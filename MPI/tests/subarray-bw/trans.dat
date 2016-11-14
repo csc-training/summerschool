@@ -1,0 +1,10 @@
+Rank 1 msgsize 8 trans 0.00417084 GB/s
+Rank 1 msgsize 32 trans 0.0164342 GB/s
+Rank 1 msgsize 128 trans 0.065979 GB/s
+Rank 1 msgsize 512 trans 0.260301 GB/s
+Rank 1 msgsize 2048 trans 0.820198 GB/s
+Rank 1 msgsize 8192 trans 1.13462 GB/s
+Rank 1 msgsize 32768 trans 2.59201 GB/s
+Rank 1 msgsize 131072 trans 3.23435 GB/s
+Rank 1 msgsize 524288 trans 3.57371 GB/s
+Rank 1 msgsize 2097152 trans 3.76409 GB/s

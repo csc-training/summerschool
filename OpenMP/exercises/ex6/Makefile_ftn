@@ -1,0 +1,66 @@
+COMP=cray
+
+ifeq ($(COMP),cray)
+CC=cc 
+FC=ftn
+MPIF90=ftn
+CCFLAGS=-g -h omp -I/appl/opt/libpng/include/libpng16
+FCFLAGS=-g -h omp -efmw
+LIBS=-L/appl/opt/libpng/lib -lpng16 -lz 
+endif
+
+ifeq ($(COMP),gnu)
+CC=gcc
+FC=gfortran
+CCFLAGS=-g -fopenmp -I/appl/opt/libpng/include/libpng16
+FCFLAGS=-g -fopenmp
+LIBS=-L/appl/opt/libpng/lib -lpng16 -lz 
+endif
+
+ifeq ($(COMP),intel)
+CC=icc
+FC=ifort
+CCFLAGS=-g -qopenmp -I/appl/opt/libpng/include/libpng16
+FCFLAGS=-g -qopenmp
+LIBS=-L/appl/opt/libpng/lib -lpng16 -lz 
+endif
+
+EXE6a=bonus_ex6a
+OBJS6a=pngwriter_mod.o pngwriter.o bonus_ex6a_heat.o bonus_ex6a_main.o
+
+EXE6b=bonus_ex6b
+OBJS6b=pngwriter_mod.o pngwriter.o bonus_ex6b_heat.o bonus_ex6b_main.o
+
+OBJS_PNGF=pngwriter_mod.o
+
+EXES=$(EXE6a) $(EXE6b)
+
+all: $(EXES)
+
+# Dependencies
+pngwriter.o: pngwriter.c
+pngwriter_mod.o: pngwriter_mod.F90 pngwriter.o
+
+bonus_ex6a_main.o: bonus_ex6a_heat.o bonus_ex6a_main.F90
+bonus_ex6b_main.o: bonus_ex6b_heat.o bonus_ex6b_main.F90
+
+bonus_ex6a_heat.o: bonus_ex6a_heat.F90 pngwriter_mod.o
+bonus_ex6b_heat.o: bonus_ex6b_heat.F90 pngwriter_mod.o
+
+$(EXE6a): $(OBJS6a) .ALWAYSEXEC
+	$(FC) $(FCFLAGS) $(OBJS6a) -o $@ $(LIBS)
+
+$(EXE6b): $(OBJS6b) .ALWAYSEXEC
+	$(FC) $(FCFLAGS) $(OBJS6b) -o $@ $(LIBS)
+
+pngwriter.o: pngwriter.c
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+%.o: %.F90
+	$(FC) $(FCFLAGS) -c $< -o $@
+
+clean:
+	-/bin/rm -f $(EXES)
+	-/bin/rm -f a.out *.o *.mod *~ *.png
+
+.ALWAYSEXEC:

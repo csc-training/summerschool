@@ -1,0 +1,47 @@
+COMP=cray
+
+ifeq ($(COMP),cray)
+CC=cc
+FC=ftn 
+CCFLAGS=-I/appl/opt/libpng/include/libpng16
+FCFLAGS=-efmw
+LIBS=-L/appl/opt/libpng/lib -lpng16 -lz
+endif
+
+ifeq ($(COMP),gnu)
+CC=gcc
+FC=mpif90
+CCFLAGS=-Wall -I/appl/opt/libpng/include/libpng16
+FCFLAGS=-Wall
+LIBS=-L/appl/opt/libpng/lib -lpng16 -lz
+endif
+
+ifeq ($(COMP),intel)
+CC=icc
+FC=ifort
+CCFLAGS=-g -I/appl/opt/libpng/include/libpng16
+FCFLAGS=-g
+LIBS=-L/appl/opt/libpng/lib -lpng16 -lz
+endif
+
+EXE=heat_mpi
+OBJS=pngwriter.o pngwriter_mod.o heat_mpi.o heat_mpi_main.o
+
+all: $(EXE)
+
+pngwriter.o: pngwriter.c pngwriter.h
+pngwriter_mod.o: pngwriter_mod.F90
+heat_mpi.o: heat_mpi.F90 
+heat_mpi_main.o: heat_mpi_main.F90
+
+$(EXE): $(OBJS)
+	$(FC) $(FCFLAGS) $(OBJS) -o $@ $(LIBS)
+
+%.o: %.F90
+	$(FC) $(FCFLAGS) -c $< -o $@
+
+%.o: %.c
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+clean:
+	-/bin/rm -f $(EXE) a.out *.o *.mod *.png *~

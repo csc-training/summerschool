@@ -1,0 +1,43 @@
+COMP=cray
+
+ifeq ($(COMP),cray)
+CC=cc
+FC=ftn 
+CCFLAGS=-O2
+FCFLAGS=-efm -O2
+LIBS=
+endif
+
+ifeq ($(COMP),gnu)
+CC=gcc
+FC=mpif90
+CCFLAGS=-O3
+FCFLAGS=-O3
+LIBS=
+endif
+
+ifeq ($(COMP),intel)
+CC=icc
+FC=ifort
+CCFLAGS=-g
+FCFLAGS=-g
+endif
+
+EXE1=vector_type
+OBJS1=vector_type.f90
+
+all:	$(EXE1)
+
+.PHONY: .ALWAYSEXEC clean
+
+$(EXE1):$(OBJS1) .ALWAYSEXEC
+	$(FC) $(FCFLAGS) $(OBJS1) -o $@ $(LIBS)
+
+%.o: %.f90
+	$(FC) $(FCFLAGS) -c $< -o $@
+
+
+clean:
+	-/bin/rm -f $(EXE1) a.out *.o *.mod *~
+
+.ALWAYSEXEC:
