@@ -16,7 +16,7 @@ contains
     type(field), intent(in) :: curr
     integer, intent(in) :: iter
     type(parallel_data), intent(in) :: parallel
-
+    
     character(len=85) :: filename
 
     integer :: stat
@@ -54,7 +54,7 @@ contains
   ! Note that this version assumes the input data to be in C memory layout
   subroutine read_field(field0, filename, parallel)
     use setup
-
+    
     implicit none
     type(field), intent(out) :: field0
     character(len=85), intent(in) :: filename
@@ -103,5 +103,5 @@ contains
     end if
 
   end subroutine read_field
-
+  
 end module io

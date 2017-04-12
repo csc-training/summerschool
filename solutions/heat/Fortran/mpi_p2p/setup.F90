@@ -4,70 +4,70 @@ module setup
 
 contains
 
-subroutine initialize(previous, current, nsteps, parallel)
+  subroutine initialize(previous, current, nsteps, parallel)
     use utilities
     use io
-
+    
     implicit none
 
     type(field), intent(out) :: previous, current
     integer, intent(out) :: nsteps
     type(parallel_data), intent(out) :: parallel
-
+    
     integer :: rows, cols
     logical :: using_input_file
     character(len=85) :: input_file, arg  ! Input file name and command line arguments
 
 
-  ! Default values for grid size and time steps
-  rows = 200
-  cols = 200
-  nsteps = 500
-  using_input_file = .false.
+    ! Default values for grid size and time steps
+    rows = 200
+    cols = 200
+    nsteps = 500
+    using_input_file = .false.
 
-  ! Read in the command line arguments and
-  ! set up the needed variables
-  select case(command_argument_count())
-  case(0) ! No arguments -> default values
-  case(1) ! One argument -> input file name
-     using_input_file = .true.
-     call get_command_argument(1, input_file)
-  case(2) ! Two arguments -> input file name and number of steps
-     using_input_file = .true.
-     call get_command_argument(1, input_file)
-     call get_command_argument(2, arg)
-     read(arg, *) nsteps
-  case(3) ! Three arguments -> rows, cols and nsteps
-     call get_command_argument(1, arg)
-     read(arg, *) rows
-     call get_command_argument(2, arg)
-     read(arg, *) cols
-     call get_command_argument(3, arg)
-     read(arg, *) nsteps
-  case default
-     call usage()
-     stop
-  end select
+    ! Read in the command line arguments and
+    ! set up the needed variables
+    select case(command_argument_count())
+    case(0) ! No arguments -> default values
+    case(1) ! One argument -> input file name
+       using_input_file = .true.
+       call get_command_argument(1, input_file)
+    case(2) ! Two arguments -> input file name and number of steps
+       using_input_file = .true.
+       call get_command_argument(1, input_file)
+       call get_command_argument(2, arg)
+       read(arg, *) nsteps
+    case(3) ! Three arguments -> rows, cols and nsteps
+       call get_command_argument(1, arg)
+       read(arg, *) rows
+       call get_command_argument(2, arg)
+       read(arg, *) cols
+       call get_command_argument(3, arg)
+       read(arg, *) nsteps
+    case default
+       call usage()
+       stop
+    end select
 
-  ! Initialize the fields according the command line arguments
-  if (using_input_file) then
-     call read_field(previous, input_file, parallel)
-     call copy_fields(previous, current)
-  else
-     call parallel_setup(parallel, rows, cols)
-     call set_field_dimensions(previous, rows, cols, parallel)
-     call set_field_dimensions(current, rows, cols, parallel)
-     call generate_field(previous, parallel)
-     call copy_fields(previous, current)
-  end if
+    ! Initialize the fields according the command line arguments
+    if (using_input_file) then
+       call read_field(previous, input_file, parallel)
+       call copy_fields(previous, current)
+    else
+       call parallel_setup(parallel, rows, cols)
+       call set_field_dimensions(previous, rows, cols, parallel)
+       call set_field_dimensions(current, rows, cols, parallel)
+       call generate_field(previous, parallel)
+       call copy_fields(previous, current)
+    end if
 
-end subroutine initialize
+  end subroutine initialize
 
   subroutine parallel_setup(parallel, nx, ny)
     use mpi
-
+    
     implicit none
-
+    
     type(parallel_data), intent(out) :: parallel
     integer, intent(in), optional :: nx, ny
 
@@ -75,7 +75,7 @@ end subroutine initialize
     integer :: ierr
 
     call mpi_comm_size(MPI_COMM_WORLD, parallel%size, ierr)
-
+    
     if (present(ny)) then
        ny_local = ny / parallel%size
        if (ny_local * parallel%size /= ny) then
@@ -83,19 +83,19 @@ end subroutine initialize
           call mpi_abort(MPI_COMM_WORLD, -2, ierr)
        end if
     end if
-
+    
     call mpi_comm_rank(MPI_COMM_WORLD, parallel%rank, ierr)
-
+    
     parallel%nleft = parallel%rank - 1
     parallel%nright = parallel%rank + 1
-
+    
     if (parallel%nleft < 0) then
        parallel%nleft = MPI_PROC_NULL
     end if
     if (parallel%nright > parallel%size - 1) then
        parallel%nright = MPI_PROC_NULL
     end if
-
+    
   end subroutine parallel_setup
 
   ! Generate initial the temperature field.  Pattern is disc with a radius
@@ -105,19 +105,19 @@ end subroutine initialize
     use heat
 
     implicit none
-
+    
     type(field), intent(inout) :: field0
     type(parallel_data), intent(in) :: parallel
-
+    
     real(dp) :: radius2
     integer :: i, j, ds2
-
+    
     ! The arrays for field contain also a halo region
     allocate(field0%data(0:field0%nx+1, 0:field0%ny+1))
-
+    
     ! Square of the disk radius
     radius2 = (field0%nx_full / 6.0_dp)**2
-
+    
     do j = 0, field0%ny + 1
        do i = 0, field0%nx + 1
           ds2 = int((i - field0%nx_full / 2.0_dp + 1)**2 + &
@@ -129,7 +129,7 @@ end subroutine initialize
           end if
        end do
     end do
-
+    
     ! Boundary conditions
     if (parallel % rank == 0) then
        field0%data(:,0) = 20.0_dp
@@ -138,23 +138,23 @@ end subroutine initialize
     end if
     field0%data(0,:) = 85.0_dp
     field0%data(field0%nx+1,:) = 5.0_dp
-
+    
   end subroutine generate_field
-
-
+  
+  
   ! Clean up routine for field type
   ! Arguments:
   !   field0 (type(field)): field variable to be cleared
   subroutine finalize(field0, field1)
     use heat
-
+    
     implicit none
-
+    
     type(field), intent(inout) :: field0, field1
-
+    
     deallocate(field0%data)
     deallocate(field1%data)
-
+    
   end subroutine finalize
 
   ! Helper routine that prints out a simple usage if

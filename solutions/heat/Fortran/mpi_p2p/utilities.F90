@@ -1,6 +1,7 @@
 
 module utilities
     use heat
+
 contains
 
   ! Swap the data fields of two variables of type field
