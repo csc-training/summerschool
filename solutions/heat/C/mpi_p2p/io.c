@@ -63,7 +63,7 @@ void write_field(field *temperature, int iter, parallel_data *parallel)
  * initialize the temperature fields temperature1 and
  * temperature2 to the same initial state. */
 void read_field(field *temperature1, field *temperature2, char *filename,
-		parallel_data *parallel)
+                parallel_data *parallel)
 {
     FILE *fp;
     int nx, ny, i, j;

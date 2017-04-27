@@ -11,8 +11,8 @@
 #define NSTEPS 500  // Default number of iteration steps
 
 /* Initialize the heat equation solver */
-void initialize(int argc, char* argv[], field *current, 
-		field *previous, int *nsteps)
+void initialize(int argc, char* argv[], field *current,
+                field *previous, int *nsteps)
 {
     /*
      * Following combinations of command line arguments are possible:
@@ -39,12 +39,12 @@ void initialize(int argc, char* argv[], field *current,
     case 2:
         /* Read initial field from a file */
         strncpy(input_file, argv[1], 64);
-	read_file = 1;
+        read_file = 1;
         break;
     case 3:
         /* Read initial field from a file */
         strncpy(input_file, argv[1], 64);
-	read_file = 1;
+        read_file = 1;
 
         /* Number of time steps */
         *nsteps = atoi(argv[2]);
@@ -65,7 +65,7 @@ void initialize(int argc, char* argv[], field *current,
         read_field(current, previous, input_file);
     else
       {
-	set_field_dimensions(current, rows, cols);
+        set_field_dimensions(current, rows, cols);
         set_field_dimensions(previous, rows, cols);
         generate_field(current);
         generate_field(previous);

@@ -24,8 +24,8 @@ void free_2d(double **array);
 
 void set_field_dimensions(field *temperature, int nx, int ny);
 
-void initialize(int argc, char *argv[], field *temperature1, 
-		field *temperature2, int *nsteps);
+void initialize(int argc, char *argv[], field *temperature1,
+                field *temperature2, int *nsteps);
 
 void generate_field(field *temperature);
 

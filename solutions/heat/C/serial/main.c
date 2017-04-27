@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     double dx2, dy2;            //!< delta x and y squared
 
     clock_t start_clock;        //!< Time stamps
-   
+
     initialize(argc, argv, &current, &previous, &nsteps);
 
     /* Output the initial field */

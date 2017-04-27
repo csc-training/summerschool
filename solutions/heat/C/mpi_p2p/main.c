@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     double start_clock;        //!< Time stamps
 
     MPI_Init(&argc, &argv);
-   
+
     initialize(argc, argv, &current, &previous, &nsteps, &parallelization);
 
     /* Output the initial field */
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
         exchange(&previous, &parallelization);
         evolve(&current, &previous, a, dt);
         if (iter % image_interval == 0) {
-	  write_field(&current, iter, &parallelization);
+          write_field(&current, iter, &parallelization);
         }
         /* Swap current field so that it will be used
             as previous for next iteration step */
