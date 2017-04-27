@@ -1,2 +1,9 @@
 .DS_Store
 *.o
+
+#ignore specific exercise & solution binaries
+exercises/programming/fortran/hello/hello
+solutions/programming/fortran/hello/hello
+
+exercises/programming/fortran/loops/loops
+solutions/programming/fortran/loops/loops
