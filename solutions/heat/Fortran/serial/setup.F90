@@ -1,4 +1,4 @@
-
+! Setup routines for heat equation solver
 module setup
 
 contains

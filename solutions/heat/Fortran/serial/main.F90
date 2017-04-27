@@ -1,3 +1,4 @@
+! Heat equation solver in 2D.
 
 program heat_solve
   use heat

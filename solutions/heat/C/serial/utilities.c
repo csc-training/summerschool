@@ -1,6 +1,5 @@
-/* Utility functions for heat equation solver 
- * This file does not need to be edited
-*/
+/* Utility functions for heat equation solver
+ *   NOTE: This file does not need to be edited! */
 
 #include <stdio.h>
 #include <stdlib.h>

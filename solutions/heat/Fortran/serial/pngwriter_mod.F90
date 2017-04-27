@@ -1,4 +1,4 @@
-
+! PNG writer for heat equation solver
 module pngwriter
   use heat
 

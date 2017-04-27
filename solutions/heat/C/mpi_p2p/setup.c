@@ -1,4 +1,4 @@
-/* Main solver routines for heat equation solver */
+/* Setup routines for heat equation solver */
 
 #include <stdio.h>
 #include <stdlib.h>

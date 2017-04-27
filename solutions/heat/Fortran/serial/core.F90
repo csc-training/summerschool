@@ -1,3 +1,4 @@
+! Main solver routines for heat equation solver
 module core
 
 contains
