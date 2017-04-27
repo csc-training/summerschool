@@ -14,7 +14,7 @@ program heat_solve
 
   real(dp) :: dt     ! Time step
   integer :: nsteps       ! Number of time steps
-  integer, parameter :: image_interval = 10 ! Image output interval
+  integer, parameter :: image_interval = 500 ! Image output interval
 
   type(parallel_data) :: parallelization
   integer :: ierr

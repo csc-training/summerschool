@@ -53,7 +53,6 @@ contains
   !   filename (char): name of the input file
   ! Note that this version assumes the input data to be in C memory layout
   subroutine read_field(field0, filename, parallel)
-    use setup
     
     implicit none
     type(field), intent(out) :: field0
