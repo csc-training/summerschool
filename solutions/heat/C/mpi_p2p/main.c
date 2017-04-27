@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     double dt;                  //!< Time step
     int nsteps;                 //!< Number of time steps
 
-    int image_interval = 10;    //!< Image output interval
+    int image_interval = 500;    //!< Image output interval
 
     parallel_data parallelization; //!< Parallelization info
 

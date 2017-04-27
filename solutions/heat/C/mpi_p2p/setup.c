@@ -24,8 +24,8 @@ void initialize(int argc, char* argv[], field *current,
      */
 
 
-    int rows = 200;             //!< Field dimensions with default values
-    int cols = 200;
+    int rows = 2000;             //!< Field dimensions with default values
+    int cols = 2000;
 
     char input_file[64];        //!< Name of the optional input file
 

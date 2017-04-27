@@ -20,8 +20,8 @@ contains
 
 
     ! Default values for grid size and time steps
-    rows = 200
-    cols = 200
+    rows = 2000
+    cols = 2000
     nsteps = 500
     using_input_file = .false.
 
@@ -62,41 +62,6 @@ contains
     end if
 
   end subroutine initialize
-
-  subroutine parallel_setup(parallel, nx, ny)
-    use mpi
-    
-    implicit none
-    
-    type(parallel_data), intent(out) :: parallel
-    integer, intent(in), optional :: nx, ny
-
-    integer :: ny_local
-    integer :: ierr
-
-    call mpi_comm_size(MPI_COMM_WORLD, parallel%size, ierr)
-    
-    if (present(ny)) then
-       ny_local = ny / parallel%size
-       if (ny_local * parallel%size /= ny) then
-          write(*,*) 'Cannot divide grid evenly to processors'
-          call mpi_abort(MPI_COMM_WORLD, -2, ierr)
-       end if
-    end if
-    
-    call mpi_comm_rank(MPI_COMM_WORLD, parallel%rank, ierr)
-    
-    parallel%nleft = parallel%rank - 1
-    parallel%nright = parallel%rank + 1
-    
-    if (parallel%nleft < 0) then
-       parallel%nleft = MPI_PROC_NULL
-    end if
-    if (parallel%nright > parallel%size - 1) then
-       parallel%nright = MPI_PROC_NULL
-    end if
-    
-  end subroutine parallel_setup
 
   ! Generate initial the temperature field.  Pattern is disc with a radius
   ! of nx_full / 6 in the center of the grid.
