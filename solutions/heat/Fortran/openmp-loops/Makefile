@@ -1,23 +1,24 @@
 COMP=cray
 
 COMMONDIR=../../common
+LIBPNGDIR=/appl/opt/libpng
 
 ifeq ($(COMP),cray)
 FC=ftn
 CC=cc
 FCFLAGS=-O3 
-CCFLAGS=-O3 -I/appl/opt/libpng/include -I$(COMMONDIR)
-LDFLAGS=
-LIBS=-L/appl/opt/libpng/lib -lpng -lz
+CCFLAGS=-O3 -I$(LIBPNGDIR)/include -I$(COMMONDIR)
+LDFLAGS=-L$(LIBPNGDIR)/lib
+LIBS=-lpng -lz
 endif
 
 ifeq ($(COMP),gnu)
 FC=gfortran
 CC=gcc
 FCFLAGS=-fopenmp -O3 -Wall 
-CCFLAGS=-fopenmp -O3 -Wall -I/appl/opt/libpng/include -I$(COMMONDIR)
-LDFLAGS=
-LIBS=-L/appl/opt/libpng/lib -lpng -lz
+CCFLAGS=-fopenmp -O3 -Wall -I$(LIBPNGDIR)/include -I$(COMMONDIR)
+LDFLAGS=-L$(LIBPNGDIR)/lib
+LIBS=-lpng -lz
 endif
 
 EXE=heat_serial
