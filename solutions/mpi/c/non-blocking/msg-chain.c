@@ -1,7 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<mpi.h>
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +18,7 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
-    /* Allocate message */
+    /* Allocate message buffers */
     message = malloc(sizeof(int) * size);
     receiveBuffer = malloc(sizeof(int) * size);
     /* Initialize message */
@@ -33,27 +32,28 @@ int main(int argc, char *argv[])
     } else {
         destination = MPI_PROC_NULL;
     }
-
     if (myid > 0) {
         source = myid - 1;
     } else {
         source = MPI_PROC_NULL;
     }
 
-    /* Send and receive messages as defined in exercise */
+    /* Receive messages in the back ground */
     MPI_Irecv(receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
               MPI_COMM_WORLD, &requests[0]);
+    /* Send messages in the back ground */
     MPI_Isend(message, size, MPI_INT, destination, myid + 1,
               MPI_COMM_WORLD, &requests[1]);
-    printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n", myid,
-           size, myid + 1, destination);
 
     /* Blocking wait for messages */
     MPI_Waitall(2, requests, statuses);
 
+    /* Use status parameter to find out the no. of elements received */
     MPI_Get_count(&statuses[0], MPI_INT, &count);
-    printf("Receiver: %d. received elements: %d. Tag %d. Sender: %d.\n",
-           myid, count, statuses[0].MPI_TAG, statuses[0].MPI_SOURCE);
+    printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
+            myid, size, myid + 1, destination);
+    printf("Receiver: %d. Received elements: %d. Tag %d. Sender: %d.\n",
+            myid, count, statuses[0].MPI_TAG, statuses[0].MPI_SOURCE);
 
     free(message);
     free(receiveBuffer);
