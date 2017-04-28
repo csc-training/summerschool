@@ -1,5 +1,7 @@
 .DS_Store
 *.o
+*.mod
+*.png
 
 #ignore specific exercise & solution binaries
 exercises/programming/fortran/hello/hello
@@ -10,3 +12,12 @@ solutions/programming/fortran/loops/loops
 
 exercises/programming/fortran/arrays/arrays
 solutions/programming/fortran/arrays/arrays
+
+exercises/programming/fortran/laplace/laplace
+solutions/programming/fortran/laplace/laplace
+
+exercises/programming/fortran/intrinsics/intrinsics
+solutions/programming/fortran/intrinsics/intrinsics
+
+exercises/programming/fortran/io/io
+solutions/programming/fortran/io/io
