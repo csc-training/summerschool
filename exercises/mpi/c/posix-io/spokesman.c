@@ -51,7 +51,7 @@ void single_writer(int my_id, int *localvector, int localsize)
     FILE *fp;
     int *fullvector;
 
-    /* Implement a function that will write the data to file so that
+    /* TODO: Implement a function that will write the data to file so that
        a single process does the file io. Use rank WRITER_ID as the io rank */
 
     free(fullvector);
