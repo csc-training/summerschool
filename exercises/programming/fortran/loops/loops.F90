@@ -6,8 +6,7 @@ program loops
 
 
 ! TODO initialize array A here
-! Remember that we now have A(ydir, xdir),
-! so we define height with ny and width with nx.
+! Remember that we define height with ny and width with nx.
 
 
 
@@ -15,7 +14,7 @@ program loops
 !--------------------------------------------------
 ! printing of the final array
   do j = 1, ny
-     write(*,'(*(F4.1))') A(j,:)
+     write(*,'(*(F4.1))') A(:,j)
   end do
 
 end program loops
