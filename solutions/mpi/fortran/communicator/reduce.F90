@@ -4,7 +4,7 @@ program coll_exer
 
   integer, parameter :: n_mpi_tasks = 4
 
-  integer :: ntasks, rank, ierr, i, color, sub_comm, request
+  integer :: ntasks, rank, ierr, i, color, sub_comm
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
   integer, dimension(n_mpi_tasks) :: offsets, counts
@@ -23,8 +23,7 @@ program coll_exer
   ! First collective operation to send (0,1,..,7) everywhere
   ! Initialize sendbuf and broadcast
   call init_buffers
-  ! TODO: Add correct collective operation
-
+  call mpi_bcast(sendbuf, 2*n_mpi_tasks, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
   call print_buffers(sendbuf)
 
   ! Initialize buffers for a)
@@ -32,8 +31,8 @@ program coll_exer
   call print_buffers(sendbuf)
 
   ! Scatter the elements from task 0
-  ! TODO: Add correct collective operation
-
+  call mpi_scatter(sendbuf, 2, MPI_INTEGER, recvbuf, 2, MPI_INTEGER, &
+       & 0, MPI_COMM_WORLD, ierr)
   call print_buffers(recvbuf)
 
   ! Gather varying size data to task 1
@@ -43,8 +42,8 @@ program coll_exer
   do i = 2, ntasks
      offsets(i) = offsets(i-1) + counts(i-1)
   end do
-  ! TODO: Add the missing calls
-
+  call mpi_gatherv(sendbuf, counts(rank+1), MPI_INTEGER, recvbuf, counts, &
+       & offsets, MPI_INTEGER, 1, MPI_COMM_WORLD, ierr)
   call print_buffers(recvbuf)
 
   ! Create new communicator and reduce the data
@@ -54,8 +53,10 @@ program coll_exer
   else
      color = 2
   end if
-  ! TODO: Create the correct communicators and do the reduction
-  !       using non-blocking collective function
+  call mpi_comm_split(MPI_COMM_WORLD, color, rank, sub_comm, ierr)
+  call mpi_reduce(sendbuf, recvbuf, 2*n_mpi_tasks, MPI_INTEGER, MPI_SUM, 0, &
+       & sub_comm, ierr)
+
   call print_buffers(recvbuf)
   call mpi_barrier(MPI_COMM_WORLD, ierr)
   call flush(6)

@@ -1,3 +1,7 @@
+/*
+ * CSC/PATC Introduction to parallel programming using MPI and OpenMP
+ * (c) CSC 2013
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -16,7 +20,6 @@ int main(int argc, char *argv[])
 
     int offsets[NTASKS] = { 0, 1, 2, 4 };
     int counts[NTASKS] = { 1, 1, 2, 4 };
-    MPI_Request request;
 
     MPI_Comm sub_comm;
 
@@ -34,8 +37,7 @@ int main(int argc, char *argv[])
     /* First collective operation to send (0,1,2,...,7) everywhere */
     /* Initialize sendbuf and broadcast */
     init_buffers(sendbuf, recvbuf, 2 * NTASKS);
-    /* TODO: Add here the correct non-blokcing collective communication */
-
+    MPI_Bcast(sendbuf, 2 * NTASKS, MPI_INT, 0, MPI_COMM_WORLD);
     print_buffers(printbuf, sendbuf, 2 * NTASKS);
 
     /* Initialize buffers for a) */
@@ -43,14 +45,14 @@ int main(int argc, char *argv[])
     print_buffers(printbuf, sendbuf, 2 * NTASKS);
 
     /* Scatter the elements from task 0 */
-    /* TODO: Add correct calls */
-
+    MPI_Scatter(sendbuf, 2, MPI_INT, recvbuf, 2, MPI_INT, 0,
+                MPI_COMM_WORLD);
     print_buffers(printbuf, recvbuf, 2 * NTASKS);
 
     /* Gather varying size data to task 1 */
     init_buffers(sendbuf, recvbuf, 2 * NTASKS);
-    /* TODO: Add correct calls */
-
+    MPI_Gatherv(sendbuf, counts[rank], MPI_INT, recvbuf, counts,
+                offsets, MPI_INT, 1, MPI_COMM_WORLD);
     print_buffers(printbuf, recvbuf, 2 * NTASKS);
 
     /* Create new communicator and reduce the data */
@@ -60,9 +62,9 @@ int main(int argc, char *argv[])
     } else {
         color = 2;
     }
-    /* TODO: Create new communicators and do the reduction
-             using correct collective communication call */
-
+    MPI_Comm_split(MPI_COMM_WORLD, color, rank, &sub_comm);
+    MPI_Reduce(sendbuf, recvbuf, 2 * NTASKS, MPI_INT, MPI_SUM, 0,
+               sub_comm);
     print_buffers(printbuf, recvbuf, 2 * NTASKS);
 
     MPI_Finalize();
