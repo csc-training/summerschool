@@ -1,7 +1,3 @@
-/*
- * CSC/PATC Introduction to parallel programming using MPI and OpenMP
- * (c) CSC 2013
- */
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -18,9 +14,6 @@ int main(int argc, char *argv[])
     int sendbuf[2 * NTASKS], recvbuf[2 * NTASKS];
     int printbuf[2 * NTASKS * NTASKS];
 
-    int offsets[NTASKS] = { 0, 1, 2, 4 };
-    int counts[NTASKS] = { 1, 1, 2, 4 };
-
     MPI_Comm sub_comm;
 
     MPI_Init(&argc, &argv);
@@ -34,23 +27,18 @@ int main(int argc, char *argv[])
         MPI_Abort(MPI_COMM_WORLD, -1);
     }
 
-    /* First collective operation to send (0,1,2,...,7) everywhere */
-    /* Initialize sendbuf and broadcast */
+    /* Initialize message buffers */
     init_buffers(sendbuf, recvbuf, 2 * NTASKS);
-    
-    /* TODO: send to all */
 
-    print_buffers(printbuf, sendbuf, 2 * NTASKS);
-    
-    /* Initialize buffers for a) */
-    init_buffers(sendbuf, recvbuf, 2 * NTASKS);
+    /* Print data that will be sent */
     print_buffers(printbuf, sendbuf, 2 * NTASKS);
 
-    /* TODO start: perform collective communication */
+    /* TODO: use a single collective communication call (and maybe prepare
+     *       some parameters for the call) */
 
-    /* TODO end */
-
-    print_buffers(printbuf, recvbuf, 2 * NTASKS);
+    /* Print data that was received */
+    /* TODO: add correct buffer */
+    print_buffers(printbuf, ... , 2 * NTASKS);
 
     MPI_Finalize();
     return 0;

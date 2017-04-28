@@ -7,7 +7,6 @@ program coll_exer
   integer :: ntasks, rank, ierr, i, color, sub_comm
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
-  integer, dimension(n_mpi_tasks) :: offsets, counts
 
   call mpi_init(ierr)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)
@@ -20,46 +19,18 @@ program coll_exer
      call mpi_abort(MPI_COMM_WORLD, -1, ierr)
   end if
 
-  ! First collective operation to send (0,1,..,7) everywhere
-  ! Initialize sendbuf and broadcast
+  ! Initialize message buffers
   call init_buffers
-  call mpi_bcast(sendbuf, 2*n_mpi_tasks, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
+
+  ! Print data that will be sent
   call print_buffers(sendbuf)
 
-  ! Initialize buffers for a)
-  call init_buffers
+  ! Send (0,1,..,7) everywhere
+  call mpi_bcast(sendbuf, 2*ntasks, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
+
+  ! Print data that was received
   call print_buffers(sendbuf)
 
-  ! Scatter the elements from task 0
-  call mpi_scatter(sendbuf, 2, MPI_INTEGER, recvbuf, 2, MPI_INTEGER, &
-       & 0, MPI_COMM_WORLD, ierr)
-  call print_buffers(recvbuf)
-
-  ! Gather varying size data to task 1
-  call init_buffers
-  counts = (/1,1,2,4/)
-  offsets(1) = 0
-  do i = 2, ntasks
-     offsets(i) = offsets(i-1) + counts(i-1)
-  end do
-  call mpi_gatherv(sendbuf, counts(rank+1), MPI_INTEGER, recvbuf, counts, &
-       & offsets, MPI_INTEGER, 1, MPI_COMM_WORLD, ierr)
-  call print_buffers(recvbuf)
-
-  ! Create new communicator and reduce the data
-  call init_buffers
-  if (rank / 2 == 0) then
-     color = 1
-  else
-     color = 2
-  end if
-  call mpi_comm_split(MPI_COMM_WORLD, color, rank, sub_comm, ierr)
-  call mpi_reduce(sendbuf, recvbuf, 2*n_mpi_tasks, MPI_INTEGER, MPI_SUM, 0, &
-       & sub_comm, ierr)
-
-  call print_buffers(recvbuf)
-  call mpi_barrier(MPI_COMM_WORLD, ierr)
-  call flush(6)
   call mpi_finalize(ierr)
 
 contains

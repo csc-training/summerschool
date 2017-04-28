@@ -7,7 +7,6 @@ program coll_exer
   integer :: ntasks, rank, ierr, i, color, sub_comm
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
-  integer, dimension(n_mpi_tasks) :: offsets, counts
 
   call mpi_init(ierr)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)
@@ -20,19 +19,19 @@ program coll_exer
      call mpi_abort(MPI_COMM_WORLD, -1, ierr)
   end if
 
-  ! First collective operation to send (0,1,..,7) everywhere
-  ! Initialize sendbuf and broadcast
+  ! Initialize message buffers
   call init_buffers
-  ! TODO send to all
+
+  ! Print data that will be sent
   call print_buffers(sendbuf)
 
-  ! TODO start: perform collective communication
+  ! TODO: use a single collective communication call (and maybe prepare
+  !       some parameters for the call)
 
-  ! TODO end
+  ! Print data that was received
+  ! TODO: add correct buffer
+  call print_buffers(...)
 
-  call print_buffers(recvbuf)
-  call mpi_barrier(MPI_COMM_WORLD, ierr)
-  call flush(6)
   call mpi_finalize(ierr)
 
 contains
