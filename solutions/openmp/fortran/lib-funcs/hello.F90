@@ -1,19 +1,18 @@
-program thread_hello
+program hello
   use omp_lib
   implicit none
-
   integer :: tid, nthreads
 
+  print *, 'Hello world!'
   !$omp parallel private(tid) shared(nthreads)
+  tid = omp_get_thread_num()
   !$omp single
   nthreads = omp_get_num_threads()
-  print *, 'There are ', nthreads, ' threads in total.'
   !$omp end single
-
-  tid = omp_get_thread_num()
-
   !$omp critical
-  print *, 'Hello from thread id ', tid, '/', nthreads
+  print *, '  ... from thread ID', tid
   !$omp end critical
   !$omp end parallel
-end program thread_hello
+  print *, 'There were', nthreads, 'threads in total.'
+
+end program hello

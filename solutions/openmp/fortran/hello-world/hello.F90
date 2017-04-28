@@ -2,8 +2,8 @@ program hello
   implicit none
 
   print *, 'Hello world!'
-  !$OMP PARALLEL
+  !$omp parallel
   print *, 'X'
-  !$OMP END PARALLEL
+  !$omp end parallel
 
 end program hello

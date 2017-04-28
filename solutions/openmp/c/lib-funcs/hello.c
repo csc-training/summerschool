@@ -1,23 +1,21 @@
 #include <stdio.h>
 #include <omp.h>
 
-int main(void)
+int main(int argc, char *argv[])
 {
     int tid, nthreads;
 
+    printf("Hello world!\n");
 #pragma omp parallel private(tid) shared(nthreads)
     {
-#pragma omp single
-        {
-            nthreads = omp_get_num_threads();
-            printf("There are %i threads in total.\n", nthreads);
-        }
-
         tid = omp_get_thread_num();
+#pragma omp single
+		nthreads = omp_get_num_threads();
 
 #pragma omp critical
-        printf("Hello from thread id %i/%i!\n", tid, nthreads);
+        printf("  ... from thread ID %i.\n", tid);
     }
+	printf("There were %i threads in total.\n", nthreads);
 
     return 0;
 }
