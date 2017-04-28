@@ -1,20 +1,19 @@
 COMP=cray
 
 COMMONDIR=../../common
-LIBPNGDIR=/appl/opt/libpng
 
 ifeq ($(COMP),cray)
 CC=cc
-CCFLAGS=-O3 -I$(LIBPNGDIR)/include -I$(COMMONDIR)
-LDFLAGS=-L$(LIBPNGDIR)/lib
+CCFLAGS=-O3 -I/appl/opt/libpng/include -I$(COMMONDIR)
+LDFLAGS=-L/appl/opt/libpng/lib
 LIBS=-lpng -lz
 endif
 
 ifeq ($(COMP),gnu)
 CC=gcc
-CCFLAGS=-O3 -Wall -I$(LIBPNGDIR)/include -I$(COMMONDIR)
-LDFLAGS=-L$(LIBPNGDIR)/lib
-LIBS=-lpng -lz
+CCFLAGS=-O3 -Wall -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
 endif
 
 EXE=heat_serial
