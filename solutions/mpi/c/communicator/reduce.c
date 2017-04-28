@@ -1,7 +1,3 @@
-/*
- * CSC/PATC Introduction to parallel programming using MPI and OpenMP
- * (c) CSC 2013
- */
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -18,9 +14,6 @@ int main(int argc, char *argv[])
     int sendbuf[2 * NTASKS], recvbuf[2 * NTASKS];
     int printbuf[2 * NTASKS * NTASKS];
 
-    int offsets[NTASKS] = { 0, 1, 2, 4 };
-    int counts[NTASKS] = { 1, 1, 2, 4 };
-
     MPI_Comm sub_comm;
 
     MPI_Init(&argc, &argv);
@@ -34,26 +27,11 @@ int main(int argc, char *argv[])
         MPI_Abort(MPI_COMM_WORLD, -1);
     }
 
-    /* First collective operation to send (0,1,2,...,7) everywhere */
-    /* Initialize sendbuf and broadcast */
+    /* Initialize message buffers */
     init_buffers(sendbuf, recvbuf, 2 * NTASKS);
-    MPI_Bcast(sendbuf, 2 * NTASKS, MPI_INT, 0, MPI_COMM_WORLD);
+
+    /* Print data that will be sent */
     print_buffers(printbuf, sendbuf, 2 * NTASKS);
-
-    /* Initialize buffers for a) */
-    init_buffers(sendbuf, recvbuf, 2 * NTASKS);
-    print_buffers(printbuf, sendbuf, 2 * NTASKS);
-
-    /* Scatter the elements from task 0 */
-    MPI_Scatter(sendbuf, 2, MPI_INT, recvbuf, 2, MPI_INT, 0,
-                MPI_COMM_WORLD);
-    print_buffers(printbuf, recvbuf, 2 * NTASKS);
-
-    /* Gather varying size data to task 1 */
-    init_buffers(sendbuf, recvbuf, 2 * NTASKS);
-    MPI_Gatherv(sendbuf, counts[rank], MPI_INT, recvbuf, counts,
-                offsets, MPI_INT, 1, MPI_COMM_WORLD);
-    print_buffers(printbuf, recvbuf, 2 * NTASKS);
 
     /* Create new communicator and reduce the data */
     init_buffers(sendbuf, recvbuf, 2 * NTASKS);
@@ -65,6 +43,8 @@ int main(int argc, char *argv[])
     MPI_Comm_split(MPI_COMM_WORLD, color, rank, &sub_comm);
     MPI_Reduce(sendbuf, recvbuf, 2 * NTASKS, MPI_INT, MPI_SUM, 0,
                sub_comm);
+
+    /* Print data that was received */
     print_buffers(printbuf, recvbuf, 2 * NTASKS);
 
     MPI_Finalize();
