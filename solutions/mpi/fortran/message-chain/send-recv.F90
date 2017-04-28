@@ -2,10 +2,10 @@ program basic
   use mpi
   implicit none
   integer, parameter :: size = 100
-  integer :: rc, myid, ntasks, count
-  integer :: status(MPI_STATUS_SIZE)
+  integer :: rc, myid, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
+  integer :: status(MPI_STATUS_SIZE)
 
   call mpi_init(rc)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, rc)
@@ -13,7 +13,7 @@ program basic
 
   message = myid
 
-  ! Send and receive as defined in the assignment
+  ! Send messages
   if ( myid < ntasks-1 ) then
      call mpi_send(message, size, MPI_INTEGER, myid+1, &
           myid+1, MPI_COMM_WORLD, rc)
@@ -21,7 +21,7 @@ program basic
           ' Sent elements: ',size, &
           '. Tag: ', myid+1, '. Receiver: ', myid+1
   end if
-
+  ! Receive messages
   if ( myid > 0 ) then
      call mpi_recv(receiveBuffer, size, MPI_INTEGER, myid-1,  &
           myid, MPI_COMM_WORLD, status, rc)
