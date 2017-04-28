@@ -36,16 +36,12 @@ int main(int argc, char *argv[])
         source = MPI_PROC_NULL;
     }
 
-    /* Send messages */
-    MPI_Send(message, size, MPI_INT, destination, myid + 1,
-             MPI_COMM_WORLD);
-    printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n", myid,
-            size, myid + 1, destination);
-    /* Receive messages */
-    MPI_Recv(receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
-             MPI_COMM_WORLD, &status);
-    printf("Receiver: %d. first element %d.\n",
-            myid, receiveBuffer[0]);
+    /* Send and receive messages */
+    MPI_Sendrecv(message, size, MPI_INT, destination, myid + 1,
+                 receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
+                 MPI_COMM_WORLD, &status);
+    printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
+            myid, size, myid + 1, destination);
 
     free(message);
     free(receiveBuffer);

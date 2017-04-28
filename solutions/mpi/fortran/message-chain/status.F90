@@ -28,21 +28,20 @@ program basic
      source = MPI_PROC_NULL
   end if
 
-  ! Send messages
-  call mpi_send(message, size, MPI_INTEGER, destination, &
-       myid + 1, MPI_COMM_WORLD, rc)
-  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
-       ' Sent elements: ', size, &
-       '. Tag: ', myid + 1, '. Receiver: ', destination
-  ! Receive messages
-  call mpi_recv(receiveBuffer, size, MPI_INTEGER, source,  &
-       MPI_ANY_TAG, MPI_COMM_WORLD, status, rc)
+  ! Send and receive messages
+  call mpi_sendrecv(message, size, MPI_INTEGER, destination, myid + 1, &
+       receiveBuffer, size, MPI_INTEGER, source, MPI_ANY_TAG, &
+       MPI_COMM_WORLD, status, rc)
   ! Use status parameter to find out the no. of elements received
   call mpi_get_count(status, MPI_INTEGER, count, rc)
+  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
+       ' Sent elements: ', size, &
+       '. Tag: ', myid + 1, &
+       '. Receiver: ', destination
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Receiver: ', myid, &
-       'received elements: ',count, &
-       ' Tag: ', status(MPI_TAG), &
-       ' Sender: ', status(MPI_SOURCE)
+       ' Received elements: ', count, &
+       '. Tag: ', status(MPI_TAG), &
+       '. Sender: ', status(MPI_SOURCE)
 
   call mpi_finalize(rc)
 end program basic

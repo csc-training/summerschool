@@ -37,17 +37,15 @@ int main(int argc, char *argv[])
         source = MPI_PROC_NULL;
     }
 
-    /* Send messages */
-    MPI_Send(message, size, MPI_INT, destination, myid + 1,
-             MPI_COMM_WORLD);
-    printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n", myid,
-            size, myid + 1, destination);
-    /* Receive messages */
-    MPI_Recv(receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
-             MPI_COMM_WORLD, &status);
+    /* Send and receive messages */
+    MPI_Sendrecv(message, size, MPI_INT, destination, myid + 1,
+                 receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
+                 MPI_COMM_WORLD, &status);
     /* Use status parameter to find out the no. of elements received */
     MPI_Get_count(&status, MPI_INT, &count);
-    printf("Receiver: %d. received elements: %d. Tag %d. Sender: %d.\n",
+    printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
+            myid, size, myid + 1, destination);
+    printf("Receiver: %d. Received elements: %d. Tag %d. Sender: %d.\n",
             myid, count, status.MPI_TAG, status.MPI_SOURCE);
 
     free(message);
