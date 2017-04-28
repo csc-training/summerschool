@@ -23,13 +23,12 @@ int main(int argc, char *argv[])
     }
 
     /* Send and receive messages */
-    if (myid > 0) && (myid < ntasks - 1) {
+    if ((myid > 0) && (myid < ntasks - 1)) {
         MPI_Sendrecv(message, size, MPI_INT, myid + 1, myid + 1,
                 receiveBuffer, size, MPI_INT, myid - 1, MPI_ANY_TAG,
                 MPI_COMM_WORLD, &status);
         printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
                 myid, size, myid + 1, myid + 1);
-        source = myid - 1;
     }
     /* Only send a message */
     else if (myid < ntasks - 1) {
