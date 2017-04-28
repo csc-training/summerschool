@@ -1,5 +1,5 @@
-#ifndef __HEAT_SERIAL_H__
-#define __HEAT_SERIAL_H__
+#ifndef __HEAT_H__
+#define __HEAT_H__
 
 /* Datatype for temperature field */
 typedef struct {
@@ -61,5 +61,5 @@ void allocate_field(field *temperature);
 
 void finalize(field *temperature1, field *temperature2);
 
-#endif  /* __HEAT_SERIAL_H__ */
+#endif  /* __HEAT_H__ */
 
