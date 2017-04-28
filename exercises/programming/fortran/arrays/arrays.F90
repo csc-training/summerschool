@@ -1,7 +1,7 @@
 program arrays
   implicit none
   integer :: nx, ny
-  integer :: i, alloc_stat
+  integer :: j, alloc_stat
 ! TODO: define allocatable array A
 
   write (*,*) 'Give x and y dimensions of matrix A:'
@@ -14,8 +14,8 @@ program arrays
 
 !--------------------------------------------------
 ! Print out the arrays
-  do i = 1, ny
-     write(*,'(*(F5.2))') A(i,:)
+  do j = 1, ny
+     write(*,'(*(F5.2))') A(:,j)
   end do
 
 
