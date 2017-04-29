@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/csc-training/summerschool.git/!svn/ver/20/trunk/solutions/heat/C/mpi_p2p
+END
+setup.c
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/csc-training/summerschool.git/!svn/ver/17/trunk/solutions/heat/C/mpi_p2p/setup.c
+END
+main.c
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/csc-training/summerschool.git/!svn/ver/17/trunk/solutions/heat/C/mpi_p2p/main.c
+END
+heat.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/csc-training/summerschool.git/!svn/ver/16/trunk/solutions/heat/C/mpi_p2p/heat.h
+END
+io.c
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/csc-training/summerschool.git/!svn/ver/16/trunk/solutions/heat/C/mpi_p2p/io.c
+END
+core.c
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/csc-training/summerschool.git/!svn/ver/4/trunk/solutions/heat/C/mpi_p2p/core.c
+END
+utilities.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/csc-training/summerschool.git/!svn/ver/17/trunk/solutions/heat/C/mpi_p2p/utilities.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/csc-training/summerschool.git/!svn/ver/20/trunk/solutions/heat/C/mpi_p2p/Makefile
+END
