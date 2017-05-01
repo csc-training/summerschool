@@ -1,9 +1,0 @@
-program laplacian
-  use laplacian_mod
-  implicit none
-  real, dimension(:,:), allocatable :: previous, current
-  integer :: nx, ny
-  
-  write(*,*) 'Provide the arra
-
-end program laplacian
