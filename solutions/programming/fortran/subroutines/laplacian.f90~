@@ -1,0 +1,83 @@
+module laplacian_mod
+  use iso_fortran_env, only : REAL64
+  implicit none
+  integer, parameter :: dp = REAL64
+
+  integer, parameter :: nx = 16, ny = 16
+  real(dp), dimension(nx, ny) :: prev, lapl
+  integer :: i, j
+
+  real(dp), parameter :: dx = 0.01, dy = 0.01
+
+contains
+
+  subroutine initialize(field0)
+    implicit none
+    real, dimension(:,:), intent(inout) :: field0
+
+  ! Initialize the whole array in one go
+    field0 = 65.0
+
+  ! Adjust the boundaries 
+  do i = 0, nx + 1
+     field0(i, 0) = 20.0
+  end do
+  
+  do i = 0, nx + 1
+     field0(i, ny + 1) = 70.0
+  end do
+  
+  do i = 0, ny + 1
+     field0(0, i) = 85.0
+  end do
+  
+  do i = 0, ny+1
+     field0(nx + 1, i) = 5.0
+  end do
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+     
+
+
+
+
+    ! Compute Laplacian in double do-loop using prev 
+  ! and saving to lapl array.
+  do j = 2, ny-1
+    do i = 2, nx-1
+      lapl(i,j) = (prev(i-1, j) - 2.0 * prev(i,j) + &
+           &       prev(i+1, j)) /dx**2 + &
+           &      (prev(i, j-1) - 2.0 * prev(i,j) + &
+           &       prev(i, j+1)) /dy**2
+    end do
+  end do
+
+
+
+
+!--------------------------------------------------
+! printing of the prev and lapl arrays
+  write(*,*) "Previous array:"
+  do j = 1, ny
+     write(*,'(*(F4.1))') prev(:,j)
+  end do
+
+  write(*,*) "Laplacian of the array:"
+  do j = 1, ny
+     write(*,'(*(F4.1))') lapl(:,j)
+  end do
+
+end program laplacian
