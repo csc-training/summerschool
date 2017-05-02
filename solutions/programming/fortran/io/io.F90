@@ -4,13 +4,9 @@ contains
 
   ! Reads the temperature distribution from an input file
   subroutine read_field(field, filename)
-    use iso_fortran_env, only : REAL64
-
     implicit none
 
-    integer, parameter :: dp = REAL64
-
-    real(dp), dimension(:,:), allocatable, intent(out) :: field
+    real, dimension(:,:), allocatable, intent(out) :: field
     character(len=*), intent(in) :: filename
 
     integer, parameter :: funit = 10
@@ -46,18 +42,18 @@ contains
     implicit none
 
     integer, parameter :: dp = REAL64
-    real(dp), intent(in) :: field(:,:)
+    real, intent(in) :: field(:,:)
     integer, intent(in) :: iter
 
     character(len=85) :: filename
     integer :: nx, ny, stat
 
-
     nx = size(field, 1)
     ny = size(field, 2)
 
+
     write(filename,'(A5,I4.4,A4,A)')  'heat_', iter, '.png'
-    stat = save_png(field, nx, ny, filename)
+    stat = save_png(real(field, kind=dp), nx, ny, filename)
 
   end subroutine write_field
 
