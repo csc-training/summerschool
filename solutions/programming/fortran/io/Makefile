@@ -1,4 +1,4 @@
-COMP=gnu
+COMP=cray
 
 COMMONDIR=../../../heat/common
 LIBPNGDIR=/appl/opt/libpng

@@ -15,7 +15,7 @@ program arrays
 !--------------------------------------------------
 ! Print out the arrays
   do j = 1, ny
-     write(*,'(*(F5.2))') A(:,j)
+     write(*,'(*(F5.1))') A(:,j)
   end do
 
 

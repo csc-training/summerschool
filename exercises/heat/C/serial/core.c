@@ -18,17 +18,11 @@ void evolve(field *curr, field *prev, double a, double dt)
      * are not updated. */
     dx2 = prev->dx * prev->dx;
     dy2 = prev->dy * prev->dy;
-    for (i = 1; i < curr->nx + 1; i++) {
-        for (j = 1; j < curr->ny + 1; j++) {
-            curr->data[i][j] = prev->data[i][j] + a * dt *
-                               ((prev->data[i + 1][j] -
-                                 2.0 * prev->data[i][j] +
-                                 prev->data[i - 1][j]) / dx2 +
-                                (prev->data[i][j + 1] -
-                                 2.0 * prev->data[i][j] +
-                                 prev->data[i][j - 1]) / dy2);
-        }
-    }
+
+    /* TODO: Add update loops for computing the new field values
+             of 'curr' using field 'prev' */
+#error Add update loops
+
 }
 
 

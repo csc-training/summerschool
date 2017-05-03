@@ -1,25 +1,23 @@
 program laplacian
-  use iso_fortran_env, only : REAL64
   implicit none
-  integer, parameter :: dp = REAL64
 
-  integer, parameter :: nx = 16, ny = 16
-  real(dp), dimension(nx, ny) :: prev, lapl
+  integer, parameter :: nx = 10, ny = 10
+  real, dimension(nx, ny) :: prev, lapl
   integer :: i, j
 
-  real(dp), parameter :: dx = 0.01, dy = 0.01
+  real, parameter :: dx = 0.01, dy = 0.01
 
 
 
 ! initialize prev array with varying boundaries
-  prev(:,:)  = 0.0 ! center
-  prev(1,:)  = 3.0 ! left
-  prev(nx,:) = 4.0 ! right
-  prev(:,1)  = 1.0 ! top
-  prev(:,ny) = 2.0 ! bottom
+  prev(:,:)  = 65.0 ! middle
+  prev(:,1)  = 20.0 ! top
+  prev(:,ny) = 70.0 ! bottom
+  prev(1,:)  = 85.0 ! left
+  prev(nx,:) = 5.0  ! right
 
 ! initialize lapl array to zeros
-  lapl(:,:)  = 0.0 ! center
+  lapl(:,:)  = 0.0  ! middle
 
 !-------------------------------------------------- 
 
@@ -42,12 +40,12 @@ program laplacian
 ! printing of the prev and lapl arrays
   write(*,*) "Previous array:"
   do j = 1, ny
-     write(*,'(*(F4.1))') prev(:,j)
+     write(*,'(*(F5.1))') prev(:,j)
   end do
 
   write(*,*) "Laplacian of the array:"
   do j = 1, ny
-     write(*,'(*(F4.1))') lapl(:,j)
+     write(*,'(*(F5.1))') lapl(:,j)
   end do
 
 end program laplacian
