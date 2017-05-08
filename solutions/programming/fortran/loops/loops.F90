@@ -1,47 +1,34 @@
-program loops
+program array
   implicit none
-  integer, parameter :: nx = 16, ny = 16
-  real, dimension(nx, ny) :: A
-  integer :: i, j
+  integer, parameter :: nx = 10, ny = 10
+  real, dimension(0:nx+1,0:ny+1) :: field0
+  integer :: i
 
+  ! Initialize the whole array in one go
+  field0 = 65.0
 
-! Initialize everything first to zero 0.0
-! We define height with ny and width with nx.
-! For clarity we associate i with x and j with y.
-
-
-  do i = 2, nx-1
-    do j = 2, ny-1
-      A(i,j) = 0.0
-    end do
+  ! Adjust the boundaries 
+  do i = 0, nx + 1
+     field0(i, 0) = 20.0
+  end do
+  
+  do i = 0, nx + 1
+     field0(i, ny + 1) = 70.0
+  end do
+  
+  do i = 0, ny + 1
+     field0(0, i) = 85.0
+  end do
+  
+  do i = 0, ny+1
+     field0(nx + 1, i) = 5.0
+  end do
+  
+  ! Print out the array
+  ! the ':' syntax means the whole row, see the Fortran arrays lecture
+  do i = 0, nx+1
+     write(*, '(12F6.1)') field0(i,:)
   end do
 
-! Top
-  do i = 1, nx
-    A(i,1) = 1.0
-  end do
-
-! Bottom
-  do i = 1, nx
-    A(i,ny) = 2.0
-  end do
-
-! Left
-  do j = 2, ny-1
-    A(1,j) = 3.0
-  end do
-
-! Right
-  do j = 2, ny-1
-    A(nx,j) = 4.0
-  end do
-
-
-
-!--------------------------------------------------
-! printing of the final array
-  do j = 1, ny
-     write(*,'(*(F4.1))') A(:,j)
-  end do
-
-end program loops
+end program array
+  
