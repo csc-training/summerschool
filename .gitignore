@@ -24,6 +24,10 @@ solutions/programming/fortran/io/io
 
 #ignore R and RStudio related files
 .Rproj.user
+<<<<<<< HEAD
 *.Rproj
+=======
+.Rproj
+>>>>>>> 74d14db25319df017c58af24433c6724fb00bd1a
 .RData
 .Rhistory
