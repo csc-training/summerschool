@@ -21,3 +21,9 @@ solutions/programming/fortran/intrinsics/intrinsics
 
 exercises/programming/fortran/io/io
 solutions/programming/fortran/io/io
+
+#ignore R and RStudio related files
+.Rproj.user
+.Rproj
+.RData
+.Rhistory
