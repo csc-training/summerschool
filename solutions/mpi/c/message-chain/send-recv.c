@@ -5,10 +5,12 @@
 int main(int argc, char *argv[])
 {
     int i, myid, ntasks;
-    int size = 100;
+    int size = 10000000;
     int *message;
     int *receiveBuffer;
     MPI_Status status;
+
+    double t0, t1;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
@@ -21,6 +23,9 @@ int main(int argc, char *argv[])
     for (i = 0; i < size; i++) {
         message[i] = myid;
     }
+
+    MPI_Barrier(MPI_COMM_WORLD);
+    t0 = MPI_Wtime();
 
     /* Send messages */
     if (myid < ntasks - 1) {
@@ -36,6 +41,12 @@ int main(int argc, char *argv[])
         printf("Receiver: %d. first element %d.\n",
                 myid, receiveBuffer[0]);
     }
+
+    t1 = MPI_Wtime();
+    MPI_Barrier(MPI_COMM_WORLD);
+    fflush(stdout);
+
+    printf("Time elapsed in rank %2d: %6.3f\n", myid, t1 - t0);
 
     free(message);
     free(receiveBuffer);

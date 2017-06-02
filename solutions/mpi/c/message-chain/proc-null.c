@@ -5,10 +5,12 @@
 int main(int argc, char *argv[])
 {
     int i, myid, ntasks;
-    int size = 100;
+    int size = 10000000;
     int *message;
     int *receiveBuffer;
     MPI_Status status;
+
+    double t0, t1;
 
     int source, destination;
 
@@ -36,12 +38,21 @@ int main(int argc, char *argv[])
         source = MPI_PROC_NULL;
     }
 
+    MPI_Barrier(MPI_COMM_WORLD);
+    t0 = MPI_Wtime();
+
     /* Send and receive messages */
     MPI_Sendrecv(message, size, MPI_INT, destination, myid + 1,
                  receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
                  MPI_COMM_WORLD, &status);
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
             myid, size, myid + 1, destination);
+
+    t1 = MPI_Wtime();
+    MPI_Barrier(MPI_COMM_WORLD);
+    fflush(stdout);
+
+    printf("Time elapsed in rank %2d: %6.3f\n", myid, t1 - t0);
 
     free(message);
     free(receiveBuffer);
