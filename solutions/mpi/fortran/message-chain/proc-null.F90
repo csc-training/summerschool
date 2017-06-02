@@ -1,11 +1,15 @@
 program basic
   use mpi
+  use iso_fortran_env, only : REAL64
+
   implicit none
-  integer, parameter :: size = 100
+  integer, parameter :: size = 10000000
   integer :: rc, myid, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
   integer :: status(MPI_STATUS_SIZE)
+
+  real(REAL64) :: t0, t1 
 
   integer :: source, destination
 
@@ -27,6 +31,9 @@ program basic
      source = MPI_PROC_NULL
   end if
 
+  call mpi_barrier(mpi_comm_world, rc)
+  t0 = mpi_wtime()
+
   ! Send and receive messages
   call mpi_sendrecv(message, size, MPI_INTEGER, destination, myid + 1, &
        receiveBuffer, size, MPI_INTEGER, source, MPI_ANY_TAG, &
@@ -35,6 +42,12 @@ program basic
        ' Sent elements: ', size, &
        '. Tag: ', myid + 1, &
        '. Receiver: ', destination
+
+  t1 = mpi_wtime()
+  call mpi_barrier(mpi_comm_world, rc)
+  call flush(6)
+
+  write(*, '(A20, I3, A, F6.3)') 'Time elapsed in rank', myid, ':', t1-t0
 
   call mpi_finalize(rc)
 end program basic
