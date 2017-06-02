@@ -6,10 +6,12 @@
 int main(int argc, char *argv[])
 {
     int i, myid, ntasks;
-    int size = 100;
+    int size = 10000000;
     int *message;
     int *receiveBuffer;
     MPI_Status status;
+
+    double t0, t1;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
@@ -21,6 +23,10 @@ int main(int argc, char *argv[])
     /* Initialize message */
     for (i = 0; i < size; i++)
         message[i] = myid;
+
+    /* Start measuring the time spend in communication */
+    MPI_Barrier(MPI_COMM_WORLD);
+    t0 = MPI_Wtime();
 
     /* TODO start */
     /* Send and receive messages as defined in exercise */
@@ -37,6 +43,13 @@ int main(int argc, char *argv[])
     }
 
     /* TODO end */
+
+    /* Finalize measuring the time and print it out */
+    t1 = MPI_Wtime();
+    MPI_Barrier(MPI_COMM_WORLD);
+    fflush(stdout);
+
+    printf("Time elapsed in rank %2d: %6.3f\n", myid, t1 - t0);
 
     free(message);
     free(receiveBuffer);
