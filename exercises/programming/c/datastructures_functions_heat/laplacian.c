@@ -45,12 +45,12 @@ int main(void)
     // *INDENT-ON*
 
     // Call the png writer routine
-    error_code = save_png((double *) laplacian, NX, NY, "ex3.png", 'c');
+    error_code = save_png((double *) laplacian, NX, NY, "datastructures_functions_heat-a_b.png", 'c');
 
     if (error_code == 0) {
-        printf("Wrote the output file ex3.png\n");
+        printf("Wrote the output file datastructures_functions_heat-a_b.png\n");
     } else {
-        printf("Error while writing output file ex2.png\n");
+        printf("Error while writing output file datastructures_functions_heat-a_b.png\n");
     }
 
     return 0;
