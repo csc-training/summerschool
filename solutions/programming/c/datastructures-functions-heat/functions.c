@@ -64,12 +64,12 @@ void print_field(field * f)
     int error_code;
 
     error_code =
-        save_png((double *) f->data, f->nx + 2, f->ny + 2, "ex3_d-e.png",
+        save_png((double *) f->data, f->nx + 2, f->ny + 2, "datastructures-functions-heat_c-d.png",
                  'c');
     if (error_code == 0) {
-        printf("Wrote output file ex3_d-e.png\n");
+        printf("Wrote output file datastructures-functions-heat_c-d.png\n");
     } else {
-        printf("Error while writing output file ex3_d-e.png\n");
+        printf("Error while writing output file datastructures-functions-heat_c-d.png\n");
     }
 }
 
