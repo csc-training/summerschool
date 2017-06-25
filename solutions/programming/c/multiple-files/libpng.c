@@ -26,12 +26,12 @@ int main(void)
     }
 
     // Call the png writer routine
-    error_code = save_png(array[0], NX, NY, "ex5.png", 'c');
+    error_code = save_png(array[0], NX, NY, "2darray.png", 'c');
 
     if (error_code == 0) {
-        printf("Wrote the output file ex5.png\n");
+        printf("Wrote the output file 2darray.png\n");
     } else {
-        printf("Error while writing output file ex5.png\n");
+        printf("Error while writing output file 2darray.png\n");
     }
 
     return 0;
