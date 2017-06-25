@@ -9,3 +9,5 @@ Feel free to fork this repository and work through the exercises. You can also a
 ---
 ## Notes
 - [x] Have fun!
+
+- Location Nuuksio National Park, Nuuksiontie 82, Espoo.
