@@ -2,6 +2,11 @@
 *.o
 *.mod
 *.png
+\#*
+*~ 
+
+#ignore default binary name
+a.out
 
 #ignore specific exercise & solution binaries
 exercises/programming/fortran/hello/hello
