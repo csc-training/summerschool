@@ -7,7 +7,7 @@ program intrinsics
   write (*,*) 'Give x and y dimensions of matrix A:'
   read (*,*) nx, ny
 
-  allocate(A(ny,nx), stat = alloc_stat)
+  allocate(A(nx,ny), stat = alloc_stat)
   if (alloc_stat /= 0) call abort()
 
   ! Initializing array
@@ -20,7 +20,7 @@ program intrinsics
   !--------------------------------------------------
   ! Print out the arrays
   do j = 1, ny
-     write(*,'(*(F5.2))') A(:,j)
+     write(*,'(*(F5.1))') A(:,j)
   end do
 
 
