@@ -12,7 +12,7 @@ program subroutines
   call write_field(previous)
 
   ! compute the Laplacian
-  call laplacian(previous, current)
+  call laplacian(current, previous)
   ! print the result array
   call write_field(current)
  
