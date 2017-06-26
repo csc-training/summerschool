@@ -1,11 +1,7 @@
 program main
   use io
-
   implicit none
-
   real, dimension(:,:), allocatable :: field
-
-
 
   call read_field(field, 'bottle.dat')
 

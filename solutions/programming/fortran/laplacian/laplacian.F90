@@ -9,19 +9,18 @@ program laplacian
 
 
 
-! initialize prev array with varying boundaries
+  ! initialize prev array with varying boundaries
   prev(:,:)  = 65.0 ! middle
-  prev(:,1)  = 20.0 ! top
-  prev(:,ny) = 70.0 ! bottom
-  prev(1,:)  = 85.0 ! left
-  prev(nx,:) = 5.0  ! right
+  prev(:,1)  = 20.0 ! left
+  prev(:,ny) = 70.0 ! right
+  prev(1,:)  = 85.0 ! top
+  prev(nx,:) = 5.0  ! bottom
 
-! initialize lapl array to zeros
+  ! initialize lapl array to zeros
   lapl(:,:)  = 0.0  ! middle
 
-!-------------------------------------------------- 
 
-
+  !-------------------------------------------------- 
   ! Compute Laplacian in double do-loop using prev 
   ! and saving to lapl array.
   do j = 2, ny-1
@@ -34,18 +33,16 @@ program laplacian
   end do
 
 
-
-
-!--------------------------------------------------
-! printing of the prev and lapl arrays
+  !--------------------------------------------------
+  ! Printing of the prev and lapl arrays
   write(*,*) "Previous array:"
-  do j = 1, ny
-     write(*,'(*(F5.1))') prev(:,j)
+  do i = 1, nx
+    write(*,'(*(G10.1))') prev(i,:)
   end do
 
   write(*,*) "Laplacian of the array:"
-  do j = 1, ny
-     write(*,'(*(F5.1))') lapl(:,j)
+  do i = 1, nx
+    write(*,'(*(G10.1))') lapl(i,:)
   end do
 
 end program laplacian
