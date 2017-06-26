@@ -49,11 +49,13 @@ contains
   subroutine write_field(array)
     implicit none
     real, dimension(0:,0:), intent(in) :: array
-    integer :: j
+    integer :: j, nx, ny
     
+    nx = size(array,1)
+    ny = size(array,2)
     write(*,*) ' '
-    do j = 1, size(array,1)-2
-       write(*,'(*(F6.1))') array(j,1:)
+    do j = 1, nx-2
+       write(*,'(*(G10.1))') array(j,1:ny-2)
     end do
   end subroutine write_field
 

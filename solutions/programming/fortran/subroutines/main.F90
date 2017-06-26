@@ -2,7 +2,7 @@ program subroutines
   use laplacian_mod
   implicit none
   real, dimension(:,:), allocatable :: previous, current
-  integer :: nx, ny, iter
+  integer :: nx, ny
 
   write (*,*) 'Give x and y dimensions of a matrix:'
   read (*,*) nx, ny
