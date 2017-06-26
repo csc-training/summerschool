@@ -1,21 +1,27 @@
 program arrays
   implicit none
   integer :: nx, ny
-  integer :: j, alloc_stat
-! TODO: define allocatable array A
+  integer :: i, alloc_stat
+  ! TODO: define allocatable array A
 
-  write (*,*) 'Give x and y dimensions of matrix A:'
+  write (*,*) 'Give number of rows and columns for matrix A:'
   read (*,*) nx, ny
 
-! TODO allocate A now that we know nx and ny
-
-! TODO Use array syntax to initialize the array
+  ! TODO allocate A now that we know nx and ny
 
 
-!--------------------------------------------------
-! Print out the arrays
-  do j = 1, ny
-     write(*,'(*(F5.1))') A(:,j)
+  ! TODO Use array syntax to initialize the array
+
+
+
+
+
+
+
+  !--------------------------------------------------
+  ! Print out the array
+  do i = 1, nx
+    write(*,'(*(F6.1))') A(i,:)
   end do
 
 

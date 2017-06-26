@@ -13,10 +13,14 @@ contains
     lbx = lbound(field0,1)
     ubx = ubound(field0,1)
     lby = lbound(field0,2)
-    uby = lbound(field0,2)
+    uby = ubound(field0,2)
 
-    !field0 = 65.0
-    call random_number(field0)
+    ! initialize middle 
+    field0 = 65.0
+
+    ! or use random values to better see effects from applying laplacian
+    !call random_number(field0)
+
     ! Adjust the boundaries 
     field0(:, lby) = 20.0
     field0(:, uby) = 70.0
@@ -49,14 +53,15 @@ contains
   subroutine write_field(array)
     implicit none
     real, dimension(0:,0:), intent(in) :: array
-    integer :: j, nx, ny
+    integer :: i, nx, ny
     
     nx = size(array,1)
     ny = size(array,2)
     write(*,*) ' '
-    do j = 1, nx-2
-       write(*,'(*(G10.1))') array(j,1:ny-2)
+    do i = 1, nx-2
+       write(*,'(*(G10.1))') array(i,1:ny-2)
     end do
+
   end subroutine write_field
 
   subroutine swap_fields(curr, prev)

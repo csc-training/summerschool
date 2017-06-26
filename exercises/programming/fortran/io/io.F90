@@ -18,6 +18,21 @@ contains
     ! close the file
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   end subroutine read_field
 
   ! Output routine, saves the temperature distribution as a png image

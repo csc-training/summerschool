@@ -5,8 +5,7 @@ module laplacian_mod
 contains
   
   subroutine initialize(field0)
-! TODO: implement a subroutine that initializes the input
-! array similarly as in Ex 2
+! TODO: implement a subroutine that initializes the input array
 
   end subroutine initialize
    
