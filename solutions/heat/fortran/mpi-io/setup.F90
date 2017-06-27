@@ -14,7 +14,7 @@ contains
     integer, intent(out) :: nsteps
     type(parallel_data), intent(out) :: parallel
 
-    integer :: rows, cols
+    integer :: rows, cols, step0
     logical :: using_input_file, restart
     character(len=85) :: input_file, arg  ! Input file name and command line arguments
 
@@ -56,6 +56,7 @@ contains
         if (parallel % rank == 0) then
             write(*,'(a)') 'Restarting from an earlier checkpoint'
             write(*,'(a,i0)') '  saved at iteration', step0
+        end if
         call copy_fields(previous, current)
     else if (using_input_file) then
        call read_field(previous, input_file, parallel)
