@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <assert.h>
 #include <mpi.h>
@@ -29,6 +30,7 @@ void initialize(int argc, char* argv[], field *current,
 
     int rows = 2000;             //!< Field dimensions with default values
     int cols = 2000;
+    int start;
 
     char input_file[64];        //!< Name of the optional input file
 
@@ -67,8 +69,8 @@ void initialize(int argc, char* argv[], field *current,
 
     // Check if checkpoint exists
     if (!access(CHECKPOINT, F_OK)) {
-        read_restart(&current, &parallel, &start);
-        if (parallel.rank == 0)
+        read_restart(current, parallel, &start);
+        if (parallel->rank == 0)
             printf("Restarting from an earlier checkpoint saved"
                    " at iteration %d.\n", start);
         copy_field(current, previous);
