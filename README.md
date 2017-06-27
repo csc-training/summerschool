@@ -12,3 +12,16 @@ git pull https://github.com/csc-training/summerschool.git
 ---
 ## Notes
 - [x] Have fun!
+
+- Location Nuuksio National Park, Nuuksiontie 82, Espoo.
+
+-git usage: 	git status
+		git add filename
+		git commit -m "short note"
+		git push
+
+	git config --global user.name “nickname”
+	git config --global user.email “user@email.com”
+	git clone https://github.com/user/summerschool
+
+
