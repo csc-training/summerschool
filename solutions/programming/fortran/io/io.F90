@@ -20,7 +20,7 @@ contains
     end if
 
     ! read header 
-    read(funit, *) dummy, ny, nx
+    read(funit, *) dummy, nx, ny
 
     ! allocate matrix
     if (allocated(field)) deallocate(field)
