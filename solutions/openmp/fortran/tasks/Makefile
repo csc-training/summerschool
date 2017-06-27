@@ -1,12 +1,27 @@
+COMP=cray
+
+ifeq ($(COMP),cray)
+FC=ftn
+CC=cc
+FCFLAGS=-O3
+CCFLAGS=-O3 -I/appl/opt/libpng/include 
+LDFLAGS=-L/appl/opt/libpng/lib
+LIBS=-lpng -lz
+endif
+
+ifeq ($(COMP),gnu)
 FC=gfortran
-FFLAGS=-O2 -fopenmp
-LDFLAGS=-fopenmp
+CC=gcc
+FCFLAGS=-O3 -Wall
+CCFLAGS=-O3 -Wall 
+LDFLAGS=
 LIBS=-lpng
+endif
 
 all: mandelbrot
 
 pngwriter.o: pngwriter.c pngwriter.h
-	gcc -O2 -c -o $@ $< 
+	$(CC) $(CCFLAGS) -c -o $@ $< 
 
 pngwriter_mod.o: pngwriter_mod.F90
 	$(FC) -c pngwriter_mod.F90
