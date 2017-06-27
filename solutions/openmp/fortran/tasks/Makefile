@@ -32,7 +32,7 @@ pngwriter_mod.o: pngwriter_mod.F90
 mandelbrot.o: mandelbrot.F90 pngwriter_mod.o
 
 pngwriter.o: pngwriter.c pngwriter.h
-	gcc -O2 -c -o $@ $<
+	$(CC) $(CCFLAGS) -c -o $@ $<
 
 $(EXE): $(OBJS) $(OBJS_PNG)
 	$(FC) $(FCFLAGS) $(OBJS) $(OBJS_PNG) -o $@ $(LDFLAGS) $(LIBS)
