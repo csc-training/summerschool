@@ -182,13 +182,13 @@ contains
     ! set correct dimensions to MPI metadata
     call parallel_setup(parallel, rows, cols)
     ! set local dimensions and allocate memory for the data
-    call set_field_dimensions(previous, rows, cols, parallel)
+    call set_field_dimensions(temp, rows, cols, parallel)
     allocate(temp%data(0:temp%nx+1, 0:temp%ny+1))
     temp%data(:,:) = 0.0
 
     ! read in restart data
     ! Skip three integers in the beginning of file
-    disp = 3*sizeof(full_nx)
+    disp = 3*sizeof(rows)
     disp = disp + parallel%rank * (temp%nx + 2) * (temp%ny + 2) * sizeof(temp%data(1,1))
     call mpi_file_read_at_all(fp, disp, temp%data, &
                          (temp%nx + 2) * (temp%ny + 2), &
