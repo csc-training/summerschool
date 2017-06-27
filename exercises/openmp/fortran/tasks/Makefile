@@ -1,20 +1,48 @@
-FC=gfortran
-FFLAGS=-O2 -fopenmp
-LDFLAGS=-fopenmp
-LIBS=-lpng
+COMP=cray
 
-all: mandelbrot
+COMMONDIR=../../../heat/common
+
+ifeq ($(COMP),cray)
+FC=ftn
+CC=cc
+FCFLAGS=-O3
+CCFLAGS=-O3 -I/appl/opt/libpng/include -I$(COMMONDIR)
+LDFLAGS=-L/appl/opt/libpng/lib
+LIBS=-lpng -lz
+endif
+
+ifeq ($(COMP),gnu)
+FC=gfortran
+CC=gcc
+FCFLAGS=-fopenmp -O3 -Wall
+CCFLAGS=-fopenmp -O3 -Wall -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+endif
+
+EXE=mandelbrot
+OBJS=mandelbrot.o pngwriter_mod.o
+OBJS_PNG=pngwriter.o
+CORRECT_OBJS_PNG=$(COMMONDIR)/pngwriter.o
+
+all: $(EXE)
+
+$(COMMONDIR)/pngwriter.o: $(COMMONDIR)/pngwriter.c $(COMMONDIR)/pngwriter.h
+pngwriter_mod.o: pngwriter_mod.F90
+mandelbrot.o: mandelbrot.F90 pngwriter_mod.o
 
 pngwriter.o: pngwriter.c pngwriter.h
-	gcc -O2 -c -o $@ $< 
+	$(CC) $(CCFLAGS) -c -o $@ $<
 
-pngwriter_mod.o: pngwriter_mod.F90
-	$(FC) -c pngwriter_mod.F90
+$(EXE): $(OBJS) $(OBJS_PNG)
+	$(FC) $(FCFLAGS) $(OBJS) $(OBJS_PNG) -o $@ $(LDFLAGS) $(LIBS)
 
-mandelbrot.o: mandelbrot.f90 pngwriter_mod.o
-	$(FC) $(FFLAGS) -c mandelbrot.f90
-mandelbrot: mandelbrot.o pngwriter_mod.o pngwriter.o
-	$(FC) $(LDFLAGS)  -o $@ mandelbrot.o pngwriter_mod.o pngwriter.o $(LIBS)
+%.o: %.F90
+	$(FC) $(FCFLAGS) -c $< -o $@
 
+%.o: %.c
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+.PHONY: clean
 clean:
-	rm -f *.o *.mod mandelbrot mandelbrot.png
+	-/bin/rm -f $(EXE) a.out *.o *.mod *.png *~ mandelbrot.png
