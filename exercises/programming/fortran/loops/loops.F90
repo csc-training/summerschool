@@ -1,20 +1,18 @@
 program loops
   implicit none
-! TODO define parameters nx and ny
-! TODO: define floating point array A
+  ! TODO define parameters nx and ny
+  ! TODO: define real-valued array A
   integer :: i, j
 
-
-! TODO initialize array A here
-! Remember that we define height with ny and width with nx.
+  ! TODO initialize array A here
 
 
 
-
-!--------------------------------------------------
-! printing of the final array
-  do j = 1, ny
-     write(*,'(*(F4.1))') A(:,j)
+  !--------------------------------------------------
+  ! Print out the array
+  ! the ':' syntax means the whole row, see the Fortran arrays lecture
+  do i = 0, nx+1
+     write(*, '(12F6.1)') A(i,:)
   end do
 
 end program loops
