@@ -147,7 +147,7 @@ contains
     ! set correct dimensions to MPI metadata
     call parallel_setup(parallel, rows, cols)
     ! set local dimensions and allocate memory for the data
-    call set_field_dimensions(previous, rows, cols, parallel)
+    call set_field_dimensions(temp, rows, cols, parallel)
     allocate(temp%data(0:temp%nx+1, 0:temp%ny+1))
     temp%data(:,:) = 0.0
 
