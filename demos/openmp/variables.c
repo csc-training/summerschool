@@ -12,9 +12,9 @@ int main(void)
 #pragma omp atomic
         var2++;
 #pragma omp single
-        printf("Inside region (end): var1=%i, var2=%i\n\n", var1, var2);
+        printf("Inside region   (end): var1=%i, var2=%i\n", var1, var2);
     }
-    printf("After region: var1=%i, var2=%i\n\n", var1, var2);
+    printf("\nAfter region: var1=%i, var2=%i\n\n", var1, var2);
 
     return 0;
 }
