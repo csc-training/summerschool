@@ -1,11 +1,11 @@
-# MPI Cheatsheet for `Fortran`
+# MPI Cheatsheet for Fortran
 A short collection of different MPI functions and their respective inputs for `Fortran`.
 
 ## Interfaces for basic MPI operations
 ```fortran
 integer :: comm, Nrank, rank, rc
 
-call mpi_init(ierror) 
+call mpi_init(rc) 
 call mpi_comm_size(comm, Nrank, rc) 
 call mpi_comm_rank(comm, rank, rc) 
 call mpi_barrier(comm, rc) 
@@ -28,6 +28,7 @@ MPI_BYTE             |
 
 ## Point-to-Point communication
 
+##### `send` and `receive`:
 ```fortran
 integer :: count, datatype, source, dest, tag, comm, rc
 integer :: status(MPI_STATUS_SIZE)
@@ -56,7 +57,7 @@ call mpi_sendrecv(
     recvtag, 
     comm, 
     status, 
-    ierror
+    rc
     )
 ```
 

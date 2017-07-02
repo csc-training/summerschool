@@ -1,4 +1,4 @@
-# MPI Cheatsheet for `C`
+# MPI Cheatsheet for C
 A short collection of different MPI functions and their respective inputs for `C`.
 
 ## Interfaces for basic MPI operations
@@ -28,6 +28,7 @@ MPI_BYTE           |
 
 ## Point-to-Point communication
 
+##### `send` and `receive`:
 ```c
 int MPI_Send(
     void *buffer,
@@ -51,6 +52,7 @@ int MPI_Recv(
     )
 ```
 
+##### Combined `send` and `receive`:
 ```c
 int MPI_Sendrecv(
     void *sendbuf, 
