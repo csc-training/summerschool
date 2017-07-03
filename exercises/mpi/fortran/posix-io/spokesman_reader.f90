@@ -39,17 +39,8 @@ contains
   subroutine single_reader()
     implicit none
 
-    if (my_id == writer_id) then
-      open(10, file='singlewriter.dat', status='old', form='unformatted', &
-           & access='stream')
-      read(10, pos=1) fullvector
-      close(10)
-      write(output_unit,'(A,I0,A)') 'Read ', size(fullvector), &
-           & ' elements from file ex1a.dat'
-    end if
-
-    call mpi_scatter(fullvector, localsize, mpi_integer, localvector, &
-         & localsize, mpi_integer, writer_id, mpi_comm_world, rc)
+! TODO: Implement a function that will read the data from a file so that
+!       a single process does the file io. Use rank WRITER_ID as the io rank 
 
   end subroutine single_reader
 
