@@ -76,7 +76,7 @@ end subroutine initialize
     integer :: i, j, ds2
 
     ! The arrays for field contain also a halo region
-    allocate(field0%data(0:field0%ny+1, 0:field0%nx+1))
+    allocate(field0%data(0:field0%nx+1, 0:field0%ny+1))
 
  
     ! Square of the disk radius

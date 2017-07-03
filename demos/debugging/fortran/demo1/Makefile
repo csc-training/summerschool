@@ -5,7 +5,7 @@ COMMONDIR=../../common
 ifeq ($(COMP),cray)
 FC=ftn
 CC=cc
-FCFLAGS=-O3 -hcpu=sandybridge #-h bounds 
+FCFLAGS=-O3 -hcpu=sandybridge -h bounds 
 CCFLAGS=-O3 -hcpu=sandybridge -I/appl/opt/libpng/include -I$(COMMONDIR)
 LDFLAGS=-L/appl/opt/libpng/lib
 LIBS=-lpng -lz
@@ -14,7 +14,7 @@ endif
 ifeq ($(COMP),gnu)
 FC=gfortran
 CC=gcc
-FCFLAGS=-O3 -Wall 
+FCFLAGS=-O3 -Wall -fcheck-bounds
 CCFLAGS=-O3 -Wall -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng

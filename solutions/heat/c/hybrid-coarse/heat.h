@@ -44,7 +44,7 @@ void initialize(int argc, char *argv[], field *temperature1,
 
 void generate_field(field *temperature, parallel_data *parallel);
 
-void exchange(field *temperature, parallel_data *parallel);
+void exchange(field *temperature, parallel_data *parallel, int thread_id);
 
 void evolve(field *curr, field *prev, double a, double dt);
 

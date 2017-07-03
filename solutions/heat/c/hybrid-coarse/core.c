@@ -9,20 +9,23 @@
 #include "heat.h"
 
 /* Exchange the boundary values */
-void exchange(field *temperature, parallel_data *parallel)
+void exchange(field *temperature, parallel_data *parallel, int thread_id)
 {
+    int tag_up, tag_down;
 
+    tag_up = thread_id + 512;
+    tag_down = thread_id + 1024;
     // Send to the up, receive from down
     MPI_Sendrecv(temperature->data[1], temperature->ny + 2, MPI_DOUBLE,
-                 parallel->nup, 11,
+                 parallel->nup, tag_up,
                  temperature->data[temperature->nx + 1],
-                 temperature->ny + 2, MPI_DOUBLE, parallel->ndown, 11,
+                 temperature->ny + 2, MPI_DOUBLE, parallel->ndown, tag_up,
                  MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     // Send to the down, receive from up
     MPI_Sendrecv(temperature->data[temperature->nx], temperature->ny + 2,
-                 MPI_DOUBLE, parallel->ndown, 12,
+                 MPI_DOUBLE, parallel->ndown, tag_down,
                  temperature->data[0], temperature->ny + 2, MPI_DOUBLE,
-                 parallel->nup, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                 parallel->nup, tag_down, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
 
@@ -37,6 +40,7 @@ void evolve(field *curr, field *prev, double a, double dt)
      * are not updated. */
     dx2 = prev->dx * prev->dx;
     dy2 = prev->dy * prev->dy;
+#pragma omp for private(i,j)
     for (i = 1; i < curr->nx + 1; i++) {
         for (j = 1; j < curr->ny + 1; j++) {
             curr->data[i][j] = prev->data[i][j] + a * dt *
