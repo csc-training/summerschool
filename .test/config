@@ -1,0 +1,8 @@
+# Configuration for
+#   github.com/mlouhivu/test-bot.git
+[cray]
+  compiler=cc
+
+  (fortran)
+    compiler=ftn
+
