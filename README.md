@@ -1,4 +1,4 @@
-# CSC Summer School in High-Performance Computing 2017
+# CSC Summer School in High-Performance Computing 2018
 
 This is the material repository for the high-performance computing summer school by CSC - Finnish IT Center for Science.
 
@@ -8,6 +8,8 @@ Once forked to yourself, you can sync with the original repository (in case of u
 ```
 git pull https://github.com/csc-training/summerschool.git
 ```
+
+Versions from previous years can be found in tags.
 
 ---
 ## Notes
