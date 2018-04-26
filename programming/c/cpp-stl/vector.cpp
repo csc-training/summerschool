@@ -1,6 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 
 
 // Asks user a number using std::cin while simultaneously 
@@ -29,16 +27,17 @@ int main()
   int N = 10; // number of integers we ask from user
   int number;
 
-  std::vector<int> vec;
+  // TODO: implement vector container named vec. 
+  //       What is type of the incoming numbers?
 
 
   std::cout << "Give me " << N << " numbers :\n";
   for(int i=0; i<N; i++) {
     number = ask_number();
 
-    // appending elements into vector
-    vec.push_back(number);
+    //TODO: add elements to the container
   }
+
 
 
   // printing vector
@@ -49,8 +48,7 @@ int main()
   std::cout << '\n';
 
 
-  // sorting
-  std::sort(vec.begin(), vec.end());
+  // TODO: implement sort
 
 
   // printing vector again
@@ -61,12 +59,10 @@ int main()
   std::cout << '\n';
 
 
+
+  // TODO implement smallest and largest number output
   int smallest, largest; 
 
-  // std::min/max_element returns iterator; so we need to take the value
-  // that they point into with * operator
-  smallest = *std::min_element(vec.begin(), vec.end());
-  largest  = *std::max_element(vec.begin(), vec.end());
 
 
   std::cout << "Smallest number is: " << smallest << '\n';
