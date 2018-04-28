@@ -1,48 +1,54 @@
 program laplacian
+  use iso_fortran_env, only : REAL64
   implicit none
 
-  integer, parameter :: nx = 10, ny = 10
-  real, dimension(nx, ny) :: prev, lapl
+  integer, parameter :: nx = 10, ny = 10, dp = REAL64
+  real(dp), dimension(nx,ny) :: U, lapl, solution
   integer :: i, j
 
-  real, parameter :: dx = 0.01, dy = 0.01
+  real(dp) :: dx, dy, x, y
 
+  ! Grid spacing
+  dx = 1.0/real(nx)
+  dy = 1.0/real(ny)
 
+  ! TODO: 
+  ! initialize array U(x,y) = (x^2 + y^2) in the domain [0:1,0:1] 
+  y = 0.0
+  do j = 1, ny
+     x = 0.0
+     do i = 1, nx
+        U(i,j) =  x**2 + y**2
+        x = x + dx
+     end do
+     y = y + dy
+  end do
 
-  ! initialize prev array with varying boundaries
-  prev(:,:)  = 65.0 ! middle
-  prev(:,1)  = 20.0 ! left
-  prev(:,ny) = 70.0 ! right
-  prev(1,:)  = 85.0 ! top
-  prev(nx,:) = 5.0  ! bottom
-
-  ! initialize lapl array to zeros
-  lapl(:,:)  = 0.0  ! middle
-
-
-  !-------------------------------------------------- 
-  ! Compute Laplacian in double do-loop using prev 
-  ! and saving to lapl array.
+  ! TODO:
+  ! Compute Laplacian of U in double do-loop and saving to lapl array.
+  lapl = 0.0
   do j = 2, ny-1
     do i = 2, nx-1
-      lapl(i,j) = (prev(i-1, j) - 2.0 * prev(i,j) + &
-           &       prev(i+1, j)) /dx**2 + &
-           &      (prev(i, j-1) - 2.0 * prev(i,j) + &
-           &       prev(i, j+1)) /dy**2
+       lapl(i,j) = (U(i-1,j) - 2.0*U(i,j) + U(i+1,j)) / dx**2 + &
+            (U(i,j-1) - 2.0*U(i,j) + U(i,j+1)) / dy**2
     end do
   end do
 
 
   !--------------------------------------------------
+  ! TODO:
   ! Printing of the prev and lapl arrays
-  write(*,*) "Previous array:"
-  do i = 1, nx
-    write(*,'(*(G10.1))') prev(i,:)
+  write(*,*) "Original array:"
+  do i = 2, nx-1
+    write(*,'(*(G9.1))') U(i,2:ny-1)
   end do
 
   write(*,*) "Laplacian of the array:"
-  do i = 1, nx
-    write(*,'(*(G10.1))') lapl(i,:)
+  do i = 2, nx-1
+    write(*,'(*(G9.1))') lapl(i,2:ny-1)
   end do
+
+ ! Analytically, the Laplacian of the function is nabla^2 U(x,y) = 4
+
 
 end program laplacian

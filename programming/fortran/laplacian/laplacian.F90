@@ -1,29 +1,31 @@
 program laplacian
+  use iso_fortran_env, only : REAL64
   implicit none
 
-  integer, parameter :: nx = 10, ny = 10
-  real, dimension(nx, ny) :: prev, lapl
+  integer, parameter :: nx = 10, ny = 10, dp = REAL64
+  real(dp), dimension(nx,ny) :: U, lapl
   integer :: i, j
 
-  real, parameter :: dx = 0.01, dy = 0.01
+  real(dp) :: dx, dy, x, y
+
+  ! Grid spacing
+  dx = 1.0/real(nx)
+  dy = 1.0/real(ny)
+
+  ! TODO: 
+  ! initialize array U(x,y) = (x^2 + y^2) in the domain [0:1,0:1] 
 
 
 
-  ! initialize prev array with varying boundaries
-  prev(:,:)  = 65.0 ! middle
-  prev(:,1)  = 20.0 ! left
-  prev(:,ny) = 70.0 ! right
-  prev(1,:)  = 85.0 ! top
-  prev(nx,:) = 5.0  ! bottom
-
-  ! initialize lapl array to zeros
-  lapl(:,:)  = 0.0  ! middle
 
 
-  !-------------------------------------------------- 
-  ! TODO: implement Laplacian in double do-loop using prev 
-  ! and saving to lapl array. Remember to evaluate it only
-  ! at the inner points.
+
+
+
+
+
+  ! TODO:
+  ! Compute Laplacian of U and saving to lapl array.
 
 
 
@@ -34,15 +36,19 @@ program laplacian
 
 
   !--------------------------------------------------
+  ! TODO:
   ! Printing of the prev and lapl arrays
-  write(*,*) "Previous array:"
-  do i = 1, nx
-    write(*,'(*(G10.1))') prev(i,:)
-  end do
+  write(*,*) "Original array:"
 
-  write(*,*) "Laplacian of the array:"
-  do i = 1, nx
-    write(*,'(*(G10.1))') lapl(i,:)
-  end do
+
+
+
+
+
+
+
+
+ ! Analytically, the Laplacian of the function is nabla^2 U(x,y) = 4
+
 
 end program laplacian
