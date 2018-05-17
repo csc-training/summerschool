@@ -7,7 +7,7 @@
 #include <mpi.h>
 
 #include "heat.h"
-#include "../../common/pngwriter.h"
+#include "pngwriter.h"
 
 /* Output routine that prints out a picture of the temperature
  * distribution. */

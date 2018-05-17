@@ -8,7 +8,7 @@
 #include <mpi.h>
 
 #include "heat.h"
-#include "../../common/pngwriter.h"
+#include "pngwriter.h"
 
 #define NSTEPS 500  // Default number of iteration steps
 
