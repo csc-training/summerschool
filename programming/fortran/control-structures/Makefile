@@ -17,13 +17,13 @@ CC=icc
 FC=ifort
 endif
 
-EXE=loops
-OBJ=loops.o
+EXE=do-loop
+OBJ=do-loop.o
 
 
 all: $(EXE)
 
-loops.o: loops.F90
+do-loop.o: do-loop.F90
 
 $(EXE): $(OBJ)
 	$(FC) $(FCFLAGS) $(OBJ) -o $@ 
