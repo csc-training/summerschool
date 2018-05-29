@@ -5,8 +5,7 @@ int main(int argc, char **argv)
 {
     int rank;
     int array[8][8];
-    MPI_Datatype blocktype;
-    int sizes[2], subsizes[2], offsets[2];
+    //TODO: Declare a variable storing the MPI datatype 
 
     int i, j;
 
@@ -28,26 +27,8 @@ int main(int argc, char **argv)
         }
     }
 
-    // Create datatype for a subblock [2:5][3:5] of the 8x8 matrix
-    sizes[0] = sizes[1] = 8;
-    subsizes[0] = 3;
-    subsizes[1] = 2;
-    offsets[0] = 2;
-    offsets[1] = 3;
-    MPI_Type_create_subarray(2, sizes, subsizes, offsets, MPI_ORDER_C,
-                             MPI_INT, &blocktype);
-    MPI_Type_commit(&blocktype);
-
-    // Send a block of a matrix using the user-defined datatype
     if (rank == 0) {
-        MPI_Send(array, 1, blocktype, 1, 1, MPI_COMM_WORLD);
-    } else if (rank == 1) {
-        MPI_Recv(array, 1, blocktype, 0, 1, MPI_COMM_WORLD,
-                 MPI_STATUS_IGNORE);
-    }
-
-    // Print out the result
-    if (rank == 1) {
+        printf("Data in rank 0\n");
         for (i = 0; i < 8; i++) {
             for (j = 0; j < 8; j++) {
                 printf("%3d", array[i][j]);
@@ -56,7 +37,24 @@ int main(int argc, char **argv)
         }
     }
 
-    MPI_Type_free(&blocktype);
+    //TODO: Create datatype that describes one column. Use MPI_Type_vector.
+    
+    //TODO: Send first column of matrix form rank 0 to rank 1
+
+    //TODO: free datatype
+
+    // Print out the result on rank 1
+    // The application is correct if the first column has the values of rank 0
+    if (rank == 1) {
+        printf("Received data\n");
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                printf("%3d", array[i][j]);
+            }
+            printf("\n");
+        }
+    }
+
     MPI_Finalize();
 
     return 0;

@@ -5,7 +5,9 @@ int main(int argc, char **argv)
 {
     int rank;
     int array[8][8];
-    MPI_Datatype columntype;
+    MPI_Datatype indexedtype;
+    int displs[8];
+    int counts[8];
 
     int i, j;
 
@@ -26,22 +28,8 @@ int main(int argc, char **argv)
             }
         }
     }
-
-
-    // Create datatype
-    MPI_Type_vector(8, 1, 8, MPI_INT, &columntype);
-    MPI_Type_commit(&columntype);
-
-    // Send first column of matrix
     if (rank == 0) {
-        MPI_Send(array, 1, columntype, 1, 1, MPI_COMM_WORLD);
-    } else if (rank == 1) {
-        MPI_Recv(array, 1, columntype, 0, 1, MPI_COMM_WORLD,
-                 MPI_STATUS_IGNORE);
-    }
-
-    // Print out the result
-    if (rank == 1) {
+        printf("Data in rank 0\n");
         for (i = 0; i < 8; i++) {
             for (j = 0; j < 8; j++) {
                 printf("%3d", array[i][j]);
@@ -50,7 +38,35 @@ int main(int argc, char **argv)
         }
     }
 
-    MPI_Type_free(&columntype);
+    // Create datatype
+    for (i = 0; i < 4; i++) {
+        counts[i] = i + 1;
+        displs[i] = i + 2 * i * 8;
+    }
+
+    MPI_Type_indexed(8, counts, displs, MPI_INT, &indexedtype);
+    MPI_Type_commit(&indexedtype);
+
+    // Send first indexed of matrix
+    if (rank == 0) {
+        MPI_Send(array, 1, indexedtype, 1, 1, MPI_COMM_WORLD);
+    } else if (rank == 1) {
+        MPI_Recv(array, 1, indexedtype, 0, 1, MPI_COMM_WORLD,
+                 MPI_STATUS_IGNORE);
+    }
+
+    // Print out the result
+    if (rank == 1) {
+        printf("Received data\n");
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                printf("%3d", array[i][j]);
+            }
+            printf("\n");
+        }
+    }
+
+    MPI_Type_free(&indexedtype);
     MPI_Finalize();
 
     return 0;
