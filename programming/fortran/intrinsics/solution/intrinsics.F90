@@ -1,30 +1,34 @@
 program intrinsics
   implicit none
   integer :: nx, ny
-  integer :: i, alloc_stat
+  integer :: i, j, alloc_stat
   real, dimension(:,:), allocatable :: A
+  real :: dx, dy, x, y
 
   write (*,*) 'Give number of rows and columns for matrix A:'
   read (*,*) nx, ny
+  dx = 1.0/(nx-1)
+  dy = 1.0/(ny-1)
 
   allocate(A(nx,ny), stat = alloc_stat)
   if (alloc_stat /= 0) call abort()
 
   ! Initializing array
-  A(:,:)  = 65.0 ! middle
-  A(:,1)  = 20.0 ! left
-  A(:,ny) = 70.0 ! right
-  A(1,:)  = 85.0 ! top
-  A(nx,:) = 5.0  ! bottom
+  y = 0.0
+  do j = 1, ny
+     x = 0.0
+     do i = 1, nx
+        A(i, j) = x**2 + y**2
+        x = x + dx
+     end do
+     y = y + dy
+  end do
 
-  !--------------------------------------------------
-  ! Print out the array
   do i = 1, nx
     write(*,'(*(F6.1))') A(i,:)
   end do
 
-
-  !--------------------------------------------------
+  ! TODO:
   ! Using array intrinsics to get information from array A
 
   write (*,*) 'a) Sum of elements across 2nd dimension of A: ', sum(A,2) 

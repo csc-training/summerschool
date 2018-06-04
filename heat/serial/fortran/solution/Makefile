@@ -1,6 +1,6 @@
-COMP=cray
+COMP=gnu
 
-COMMONDIR=../../common
+COMMONDIR=../../../common/
 
 ifeq ($(COMP),cray)
 FC=ftn

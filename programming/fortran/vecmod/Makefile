@@ -7,7 +7,6 @@ FCFLAGS=-efmw -hcpu=sandybridge
 endif
 
 ifeq ($(COMP),gnu)
-CC=gcc
 FC=gfortran
 FCFLAGS=-Wall
 endif
@@ -17,13 +16,14 @@ CC=icc
 FC=ifort
 endif
 
-EXE=laplacian
-OBJ=laplacian.o
+EXE=vec
+OBJ=vecmod.o vec.o
 
 
 all: $(EXE)
 
-arrays.o: laplacian.F90
+vecmod.o: vecmod.F90
+vec.o: vec.F90 vecmod.o
 
 $(EXE): $(OBJ)
 	$(FC) $(FCFLAGS) $(OBJ) -o $@ 
@@ -35,4 +35,4 @@ $(EXE): $(OBJ)
 	$(CC) $(CCFLAGS) -c $< -o $@
 
 clean:
-	-/bin/rm -f $(EXE)  *.o *.mod  *~
+	-/bin/rm -f $(EXE)  *.o *.mod *~

@@ -50,18 +50,18 @@ contains
     integer :: nx, ny, i
     character(len=2) :: dummy
 
-    open(10, file=filename)
+    ! TODO: implement the file reading
     ! Read the header
-    read(10, *) dummy, nx, ny ! nx is the number of rows
 
-    call set_field_dimensions(field0, nx, ny)
+
+
     ! The arrays for temperature field contain also a halo region
-    allocate(field0%data(0:field0%nx+1, 0:field0%ny+1))
+
 
     ! Read the data
-    do i = 1, nx
-       read(10, *) field0%data(i, 1:ny)
-    end do
+
+
+
 
     ! Set the boundary values
     field0%data(1:nx,   0     ) = field0%data(1:nx, 1     )
