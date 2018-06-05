@@ -13,12 +13,20 @@ Implement communication that sends and receives values from these data
 vectors to the receive buffers using a single collective routine in
 each case, so that the receive buffers will have the following values:
 
-a) ![](img/bcast.png)
+a) 
 
-b) ![](img/scatter.png)
+![](img/bcast.png)
 
-c) ![](img/gatherv.png)
+b) 
 
-d) ![](img/alltoall.png)
+![](img/scatter.png)
+
+c) 
+
+![](img/gatherv.png)
+
+d) 
+
+![](img/alltoall.png)
 
 
