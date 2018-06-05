@@ -66,11 +66,12 @@ contains
   ! Arguments:
   !    reqs (integer, dimension(4)): non-blocking communication handles
   subroutine exchange_finalize(reqs)
+    use mpi
     implicit none
     integer, intent(in) :: reqs(4)
     integer :: ierr
 
-    call mpi_waitall(4, reqs, ierr)
+    call mpi_waitall(4, reqs, mpi_statuses_ignore, ierr)
   end subroutine exchange_finalize
 
   ! Compute one time step of temperature evolution
