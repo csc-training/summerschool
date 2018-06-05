@@ -14,9 +14,7 @@ b)
 
 ![](img/indexed.png)
 
-c)
-
-Write a program that sends an array of structures (derived types in
+c) Write a program that sends an array of structures (derived types in
 Fortran) between two tasks. Implement a user-defined datatype that can
 be used for sending the structured data and verify that the
 communication is performed successfully. Check the size and true
@@ -24,5 +22,7 @@ extent of your type. A skeleton code is provided in
 [c/struct_type.c](c/struct_type.c) or
 [fortran/struct_type.F90](fortran/struct_type.F90).
 
-
+d) Implement the sending of structured data also by sending just a
+stream of bytes (type `MPI_BYTE`). Verify correctness and compare the
+performance of these two approaches.
 
