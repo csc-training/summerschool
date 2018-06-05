@@ -30,6 +30,8 @@ d)
 ![](img/alltoall.png)
 
 
-You can start from scratch or use the skeleton code found in [c/collective.c]([c/collective.c) or [fortran/collective.F90]([fortran/collective.F90).
+You can start from scratch or use the skeleton code found in
+[c/collective.c](c/collective.c) or
+[fortran/collective.F90](fortran/collective.F90).
 
 
