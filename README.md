@@ -11,6 +11,14 @@ git pull https://github.com/csc-training/summerschool.git
 
 Versions from previous years can be found in tags.
 
+## Exercises
+
+ - [Fortran programming](programming/fortran)
+ - [C/C++ programming](programming/c)
+ - [OpenMP](openmp)
+ - [MPI](mpi)
+ - [Hybrid MPI/OpenMP](hybrid)
+
 ---
 ## Notes
 - [x] Have fun!
