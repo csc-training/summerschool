@@ -1,7 +1,7 @@
 ## Control structures
 
 a) Define a two-dimensional (nx-by-ny), real-valued array and initialize it 
-to the values of the function f(x,y)=x^2+y^2  in the square x = [0,1], 
+to the values of the function f(x,y)=x<sup>2</sup>+y<sup>2</sup>  in the square x = [0,1], 
 y =[0,1] using nx = ny = 10. Exercise skeleton is available in 
 [do-loop.F90](do-loop.F90).
 
@@ -11,9 +11,6 @@ the behavior with different integer values.
 
 c) Fibonacci numbers are a sequence of integers defined by the recurrence 
 relation 
- Fn = Fn-1 + Fn-2
-with the initial values F0=0, F1=1. Print out Fibonacci numbers Fn < 100 i
+ F<sub>n</sub> = F<sub>n-1</sub> + F<sub>n-2</sub>
+with the initial values F<sub>0</sub>=0, F<sub>1</sub>=1. Print out Fibonacci numbers Fn < 100
 using a `do while` loop.
-
-
-
