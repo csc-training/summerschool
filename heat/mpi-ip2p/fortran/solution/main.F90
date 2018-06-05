@@ -21,7 +21,6 @@ program heat_solve
   integer :: ierr
 
   integer :: iter
-  integer :: requests(4) ! handles for non-blocking communication overlap
 
   real(kind=dp) :: start, stop ! Timers
 
@@ -38,13 +37,14 @@ program heat_solve
 
   ! Main iteration loop, save a picture every
   ! image_interval steps
+  ! modified for computation-communication overlap
 
   start =  mpi_wtime()
   
   do iter = 1, nsteps
-     call exchange_init(previous, parallelization,requests)
+     call exchange_init(previous, parallelization)
      call evolve_interior(current, previous, a, dt)
-     call exchange_finalize(requests)
+     call exchange_finalize(parallelization)
      call evolve_edges(current,previous, a, dt)
      if (mod(iter, image_interval) == 0) then
         call write_field(current, iter, parallelization)

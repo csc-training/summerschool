@@ -20,6 +20,7 @@ module heat
      integer :: size
      integer :: rank
      integer :: nleft, nright  ! Ranks of neighbouring MPI tasks
+     integer :: requests(4)    ! Non-blocking communication handles
   end type parallel_data
 
 contains
