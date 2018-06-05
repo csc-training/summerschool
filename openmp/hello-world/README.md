@@ -2,7 +2,7 @@
 
 In this exercise you will test that you are able to compile and run
 OpenMP application. Take a look at a simple example program in
-[hello-world/](hello-world/) that has been parallelized using
+[hello-world/](.) that has been parallelized using
 OpenMP. It will first print out a hello message (in serial) after
 which each thread will print out an "X" character (in parallel).
 

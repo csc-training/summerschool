@@ -1,6 +1,6 @@
 ## Vector sum and race condition ##
 
-In [race-condition/](race-condition/) you will find a serial code that
+In [race-condition/](.) you will find a serial code that
 sums up all the elements of a vector A, initialized as
 A=1,2,...,N. For reference, from the arithmetic sum formula we know
 that the result should be S=N(N+1)/2.
