@@ -36,9 +36,9 @@ void print_field(field * f)
 {
     int error_code;
 
-	// TODO: Fix the call to png writing. Note that since we now have a 
-	// dynamically allocated 2D array, we need to pass on a pointer to the 
-	// first element (=row) of the array instead of the array itself.
+    // TODO: Fix the call to png writing. Note that since we now have a 
+    // dynamically allocated 2D array, we need to pass on a pointer to the 
+    // first element (=row) of the array instead of the array itself.
     error_code = save_png(... , ..., ..., "dynamic_array.png", 'c');
     if (error_code == 0) {
         printf("Wrote output file dynamic_array.png\n");
@@ -65,15 +65,15 @@ int main(int argc, char *argv[])
     nx = atoi(argv[1]);
     ny = atoi(argv[2]);
 
-	// TODO: Allocate memory for a 2D array (nx,ny). Remember to allocate 
-	// space also for a ghost layer around the real data.
+    // TODO: Allocate memory for a 2D array (nx,ny). Remember to allocate 
+    // space also for a ghost layer around the real data.
 
     // Initialize field and print out the result
     init_field(&temperature, nx, ny);
     print_field(&temperature);
 	
-	// Free memory allocation
-	// TODO: Free memory allocations
+    // Free memory allocation
+    // TODO: Free memory allocations
 
     return 0;
 }

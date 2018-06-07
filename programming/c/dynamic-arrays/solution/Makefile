@@ -1,5 +1,7 @@
 COMP=cray
 
+COMMONDIR=../../../heat/common
+
 ifeq ($(COMP),cray)
 CC=cc
 CCFLAGS=-O3 -I/appl/opt/libpng/include
@@ -7,7 +9,7 @@ LIBS=-L/appl/opt/libpng/lib -lpng -lz
 endif
 
 ifeq ($(COMP),gnu)
-CC=mpicc
+CC=gcc
 CCFLAGS=-O3 -Wall
 LIBS=-lpng
 endif
@@ -15,16 +17,22 @@ endif
 EXE=dynamic_array
 OBJS=pngwriter.o dynamic_array.o
 
+.SUFFIXES:
+
 all: $(EXE)
 
-pngwriter.o: pngwriter.c pngwriter.h
+pngwriter.o: $(COMMONDIR)/pngwriter.c $(COMMONDIR)/pngwriter.h
+	$(CC) $(CCFLAGS) -I$(COMMONDIR) -c $< -o $@
+
 dynamic_array.o: dynamic_array.c
 
 $(EXE): $(OBJS)
 	$(CC) $(CCFLAGS) $(OBJS) -o $@ $(LIBS)
 
 %.o: %.c
-	$(CC) $(CCFLAGS) -c $< -o $@
+	$(CC) -I$(COMMONDIR) $(CCFLAGS) -c $< -o $@
+
+.PHONY: clean
 
 clean:
 	-/bin/rm -f $(EXE) a.out *.o *.png
