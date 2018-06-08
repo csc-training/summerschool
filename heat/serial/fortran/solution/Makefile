@@ -1,4 +1,4 @@
-COMP=gnu
+COMP=cray
 
 COMMONDIR=../../../common/
 
