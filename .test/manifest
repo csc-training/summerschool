@@ -1,302 +1,327 @@
 # Manifest of test targets for
 #   github.com/mlouhivu/test-bot.git
 
-[solutions/hybrid/fortran/multiple/multiple.F90] +mpi +omp
-  type=pass
-  export=('MPICH_MAX_THREAD_SAFETY=multiple')
-
-[solutions/hybrid/fortran/hello-world/hybrid-hello.F90] +mpi +omp
-  type=pass
-
-[solutions/hybrid/c/multiple/multiple.c] +mpi +omp
-  type=pass
-  export=('MPICH_MAX_THREAD_SAFETY=multiple')
-
-[solutions/hybrid/c/hello-world/hybrid-hello.c] +mpi +omp
-  type=pass
-
-[solutions/heat/fortran/mpi_p2p] +mpi
-  type=pass
-
-[solutions/heat/fortran/openmp] +omp
-  type=pass
-
-[solutions/heat/fortran/hybrid-fine] +mpi +omp
-  type=pass
-
-[solutions/heat/fortran/mpi-2d] +mpi
-  type=pass
-
-[solutions/heat/fortran/serial]
-  type=pass
-
-[solutions/heat/fortran/hybrid-coarse] +mpi +omp
-  type=pass
-  export=('MPICH_MAX_THREAD_SAFETY=multiple')
-
-[solutions/heat/fortran/mpi-io] +mpi
-  type=pass
-
-[solutions/heat/fortran/mpi_ip2p] +mpi
-  type=pass
-
-[solutions/heat/fortran/openmp-loops] +omp
-  type=pass
-
-[solutions/heat/c/mpi_p2p] +mpi
-  type=pass
-
-[solutions/heat/c/openmp] +omp
-  type=pass
-
-[solutions/heat/c/hybrid-fine] +mpi
-  type=pass
-
-[solutions/heat/c/mpi-2d] +mpi
-  type=pass
-
-[solutions/heat/c/serial]
-  type=pass
-
-[solutions/heat/c/hybrid-coarse] +mpi +omp
-  type=pass
-  export=('MPICH_MAX_THREAD_SAFETY=multiple')
-
-[solutions/heat/c/mpi-io] +mpi
-  type=pass
-
-[solutions/heat/c/mpi_ip2p] +mpi
-  type=pass
-
-[solutions/heat/c/openmp-loops] +omp
-  type=pass
-
-[solutions/openmp/fortran/tasks] +omp
-  type=pass
-
-[solutions/openmp/fortran/lib-funcs/hello.F90] +omp
-  type=pass
-
-[solutions/openmp/fortran/race-condition/vectorsum.F90] +omp
-  type=pass
-
-[solutions/openmp/fortran/hello-world/hello.F90] +omp
-  type=pass
-
-[solutions/openmp/fortran/work-sharing/sum.F90] +omp
-  type=pass
-
-[solutions/openmp/fortran/data-sharing/variables.F90] +omp
-  type=pass
-
-[solutions/openmp/c/tasks] +omp
-  type=pass
-
-[solutions/openmp/c/lib-funcs/hello.c] +omp
-  type=pass
-
-[solutions/openmp/c/race-condition/vectorsum.c] +omp
-  type=pass
-
-[solutions/openmp/c/hello-world/hello.c] +omp
-  type=pass
-
-[solutions/openmp/c/work-sharing/sum.c] +omp
-  type=pass
-
-[solutions/openmp/c/data-sharing/variables.c] +omp
-  type=pass
-
-[solutions/mpi/fortran/message-exchange/exchange.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/datatypes/subarray_type.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/datatypes/struct_type_c.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/datatypes/struct_type_d.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/datatypes/vector_type.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/topology/cart-topology.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/hello-world/hello.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/collectives/scatter.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/collectives/alltoall.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/collectives/broadcast.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/collectives/gatherv.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/non-blocking/msg-chain.f90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/non-blocking/broadcast.f90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/communicator/reduce.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/mpi-io/mpiio.f90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/message-chain/sendrecv.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/message-chain/status.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/message-chain/send-recv.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/message-chain/proc-null.F90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/posix-io/spokesman.f90] +mpi
-  type=pass
-
-[solutions/mpi/fortran/posix-io/spokesman_reader.f90] +mpi
-  type=pass
-
-[solutions/mpi/c/message-exchange/exchange.c] +mpi
-  type=pass
-
-[solutions/mpi/c/datatypes/struct_type_c.c] +mpi
-  type=pass
-
-[solutions/mpi/c/datatypes/subarray_type.c] +mpi
-  type=pass
-
-[solutions/mpi/c/datatypes/struct_type_d.c] +mpi
-  type=pass
-
-[solutions/mpi/c/datatypes/vector_type.c] +mpi
-  type=pass
-
-[solutions/mpi/c/topology/cart-topology.c] +mpi
-  type=pass
-
-[solutions/mpi/c/hello-world/hello.c] +mpi
-  type=pass
-
-[solutions/mpi/c/collectives/scatter.c] +mpi
-  type=pass
-
-[solutions/mpi/c/collectives/alltoall.c] +mpi
-  type=pass
-
-[solutions/mpi/c/collectives/gatherv.c] +mpi
-  type=pass
-
-[solutions/mpi/c/collectives/broadcast.c] +mpi
-  type=pass
-
-[solutions/mpi/c/non-blocking/msg-chain.c] +mpi
-  type=pass
-
-[solutions/mpi/c/non-blocking/broadcast.c] +mpi
-  type=pass
-
-[solutions/mpi/c/communicator/reduce.c] +mpi
-  type=pass
-
-[solutions/mpi/c/mpi-io/mpiio.c] +mpi
-  type=pass
-
-[solutions/mpi/c/message-chain/proc-null.c] +mpi
-  type=pass
-
-[solutions/mpi/c/message-chain/sendrecv.c] +mpi
-  type=pass
-
-[solutions/mpi/c/message-chain/status.c] +mpi
-  type=pass
-
-[solutions/mpi/c/message-chain/send-recv.c] +mpi
-  type=pass
-
-[solutions/mpi/c/posix-io/spokesman.c] +mpi
-  type=pass
-
-[solutions/mpi/c/posix-io/spokesman_reader.c] +mpi
-  type=pass
-
-[solutions/programming/fortran/subroutines]
+[programming/fortran/subroutines/solution]
   type=pass
   user_input='3 3'
 
-[solutions/programming/fortran/laplacian]
+[programming/fortran/laplacian/solution]
   type=pass
 
-[solutions/programming/fortran/loops]
-  type=pass
-
-[solutions/programming/fortran/intrinsics]
-  type=pass
-  user_input='3 3'
-
-[solutions/programming/fortran/arrays]
-  type=pass
-  user_input='3 3'
-
-[solutions/programming/fortran/hello]
-  type=pass
-
-[solutions/programming/fortran/io]
-  type=pass
-
-[solutions/programming/fortran/types/heat_mod.F90]
+[programming/fortran/types/solution/heat_mod.F90]
   type=pass
   +skip_run
 
-[solutions/programming/c/dynamic-arrays]
+[programming/fortran/intrinsics/solution]
+  type=pass
+  user_input='3 3'
+
+[programming/fortran/control-structures/solution]
+  type=pass
+
+[programming/fortran/arrays/solution]
+  type=pass
+  user_input='3 3'
+
+[programming/fortran/hello/solution]
+  type=pass
+
+[programming/fortran/io/solution]
+  type=pass
+
+[programming/fortran/vecmod/solution]
+  type=pass
+
+[programming/c/cpp-basics/solution/hello.cpp]
+  type=pass
+
+[programming/c/dynamic-arrays/solution]
   type=pass
   arguments='3 3'
 
-[solutions/programming/c/multiple-files]
-  type=pass
-
-[solutions/programming/c/datastructures-functions-heat/Makefile_functions]
+[programming/c/datastructures-functions-heat/solution/Makefile_functions]
   type=pass
   makefile=Makefile_functions
 
-[solutions/programming/c/datastructures-functions-heat/Makefile_laplacian]
+[programming/c/datastructures-functions-heat/solution/Makefile_laplacian]
   type=pass
   makefile=Makefile_laplacian
 
-[solutions/programming/c/control-structures/my_pow_prog.c]
+[programming/c/control-structures/solution/my_pow_prog.c]
   type=pass
 
-[solutions/programming/c/control-structures/fibonacci.c]
+[programming/c/control-structures/solution/fibonacci.c]
   type=pass
 
-[solutions/programming/c/control-structures/if_else.c]
+[programming/c/control-structures/solution/if_else.c]
   type=pass
 
-[solutions/programming/c/datastructures-functions/fibonacci.c]
+[programming/c/cpp-objects/solution/class-demo.cpp]
   type=pass
 
-[solutions/programming/c/datastructures-functions/add_one.c]
+[programming/c/datastructures-functions/solution/fibonacci.c]
+  type=pass
+
+[programming/c/datastructures-functions/solution/add_one.c]
   type=pass
   +do_not_link
 
-[solutions/programming/c/fileio/read.c]
+[programming/c/fileio/solution/read.c]
   type=pass
 
-[solutions/programming/c/datatypes-expressions/expressions.c]
+[programming/c/multiple-files/solution]
   type=pass
 
-[solutions/programming/c/datatypes-expressions/pointers.c]
+[programming/c/datatypes-expressions/solution/expressions.c]
   type=pass
+
+[programming/c/datatypes-expressions/solution/pointers.c]
+  type=pass
+
+[openmp/lib-funcs/solution/hello.F90] +omp
+  type=pass
+
+[openmp/lib-funcs/solution/hello.c] +omp
+  type=pass
+
+[openmp/race-condition/solution/vectorsum.F90] +omp
+  type=pass
+
+[openmp/race-condition/solution/vectorsum.c] +omp
+  type=pass
+
+[openmp/tasks/fortran/solution] +omp
+  type=pass
+
+[openmp/tasks/c/solution] +omp
+  type=pass
+
+[openmp/hello-world/solution/hello.F90] +omp
+  type=pass
+
+[openmp/hello-world/solution/hello.c] +omp
+  type=pass
+
+[openmp/work-sharing/solution/sum.F90] +omp
+  type=pass
+
+[openmp/work-sharing/solution/sum.c] +omp
+  type=pass
+
+[openmp/data-sharing/solution/variables.F90] +omp
+  type=pass
+
+[openmp/data-sharing/solution/variables.c] +omp
+  type=pass
+
+[mpi/message-exchange/solution/exchange.F90] +mpi
+  type=pass
+
+[mpi/message-exchange/solution/exchange.c] +mpi
+  type=pass
+
+[mpi/datatypes/fortran/solution/struct_type_c.F90] +mpi
+  type=pass
+
+[mpi/datatypes/fortran/solution/struct_type_d.F90] +mpi
+  type=pass
+
+[mpi/datatypes/fortran/solution/custom_type_b.F90] +mpi
+  type=pass
+
+[mpi/datatypes/fortran/solution/custom_type_a.F90] +mpi
+  type=pass
+
+[mpi/datatypes/c/solution/custom_type_a.c] +mpi
+  type=pass
+
+[mpi/datatypes/c/solution/custom_type_b.c] +mpi
+  type=pass
+
+[mpi/datatypes/c/solution/struct_type_c.c] +mpi
+  type=pass
+
+[mpi/datatypes/c/solution/struct_type_d.c] +mpi
+  type=pass
+
+[mpi/topology/solution/cart-topology.c] +mpi
+  type=pass
+
+[mpi/topology/solution/cart-topology.F90] +mpi
+  type=pass
+
+[mpi/hello-world/solution/hello.F90] +mpi
+  type=pass
+
+[mpi/hello-world/solution/hello.c] +mpi
+  type=pass
+
+[mpi/collectives/fortran/solution/scatter.F90] +mpi
+  type=pass
+
+[mpi/collectives/fortran/solution/alltoall.F90] +mpi
+  type=pass
+
+[mpi/collectives/fortran/solution/broadcast.F90] +mpi
+  type=pass
+
+[mpi/collectives/fortran/solution/gatherv.F90] +mpi
+  type=pass
+
+[mpi/collectives/c/solution/scatter.c] +mpi
+  type=pass
+
+[mpi/collectives/c/solution/alltoall.c] +mpi
+  type=pass
+
+[mpi/collectives/c/solution/gatherv.c] +mpi
+  type=pass
+
+[mpi/collectives/c/solution/broadcast.c] +mpi
+  type=pass
+
+[mpi/non-blocking/fortran/solution/msg-chain-pc.F90] +mpi
+  type=pass
+
+[mpi/non-blocking/fortran/solution/ibcast.F90] +mpi
+  type=pass
+
+[mpi/non-blocking/fortran/solution/msg-chain-ip2p.F90] +mpi
+  type=pass
+
+[mpi/non-blocking/c/solution/msg-chain-pc.c] +mpi
+  type=pass
+
+[mpi/non-blocking/c/solution/ibcast.c] +mpi
+  type=pass
+
+[mpi/non-blocking/c/solution/msg-chain-ip2p.c] +mpi
+  type=pass
+
+[mpi/communicator/solution/reduce.c] +mpi
+  type=pass
+
+[mpi/communicator/solution/reduce.F90] +mpi
+  type=pass
+
+[mpi/mpi-io/solution/mpiio.c] +mpi
+  type=pass
+
+[mpi/mpi-io/solution/mpiio.f90] +mpi
+  type=pass
+
+[mpi/message-chain/fortran/solution/sendrecv.F90] +mpi
+  type=pass
+
+[mpi/message-chain/fortran/solution/status.F90] +mpi
+  type=pass
+
+[mpi/message-chain/fortran/solution/send-recv.F90] +mpi
+  type=pass
+
+[mpi/message-chain/fortran/solution/proc-null.F90] +mpi
+  type=pass
+
+[mpi/message-chain/c/solution/proc-null.c] +mpi
+  type=pass
+
+[mpi/message-chain/c/solution/sendrecv.c] +mpi
+  type=pass
+
+[mpi/message-chain/c/solution/status.c] +mpi
+  type=pass
+
+[mpi/message-chain/c/solution/send-recv.c] +mpi
+  type=pass
+
+[mpi/posix-io/fortran/solution/spokesman.f90] +mpi
+  type=pass
+
+[mpi/posix-io/fortran/solution/spokesman_reader.f90] +mpi
+  type=pass
+
+[mpi/posix-io/fortran/solution/separate-files.f90] +mpi
+  type=pass
+
+[mpi/posix-io/c/solution/spokesman.c] +mpi
+  type=pass
+
+[mpi/posix-io/c/solution/spokesman_reader.c] +mpi
+  type=pass
+
+[mpi/posix-io/c/solution/separate-files.c] +mpi
+  type=pass
+
+[hybrid/multiple/solution/multiple.c] +mpi +omp
+  type=pass
+  export=('MPICH_MAX_THREAD_SAFETY=multiple')
+
+[hybrid/multiple/solution/multiple.F90] +mpi +omp
+  type=pass
+  export=('MPICH_MAX_THREAD_SAFETY=multiple')
+
+[hybrid/hello-world/solution/hybrid-hello.F90] +mpi +omp
+  type=pass
+  export=('MPICH_MAX_THREAD_SAFETY=multiple')
+
+[hybrid/hello-world/solution/hybrid-hello.c] +mpi +omp
+  type=pass
+  export=('MPICH_MAX_THREAD_SAFETY=multiple')
+
+[heat/serial/fortran/solution]
+  type=pass
+
+[heat/serial/c/solution]
+  type=pass
+
+[heat/openmp/fortran/solution] +omp
+  type=pass
+
+[heat/openmp/c/solution] +omp
+  type=pass
+
+[heat/openmp-loops/fortran/solution] +omp
+  type=pass
+
+[heat/openmp-loops/c/solution] +omp
+  type=pass
+
+[heat/mpi-2d/fortran/solution] +mpi
+  type=pass
+
+[heat/mpi-2d/c/solution] +mpi
+  type=pass
+
+[heat/mpi-ip2p/fortran/solution] +mpi
+  type=pass
+
+[heat/mpi-ip2p/c/solution] +mpi
+  type=pass
+
+[heat/mpi-p2p/fortran/solution] +mpi
+  type=pass
+
+[heat/mpi-p2p/c/solution] +mpi
+  type=pass
+
+[heat/mpi-io/fortran/solution] +mpi
+  type=pass
+
+[heat/mpi-io/c/solution] +mpi
+  type=pass
+
+[heat/hybrid-coarse/fortran/solution] +mpi +omp
+  type=pass
+  export=('MPICH_MAX_THREAD_SAFETY=multiple')
+
+[heat/hybrid-coarse/c/solution] +mpi +omp
+  type=pass
+  export=('MPICH_MAX_THREAD_SAFETY=multiple')
+
+[heat/hybrid-fine/fortran/solution] +mpi +omp
+  type=pass
+  export=('MPICH_MAX_THREAD_SAFETY=multiple')
+
+[heat/hybrid-fine/c/solution] +mpi +omp
+  type=pass
+  export=('MPICH_MAX_THREAD_SAFETY=multiple')
