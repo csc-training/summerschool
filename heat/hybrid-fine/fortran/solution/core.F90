@@ -52,8 +52,7 @@ contains
     ny = curr%ny
 
     !$OMP PARALLEL DO PRIVATE(i,j) &
-    !$OMP             SHARED(nx,ny,curr,prev,a,dt) &
-    !$OMP 
+    !$OMP             SHARED(nx,ny,curr,prev,a,dt)
     do j = 1, ny
        do i = 1, nx
           curr%data(i, j) = prev%data(i, j) + a * dt * &

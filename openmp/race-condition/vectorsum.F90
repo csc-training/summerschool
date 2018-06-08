@@ -13,6 +13,9 @@ program vectorsum
      vecA(i) = i
   end do
 
+  sumex = nx*(nx+1_ik)/2_ik
+  write(*,*) 'Arithmetic sum formula (exact):                  ', sumex
+
   sum = 0
   ! TODO: Parallelize the computation
   do i = 1, nx
