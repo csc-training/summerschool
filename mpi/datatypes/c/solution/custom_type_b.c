@@ -6,8 +6,8 @@ int main(int argc, char **argv)
     int rank;
     int array[8][8];
     MPI_Datatype indexedtype;
-    int displs[8];
-    int counts[8];
+    int displs[4];
+    int counts[4];
 
     int i, j;
 
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
         displs[i] = i + 2 * i * 8;
     }
 
-    MPI_Type_indexed(8, counts, displs, MPI_INT, &indexedtype);
+    MPI_Type_indexed(4, counts, displs, MPI_INT, &indexedtype);
     MPI_Type_commit(&indexedtype);
 
     // Send first indexed of matrix

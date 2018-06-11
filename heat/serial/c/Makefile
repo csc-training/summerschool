@@ -1,4 +1,6 @@
+ifeq ($(COMP),)
 COMP=cray
+endif
 
 COMMONDIR=$(shell \
   if test -d '../../common'; then \

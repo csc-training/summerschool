@@ -7,7 +7,7 @@ program datatype1
   integer, dimension(8,8) :: array
   integer :: rank, ierr
   integer :: indexedtype
-  integer, dimension(8) :: counts, displs
+  integer, dimension(4) :: counts, displs
   integer :: i, j
 
   call mpi_init(ierr)
@@ -37,7 +37,7 @@ program datatype1
   end do
 
   ! create datatype
-  call mpi_type_indexed(8, counts, displs, MPI_INTEGER, indexedtype, ierr)
+  call mpi_type_indexed(4, counts, displs, MPI_INTEGER, indexedtype, ierr)
   call mpi_type_commit(indexedtype, ierr)
 
   ! send first indexed of matrix

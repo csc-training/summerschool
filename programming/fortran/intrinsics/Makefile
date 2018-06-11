@@ -1,4 +1,6 @@
+ifeq ($(COMP),)
 COMP=cray
+endif
 
 ifeq ($(COMP),cray)
 CC=cc

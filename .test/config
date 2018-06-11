@@ -2,7 +2,18 @@
 #   github.com/mlouhivu/test-bot.git
 [cray]
   compiler=cc
-
   (fortran)
     compiler=ftn
 
+[gnu]
+  compiler=gcc
+  (c+mpi)
+    compiler=mpicc
+  (fortran)
+    compiler=gfortran
+  (fortran+mpi)
+    compiler=mpif90
+  (c+omp)
+    compile-options=-fopenmp
+  (fortran+omp)
+    compile-options=-fopenmp

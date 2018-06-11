@@ -1,6 +1,8 @@
+ifeq ($(COMP),)
 COMP=cray
+endif
 
-COMMONDIR=../../common
+COMMONDIR=../../../common
 
 ifeq ($(COMP),cray)
 FC=ftn
@@ -46,4 +48,4 @@ $(EXE): $(OBJS) $(OBJS_PNG)
 
 .PHONY: clean
 clean:
-	-/bin/rm -f $(EXE) a.out *.o *.mod *.png *~
+	-/bin/rm -f $(EXE) HEAT_RESTART.dat a.out *.o *.mod *.png *~

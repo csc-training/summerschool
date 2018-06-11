@@ -1,4 +1,6 @@
+ifeq ($(COMP),)
 COMP=gnu
+endif
 
 ifeq ($(COMP),cray)
 CC=cc

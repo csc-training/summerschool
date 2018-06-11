@@ -7,6 +7,7 @@
 
 [programming/fortran/laplacian/solution]
   type=pass
+  user_input='3 3'
 
 [programming/fortran/types/solution/heat_mod.F90]
   type=pass
@@ -31,6 +32,7 @@
 
 [programming/fortran/vecmod/solution]
   type=pass
+  +skip_run
 
 [programming/c/cpp-basics/solution/hello.cpp]
   type=pass

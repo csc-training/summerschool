@@ -1,4 +1,6 @@
+ifeq($(COMP),)
 COMP=cray
+endif
 
 COMMONDIR=../../common
 

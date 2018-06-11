@@ -1,6 +1,8 @@
+ifeq ($(COMP),)
 COMP=cray
+endif
 
-COMMONDIR=../../../heat/common
+COMMONDIR=../../../../heat/common
 
 ifeq ($(COMP),cray)
 CC=cc
