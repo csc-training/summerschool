@@ -23,7 +23,7 @@ module heat
      integer :: comm
      integer :: rowtype                    ! MPI Datatype for communication of rows
      integer :: columntype                 ! MPI Datatype for communication of columns
-     integer :: subarraytype               ! MPI Datatype for communication of inner region 
+     integer :: subarraytype               ! MPI Datatype for communication of inner region
 
   end type parallel_data
 
@@ -55,16 +55,16 @@ contains
 
   subroutine parallel_setup(parallel, nx, ny)
     use mpi
-    
+
     implicit none
-    
+
     type(parallel_data), intent(out) :: parallel
     integer, intent(in), optional :: nx, ny
 
     integer :: nx_local, ny_local
     integer :: world_size
     integer :: dims(2)
-    logical :: periods(2) = (/.False., .FALSE./)
+    logical :: periods(2) = (/.false., .false./)
     integer, dimension(2) :: sizes, subsizes, offsets
 
     integer :: ierr
@@ -80,17 +80,17 @@ contains
     ! Ensure that the grid is divisible to the MPI tasks
     if (dims(1) * dims(2) /= world_size) then
        write(*,*) 'Cannot make square MPI grid, please use number of CPUs which is power of two', &
-                   dims(1), dims(2), world_size
+            dims(1), dims(2), world_size
        call mpi_abort(MPI_COMM_WORLD, -1, ierr)
     end if
     if (nx_local * dims(1) /= nx) then
        write(*,*) 'Cannot divide grid evenly to processors in x-direction', &
-                   nx_local, dims(1), nx
+            nx_local, dims(1), nx
        call mpi_abort(MPI_COMM_WORLD, -2, ierr)
     end if
     if (ny_local * dims(2) /= ny) then
        write(*,*) 'Cannot divide grid evenly to processors in y-direction', &
-                   ny_local, dims(2), ny
+            ny_local, dims(2), ny
        call mpi_abort(MPI_COMM_WORLD, -2, ierr)
     end if
 
@@ -99,10 +99,10 @@ contains
     ! Create cartesian communicator based on dims variable. Store the communicator to the
     ! field "comm" of the parallel datatype (parallel%comm).
 
-    ! Find the neighbouring MPI tasks (parallel%nup, parallel%ndown, 
+    ! Find the neighbouring MPI tasks (parallel%nup, parallel%ndown,
     !     parallel%nleft, parallel%nright) using MPI_Cart_shift
 
-    ! Determine parallel%size and parallel%rank from newly created 
+    ! Determine parallel%size and parallel%rank from newly created
     ! Cartesian comm
 
     ! Create datatypes for halo exchange
@@ -129,11 +129,11 @@ contains
 
     ! TODO Fill in the correct parameters to mpi_type_create_subarray
     call mpi_type_create_subarray(, , , , , &
-                             , parallel%subarraytype, ierr)
+         , parallel%subarraytype, ierr)
     call mpi_type_commit(parallel%subarraytype, ierr)
 
     ! TODO end
-    
+
   end subroutine parallel_setup
 
 end module heat

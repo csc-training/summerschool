@@ -7,7 +7,7 @@ program broadcast
   integer :: ntasks, rank, ierr, i, color, sub_comm
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
-  
+
   integer :: status(MPI_STATUS_SIZE)
   integer :: rc, request
 
@@ -30,7 +30,7 @@ program broadcast
 
   ! Send (0,1,..,7) everywhere
   call mpi_ibcast(sendbuf, 2*ntasks, MPI_INTEGER, 0, MPI_COMM_WORLD, &
-                  request, ierr)
+       & request, ierr)
   call mpi_wait(request, status, rc)
 
   ! Print data that was received

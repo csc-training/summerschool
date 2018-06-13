@@ -1,6 +1,6 @@
 ! Setup routines for heat equation solver
 module setup
-    use heat
+  use heat
 
 contains
 
@@ -52,12 +52,12 @@ contains
     ! Check if checkpoint exists
     inquire (file="HEAT_RESTART.dat", exist=restart)
     if (restart) then
-        call read_restart(previous, parallel, step0)
-        if (parallel % rank == 0) then
-            write(*,'(a)') 'Restarting from an earlier checkpoint'
-            write(*,'(a,i0)') '  saved at iteration', step0
-        end if
-        call copy_fields(previous, current)
+       call read_restart(previous, parallel, step0)
+       if (parallel % rank == 0) then
+          write(*,'(a)') 'Restarting from an earlier checkpoint'
+          write(*,'(a,i0)') '  saved at iteration', step0
+       end if
+       call copy_fields(previous, current)
     else if (using_input_file) then
        call read_field(previous, input_file, parallel)
        call copy_fields(previous, current)

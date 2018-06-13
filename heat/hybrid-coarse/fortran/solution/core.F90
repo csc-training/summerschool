@@ -1,6 +1,6 @@
 ! Main solver routines for heat equation solver
 module core
-    use heat
+  use heat
 
 contains
 
@@ -19,7 +19,7 @@ contains
     if (present(thread_id)) then
        tag_left = thread_id + 512
        tag_right = thread_id + 1024
-    else 
+    else
        tag_left = 512
        tag_right = 1024
     end if
@@ -57,7 +57,7 @@ contains
     nx = curr%nx
     ny = curr%ny
 
-!$OMP DO PRIVATE(i)
+    !$OMP DO PRIVATE(i)
     do j = 1, ny
        do i = 1, nx
           curr%data(i, j) = prev%data(i, j) + a * dt * &
@@ -67,7 +67,7 @@ contains
                &   prev%data(i, j+1)) / curr%dy**2)
        end do
     end do
-!$OMP END DO
+    !$OMP END DO
   end subroutine evolve
 
 end module core

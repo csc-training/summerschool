@@ -33,7 +33,7 @@ program heat_solve
   ! image_interval steps
 
   call cpu_time(start)
-  
+
   do iter = 1, nsteps
      call evolve(current, previous, a, dt)
      if (mod(iter, image_interval) == 0) then
@@ -46,7 +46,7 @@ program heat_solve
 
   write(*,'(A,F7.3,A)') 'Iteration took ', stop - start, ' seconds.'
   write(*,'(A,G0)') 'Reference value at 5,5: ', previous % data(5,5)
-  
+
   call finalize(current, previous)
 
 end program heat_solve

@@ -19,6 +19,5 @@ program subroutines
 
   ! print the result array
   call write_field(current)
- 
-end program subroutines
 
+end program subroutines

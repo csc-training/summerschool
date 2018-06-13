@@ -25,7 +25,7 @@ program coll_exer
   ! Print data that will be sent
   call print_buffers(sendbuf)
 
-  ! TODO: use a single *non-blocking* 
+  ! TODO: use a single *non-blocking*
   ! collective communication call (and maybe prepare
   ! some parameters for the call)
   ! TODO: remember to complete the collective

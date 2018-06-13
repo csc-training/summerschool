@@ -1,6 +1,6 @@
 ! Main solver routines for heat equation solver
 module core
-    use heat
+  use heat
 
 contains
 
@@ -17,27 +17,27 @@ contains
 
     ! Send to left, receive from right
     call mpi_sendrecv(field0%data(0, 1), 1, parallel%columntype, &
-                      parallel%nleft, 11, &
-                      field0%data(0, field0%ny + 1), 1, parallel%columntype, &
-                      parallel%nright, 11, &
-                      parallel%comm, MPI_STATUS_IGNORE, ierr)
-
+         & parallel%nleft, 11, &
+         & field0%data(0, field0%ny + 1), 1, parallel%columntype, &
+         & parallel%nright, 11, &
+         & parallel%comm, MPI_STATUS_IGNORE, ierr)
+    
     ! Send to right, receive from left
     call mpi_sendrecv(field0%data(0, field0%ny), 1, parallel%columntype, &
-                      parallel%nright, 12, &
-                      field0%data(0, 0), 1, parallel%columntype, &
-                      parallel%nleft, 12, &
-                      parallel%comm, MPI_STATUS_IGNORE, ierr)
+         & parallel%nright, 12, &
+         & field0%data(0, 0), 1, parallel%columntype, &
+         & parallel%nleft, 12, &
+         & parallel%comm, MPI_STATUS_IGNORE, ierr)
 
     ! Send to up receive from down
     call mpi_sendrecv(field0%data(1, 0), 1, parallel%rowtype, &
-           parallel%nup, 13, field0%data(field0%nx+1, 0), 1, parallel%rowtype, &
-           parallel%ndown, 13, parallel%comm, MPI_STATUS_IGNORE, ierr)
+         & parallel%nup, 13, field0%data(field0%nx+1, 0), 1, parallel%rowtype, &
+         & parallel%ndown, 13, parallel%comm, MPI_STATUS_IGNORE, ierr)
 
     ! Send to the down, receive from up
     call mpi_sendrecv(field0%data(field0%nx, 0), 1, parallel%rowtype, &
-           parallel%ndown, 14, field0%data(0, 0), 1, parallel%rowtype, &
-           parallel%nup, 14, parallel%comm, MPI_STATUS_IGNORE, ierr)
+         & parallel%ndown, 14, field0%data(0, 0), 1, parallel%rowtype, &
+         & parallel%nup, 14, parallel%comm, MPI_STATUS_IGNORE, ierr)
 
   end subroutine exchange
 

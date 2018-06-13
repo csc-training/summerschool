@@ -1,7 +1,7 @@
 ! Utility routines for heat equation solver
 !   NOTE: This file does not need to be edited!
 module utilities
-    use heat
+  use heat
 
 contains
 

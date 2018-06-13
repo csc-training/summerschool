@@ -1,19 +1,19 @@
 ! Setup routines for heat equation solver
 module setup
-    use heat
+  use heat
 
 contains
 
   subroutine initialize(previous, current, nsteps, parallel)
     use utilities
     use io
-    
+
     implicit none
 
     type(field), intent(out) :: previous, current
     integer, intent(out) :: nsteps
     type(parallel_data), intent(out) :: parallel
-    
+
     integer :: rows, cols
     logical :: using_input_file
     character(len=85) :: input_file, arg  ! Input file name and command line arguments
@@ -70,13 +70,13 @@ contains
     use heat
 
     implicit none
-    
+
     type(field), intent(inout) :: field0
     type(parallel_data), intent(in) :: parallel
-    
+
     real(dp) :: radius2
     integer :: i, j, ds2
-    
+
     integer, dimension(2) :: dims, coords
     logical :: periods(2)
     integer :: ierr
@@ -117,23 +117,23 @@ contains
     if (coords(1) == dims(1) - 1) then
        field0%data(field0%nx+1,:) = 5.0_dp
     end if
-    
+
   end subroutine generate_field
-  
-  
+
+
   ! Clean up routine for field type
   ! Arguments:
   !   field0 (type(field)): field variable to be cleared
   subroutine finalize(field0, field1)
     use heat
-    
+
     implicit none
-    
+
     type(field), intent(inout) :: field0, field1
-    
+
     deallocate(field0%data)
     deallocate(field1%data)
-    
+
   end subroutine finalize
 
   ! Helper routine that prints out a simple usage if

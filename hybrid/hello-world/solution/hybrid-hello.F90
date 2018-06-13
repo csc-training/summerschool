@@ -18,11 +18,11 @@ program hybridhello
   call MPI_Comm_rank(MPI_COMM_WORLD, my_id, rc)
   call MPI_Comm_size(MPI_COMM_WORLD, ntask, rc)
 
-!$omp parallel default(shared) private(tid)
+  !$omp parallel default(shared) private(tid)
   tid = omp_get_thread_num()
 
   write(*,'(A,I3,A,I3)') 'Rank ', my_id, ' thread ', tid
-!$omp end parallel
+  !$omp end parallel
 
   call MPI_Finalize(rc)
 

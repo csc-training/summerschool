@@ -3,7 +3,7 @@ module setup
 
 contains
 
-subroutine initialize(previous, current, nsteps)
+  subroutine initialize(previous, current, nsteps)
 
     use heat
     use utilities
@@ -19,52 +19,52 @@ subroutine initialize(previous, current, nsteps)
     character(len=85) :: input_file, arg  ! Input file name and command line arguments
 
 
-  ! Default values for grid size and time steps
-  rows = 200
-  cols = 200
-  nsteps = 500
-  using_input_file = .false.
+    ! Default values for grid size and time steps
+    rows = 200
+    cols = 200
+    nsteps = 500
+    using_input_file = .false.
 
-  ! Read in the command line arguments and
-  ! set up the needed variables
-  select case(command_argument_count())
-  case(0) ! No arguments -> default values
-  case(1) ! One argument -> input file name
-     using_input_file = .true.
-     call get_command_argument(1, input_file)
-  case(2) ! Two arguments -> input file name and number of steps
-     using_input_file = .true.
-     call get_command_argument(1, input_file)
-     call get_command_argument(2, arg)
-     read(arg, *) nsteps
-  case(3) ! Three arguments -> rows, cols and nsteps
-     call get_command_argument(1, arg)
-     read(arg, *) rows
-     call get_command_argument(2, arg)
-     read(arg, *) cols
-     call get_command_argument(3, arg)
-     read(arg, *) nsteps
-  case default
-     call usage()
-     stop
-  end select
+    ! Read in the command line arguments and
+    ! set up the needed variables
+    select case(command_argument_count())
+    case(0) ! No arguments -> default values
+    case(1) ! One argument -> input file name
+       using_input_file = .true.
+       call get_command_argument(1, input_file)
+    case(2) ! Two arguments -> input file name and number of steps
+       using_input_file = .true.
+       call get_command_argument(1, input_file)
+       call get_command_argument(2, arg)
+       read(arg, *) nsteps
+    case(3) ! Three arguments -> rows, cols and nsteps
+       call get_command_argument(1, arg)
+       read(arg, *) rows
+       call get_command_argument(2, arg)
+       read(arg, *) cols
+       call get_command_argument(3, arg)
+       read(arg, *) nsteps
+    case default
+       call usage()
+       stop
+    end select
 
-  ! Initialize the fields according the command line arguments
-  if (using_input_file) then
-     !$OMP SINGLE
-     call read_field(previous, input_file)
-     call copy_fields(previous, current)
-     !$OMP END SINGLE
-  else
-     !$OMP SINGLE
-     call set_field_dimensions(previous, rows, cols)
-     call set_field_dimensions(current, rows, cols)
-     !$OMP END SINGLE
-     call generate_field(previous)
-     call generate_field(current)
-  end if
+    ! Initialize the fields according the command line arguments
+    if (using_input_file) then
+       !$OMP SINGLE
+       call read_field(previous, input_file)
+       call copy_fields(previous, current)
+       !$OMP END SINGLE
+    else
+       !$OMP SINGLE
+       call set_field_dimensions(previous, rows, cols)
+       call set_field_dimensions(current, rows, cols)
+       !$OMP END SINGLE
+       call generate_field(previous)
+       call generate_field(current)
+    end if
 
-end subroutine initialize
+  end subroutine initialize
 
   ! Generate initial the temperature field.  Pattern is disc with a radius
   ! of nx_full / 6 in the center of the grid.

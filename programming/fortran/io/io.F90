@@ -54,8 +54,8 @@ contains
     write(filename,'(A5,I4.4,A4,A)')  'heat_', iter, '.png'
     stat = save_png(real(field, kind=dp), nx, ny, filename)
     if (stat == 0) then
-        write (*,*) 'Wrote the png file ', filename
-        write (*,*) 'Use e.g. "eog" to open it.'
+       write (*,*) 'Wrote the png file ', filename
+       write (*,*) 'Use e.g. "eog" to open it.'
     end if
   end subroutine write_field
 

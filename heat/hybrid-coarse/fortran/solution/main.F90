@@ -30,12 +30,12 @@ program heat_solve
      write (*,*) ' MPI_THREAD_MULTIPLE required for the thread support level '
      call mpi_abort(mpi_comm_world, 5, ierr)
   end if
-!$OMP PARALLEL PRIVATE(iter, thread_id)
+  !$OMP PARALLEL PRIVATE(iter, thread_id)
   call initialize(current, previous, nsteps, parallelization)
   thread_id = omp_get_thread_num()
 
   ! Draw the picture of the initial state
-!$OMP SINGLE
+  !$OMP SINGLE
   call write_field(current, 0, parallelization)
 
   ! Largest stable time step
@@ -44,26 +44,26 @@ program heat_solve
 
   ! Main iteration loop, save a picture every
   ! image_interval steps
-!$OMP END SINGLE
-  start =  mpi_wtime()  
+  !$OMP END SINGLE
+  start =  mpi_wtime()
   do iter = 1, nsteps
      call exchange(previous, parallelization, thread_id)
      call evolve(current, previous, a, dt)
-!$OMP SINGLE
+     !$OMP SINGLE
      if (mod(iter, image_interval) == 0) then
         call write_field(current, iter, parallelization)
      end if
      call swap_fields(current, previous)
-!$OMP END SINGLE
+     !$OMP END SINGLE
   end do
   stop = mpi_wtime()
-!$OMP END PARALLEL
+  !$OMP END PARALLEL
 
   if (parallelization % rank == 0) then
      write(*,'(A,F7.3,A)') 'Iteration took ', stop - start, ' seconds.'
      write(*,'(A,G0)') 'Reference value at 5,5: ', previous % data(5,5)
   end if
-  
+
   call finalize(current, previous)
 
   call mpi_finalize(ierr)

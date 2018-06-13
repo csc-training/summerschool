@@ -1,7 +1,7 @@
 program subroutines
   use laplacian_mod
   implicit none
-! TODO: define the arrays
+  ! TODO: define the arrays
   integer :: nx, ny
 
   write (*,*) 'Give number of rows and columns for matrix A:'
@@ -19,6 +19,5 @@ program subroutines
 
   ! print the result array
   call write_field(current)
- 
-end program subroutines
 
+end program subroutines

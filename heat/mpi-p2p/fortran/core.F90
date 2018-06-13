@@ -1,6 +1,6 @@
 ! Main solver routines for heat equation solver
 module core
-    use heat
+  use heat
 
 contains
 

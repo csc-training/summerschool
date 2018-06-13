@@ -9,12 +9,12 @@ program loops
   dy = 1. / (ny - 1)
   y = 0.0
   do j = 1, ny
-    x = 0.0
-    do i = 1, nx
-      A(i,j) = x**2 + y**2
-      x = x + dx
-    end do
-    y = y + dy
+     x = 0.0
+     do i = 1, nx
+        A(i,j) = x**2 + y**2
+        x = x + dx
+     end do
+     y = y + dy
   end do
 
   ! Print out the array
@@ -24,4 +24,3 @@ program loops
   end do
 
 end program loops
-  

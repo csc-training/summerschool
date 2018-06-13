@@ -28,4 +28,3 @@ contains
   end subroutine set_field_dimensions
 
 end module heat
-

@@ -2,33 +2,33 @@ module vector_algebra
   use iso_fortran_env, only : REAL64
   implicit none
   type vector_t
-    real(REAL64) :: x, y, z
+     real(REAL64) :: x, y, z
   end type vector_t
 
-! TODO: overload operators needed by the parser
+  ! TODO: overload operators needed by the parser
 
   interface operator(+)
-    module procedure vector_sum
-  end interface
+     module procedure vector_sum
+  end interface operator(+)
 
   interface operator(-)
-    module procedure vector_subs
-  end interface
-  
+     module procedure vector_subs
+  end interface operator(-)
+
   interface operator(*)
-    module procedure vector_dot_product
-  end interface
+     module procedure vector_dot_product
+  end interface operator(*)
 
   interface operator(.x.)
-    module procedure vector_cross_product
-  end interface
+     module procedure vector_cross_product
+  end interface operator(.x.)
 
   interface abs
-    module procedure vector_norm
-  end interface
+     module procedure vector_norm
+  end interface abs
 
 contains
-! TODO: implement the corresponding functions
+  ! TODO: implement the corresponding functions
 
   function vector_sum(v1, v2) result(v3)
     type(vector_t), intent(in) :: v1,v2

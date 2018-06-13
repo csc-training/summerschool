@@ -12,7 +12,7 @@ program basic
   integer :: source, destination
   integer :: requests(2)
 
-  real(REAL64) :: t0, t1 
+  real(REAL64) :: t0, t1
 
   call MPI_INIT(rc)
   call MPI_COMM_RANK(MPI_COMM_WORLD, myid, rc)

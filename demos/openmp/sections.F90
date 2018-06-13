@@ -3,17 +3,16 @@ program sections
   use omp_lib
   implicit none
 
-!$OMP PARALLEL
-!$OMP SECTIONS
+  !$OMP PARALLEL
+  !$OMP SECTIONS
 
-!$OMP SECTION
+  !$OMP SECTION
   write(*,*) 'First section, thread', omp_get_thread_num()
 
-!$OMP SECTION
+  !$OMP SECTION
   write(*,*) 'Second section, thread', omp_get_thread_num()
 
-!$OMP END SECTIONS
-!$OMP END PARALLEL
+  !$OMP END SECTIONS
+  !$OMP END PARALLEL
 
 end program sections
-

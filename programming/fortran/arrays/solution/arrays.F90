@@ -1,6 +1,6 @@
 program arrays
   implicit none
-! TODO: Define the array A
+  ! TODO: Define the array A
   real, dimension(:,:), allocatable :: A
   real :: x, y, dx, dy
   integer :: nx, ny, i, j, alloc_stat
@@ -10,11 +10,11 @@ program arrays
   dx = 1.0/real(nx-1)
   dy = 1.0/real(ny-1)
 
-! TODO: allocate the array A
+  ! TODO: allocate the array A
   allocate (A(nx, ny), stat=alloc_stat)
   if (alloc_stat /= 0) stop
 
-! TODO: initalize the array A
+  ! TODO: initalize the array A
   y = 0.0
   do j = 1, ny
      x = 0.0
@@ -25,7 +25,7 @@ program arrays
      y = y + dy
   end do
 
-! TODO: Print out the array
+  ! TODO: Print out the array
   do i = 1, nx
      write (*, '(*(F6.2))') A(i,:)
   end do

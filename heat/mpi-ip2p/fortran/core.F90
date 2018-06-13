@@ -1,6 +1,6 @@
 ! Main solver routines for heat equation solver
 module core
-    use heat
+  use heat
 
 contains
 
@@ -65,7 +65,7 @@ contains
     ny = curr%ny
 
     ! TODO
-    
+
   end subroutine evolve_edges
-  
+
 end module core

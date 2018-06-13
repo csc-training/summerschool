@@ -32,8 +32,8 @@ program datatype1
   end if
 
   do i=1,4
-    counts(i) = i
-    displs(i) = i - 1 + 2 * (i - 1) * 8
+     counts(i) = i
+     displs(i) = i - 1 + 2 * (i - 1) * 8
   end do
 
   ! create datatype

@@ -1,6 +1,6 @@
 ! Main solver routines for heat equation solver
 module core
-    use heat
+  use heat
 
 contains
 
@@ -18,12 +18,12 @@ contains
     ! Send to left, receive from right
     call mpi_isend(field0%data(:, 1), field0%nx + 2, MPI_DOUBLE_PRECISION, &
          & parallel%nleft, 11, MPI_COMM_WORLD, parallel%requests(1), ierr)
-    call mpi_irecv(field0%data(:, field0%ny + 1), field0%nx + 2, & 
+    call mpi_irecv(field0%data(:, field0%ny + 1), field0%nx + 2, &
          & MPI_DOUBLE_PRECISION, parallel%nright, 11, &
          & MPI_COMM_WORLD, parallel%requests(2), ierr)
-    
+
     ! Send to right, receive from left
-    call mpi_isend(field0%data(:, field0%ny), field0%nx + 2, & 
+    call mpi_isend(field0%data(:, field0%ny), field0%nx + 2, &
          & MPI_DOUBLE_PRECISION, parallel%nright, 12, &
          MPI_COMM_WORLD, parallel%requests(3), ierr)
     call mpi_irecv(field0%data(:, 0), field0%nx + 2, MPI_DOUBLE_PRECISION, &
@@ -102,7 +102,7 @@ contains
             &  (prev%data(i, j-1) - 2.0 * prev%data(i, j) + &
             &   prev%data(i, j+1)) / curr%dy**2)
     end do
-    
+
   end subroutine evolve_edges
-  
+
 end module core

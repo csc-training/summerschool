@@ -25,17 +25,17 @@ program intrinsics
   end do
 
   do i = 1, nx
-    write(*,'(*(F6.1))') A(i,:)
+     write(*,'(*(F6.1))') A(i,:)
   end do
 
   ! TODO:
   ! Using array intrinsics to get information from array A
 
-  write (*,*) 'a) Sum of elements across 2nd dimension of A: ', sum(A,2) 
+  write (*,*) 'a) Sum of elements across 2nd dimension of A: ', sum(A,2)
 
   write (*,*) 'b) Coordinates of maximum element: ', maxloc(A)
 
-  write (*,*) 'c) Absolute minimum value: ', minval(A) 
+  write (*,*) 'c) Absolute minimum value: ', minval(A)
 
   write (*,*) 'd) Are elements of A greater than or equal to 0: ', any(A >= 0.0)
 

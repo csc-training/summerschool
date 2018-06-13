@@ -16,7 +16,7 @@ program heat_solve
   real(dp) :: dt     ! Time step
   integer :: nsteps       ! Number of time steps
   integer, parameter :: image_interval = 500 ! Image output interval
-  integer, parameter :: checkpoint_interval = 200 ! restart interval 
+  integer, parameter :: checkpoint_interval = 200 ! restart interval
 
   type(parallel_data) :: parallelization
   integer :: ierr
@@ -40,7 +40,7 @@ program heat_solve
   ! image_interval steps
 
   start =  mpi_wtime()
-  
+
   do iter = 1, nsteps
      call exchange(previous, parallelization)
      call evolve(current, previous, a, dt)
@@ -48,7 +48,7 @@ program heat_solve
         call write_field(current, iter, parallelization)
      end if
      if (mod(iter, checkpoint_interval) == 0) then
-         call write_restart(current, parallelization, iter)
+        call write_restart(current, parallelization, iter)
      end if
      call swap_fields(current, previous)
   end do
@@ -59,7 +59,7 @@ program heat_solve
      write(*,'(A,F7.3,A)') 'Iteration took ', stop - start, ' seconds.'
      write(*,'(A,G0)') 'Reference value at 5,5: ', previous % data(5,5)
   end if
-  
+
   call finalize(current, previous)
 
   call mpi_finalize(ierr)

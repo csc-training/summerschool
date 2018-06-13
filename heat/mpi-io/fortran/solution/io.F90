@@ -1,7 +1,7 @@
 ! I/O routines for heat equation solver
 module io
-    use heat
-    use mpi
+  use heat
+  use mpi
 
 contains
 
@@ -118,8 +118,8 @@ contains
     integer :: ierr
 
     call mpi_file_open(MPI_COMM_WORLD, "HEAT_RESTART.dat",  &
-                       MPI_MODE_CREATE + MPI_MODE_WRONLY, &
-                       MPI_INFO_NULL, fp, ierr)
+         & MPI_MODE_CREATE + MPI_MODE_WRONLY, &
+         & MPI_INFO_NULL, fp, ierr)
 
     ! write the restart header by the rank#0
     if (parallel%rank == 0) then
@@ -137,8 +137,8 @@ contains
     disp = disp + parallel%rank * (temp%ny + 2) * (temp%nx + 2) * sizeof(temp%data(1,1))
     ! everyone writes their part of the grid
     call mpi_file_write_at_all(fp, disp, temp%data, &
-                               (temp%nx + 2) * (temp%ny + 2), &
-                               MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, ierr)
+         & (temp%nx + 2) * (temp%ny + 2), &
+         & MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, ierr)
     call mpi_file_close(fp, ierr)
 
   end subroutine write_restart
@@ -159,7 +159,7 @@ contains
     integer :: ierr
 
     call mpi_file_open(MPI_COMM_WORLD, "HEAT_RESTART.dat", MPI_MODE_RDONLY, &
-                MPI_INFO_NULL, fp, ierr)
+         & MPI_INFO_NULL, fp, ierr)
 
     ! read in the restart header (dimensions, number of preceding steps) by the
     ! rank#0 and broadcast it to other ranks
@@ -187,8 +187,8 @@ contains
     disp = 3*sizeof(rows)
     disp = disp + parallel%rank * (temp%nx + 2) * (temp%ny + 2) * sizeof(temp%data(1,1))
     call mpi_file_read_at_all(fp, disp, temp%data, &
-                         (temp%nx + 2) * (temp%ny + 2), &
-                         MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, ierr)
+         & (temp%nx + 2) * (temp%ny + 2), &
+         & MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, ierr)
     call mpi_file_close(fp, ierr)
 
   end subroutine read_restart

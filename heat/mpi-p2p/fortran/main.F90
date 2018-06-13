@@ -41,7 +41,7 @@ program heat_solve
   ! image_interval steps
 
   start =  mpi_wtime()
-  
+
   do iter = 1, nsteps
      call exchange(previous, parallelization)
      call evolve(current, previous, a, dt)
@@ -57,7 +57,7 @@ program heat_solve
      write(*,'(A,F7.3,A)') 'Iteration took ', stop - start, ' seconds.'
      write(*,'(A,G0)') 'Reference value at 5,5: ', previous % data(5,5)
   end if
-  
+
   call finalize(current, previous)
 
   ! TODO start: finalize MPI

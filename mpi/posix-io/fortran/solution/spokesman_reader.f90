@@ -13,13 +13,13 @@ program pario
   call mpi_comm_rank(mpi_comm_world, my_id, rc)
 
   if (ntasks > 64) then
-    write(error_unit, *) 'Maximum number of tasks is 64!'
-    call mpi_abort(MPI_COMM_WORLD, -1, rc)
+     write(error_unit, *) 'Maximum number of tasks is 64!'
+     call mpi_abort(MPI_COMM_WORLD, -1, rc)
   end if
 
   if (mod(datasize, ntasks) /= 0) then
-    write(error_unit, *) 'Datasize (64) should be divisible by number of tasks'
-    call mpi_abort(MPI_COMM_WORLD, -1, rc)
+     write(error_unit, *) 'Datasize (64) should be divisible by number of tasks'
+     call mpi_abort(MPI_COMM_WORLD, -1, rc)
   end if
 
   localsize = datasize / ntasks
@@ -40,12 +40,12 @@ contains
     implicit none
 
     if (my_id == writer_id) then
-      open(10, file='singlewriter.dat', status='old', form='unformatted', &
-           & access='stream')
-      read(10, pos=1) fullvector
-      close(10)
-      write(output_unit,'(A,I0,A)') 'Read ', size(fullvector), &
-           & ' elements from file ex1a.dat'
+       open(10, file='singlewriter.dat', status='old', form='unformatted', &
+            & access='stream')
+       read(10, pos=1) fullvector
+       close(10)
+       write(output_unit,'(A,I0,A)') 'Read ', size(fullvector), &
+            & ' elements from file ex1a.dat'
     end if
 
     call mpi_scatter(fullvector, localsize, mpi_integer, localvector, &
@@ -58,15 +58,15 @@ contains
     integer :: task
 
     do task = 0, ntasks-1
-      if (my_id == task) then
-        write(output_unit, '(A,I0,A)', advance='no') 'Task ', &
-             & my_id, ' received:'
-        do i = 1, localsize
-          write(output_unit, '(I3)', advance='no') localvector(i)
-        end do
-        write(output_unit,*) ' '
-      end if
-      call mpi_barrier(MPI_COMM_WORLD, rc)
+       if (my_id == task) then
+          write(output_unit, '(A,I0,A)', advance='no') 'Task ', &
+               & my_id, ' received:'
+          do i = 1, localsize
+             write(output_unit, '(I3)', advance='no') localvector(i)
+          end do
+          write(output_unit,*) ' '
+       end if
+       call mpi_barrier(MPI_COMM_WORLD, rc)
     end do
 
   end subroutine ordered_print

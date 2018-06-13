@@ -25,7 +25,7 @@ program intrinsics
   end do
 
   do i = 1, nx
-    write(*,'(*(F6.1))') A(i,:)
+     write(*,'(*(F6.1))') A(i,:)
   end do
 
   ! TODO:

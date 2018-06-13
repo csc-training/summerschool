@@ -9,7 +9,7 @@ program basic
   integer :: message(size)
   integer :: receiveBuffer(size)
 
-  real(REAL64) :: t0, t1 
+  real(REAL64) :: t0, t1
 
   call mpi_init(rc)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, rc)

@@ -22,7 +22,7 @@ program datatype1
   end if
 
   if (rank == 0) then
-    write(*,*) 'Data in rank 0'
+     write(*,*) 'Data in rank 0'
      do i=1,8
         write(*,'(8I3)') array(i, :)
      end do

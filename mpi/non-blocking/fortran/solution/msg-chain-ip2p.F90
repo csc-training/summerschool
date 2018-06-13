@@ -9,7 +9,7 @@ program chain
   integer :: receiveBuffer(size)
   integer :: status(MPI_STATUS_SIZE,2)
 
-  real(REAL64) :: t0, t1 
+  real(REAL64) :: t0, t1
 
   integer :: source, destination
   integer :: count

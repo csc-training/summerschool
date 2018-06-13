@@ -1,19 +1,19 @@
 ! Setup routines for heat equation solver
 module setup
-    use heat
+  use heat
 
 contains
 
   subroutine initialize(previous, current, nsteps, parallel)
     use utilities
     use io
-    
+
     implicit none
 
     type(field), intent(out) :: previous, current
     integer, intent(out) :: nsteps
     type(parallel_data), intent(out) :: parallel
-    
+
     integer :: rows, cols
     logical :: using_input_file
     character(len=85) :: input_file, arg  ! Input file name and command line arguments
@@ -70,19 +70,19 @@ contains
     use heat
 
     implicit none
-    
+
     type(field), intent(inout) :: field0
     type(parallel_data), intent(in) :: parallel
-    
+
     real(dp) :: radius2
     integer :: i, j, ds2
-    
+
     ! The arrays for field contain also a halo region
     allocate(field0%data(0:field0%nx+1, 0:field0%ny+1))
-    
+
     ! Square of the disk radius
     radius2 = (field0%nx_full / 6.0_dp)**2
-    
+
     !$OMP PARALLEL PRIVATE(j, i, ds2)
     !$OMP DO
     do j = 0, field0%ny + 1
@@ -96,21 +96,21 @@ contains
           end if
        end do
     end do
-   !$OMP END DO
-    
+    !$OMP END DO
+
     ! Boundary conditions
     if (parallel % rank == 0) then
-    !$OMP DO
-    do j = 0, field0%nx + 1
-       field0%data(j, 0) = 20.0_dp
-    end do
-    !$OMP END DO NOWAIT
+       !$OMP DO
+       do j = 0, field0%nx + 1
+          field0%data(j, 0) = 20.0_dp
+       end do
+       !$OMP END DO NOWAIT
     else if (parallel % rank == parallel%size - 1) then
-    !$OMP DO
-    do j = 0, field0%nx + 1
-       field0%data(j, field0%ny + 1) = 70.0_dp
-    end do
-    !$OMP END DO
+       !$OMP DO
+       do j = 0, field0%nx + 1
+          field0%data(j, field0%ny + 1) = 70.0_dp
+       end do
+       !$OMP END DO
     end if
     !$OMP DO
     do j = 0, field0%ny + 1
@@ -123,23 +123,23 @@ contains
     end do
     !$OMP END DO
     !$OMP END PARALLEL
-    
+
   end subroutine generate_field
-  
-  
+
+
   ! Clean up routine for field type
   ! Arguments:
   !   field0 (type(field)): field variable to be cleared
   subroutine finalize(field0, field1)
     use heat
-    
+
     implicit none
-    
+
     type(field), intent(inout) :: field0, field1
-    
+
     deallocate(field0%data)
     deallocate(field1%data)
-    
+
   end subroutine finalize
 
   ! Helper routine that prints out a simple usage if

@@ -13,19 +13,19 @@ contains
     integer :: nx, ny, i, stat, alloc_stat
     character(len=2) :: dummy
 
-    ! TODO: implement function that will:                     
-    ! open the file                                           
-    ! read the first header line to get nx and ny             
-    ! allocate matrix called field                            
-    ! read rest of the file into field                        
-    ! close the file                                 
+    ! TODO: implement function that will:
+    ! open the file
+    ! read the first header line to get nx and ny
+    ! allocate matrix called field
+    ! read rest of the file into field
+    ! close the file
     open(funit, file=filename, status='old', iostat=stat)
     if (stat /= 0) then
-      write (*,*) 'Error, could not open ' // trim(filename)
-      stop
+       write (*,*) 'Error, could not open ' // trim(filename)
+       stop
     end if
 
-    ! read header 
+    ! read header
     read(funit, *) dummy, nx, ny
 
     ! allocate matrix
@@ -35,7 +35,7 @@ contains
 
     ! read data into inner regions
     do i = 1, nx
-      read(funit, *) field(i, 1:ny)
+       read(funit, *) field(i, 1:ny)
     end do
 
     close(funit)
@@ -61,8 +61,8 @@ contains
     write(filename,'(A5,I4.4,A4,A)')  'heat_', iter, '.png'
     stat = save_png(real(field, kind=dp), nx, ny, filename)
     if (stat == 0) then
-        write (*,*) 'Wrote the png file ', filename
-        write (*,*) 'Use e.g. "eog" to open it.'
+       write (*,*) 'Wrote the png file ', filename
+       write (*,*) 'Use e.g. "eog" to open it.'
     end if
   end subroutine write_field
 

@@ -21,7 +21,7 @@ contains
     nx = curr%nx
     ny = curr%ny
 
-    !$OMP DO 
+    !$OMP DO
     do j = 1, ny
        do i = 1, nx
           curr%data(i, j) = prev%data(i, j) + a * dt * &

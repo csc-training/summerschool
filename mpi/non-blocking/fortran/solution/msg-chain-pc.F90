@@ -9,7 +9,7 @@ program chain
   integer :: receiveBuffer(size)
   integer :: status(MPI_STATUS_SIZE,2)
 
-  real(REAL64) :: t0, t1 
+  real(REAL64) :: t0, t1
 
   integer :: source, destination
   integer :: count
@@ -35,7 +35,7 @@ program chain
 
   call mpi_barrier(mpi_comm_world, rc)
   t0 = mpi_wtime()
-  
+
   ! Describe the receiving request
   call mpi_recv_init(receiveBuffer, size, MPI_INTEGER, source, &
        MPI_ANY_TAG, MPI_COMM_WORLD, requests(1), rc)
@@ -45,11 +45,11 @@ program chain
 
   ! Start communication
   call mpi_startall(2, requests, rc)
-  
+
   ! Blocking wait for messages
   call mpi_waitall(2, requests, status, rc)
   t1 = mpi_wtime()
-  
+
   ! Use status parameter to find out the no. of elements received
   call mpi_get_count(status(:,1), MPI_INTEGER, count, rc)
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &

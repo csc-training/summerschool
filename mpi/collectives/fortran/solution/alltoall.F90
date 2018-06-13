@@ -25,9 +25,9 @@ program coll_exer
   ! Print data that will be sent
   call print_buffers(sendbuf)
 
-  ! Carry out the all-to-all pattern 
+  ! Carry out the all-to-all pattern
   call mpi_alltoall(sendbuf, 2, MPI_INTEGER, recvbuf, 2, MPI_INTEGER, &
-                    MPI_COMM_WORLD, ierr)
+       & MPI_COMM_WORLD, ierr)
 
   ! Print data that was received
   call print_buffers(recvbuf)

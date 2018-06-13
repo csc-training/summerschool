@@ -21,7 +21,7 @@ contains
     nx = curr%nx
     ny = curr%ny
 
-! TODO: implement the heat equation update
+    ! TODO: implement the heat equation update
   end subroutine evolve
 
 end module core

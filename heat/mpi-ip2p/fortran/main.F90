@@ -40,7 +40,7 @@ program heat_solve
   ! modified for computation-communication overlap
 
   start =  mpi_wtime()
-  
+
   do iter = 1, nsteps
      call exchange_init(previous, parallelization)
      call evolve_interior(current, previous, a, dt)
@@ -58,7 +58,7 @@ program heat_solve
      write(*,'(A,F7.3,A)') 'Iteration took ', stop - start, ' seconds.'
      write(*,'(A,G0)') 'Reference value at 5,5: ', previous % data(5,5)
   end if
-  
+
   call finalize(current, previous)
 
   call mpi_finalize(ierr)
