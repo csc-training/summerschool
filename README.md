@@ -13,6 +13,7 @@ Versions from previous years can be found in tags.
 
 ## Exercises
 
+ - [General instructions](exercise-instructions.md)
  - [Fortran programming](programming/fortran)
  - [C/C++ programming](programming/c)
  - [OpenMP](openmp)
