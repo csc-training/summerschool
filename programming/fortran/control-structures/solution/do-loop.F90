@@ -1,40 +1,27 @@
-program array
+program loops
   implicit none
   integer, parameter :: nx = 10, ny = 10
-  real, dimension(0:nx+1,0:ny+1) :: A
-  integer :: i
+  real, dimension(nx,ny) :: A
+  real :: dx, dy, x, y
+  integer :: i, j
 
-  ! Initialize the whole array in one go
-  A = 65.0
+  dx = 1. / (nx - 1)
+  dy = 1. / (ny - 1)
+  y = 0.0
+  do j = 1, ny
+    x = 0.0
+    do i = 1, nx
+      A(i,j) = x**2 + y**2
+      x = x + dx
+    end do
+    y = y + dy
+  end do
 
-  ! Adjust the boundaries 
-  !--------------------------------------------------
-
-  ! left column
-  do i = 0, nx + 1
-     A(i, 0) = 20.0
-  end do
-  
-  ! right column
-  do i = 0, nx + 1
-     A(i, ny + 1) = 70.0
-  end do
-  
-  ! top row
-  do i = 0, ny + 1
-     A(0, i) = 85.0
-  end do
-  
-  ! bottom row
-  do i = 0, ny+1
-     A(nx + 1, i) = 5.0
-  end do
-  
   ! Print out the array
   ! the ':' syntax means the whole row, see the Fortran arrays lecture
-  do i = 0, nx+1
-     write(*, '(12F6.1)') A(i,:)
+  do i = 1, nx
+     write(*, '(10F7.3)') A(i,:)
   end do
 
-end program array
+end program loops
   

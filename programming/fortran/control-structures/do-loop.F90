@@ -11,7 +11,7 @@ program loops
   !--------------------------------------------------
   ! Print out the array
   ! the ':' syntax means the whole row, see the Fortran arrays lecture
-  do i = 0, nx+1
+  do i = 1, nx
      write(*, '(12F6.1)') A(i,:)
   end do
 
