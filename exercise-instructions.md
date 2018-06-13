@@ -32,11 +32,11 @@ that.
 Compilation of the source codes is performed with the `ftn` and `cc` wrapper
 commands:
 ```
-ftn –o my_mpi_exe_test.f90
+ftn –o my_mpi_exe test.f90
 ```
 or
 ```
-cc –o my mpi_exe_test.c
+cc –o my mpi_exe test.c
 ```
 
 The wrapper commands include automatically all the flags needed for building
