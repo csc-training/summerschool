@@ -70,6 +70,9 @@ void initialize(int argc, char* argv[], field *current,
     // Check if checkpoint exists
     if (!access(CHECKPOINT, F_OK)) {
         read_restart(current, parallel, &start);
+        set_field_dimensions(previous, current->nx_full, current->ny_full,
+                             parallel);
+        allocate_field(previous);        
         if (parallel->rank == 0)
             printf("Restarting from an earlier checkpoint saved"
                    " at iteration %d.\n", start);

@@ -168,10 +168,6 @@ contains
        call mpi_file_read_at(fp, disp, rows, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
        disp = disp + sizeof(rows)
        call mpi_file_read_at(fp, disp, cols, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
-       if (mod(cols, parallel%size) /= 0) then
-          write (*,*) 'Unable to divide the grid with the number of processes'
-          call mpi_abort(MPI_COMM_WORLD, -1, ierr)
-       end if
        disp = disp + sizeof(cols)
        call mpi_file_read_at(fp, disp, iter, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
     end if
