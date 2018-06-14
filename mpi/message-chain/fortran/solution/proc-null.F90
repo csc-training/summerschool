@@ -31,6 +31,7 @@ program basic
      source = MPI_PROC_NULL
   end if
 
+  ! Start measuring the time spent in communication
   call mpi_barrier(mpi_comm_world, rc)
   t0 = mpi_wtime()
 
@@ -43,6 +44,7 @@ program basic
        '. Tag: ', myid + 1, &
        '. Receiver: ', destination
 
+  ! Finalize measuring the time and print it out
   t1 = mpi_wtime()
   call mpi_barrier(mpi_comm_world, rc)
   call flush(6)
@@ -50,4 +52,5 @@ program basic
   write(*, '(A20, I3, A, F6.3)') 'Time elapsed in rank', myid, ':', t1-t0
 
   call mpi_finalize(rc)
+
 end program basic

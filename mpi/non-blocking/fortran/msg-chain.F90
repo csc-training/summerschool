@@ -3,30 +3,30 @@ program basic
   use iso_fortran_env, only : REAL64
 
   implicit none
-  !  include 'mpif.h'
   integer, parameter :: size = 10000000
-  integer :: rc, myid, ntasks, count
-  integer :: status(MPI_STATUS_SIZE,2)
+  integer :: rc, myid, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
-  integer :: source, destination
-  integer :: requests(2)
+  integer :: status(MPI_STATUS_SIZE,2)
 
   real(REAL64) :: t0, t1
 
-  call MPI_INIT(rc)
-  call MPI_COMM_RANK(MPI_COMM_WORLD, myid, rc)
-  call MPI_COMM_SIZE(MPI_COMM_WORLD, ntasks, rc)
+  integer :: source, destination
+  integer :: count
+  integer :: requests(2)
+
+  call mpi_init(rc)
+  call mpi_comm_rank(MPI_COMM_WORLD, myid, rc)
+  call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
   message = myid
 
+  ! Set source and destination ranks
   if (myid < ntasks-1) then
      destination = myid + 1
   else
      destination = MPI_PROC_NULL
   end if
-
-  ! Send and receive as defined in exercise
   if (myid > 0) then
      source = myid - 1
   else
@@ -60,5 +60,5 @@ program basic
 
   write(*, '(A20, I3, A, F6.3)') 'Time elapsed in rank', myid, ':', t1-t0
 
-  call MPI_FINALIZE(rc)
+  call mpi_finalize(rc)
 end program basic

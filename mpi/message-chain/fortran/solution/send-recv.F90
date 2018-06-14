@@ -7,7 +7,6 @@ program basic
   integer :: rc, myid, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
-  integer :: status(MPI_STATUS_SIZE)
 
   real(REAL64) :: t0, t1
 
@@ -17,6 +16,7 @@ program basic
 
   message = myid
 
+  ! Start measuring the time spent in communication
   call mpi_barrier(mpi_comm_world, rc)
   t0 = mpi_wtime()
 
@@ -36,6 +36,7 @@ program basic
           ' First element: ', receiveBuffer(1)
   end if
 
+  ! Finalize measuring the time and print it out
   t1 = mpi_wtime()
   call mpi_barrier(mpi_comm_world, rc)
   call flush(6)

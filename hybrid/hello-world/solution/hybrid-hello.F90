@@ -1,7 +1,7 @@
 program hybridhello
   use omp_lib
+  use mpi
   implicit none
-  include 'mpif.h'
   integer :: provided, my_id, ntask, tid, rc
 
   call MPI_Init_thread(MPI_THREAD_MULTIPLE, provided, rc)

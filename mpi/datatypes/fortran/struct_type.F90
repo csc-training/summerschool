@@ -1,4 +1,3 @@
-
 program datatype_struct
   use mpi
   implicit none

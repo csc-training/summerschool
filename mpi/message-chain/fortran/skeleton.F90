@@ -3,17 +3,17 @@ program basic
   use iso_fortran_env, only : REAL64
 
   implicit none
-  integer, parameter :: size = 100
-  integer :: rc, myid, ntasks, count
-  integer :: status(MPI_STATUS_SIZE)
+  integer, parameter :: size = 10000000
+  integer :: rc, myid, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
+  integer :: status(MPI_STATUS_SIZE)
 
   real(REAL64) :: t0, t1
 
   call mpi_init(rc)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, rc)
-  call mpi_comm_sizeMPI_COMM_WORLD, ntasks, rc)
+  call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
   message = myid
 

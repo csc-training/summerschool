@@ -33,6 +33,7 @@ program chain
      source = MPI_PROC_NULL
   end if
 
+  ! Start measuring the time spent in communication
   call mpi_barrier(mpi_comm_world, rc)
   t0 = mpi_wtime()
 
