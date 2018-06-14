@@ -12,7 +12,7 @@ typedef struct {
     uint8_t blue;
 } pixel_t;
 
-void cmap(const int value, const int max_val, pixel_t * pix);
+void cmap(const int value, const int max_val, pixel_t *pix);
 
 /* Heat colormap from black to white */
 // *INDENT-OFF*
@@ -112,22 +112,26 @@ int save_png(int *data, const int height, const int width, const char *fname)
     int depth = 8;
 
     fp = fopen(fname, "wb");
-    if (fp == NULL)
+    if (fp == NULL) {
         goto fopen_failed;
+    }
 
     pngstruct_ptr =
         png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
-    if (pngstruct_ptr == NULL)
+    if (pngstruct_ptr == NULL) {
         goto pngstruct_create_failed;
+    }
 
     pnginfo_ptr = png_create_info_struct(pngstruct_ptr);
 
-    if (pnginfo_ptr == NULL)
+    if (pnginfo_ptr == NULL) {
         goto pnginfo_create_failed;
+    }
 
-    if (setjmp(png_jmpbuf(pngstruct_ptr)))
+    if (setjmp(png_jmpbuf(pngstruct_ptr))) {
         goto setjmp_failed;
+    }
 
     png_set_IHDR(pngstruct_ptr, pnginfo_ptr, (size_t) width,
                  (size_t) height, depth, PNG_COLOR_TYPE_RGB,
@@ -166,26 +170,30 @@ int save_png(int *data, const int height, const int width, const char *fname)
     }
     png_free(pngstruct_ptr, row_pointers);
 
-  setjmp_failed:
-  pnginfo_create_failed:
+setjmp_failed:
+pnginfo_create_failed:
     png_destroy_write_struct(&pngstruct_ptr, &pnginfo_ptr);
-  pngstruct_create_failed:
+pngstruct_create_failed:
     fclose(fp);
-  fopen_failed:
+fopen_failed:
     return status;
 }
 
 /* This routine sets the RGB values for the pixel_t structure using
  * the colormap data heat_colormap. If the value is outside the
  * acceptable png values 0,255 blue or red color is used instead. */
-void cmap(const int value, const int max_value, pixel_t * pix)
+void cmap(const int value, const int max_value, pixel_t *pix)
 {
     int ival;
 
     ival = ((double) value / (double) max_value) * 255;
     /* Check for wrong values */
-    if (ival > 255) ival = 255;
-    if (ival < 0) ival = 0;
+    if (ival > 255) {
+        ival = 255;
+    }
+    if (ival < 0) {
+        ival = 0;
+    }
 
     /* Pick color from heat_colormap */
     pix->red = heat_colormap[ival][0];

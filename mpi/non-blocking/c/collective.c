@@ -13,8 +13,7 @@ int main(int argc, char *argv[])
     int ntasks, rank, color;
     int sendbuf[2 * NTASKS], recvbuf[2 * NTASKS];
     int printbuf[2 * NTASKS * NTASKS];
-
-    MPI_Comm sub_comm;
+    MPI_Request request;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
@@ -40,7 +39,7 @@ int main(int argc, char *argv[])
 
     /* Print data that was received */
     /* TODO: add correct buffer */
-    print_buffers(printbuf, ... , 2 * NTASKS);
+    print_buffers(printbuf, ..., 2 * NTASKS);
 
     MPI_Finalize();
     return 0;

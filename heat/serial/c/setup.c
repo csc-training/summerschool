@@ -11,7 +11,7 @@
 #define NSTEPS 500  // Default number of iteration steps
 
 /* Initialize the heat equation solver */
-void initialize(int argc, char* argv[], field *current,
+void initialize(int argc, char *argv[], field *current,
                 field *previous, int *nsteps)
 {
     /*
@@ -61,15 +61,14 @@ void initialize(int argc, char* argv[], field *current,
         exit(-1);
     }
 
-    if (read_file)
+    if (read_file) {
         read_field(current, previous, input_file);
-    else
-      {
+    } else {
         set_field_dimensions(current, rows, cols);
         set_field_dimensions(previous, rows, cols);
         generate_field(current);
         generate_field(previous);
-      }
+    }
 }
 
 /* Generate initial temperature field.  Pattern is disc with a radius

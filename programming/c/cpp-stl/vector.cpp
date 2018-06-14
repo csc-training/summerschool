@@ -39,7 +39,6 @@ int main()
   }
 
 
-
   // printing vector
   std::cout << "You gave: ";
   for(auto i : vec) {
@@ -59,11 +58,8 @@ int main()
   std::cout << '\n';
 
 
-
   // TODO implement smallest and largest number output
   int smallest, largest; 
-
-
 
   std::cout << "Smallest number is: " << smallest << '\n';
   std::cout << "Largest number is : " << largest << '\n';

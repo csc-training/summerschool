@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
         message[i] = myid;
     }
 
-
     /* TODO: */
     /* Send and receive messages as defined in exercise */
     if (myid == 0) {
@@ -33,7 +32,6 @@ int main(int argc, char *argv[])
 
         printf("Rank %i received %i\n", myid, receiveBuffer[0]);
     }
-
 
     free(message);
     free(receiveBuffer);

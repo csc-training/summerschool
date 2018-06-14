@@ -11,7 +11,7 @@
 /* Exchange the boundary values */
 void exchange(field *temperature, parallel_data *parallel)
 {
-  /* TODO start: implement 2D halo exchange using MPI datatypes */
+    /* TODO start: implement 2D halo exchange using MPI datatypes */
 
     // Send to the up, receive from down
 
@@ -21,7 +21,7 @@ void exchange(field *temperature, parallel_data *parallel)
 
     // Send to the right, receive from left
 
-  /* TODO end */
+    /* TODO end */
 }
 
 

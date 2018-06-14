@@ -22,10 +22,12 @@ int main(void)
     }
 
     // Zero out the outer boundary of laplacian
-    for (i = 0; i < NX; i++)
+    for (i = 0; i < NX; i++) {
         laplacian[i][0] = laplacian[i][NY - 1] = 0.0;
-    for (j = 0; i < NY; j++)
+    }
+    for (j = 0; i < NY; j++) {
         laplacian[0][j] = laplacian[NX - 1][j] = 0.0;
+    }
 
     // Initial conditions for top and bottom
     for (i = 0; i < NX; i++) {
@@ -41,7 +43,7 @@ int main(void)
     // Evaluate the Laplacian
     // *INDENT-OFF*
 #error Add the missing part
- 
+
     // *INDENT-ON*
 
     // Call the png writer routine

@@ -48,7 +48,7 @@ int main(int argc, char **argv)
         exchange(&previous, &parallelization);
         evolve(&current, &previous, a, dt);
         if (iter % image_interval == 0) {
-          write_field(&current, iter, &parallelization);
+            write_field(&current, iter, &parallelization);
         }
         /* write a checkpoint now and then for easy restarting */
         if (iter % restart_interval == 0) {
@@ -61,8 +61,8 @@ int main(int argc, char **argv)
 
     /* Determine the CPU time used for the iteration */
     if (parallelization.rank == 0) {
-      printf("Iteration took %.3f seconds.\n", (MPI_Wtime() - start_clock));
-      printf("Reference value at 5,5: %f\n", previous.data[5][5]);
+        printf("Iteration took %.3f seconds.\n", (MPI_Wtime() - start_clock));
+        printf("Reference value at 5,5: %f\n", previous.data[5][5]);
     }
 
     finalize(&current, &previous);

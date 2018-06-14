@@ -3,7 +3,7 @@
 #include "dynamic_array.h"
 
 // This routine initializes the values of field structure
-void init_field(field * f, int nx, int ny)
+void init_field(field *f, int nx, int ny)
 {
     int i, j;
 
@@ -16,8 +16,9 @@ void init_field(field * f, int nx, int ny)
 
     // First zero out the inner part of the array
     for (i = 1; i < f->nx + 1; i++)
-        for (j = 1; j < f->ny + 1; j++)
+        for (j = 1; j < f->ny + 1; j++) {
             f->data[i][j] = 0.0;
+        }
 
     // Initial conditions for left and right
     for (i = 0; i < f->nx + 2; i++) {
@@ -32,14 +33,14 @@ void init_field(field * f, int nx, int ny)
 }
 
 // This function saves the field values to a png file
-void print_field(field * f)
+void print_field(field *f)
 {
     int error_code;
 
-    // TODO: Fix the call to png writing. Note that since we now have a 
-    // dynamically allocated 2D array, we need to pass on a pointer to the 
+    // TODO: Fix the call to png writing. Note that since we now have a
+    // dynamically allocated 2D array, we need to pass on a pointer to the
     // first element (=row) of the array instead of the array itself.
-    error_code = save_png(... , ..., ..., "dynamic_array.png", 'c');
+    error_code = save_png(..., ..., ..., "dynamic_array.png", 'c');
     if (error_code == 0) {
         printf("Wrote output file dynamic_array.png\n");
     } else {
@@ -49,7 +50,6 @@ void print_field(field * f)
 
 int main(int argc, char *argv[])
 {
-
     int nx, ny;
     field temperature;
 
@@ -57,21 +57,21 @@ int main(int argc, char *argv[])
 
     // Two command line arguments required
     if (argc != 3) {
-        printf
-            ("Please give two command line arguments for x- an y-dimensions\n");
+        printf("Please give two command line arguments "
+	       "for x- an y-dimensions\n");
         return (-1);
     }
     // atoi function converts a string to integer
     nx = atoi(argv[1]);
     ny = atoi(argv[2]);
 
-    // TODO: Allocate memory for a 2D array (nx,ny). Remember to allocate 
+    // TODO: Allocate memory for a 2D array (nx,ny). Remember to allocate
     // space also for a ghost layer around the real data.
 
     // Initialize field and print out the result
     init_field(&temperature, nx, ny);
     print_field(&temperature);
-	
+
     // Free memory allocation
     // TODO: Free memory allocations
 

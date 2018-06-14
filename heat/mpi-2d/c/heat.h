@@ -63,7 +63,7 @@ void swap_fields(field *temperature1, field *temperature2);
 
 void allocate_field(field *temperature);
 
-void finalize(field *temperature1, field *temperature2, 
+void finalize(field *temperature1, field *temperature2,
               parallel_data *parallel);
 
 #endif  /* __HEAT_H__ */

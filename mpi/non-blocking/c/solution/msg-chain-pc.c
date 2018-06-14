@@ -40,29 +40,32 @@ int main(int argc, char *argv[])
         source = MPI_PROC_NULL;
     }
 
+    /* Start measuring the time spend in communication */
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
     /* Describe the receiving requests */
     MPI_Recv_init(receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
-              MPI_COMM_WORLD, &requests[0]);
+                  MPI_COMM_WORLD, &requests[0]);
     /* Describe the sending requests */
     MPI_Send_init(message, size, MPI_INT, destination, myid + 1,
-              MPI_COMM_WORLD, &requests[1]);
+                  MPI_COMM_WORLD, &requests[1]);
 
     /* Start communication */
     MPI_Startall(2, requests);
-    
+
     /* Blocking wait for messages */
     MPI_Waitall(2, requests, statuses);
 
-    t1 = MPI_Wtime();  
+    /* Finalize measuring the time and print it out */
+    t1 = MPI_Wtime();
+
     /* Use status parameter to find out the no. of elements received */
     MPI_Get_count(&statuses[0], MPI_INT, &count);
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
-            myid, size, myid + 1, destination);
+           myid, size, myid + 1, destination);
     printf("Receiver: %d. Received elements: %d. Tag %d. Sender: %d.\n",
-            myid, count, statuses[0].MPI_TAG, statuses[0].MPI_SOURCE);
+           myid, count, statuses[0].MPI_TAG, statuses[0].MPI_SOURCE);
 
     MPI_Barrier(MPI_COMM_WORLD);
     fflush(stdout);

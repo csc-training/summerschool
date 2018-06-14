@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
         message[i] = myid;
     }
 
+    /* Start measuring the time spent in communication */
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
@@ -32,16 +33,17 @@ int main(int argc, char *argv[])
         MPI_Send(message, size, MPI_INT, myid + 1, myid + 1,
                  MPI_COMM_WORLD);
         printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
-                myid, size, myid + 1, myid + 1);
+               myid, size, myid + 1, myid + 1);
     }
     /* Receive messages */
     if (myid > 0) {
         MPI_Recv(receiveBuffer, size, MPI_INT, myid - 1, myid,
                  MPI_COMM_WORLD, &status);
         printf("Receiver: %d. first element %d.\n",
-                myid, receiveBuffer[0]);
+               myid, receiveBuffer[0]);
     }
 
+    /* Finalize measuring the time and print it out */
     t1 = MPI_Wtime();
     MPI_Barrier(MPI_COMM_WORLD);
     fflush(stdout);

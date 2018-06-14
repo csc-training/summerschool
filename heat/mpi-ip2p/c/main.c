@@ -44,22 +44,22 @@ int main(int argc, char **argv)
 
     /* Time evolve */
     for (iter = 1; iter < nsteps; iter++) {
-      exchange_init(&previous, &parallelization);
-      evolve_interior(&current, &previous, a, dt);
-      exchange_finalize(&parallelization);
-      evolve_edges(&current, &previous, a, dt);
-      if (iter % image_interval == 0) {
-	write_field(&current, iter, &parallelization);
-      }
-      /* Swap current field so that it will be used
-	 as previous for next iteration step */
+        exchange_init(&previous, &parallelization);
+        evolve_interior(&current, &previous, a, dt);
+        exchange_finalize(&parallelization);
+        evolve_edges(&current, &previous, a, dt);
+        if (iter % image_interval == 0) {
+            write_field(&current, iter, &parallelization);
+        }
+        /* Swap current field so that it will be used
+        as previous for next iteration step */
         swap_fields(&current, &previous);
     }
 
     /* Determine the CPU time used for the iteration */
     if (parallelization.rank == 0) {
-      printf("Iteration took %.3f seconds.\n", (MPI_Wtime() - start_clock));
-      printf("Reference value at 5,5: %f\n", previous.data[5][5]);
+        printf("Iteration took %.3f seconds.\n", (MPI_Wtime() - start_clock));
+        printf("Reference value at 5,5: %f\n", previous.data[5][5]);
     }
 
     finalize(&current, &previous);

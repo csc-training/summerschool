@@ -1,7 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<mpi.h>
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
 
 int main(int argc, char *argv[])
 {
@@ -17,21 +16,21 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
-    /* Allocate message */
+    /* Allocate message buffers */
     message = malloc(sizeof(int) * size);
     receiveBuffer = malloc(sizeof(int) * size);
     /* Initialize message */
-    for (i = 0; i < size; i++)
+    for (i = 0; i < size; i++) {
         message[i] = myid;
+    }
 
-    /* Start measuring the time spend in communication */
+    /* Start measuring the time spent in communication */
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
     /* TODO start */
     /* Send and receive messages as defined in exercise */
     if (myid < ntasks - 1) {
-
         printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
                myid, size, myid + 1, myid + 1);
     }

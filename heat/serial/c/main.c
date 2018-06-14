@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 
     /* Determine the CPU time used for the iteration */
     printf("Iteration took %.3f seconds.\n", (double)(clock() - start_clock) /
-        (double)CLOCKS_PER_SEC);
+           (double)CLOCKS_PER_SEC);
     printf("Reference value at 5,5: %f\n", previous.data[5][5]);
 
     finalize(&current, &previous);

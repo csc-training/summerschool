@@ -5,7 +5,7 @@ int main(int argc, char **argv)
 {
     int rank;
     int array[8][8];
-    //TODO: Declare a variable storing the MPI datatype 
+    //TODO: Declare a variable storing the MPI datatype
 
     int i, j;
 
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     }
 
     //TODO: Create datatype that describes one column. Use MPI_Type_vector.
-    
+
     //TODO: Send first column of matrix form rank 0 to rank 1
 
     //TODO: free datatype

@@ -26,6 +26,7 @@ int main(int argc, char **argv)
             }
         }
     }
+
     if (rank == 0) {
         printf("Data in rank 0\n");
         for (i = 0; i < 8; i++) {
@@ -36,6 +37,7 @@ int main(int argc, char **argv)
         }
     }
 
+    //TODO: Create datatype that describes one column. Use MPI_Type_vector.
 
     // Create datatype
     MPI_Type_vector(8, 1, 8, MPI_INT, &columntype);

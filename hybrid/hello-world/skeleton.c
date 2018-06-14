@@ -1,11 +1,12 @@
+#include <stdlib.h>
 #include <stdio.h>
-#include <mpi.h>
 #include <omp.h>
+#include <mpi.h>
 
 int main(int argc, char *argv[])
 {
     int my_id, omp_rank;
-    int provided, required=MPI_THREAD_FUNNELED;
+    int provided, required = MPI_THREAD_FUNNELED;
 
     /* TODO: Initialize MPI with thread support. */
 

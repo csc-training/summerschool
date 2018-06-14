@@ -11,7 +11,7 @@
 #define NSTEPS 500  // Default number of iteration steps
 
 /* Initialize the heat equation solver */
-void initialize(int argc, char* argv[], field *current,
+void initialize(int argc, char *argv[], field *current,
                 field *previous, int *nsteps)
 {
     /*
@@ -32,7 +32,7 @@ void initialize(int argc, char* argv[], field *current,
 
     *nsteps = NSTEPS;
 
-#pragma omp single
+    #pragma omp single
     {
         switch (argc) {
         case 1:
@@ -65,11 +65,10 @@ void initialize(int argc, char* argv[], field *current,
     }
 
     if (read_file)
-#pragma omp single
+        #pragma omp single
         read_field(current, previous, input_file);
-    else
-    {
-#pragma omp single
+    else {
+        #pragma omp single
         {
             set_field_dimensions(current, rows, cols);
             set_field_dimensions(previous, rows, cols);
@@ -90,15 +89,15 @@ void generate_field(field *temperature)
 
     /* Allocate the temperature array, note that
      * we have to allocate also the ghost layers */
-#pragma omp single
+    #pragma omp single
     {
-    temperature->data =
-        malloc_2d(temperature->nx + 2, temperature->ny + 2);
+        temperature->data =
+            malloc_2d(temperature->nx + 2, temperature->ny + 2);
     }
 
     /* Radius of the source disc */
     radius = temperature->nx / 6.0;
-#pragma omp for private(i, j, dx, dy)
+    #pragma omp for private(i, j, dx, dy)
     for (i = 0; i < temperature->nx + 2; i++) {
         for (j = 0; j < temperature->ny + 2; j++) {
             /* Distances of point i, j from the origin */
@@ -113,13 +112,13 @@ void generate_field(field *temperature)
     }
 
     /* Boundary conditions */
-#pragma omp for private(i)
+    #pragma omp for private(i)
     for (i = 0; i < temperature->nx + 2; i++) {
         temperature->data[i][0] = 20.0;
         temperature->data[i][temperature->ny + 1] = 70.0;
     }
 
-#pragma omp for private(j)
+    #pragma omp for private(j)
     for (j = 0; j < temperature->ny + 2; j++) {
         temperature->data[0][j] = 85.0;
         temperature->data[temperature->nx + 1][j] = 5.0;

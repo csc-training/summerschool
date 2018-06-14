@@ -20,10 +20,10 @@ typedef struct {
 } field;
 
 // Function prototypes
-void init_field(field * f, int nx, int ny);
+void init_field(field *f, int nx, int ny);
 
-void laplacian(field * f);
+void laplacian(field *f);
 
-void print_field(field * f);
+void print_field(field *f);
 
 #endif

@@ -10,7 +10,7 @@ int main(void)
 
     /* Initialization of the vectors */
     for (i = 0; i < NX; i++) {
-        vecA[i] = 1.0 / ((double) (NX - i));
+        vecA[i] = 1.0 / ((double)(NX - i));
         vecB[i] = vecA[i] * vecA[i];
     }
 

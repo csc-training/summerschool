@@ -16,10 +16,10 @@ typedef struct {
 
 /* Datatype for basic parallelization information */
 typedef struct {
-  int size;                   /* Number of MPI tasks */
-  int rank;
-  int nup, ndown;      /* Ranks of neighbouring MPI tasks */
-  MPI_Request requests[4];    /* Requests for non-blocking communication */
+    int size;                   /* Number of MPI tasks */
+    int rank;
+    int nup, ndown;      /* Ranks of neighbouring MPI tasks */
+    MPI_Request requests[4];    /* Requests for non-blocking communication */
 } parallel_data;
 
 

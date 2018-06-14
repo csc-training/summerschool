@@ -28,6 +28,7 @@ int main(int argc, char **argv)
             }
         }
     }
+
     if (rank == 0) {
         printf("Data in rank 0\n");
         for (i = 0; i < 8; i++) {
@@ -55,7 +56,8 @@ int main(int argc, char **argv)
                  MPI_STATUS_IGNORE);
     }
 
-    // Print out the result
+    // Print out the result on rank 1
+    // The application is correct if the first column has the values of rank 0
     if (rank == 1) {
         printf("Received data\n");
         for (i = 0; i < 8; i++) {

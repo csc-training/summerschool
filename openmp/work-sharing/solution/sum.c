@@ -10,11 +10,11 @@ int main(void)
 
     /* Initialization of the vectors */
     for (i = 0; i < NX; i++) {
-        vecA[i] = 1.0 / ((double) (NX - i));
+        vecA[i] = 1.0 / ((double)(NX - i));
         vecB[i] = vecA[i] * vecA[i];
     }
 
-#pragma omp parallel for default(shared) private(i)
+    #pragma omp parallel for default(shared) private(i)
     for (i = 0; i < NX; i++) {
         vecC[i] = vecA[i] * vecB[i];
     }

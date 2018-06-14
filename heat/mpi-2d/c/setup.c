@@ -13,7 +13,7 @@
 #define NSTEPS 500  // Default number of iteration steps
 
 /* Initialize the heat equation solver */
-void initialize(int argc, char* argv[], field *current,
+void initialize(int argc, char *argv[], field *current,
                 field *previous, int *nsteps, parallel_data *parallel)
 {
     /*
@@ -63,17 +63,16 @@ void initialize(int argc, char* argv[], field *current,
         exit(-1);
     }
 
-    if (read_file)
-      read_field(current, previous, input_file, parallel);
-    else
-      {
+    if (read_file) {
+        read_field(current, previous, input_file, parallel);
+    } else {
         parallel_setup(parallel, rows, cols);
         set_field_dimensions(current, rows, cols, parallel);
         set_field_dimensions(previous, rows, cols, parallel);
         generate_field(current, parallel);
         allocate_field(previous);
         copy_field(current, previous);
-      }
+    }
 }
 
 /* Generate initial temperature field.  Pattern is disc with a radius
@@ -100,8 +99,8 @@ void generate_field(field *temperature, parallel_data *parallel)
             /* Distance of point i, j from the origin */
             dx = i + coords[0] * temperature->nx -
                  temperature->nx_full / 2 + 1;
-            dy = j + coords[1] * temperature->ny - 
-	         temperature->ny_full / 2 + 1;
+            dy = j + coords[1] * temperature->ny -
+                 temperature->ny_full / 2 + 1;
             if (dx * dx + dy * dy < radius * radius) {
                 temperature->data[i][j] = 5.0;
             } else {
@@ -193,10 +192,10 @@ void parallel_setup(parallel_data *parallel, int nx, int ny)
     /* Create cartesian communicator based on dims variable. Store the communicator
        to the comm field of the parallel datatype parallel->comm */
 
-    /* Find the neighbouring MPI tasks (parallel->nup, parallel->ndown, 
+    /* Find the neighbouring MPI tasks (parallel->nup, parallel->ndown,
        parallel->nleft, parallel->nright) using MPI_Cart_shift */
 
-    /* Determine parallel->size and parallel->rank from newly created 
+    /* Determine parallel->size and parallel->rank from newly created
        Cartesian comm */
 
     /* Create datatypes for halo exchange
@@ -220,7 +219,7 @@ void parallel_setup(parallel_data *parallel, int nx, int ny)
         sizes[1] = ; // TODO
     }
     // Fill in correct parameters to MPI_Type_create_subarray
-    MPI_Type_create_subarray(, , , , ,
+    MPI_Type_create_subarray(,,,,,
                              , &parallel->subarraytype);
     MPI_Type_commit(&parallel->subarraytype);
 
@@ -240,7 +239,7 @@ void parallel_set_dimensions(parallel_data *parallel, int nx, int ny)
 
 
 /* Deallocate the 2D arrays of temperature fields */
-void finalize(field *temperature1, field *temperature2, 
+void finalize(field *temperature1, field *temperature2,
               parallel_data *parallel)
 {
     free_2d(temperature1->data);

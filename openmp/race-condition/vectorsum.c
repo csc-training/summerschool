@@ -10,19 +10,19 @@ int main(void)
 
     /* Initialization of the vectors */
     for (i = 0; i < NX; i++) {
-        vecA[i] = (long) i+1;
+        vecA[i] = (long) i + 1;
     }
 
-    sumex = (long) NX*(NX+1)/((long) 2);
+    sumex = (long) NX * (NX + 1) / ((long) 2);
     printf("Arithmetic sum formula (exact):                  %ld\n",
-	   sumex);
+           sumex);
 
     sum = 0.0;
     /* TODO: Parallelize computation */
     for (i = 0; i < NX; i++) {
         sum += vecA[i];
     }
-    printf("Sum: %ld\n",sum);
+    printf("Sum: %ld\n", sum);
 
     return 0;
 }

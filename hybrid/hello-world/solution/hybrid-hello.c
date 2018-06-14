@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
     int provided, rank, ntasks;
     int tid;
 
-    MPI_CHECK(MPI_Init_thread
-              (&argc, &argv, MPI_THREAD_MULTIPLE, &provided));
+    MPI_CHECK(MPI_Init_thread(&argc, &argv,
+			      MPI_THREAD_MULTIPLE, &provided));
 
     /* Check the thread support level */
     if (provided == MPI_THREAD_MULTIPLE) {
@@ -35,15 +35,13 @@ int main(int argc, char *argv[])
     } else {
         printf("No multithreading support\n");
     }
-    
 
     MPI_CHECK(MPI_Comm_rank(MPI_COMM_WORLD, &rank));
     MPI_CHECK(MPI_Comm_size(MPI_COMM_WORLD, &ntasks));
 
-#pragma omp parallel private(tid)
+    #pragma omp parallel private(tid)
     {
         tid = omp_get_thread_num();
-
         printf("mpi rank: %d  thread id: %d\n", rank, tid);
     }
 

@@ -12,7 +12,7 @@
 #define NSTEPS 500  // Default number of iteration steps
 
 /* Initialize the heat equation solver */
-void initialize(int argc, char* argv[], field *current,
+void initialize(int argc, char *argv[], field *current,
                 field *previous, int *nsteps, parallel_data *parallel)
 {
     /*
@@ -62,17 +62,16 @@ void initialize(int argc, char* argv[], field *current,
         exit(-1);
     }
 
-    if (read_file)
-      read_field(current, previous, input_file, parallel);
-    else
-      {
+    if (read_file) {
+        read_field(current, previous, input_file, parallel);
+    } else {
         parallel_setup(parallel, rows, cols);
         set_field_dimensions(current, rows, cols, parallel);
         set_field_dimensions(previous, rows, cols, parallel);
         generate_field(current, parallel);
         allocate_field(previous);
         copy_field(current, previous);
-      }
+    }
 }
 
 /* Generate initial temperature field.  Pattern is disc with a radius
@@ -91,7 +90,7 @@ void generate_field(field *temperature, parallel_data *parallel)
 
     /* Radius of the source disc */
     radius = temperature->nx_full / 6.0;
-#pragma omp parallel for private(i, j, dx, dy)
+    #pragma omp parallel for private(i, j, dx, dy)
     for (i = 0; i < temperature->nx + 2; i++) {
         for (j = 0; j < temperature->ny + 2; j++) {
             /* Distance of point i, j from the origin */
@@ -107,19 +106,19 @@ void generate_field(field *temperature, parallel_data *parallel)
     }
 
     /* Boundary conditions */
-#pragma omp parallel for private(i)
+    #pragma omp parallel for private(i)
     for (i = 0; i < temperature->nx + 2; i++) {
         temperature->data[i][0] = 20.0;
         temperature->data[i][temperature->ny + 1] = 70.0;
     }
 
     if (parallel->rank == 0) {
-#pragma omp parallel for private(j)
+        #pragma omp parallel for private(j)
         for (j = 0; j < temperature->ny + 2; j++) {
             temperature->data[0][j] = 85.0;
         }
     } else if (parallel->rank == parallel->size - 1) {
-#pragma omp parallel for private(j)
+        #pragma omp parallel for private(j)
         for (j = 0; j < temperature->ny + 2; j++) {
             temperature->data[temperature->nx + 1][j] = 5.0;
         }

@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     int offsets[NTASKS] = { 0, 1, 2, 4 };
     int counts[NTASKS] = { 1, 1, 2, 4 };
     MPI_Scatterv(sendbuf, counts, offsets, MPI_INT, recvbuf, counts[rank],
-            MPI_INT, 0, MPI_COMM_WORLD);
+                 MPI_INT, 0, MPI_COMM_WORLD);
 
     /* Print data that was received */
     print_buffers(printbuf, recvbuf, 2 * NTASKS);

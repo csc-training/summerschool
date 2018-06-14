@@ -85,7 +85,7 @@ void many_writers(int my_id, int *localvector, int localsize)
         fwrite(localvector, sizeof(int), localsize, fp);
         fclose(fp);
         printf("Wrote %d elements to file manywriters-%d.dat\n", localsize,
-                my_id);
+               my_id);
     }
 }
 

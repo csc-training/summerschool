@@ -1,7 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<mpi.h>
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +20,7 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
-    /* Allocate message */
+    /* Allocate message buffers */
     message = malloc(sizeof(int) * size);
     receiveBuffer = malloc(sizeof(int) * size);
     /* Initialize message */
@@ -35,7 +34,6 @@ int main(int argc, char *argv[])
     } else {
         destination = MPI_PROC_NULL;
     }
-
     if (myid > 0) {
         source = myid - 1;
     } else {

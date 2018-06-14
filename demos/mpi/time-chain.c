@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     MPI_Status status, statuses[2];
     MPI_Request requests[2];
 
-    double t0, t1, tmax=0, time=0;
+    double t0, t1, tmax = 0, time = 0;
 
     int source, destination;
     int count;
@@ -45,9 +45,9 @@ int main(int argc, char *argv[])
 
     /* Send+Recv */
     MPI_Recv(receiveBuffer, size, MPI_INT, source, MPI_ANY_TAG,
-              MPI_COMM_WORLD, &status);
+             MPI_COMM_WORLD, &status);
     MPI_Send(message, size, MPI_INT, destination, myid + 1,
-              MPI_COMM_WORLD);
+             MPI_COMM_WORLD);
 
     t1 = MPI_Wtime() - t0;
     MPI_Reduce(&t1, &time, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);

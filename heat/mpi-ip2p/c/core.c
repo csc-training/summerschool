@@ -34,7 +34,7 @@ void evolve_interior(field *curr, field *prev, double a, double dt)
 
 /* complete the non-blocking communication */
 /* TODO */(
-void exchange_finalize(parallel_data *parallel)
+    void exchange_finalize(parallel_data *parallel)
 {
 
 }

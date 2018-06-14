@@ -6,7 +6,7 @@
 #define DY 0.01
 
 // This routine initializes the values of field structure
-void init_field(field * f, int nx, int ny)
+void init_field(field *f, int nx, int ny)
 {
     int i, j;
 
@@ -19,8 +19,9 @@ void init_field(field * f, int nx, int ny)
 
     // First zero out the inner part of the array
     for (i = 1; i < f->nx + 1; i++)
-        for (j = 1; j < f->ny + 1; j++)
+        for (j = 1; j < f->ny + 1; j++) {
             f->data[i][j] = 0.0;
+        }
 
     // Initial conditions for top and bottom
     for (i = 0; i < f->nx + 2; i++) {
@@ -35,7 +36,7 @@ void init_field(field * f, int nx, int ny)
 }
 
 // This function computes the Laplacian of the field
-void laplacian(field * f)
+void laplacian(field *f)
 {
     // Array where we store the result
     double laplacian[NX + 2][NX + 2];
@@ -54,12 +55,13 @@ void laplacian(field * f)
 
     // Copy the results back to the struct
     for (i = 1; i < f->nx + 1; i++)
-        for (j = 1; j < f->ny + 1; j++)
+        for (j = 1; j < f->ny + 1; j++) {
             f->data[i][j] = laplacian[i][j];
+        }
 }
 
 // This function saves the field values to a png file
-void print_field(field * f)
+void print_field(field *f)
 {
     int error_code;
 

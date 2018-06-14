@@ -22,10 +22,12 @@ int main(void)
     }
 
     // Zero out the outer boundary of laplacian
-    for (i = 0; i < NX; i++)
+    for (i = 0; i < NX; i++) {
         laplacian[i][0] = laplacian[i][NY - 1] = 0.0;
-    for (j = 0; i < NY; j++)
+    }
+    for (j = 0; i < NY; j++) {
         laplacian[0][j] = laplacian[NX - 1][j] = 0.0;
+    }
 
     // Initial conditions for top and bottom
     for (i = 0; i < NX; i++) {
@@ -50,12 +52,12 @@ int main(void)
     // *INDENT-ON*
 
     // Call the png writer routine
-    error_code = save_png((double *) laplacian, NX, NY, "datastructures-functions-heat_a-b.png", 'c');
+    error_code = save_png((double *) laplacian, NX, NY, "datastructures_functions_heat-a_b.png", 'c');
 
     if (error_code == 0) {
-        printf("Wrote the output file datastructures-functions-heat_a-b.png\n");
+        printf("Wrote the output file datastructures_functions_heat-a_b.png\n");
     } else {
-        printf("Error while writing output file datastructures-functions-heat_a-b.png\n");
+        printf("Error while writing output file datastructures_functions_heat-a_b.png\n");
     }
 
     return 0;

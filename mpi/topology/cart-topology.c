@@ -3,7 +3,8 @@
 #include <mpi.h>
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
     int ntasks, my_id, irank;
     int dims[2];      /* Dimensions of the grid */
     int coords[2];    /* Coordinates in the grid */

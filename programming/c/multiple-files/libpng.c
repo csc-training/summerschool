@@ -12,7 +12,7 @@ int main(void)
     double array[NX][NY];
 
     // Initialize the zeros first
-    memset(array, 0, NX*NY*sizeof(double));
+    memset(array, 0, NX * NY * sizeof(double));
 
     // Initial conditions for top and bottom
     for (i = 0; i < NX; i++) {

@@ -68,7 +68,6 @@ int main()
   smallest = *std::min_element(vec.begin(), vec.end());
   largest  = *std::max_element(vec.begin(), vec.end());
 
-
   std::cout << "Smallest number is: " << smallest << '\n';
   std::cout << "Largest number is : " << largest << '\n';
 
