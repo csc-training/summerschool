@@ -11,7 +11,7 @@
 
 # C++ exercises
 
-- [cpp-basics](cpp-basics)
-- [cpp-objects](cpp-objects)
-- [cpp-stl](cpp-stl)
-- [cpp-array2d](cpp-array2d)
+- [Basics](cpp-basics)
+- [Objects](cpp-objects)
+- [STL and std::vector containers](cpp-stl)
+- [Multidimensional array class for heat equation](cpp-array2d)
