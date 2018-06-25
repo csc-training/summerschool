@@ -9,9 +9,8 @@ a) Create a two-dimensional `258x258` array of double precision numbers. Initial
 - `70.0` on the right boundary
 - `5.0`  on the lower boundary
 
-and otherwise zeros. 
+and otherwise zeros. A skeleton code is provided in [2d_array.c](2d_array.c).
 
-A skeleton code is provided in [2d_array.c](2d_array.c).
 
 b) Write a double-for loop for evaluating the Laplacian using the finite-difference approximation:
 

@@ -15,11 +15,12 @@ b) Write a function that implements a double-for loop for evaluating the Laplaci
 
 As an input use the `258x258` array of Exercise a. Evaluate the Laplacian only at the inner `256x256` points, the outer points are used as a boundary condition. As a grid spacing, use `dx=dy=0.01`.
 
-c) **BONUS**: Generalize the given `Matrix<T>` template class into a temperature field class template `Field<T>`. The class has the following attributes:
+**BONUS**:
+c) Generalize the given `Matrix<T>` template class into a temperature field class template `Field<T>`. The class has the following attributes:
 
 - number of grid points `nx` and `ny` in the x- and y-direction
 - the grid spacings `dx` and `dy` in the x- and y-direction
-- two-dimensional data array containing the data points of the field. The array should also contain the boundary values, so its dimensions are `nx+2` and `ny+2`. 
+- two dimensional data array containing the data points of the field. The array should also contain the boundary values, so its dimensions are `nx+2` and `ny+2`. 
 
 Finally, implement the initialization of the two-dimensional array (Exercise a) and finite-difference Laplacian (Exercise b) in their own functions, which take as input the class representing the temperature field (Exercise c).
 
