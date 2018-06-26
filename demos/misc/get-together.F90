@@ -1,8 +1,9 @@
 program introductions
   implicit none
   character(len=:), dimension(:), allocatable :: names
-  integer, dimension(28) :: order
-  integer :: i
+  integer, dimension(:), allocatable :: order
+  integer :: i, s
+
 
   names = [ &
        "Ali Afzalifar              ", &     
@@ -34,9 +35,11 @@ program introductions
        "Tomas Panoc                ", &
        "Tova Jarnerud              "  ]
 
+  allocate (order(size(names)))
   call randomize_order(order)
   do i = 1, size(names)
-     write(*,*) names(order(i))
+     write(*,'(A1,I0,A1,I0,A1,A30)') '#', i, '/', &
+       size(names), ':', names(order(i))
      read(*,*)
   end do
 
