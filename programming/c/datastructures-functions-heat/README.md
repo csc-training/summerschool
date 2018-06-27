@@ -16,7 +16,11 @@ b) Write a double-for loop for evaluating the Laplacian using the finite-differe
 
 ![](http://quicklatex.com/cache3/2d/ql_b0e3418f715db7b7865384d6ebd6a42d_l3.png)
 
-As an input use the `258x258` array of Exercise a (or start from the skeleton [laplacian.c](laplacian.c). Evaluate the Laplacian only at the inner `256x256` points, the outer points are used as a boundary condition. As a grid spacing, use `dx=dy=0.01`.
+As an input use the `258x258` array of Exercise a (or start from the skeleton
+[laplacian.c](laplacian.c). Evaluate the Laplacian only at the inner `256x256`
+points, the outer points are used as a boundary condition. As a grid spacing,
+use `dx=dy=0.01`. You can use the provided `Makefile` (use command `make`) for 
+building the code.
 
 c) Create a struct for a temperature field. The struct has the following elements:
 
