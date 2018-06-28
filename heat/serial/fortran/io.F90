@@ -53,9 +53,13 @@ contains
     ! TODO: implement the file reading
     ! Read the header
 
+    ! Initialize the field metadata (nx, ny, dx, dy). You can use
+    ! the utilite routine set_field_dimensions from module heat
 
+    ! Allocate space for the data. The array for temperature field contains 
+    ! also a halo region (one layer of extra space in all directions which
+    ! is used as boundary condition).
 
-    ! The arrays for temperature field contain also a halo region
 
 
     ! Read the data
