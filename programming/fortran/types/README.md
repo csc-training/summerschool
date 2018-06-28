@@ -12,9 +12,9 @@ Define the real-valued variables into double precision, using the
 `ISO_FORTRAN_ENV` intrinsic module. 
 
 b) Append this module with a subroutine that takes as input the number of
-grid points in both dimensions and returns a field type where the 
-metadata (grid points and grid spacings; let us set the latter to 0.01) 
-has been initialized.
+grid points in both dimensions and a variable of the field type. The
+subroutine should then initialize the metadata (grid points and grid 
+spacings; let us set the latter to 0.01).
 
 
 
