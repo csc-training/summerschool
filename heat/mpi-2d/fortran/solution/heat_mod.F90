@@ -125,8 +125,9 @@ contains
        sizes(1) = nx_local + 2
        sizes(2) = ny_local + 2
     end if
-    call mpi_type_create_subarray(2, sizes, subsizes, offsets, MPI_ORDER_C, &
-         & MPI_DOUBLE_PRECISION, parallel%subarraytype, ierr)
+    call mpi_type_create_subarray(2, sizes, subsizes, offsets, &
+         & MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, parallel%subarraytype, &
+         & ierr)
     call mpi_type_commit(parallel%subarraytype, ierr)
 
   end subroutine parallel_setup
