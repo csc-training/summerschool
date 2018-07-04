@@ -48,8 +48,8 @@ contains
     nx = curr%nx
     ny = curr%ny
 
-    do j = 1, ny
-       do i = 1, nx
+    do j = 0, ny
+       do i = 0, nx
           curr%data(i, j) = prev%data(i, j) + a * dt * &
                & ((prev%data(i-1, j) - 2.0 * prev%data(i, j) + &
                &   prev%data(i+1, j)) / curr%dx**2 + &
