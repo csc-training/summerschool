@@ -20,5 +20,5 @@ code (by typing ```make```).
 Remember to update all ghost layers at every iteration.
 
 A schematic representation of the decomposition looks like:
-![img](domain_decomposition.png)
+![img](img/domain_decomposition.png)
 
