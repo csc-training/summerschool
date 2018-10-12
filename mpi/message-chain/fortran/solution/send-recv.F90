@@ -7,6 +7,7 @@ program basic
   integer :: rc, myid, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
+  integer :: status(MPI_STATUS_SIZE)
 
   real(REAL64) :: t0, t1
 
