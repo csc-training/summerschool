@@ -6,6 +6,9 @@
   (fortran)
     compiler=ftn
 
+  (cpp)
+    compiler=CC
+
 [gnu]
   compiler=gcc
   (+omp)
@@ -18,3 +21,8 @@
     compiler=gfortran
   (fortran+mpi)
     compiler=mpif90
+
+  (cpp)
+    compiler=g++
+  (cpp+mpi)
+    compiler=mpiCC
