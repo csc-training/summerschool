@@ -12,6 +12,7 @@
 [programming/fortran/types/solution/heat_mod.F90]
   type=pass
   +skip_run
+  +do_not_link
 
 [programming/fortran/intrinsics/solution]
   type=pass
@@ -19,6 +20,8 @@
 
 [programming/fortran/control-structures/solution]
   type=pass
+  binary=(do-loop, fibonacci, if-else)
+  user_input=(,,'8')
 
 [programming/fortran/arrays/solution]
   type=pass
