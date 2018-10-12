@@ -1,5 +1,5 @@
 ifeq ($(COMP),)
-COMP=gnu
+COMP=cray
 endif
 
 ifeq ($(COMP),cray)
