@@ -20,15 +20,12 @@ FC=ifort
 endif
 
 EXE=do-loop
-OBJ=do-loop.o
-
+OBJ=
 
 all: $(EXE)
 
-do-loop.o: do-loop.F90
-
-$(EXE): $(OBJ)
-	$(FC) $(FCFLAGS) $(OBJ) -o $@ 
+$(EXE): %: %.o
+	$(FC) $(FCFLAGS) $< -o $@
 
 %.o: %.F90
 	$(FC) $(FCFLAGS) -c $< -o $@
