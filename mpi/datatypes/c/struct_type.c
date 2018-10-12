@@ -7,7 +7,6 @@
 int main(int argc, char *argv[])
 {
     int n = 1000, cnt = 3, reps = 10000;
-    particle particles[n];
     int i, j, myid, ntasks, blocklen[cnt];
     MPI_Datatype particletype, temptype;
     MPI_Aint disp[cnt], dist[2], lb, extent;
@@ -18,6 +17,7 @@ int main(int argc, char *argv[])
         int charge;
         char label[2];
     } particle;
+    particle particles[n];
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
