@@ -12,7 +12,7 @@ Then, write a main program that
 
  - defines two (dynamically allocatable) arrays, `previous` and `current`
  - initialize the `previous` array
- - apply the Laplacian on the initialized array
+ - apply the Laplacian on the initialized `previous` array and store the results in the `current` array
  - print out both arrays (after and before the Laplacian) 
  
  by calling the three module procedures described above. You can use the provided skeleton codes
