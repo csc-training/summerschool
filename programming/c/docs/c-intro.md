@@ -279,52 +279,40 @@ f = 1.234;
 c = f; // ERROR!, wrong data type
 ```
 </div>
-# **Variable assignment**
+# Variable assignment
+<div class="column">
+- Assign a value to a variable: **variable = value;**  
 
-Assign a value to a variable: **variable = value;**
+- Both should have the same data type
 
-Both should have the same data type
+  * implicit conversion between compatible types
+  * explicit conversion (typecast) syntax: **(type) var**
+</div>
+<div class="column">
+```c
+// examples of assignment
+count = 10;
+i = j = 0;
+k = i*j + 1;
 
-  - implicit conversion between compatible types
-  - explicit conversion (typecast) syntax: **(type) var**
+// assign at declaration
+int i = 4;
 
-**// examples of assignment**
+// typecast from int to float
+int i;
+float f;
+i = 5 * 21;
+f = (float) i;
 
-**count = 10;**
+// watch out for operator order
+(float) i/5 != (float) (i/5)
+```
+</div>
 
-**i = j = 0;**
 
-**k = i\*j + 1;**
+# Arithmetics
 
-****
-
-**// assign at declaration**
-
-**int i = 4;**
-
-****
-
-**// typecast from int to float**
-
-**int i;**
-
-**float f;**
-
-****
-
-**i = 5 \* 21;**
-
-**f = (float) i;**
-
-****
-
-**// watch out for operator order**
-
-**(float) i/5 \!= (float) (i/5)**
-
-# **Arithmetics**
-
-Operators:
+- Operators: `+  -  *  /  %`
 
 Operator precedence
 
