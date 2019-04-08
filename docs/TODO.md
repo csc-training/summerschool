@@ -2,7 +2,7 @@
 
 - Briefing-and-closing 
 - C                     
-- Data-analysis  
+- ~~Data-analysis~~  
 - ~~Debugging~~      
 - ~~Fortran~~                 
 - HPC-application-design  

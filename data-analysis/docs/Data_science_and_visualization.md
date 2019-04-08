@@ -1,6 +1,9 @@
-% Data science and visualization
-% CSC
-% \today
+---
+title:  Data science and visualization
+author: CSC Summerschool 
+date:   2019-07
+lang:   en
+---
 # What is data science
 <div class="column">
 - Not just statistics rebranded

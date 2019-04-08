@@ -1,6 +1,6 @@
 ---
 title:  Introduction to Unix
-author: CSC Summerschool 2019
+author: CSC Summerschool 
 date:   2019-07
 lang:   en
 ---
