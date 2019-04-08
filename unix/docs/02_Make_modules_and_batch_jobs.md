@@ -9,16 +9,13 @@
 
 # Make
 
-::::::::::::::{.columns}
-::: {.column width="40%"}
-![](Deptree.png){width=800px}
-:::
-::: {.column width="45%"}
+<div class="column">
+![](Deptree.png){width=700px}
+</div>
+<div class="column">
 - Large programs are usually separated into several files and can have complicated dependency structures
 - Compilation and linking becomes complicated and prone to errors
-:::
-::::::::::::::
-
+</div>
 # Simple Makefile example
 ::::::::::::::{.columns}
 ::: {.column width="45%"}
@@ -48,7 +45,7 @@ $ gcc -o hello hello.c
 :::
 ::::::::::::::
 
-# Modules and batch job system
+# Modules and batch job system {.section}
 
 # Module environment on Sisu
 
