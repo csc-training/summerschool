@@ -7,6 +7,8 @@ lang:   en
 
 
 # Hands up - is this familiar?
+![](familiar.png){.center width=50%}
+
 
 # Solution: Version control
 
@@ -33,15 +35,8 @@ the work is done for you by the version control system
 
   * e.g. it does what it can and shows you the places where it needs manual intervention
 
-# Distributed vs. Centralized
-<div class="column">
-
-   **Centralized**
-</div>
-
-<div class="column">
-   **Distributed**
-</div>
+# Centralized vs. Distributed
+![](git_cent_dist.svg){.center width=80%}
 
 # Remote repositories
 
@@ -72,7 +67,11 @@ Most modern and widely used combo: Git + Github
 
 # Social coding with git+Github
 
-- These days Github account also serves as your “code CV”
+- These days Github account also serves as your “code CV”  
+  
+  
+![](coding_cv_1.png){.center}   
+![](coding_cv_2.png){.center}
 
 # Initializing repositories
 - Git needs to be told that “start operating in this folder”
@@ -83,13 +82,14 @@ Most modern and widely used combo: Git + Github
 - Repository is now functioning and synced with GitHub
 
 
-# Initializing repositories
+# Initializing repositories, alternative way
 
-- First we need to create a new remote repository in GitHub
+- Create a new remote repository in GitHub  
 
-- Next we “clone” (=download) it
+![](new_repo.png)
 
-  * `git clone https://github.com/user/repo.git` 
+- Clone (=download) it: `git clone https://github.com/user/repo.git`   
+![](clone_1.png){width=30%} \	 ---> \ ![](clone_2.png){width=30%}
 
 # Forking & cloning repositories
 
@@ -99,27 +99,42 @@ Most modern and widely used combo: Git + Github
     without affecting the original project.
   - Once forked, we can again clone the repository to ourselves
 
+![](fork.jpg){.center width=80%}
+
 # Forking & cloning repositories
 
 - Let’s fork & clone our first repository
 
   * Fork `https://github.com/csc-training/summerschool`
-  * `git clone https://github.com/user/summerschool`
+  * `git clone https://github.com/user/summerschool`  
 
+![](clone_fork.png){.center}
 
 # Git Workflow
 
-1. New file changes are pulled from the remote repository
+1. New file changes are **pull**ed from the remote repository: `git pull`
+
 	* Files are now up-to-date (in respect to the remote repository)
 
-2. Something is modified
+2. Something is modified 
+	* E.g. editing, adding or removing a file 
 
-3. Modifications are added for commit
+3. Modifications are **add**ed for commit: `git add file.c`
 	* Think of this as putting your file changes into a package
 
-4. Changes are committed to the local repository
+4. Changes are **commit**ted to the local repository: `git commit`
 
-5. Commits are pushed to the remote repository
+5. Commits are **push**ed to the remote repository: `git push`
+ 
+# Git file states
+ A file in a git repository can be in one of the following states
+
+ - **Untracked**: Untracked files are ignored by git
+ - **Unmodified**: The file is tracked by git, but no changes have been made 
+ - **Modfied**: The file is tracked by git and has been modified
+ - **Staged**:  The file has been added (`git add file1`) and is ready to be committed to the local repository 
+
+
 
 # Git Workflow
 
@@ -143,7 +158,7 @@ Most modern and widely used combo: Git + Github
   * `git branch new_branch_name`
   * `git checkout new_branch_name`
 
-- git pull is actually git fetch && git merge that fetches remote master
+- `git pull` is actually `git fetch` && `git merge` that fetches remote master
 branch and merges it into local master branch
 
 - Allows to work on some aspect of the project and then fall back to the
@@ -159,29 +174,27 @@ master branch if needed
 
   - Typically done in the www-interface of GitHub
 
-Pull request is usually a fix or an improvement containing multiple
+- Pull request is usually a fix or an improvement containing multiple
 commits
 
-Allows to review and modify changes
+- Allows to review and modify changes
 
-# **Summary**
+# Summary
 
   - If you are not using git, start using it\!
-  - Remember the standard workflow: pull, modify, add, commit, push
+  - Remember the standard workflow: 
+  	* pull -> modify -> add -> commit -> push
   - Explore GitHub, there are quite a many cool repositories\!
-  - Check
-    [<span class="underline">https://help.github.com/</span>](https://help.github.com/)
-    - it has an answer to everything git-related\!
+  - Check [<span class="underline">https://help.github.com/</span>](https://help.github.com/)
+	* it has an answer to everything git-related\!
 
-# **Version control git commands**
+# Version control git commands
 
-List of common commands
-
-  - Download repository: **git clone** https://…
-  - Update changes from remote repo: **git pull**
-  - Check the status of repository: **git status**
-  - Add new file for staging: **git add** file1
-  - Commit changes to local repository: **git commit -m “X”**
-  - Update local repo to remote repo: **git push**
-  - Delete a file from repository: **git rm** file1
-  - Documentation: **git help \[cmd\]**
+  - Download repository: `git clone https://…`
+  - Update changes from remote repo: `git pull`
+  - Check the status of repository: `git status`
+  - Add new file for staging: `git add file1`
+  - Commit changes to local repository: `git commit -m “X”`
+  - Update local repo to remote repo: `git push`
+  - Delete a file from repository: `git rm file1`
+  - Documentation: `git help [cmd]`
