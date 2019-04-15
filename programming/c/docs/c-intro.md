@@ -420,7 +420,7 @@ p = &a;
 a = (*p) + 2; // a=7
 ```
 
-# **Summary**
+# Summary
 
   - Short history and different standards
   - Basic syntax
@@ -464,1461 +464,980 @@ Test operators:
 ```
 </div>
 
-# **Control structures // if – else**
-
-## **// simple if-else**
-
-## **if (x \> 1.2) {**
-
-## **y = 4\*x\*r; // TRUE**
-
-## **} else {**
-
-## **y = 0.0; // FALSE**
-
-## **}**
-
-## ****
-
-## **// else is optional**
-
-## **if (x || y) {**
-
-## **z += x + y;**
-
-## **}**
-
-**// complex if-elseif-else**
-
-**if ((x \> 1.2) && (i \!= 0) )**
-
-**{**
-
-**y = x / i; // 1st TRUE**
-
-**} else if (x \< 1.0 ) {**
-
-**y = -x; // 1st FALSE**
-
-**// 2nd TRUE**
-
-**} else {**
-
-**y = 0.0; // 1st, 2nd FALSE**
-
-**}**
-
-# **Control structures // switch**
-
-switch (...) { case (...): ... break; default: ... }
-
-condition:
-
-  - single variable OR complex expression
-
-branch(=case) with matching value chosen
-
-break stops branch
-
-conditional expression
-
-test value
-
-end of branch
-
-default branch executed
-
-if nothing else matches
-
-# **Control structures // switch**
-
-## **// simple switch based on the**
-
-## **// value of integer i**
-
-## **switch (i) {**
-
-## **case 1:**
-
-## **printf("one\\n");**
-
-## **break;**
-
-## **case 2:**
-
-## **printf("two\\n");**
-
-## **break;**
-
-## **default:**
-
-## **printf("many\\n");**
-
-## **break;**
-
-## **}**
-
-good style to break even the last branch\!
-
-# **Control structures // switch**
-
-**switch (i) {**
-
-**case 1:**
-
-**printf("one\\n");**
-
-**case 2:**
-
-**printf("two\\n");**
-
-**default:**
-
-**printf("many\\n");**
-
-**}**
-
-**switch (i) {**
-
-**case 1:**
-
-**printf("one\\n");**
-
-**break;**
-
-**case 2:**
-
-**printf("two\\n");**
-
-**break;**
-
-**default:**
-
-**printf("many\\n");**
-
-**}**
-
-**switch (i) {**
-
-**default:**
-
-**printf("many\\n");**
-
-**case 1:**
-
-**printf("one\\n");**
-
-**break;**
-
-**case 2:**
-
-**printf("two\\n");**
-
-**break;**
-
-**}**
-
-A
-
-B
-
-C
-
+# Control structures // if – else
+<div class=column>
+ ```c
+ // simple if-else
+ if (x > 1.2) {
+	 y = 4*x*r; // TRUE
+ } else {
+ 	y = 0.0; // FALSE
+ }
+
+ // else is optional
+
+ if (x || y) {
+ 	z += x + y;
+ }
+```
+</div>
+
+<div class=column>
+```c
+// complex if-elseif-else
+
+if ((x > 1.2) && (i != 0) ){
+	y = x / i; // 1st TRUE
+} else if (x < 1.0 ) {
+	y = -x; // 1st FALSE
+// 2nd TRUE
+} else {
+	y = 0.0; // 1st, 2nd FALSE
+}
+```
+</div>
+
+# Control structures // switch
+```
+switch (...) {		// conditional expression 
+	case (...):  	// test value
+		...	// Do something
+		break;  // end of branch
+	default:  	// default branch executed if nothing else matches
+		...	// Do something
+	}
+```
+- condition:
+
+  * single variable OR complex expression
+
+- branch(=case) with matching value chosen
+
+- break stops branch
+
+# Control structures // switch
+```c
+ // simple switch based on the
+ // value of integer i
+ switch (i) {
+ 	case 1:
+ 		printf("one\\n");
+ 		break;
+ 	case 2:
+		printf("two\\n");
+		break;
+	default:
+		printf("many\\n");
+		break; //  good style to break even the last branch
+	}
+
+```
+# Control structures // switch
+
+<div class=column>
+<small>
+```c
+// A
+switch (i) {
+	case 1:
+		printf("one\\n");
+	case 2:
+		printf("two\\n");
+	default:
+		printf("many\\n");
+}
+```
+```c
+// C
+switch (i) {
+	case 1:
+		printf("one\\n");
+		break;
+	case 2:
+		printf("two\\n");
+		break;
+	default:
+		printf("many\\n");
+}
+```
+</small>
+
+</div>
+
+<div class=column>
+<small>
+```c
+// B
+switch (i) {
+	default:
+		printf("many\\n");
+	case 1:
+		printf("one\\n");
+		break;
+	case 2:
+		printf("two\\n");
+		break;
+}
+```
+</small>
 In each case, what would be printed on the screen if i is 1, 2, or 3?
 
-# **Loops // while**
+</div>
 
-## ****
 
-## ****
+# Loops // while
+- **while (_condition_) {_code block_}**
+```c
+i = 0 // loop i = 0..99 with an increment of one
+while (i<100) {
+	data\[i\] = x\[i\] + c
+	i++;
+}
+```
+- Code block executes repeatedly as long as condition is TRUE
 
-**while (...) {...}**
+- Condition executed *before* iteration
 
-Code block executes repeatedly as long as condition is TRUE
-
-Condition executed *before* iteration
-
-**do {...} while (...)**
+- **do {...} while (...)**
 
   - Block executed at least once
 
-condition
 
-code block
 
-**// loop i = 0..99 with an increment of one**
-
-**i = 0**
-
-**while (i\<100) {**
-
-**data\[i\] = x\[i\] + c**
-
-**i++;**
-
-**}**
-
-# **Loops // for**
-
-## ****
-
-## ****
-
-## ****
-
-  - **for (\<init\>; \<condition\>; \<after\>) {...}**
-
-**// loop i = 0..99 with an increment of one**
-
-**for (i=0; i\<100; i++) {**
-
-**data\[i\] = x\[i\] + c**
-
-**}**
-
-# **Loops // for**
-
-## **// loop using a for-statement**
-
-## **// i is incremented after each iteration**
-
-## **for (i=0; i\<bar; i++) {**
-
-## **x += i\*3.14 + c;**
-
-## **c = i + 2;**
-
-## **}**
-
-## ****
-
-## **// the same loop but with a while-statement**
-
-## **i=0;**
-
-## **while (i \< bar) {**
-
-## **x += i\*3.14 + c;**
-
-## **c = i + 2;**
-
-## **i++;**
-
-## **}**
-
-# **Jump statements**
-
-**break**
-
-  - end a loop (for, while, do) or a switch statement
-
-**continue**
-
-  - continue with the next iteration of a loop
-
-**// jump out of a loop**
-
-**for (i=0; i\<10; i++) {**
-
-**printf("in loop");**
-
-**if (i == x)**
-
-**break;**
-
-**}**
-
-****
-
-****
-
-**// jump to the next iteration**
-
-**for (i=0; i\<10; i++) {**
-
-**if (i \< x)**
-
-**continue;**
-
-**printf("in loop");**
-
-**}**
-
-# **Summary**
-
-  - Conditional branching: if-else, switch
-  - Looping as long as condition is true: while, do – while
-  - Fixed number of loop passes: for
-  - Jump statements: continue, break
-
-# **Data structures and functions**
-
-# **Arrays**
-
-  - Static arrays declared as **\<type\> name\[N\]** where **N** is the
-    size of the array **int i\[10\]** array of 10 integers **float
-    f\[3\]** array of 3 floats **char c\[60\]** string of 60 letters
-  - elements indexed starting from zero **i\[3\]** 4th element of array
-    i
-  - multi-dimensional arrays possible **int m\[10\]\[20\]** a 10x20
-    matrix
-
-# **Arrays**
-
-## **// integer vector**
-
-## **int triplet\[3\];**
-
-## ****
-
-## **triplet\[0\] = 1;**
-
-## **triplet\[1\] = 2 \* triplet\[0\];**
-
-## **triplet\[2\] =**
-
-## **triplet\[0\] + triplet\[1\];**
-
-## ****
-
-## **// string**
-
-## **char word\[\] = "hello\!";**
-
-## **printf(word); // hello\!**
-
-**// 2-dim matrix**
-
-**int i,j;**
-
-**float matrix\[5\]\[5\];**
-
-****
-
-**for (i=0; i\<5; i++)**
-
-**for (j=0; j\<5; j++)**
-
-**matrix\[i\]\[j\] = i\*j;**
-
-****
-
-**// print the 2nd row**
-
-**for (i=0; i\<5; i++)**
-
-**printf("%f ", matrix\[1\]\[i\]);**
-
-# **Pointer arithmetic and arrays**
-
-Pointers can be added to or subtracted from
-
-  - This shifts the pointer to a new memory address before or after the
+# Loops // for
+- **for (\<init\>; \<condition\>; \<after\>) {...}**
+
+```c
+// loop i = 0..99 with an increment of one
+for (i=0; i<100; i++) {
+	data[i] = x[i] + c
+}
+```
+* **\<init\>** execute once before entering the loop
+* **\<condition\>** stop loop when condition is FALSE
+* **\<after\>**	execute after each iteration
+
+
+# Loops // for
+```c
+ // loop using a for-statement
+ // i is incremented after each iteration
+ for (i=0; i\<bar; i++) {
+ 	x += i\*3.14 + c;
+ 	c = i + 2;
+ }
+```
+ 
+```c
+ // the same loop but with a while-statement
+ i=0;
+ while (i < bar) {
+ 	x += i\*3.14 + c;
+ 	c = i + 2;
+ 	i++;
+ }
+```
+
+
+# Jump statements
+
+<div class=column>
+- **break**
+
+  * end a loop (for, while, do) or a switch statement
+
+- **continue**
+
+  * continue with the next iteration of a loop
+</div>
+<div class=column>
+```c
+// jump out of a loop
+for (i=0; i\<10; i++) {
+	printf("in loop");
+	if (i == x)
+		break;
+}
+```
+```c
+// jump to the next iteration
+for (i=0; i\<10; i++) {
+	if (i \< x)
+		continue;
+	printf("in loop");
+}
+```
+</div>
+# Summary
+
+  - Conditional branching: **if-else**, **switch**
+  - Looping as long as condition is true: **while**, **do – while**
+  - Fixed number of loop passes: **for**
+  - Jump statements: **continue**, **break**
+
+# Data structures and functions {.section}
+
+# Arrays
+
+  - Static arrays declared as **\<type\> name\[N\]** where **N** is the size of the array   
+    * **int i\[10\]** array of 10 integers   
+    * **float f\[3\]** array of 3 floats   
+    * **char c\[60\]** string of 60 letters  
+  - elements indexed starting from zero   
+  	* **i\[3\]** 4th element of array i  
+  - multi-dimensional arrays possible   
+  	* **int m\[10\]\[20\]** a 10x20 matrix
+
+# Arrays
+<div class=column>
+```c
+ // integer vector
+ int triplet[3];
+ triplet[0] = 1;
+ triplet[1] = 2 * triplet[0];
+ triplet[2] =
+ triplet[0] + triplet[1];
+
+ // string
+char word[] = "hello!";
+printf(word); // hello!
+```
+</div>
+<div class=column>
+```c
+// 2-dim matrix
+int i,j;
+float matrix[5][5];
+
+for (i=0; i<5; i++){
+	for (j=0; j<5; j++){
+		matrix[i][j] = i*j;
+		}
+	 }
+
+// print the 2nd row
+for (i=0; i<5; i++){
+	printf("%f ", matrix[1][i]);
+	}
+```
+</div>
+
+# Pointer arithmetic and arrays
+
+- Pointers can be added to or subtracted from
+
+  * This shifts the pointer to a new memory address before or after the
     current one
-  - Each step is **sizeof(pointer\_datatype)** bytes, i.e. the memory
-    size of the pointer's data type
+  * Each step is **sizeof(pointer\_datatype)** bytes, i.e. the memory size of the pointer's data type
+(Watch out for out-of-bounds memory errors!)
 
-Watch out for out-of-bounds memory errors\!
+```c
+float vector[10], *ptr;
 
-**float vector\[10\], \*ptr;**
-
-****
-
-**ptr = \&vector\[0\]; // \*ptr -\> vector\[0\]**
-
-**ptr = vector; // name of array works as pointer to the beginning**
-
-**ptr++; // \*ptr -\> vector\[1\]**
-
-**ptr += 3; // \*ptr -\> vector\[4\]**
-
-**ptr--; // \*ptr -\> vector\[3\]**
-
-# **Structures**
-
+ptr = &vector[0]; // *ptr -> vector[0]
+ptr = vector; // name of array works as pointer to the beginning
+ptr++; // *ptr -> vector[1]
+ptr += 3; // *ptr -> vector[4]
+ptr--; // *ptr -> vector[3]
+```
+# Structures
+<div class=column>
   - Multiple variables of arbitrary type can be grouped together in a
     **struct**
   - Member **y** of struct **x** accessed with **x.y** (or **x-\>y** if
     x is a pointer)
+</div>
+<div class=column>
+<small>
+```c
+struct s {
+	int i;
+	float f;
+} one;
 
-**struct s {**
+typedef struct {
+	int count;
+	float price;
+} apple;
 
-**int i;**
+apple a;
+a.count = 7;
+a.price = 1.24;
+cost = a.count * a.price;
 
-**float f;**
+// with pointers
+apple *ptr;
+ptr = &a;
+c = ptr->count;
+ptr->price = 0.89;
+```
+</small>
+</div>
+# Functions
 
-**} one;**
+- Functions are the only subroutine type in C
 
-****
-
-**typedef struct {**
-
-**int count;**
-
-**float price;**
-
-**} apple;**
-
-**apple a;**
-
-****
-
-**a.count = 7;**
-
-**a.price = 1.24;**
-
-**cost = a.count \* a.price;**
-
-****
-
-**// with pointers**
-
-**apple \*ptr;**
-
-**ptr = \&a;**
-
-**c = ptr-\>count;**
-
-**ptr-\>price = 0.89;**
-
-# **Functions**
-
-Functions are the only subroutine type in C
-
-  - But functions do not have to return anything
+  * But functions do not have to return anything
 
 Function definitions are of form
+```
+type func-name(param-list)
+{
 
-Here **type** is the return type of the function
+/* body of function */
 
-  - **void** means that function does not return anything
+}
+```
 
-**type func-name(param-list)**
+- Here **type** is the return type of the function
 
-**{**
+  * **void** means that function does not return anything
 
-**/\* body of function \*/**
 
-**}**
+# main function
 
-# **main function**
+- Every C program has the main function with definition
+```
+int main(int argc, char *argv[])
+{
 
-Every C program has the main function with definition
+/* body of function */
 
-Command line arguments are passed to the program using **argc** and
-**argv**
+}
+```
+- Command line arguments are passed to the program using **argc** and **argv**
 
-main should always return integer
+- main should always return integer
 
-  - zero means success, non-zero values are errors
+  * zero means success, non-zero values are errors
 
-**int main(int argc, char \*argv\[\])**
 
-**{**
-
-**/\* body of function \*/**
-
-**}**
-
-# **Function example**
+# Function example
 
   - This function returns the sum of two integer arguments:
+```c
+#include <stdio.h>
 
-**\#include \<stdio.h\>**
+int add(int a, int b) {
+	return a + b;
+}
 
-**int add(int a, int b) {**
-
-**return a + b;**
-
-**}**
-
-****
-
-**int main(void) {**
-
-**int val;**
-
-**val = add(3, 6);**
-
-**printf(“Sum is %i\\n”, val);**
-
-**return 0;**
-
-**}**
+int main(void) {
+	int val;
+	val = add(3, 6);
+	printf(“Sum is %i\n”, val);
+	return 0;
+}
+```
 
 # **Variable scoping**
 
-Variable scoping in C is local unless defined otherwise
+<div class=column>
+- Variable scoping in C is local unless defined otherwise
 
-  - Variables declared in the function definition are only visible
-    inside the function body
-  - Variables of calling scope are not visible inside function body
+  * Variables declared in the function definition are only visible
+   inside the function body
+  * Variables of calling scope are not visible inside function body
+</div>
+<div class=colum>
+```c
+void funcB(float a) {
+	int counter;//Not accessible from funcA
+	...
+}
 
-**void funcB(float a) {**
+int funcA(void) {
+	float value1, 
+	value2;//Not accessible from funcB 
+	funcB(value1);
+	...
+}
+```
+</div>
 
-**int counter;**
+# Arguments
+<div class=column>
+- All arguments are passed as *values*
 
-**...**
+  * Copy of the value is passed to the function
+  * Functions can not change the value of a variable in the *calling scope*
 
-**}**
+- Pointers can be used to pass a reference to a variable as an argument!
+</div>
+<div class=column>
+```c
+void funcB(int a) {
 
-**int funcA(void) {**
+	a += 10;
 
-**float value\_1, value2;**
+}
 
-**funcB(value\_1);**
+int funcA(void) {
+	int var = 0;
+	funcB(var);
+	// var is still 0\!
+	...
+}
+```
+</div>
 
-**...**
-
-**}**
-
-Not accessible from **funcA**
-
-Not accessible from **funcB**
-
-# **Arguments**
-
-All arguments are passed as *values*
-
-  - Copy of the value is passed to the function
-  - Functions can not change the value of a variable in the *calling
-    scope*
-
-Pointers can be used to pass a reference to a variable as an argument\!
-
-**void funcB(int a) {**
-
-**a += 10;**
-
-**}**
-
-****
-
-**int funcA(void) {**
-
-**int var = 0;**
-
-**funcB(var);**
-
-**// var is still 0\!**
-
-**...**
-
-**}**
-
-# **Functions with pointers**
+# Functions with pointers
 
   - Pointers allow “returning” of multiple values
+```c
+// passing by reference
+void add_pi(float *a, int *b) {
+	float pi=3.14;
+	*a += pi;
+	(*b)++;
+}
 
-**// passing by reference**
+float a=1.0;
+int b=1;
+add_pi(&a, &b); // a=4.14 b=2
+```
 
-**void add\_pi(float \*a, int \*b) {**
 
-**float pi=3.14;**
+# Dynamic arrays{.section}
 
-**\*a += pi;**
+# Dynamic memory management
 
-**(\*b)++;**
-
-**}**
-
-**float a=1.0;**
-
-**int b=1;**
-
-****
-
-**add\_pi(\&a, \&b); // a=4.14 b=2**
-
-# **Dynamic arrays**
-
-# **Dynamic memory management**
-
-  - In most cases the exact size of all data structures is not known at
-    compile time because they depend on the input data
-  - Dynamic memory management is accomplished by using pointers and
-    manually managing memory (de)allocation
+  - In most cases the exact size of all data structures is not known at 
+  compile time because they depend on the input data
+  - Dynamic memory management is accomplished by using pointers and 
+  manually managing memory (de)allocation
   - Relevant functions are **malloc()**, **realloc()**, **free()**
 
-# **malloc**
+# malloc
 
-malloc function is defined in header file stdlib.h: **void
-\*malloc(size\_t size);**
+- malloc function is defined in header file stdlib.h: 
+	* **void\* malloc(size\_t size);**
 
-**malloc** returns a pointer of type **void** to a memory location with
+- **malloc** returns a pointer of type **void** to a memory location with
 allocated space of size **size** bytes
 
-  - If allocation fails, **malloc** returns **NULL\!**
+  * If allocation fails, **malloc** returns **NULL\!**
 
-The memory area returned by the malloc is uninitialized\!
+- The memory area returned by the malloc is uninitialized!
 
-# **Dynamic arrays**
+# Dynamic arrays
 
-**malloc** can be used to allocate space for arrays
+- **malloc** can be used to allocate space for arrays
 
-  - **malloc** returns a pointer to the beginning of the array
-  - Elements can be accessed with normal array syntax
+  * **malloc** returns a pointer to the beginning of the array
+  * Elements can be accessed with normal array syntax
 
-The size of memory allocation can be determined using **sizeof**
+- The size of memory allocation can be determined using **sizeof**
 operator which returns the size of the argument in bytes
 
-Example for a dynamic array of five integers: **int \*ptr = (int \*)
-malloc(5 \* sizeof(int));**
+- Example for a dynamic array of five integers: 
+	* **int \*ptr = (int \*) malloc(5 \* sizeof(int));**
 
-# **free**
+# free
 
-**free** deallocates previous allocated object **void free(void
-\*ptr);**
+- **free** deallocates previous allocated object 
+	* **void free(void\*ptr);**
 
-After freeing you should not try to access any part of the allocation
+- After freeing you should not try to access any part of the allocation
 
-Calling free with a pointer that does not point to a allocated memory
+- Calling free with a pointer that does not point to a allocated memory
 can crash the code
 
-  - Calling free twice is a common mistake\!
-
-# **Dynamic arrays**
-
-## **int n\_elems = 32;**
-
-## **float \*prices;**
-
-## ****
-
-## **// allocate memory for the required amount of floats**
-
-## **prices = malloc(n\_elems\*sizeof(float));**
-
-## **for (i=0; i\<n\_elems; i++) {**
-
-## **prices\[i\] = i\*1.23;**
-
-## **}**
-
-## **// add space for one more float**
-
-## **prices = realloc(prices, sizeof(float)\*(n\_elems+1));**
-
-## **prices\[n\_elems\] = 0.91;**
-
-## **// de-allocate the memory block**
-
-## **free(prices);**
-
-# **Pointers to pointers**
-
-It is possible to have pointer references to pointers
-
-  - This is very useful when functions have to manipulate values of
-    arguments of pointer type
-  - Multidimensional arrays are also naturally mapped into pointers of
-    pointers
-
-# **Pointer to a pointer example**
-
-**\#include\<stdio.h\>**
-
-****
-
-**int main(void) {**
-
-**int a = 5;**
-
-**int \*int\_ptr;**
-
-**int \*\*int\_ptr\_ptr;**
-
-****
-
-**int\_ptr\_ptr = \&int\_ptr;**
-
-**int\_ptr = \&a;**
-
-****
-
-**printf(“a=%i\\n”, \*\*int\_ptr\_ptr);**
-
-**return 0;**
-
-**}**
-
-****
-
-**// Result: a=5**
-
-# **Dynamic multi-dimensional arrays**
-
-Doable, but becomes complicated
-
-No real multi-dimensional arrays in C, so really just arrays of arrays
-
-  - Two dimensional array maps to a variable that is a pointer to a
-    pointer
-
-Memory management by hand
-
-  - There are at least two different ways to do the allocation
-  - Easy to make mistakes, beware here lieth dragons\!
-
-Often best to just use 1D array and map N dimensional indices
-
-# **Allocating row-by-row**
-
-## **int i;**
-
-## **int rows = 4, cols = 8;**
-
-## **float \*\*matrix;**
-
-## ****
-
-## **/\* allocate memory \*/**
-
-## **matrix = malloc(rows \* sizeof(float \*));**
-
-## **for (i = 0; i \< rows; i++)**
-
-## **matrix\[i\] = malloc(cols \* sizeof(float));**
-
-## ****
-
-## **// start using the 2D array**
-
-## **matrix\[0\]\[2\] = 3.14;**
-
-**matrix**
-
-**matrix\[i\]**
-
-**matrix\[i\]\[j\]**
-
-Do not do this\!
-
-# **Dynamic multi-dimensional arrays**
-
-## Dynamic 2D array in *contiguous* memory:
-
-  - First, allocate memory for pointers to the first element of each row
-  - Second, allocate memory for all elements
-  - Third, point each row at the first element of that row
-
-# **Dynamic multi-dimensional arrays**
-
-## **/\* allocate memory \*/**
-
-## **matrix = malloc(rows \* sizeof(float \*));**
-
-## **matrix\[0\] = malloc(rows \* cols \* sizeof(float));**
-
-## ****
-
-## **/\* point the beginning of each row at the correct address \*/**
-
-## **for (i = 0; i \< rows; i++)**
-
-## **matrix\[i\] = matrix\[0\] + i \* cols;**
-
-## ****
-
-## **// start using the 2D array**
-
-## **matrix\[0\]\[2\] = 3.14;**
-
-**matrix**
-
-**matrix\[i\]**
-
-**matrix\[i\]\[j\]**
+  * Calling free twice is a common mistake\!
+
+# Dynamic arrays
+```c
+ int n_elems = 32;
+ float *prices;
+
+ // allocate memory for the required amount of floats
+ prices = malloc(n_elems*sizeof(float));
+ for (i=0; i<n_elems; i++) {
+	prices[i] = i*1.23;
+ }
+
+ // add space for one more float
+ prices = realloc(prices, sizeof(float)*(n_elems+1));
+ prices[n_elems] = 0.91;
+
+ // de-allocate the memory block
+ free(prices);
+```
+
+# Pointers to pointers
+
+- It is possible to have pointer references to pointers
+
+  * This is very useful when functions have to manipulate values of arguments of pointer type
+  * Multidimensional arrays are also naturally mapped into pointers of pointers
+
+# Pointer to a pointer example
+```c
+#include<stdio.h>
+
+int main(void) {
+	int a = 5;
+	int *int_ptr;
+	int **int_ptr_ptr;
+	int_ptr_ptr = &int_ptr;
+	int_ptr = &a;
+	printf(“a=%i\n”, **int_ptr_ptr);
+	return 0;
+}
+// Result: a=5
+```
+
+# Dynamic multi-dimensional arrays
+
+- Doable, but becomes complicated
+
+- No real multi-dimensional arrays in C, so really just arrays of arrays
+
+  * Two dimensional array maps to a variable that is a pointer to a pointer
+
+- Memory management by hand
+
+  * There are at least two different ways to do the allocation
+  * Easy to make mistakes, _beware here lieth dragons!_
+
+- Often best to just use 1D array and map N dimensional indices
+
+# Allocating row-by-row
+<div class=column>
+```c
+ int i;
+ int rows = 4, cols = 8;
+ float **matrix;
+
+ /* allocate memory */
+ matrix = malloc(rows * sizeof(float *));
+ for (i = 0; i < rows; i++){
+ 	matrix[i] = malloc(cols * sizeof(float));
+ }
+ 
+ // start using the 2D array
+ matrix[0][2] = 3.14;
+```
+</div>
+<div class=column>
+![](allocation1-01.svg){.center width=80%}  
+**Do not do this!**
+</div>
+
+# Dynamic multi-dimensional arrays
+
+- Dynamic 2D array in *contiguous* memory:
+  * First, allocate memory for pointers to the first element of each row
+  * Second, allocate memory for all elements
+  * Third, point each row at the first element of that row
+
+# Dynamic multi-dimensional arrays
+<small>
+```c
+ /* allocate memory */
+ matrix = malloc(rows * sizeof(float *));
+ matrix[0] = malloc(rows * cols * sizeof(float));
+ /* point the beginning of each row at the correct address */
+ for (i = 0; i < rows; i++){
+ 	matrix[i] = matrix[0] + i * cols;
+ }
+ // start using the 2D array
+ matrix[0][2] = 3.14;
+```
+![](allocation2-01.svg){.center width=100%}
+</small>
 
 # **Memory layout**
 
-Allocating space for the whole array using a single malloc call is the
+- Allocating space for the whole array using a single malloc call is the
 recommended way
 
-  - Number of expensive malloc calls is minimized
-  - Array is represented as one contiguous block in memory
-  - It can be copied without looping over rows
-  - Most IO and numerical libraries assume contiguous storage
+  * Number of expensive malloc calls is minimized
+  * Array is represented as one contiguous block in memory
+  * It can be copied without looping over rows
+  * Most IO and numerical libraries assume contiguous storage
 
-# **Dynamic multi-dimensional arrays**
+# Dynamic multi-dimensional arrays
 
-  - After using a dynamic multi-dimensional array, remember to free each
-    array inside the main array
+  - After using a dynamic multi-dimensional array, remember to free each array inside the main array
 
-## ****
+```c
+ /* When using contiguous memory */
 
-## **/\* When using contiguous memory \*/**
+ free(matrix[0]);
 
-## **free(matrix\[0\]);**
+ free(matrix);
+```
 
-## **free(matrix);**
+# Using indexing to represent 2D array
 
-# **Using indexing to represent 2D array**
+- Allocate memory for all elements as normal 1D array
+- Compute indices so that the 1D memory area map to the 2D array we want to represent
+- Benefits
+  * The compiler understands better the code, and hence performance may be better
+  * Allocation and deallocation easier
+  * Straightforward to generalize to higher dimensions
+- Drawbacks
+  * Code may look less elegant
 
-Allocate memory for all elements as normal 1D array
+# Using indexing to represent 2D array
+```c
+ /* matrix now normal pointer */
+ float *matrix;
+ /* allocate memory */
+ matrix = malloc(rows * cols * sizeof(float));
+ /* start using the array, element [i][j] in 2D array now maps to [i * cols + j]*/
+ matrix[0 * cols + 2] = 3.14;
+ /* free memory */
+ free(matrix);
+```
+![](allocation3-01.svg){.center width=100%}
 
-Compute indices so that the 1D memory area map to the 2D array we want
-to represent
+# Preprocessing and libraries {.section}
 
-Benefits
+# Preprocessing directives
 
-  - The compiler understands better the code, and hence performance may
-    be better
-  - Allocation and deallocation easier
-  - Straightforward to generalize to higher dimensions
-
-Drawbacks
-
-  - Code may look less
-elegant
-
-# **Using indexing to represent 2D array**
-
-## **/\* matrix now normal pointer \*/**
-
-## **float \*matrix;**
-
-## ****
-
-## **/\* allocate memory \*/**
-
-## **matrix = malloc(rows \* cols \* sizeof(float));**
-
-## ****
-
-## **/\* start using the array, element \[i\]\[j\] in 2D array now maps to \[i \* cols + j\]\*/**
-
-## **matrix\[0 \* cols + 2\] = 3.14;**
-
-## ****
-
-## **/\* free memory \*/**
-
-## **free(matrix);**
-
-**matrix**
-
-**matrix\[i \* cols + j\]**
-
-# **Preprocessing and libraries**
-
-# **Preprocessing directives**
-
-C preprocessor is a part of the compiler that does initial text
+- C preprocessor is a part of the compiler that does initial text
 substitution, manipulation, inclusion and other activities before the
 actual translation is done
 
-  - We have already used **\#include**, which includes a file
+  * We have already used **\#include**, which includes a file
 
-C relies heavily on preprocessor to accomplish
+- C relies heavily on preprocessor to accomplish
 
-  - Portability of code
-  - Source code control
-  - Debugging
+  * Portability of code
+  * Source code control
+  * Debugging
 
-# **Directives**
+# Directives
 
-Preprocessor directives start with **\#**, which has to be first token
+- Preprocessor directives start with **\#**, which has to be first token
 on a line
 
-Directives are limited to one line
+- Directives are limited to one line
 
-  - Line can be continued using **\\**
+  * Line can be continued using **\\**
 
-Directives are not statements, do not end the line with **;**
+- Directives are not statements, do not end the line with **;**
+```c
+// These are ok
+#define one
+	#define two
 
-**// These are ok**
+// Not the first token - WRONG!
+int i; #define one
+```
 
-**\#define one**
 
-**\#define two**
-
-**// Not the first token - WRONG\!**
-
-**int i; \#define one**
-
-# **\#define**
+# \#define
 
   - **\#define** can be used to define “objects” or macros
-  - It has the form of \#define *identifier* *replacement*
-  - After the definition all instances of ***identifier*** are replaced
-    with ***replacement***
+  - It has the form of **\#define** ***identifier*** ***replacement***
+  - After the definition all instances of ***identifier*** are replaced with ***replacement***
+```c
+// Example
+#define ONE 1
 
-**// Example**
+printf(“Value is %i\n”, ONE);
 
-**\#define ONE 1**
+// Result: Value is 1
+```
+# Directives
 
-**printf(“Value is %i\\n”, ONE);**
+- **\#ifdef, \#ifndef**
 
-**// Result: Value is 1**
+  * checks whether a macro is defined (/ not defined)
+  * if check is true, then includes the enclosed code
 
-# **Directives**
+```c
+#include <stdio.h>
+#include "myfile.h"
 
-**\#ifdef, \#ifndef**
+#define DEBUG 1
+#define PI 3.14159
+#define MAX(a,b) (a)>(b)?(a):(b)
 
-  - checks whether a macro is defined (/ not defined)
-  - if check is true, then includes the enclosed code
+#ifdef DEBUG
+/* debug mode is enabled */
+#endif
+```
 
-**\#include \<stdio.h\>**
+# Definitions on compiler command line
 
-**\#include "myfile.h"**
+  - It is also possible to set preprocessor definitions on the compiler command line
+  - Most compilers accept option **-D** for this purpose:  
+   **gcc -DONE=1 -DUSE\_FEATURE**  
+   is equivalent with   
+   **\#define ONE 1   
+   \#define USE\_FEATURE**
 
-****
+# The transition from Code to program
+<div class=column>
+- Compiling:
 
-**\#define DEBUG 1**
+  * Transforming the C source code to machine language
 
-**\#define PI 3.14159**
+- Linker:
 
-**\#define MAX(a,b) (a)\>(b)?(a):(b)**
-
-****
-
-**\#ifdef DEBUG**
-
-**/\* debug mode is enabled \*/**
-
-**\#endif**
-
-# **Definitions on compiler command line**
-
-  - It is also possible to set preprocessor definitions on the compiler
-    command line
-  - Most compilers accept option **-D** for this purpose: **gcc -DONE=1
-    -DUSE\_FEATURE** is equivalent with **\#define ONE 1 \#define
-    USE\_FEATURE**
-
-# **The transition from Code to program**
-
-Compiling:
-
-  - Transforming the C source code to machine language
-
-Linker:
-
-  - Combines object files generated by the compiler into a single
+  * Combines object files generated by the compiler into a single
     executable program
 
-The result is an executable binary file
-
-**\#include \<stdio.h\>**
-
-****
-
-**void main() {**
-
-**int i,j=0;**
-
-**float f=1.0;**
-
-**for (i=0; i\<8; i++) {**
-
-**j += i;**
-
-**f \*= j+i;**
-
-**}**
-
-compiler
-
-program
-
-gcc, cc, ...
-
-./foo
-
-foo.c
-
-preprocessor
-
-compiler
-
-linker
+- The result is an executable binary file
+</div>
+<div class=column>
+![](codeToP-01.svg){.center width=80%}
+</div>
 
 # **Working with several files and libraries**
 
-Advantages:
+- Advantages:
 
-  - Different programmers can work on different files
-  - Function definitions can be re-used in other programs
-  - Changing a file, only that file needs to be re-compiled to rebuild
-    the program
+  * Different programmers can work on different files
+  * Function definitions can be re-used in other programs
+  * Changing a file, only that file needs to be re-compiled to rebuild the program
 
-UNIX ‘make’ can be very useful tool for this\!
+- UNIX ‘make’ can be very useful tool for this!
 
-  - Most IDEs also provide a tools for building this kind of compilation
+  * Most IDEs also provide a tools for building this kind of compilation
 
-# **Compilation: working with several files**
-
+# Compilation: working with several files
+<div class=column>
   - We use header files to define functions that we can use later
-  - Making .h files for your functions allows you to ‘include’ them in
-    your code
+  - Making .h files for your functions allows you to ‘include’ them in your code
+  - Function prototypes introduce the return value, name and argument of the function
+  to the compiler
+</div>
+<div class=column>
+```c
+// we implement the function ‘add’
+int add(int first, int second){
+	return first + second;
+}
+```
 
-**// we define the function ‘add’**
+```c
+// we define the function ‘add’
+#ifndef ADD_H
+#define ADD_H
 
-**\#ifndef ADD\_H**
+// Function prototype
+int add(int first, int second);
+#endif
+```
+</div>
 
-**\#define ADD\_H**
 
-**int add(int first, int second);**
+# Compilation: working with several files
 
-**\#endif**
+  - Another .c file can then use the function **add()** by including theheader file:
+```c
+// we can use #include "" or #include <>
+#include "add.h"
 
-**// we implement the function ‘add’**
+int example(int x){
+	return add(x, add(x,x));
+}
+```
 
-**int add(int first, int second)**
+# Compilation: working with several files
 
-**{**
+- So, this is how headers work:
 
-**return first + second;**
+  * main() would be in one file, the others will contain functions
+  * Headers usually only contain definitions of data types, function prototypes and C preprocessor commands
+  * We include the header into the C files
+  * We compile the different files and the compiler calls the header file
 
-**}**
+# The transition from Code to program
 
-File: add.c
+- In complex projects:
+	* Compile each source code file (.c) into an object file (.o)
+```bash
+$ gcc -c main.c
+$ gcc -c add.c
+```
+	* Link object files into a binary and execute the binary
+```bash
+$ gcc -o foo main.o add.o
+$ ./foo
+Modify “add.c”
+$ gcc –c add.c
+$ gcc -o foo main.o add.o
+$ ./foo
+```
 
-File: add.h
+# Libraries
 
-This is called **function prototype.** It introduces the return value,
-name and arguments of the function to the compiler
-
-# **Compilation: working with several files**
-
-  - Another .c file can then use the function add() by including the
-    header file:
-
-**// we can use \#include "" or \#include \<\>**
-
-**\#include "add.h"**
-
-****
-
-**int example(int x)**
-
-**{**
-
-**return add(x, add(x,x));**
-
-**}**
-
-# **Compilation: working with several files**
-
-So, this is how headers work:
-
-  - main() would be in one file, the others will contain functions
-  - Headers usually only contain definitions of data types, function
-    prototypes and C preprocessor commands
-  - We include the header into the C files
-  - We compile the different files and the compiler calls the header
-    file
-
-# In complex projects:
-
-In complex projects:
-
-  - Compile each source code file (.c) into an object file (.o)
-  - Link object files into a binary and execute the binary
-
-**The transition from Code to program**
-
-**$ gcc -c main.c**
-
-**$ gcc -c add.c**
-
-**$ gcc -o foo main.o add.o**
-
-**$ ./foo**
-
-***Modify “add.c”***
-
-**$ gcc –c add.c**
-
-**$ gcc -o foo main.o add.o**
-
-**$ ./foo**
-
-# **Libraries**
-
-Libraries contain functions, data types and constants that can be used
+- Libraries contain functions, data types and constants that can be used
 by multiple programs
 
-Two components:
+- Two components:
 
-  - header: function etc. definitions
-  - object code in a library file (shared .so or static .a)
+  * header: function etc. definitions
+  * object code in a library file (shared .so or static .a)
 
-When creating the executable binary file, an additional flag
+- When creating the executable binary file, an additional flag
 (–l*library\_name*) is given to the linker to include the library
 
-# **Libraries**
-
-  - Math operations
-  - It includes the most common mathematical functions, e.g. sin(),
-    cos(), log() etc.
+# Libraries
+<div class=column>
+  - Math operations  
+   **\#include \<math.h**\>  
+   \+ link with -lm flag\!
+  - It includes the most common mathematical functions, e.g. sin(), cos(), log() etc.
   - Also includes constants such as M\_PI for π
-  - For power operation function pow() is used (^ is bit-wise XOR in C
-    \!)
+  - For power operation function pow() is used (^ is bit-wise XOR in C!)
+</div>
+<div class=column>
+```c
+#include <math.h>
+int main () {
+	float r, theta;
+	double area, y;
+// radius and an angle
+	r = 1.2;
+	theta = 0.456;
+// calculate something
+	area = M_PI * pow(r,2);
+	y = sin(theta)+ cos(theta/2.0);
+	y += exp(-3.1 * area);
+// echo results
+	printf("area is %f\n", area);
+	printf("y=%.18e\n", y);
+}
+```
+</div>
 
-**\#include \<math.h\>**
 
-****
 
-**int main () {**
 
-**float r, theta;**
 
-**double area, y;**
+# Linking with libraries
 
-****
-
-**// radius and an angle**
-
-**r = 1.2;**
-
-**theta = 0.456;**
-
-****
-
-**// calculate something**
-
-**area = M\_PI \* pow(r,2);**
-
-**y = sin(theta)**
-
-**+ cos(theta/2.0);**
-
-**y += exp(-3.1 \* area);**
-
-****
-
-**// echo results**
-
-**printf("area is %f\\n", area);**
-
-**printf("y=%.18e\\n", y);**
-
-**}**
-
-**\#include \<math.h**\>
-
-\+ link with -lm flag\!
-
-# Add libraries in linking phase
 
   - Add libraries in linking phase
+```bash
+$ gcc -c main.c
+$ gcc -o foo main.o -lm
+$./foo
+```
+# Compiler optimization
 
-**Linking with libraries**
-
-**$ gcc -c main.c**
-
-**$ gcc -o foo main.o -lm**
-
-**$
-./foo**
-
-# Compiler flags provides possibilities of also for code optimization. Few instances of the optimization flags are -O, -O0, -O1, -O2, -O3, -Os.
-
-  - Compiler flags provides possibilities of also for code optimization.
-    Few instances of the optimization flags are -O, -O0, -O1, -O2, -O3,
-    -Os.
+ - Compiler flags provides possibilities of also for code optimization. Few instances of the optimization flags are  
+ **-O, -O0, -O1, -O2, -O3, -Os.**
+```bash
+$ gcc -O3 -o toroid -lm toroid.c
+$ ./toroid
+```
   - For further information check the manual of gcc:
+```bash
+$ man gcc
+```
 
-**Compiler optimization**
 
-**$ gcc -O3 -o toroid -lm toroid.c**
-
-**$ ./toroid**
-
-**$ man gcc**
+# File I/O{.section}
 
 # **File I/O**
 
-# **File I/O**
+  - **FILE\* fopen(\<filename\>, \<mode\>)**
+  	* **\<filename\>** name of a file
+	* **\<mode\>** read (r), write (w), append (a), read+write (r+w), binary mode (rb) ...
+	* **FILE** pointer to file
+  - **fclose(FILE\*)** closes file
+  - **fflush(FILE\*)** flush I/O buffer to disk
 
-  - **fopen(\<filename\>, \<mode\>)**  **FILE\***
-  - **fclose(FILE\*)**  closes file
-  - **fflush(FILE\*)**  flush I/O buffer to disk
 
-**r, w, a read, write, append r+, w+, a+ read+write rb, wb, ... binary
-mode**
+# File I/O
 
-**name of a file**
+- **stdout, stderr**
 
-**pointer to file**
+  * special output streams for STDOUT and STDERR (stdio.h)
 
-# **File I/O**
+- **fprintf(\<file\>, \<template\> {,\<variables\>})**
 
-**stdout, stderr**
+ 	* **\<file\>** pointer to an open file
 
-  - special output streams for STDOUT and STDERR (stdio.h)
+ 	* **\<template\>** arbitrary string with optional placeholders for data from variables
 
-**fprintf(\<file\>, \<template\> {,
-\<variables\>})**
+ 	* **\<variables\>** (optional) a list of variables
 
-## **\<file\>** pointer to an open file
+# File I/O
+```c
+#include <stdio.h>
 
-## **\<template\>** arbitrary string with optional placeholders for data from variables
+fprintf(stdout, "The answer is %d.\n", 42);
+//output (STDOUT):
+// The answer is 42.
 
-## **\<variables\>** (optional) a list of variables
+fprintf(stderr,"Pi equals to %.2f (at least to the %dnd decimal).\n",3.14159265, 2);
+//output (STDERR):
+// Pi equals to 3.14 (at least to the 2nd decimal).
+```
+# File I/O
+```c
+ #include <stdio.h>
 
-# **File I/O**
+ FILE *fp;
+ int pid=2146;
 
-## **\#include \<stdio.h\>**
+ fp = fopen("mylog", "w");
+ fprintf(fp, "logging my progress for process %d...", pid);
+ fprintf(fp, "ok\n");
+ fclose(fp);
 
-## ****
+ //output (in file 'mylog'):
+ // logging my progress for process 2146...ok
+```
 
-## **fprintf(stdout, "The answer is %d.\\n", 42);**
 
-## **//output (STDOUT):**
+# File I/O
 
-## **// The answer is 42.**
+- **fgets(char \*buffer, int size, FILE \*stream)**
 
-## ****
+  * Reads a single line from file pointer stream
+  * Assigns string to buffer
+  * The size parameter defines the max. size of characters to read.
 
-## **fprintf(stderr,**
+# File I/O
 
-## **"Pi equals to %.2f (at least to the %dnd decimal).\\n",**
+- **fscanf(FILE \*stream, char \*format, ...)**
 
-## **3.14159265, 2);**
+  * scan input according to format e.g. "name: %s age: %d"
+  * store values of placeholders (%s etc.) to pointers
 
-## **//output (STDERR):**
+```c
+// read max 64 characters from FILE *fp
+fgets(buffer, 64, fp);
 
-## **// Pi equals to 3.14 (at least to the 2nd decimal).**
+// read a matching string from FILE *fp, pick a string and
+// an integer and assign them to variables name and age
+fscanf(fp, "name: %s age: %d", &name, &age);
+```
 
-# **File I/O**
-
-## **\#include \<stdio.h\>**
-
-## ****
-
-## **FILE \*fp;**
-
-## **int pid=2146;**
-
-## ****
-
-## **fp = fopen("mylog", "w");**
-
-## **fprintf(fp, "logging my progress for process %d...", pid);**
-
-## **fprintf(fp, "ok\\n");**
-
-## **fclose(fp);**
-
-## ****
-
-## **//output (in file 'mylog'):**
-
-## **// logging my progress for process 2146...ok**
-
-# **File I/O**
-
-**fgets(char \*buffer, int size, FILE \*stream)**
-
-  - Reads a single line from file pointer stream
-  - Assigns string to buffer
-  - The size parameter defines the max. size of characters to read.
-
-# **File I/O**
-
-**fscanf(FILE \*stream, char \*format, ...)**
-
-  - scan input according to format e.g. "name: %s age: %d"
-  - store values of placeholders (%s etc.) to pointers
-
-**// read max 64 characters from FILE \*fp**
-
-**fgets(buffer, 64, fp);**
-
-****
-
-**// read a matching string from FILE \*fp, pick a string and**
-
-**// an integer and assign them to variables name and age**
-
-**fscanf(fp, "name: %s age: %d", \&name, \&age);**
-
-# **Summary**
+# Summary
 
   - Basic syntax
-  - Overall structure: \#include, functions, main()
-  - Data types: int, float, ..., struct
-  - Control structures: for, while, if/else, switch/case
-  - Memory management: pointers, malloc(), ...
-  - I/O: files, stdin, stdout
+  - Overall structure: _\#include, functions, main()_
+  - Data types: _int, float, ..., struct_
+  - Control structures: _for, while, if/else, switch/case_
+  - Memory management: _pointers, malloc(), ..._
+  - I/O: _files, stdin, stdout_
   - Compiling & linking
 
-# **Web resources**
+# Web resources
+
+  - C Programming  
+    [http://en.wikibooks.org/wiki/C\_Programming](http://en.wikibooks.org/wiki/C\_Programming)
+  - The C Library Reference Guide  
+    [http://www.acm.uiuc.edu/webmonkeys/book/c\_guide/](http://www.acm.uiuc.edu/webmonkeys/book/c\_guide/)
+  - C syntax   
+    [http://en.wikipedia.org/wiki/C\_syntax](http://en.wikipedia.org/wiki/C\_syntax)
+  - Ten Reasons to Teach and Learn Computer Programming in C  
+    [http://iel.ucdavis.edu/publication/WhyC.html](http://iel.ucdavis.edu/publication/WhyC.html)
+  - International Obfuscated C Code Contest  
+    [http://en.wikipedia.org/wiki/International\_Obfuscated\_C\_Code\_Contest](http://en.wikipedia.org/wiki/International\_Obfuscated\_C\_Code\_Contest)
+
+# Say what?
+![© 1993  E. Jay Berkenbilt](obf.svg){.center width=20%}
 
-  - C Programming http://en.wikibooks.org/wiki/C\_Programming
-  - The C Library Reference Guide
-    http://www.acm.uiuc.edu/webmonkeys/book/c\_guide/
-  - C syntax http://en.wikipedia.org/wiki/C\_syntax
-  - Ten Reasons to Teach and Learn Computer Programming in C
-    http://iel.ucdavis.edu/publication/WhyC.html
-  - International Obfuscated C Code Contest
-    http://en.wikipedia.org/wiki/International\_Obfuscated\_C\_Code\_Contest
 
-# **Say what?**
-
-## static signed char a\[\] = {0x69,
-
-## 110, 118, 97, 108, 105, 0x64, 1-1,
-
-## 0x6d, 111, 118, 101, 1\<\<1\<\<1\<\<1\<\<1\<\<1,
-
-## 114, 105, 0x6e, 103, 32, 'o'/3, 100,
-
-## 32, 102, 114, 111, 0x6d, 32, 115, 116,
-
-## 97, 100-001, 107, 32,37, 2\*'2', '@'\>\>1,
-
-## 116, '%' + '%' + '%','w'-'W',115, 0x74,
-
-## 97, 3\*'\!', 107, 'q' - 'Q', 37, 10\*'\\n',
-
-## 10, 0}, \* b = a + (1\<\<1\<\<1\<\<1), \* w, x,
-
-## \*q, c, r; int main(int d, char \*e \[\]) {
-
-## return q = (signed char \*)(e+1+1), (r =
-
-## e\[0\] && e\[1\] ? 0 : 0 \* puts (a) + 1) ||
-
-## (r = e\[1\<\<1\] && d \!= 1 \<\<1 && 0 \* puts(
-
-## a) + 1) || e\[1- -1\] || (r = atoi(e\[1\])
-
-## \< -0200 || atoi (e \[1\]) \> 0x7f || ( x =
-
-## atoi( e\[1\] ) ) == 0 ? 0 \* puts(a) + 1 :
-
-## 0\) || e \[1- -1\] || (x- -x \> 1-1 ? (q\[0\]
-
-## \= x, q\[1\] = q\[3\] = 1, q\[2\] = 2) : (
-
-## memset ( w = ( signed char \* )
-
-## malloc(-x), '1', -x), puts (w),
-
-## q\[0\] = x, q\[1\] = '0', q\[2\] = q\[3\] =
-
-## 0)), r || (q\[3\] ? (c = 6 - q\[1\] - q\[2\],
-
-## (q\[0\] \!= 1) ? q\[0\]-- , d = q\[2\], q\[2\] =
-
-## c, main(2, e), c = q\[2\], q\[2\] = d, q\[0\]
-
-## \++ : 0, printf(b, q\[0\], q\[1\], q\[2\]), (q
-
-## \[0\] \!= 1) ? q\[0\]--, d = q\[1\],q\[1\] = c ,
-
-## main(2, e), c = q\[1\], q\[1\] = d, q\[0\] ++
-
-## : 0) : - 1 - q\[0\] - 1 == 0 ? (w\[- x – 1
-
-## \- (q\[1\] & 1 ^ 1)\] = q\[1\], puts (w), w \[
-
-## \- x - 1 - (q\[1\] & 1)\] = q\[1\], puts(w) )
-
-## : - 1 - q\[0\] == 0 ? (w\[- x - 1\] = q\[ 1
-
-## \], puts(w)) : (q\[0\] += 1 + ( q\[1\] & 1
-
-## ^ 1), main(2, e), q\[0\] -= 1 + ( q
-
-## \[1\] & 1 ^ 1), q\[1\] & 1 ? (q
-
-## \[0\]+=1+1, q\[1\]^=1, main
-
-## (2, e), q\[1\]^=1, q\[0\]-=1
-
-## \+1) : 0, w\[q\[0\] - x\] = q
-
-## \[1\], puts(w), q\[1\] & 1 ?
-
-## 0 : (q\[0\]+=1+1, q\[1\]^=1,
-
-## main (2, e), q\[1\]^=1, q
-
-## \[0\]-=1+1), q\[0\] += 1 +
-
-## (q\[1\] & 1),main(2,e)
-
-## , q\[0\] -= 1 + (q\[1\]
-
-## & 1) ) ), r; }
-
-char
-
-\_3141592654\[3141
-
-\],\_\_3141\[3141\];\_314159\[31415\],\_3141\[31415\];main(){register
-char\*
-
-\_3\_141,\*\_3\_1415, \*\_3\_\_1415; register int
-\_314,\_31415,\_\_31415,\*\_31,
-
-\_3\_14159,\_\_3\_1415;\*\_3141592654=\_\_31415=2,\_3141592654\[0\]\[\_3141592654
-
-\-1\]=1\[\_\_3141\]=5;\_\_3\_1415=1;do{\_3\_14159=\_314=0,\_\_31415++;for(
-\_31415
-
-\=0;\_31415\<(3,14-4)\*\_\_31415;\_31415++)\_31415\[\_3141\]=\_314159\[\_31415\]=
--
-
-1;\_3141\[\*\_314159=\_3\_14159\]=\_314;\_3\_141=\_3141592654+\_\_3\_1415;\_3\_1415=
-
-\_\_3\_1415 +\_\_3141;for (\_31415 = 3141-
-
-\_\_3\_1415 ; \_31415;\_31415—
-
-,\_3\_141 ++, \_3\_1415++){\_314
-
-\+=\_314\<\<2 ; \_314\<\<=1;\_314+=
-
-\*\_3\_1415;\_31 =\_314159+\_314;
-
-if(\!(\*\_31+1) )\* \_31 =\_314 /
-
-\_\_31415,\_314 \[\_3141\]=\_314 %
-
-\_\_31415 ;\* ( \_3\_\_1415=\_3\_141
-
-)+= \*\_3\_1415 = \*\_31;while(\*
-
-\_3\_\_1415 \>= 31415/3141 ) \*
-
-\_3\_\_1415+= - 10,(\*--\_3\_\_1415
-
-)++;\_314=\_314 \[\_3141\]; if ( \!
-
-\_3\_14159 && \* \_3\_1415)\_3\_14159
-
-\=1,\_\_3\_1415 = 3141-\_31415;}if(
-
-\_314+(\_\_31415 \>\>1)\>=\_\_31415 )
-
-while ( ++ \* \_3\_141==3141/314
-
-)\*\_3\_141--=0 ;}while(\_3\_14159
-
-) ; { char \* \_\_3\_14= "3.1415";
-
-write((3,1), (--\*\_\_3\_14,\_\_3\_14
-
-),(\_3\_14159 ++,++\_3\_14159))+
-
-3.1415926; } for ( \_31415 = 1;
-
-\_31415\<3141- 1;\_31415++)write(
-
-31415% 314-( 3,14),\_3141592654\[
-
-\_31415 \] + "0123456789","314“
-
-\[ 3\]+1)-\_314; puts((\*\_3141592654=0
-
-,\_3141592654)) ;\_314= \*"3.141592";}
-
-© 1989 Roemer B. Lievaart
-
-© 1993 E. Jay Berkenbilt
