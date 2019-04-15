@@ -312,140 +312,113 @@ f = (float) i;
 
 # Arithmetics
 
-- Operators: `+  -  *  /  %`
+- Operators: 
+	* `+` addition 
+	* `-` subtraction 
+	* `*`  multiplication 
+	* `/` division
+	* `%` modulus
 
-Operator precedence
+- Operator precedence
 
-  - **%** **\*** **/**
-  - **+** **-**
+  1. `% * /`
+  2. `+ -`
 
-Parentheses group operations () and change evaluation order
+Parentheses `()` group operations and change evaluation order
 
-**+** addition **–** subtraction **\*** multiplication **/** division
-**%** modulus
 
 # **Compound assignment**
 
-  - C has a short-hand notation for combined arithmetic operation and
-    assignment a += b equals a = a + b a -= b a = a - b a \*= b a = a \*
-    b a /= b a = a / b
-  - For special cases **a+=1** and **a-=1** there are special operators
-    **++** and **--**
+<div class="column">
+  - C has a short-hand notation for combined arithmetic operation and assignment  
+    `a += b <--> a = a+b`   
+    `a -= b <--> a = a-b`   
+    `a *= b <--> a = a*b`  
+    `a /= b <--> a = a/b`  
+  - For special cases `a+=1` and `a-=1` there are special operators  
+  `++` and `--`
 
-**// example of compound assignment**
+</div>
+<div class="column">
+```c
+// example of compound assignment
+int count = 10;
 
-**int count = 10;**
+count += 5; // now count is 15
 
-**count += 5; // now count is 15**
+count /= 3; // and now count is 5
 
-**count /= 3; // and now count is 5**
+// Adding one to count
+count++;
 
-****
+// This is also valid\!
+++count;
+```
+</div>
 
-**// Adding one to count**
+# Arithmetics and assignment examples
+<div class=column>
+```c
+// addition, substraction
+ i = 5 + 2;
+ i = 5 – 2;
+ i += 1; // i = i + 1
+ f -= 3.4;
+ i++; // i = i + 1
+ i--;
 
-**count++;**
+ // multiplication, division
+ i = 5 * 2;
+ i = 5 / 2; // integer division
+ f *= 3.0 / 4.2;
 
-****
+ // modulus
+ m = 25 % 3;
+```
+</div>
+<div class=column>
+```c
+// grouping with ()s
+b = a * (1.3 + (25%3));
 
-**// This is also valid\!**
+// watch out!
+f = 1 + q / (1 - q);
+f = (1 + q) / (1 - q);
 
-**++count;**
+// also functions use ()
+f = r * sin(theta);
+f = (r + p)*sin(theta);
 
-****
+```
+</div>
 
-# **Arithmetics and assignment examples**
-
-## **// addition, substraction**
-
-## **i = 5 + 2;**
-
-## **i = 5 – 2;**
-
-## **i += 1; // i = i + 1**
-
-## **f -= 3.4;**
-
-## **i++; // i = i + 1**
-
-## **i--;**
-
-## ****
-
-## **// multiplication, division**
-
-## **i = 5 \* 2;**
-
-## **i = 5 / 2; // integer division**
-
-## **f \*= 3.0 / 4.2;**
-
-## ****
-
-## **// modulus**
-
-## **m = 25 % 3;**
-
-**// grouping with ()s**
-
-**b = a \* (1.3 + (25%3));**
-
-****
-
-**// watch out\!**
-
-**f = 1 + q / (1 - q);**
-
-**f = (1 + q) / (1 - q);**
-
-****
-
-**// also functions use ()**
-
-**f = r \* sin(theta);**
-
-**f = (r + p)\*sin(theta);**
-
-# **Pointers**
+# Pointers
 
   - A variable is actually a reference to a memory location
   - The contents of the memory block determine the value of a variable
   - Memory addresses can be stored (and manipulated) in pointers
-  - Pointers are one of the key features (and one of the most difficult)
-    of the C language\!
+  - Pointers are one of the key features (and one of the most difficult) of the C language!
 
-# **Pointers**
-
+# Pointers
   - Pointers have a type (**int, char** etc.)
   - Stores a memory address containing data of corresponding type
+  ![](pointer1-01.svg){.center width=100%}  
 
-**int a**
+# Pointers
 
-memory
+  - The address of a variable is obtained with `&`
+  - The value pointed at by a pointer (the contents of the address) can 
+  be accessed by de-referencing the pointer with `*`
+```c
+int *p, a;
+a = 5;
 
-int \*p
+// get address of a
+p = &a;
 
-address
-
-# **Pointers**
-
-  - The address of a variable is obtained with **&**
-  - The value pointed at by a pointer (the contents of the address) can
-    be accessed by de-referencing the pointer with **\***
-
-**int \*p, a;**
-
-****
-
-**a = 5;**
-
-**// get address of a**
-
-**p = \&a;**
-
-**// assign to a the value pointed at by \*p plus 2**
-
-**a = (\*p) + 2; // a=7**
+// assign to a the value pointed at by *p plus 2
+a = (*p) + 2; // a=7
+```
 
 # **Summary**
 
@@ -454,44 +427,42 @@ address
   - Variables and their type, assignment of values
   - Arithmetic operations
 
-# **Control structures and loops**
+# Control structures and loops {.section}
 
-# **Control structures // if – else**
-
-## ****
-
-## ****
-
-  - if (conditional) {TRUE} else {FALSE}
-  - test operators:
-  - negation: \!
+# Control structures // if – else 
+<div class=column>
+  - if (_conditional_) {_TRUE_} else {_FALSE_}
+  - negation: **!**
   - non-zero value == TRUE
+```c
+if (i < 100) {
+    data[i] = x[i] + c
+} else {
+    data[i] = x[i] - c
+}
+```
+  
+</div>
+<div class=column> 
+Test operators:
+```
+== equal to
 
-**== equal to**
+!= not equal to
 
-**\!= not equal to**
+&& AND
 
-**&& AND**
+|| OR
 
-**|| OR**
+< less than
 
-**\< less than**
+> greater than
 
-**\> greater than**
+<= less or equal
 
-**\<= less or equal**
-
-**\>= greater or equal**
-
-**if (i \< 100) {**
-
-**data\[i\] = x\[i\] + c**
-
-**} else {**
-
-**data\[i\] = x\[i\] - c**
-
-**}**
+>= greater or equal
+```
+</div>
 
 # **Control structures // if – else**
 
