@@ -6,7 +6,7 @@
     - integers (**`integer`**)
     - floating point numbers (**`real`**)
     - complex numbers (**`complex`**)
-    - truth values (**`logical`**)
+    - logical values (**`logical`**)
     - variable length character strings (**`character(:)`**)
 - Each of these built-in types may be declared as multi-dimensional arrays
 
