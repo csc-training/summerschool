@@ -1,7 +1,8 @@
 ## List of lecture material to be converted into markdown
+### Initial conversion
 
 - Briefing-and-closing 
-- C                     
+- ~~C~~                     
 - ~~Data-analysis~~  
 - ~~Debugging~~      
 - ~~Fortran~~                 
@@ -15,6 +16,6 @@
 - OpenMP       
 - Parallel-IO        
 - Performance 
-- Version-control
-- Working-with-Unix
+- ~~Version-control~~
+- ~~Working-with-Unix~~
 
