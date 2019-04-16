@@ -1,13 +1,12 @@
-# Introduction to Fortran 95/2003
+# Introduction to Fortran 95/2003 {.section}
 
-# Getting started with Fortran
+# Getting started with Fortran {.section}
 
 # Outline
 
 - Fortran as a language
     - look and feel
     - from code to program
-
 - Variables and operators
     - declare, assign
     - arrays
@@ -15,7 +14,7 @@
     - branches
     - loops
 
-# Fortran as a language
+# Fortran as a language {.section}
 
 # Why learn Fortran?
 
@@ -43,36 +42,15 @@
   features, C-bindings
     - ”Fortran 95/2003” is the current *de facto* standard
 
-The latest standard is Fortran 2008 (2010): a minor revision
-    - Most notable addition: Fortran coarray syntax
-    - Compiler support nearly complete
-    - The next revision: Fortran 2015
+- The latest standard is Fortran 2018: a minor revision
+    - Fortran coarray improvements
+    - C interoperability improvements
 
 # Compiling and linking
 
-compiler
-
-linker
-
-**source code file**
-
-(.f, .F, .f90, .F90)
-
-modules
-
-object code (.o, .so)
-
-libraries
-
-**executable**
-
-compiler output
-
-(optional)
-
-linker output
-
-(optional)
+<center>
+![](img/fortran_compile.png)
+</center>
 
 # Transition from code to a program
 
@@ -80,6 +58,7 @@ linker output
 - In more complex cases (multiple sources)
     - Compile each source code file (.f90) into an object file (.o)
     - Link object files into a binary and execute the binary
+
 ```console
 $ gfortran -c main.f90
 $ gfortran -c sub.f90
@@ -199,7 +178,7 @@ character(len=80), dimension(24) :: screen
 ```
 By default, Fortran indexing starts from 1
 
-# Control structures
+# Control structures {.section}
 
 # Conditionals (if-else)
 
@@ -275,7 +254,7 @@ end do
  read(*,*) x
  do while (x > 0) 
    totalsum = totalsum + x read(*,*) x 
-  end do
+ end do
 ```
 
 # Loops example 2
