@@ -1,41 +1,21 @@
-# Procedures and modules
+---
+title: Procedures and modules
+lang:  en
+---
 
 # Outline
 
-- Structured programming
-- Modules
 - Procedures: functions and subroutines
+- Modules
 - Interfaces
-
-# Structured programming
-
-- Structured programming based on program sub-units (*functions*,
-  *subroutines* and *modules*) enables
-    - Testing and debugging separately
-    - Re-use of code
-    - Improved readability
-    - Re-occurring tasks
-- The key to success is in well defined data structures and scoping, which
-  lead to clean procedure interfaces
-
-# Modular programming
-
-- Modularity means dividing a program into minimally dependent *modules*
-    - Enables division of the program into smaller self-contained units
-- Fortran modules enable
-    - Global definitions of procedures, variables and constants
-    - Compilation-time *error checking*
-    - Hiding *implementation details*
-    - *Grouping* routines and data structures
-    - Defining *generic procedures* and custom operators
 
 # What are procedures?
 
 - Procedure is block of code that can be called from other code.
 - Calling code passes data to procedure via arguments
 - Fortran has two types of procedures: *subroutines* and *functions*
-- Subroutines pass data back via arguments
-- Functions return a value
+    - Subroutines pass data back via arguments
+    - Functions return a value
 
 # Procedure declarations
 
@@ -44,11 +24,12 @@
 
 Declaration:
 
-```
+```fortran
 subroutine sub(arg1, arg2, ...)
   [declarations]
   [statements]
-end subroutine sub**
+
+end subroutine sub
 ```
 Use as:
 
@@ -59,9 +40,9 @@ Use as:
 
 Declaration:
 
-```
+```fortran
 [type] function func(arg1, arg2, ...) & 
-        & [result(val)]
+       &  [result(val)]
   [declarations]
   [statements]
 end function func
@@ -76,30 +57,34 @@ Use as:
 
 <div class="column">
 ```fortran
-subroutine dist(x, y, d)
-  implicit none
-  real :: x, y, d
-  d = sqrt(x**2 + y**2)
-end subroutine dist
-
 program do_something
   ...
   call dist(x, y, r)
   ...
+
+  contains  
+    subroutine dist(x, y, d)
+      implicit none
+      real :: x, y, d
+      d = sqrt(x**2 + y**2)
+      end subroutine dist
+end program
 ```
 </div>
 <div class="column">
 ```fortran
-real function dist(x, y)
-  implicit none
-  real :: x, y
-  dist = sqrt(x**2 + y**2)
-end function dist
-
 program do_something
   ...
   r = dist(x, y)
   ...
+
+  contains
+    real function dist(x, y)
+      implicit none
+      real :: x, y
+      dist = sqrt(x**2 + y**2)
+    end function dist
+end program
 ```
 </div>
 
@@ -179,109 +164,159 @@ subroutine foo2(x)
 ```
 </div>
 
-- In **foo1** variable **i** starts always from 0 and gets value 1
-- In **foo2** variable **i** gets values 1, 2, 3, … in each successive
+- In `foo1` variable **i** starts always from 0 and gets value 1
+- In `foo2` variable **i** gets values 1, 2, 3, … in each successive
   call
 
 # Should I use subroutine or function?
 
-- Main difference is that functions can be used in expressions: **`r =
-  dist(x1, y1) + dist(x2, y2)`**
+- Main difference is that functions can be used in expressions: 
+
+```fortran
+r = dist(x1, y1) + dist(x2, y2)
+```
+
 - Recommendation as good programming practice:
     - Use functions for computing value based on input
     - Use subroutines for performing operation that changes some of the
       inputs
 
-# Procedure types, modules
+# Modular programming
 
-# Procedure types
+- By now, we have used *internal* procedures and the whole application is
+  implemented in a single file.
+- Larger applications should be divided into small, minimally dependent *modules*
+    - Aim is to build complex behaviour from simple self-contained components
+    - Modules can be tested and debugged separately
+    - Modules enable easier re-use of code
 
-- There are four procedure types in Fortran 90: *intrinsic, external*,
-  *internal* and *module* procedures
-- Procedure types differ in
-    - Scoping, i.e. what data and other procedures a procedure can access
-    - Interface type, explicit or implicit
-- Compiler can check the argument types of the at compile time only if the
-  interface is explicit!
+# Fortran modules
 
-# Implicit and explicit procedure types
+- For most use cases, procedures should be implemented in Fortran modules
+- Modules can contains also variables, constants and data structure definitions
+- Fortran modules enable
+    - Hiding *implementation details*
+    - *Grouping* routines and data structures
+    - Defining *generic procedures* and custom operators
 
-- The interfaces of the intrinsic, internal and module procedures are
-  *explicit*
-- The interfaces of the external procedures, such as many library
-  subroutines, are *implicit*. You can write an explicit interface to
-  those, though.
-- Intrinsic procedures are the procedures defined by the programming
-  language itself, such as **INTRINSIC SIN**
+# Module defition and usage
 
-# Module procedures and variables
+- Module is defined with the `MODULE` keyword and used from main program 
+  or other module with the `USE` keyword
+- Depending on the complexity of module, one file can contain a single or 
+  multiple module definitions
+    - Only related modules should be grouped into the same file
+
+# Module example
 
 <div class="column">
 **Declaration**
 ```fortran
-MODULE check
-  IMPLICIT NONE
-  INTEGER, PARAMETER :: &
-    longint = SELECTED_INT_KIND(8)
-CONTAINS
-  FUNCTION check_this(x) RESULT(z)
-   INTEGER(longint):: x, z
-   ...
-  END FUNCTION
-END MODULE check
+module geometry
+  implicit none
+  real, parameter :: pi = 3.14
+
+  contains
+    real function dist(x, y)
+      implicit none
+      real :: x, y
+      dist = sqrt(x**2 + y**2)
+    end function dis
+
+end module geometry
 ```
 </div>
 <div class="column">
 **Usage**
 ```fortran
-PROGRAM testprog
-  USE check
-  IMPLICIT NONE
-  INTEGER(KIND=longint) :: x, test
-  test = check_this(x)
-END PROGRAM testprog
+program testprog
+  use geometry
+  implicit none
+  real :: x=1.2 + pi, y=4.5, d
+  d = dist(x, y)
+end program testprog
+```
+```fortran
+module testmod
+  use geometry
+  contains
+    function test_func()
+      implicit none
+      real :: x=-2.0, y=3.3
+      test_func = dist(x, y) + pi
+    end function test_func
+    ...
 ```
 </div>
+
+# Building modules
+
+- When working with modules, each source file needs to be compiled separately
+
+```console
+$ gfortran -c mymod.f90
+$ gfortran -c myprog.f90
+```
+- When compiling the module, a `.mod` is produced for each module defined in `mymod.f90`.
+- When compuling the main program compiler aborts with error if `.mod` is not found for each 
+  module **use**d
+- In order to produce executable the object files of module and main program need to be 
+  linked
+```console
+$ gfortran -o myexe mymod.o myprog.o
+```
+
 
 # Visibility of module objects
 
 - Variables and procedures in *modules* can be **PRIVATE** or **PUBLIC**
-
     - **PUBLIC** visible for all program units using the module (the
     default)
     - **PRIVATE** will hide the objects from other program units 
     
 
 ``` fortran
-REAL :: x,y 
-PRIVATE :: x 
-PUBLIC :: y ! Or 
-REAL, PRIVATE :: x 
-REAL, PUBLIC :: y
+module visibility
+  real :: x,y 
+  real :: x 
+  public :: y ! Or 
+  real, private :: x 
+  real, public :: y
+end module
 ```
+
+# Other procedure types
+
+- In addition to *internal* and *module* procedures Fortran has *intrinsic* and 
+  *external* procedures
+- Intrinsic procedures are the procedures defined by the programming
+  language itself, such as **SIN**
+- External procedures should nowadays be avoided
+    - can be needed when working with libraries (e.g BLAS and LAPACK) or with old 
+      F77 code
+    - Compiler cannot check the argument types without explicit **interface** block
 
 # Internal procedures
 
 - Each program unit (program/subroutine/function) may contain internal
-  procedures 
-  
+  procedures   
   
 ``` fortran
-SUBROUTINE mySubroutine 
+subroutine mySubroutine 
   ... 
-  CALL myInternalSubroutine
+  call myInternalSubroutine
   ... 
-CONTAINS 
-  SUBROUTINE myInternalSubroutine
+contains
+  subroutine myInternalSubroutine
     ... 
-  END SUBROUTINE myInternalSubroutine
-END SUBROUTINE mySubroutine
+  end subroutine myInternalSubroutine
+end subroutine mySubroutine
 ```
 
 # Internal procedures
 
-- Declared at the end of a program unit after the **CONTAINS** statement
-    - Nested **CONTAINS** statements are not allowed
+- Declared at the end of a program unit after the **contains** statement
+    - Nested **contains** statements are not allowed
 - Variable scoping:
     - Parent unit’s variables and objects are accessible
     - Parent unit’s variables are overlapped by local variables with the
@@ -289,44 +324,17 @@ END SUBROUTINE mySubroutine
 - Can be called only from declaring program unit
 - Often used for ”small and local, convenience” procedures
 
-# Internal procedures: example
-
-``` fortran
-SUBROUTINE parent()
-  IMPLICIT NONE
-  INTEGER :: i,j
-  i = 1; j = 1
-  CALL child()
-  ! After subroutine call i = 2 and j = 1
-CONTAINS
-  SUBROUTINE child()
-    IMPLICIT NONE
-    INTEGER :: j
-    i = i + 1 ! Variable i is from the scope of parent
-    j = 0 ! Variable j has local scope
-  END SUBROUTINE child
-END SUBROUTINE parent
-```
-
-# External procedures
-
-- Declared in a separate program unit
-    - Referred to with the **EXTERNAL** keyword
-    - Compiled separately and linked to the final executable
-- Avoid using them within a program, module procedures provide much
-  better compile time error checking
-- External procedures are often needed when using
-    - procedures written with different programming language
-    - library routines (e.g. BLAS and LAPACK libraries)
-    - old F77 subroutines
-
 # Interfaces
 
-- For external procedures, interfaces determine the type and
-  properties of arguments and return values
-- Defined by an **INTERFACE** block: interface *interface-body* **end
-  interface**
-- The ***interface-body*** matches the subprogram header
+- For external procedures, compiler cannot check the type and
+  properties of arguments and return values 
+- An explicit **interface** block can be defined to allow compiler checks
+```fortran
+interface
+  interface-body
+end interface
+```
+- The ***interface-body*** matches the procedure header
     - position, rank and type of arguments
     - return value type and rank (for functions)
 
@@ -334,12 +342,12 @@ END SUBROUTINE parent
 
 <div class="column">
 ``` fortran
-INTERFACE
-  SUBROUTINE not_dangerous(a, b, c)
-    INTEGER :: a, b, c
-  END SUBROUTINE not_dangerous
-END INTERFACE
-INTEGER :: x, y, z
+interface
+  subroutine not_dangerous(a, b, c)
+    integer :: a, b, c
+  end subroutine not_dangerous
+end interface
+integer :: x, y, z
 x=1; y=1; z=1
 ! Call external subroutine without
 ! an interface
@@ -350,10 +358,10 @@ call not_dangerous(x,y,z)
 ```
 </div>
 <div class="column">
-- Wrong calling arguments to **EXTERNAL** procedures may lead to
+- Wrong calling arguments to **external** procedures may lead to
   errors during the executable linking phase or even when the
   executable is being run
-- It is highly recommended to construct **INTERFACE** blocks for any
+- It is highly recommended to construct **interface** blocks for any
   external procedures used
 </div>
 
@@ -361,21 +369,21 @@ call not_dangerous(x,y,z)
 
 ``` fortran
 ! LU decomposition from LAPACK
-INTERFACE
-  SUBROUTINE DGETRF(M, N, A, LDA, IPIV, INFO)
-    INTEGER :: INFO, LDA, M, N
-    INTEGER:: IPIV(*)
-    DOUBLE PRECISION :: A(LDA,*)
-  END SUBROUTINE DGETRF
-END INTERFACE
+interface
+  subroutine dgetrf(M, N, A, LDA, IPIV, INFO)
+    integer :: INFO, LDA, M, N
+    integer:: IPIV(*)
+    double precision :: A(LDA,*)
+  end subroutine dgetrf
+end interface
 ! Euclidean norm from BLAS
-INTERFACE
-  FUNCTION DNRM2(N, X, INCX)
-    INTEGER :: N, INCX
-    DOUBLE PRECISION :: X(*)
-    DOUBLE PRECISION :: DNRM2
-  END FUNCTION DNRM2
-END INTERFACE
+interface
+  function dnrm2(N, X, INCX)
+    integer :: N, INCX
+    double precision :: X(*)
+    double precision :: dnrm2
+  end function dnrm2
+end interface
 ```
 
 
@@ -383,14 +391,14 @@ END INTERFACE
 
 - Global variables can be accessed from any program unit
 
-- Module variables with **SAVE** attribute provide controllable way to define
+- Module variables with **save** attribute provide controllable way to define
   and use global variables
 ``` fortran
-MODULE commons 
-  INTEGER, PARAMETER :: r = 0.42
-  INTEGER, SAVE :: n, ntot
-  REAL, SAVE :: abstol, reltol
-END MODULE commons
+module commons 
+  integer, parameter :: r = 0.42
+  integer, save :: n, ntot
+  real, save :: abstol, reltol
+end module commons
 ```
 - Explicit interface: type checking, limited scope
 - Generally, use of global variables is not recommended
