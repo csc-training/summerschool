@@ -144,7 +144,7 @@ lang:   en
 # Send operation
 
 
-`MPI_Send(buffer, count, datatype, dest, tag, comm)`
+`MPI_Send`( `buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
 : `buffer`{.input} 	The data to be sent
 : `count`{.input}	Number of elements in buffer
 : `datatype`{.input}	Type of elements in buffer (see later slides)
@@ -157,6 +157,17 @@ lang:   en
 
 
 # Receive operation
+
+`MPI_Recv`(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
+
+: `buffer`{.output}		Buffer for storing received data 
+: `count`{.input}		Number of elements in buffer, not the number of element that are actually received 
+: `datatype`{.input} 	Type of each element in buffer
+: `source`{.input} 		Sender of the message
+: `tag`{.input} 			Number identifying the message 
+: `comm`{.input}  		Communicator
+: `status`{.output} 		Information on the received message
+: `error`{.output}		As for send operation
 
 
 # MPI datatypes
@@ -187,9 +198,10 @@ lang:   en
 
 # Combined send & receive 
 
-**MPI_Sendrecv(sendbuf, sendcount, sendtype, dest, 
-sendtag, recvbuf, recvcount, recvtype, 
-source, recvtag, comm, status)**
+**`MPI_Sendrecv`(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `dest`{.input}, 
+`sendtag`{.input}, `recvbuf`{.input}, `recvcount`{.input}, `recvtype`{.input}, 
+`source`{.input}, `recvtag`{.input}, `comm`{.input}, `status`{.output})**
+
 
 * Sends one message and receives another one, with a single command
 	- Reduces risk for deadlocks
@@ -199,17 +211,52 @@ source, recvtag, comm, status)**
 
 # Special parameter values 
 
-**MPI_Send(buffer, count, datatype, dest, tag, comm)**     
-` `  
-    
+**`MPI_Send`( `buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})**
+` `    
      
-| Parameter | Special value   | Implication				   |
-| ----------| ----------------|--------------------------------------------|
-| dest	    | `MPI_PROC_NULL` | Null destination, no operation takes place |
+| Parameter 	    | Special value   | Implication				   |
+| ----------	    | ----------------|--------------------------------------------|
+| `dest`{.input}   | `MPI_PROC_NULL` | Null destination, no operation takes place |
 
 # Special parameter values
 
-**MPI_Recv(buffer, count, datatype, source, tag, comm, status)**
+**`MPI_Recv`(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})** 
+` `
 
-# Testing
+| Parameter 	    | Special value   	 | Implication				      |
+| ----------	    | ----------------	 |--------------------------------------------|
+| `source`{.input}  | `MPI_PROC_NULL` 	 | No sender=no operation takes place         |
+| 	    	    | `MPI_ANY_SOURCE`	 | Receive from any sender		      |
+| `tag`{.input}     | `MPI_ANY_TAG` 	 | Receive messages with any tag   	      |
+| `source`{.output} | `MPI_STATUS_IGNORE`| Do not store any status data		      |
+
+# Status parameter 
+
+- The status parameter in `MPI_Recv` contains information about the received data after the call has completed, e.g.
+	* Number of received elements
+	* Tag of the received message 
+	* Rank of the sender
+- In C the status parameter is a struct
+- In Fortran it is an integer array of size `MPI_STATUS_SIZE`
+
+# Status parameter
+
+- Received elements  
+Use the function  
+**`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
+- Tag of the received message  
+C: 		**status.MPI_TAG**  
+Fortran: 	**status(MPI_TAG)**
+- Rank of the sender  
+C: 		**status.MPI_SOURCE**  
+Fortran: 	**status(MPI_SOURCE)**
+
+# Summary 
+
+- Point-to-point communication = messages are sent between two MPI processes
+- Point-to-point operations enable any parallel communication pattern (in principle)
+	* `MPI_Send` and `MPI_Recv`
+	* `MPI_Sendrecv`
+- Employing special argument values may simplify the implementations of certain communication patterns
+- Status parameter of `MPI_Recv` contains information about the message after the receive is completed
 
