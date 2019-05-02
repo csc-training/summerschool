@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 907.1896 432.22354"
+   height="432.22354"
+   width="907.18964"
+   xml:space="preserve"
+   id="svg2"
+   version="1.1"
+   sodipodi:docname="receive_slide.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="981"
+     id="namedview104"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.83356662"
+     inkscape:cx="309.21037"
+     inkscape:cy="288.07298"
+     inkscape:window-x="1920"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g14" /><metadata
+     id="metadata8"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs6"><clipPath
+       id="clipPath18"
+       clipPathUnits="userSpaceOnUse"><path
+         style="clip-rule:evenodd"
+         id="path16"
+         d="M 0,-0.4 H 793.6 V 446 H 0 Z"
+         inkscape:connector-curvature="0" /></clipPath></defs><g
+     transform="matrix(1.3333333,0,0,-1.3333333,-64.692837,456.98514)"
+     id="g10"><g
+       id="g12"><g
+         clip-path="url(#clipPath18)"
+         id="g14"><g
+           id="g22"><text
+             id="text26"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,47.6,326.1)"><tspan
+               id="tspan24"
+               y="0"
+               x="0 13.1838 26.367599 39.551399 52.735199 65.918999 79.102798 92.286598 105.4704">MPI_Recv(</tspan></text>
+</g><g
+           id="g28"><text
+             id="text32"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#0070c0;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,166.4,326.1)"><tspan
+               id="tspan30"
+               y="0"
+               x="0 13.1838 26.367599 39.551399 52.735199 65.918999">buffer</tspan></text>
+</g><g
+           id="g34"><text
+             id="text38"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,245.6,326.1)"><tspan
+               id="tspan36"
+               y="0"
+               x="0 13.1838">, </tspan></text>
+</g><g
+           id="g40"><text
+             id="text44"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,272,326.1)"><tspan
+               id="tspan42"
+               y="0"
+               x="0 13.1838 26.367599 39.551399 52.735199">count</tspan></text>
+</g><g
+           id="g46"><text
+             id="text50"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,338,326.1)"><tspan
+               id="tspan48"
+               y="0"
+               x="0 13.1838">, </tspan></text>
+</g><g
+           id="g52"><text
+             id="text56"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,364.4,326.1)"><tspan
+               id="tspan54"
+               y="0"
+               x="0 13.1838 26.367599 39.551399 52.735199 65.918999 79.102798 92.286598">datatype</tspan></text>
+</g><g
+           id="g58"><text
+             id="text62"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,470,326.1)"><tspan
+               id="tspan60"
+               y="0"
+               x="0 13.1838">, </tspan></text>
+</g><g
+           id="g64"><text
+             id="text68"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,496.3,326.1)"><tspan
+               id="tspan66"
+               y="0"
+               x="0 13.2714 26.367599 39.551399 52.8228 65.918999">source</tspan></text>
+</g><g
+           id="g70"><text
+             id="text74"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,575.5,326.1)"><tspan
+               id="tspan72"
+               y="0"
+               x="0 13.2714">, </tspan></text>
+</g><g
+           id="g76"><text
+             id="text80"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,601.9,326.1)"><tspan
+               id="tspan78"
+               y="0"
+               x="0 13.1838 26.367599">tag</tspan></text>
+</g><g
+           id="g82"><text
+             id="text86"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,641.5,326.1)"><tspan
+               id="tspan84"
+               y="0"
+               x="0 13.1838">, </tspan></text>
+</g><g
+           id="g88"><text
+             id="text92"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,667.9,326.1)"><tspan
+               id="tspan90"
+               y="0"
+               x="0 13.1838 26.367599 39.551399 52.735199">comm<tspan
+   style="fill:#000000;fill-opacity:1"
+   id="tspan911">,</tspan></tspan></text>
+</g><g
+           id="g94"><text
+             id="text98"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#0070c0;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,166.7,301)"><tspan
+               id="tspan96"
+               y="0"
+               x="0 13.1838 26.367599 39.551399 52.735199 65.918999">status</tspan></text>
+</g><g
+           id="g100"><text
+             id="text104"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,245.9,301)"><tspan
+               id="tspan102"
+               y="0"
+               x="0">)</tspan></text>
+</g><g
+           id="g106"><text
+             id="text110"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito-Bold;writing-mode:lr-tb;fill:#0070c0;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,87.4,262.5)"><tspan
+               id="tspan108">buffer</tspan></text>
+</g><g
+           id="g112"><text
+             id="text116"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,262.5)"><tspan
+               id="tspan114">Buffer for storing received data</tspan></text>
+</g><g
+           id="g118"><text
+             id="text122"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,87.4,231.8)"><tspan
+               id="tspan120"
+               y="0"
+               x="0 9.1104002 20.892599 32.5872 44.194199">count</tspan></text>
+</g><g
+           id="g124"><text
+             id="text128"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,231.8)"><tspan
+               id="tspan126">Number of elements in buffer,</tspan></text>
+</g><g
+           id="g130"><text
+             id="text134"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,206.6)"><tspan
+               id="tspan132">not the number of elements that are actually received</tspan></text>
+</g><g
+           id="g136"><text
+             id="text140"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,87.3,175.9)"><tspan
+               id="tspan138"
+               y="0"
+               x="0 11.7822 22.491301 29.893499 40.6026 48.18 58.5606 70.342796">datatype</tspan></text>
+</g><g
+           id="g142"><text
+             id="text146"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,175.9)"><tspan
+               id="tspan144">Type of each element in buffer</tspan></text>
+</g><g
+           id="g148"><text
+             id="text152"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,87.4,145.1)"><tspan
+               id="tspan150"
+               y="0"
+               x="0 8.6942997 20.4765 32.258701 39.6609 48.837002">source</tspan></text>
+</g><g
+           id="g154"><text
+             id="text158"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,145.1)"><tspan
+               id="tspan156"
+               y="0"
+               x="0 10.074 20.9583 32.455799 44.040901 54.925201 62.612099 67.5177 79.102798 85.782303 90.753601 98.046303 109.5438 120.4281 125.3337 142.9194 153.8037 162.3885 171.0609 181.55099 191.75639">Sender of the message</tspan></text>
+</g><g
+           id="g160"><text
+             id="text164"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,87.4,114.3)"><tspan
+               id="tspan162"
+               y="0"
+               x="0 7.4022002 18.1989">tag</tspan></text>
+</g><g
+           id="g166"><text
+             id="text170"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,114.3)"><tspan
+               id="tspan168">Number identifying the message</tspan></text>
+</g><g
+           id="g172"><text
+             id="text176"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,87.4,83.6)"><tspan
+               id="tspan174"
+               y="0"
+               x="0 9.1104002 20.892599 38.6973">comm</tspan></text>
+</g><g
+           id="g178"><text
+             id="text182"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,83.6)"><tspan
+               id="tspan180"
+               y="0"
+               x="0 11.7822 23.3673 40.952999 58.429199 69.926697 81.424202 86.417397 95.615402 105.9084 113.1135 124.6986">Communicator</tspan></text>
+</g><g
+           id="g184"><text
+             id="text188"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito-Bold;writing-mode:lr-tb;fill:#0070c0;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,87.4,52.8)"><tspan
+               id="tspan186"
+               y="0"
+               x="0 8.4972 15.8994 26.6085 34.185902 45.880501">status</tspan></text>
+</g><g
+           id="g190"><text
+             id="text194"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,52.8)"><tspan
+               id="tspan192">Information on the received message</tspan></text>
+</g><g
+           id="g196"><text
+             id="text200"
+             style="font-variant:normal;font-weight:bold;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito-Bold;writing-mode:lr-tb;fill:#0070c0;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,87.4,22.1)"><tspan
+               id="tspan198"
+               y="0"
+               x="0 10.9938 18.768299 26.367599 38.062199">error</tspan></text>
+</g><g
+           id="g202"><text
+             id="text206"
+             style="font-variant:normal;font-weight:normal;font-size:21.89999962px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             transform="matrix(1,0,0,-1,206.4,22.1)"><tspan
+               id="tspan204">As for the send operation</tspan></text>
+</g></g></g></g></svg>

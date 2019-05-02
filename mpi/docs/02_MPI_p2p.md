@@ -22,7 +22,7 @@ lang:   en
 
 <div class="column">
 
-![](communication-schematic.svg){.center width=50%}
+![](images/communication-schematic.svg){.center width=50%}
 
 </div>
 
@@ -42,7 +42,7 @@ lang:   en
 # Case study: parallel sum 
 
 <div class=column>
-![](case_study_left-01.svg){.center width=45%}
+![](images/case_study_left-01.svg){.center width=45%}
 </div>
 
 <div class=column>
@@ -63,14 +63,14 @@ lang:   en
 # Case study: parallel sum 
 
 <div class=column>
-![](case_study_left-02.svg){.center width=45%}
+![](images/case_study_left-02.svg){.center width=45%}
 </div>
 
 <div class=coulumn>
 
  Step 1.1: Receive operation in scatter
 
- ![](case_study_right-01.svg){.center width=50%}
+ ![](images/case_study_right-01.svg){.center width=50%}
 
   P1 issues MPI_Recv to receive half of the array from P0
 </div>
@@ -80,24 +80,24 @@ lang:   en
 # Case study: parallel sum 
 
 <div class=column>
-![](case_study_left-03.svg){.center width=45%}
+![](images/case_study_left-03.svg){.center width=45%}
 </div>
 <div class=coulumn>
  Step 1.2: Send operation in scatter 
 
-![](case_study_right-02.svg){.center width=50%}
+![](images/case_study_right-02.svg){.center width=50%}
 
  P0 issues an MPI_Send to send the lower part of the array to P1
 </div>
 # Case study: parallel sum 
 
 <div class=column>
-![](case_study_left-04.svg){.center width=45%}
+![](images/case_study_left-04.svg){.center width=45%}
 </div>
 <div class=coulumn>
  Step 2: Compute the sum in parallel
 
-![](case_study_right-03.svg){.center width=50%}
+![](images/case_study_right-03.svg){.center width=50%}
 
  Both P0 & P1 compute their partial sums and store them locally
 </div>
@@ -105,25 +105,25 @@ lang:   en
 # Case study: parallel sum 
 
 <div class=column>
-![](case_study_left-05.svg){.center width=45%}
+![](images/case_study_left-05.svg){.center width=45%}
 </div>
 
 <div class=coulumn>
  Step 3.1: Receive operation in reduction
 
-![](case_study_right-04.svg){.center width=50%}
+![](images/case_study_right-04.svg){.center width=50%}
 
  P0 issues an MPI_Recv operation for receiving P1’s partial sum 
 </div>
 # Case study: parallel sum 
 
 <div class=column>
-![](case_study_left-06.svg){.center width=45%}
+![](images/case_study_left-06.svg){.center width=45%}
 </div>
 <div class=coulumn>
  Step 3.2: send operation in reduction
 
-![](case_study_right-05.svg){.center width=50%}
+![](images/case_study_right-05.svg){.center width=50%}
 
  P1 sends the partial sum to P0
 </div>
@@ -131,12 +131,12 @@ lang:   en
 # Case study: parallel sum 
 
 <div class=column>
-![](case_study_left-07.svg){.center width=45%}
+![](images/case_study_left-07.svg){.center width=45%}
 </div>
 <div class=coulumn>
  Step 3.3: compute the final answer
 
-![](case_study_right-06.svg){.center width=50%}
+![](images/case_study_right-06.svg){.center width=50%}
 
  P0 computes the total sum
 </div>
@@ -192,7 +192,7 @@ lang:   en
 
 # Typical point-to-point communication patterns
 
-![](comm_patt.svg){.center width=100%}
+![](images/comm_patt.svg){.center width=100%}
 
 * Incorrect ordering of sends/receives may give a rise to a deadlock (or unnecessary idle time)
 

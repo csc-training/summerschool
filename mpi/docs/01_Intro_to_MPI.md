@@ -7,7 +7,7 @@ lang:   en
 
 # Processes and threads
 
-![](processes-threads.svg){.center width=100%}
+![](images/processes-threads.svg){.center width=100%}
 
 <div class="column">
 
@@ -31,7 +31,7 @@ lang:   en
 
 # Processes and threads
 
-![](processes-threads.svg){.center width=100%}
+![](images/processes-threads.svg){.center width=100%}
 
 
 <div class="column">
@@ -129,7 +129,7 @@ Fortran`---> use mpi`
 - Call **MPI_Finalize** before exiting from the main program
 
 # Presenting syntax
-![](presenting_syntax.svg){.center width=90%}
+![](images/presenting_syntax.png){.center width=90%}
 
 # First five MPI commands
 
@@ -137,16 +137,16 @@ Fortran`---> use mpi`
 **MPI_Init()**
 - Information about the communicator  
 	* **MPI_Comm_size(comm, size)**  
-	*comm*		communicator  
-	*size*		number of processes in the communicator      
+	`comm`{.input}	communicator  
+	`size`{.output}		number of processes in the communicator      
 	* **MPI_Comm_rank(comm, rank)**  
-	*comm*		communicator   
-	*rank*		rank of this process
+	`comm`{.input}	communicator   
+	`rank`{.output}	rank of this process
 
 # First five MPI commands
 
 - Synchronize processes  
-**MPI_Barrier(comm)**	
+**MPI_Barrier(`comm`{.input})**	
 - Finalize MPI environment  
 **MPI_Finalize()**
 
