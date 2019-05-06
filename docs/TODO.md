@@ -9,10 +9,10 @@
 - HPC-application-design  
 - Hybrid-programming  
 - Intro-to-HPC        
-- MPI-I   
-- MPI-II  
-- MPI-III  
-- MPI-IV   
+- ~~MPI-I~~ 
+- ~~MPI-II~~
+- ~~MPI-III~~  
+- ~~MPI-IV~~ 
 - OpenMP       
 - Parallel-IO        
 - Performance 
