@@ -13,7 +13,7 @@
 - ~~MPI-II~~
 - ~~MPI-III~~  
 - ~~MPI-IV~~ 
-- OpenMP       
+- ~~OpenMP~~       
 - Parallel-IO        
 - Performance 
 - ~~Version-control~~
