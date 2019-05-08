@@ -14,7 +14,7 @@
 - ~~MPI-III~~  
 - ~~MPI-IV~~ 
 - ~~OpenMP~~       
-- Parallel-IO        
+- ~~Parallel-IO~~        
 - Performance 
 - ~~Version-control~~
 - ~~Working-with-Unix~~

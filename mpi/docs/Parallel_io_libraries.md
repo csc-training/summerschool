@@ -48,7 +48,7 @@ lang:   en
 
 * HDF5 installation includes command line tools `h5ls` and `h5dump` for investigating contents of HDF5 files
 
-```bash
+```commandline
 $ h5ls example.hdf5 
 AtomicDensityMatrices    Dataset {1, 11946}
 AtomicNumbers            Dataset {158}
@@ -56,7 +56,7 @@ AtomicNumbers            Dataset {158}
 CartesianPositions       Dataset {158, 3}
 Dimensions               Group ........
 ```
-```bash
+```commandline
 $ h5dump -a Parameters/energyunit example.hdf5
 …
 DATA {
