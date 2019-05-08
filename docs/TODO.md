@@ -7,7 +7,7 @@
 - ~~Debugging~~      
 - ~~Fortran~~                 
 - HPC-application-design  
-- Hybrid-programming  
+- ~~Hybrid-programming~~  
 - Intro-to-HPC        
 - ~~MPI-I~~ 
 - ~~MPI-II~~
