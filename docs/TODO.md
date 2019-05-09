@@ -7,7 +7,7 @@
 - ~~Fortran~~                 
 - HPC-application-design  
 - ~~Hybrid-programming~~  
-- Intro-to-HPC        
+- ~~Intro-to-HPC~~        
 - ~~MPI-I~~ 
 - ~~MPI-II~~
 - ~~MPI-III~~  

@@ -7,7 +7,7 @@ lang:   en
 
 
 # Hands up - is this familiar?
-![](familiar.png){.center width=50%}
+![](images/familiar.png){.center width=50%}
 
 
 # Solution: Version control
@@ -36,7 +36,7 @@ the work is done for you by the version control system
   * e.g. it does what it can and shows you the places where it needs manual intervention
 
 # Centralized vs. Distributed
-![](git_cent_dist.svg){.center width=80%}
+![](images/git_cent_dist.svg){.center width=80%}
 
 # Remote repositories
 
@@ -70,8 +70,8 @@ Most modern and widely used combo: Git + Github
 - These days Github account also serves as your “code CV”  
   
   
-![](coding_cv_1.png){.center}   
-![](coding_cv_2.png){.center}
+![](images/coding_cv_1.png){.center}   
+![](images/coding_cv_2.png){.center}
 
 # Initializing repositories
 - Git needs to be told that “start operating in this folder”
@@ -86,10 +86,10 @@ Most modern and widely used combo: Git + Github
 
 - Create a new remote repository in GitHub  
 
-![](new_repo.png)
+![](images/new_repo.png)
 
 - Clone (=download) it: `git clone https://github.com/user/repo.git`   
-![](clone_1.png){width=30%} \	 ---> \ ![](clone_2.png){width=30%}
+![](images/clone_1.png){width=30%} \	 ---> \ ![](images/clone_2.png){width=30%}
 
 # Forking & cloning repositories
 
@@ -99,7 +99,7 @@ Most modern and widely used combo: Git + Github
     without affecting the original project.
   - Once forked, we can again clone the repository to ourselves
 
-![](fork.jpg){.center width=80%}
+![](images/fork.jpg){.center width=80%}
 
 # Forking & cloning repositories
 
@@ -108,7 +108,7 @@ Most modern and widely used combo: Git + Github
   * Fork `https://github.com/csc-training/summerschool`
   * `git clone https://github.com/user/summerschool`  
 
-![](clone_fork.png){.center}
+![](images/clone_fork.png){.center}
 
 # Git Workflow
 

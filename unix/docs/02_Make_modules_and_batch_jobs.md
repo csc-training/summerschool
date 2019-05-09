@@ -18,7 +18,7 @@ lang:   en
 - Compilation and linking becomes complicated and prone to errors
 </div>
 <div class="column">
-![](Deptree.png){width=700px}
+![](images/Deptree.png){width=80%}
 </div>
 # Simple Makefile example
 
