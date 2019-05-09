@@ -402,7 +402,7 @@ f = (r + p)*sin(theta);
 # Pointers
   - Pointers have a type (**int, char** etc.)
   - Stores a memory address containing data of corresponding type
-  ![](pointer1-01.svg){.center width=100%}  
+  ![](images/pointer1-01.svg){.center width=100%}  
 
 # Pointers
 
@@ -780,7 +780,7 @@ ptr->price = 0.89;
   * But functions do not have to return anything
 
 Function definitions are of form
-```
+```c
 type func-name(param-list)
 {
 
@@ -797,7 +797,7 @@ type func-name(param-list)
 # main function
 
 - Every C program has the main function with definition
-```
+```c
 int main(int argc, char *argv[])
 {
 
@@ -1020,7 +1020,7 @@ int main(void) {
 ```
 </div>
 <div class=column>
-![](allocation1-01.svg){.center width=80%}  
+![](images/allocation1-01.svg){.center width=80%}  
 **Do not do this!**
 </div>
 
@@ -1044,7 +1044,7 @@ int main(void) {
  // start using the 2D array
  matrix[0][2] = 3.14;
 ```
-![](allocation2-01.svg){.center width=100%}
+![](images/allocation2-01.svg){.center width=100%}
 </small>
 
 # **Memory layout**
@@ -1091,7 +1091,7 @@ recommended way
  /* free memory */
  free(matrix);
 ```
-![](allocation3-01.svg){.center width=100%}
+![](images/allocation3-01.svg){.center width=100%}
 
 # Preprocessing and libraries {.section}
 
@@ -1185,7 +1185,7 @@ printf(“Value is %i\n”, ONE);
 - The result is an executable binary file
 </div>
 <div class=column>
-![](codeToP-01.svg){.center width=80%}
+![](images/codeToP-01.svg){.center width=80%}
 </div>
 
 # **Working with several files and libraries**
@@ -1438,6 +1438,7 @@ fscanf(fp, "name: %s age: %d", &name, &age);
     [http://en.wikipedia.org/wiki/International\_Obfuscated\_C\_Code\_Contest](http://en.wikipedia.org/wiki/International\_Obfuscated\_C\_Code\_Contest)
 
 # Say what?
-![© 1993  E. Jay Berkenbilt](obf.svg){.center width=20%}
+
+![© 1993  E. Jay Berkenbilt](images/obf.svg){.center width=15%}
 
 
