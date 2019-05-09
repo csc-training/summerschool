@@ -17,6 +17,7 @@ lang:   en
  ![](images/cray.png){.center width=30%}
 
 # Top 500 list
+
  ![](images/top_500.png){.center width=50%}
 
 # What are supercomputers used for? {.section}
@@ -130,7 +131,7 @@ lang:   en
 # From laptop to Tier-0
 <div class=column>
 
- ![](images/tier.svg){.center width=70%}
+ ![](images/tier.svg){.center width=80%}
 
 </div>
 <div class=column>
@@ -142,7 +143,7 @@ lang:   en
 
 * Cloud infrastructure is run on top of normal HPC system:
 	- Shared memory nodes connected by network
-* User obtains virtual machines
+* User obtains **virtual** machines
 * Infrastructure as a service (IaaS)
 	- User has full freedom (and responsibility) of operating system and the whole software environment
 * Platform as a service (PaaS)
