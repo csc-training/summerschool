@@ -143,7 +143,9 @@ threads access **asum**
 * We need some mechanism to control the access
 
 # Race condition: example
-![](images/racecond.svg){.center width=80%}
+
+![](img/race-condition.png)
+
 
 # Reductions
 
@@ -151,7 +153,9 @@ threads access **asum**
 
 * Summing elements of array is an example of reduction operation
 
-![](images/equation.png){.center width=70%}
+![](img/equation.png){.center width=70%}
+
+FIXME: missing figure?
 
 * OpenMP provides support for common reductions within parallel regions and loops with the reduction clause
 
@@ -165,7 +169,7 @@ threads access **asum**
 
 # Reduction operators
 
-![](images/operations.svg){.center width=60%}
+![](img/reduction-operators.png)
 
 # Race condition avoided with reduction
 

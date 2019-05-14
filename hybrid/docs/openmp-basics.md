@@ -10,7 +10,7 @@ lang:   en
 
 # Processes and threads
 
-![](images/processes-threads.svg){.center width=100%}
+![](img/processes-threads.png)
 
 <div class="column">
 
@@ -35,7 +35,7 @@ lang:   en
 
 # Processes and threads
 
-![](images/processes-threads.svg){.center width=100%}
+![](img/processes-threads.png)
 
 
 <div class="column">
@@ -177,7 +177,8 @@ int main(int argc, char argv[]){
 	- At end of the block is a barrier and all shared data is synchronized
 </div>
 <div class=column>
-![](images/spmd.svg){.center width=55%}
+SPMD: Single Program Multiple Data
+![](img/omp-parallel.png)
 
 </div>
 

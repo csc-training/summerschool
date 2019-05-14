@@ -203,7 +203,7 @@ int fibonacci(int n) {
 
 # OpenMP summary
 
-![](images/openmp_summary.svg){.center width=85%}
+![](img/omp-summary.png)
 
 # Things that we did not cover
 
