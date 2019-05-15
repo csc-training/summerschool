@@ -1,4 +1,4 @@
-ifeq($(COMP),)
+ifeq ($(COMP),)
 COMP=cray
 endif
 
@@ -16,11 +16,21 @@ endif
 ifeq ($(COMP),gnu)
 FC=gfortran
 CC=gcc
-FCFLAGS=-O3 -Wall -fcheck-bounds
+FCFLAGS=-O3 -Wall -fcheck=bounds
 CCFLAGS=-O3 -Wall -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng
 endif
+
+ifeq ($(COMP),intel)
+FC=ifort
+CC=icc
+FCFLAGS=-O3 -warn all -check bounds
+CCFLAGS=-O3 -warn all -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+endif
+
 
 EXE=heat_serial
 OBJS=main.o heat_mod.o core.o setup.o utilities.o io.o pngwriter_mod.o

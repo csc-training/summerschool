@@ -13,6 +13,13 @@ endif
 
 ifeq ($(COMP),gnu)
 CC=mpicc
+CCFLAGS=-O3 -Wall -Wno-pragmas -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+endif
+
+ifeq ($(COMP),intel)
+CC=mpiicc
 CCFLAGS=-O3 -Wall -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng

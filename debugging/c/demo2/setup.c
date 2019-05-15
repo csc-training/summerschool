@@ -39,12 +39,18 @@ void initialize(int argc, char *argv[], field *current,
         break;
     case 2:
         /* Read initial field from a file */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
         strncpy(input_file, argv[1], 64);
+#pragma GCC diagnostic pop
         read_file = 1;
         break;
     case 3:
         /* Read initial field from a file */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
         strncpy(input_file, argv[1], 64);
+#pragma GCC diagnostic pop
         read_file = 1;
 
         /* Number of time steps */

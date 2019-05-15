@@ -1,6 +1,7 @@
 ! Utility routines for heat equation solver
 !   NOTE: This file does not need to be edited!
 module utilities
+  use heat
 
 contains
 
@@ -8,7 +9,6 @@ contains
   ! Arguments:
   !   curr, prev (type(field)): the two variables that are swapped
   subroutine swap_fields(curr, prev)
-    use heat
 
     implicit none
 
@@ -26,7 +26,6 @@ contains
   !   to_field (type(field)): variable to copy to
   subroutine copy_fields(from_field, to_field)
 
-    use heat
     implicit none
 
     type(field), intent(in) :: from_field

@@ -7,8 +7,8 @@ COMMONDIR=../../common
 ifeq ($(COMP),cray)
 FC=ftn
 CC=cc
-FCFLAGS=-g
-CCFLAGS=-g -I/appl/opt/libpng/include -I$(COMMONDIR)
+FCFLAGS=-O3 -hcpu=sandybridge
+CCFLAGS=-O3 -hcpu=sandybridge -I/appl/opt/libpng/include -I$(COMMONDIR)
 LDFLAGS=-L/appl/opt/libpng/lib
 LIBS=-lpng -lz
 endif
@@ -21,6 +21,16 @@ CCFLAGS=-O3 -Wall -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng
 endif
+
+ifeq ($(COMP),intel)
+FC=mpiifort
+CC=icc
+FCFLAGS=-O3 -warn all -check bounds
+CCFLAGS=-O3 -warn all -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+endif
+
 
 EXE=heat_mpi
 OBJS=main.o heat_mod.o core.o setup.o utilities.o io.o pngwriter_mod.o
