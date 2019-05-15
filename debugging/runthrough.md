@@ -1,37 +1,34 @@
-- [Introduction](#orgbdf3d09)
-  - [Debugging with gdb](#orgf5df9b4)
-    - [gdb](#orgf5e84b8)
-    - [Compiling code for debugging](#org35ac802)
-    - [Starting the debugger](#orgd48ddbd)
-    - [Gdb commands](#org4093bde)
-  - [Summary of gdb commands](#org5c3c966)
-- [Using compiler tools to detect out-of bounds access](#orgc0d4988)
-  - [Fortran](#org69a8397)
-  - [C](#orgd5516e5)
+# Table of contents
+
+- [Introduction](#introduction)
+  - [Debugging with gdb](#debugwithgdb)
+    - [gdb](#gdb)
+    - [Compiling code for debugging](#compiling)
+    - [Starting the debugger](#startingdebugger)
+    - [Gdb commands](#gdbcommands)
+  - [Summary of gdb commands](#summaryofgdbcommands)
+- [Using compiler tools to detect out-of bounds access](#usingcompilers)
+  - [Fortran](#fortran)
+  - [C](#ccompilers)
 
 
-
-<a id="orgbdf3d09"></a>
-
+<a id="introduction"></a>
 # Introduction
 
 This is a short walk-through example of debugging an illegal memory access, which is a common mistake in Fortran and especially C programs.
 
 
-<a id="orgf5df9b4"></a>
-
+<a id="debugwithgdb"></a>
 ## Debugging with gdb
 
 
-<a id="orgf5e84b8"></a>
-
+<a id="gdb"></a>
 ### gdb
 
 gdb is a command line debugger, but there are many GUIs that can be used with it. Here we concentrate on the basic command line usage for maximum portability. Command line version of gdb is very widely available on HPC systems.
 
 
-<a id="org35ac802"></a>
-
+<a id="compiling"></a>
 ### Compiling code for debugging
 
 Prepare the example program for debugging and add the debug symbols. It can be done by using a compiler flag `-g` before any optimization flags. Note that any higher optimization levels will interfere with debugging. If possible, you should omit all optimizations. For gnu compilers you can use optimization flat `-Og` together with `-g` to enable optimizations that do not interfere with debugging.
@@ -48,9 +45,7 @@ Adding debug symbols to the program code increases the binary size. Some compile
 
 Source code for this example can be found in [runthrough](runthrough) directory. You can compile the code using `make` command.
 
-
-<a id="orgd48ddbd"></a>
-
+<a id="startingdebugger"></a>
 ### Starting the debugger
 
 Debugger can be used to launch the program or user can attach the debugger to a running program. The latter option is useful for inspecting problems that cause random hangups. For this tutorial we will start the programs using the debugger.
@@ -91,8 +86,7 @@ Program itself is not yet started. If we issue `run` command, the program will s
 When debugging information is available, the debugger can spot the actual source code line that crashed the program.
 
 
-<a id="org4093bde"></a>
-
+<a id="gdbcommands"></a>
 ### Gdb commands
 
 Now we have the crashed program, but how can we inspect the state of the program and find the root cause for the problem? Debugger can access the memory space of the program and thus it has all the needed information, including the call stack of the program and values of variables.
@@ -150,14 +144,13 @@ We could also open the source code file in editor by issuing the `edit` command.
 If you look at the line 25, which was the line that the debugger pointed, there seems to be no problems. But if you look at the line 26 you should be able to spot the mistake in indices and the root cause for the problem, which is on line 21.
 
 
-<a id="org5c3c966"></a>
-
+<a id="summaryofgdbcommands"></a>
 ## Summary of gdb commands
 
 Here is a short list of common gdb commands:
 
 | Long         | Short    | Action                                    |
-|------------ |-------- |----------------------------------------- |
+|------------- |--------- |------------------------------------------ |
 | run          |          | Start the program (with arglist)          |
 | backtrace    | bt       | Display program stack                     |
 | break `loc`  |          | Set breakpoint for location `loc`         |
@@ -170,25 +163,23 @@ Here is a short list of common gdb commands:
 Info command has many subcommands, here are few of them:
 
 | Subcommand  | Action                                              |
-|----------- |--------------------------------------------------- |
+|------------ |---------------------------------------------------- |
 | args        | Values of argument variables of current stack frame |
 | breakpoints | Status of specified breakpoints                     |
 | locals      | Values of local variables of current stack frame    |
 
 
-<a id="orgc0d4988"></a>
-
+<a id="usingcompilers"></a>
 # Using compiler tools to detect out-of bounds access
 
 
-<a id="org69a8397"></a>
-
+<a id="fortran"></a>
 ## Fortran
 
 Most Fortran compilers support run-time array bounds checking. It is not turned on by default because of the performance overhead. Here is a short list of most common compilers in CSC environment and options to use:
 
 | Compiler | Flag             |
-|-------- |---------------- |
+|--------- |----------------- |
 | gfortran | `-fbounds-check` |
 | ifort    | `-check bounds`  |
 | crayftn  | `-h bounds`      |
@@ -196,8 +187,7 @@ Most Fortran compilers support run-time array bounds checking. It is not turned 
 Please note that there are also other types of invalid memory referencing problems that the bounds checking can not catch. Some compilers have additional run time memory checkers that can catch more complicated bugs.
 
 
-<a id="orgd5516e5"></a>
-
+<a id="ccompilers"></a>
 ## C
 
 Because C does not have any concept of an array built into the language, checking indexing mistakes is more complicated. Many compilers have some options to do run time checking. We present here only the *address sanitizer*, which is an open-source tool integrated to both llvm's c compiler clang and gcc.
