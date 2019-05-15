@@ -115,30 +115,37 @@ contains
 
     integer :: fp
     integer(kind=MPI_OFFSET_KIND) :: disp
+    integer :: local_size
     integer :: ierr
 
+    ! open the file and write the dimensions
     call mpi_file_open(MPI_COMM_WORLD, "HEAT_RESTART.dat",  &
          & MPI_MODE_CREATE + MPI_MODE_WRONLY, &
          & MPI_INFO_NULL, fp, ierr)
-
-    ! write the restart header by the rank#0
     if (parallel%rank == 0) then
        disp = 0
-       call mpi_file_write_at(fp, disp, temp%nx_full, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
+       call mpi_file_write_at(fp, disp, temp%nx_full, 1, MPI_INTEGER, &
+            & MPI_STATUS_IGNORE, ierr)
        disp = disp + sizeof(temp%nx_full)
-       call mpi_file_write_at(fp, disp, temp%ny_full, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
+       call mpi_file_write_at(fp, disp, temp%ny_full, 1, MPI_INTEGER, &
+            & MPI_STATUS_IGNORE, ierr)
        disp = disp + sizeof(temp%ny_full)
-       call mpi_file_write_at(fp, disp, iter, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
+       call mpi_file_write_at(fp, disp, iter, 1, MPI_INTEGER, &
+            & MPI_STATUS_IGNORE, ierr)
     end if
 
-    ! For simplicity, skip three integers at the beginning of file in all tasks
-    disp = 3 * sizeof(temp%nx_full)
-    ! find the writing location
-    disp = disp + parallel%rank * (temp%ny + 2) * (temp%nx + 2) * sizeof(temp%data(1,1))
-    ! everyone writes their part of the grid
-    call mpi_file_write_at_all(fp, disp, temp%data, &
-         & (temp%nx + 2) * (temp%ny + 2), &
-         & MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, ierr)
+    ! size of the local data including the ghost layers
+    local_size = (temp%nx + 2) * (temp%ny + 2)
+
+    ! point each MPI task to the correct part of the file
+    disp = 3 * sizeof(local_size)
+    disp = disp + parallel%rank * local_size * sizeof(temp%data(1,1))
+
+    ! write data simultaneously from all processes
+    call mpi_file_write_at_all(fp, disp, temp%data, local_size, &
+                               MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, ierr)
+
+    ! close up shop
     call mpi_file_close(fp, ierr)
 
   end subroutine write_restart
@@ -156,24 +163,16 @@ contains
     integer :: rows, cols
     integer :: fp
     integer(kind=MPI_OFFSET_KIND) :: disp
+    integer :: local_size
     integer :: ierr
 
     call mpi_file_open(MPI_COMM_WORLD, "HEAT_RESTART.dat", MPI_MODE_RDONLY, &
          & MPI_INFO_NULL, fp, ierr)
 
-    ! read in the restart header (dimensions, number of preceding steps) by the
-    ! rank#0 and broadcast it to other ranks
-    if (parallel%rank == 0) then
-       disp = 0
-       call mpi_file_read_at(fp, disp, rows, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
-       disp = disp + sizeof(rows)
-       call mpi_file_read_at(fp, disp, cols, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
-       disp = disp + sizeof(cols)
-       call mpi_file_read_at(fp, disp, iter, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
-    end if
-    call mpi_bcast(rows, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
-    call mpi_bcast(cols, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
-    call mpi_bcast(iter, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
+    ! read grid size and current iteration
+    call mpi_file_read_all(fp, rows, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
+    call mpi_file_read_all(fp, cols, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
+    call mpi_file_read_all(fp, iter, 1, MPI_INTEGER, MPI_STATUS_IGNORE, ierr)
 
     ! set correct dimensions to MPI metadata
     call parallel_setup(parallel, rows, cols)
@@ -182,13 +181,18 @@ contains
     allocate(temp%data(0:temp%nx+1, 0:temp%ny+1))
     temp%data(:,:) = 0.0
 
-    ! read in restart data
-    ! Skip three integers in the beginning of file
-    disp = 3*sizeof(rows)
-    disp = disp + parallel%rank * (temp%nx + 2) * (temp%ny + 2) * sizeof(temp%data(1,1))
-    call mpi_file_read_at_all(fp, disp, temp%data, &
-         & (temp%nx + 2) * (temp%ny + 2), &
+    ! size of the local data including the ghost layers
+    local_size = (temp%nx + 2) * (temp%ny + 2)
+
+    ! point each MPI task to the correct part of the file
+    disp = 3 * sizeof(local_size)
+    disp = disp + parallel%rank * local_size * sizeof(temp%data(1,1))
+
+    ! read data simultaneously to all processes
+    call mpi_file_read_at_all(fp, disp, temp%data, local_size, &
          & MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, ierr)
+
+    ! close up shop
     call mpi_file_close(fp, ierr)
 
   end subroutine read_restart
