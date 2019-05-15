@@ -1,0 +1,172 @@
+---
+title:  Introduction to parallel I/O
+author: CSC Summer School
+date:   2019-07
+lang:   en
+---
+
+
+# Parallel I/O
+
+- How to convert internal data structures and domains to files that
+  are essentially streams of bytes?
+- How to get the data efficiently from thousands of nodes of a
+  supercomputer to physical disks?
+
+![](img/io-illustration.png){.center}
+
+
+# Parallel I/O
+
+- Good I/O is non-trivial
+  - Performance, scalability, reliability
+  - Ease of use of output (number of files, format)
+  - Portability
+- One cannot achieve all of the above - one needs to prioritize
+
+# Parallel I/O
+
+- Challenges
+    - Number of tasks is rising rapidly
+    - Size of the data is also rapidly increasing
+    - Disparity of computing power vs. I/O performance is getting worse
+    and worse
+- The need for I/O tuning is algorithm & problem specific
+- Without parallelization, I/O will become scalability bottleneck for
+  practically every application!
+
+# I/O layers
+
+![](img/io-layers.png)
+
+
+# I/O library choice
+
+- POSIX and MPI-IO libraries
+    - Provides methods for writing raw data into files
+    - Do not provide a schema or methods for writing metadata
+    - The user has to develop a file format specification, or implement a
+      given format
+- Additionally there are also higher level libraries that
+    - Gives tools for writing data + metadata, e.g. HDF5
+    - Or even provide a application or domain specific schema for what
+      data + metadata to describe a particular kind of data
+
+# Parallel File systems {.section}
+
+# File systems
+
+- Practically all large parallel computer systems provide a parallel file
+  system area
+    - Files can be accessed from all tasks
+    - Large systems often have dedicated I/O nodes
+- Some systems also provide a local disk area for temporary storage
+    - Only visible to tasks on the same node
+    - Results have to be copied after simulation
+
+# Lustre
+
+- Lustre is a popular parallel file system that is used in many large
+  systems
+    - Also at CSC (Sisu, Taito)
+- Separated storage of data and metadata
+    - Single metadata server
+    - Clustered data storage
+    - Supports e.g. striping of large datafiles for higher performance
+
+# Lustre architecture
+
+![](img/lustre-architecture.png)
+
+
+# Lustre file striping
+
+![](img/lustre-striping.png)
+
+# Lustre file striping
+
+- Striping pattern of a file/directory can be queried or set with the
+  `lfs` command
+- `lfs getstripe` <*dir*|*file*>
+- `lfs setstripe` -c *count* *dir*
+    - Set the default stripe count for directory *dir* to *count*
+    - All the new files within the directory will have the specified
+    striping
+    - Also stripe size can be specified, see *man lfs* for details
+- Proper striping can enhance I/O performance a lot
+
+
+# Performance with Lustre striping on Sisu
+
+![](img/striping-performance.png){.center width=60%}
+
+
+# Parallel I/O with posix {.section}
+
+# Parallel POSIX I/O
+
+<div class="column">
+- Spokesman strategy
+    - One process takes care of all I/O using normal (POSIX) routines
+    - Requires a lot of communication
+    - Writing/reading slow, single writer not able to fully utilize
+      filesystem
+    - Does not scale, single writer is a bottleneck
+    - Can be good option when the amount of data is small (e.g. input
+      files)
+</div>
+<div class="column">
+![](img/posix-spokesman.png)
+</div>
+
+# Example: spokesperson strategy
+
+```fortran
+if (my_id == 0) then
+    do i = 1, ntasks-1
+        call mpi_recv(full_data(i*n), n, MPI_REAL, i, tag, &
+                      MPI_COMM_WORLD, status, rc)
+    end do
+
+    open(funit, file=fname, access="stream")
+    write(funit) full_data
+    close(funit)
+else
+    call mpi_send(data, n, MPI_REAL, 0, tag, MPI_COMM_WORLD, rc)
+end if
+```
+
+
+# Special case: stdout and stderr
+
+- Standard Output and Error streams are effectively serial I/O and will be
+  a severe bottleneck for application scaling
+- Disable debugging messages when running in production mode
+    - "Hello, I'm task 32,000!"
+- Ensure only the very minimum is written to the stdout/err!
+    - Interim results, timings,...
+
+
+# Parallel POSIX I/O
+
+<div class="column">
+- Every man for himself
+    - Each process writes its local results to a separate file
+    - Good bandwidth
+    - Difficult to handle a huge number of files in later analysis
+    - Can overwhelm filesystem (for example Lustre metadata)
+</div>
+
+<div class="column">
+![](img/posix-everybody.png)
+</div>
+
+# Summary
+
+- Parallel file system is needed for efficient parallel I/O
+    - Striping of files
+- Primitive parallel I/O can be achieved using just normal Posix calls (+
+  MPI communication)
+    - Spokesman strategy
+    - Every man for himself
+    - Subset of writers/readers
