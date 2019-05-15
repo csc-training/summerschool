@@ -1,5 +1,4 @@
-## Simple MPI-I/O 
+## Simple MPI-IO
 
-Modify the previous ["Parallel I/O with Posix"](../posix-io) exercise
-so that all MPI tasks participate in the writing/reading in to a
-single file using MPI-I/O.
+Modify the [Posix I/O exercise](../posix/) in such a way that all MPI tasks
+participate in the writing to (and reading from) a single file using MPI-IO.
