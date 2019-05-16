@@ -18,3 +18,9 @@
 - ~~Version-control~~
 - ~~Working-with-Unix~~
 
+
+### Adjustments
+- Remove depracated sisu commands when sisu is decomissioned 
+- Rename and/or merge slides where needed
+
+
