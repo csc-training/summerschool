@@ -12,7 +12,7 @@ lang:   en
 <div class="column">
 
 - Data is local to the MPI processes
-    - they need to *communicate* to coordinate work
+    - They need to *communicate* to coordinate work
 - Point-to-point communication
     - Messages are sent between two processes
 - Collective communication
@@ -65,16 +65,14 @@ lang:   en
 <div class=column>
 ![](images/case_study_left-02.svg){.center width=45%}
 </div>
-
 <div class=coulumn>
 
- Step 1.1: Receive operation in scatter
+**Step 1.1**: Receive call in scatter
 
- ![](images/case_study_right-01.svg){.center width=50%}
+![](images/case_study_right-01.svg){.center width=50%}
 
-  P1 issues MPI_Recv to receive half of the array from P0
+P1 issues MPI_Recv to receive half of the array from P0
 </div>
-
 
 
 # Case study: parallel sum 
@@ -83,23 +81,24 @@ lang:   en
 ![](images/case_study_left-03.svg){.center width=45%}
 </div>
 <div class=coulumn>
- Step 1.2: Send operation in scatter 
+**Step 1.2**: Send call in scatter 
 
 ![](images/case_study_right-02.svg){.center width=50%}
 
- P0 issues an MPI_Send to send the lower part of the array to P1
+P0 issues an MPI_Send to send the lower part of the array to P1
 </div>
+
 # Case study: parallel sum 
 
 <div class=column>
 ![](images/case_study_left-04.svg){.center width=45%}
 </div>
 <div class=coulumn>
- Step 2: Compute the sum in parallel
+**Step 2**: Compute the sum in parallel
 
 ![](images/case_study_right-03.svg){.center width=50%}
 
- Both P0 & P1 compute their partial sums and store them locally
+Both P0 & P1 compute their partial sums and store them locally
 </div>
 
 # Case study: parallel sum 
@@ -109,19 +108,20 @@ lang:   en
 </div>
 
 <div class=coulumn>
- Step 3.1: Receive operation in reduction
+**Step 3.1**: Receive call in reduction
 
 ![](images/case_study_right-04.svg){.center width=50%}
 
- P0 issues an MPI_Recv operation for receiving P1’s partial sum 
+P0 issues an MPI_Recv operation for receiving P1’s partial sum
 </div>
+
 # Case study: parallel sum 
 
 <div class=column>
 ![](images/case_study_left-06.svg){.center width=45%}
 </div>
 <div class=coulumn>
- Step 3.2: send operation in reduction
+**Step 3.2**: Send call in reduction
 
 ![](images/case_study_right-05.svg){.center width=50%}
 
@@ -134,67 +134,63 @@ lang:   en
 ![](images/case_study_left-07.svg){.center width=45%}
 </div>
 <div class=coulumn>
- Step 3.3: compute the final answer
+**Step 3.3**: compute the final answer
 
 ![](images/case_study_right-06.svg){.center width=50%}
 
- P0 computes the total sum
+P0 computes the total sum
 </div>
 
 # Send operation
 
-
 `MPI_Send`( `buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
-: `buffer`{.input} 	The data to be sent
-: `count`{.input}	Number of elements in buffer
-: `datatype`{.input}	Type of elements in buffer (see later slides)
-: `dest`{.input}  	The rank of the receiver
-: `tag`{.input} 		An integer identifying the message
-: `comm`{.input} 	Communicator
-: `error`{.output}	Error value; in C/C++ it’s the return value of the function, and in Fortran an additional output parameter
-
-
-
+: `buffer`{.input}   The data to be sent
+: `count`{.input}    Number of elements in buffer
+: `datatype`{.input} Type of elements in buffer (see later slides)
+: `dest`{.input}     The rank of the receiver
+: `tag`{.input}      An integer identifying the message
+: `comm`{.input}     Communicator
+: `error`{.output}   Error value; in C/C++ it’s the return value of the function, and in Fortran an additional output parameter
 
 # Receive operation
 
 `MPI_Recv`(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
-
-: `buffer`{.output}		Buffer for storing received data 
-: `count`{.input}		Number of elements in buffer, not the number of element that are actually received 
-: `datatype`{.input} 	Type of each element in buffer
-: `source`{.input} 		Sender of the message
-: `tag`{.input} 			Number identifying the message 
-: `comm`{.input}  		Communicator
-: `status`{.output} 		Information on the received message
-: `error`{.output}		As for send operation
-
+: `buffer`{.output}	Buffer for storing received data 
+: `count`{.input} Number of elements in buffer, not the number of element that are actually received 
+: `datatype`{.input} Type of each element in buffer
+: `source`{.input} 	 Sender of the message
+: `tag`{.input}      Number identifying the message 
+: `comm`{.input}     Communicator
+: `status`{.output}  Information on the received message
+: `error`{.output}   As for send operation
 
 # MPI datatypes
 
 - MPI has a number of predefined datatypes to represent data
 - Each C or Fortran datatype has a corresponding MPI datatype
-    - C examples: `MPI_INT` for `int` and `MPI_DOUBLE` for `double`
-    - Fortran example: `MPI_INTEGER` for `integer`
+    - C examples: **`MPI_INT`** for **`int`** and **`MPI_DOUBLE`** for **`double`**
+    - Fortran example: **`MPI_INTEGER`** for **`integer`**
 - One can also define custom datatypes
 
-
-# MORE FEATURES IN POINT-TO-POINT COMMUNICATION {.section}
-
+# More features in point-to-point communication {.section}
 
 # Blocking routines & deadlocks
+
 - MPI_Send and MPI_Recv are blocking routines
-	* `MPI_Send` exits once the send buffer can be safely read and written to
-	* MPI_Recv exits once it has received the message in the receive buffer
-- Completion depends on other processes => risk for  *deadlocks*
-	* For example, all processes are in `MPI_Recv`
-	* If deadlocked, the program is stuck forever
+	- **`MPI_Send`** exits once the send buffer can be safely read and written to
+	- MPI_Recv exits once it has received the message in the receive buffer
+- Completion depends on other processes => risk for *deadlocks*
+	- For example, all processes are in **`MPI_Recv`**
+	- If deadlocked, the program is stuck forever
 
 # Typical point-to-point communication patterns
 
 ![](images/comm_patt.svg){.center width=100%}
 
-* Incorrect ordering of sends/receives may give a rise to a deadlock (or unnecessary idle time)
+<br>
+
+- Incorrect ordering of sends/receives may give a rise to a deadlock
+  (or unnecessary idle time)
 
 # Combined send & receive 
 
@@ -202,40 +198,43 @@ lang:   en
 `sendtag`{.input}, `recvbuf`{.input}, `recvcount`{.input}, `recvtype`{.input}, 
 `source`{.input}, `recvtag`{.input}, `comm`{.input}, `status`{.output})**
 
+<br>
 
-* Sends one message and receives another one, with a single command
+- Sends one message and receives another one, with a single command
 	- Reduces risk for deadlocks
-* Parameters as in `MPI_Send` and `MPI_Recv` 
-* Destination rank and source rank can be same or different 
-
+- Parameters as in **`MPI_Send`** and **`MPI_Recv`** 
+- Destination rank and source rank can be same or different 
 
 # Special parameter values 
 
-**`MPI_Send`( `buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})**
-` `    
-     
-| Parameter 	    | Special value   | Implication				   |
-| ----------	    | ----------------|--------------------------------------------|
-| `dest`{.input}   | `MPI_PROC_NULL` | Null destination, no operation takes place |
+**`MPI_Send`(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})**
+
+<br> 
+
+| Parameter      | Special value    | Implication                                  |
+| ----------     | ---------------- | -------------------------------------------- |
+| `dest`{.input} | `MPI_PROC_NULL`  | Null destination, no operation takes place   |
 
 # Special parameter values
 
-**`MPI_Recv`(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})** 
-` `
+**`MPI_Recv`(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})**
 
-| Parameter 	    | Special value   	 | Implication				      |
-| ----------	    | ----------------	 |--------------------------------------------|
-| `source`{.input}  | `MPI_PROC_NULL` 	 | No sender=no operation takes place         |
-| 	    	    | `MPI_ANY_SOURCE`	 | Receive from any sender		      |
-| `tag`{.input}     | `MPI_ANY_TAG` 	 | Receive messages with any tag   	      |
-| `source`{.output} | `MPI_STATUS_IGNORE`| Do not store any status data		      |
+<br>
+
+| Parameter         | Special value       | Implication                                  |
+| ----------        | ----------------    | -------------------------------------------- |
+| `source`{.input}  | `MPI_PROC_NULL`     | No sender=no operation takes place           |
+|                   | `MPI_ANY_SOURCE`    | Receive from any sender                      |
+| `tag`{.input}     | `MPI_ANY_TAG`       | Receive messages with any tag                |
+| `source`{.output} | `MPI_STATUS_IGNORE` | Do not store any status data                 |
 
 # Status parameter 
 
-- The status parameter in `MPI_Recv` contains information about the received data after the call has completed, e.g.
-	* Number of received elements
-	* Tag of the received message 
-	* Rank of the sender
+- The status parameter in `MPI_Recv` contains information about the
+  received data after the call has completed, e.g.
+	- Number of received elements
+	- Tag of the received message 
+	- Rank of the sender
 - In C the status parameter is a struct
 - In Fortran it is an integer array of size `MPI_STATUS_SIZE`
 
@@ -245,11 +244,11 @@ lang:   en
 Use the function  
 **`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
 - Tag of the received message  
-C: 		**status.MPI_TAG**  
-Fortran: 	**status(MPI_TAG)**
+C: 		**`status.MPI_TAG`**  
+Fortran: 	**`status(MPI_TAG)`**
 - Rank of the sender  
-C: 		**status.MPI_SOURCE**  
-Fortran: 	**status(MPI_SOURCE)**
+C: 		**`status.MPI_SOURCE`**  
+Fortran: 	**`status(MPI_SOURCE)`**
 
 # Summary 
 

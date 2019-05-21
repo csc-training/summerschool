@@ -6,19 +6,20 @@ lang:   en
 ---
 
 
-# Basic use of Unix-like systems
+# Prerequisites
 - To be able to follow the upcoming content, please make sure that you have the relevant basic Unix skills. In particular, check that
 	- you know how to start and/or use a command line interface (that is, console, shell, terminal)
 	- you know how and when to use at least these basic commands: ls, cp, mv, rm
 	- you can use some text editor, such as nano, vim, emacs
 
-# "Do one thing and do it well"
-- This is the core principle of the Unix philosophy
-- In accordance to it, all input and output of the different tools should be single flat files...
-- ... so that they can be combined through the use of pipes
-- Example:  
-	`$ ls -l | grep key | less`
 
+# Core principle of the Unix philosophy
+## "Do one thing and do it well"
+- All input and output of the different tools should be single flat files...
+- ... so that they can be combined through the use of pipes
+- Example:
+	*  count how many files contain the string "model"
+		- `$ ls | grep model | wc -l`
 
 # Basic skills for working with supercomputers
 - Logging in to, and copying files from and to the supercomputer, i.e. a remote host: ssh and scp
@@ -29,14 +30,15 @@ lang:   en
 	- Batch queue system (for running)
 
 # Logging in and moving files
-- The ssh command is used for logging into a remote host 
+- The ssh command is used for logging into a remote host   
+`$ ssh user@host`
 - You will be asked for your password to establish a connection
 - Additionaly, ssh can be used to run a command on the host  
-`$ ssh [user@]host`
+`$ ssh user@host command`
 - The scp command is used for secured copying of files and folders across different hosts on a network
 - You  will be asked for your password here as well  
-`$ scp [user@]host:source target # remote->local`  
-`$ scp source [user@]host:target # local->remote`
+`$ scp user@host:source target # remote->local`  
+`$ scp source user@host:target # local->remote`
 
 # Hands-on: ssh and scp 
 

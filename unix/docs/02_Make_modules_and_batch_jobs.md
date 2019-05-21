@@ -1,5 +1,5 @@
 ---
-title:  MAKE
+title:  Make, modules and batch jobs
 author: CSC Summerschool 
 date:   2019-07
 lang:   en
@@ -9,7 +9,9 @@ lang:   en
 
 - A compiler turns a source code file into an object file of machine code that the processor can understand
 - A linker combines several compiled object files into one executable file
-- Together, compiling and linking can be called buildinga
+- Together, compiling and linking can be called building
+
+# Make {.section}
 
 # Make
 
@@ -101,6 +103,7 @@ Get information about a module or, if no argument is given, about the module sub
 #SBATCH –N 1                     | Number of nodes to use (each has 24 cores)
 #SBATCH –t 1:00:00               | Maximum time to run the program (hh:mm:ss)
 #SBATCH –p test                  | Batch job partition (initially use ’test’)
+#SBATCH --mem=5G                 | Memory requirement
 aprun –n 24 path_to_program
 ```
 
