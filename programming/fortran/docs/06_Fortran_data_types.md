@@ -1,4 +1,4 @@
-# Derived data types
+# Derived data types{.section}
 
 # Built-in data types in Fortran
 
@@ -15,13 +15,15 @@
 - Fortran standard does not specify the precision of numeric types, i.e.
   how many bits are used for representing the number
     - Default is often 32 bits (real has then 7 significant digits)
-- The numerical precision can be controlled through the kind parameter,
-  e.g. 
+- The numerical precision can be controlled through the kind parameter
+- The **iso_fortran_env** modules contains several standard precision types
+    - real32, real64, real128, int16, int32, ...
+
 ```fortran
-use iso_fortran_env, only : REAL64, INT16 
+use iso_fortran_env, only : real64, int16 
 ! ... 
-real(kind=REAL64):: double_precision_number
-integer(kind=INT16) :: short_integer_number
+real(kind=real64):: double_precision_number
+integer(kind=int16) :: short_integer_number
 ```
 
 # What is a derived data type?
@@ -30,10 +32,9 @@ integer(kind=INT16) :: short_integer_number
   types and possibly other derived data types
     - Equivalent to structs in C programming language
 - Derived type is defined in the variable declaration section of
-  programming unit
+  program unit
     - Not visible to other programming units
-    - Unless defined in a module and used via the use clause, which is
-      most often the preferred way
+    - Normally, should be defined in a module and used via the use clause
 
 # What is a derived data type?
 
@@ -41,14 +42,14 @@ integer(kind=INT16) :: short_integer_number
   insufficient
 - It is beneficial to group the data together as larger objects
     - Code becomes easier to read and maintain
-    - Cleaner interfaces
+    - Fewer arguments to procedures
     - Encapsulation of data
 - Variables used in the same context should be grouped together using
   modules and derived data types
 
 # Derived type declaration
 
-  - Type declaration 
+- Type declaration 
 
 ``` fortran
 type particletype
@@ -58,11 +59,15 @@ type particletype
   integer :: charge 
 end type particletype
 ```
+
 - Declaring a variable with a type 
+
 ``` fortran
 type(particletype) :: proton, water(300)
 ```
+
 - Elements are accessed with **`%`** operator 
+
 ``` fortran
 write(*,*) proton % charge
 ```
@@ -84,6 +89,7 @@ water(1) % z = 0.0
 # Nested derived types
 
 - Derived types can contain other derived types as components 
+
 ``` fortran
 type moleculetype 
   type(particletype), allocatable :: atoms(:) 
@@ -95,7 +101,9 @@ type solvent
   complex :: epsilon 
 end type solvent
 ```
+
 - Access as 
+
 ``` fortran
 beverage % fluid(1) % atoms(1) % x = 0.75
 ```
