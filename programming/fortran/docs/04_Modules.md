@@ -1,7 +1,4 @@
----
-title: Modules and scoping
-lang:  en
----
+# Modules and scoping{.section}
 
 # Outline
 
