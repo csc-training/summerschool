@@ -46,34 +46,23 @@
     - Fortran coarray improvements
     - C interoperability improvements
 
-# Compiling and linking
+# Transition from source code to executable program
 
 <center>
 ![](img/fortran_compile.png)
 </center>
 
-# Transition from code to a program
+# Transition from source code to executable program
 
-- Compile and link in one go, execute the binary
-- In more complex cases (multiple sources)
-    - Compile each source code file (.f90) into an object file (.o)
-    - Link object files into a binary and execute the binary
-
+- Simple programs can be compiled and linked in one go: 
 ```console
-$ gfortran -c main.f90
-$ gfortran -c sub.f90
-$ gfortran -o foo main.o sub.o
-$ ./foo
-```
-After some modifications in `sub.f90`
-```console
-$ gfortran –c sub.f90
-$ gfortran -o foo main.o sub.o
-$ ./foo
-$ gfortran main.f90 -o foo
-$ ./foo
+$ gfortran -o hello hello.f90
+$ ./hello
+Hello from Fortran
 ```
 
+- More complex cases will be discussed later on
+ 
 # Look and feel
 
 ```fortran
@@ -320,6 +309,21 @@ select case (i)
 end select
 ```
 
+# Procedures
+
+- Procedure is block of code that can be called from other code.
+- Calling code passes data to procedure via arguments
+- Fortran has two types of procedures: *subroutines* and *functions*
+    - Subroutines pass data back via arguments
+    - Functions return a value
+- Fortran has both user defined and intrinsic procedures
+
+```fortran
+call random_number(x)   ! Subroutine is preceded by "call" statement, 
+                        ! input and output is provided via the arguments
+z = sin(x)              ! Function returns value(s) based on the input arguments
+```
+
 # Summary
 
 - Fortran is – despite its long history – a modern programming
@@ -328,3 +332,4 @@ end select
 - In our first encounter, we discussed
     - Variables, data types, operators
     - Control structures: loops and conditionals
+    - Fortran has two types of procedures: subroutines and functions
