@@ -1,4 +1,4 @@
-# Advanced features in Fortran
+# Advanced features in Fortran{.section}
 
 # Outline
 
@@ -43,8 +43,8 @@
 
 # The iso_c_binding module
 
-- Fortran 2003 intrinsic module **`iso_c_binding`** is used with **`use,
-  intrinsic :: iso_c_binding`**
+- Fortran 2003 provides intrinsic module **`iso_c_binding`** for interoperation with C. 
+    - Interoperability with other languages (e.g. Python) can be often done via C
 - Module contains
     - Access to named constants that represent **kind** type parameters of
       data representations compatible with C types
@@ -84,7 +84,7 @@ end function call_c_func
     - Objects provide methods which operate on (the data of) the object
     - Method is a procedure that is tied to the data of an object
     - Objects can be inherited from other “parent” objects
-- Object oriented programming in Fortran facilitated with type extensions
+- Object oriented programming in Fortran is facilitated with type extensions
   and type- and object-bound procedures
 
 # Fortran coarrays
@@ -98,13 +98,6 @@ end function call_c_func
     - Compiler support is still incomplete (Cray: excellent, Intel:
       moderate, GNU: experimental)
 
-# Further advance features
-
-- Abstract interfaces and procedure pointers
-    - Declaring several procedures with same interface
-- Asynchronous I/O
-- Submodules
-    - Implementation of module can be split into multiple files
 
 # Summary
 
