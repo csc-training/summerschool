@@ -24,8 +24,8 @@
 
 # Module defition and usage
 
-- Module is defined with the `MODULE` keyword and used from main program 
-  or other module with the `USE` keyword
+- Module is defined with the `module` keyword and used from main program 
+  or other module with the `use` keyword
 - Depending on the complexity of module, one file can contain a single or 
   multiple module definitions
     - Only related modules should be grouped into the same file
@@ -78,6 +78,28 @@ $ gfortran -c myprog.f90
 
 ```console
 $ gfortran -o myexe mymod.o myprog.o
+```
+
+# Building modules
+
+- Normally **make** (or similar build system) is utilized when working with
+  multiple source files
+
+```console
+$ make
+gfortran -c mymod.f90
+gfortran -c myprog.f90
+gfortran -o myexe mymod.o myprog.o
+```
+
+- By defining dependencies between program units only those units that are 
+  affected by changes need to be compiled
+
+```console
+$ emacs myprog.f90
+$ make
+gfortran -c myprog.f90
+gfortran -o myexe mymod.o myprog.o
 ```
 
 # Defining procedures in modules
@@ -160,7 +182,7 @@ end program testprog
 <div class="column">
 **Subroutine**
 
-Declaration:
+Definition:
 
 ```fortran
 subroutine sub(arg1, arg2, ...)
@@ -176,7 +198,7 @@ Use as:
 <div class="column">
 **Function**
 
-Declaration:
+Definition:
 
 ```fortran
 [type] function func(arg1, arg2, ...) & 
@@ -199,6 +221,7 @@ Use as:
       procedure
     - Any change to the value of an argument changes the value at the
       calling program
+          - Procedures can have *side-effects*
     - The *intent* attribute can be used to specify how argument is used
 
 # Intent attribute
@@ -290,8 +313,42 @@ subroutine foo2(x)
 - In `foo2` variable **i** gets values 1, 2, 3, … in each successive
   call
 
+# Variables in modules
 
-# Visibility of module objects
+- Variables declared in the module definition section are global
+    - Can be accessed from any program unit that **use**s the module.
+- Modifications in one program unit are seen also elsewhere
+
+<div class="column">
+``` fortran
+module globals 
+  integer :: var
+end module commons
+...
+subroutine foo()
+  use globals
+  var = 47
+end subroutine
+```
+</div>
+<div class="column">
+``` fortran
+...
+subroutine bar()
+  use globals
+  write(*,*) var 
+end subroutine
+...
+program myprog
+...
+  call foo()   ! var is modified
+  call bar()   ! The new value is written out
+```
+</div>
+
+- Generally, use of global variables is not recommended
+
+# Limiting visibility of module objects
 
 - Variables and procedures in *modules* can be **private** or **public**
     - **public** visible for all program units using the module (the
@@ -302,10 +359,16 @@ subroutine foo2(x)
 ``` fortran
 module visibility
   real :: x,y 
-  real :: x 
-  public :: y ! Or 
-  real, private :: x 
-  real, public :: y
+  private :: x
+  public :: y  ! public declaration is not in principle needed but can improve readability
+  real, private :: z ! Visibility can be declared together with type
+
+  private :: foo ! foo can be called only inside this module
+
+  contains
+    subroutine foo()
+      ...
+  
 end module
 ```
 
@@ -328,10 +391,10 @@ subroutine mySubroutine
   ... 
   call myInternalSubroutine
   ... 
-contains
-  subroutine myInternalSubroutine
-    ... 
-  end subroutine myInternalSubroutine
+  contains
+    subroutine myInternalSubroutine
+      ... 
+    end subroutine myInternalSubroutine
 end subroutine mySubroutine
 ```
 
@@ -347,22 +410,6 @@ end subroutine mySubroutine
 - Often used for ”small and local, convenience” procedures
 
 
-# Global data and global variables
-
-- Global variables can be accessed from any program unit
-
-- Module variables with **save** attribute provide controllable way to define
-  and use global variables
-
-``` fortran
-module commons 
-  integer, parameter :: r = 0.42
-  integer, save :: n, ntot
-  real, save :: abstol, reltol
-end module commons
-```
-
-- Generally, use of global variables is not recommended
 
 # Summary
 
