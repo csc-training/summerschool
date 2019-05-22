@@ -7,7 +7,23 @@ lang:   en
 
 
 # Hands up - is this familiar?
-![](images/familiar.png){.center width=50%}
+<div class=column>
+![](images/familiar.png){.center width=90%}
+</div>
+<div class=column>
+![](images/mail_zip.png){.center width=90%}
+</div>
+
+# Why is this a problem for you ?
+
+* Keeping track of all of your changes requires a lot of work 
+* Sharing code with colleagues and collaborating is slow and prone to errors
+ 
+## You spend less time on things that actually matter! 
+Writing your code/scripts, running simulations and getting results 
+
+## Good science is reproducible!
+What is the exact version/revision of your code used to produce some results?
 
 
 # Solution: Version control
@@ -27,6 +43,8 @@ your files
 
 - You can go back to the code as it was at any given point in time with
 single command
+
+- You can compare different versions of the code
 
 - You can merge unrelated changes made by different people
 
