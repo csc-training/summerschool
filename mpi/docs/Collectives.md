@@ -410,5 +410,5 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 
 # Summary
 
-![](images/collective-patterns.png){.center width=100%}
+![](images/collective-patterns.svg){.center width=100%}
 
