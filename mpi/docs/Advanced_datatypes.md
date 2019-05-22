@@ -6,11 +6,9 @@ lang:   en
 ---
 
 
-
-
 # Understanding datatypes: typemap
 
-* A datatype is defined by a typemap
+- A datatype is defined by a typemap
 	- pairs of basic types and displacements (in bytes)
 	- E.g. MPI_INT={(int,0)}
 
@@ -18,31 +16,34 @@ lang:   en
 
 # Datatype constructors: MPI_TYPE_CREATE_STRUCT
 
-* The most general type constructor, creates a new type from heterogeneous blocks
-	- E.g. Fortran types and C structures
-	- Input is the typemap  
+- The most general type constructor, creates a new type from heterogeneous blocks
+	- E.g. Fortran types and C structures
+	- Input is the typemap
 
-` `  
 ![](images/create_struct.svg){.center width=70%}
 
 # Datatype constructors: MPI_TYPE_CREATE_STRUCT
 
-**`MPI_Type_create_struct`(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `types`{.input}, `newtype`{.output})**   
+**`MPI_Type_create_struct`(`count`{.input}, `blocklens`{.input},`displs`{.input}, `types`{.input}, `newtype`{.output})**
+  : `count`{.input}
+    : number of blocks
+  : `blocklens`{.input}
+    : lengths of blocks (array)
+  : `displs`{.input}
+    : displacements of blocks in bytes (array)
+  : `types`{.input}
+    : types of blocks (array)
 
-`count`{.input}		number of blocks  
-`blocklens`{.input}  	lengths of blocks (array)  
-`displs`{.input}	displacements of blocks in bytes (array)  
-`types`{.input}		types of blocks (array)   
-` `  
-![](images/create_struct.svg){.center width=70%}
+![](images/create_struct.svg){.center width=50%}
 		
 # Example: sending a C struct 
+
 ```c
 /* Structure for particles */
 struct ParticleStruct {
-   int charge;         /* particle charge */   
-   double coord[3];    /* particle coords */   
-   double velocity[3]; /* particle velocity vector components */ };
+   int charge;         /* particle charge */ 
+   double coord[3];    /* particle coords */ 
+   double velocity[3]; /* particle velocity vector components */ };
  
 struct ParticleStruct particle[1000];
 MPI_Datatype Particletype;
@@ -58,19 +59,22 @@ MPI_Type_free(&Particletype);
 ```
 # Determining displacements
 
-* The previous example defines and assumes a certain alignment for the data within the structure
-* The displacements can (and should!) be determined by using the function  
-**`MPI_Get_address`(`pointer`{.input}, `address`{.output})**
-	- The address of the variable is returned, which can then be used for determining relative displacements
+- The previous example defines and assumes a certain alignment for the
+  data within the structure
+- The displacements can (and should!) be determined by using the
+  function **`MPI_Get_address`(`pointer`{.input},
+  `address`{.output})**
+	- The address of the variable is returned, which can then be used
+      for determining relative displacements
 
 # Determining displacements
 
 ```c
 /* Structure for particles */ 
 struct ParticleStruct { 
-   int charge;         /* particle charge */   
-   double coords[3];   /* particle coords */   
-   double velocity[3]; /* particle velocity vector components */ };
+   int charge;         /* particle charge */
+   double coords[3];   /* particle coords */ 
+   double velocity[3]; /* particle velocity vector components */ };
 
 struct ParticleStruct particle[1000];
 ...
@@ -85,42 +89,58 @@ disp[0] = 0;
 ...
 
 ```
-# Gaps between datatypes
-* Sending of an array of the `ParticleStruct` structures may have a portability issue: it assumes that array elements are packed in memory
-	- Implicit assumption: the extent of the datatype was the same as the size of the C struct
-	- This is not necessarily the case 
-* If there are gaps in memory between the successive structures, sending does not work correctly
 
+# Gaps between datatypes
+
+- Sending of an array of the `ParticleStruct` structures may have a
+  portability issue: it assumes that array elements are packed in
+  memory
+	- Implicit assumption: the extent of the datatype was the same as
+      the size of the C struct
+	- This is not necessarily the case
+- If there are gaps in memory between the successive structures,
+  sending does not work correctly
 
 # TYPE EXTENT {.section}
 
 # Sending multiple elements: Extent
 
-* Sending multiple user-defined types at once may not behave as expected
-* The _lower bound_ describes where the datatype starts
+- Sending multiple user-defined types at once may not behave as expected
+- The _lower bound_ describes where the datatype starts
 	- LB: min(dispj) 
-* The _extent_ describes the stride at which contiguous elements are read or written when sending multiple elements
+- The _extent_ describes the stride at which contiguous elements are
+  read or written when sending multiple elements
 	- Extent = max(dispj + sizej) – LB + padding
 
 # Multiple MPI_TYPE_VECTOR
 
 ![](images/type_vector1.svg){.center width=100%}
 
+# Reading extent and lower bound
+
+- Read current extent and lower bound
+
+**`MPI_Type_get_extent`(`type`{.input}, `lb`{.output}, `extent`{.output})**
+  : `type`{.input}
+    : Datatype
+  : `lb`{.output}
+    : Lower bound of type (in bytes)
+  : `extent`{.output}
+    : Extent of type (in bytes)
+
 # Setting extent and lower bound
 
-* Read current extent and lower bound  
-**`MPI_Type_get_extent`(`type`{.input}, `lb`{.output}, `extent`{.output})**  
-`type`{.input}		Datatype  
-`lb`{.output}   	Lower bound of type (in bytes)  
-`extent`{.output}	Extent of type (in bytes)  
-* Set new extent and lower bound  
-**`MPI_Type_create_resized`(`type`{.input}, `lb`{.input}, `extent`{.input}, `newtype`{.output})**  
-`type`{.input}		Old datatype  
-`lb`{.input} 		New lower bound (in bytes)  
-`extent`{.input} 	New extent (in bytes)  
-`newtype`{.output}	New datatype, commit before use  
-	
+-  Set new extent and lower bound
 
+**`MPI_Type_create_resized`(`type`{.input}, `lb`{.input}, `extent`{.input}, `newtype`{.output})**
+  : `type`{.input}	
+    : Old datatype
+  : `lb`{.input} 
+    : New lower bound (in bytes)
+  : `extent`{.input}
+    : New extent (in bytes)
+  : `newtype`{.output}
+    : New datatype, commit before use
 
 # Multiple MPI_TYPE_VECTOR
 
@@ -144,13 +164,15 @@ if ( extent != sizeof(particle[0] ) {
 }
 ...
 ```
+
 # Other ways of communicating non-uniform data
 
-* Non-contiguous data by manual packing
+- Non-contiguous data by manual packing
 	- Copy data into or out from temporary buffer
 	- Use MPI_Pack and MPI_Unpack functions
 	- Performance will likely be an issue
-* Structures and types as continuous stream of bytes: Communicate everything using MPI_BYTE 
+- Structures and types as continuous stream of bytes: Communicate
+  everything using MPI_BYTE
 	- Portability can be an issue - be careful
 ```c
 struct ParticleStruct particle[1000];
@@ -161,16 +183,25 @@ MPI_Send(particle, 1000*psize, MPI_BYTE, ...);
 	
 # SUBARRAY TYPE {.section}
 
-# MPI_TYPE_CREATE_SUBARRAY
+# MPI_TYPE_CREATE_SUBARRAY {.split-definition}
 
-* Creates a type describing an N-dimensional subarray within an N-dimensional array  
-**`MPI_Type_create_subarray`(`ndims`{.input}, `sizes`{.input}, `subsizes`{.input}, `offsets`{.input}, `order`{.input}, `oldtype`{.input}, `newtype`{.output})**  
+- Creates a type describing an N-dimensional subarray within an N-dimensional array
 
-`ndims`{.input}		number of array dimensions  
-`sizes`{.input}		number of array elements in each dimension (array)   
-`subsizes`{.input}	number of subarray elements in each dimension (array)  
-`offsets`{.input}	starting point of subarray in each dimension (array)  
-`order`{.input}		storage order of the array. Either `MPI_ORDER_C` or `MPI_ORDER_FORTRAN`
+**`MPI_Type_create_subarray`(`ndims`{.input}, `sizes`{.input}, `subsizes`{.input}, `offsets`{.input}, `order`{.input}, `oldtype`{.input}, `newtype`{.output})**
+  : `ndims`{.input}
+    : number of array dimensions
+
+    `sizes`{.input}
+    : number of array elements in each dimension (array)
+
+    `subsizes`{.input}
+    : number of subarray elements in each dimension (array)
+
+    `offsets`{.input}
+    : starting point of subarray in each dimension (array)
+
+    `order`{.input}
+    : storage order of the array. Either `MPI_ORDER_C` or `MPI_ORDER_FORTRAN`
 
 # Example: subarray
 
@@ -203,10 +234,13 @@ if (rank==1)
 </div>
 
 # Example: halo exchange with user defined types
+
 <div class=column>
-* A solver requires a stencil of two cells in each direction to compute the next timestep
-* The distributed 2D grid
-	- Two-element ghost layers,each process has allocated a 8 x 8 grid patch
+- A solver requires a stencil of two cells in each direction to
+  compute the next timestep
+- The distributed 2D grid
+	- Two-element ghost layers,each process has allocated a 8 x 8 grid
+      patch
 	- Each process computes a 4 x 4 patch of total system
 	- Need to communicate 2x4 and 4x2 patches
 </div>
@@ -216,7 +250,7 @@ if (rank==1)
 
 # Example: halo exchange with user defined types
 
-* Create datatype for sending and receiving in x direction
+- Create datatype for sending and receiving in x direction
 
 <div class=column>
 ![](images/halo_yellow.svg){.center width=70%}
@@ -235,7 +269,7 @@ MPI_Type_create_subarray(2, array_size,
 
 # Example: halo exchange with user defined types
 
-* Create datatype for sending and receiving in y direction
+- Create datatype for sending and receiving in y direction
 
 <div class=column>
 
@@ -277,10 +311,12 @@ MPI_Sendrecv(&array[2][4], 1, x_boundary, right, tag_right,
 ![](images/halo_exchange2.svg){.center width=100%}
 
 # Summary 
-* User-defined types enable communication of non-contiguous or heterogeneous data with single MPI communication operations
+
+- User-defined types enable communication of non-contiguous or
+  heterogeneous data with single MPI communication operations
 	- Improves code readability & portability
 	- Allows optimizations by the MPI runtime
-* In the second part we
+- In the second part we
 	- Introduced the concepts of extent and typemap
 	- Discussed describing structures/types
 	- Covered another advanced type constructor, `MPI_Type_create_subarray`

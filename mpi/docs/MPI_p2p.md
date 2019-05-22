@@ -29,8 +29,8 @@ lang:   en
 
 # MPI point-to-point operations
 
-- One process *sends* a message to another process that *receives* it with
-  `MPI_Send` and `MPI_Recv` routines
+- One process *sends* a message to another process that *receives* it
+  with `MPI_Send` and `MPI_Recv` routines
 - Sends and receives in a program should match – one receive per send
 - Each message (envelope) contains
     - The actual *data* that is to be sent
@@ -81,7 +81,7 @@ P1 issues MPI_Recv to receive half of the array from P0
 ![](images/case_study_left-03.svg){.center width=45%}
 </div>
 <div class=coulumn>
-**Step 1.2**: Send call in scatter 
+**Step 1.2**: Send call in scatter
 
 ![](images/case_study_right-02.svg){.center width=50%}
 
@@ -141,34 +141,65 @@ P0 issues an MPI_Recv operation for receiving P1’s partial sum
 P0 computes the total sum
 </div>
 
-# Send operation
+# Send operation {.split-definition}
 
-`MPI_Send`( `buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
-: `buffer`{.input}   The data to be sent
-: `count`{.input}    Number of elements in buffer
-: `datatype`{.input} Type of elements in buffer (see later slides)
-: `dest`{.input}     The rank of the receiver
-: `tag`{.input}      An integer identifying the message
-: `comm`{.input}     Communicator
-: `error`{.output}   Error value; in C/C++ it’s the return value of the function, and in Fortran an additional output parameter
+`MPI_Send`(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
+  : `buffer`{.input}
+    : The data to be sent
+    
+    `count`{.input}
+    : Number of elements in buffer
 
-# Receive operation
+    `datatype`{.input}
+    : Type of elements in buffer (see later slides)
+
+    `dest`{.input}
+    : The rank of the receiver
+
+    `tag`{.input}
+    : An integer identifying the message
+
+    `comm`{.input}
+    : Communicator
+
+    `error`{.output}
+    : Error value; in C/C++ it’s the return value of the function, and
+      in Fortran an additional output parameter
+
+# Receive operation {.split-definition}
 
 `MPI_Recv`(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
-: `buffer`{.output}	Buffer for storing received data 
-: `count`{.input} Number of elements in buffer, not the number of element that are actually received 
-: `datatype`{.input} Type of each element in buffer
-: `source`{.input} 	 Sender of the message
-: `tag`{.input}      Number identifying the message 
-: `comm`{.input}     Communicator
-: `status`{.output}  Information on the received message
-: `error`{.output}   As for send operation
+  : `buffer`{.output}
+    : Buffer for storing received data
+    
+    `count`{.input}
+    : Number of elements in buffer, not the number of element that are
+      actually received
+
+    `datatype`{.input} 
+    : Type of each element in buffer
+    
+    `source`{.input}
+ 	: Sender of the message
+    
+    `tag`{.input}
+    : Number identifying the message
+
+    `comm`{.input}
+    : Communicator
+
+    `status`{.output}
+    : Information on the received message
+
+    `error`{.output}
+    : As for send operation
 
 # MPI datatypes
 
 - MPI has a number of predefined datatypes to represent data
 - Each C or Fortran datatype has a corresponding MPI datatype
-    - C examples: **`MPI_INT`** for **`int`** and **`MPI_DOUBLE`** for **`double`**
+    - C examples: **`MPI_INT`** for **`int`** and **`MPI_DOUBLE`** for
+      **`double`**
     - Fortran example: **`MPI_INTEGER`** for **`integer`**
 - One can also define custom datatypes
 
@@ -177,8 +208,10 @@ P0 computes the total sum
 # Blocking routines & deadlocks
 
 - MPI_Send and MPI_Recv are blocking routines
-	- **`MPI_Send`** exits once the send buffer can be safely read and written to
-	- MPI_Recv exits once it has received the message in the receive buffer
+	- **`MPI_Send`** exits once the send buffer can be safely read and
+      written to
+	- MPI_Recv exits once it has received the message in the receive
+      buffer
 - Completion depends on other processes => risk for *deadlocks*
 	- For example, all processes are in **`MPI_Recv`**
 	- If deadlocked, the program is stuck forever
@@ -202,14 +235,14 @@ P0 computes the total sum
 
 - Sends one message and receives another one, with a single command
 	- Reduces risk for deadlocks
-- Parameters as in **`MPI_Send`** and **`MPI_Recv`** 
-- Destination rank and source rank can be same or different 
+- Parameters as in **`MPI_Send`** and **`MPI_Recv`**
+- Destination rank and source rank can be same or different
 
 # Special parameter values 
 
 **`MPI_Send`(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})**
 
-<br> 
+<br>
 
 | Parameter      | Special value    | Implication                                  |
 | ----------     | ---------------- | -------------------------------------------- |
@@ -233,7 +266,7 @@ P0 computes the total sum
 - The status parameter in `MPI_Recv` contains information about the
   received data after the call has completed, e.g.
 	- Number of received elements
-	- Tag of the received message 
+	- Tag of the received message
 	- Rank of the sender
 - In C the status parameter is a struct
 - In Fortran it is an integer array of size `MPI_STATUS_SIZE`
@@ -252,10 +285,14 @@ Fortran: 	**`status(MPI_SOURCE)`**
 
 # Summary 
 
-- Point-to-point communication = messages are sent between two MPI processes
-- Point-to-point operations enable any parallel communication pattern (in principle)
-	* `MPI_Send` and `MPI_Recv`
-	* `MPI_Sendrecv`
-- Employing special argument values may simplify the implementations of certain communication patterns
-- Status parameter of `MPI_Recv` contains information about the message after the receive is completed
+- Point-to-point communication = messages are sent between two MPI
+  processes
+- Point-to-point operations enable any parallel communication pattern
+  (in principle)
+    - `MPI_Send` and `MPI_Recv`
+    - `MPI_Sendrecv`
+- Employing special argument values may simplify the implementations
+  of certain communication patterns
+- Status parameter of `MPI_Recv` contains information about the
+  message after the receive is completed
 

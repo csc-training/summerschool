@@ -7,16 +7,16 @@ lang:   en
 
 # Communicators
 
-* The communicator determines the "communication universe" 
+- The communicator determines the "communication universe" 
 	- The source and destination of a message is identified by process rank within the communicator
-* So far: `MPI_COMM_WORLD`
-* Processes can be divided into subcommunicators
+- So far: `MPI_COMM_WORLD`
+- Processes can be divided into subcommunicators
 	- Task level parallelism with process groups performing separate tasks Parallel I/O
 
 # Communicators
 
-* Communicators are dynamic
-* A task can belong simultaneously to several communicators
+- Communicators are dynamic
+- A task can belong simultaneously to several communicators
 	- In each of them it has a unique ID, however
 	- Communication is normally within the communicator
 
@@ -24,15 +24,23 @@ lang:   en
 
 ![](images/communicator.svg){.center width=80%}
 
-# Creating new communicator
+# Creating new communicator {.split-definition}
 
-* `MPI_Comm_split` creates new communicators based on 'colors' and 'keys'   
-	
-**`MPI_Comm_split`(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})**  
-`comm`{.input} 		communicator handle  
-`color`{.input}		control of subset assignment, processes with the same color belong to the same new communicator  
-`key`{.input} 		control of rank assignment    
-`newcomm`{.output}	new communicator handle  
+* **`MPI_Comm_split`** creates new communicators based on 'colors' and 'keys'
+
+**`MPI_Comm_split`(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})**
+  : `comm`{.input}
+    : communicator handle
+
+    `color`{.input}
+    : control of subset assignment, processes with the same color
+      belong to the same new communicator
+
+    `key`{.input} 
+    : control of rankassignment 
+
+    `newcomm`{.output} 
+    : new communicator handle
 
 **If color = `MPI_UNDEFINED`, a process does not belong to any of the new communicators**
 
@@ -41,17 +49,17 @@ lang:   en
 <div class=column>
 ```c
 if (myid%2 == 0) {
-  color = 1;
+    color = 1;
 } else {
-  color = 2;
+    color = 2;
 }
 MPI_Comm_split(MPI_COMM_WORLD, color
-	, myid, &subcomm);
+    ,myid, &subcomm);
 
 MPI_Comm_rank(subcomm, &mysubid);
 
 printf ("I am rank %d in MPI_COMM_WORLD,but 
-	%d in Comm %d.\n", myid, mysubid, color);
+    %d in Comm %d.\n", myid, mysubid, color);
 ```
 
 </div>
@@ -85,29 +93,29 @@ if (myid%2 == 0) {
 MPI_Comm_split(MPI_COMM_WORLD, color, myid, &subcomm);
 MPI_Comm_rank(subcomm, &mysubid);
 MPI_Bcast(sendbuf, 8, MPI_INT, 0, subcomm);
-
 ```
 
 ![](images/colorcomm2.svg){.center width=30%}
 
 # Communicator manipulation
 
-* **MPI_Comm_size** 	
-	- Returns number of processes in communicator's group  
-* **MPI_Comm_rank** 			
-	- Returns rank of calling process in communicator's group  
-* **MPI_Comm_compare** 
-	- Compares two communicators  
-* **MPI_Comm_dup** 	
-	- Duplicates a communicator  
-* **MPI_Comm_free** 			
-	- Marks a communicator for deallocation  
-
+- **MPI_Comm_size** 	
+	- Returns number of processes in communicator's group
+- **MPI_Comm_rank** 			
+	- Returns rank of calling process in communicator's group
+- **MPI_Comm_compare**
+	- Compares two communicators
+- **MPI_Comm_dup**
+	- Duplicates a communicator
+- **MPI_Comm_free**	
+	- Marks a communicator for deallocation
 
 # Summary 
 
-* Defining new communicators usually required in real-world programs
+- Defining new communicators usually required in real-world programs
 	- Task parallelism, using libraries, I/O,...
-* We introduced one way of creating new communicators via `MPI_Comm_split`
-	- Tasks assigned with a color, which can be `MPI_UNDEFINED` if the task is excluded in all resulting communicators
+- We introduced one way of creating new communicators via
+  `MPI_Comm_split`
+	- Tasks assigned with a color, which can be `MPI_UNDEFINED` if the
+      task is excluded in all resulting communicators
 	- Other ways (via MPI groups) exist

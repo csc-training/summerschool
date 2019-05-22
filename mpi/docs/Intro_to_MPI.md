@@ -146,23 +146,46 @@ Fortran`---> use mpi`
 
 # First five MPI commands
 
-- Set up the MPI environment  
-    **`MPI_Init()`**
-- Information about the communicator  
-	**`MPI_Comm_size(comm, size)`**  
-	`comm`{.input}	communicator  
-	`size`{.output}	number of processes in the communicator  
-	**`MPI_Comm_rank(comm, rank)`**  
-	`comm`{.input} communicator   
-	`rank`{.output}	rank of this process
+<div class=column>
+- Set up the MPI environment
+
+**`MPI_Init()`**
+
+<br>
+
+- Finalize MPI environment
+
+**`MPI_Finalize()`**
+
+- Synchronize processes
+
+`MPI_Barrier(comm)`
+  : `comm`{.input} 
+    : communicator
+</div>
+<div class=column>
+- Synchronize processes
+
+`MPI_Barrier(comm)`
+  : `comm`{.input} 
+    : communicator
+</div>
 
 # First five MPI commands
 
-- Synchronize processes  
-    **MPI_Barrier(comm)**  
-	`comm`{.input} communicator  
-- Finalize MPI environment  
-    **MPI_Finalize()**
+- Information about the communicator
+
+`MPI_Comm_size(comm, size)`
+  : `comm`{.input}
+    : communicator
+  : `size`{.output}
+    : number of processes in the communicator
+
+`MPI_Comm_rank(comm, rank)`
+  : `comm`{.input}
+    : communicator
+  : `rank`{.output}
+    : rank of this process
 
 # MPI communicator
 
