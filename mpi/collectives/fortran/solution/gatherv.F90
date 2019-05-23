@@ -4,7 +4,7 @@ program coll_exer
 
   integer, parameter :: n_mpi_tasks = 4
 
-  integer :: ntasks, rank, ierr, i, color, sub_comm
+  integer :: ntasks, rank, ierr, i
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
   integer, dimension(n_mpi_tasks) :: offsets, counts
