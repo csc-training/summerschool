@@ -16,9 +16,9 @@ lang:   en
 
 # Introduction
 
-* Collective communication typically outperforms
+- Collective communication typically outperforms
   point-to-point communication
-* Code becomes more compact and easier to read:
+- Code becomes more compact and easier to read:
 
 <div class=column>
 ```fortran
@@ -79,6 +79,9 @@ the task 0 to all other tasks
 
     `comm`{.input} 
     : communicator
+    
+    `-`{.ghost}
+    : `-`{.ghost}
 
 # Scattering
 
@@ -294,11 +297,7 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
 
 ![](images/reduce.svg){.center width=80%}
 
-# Reduce operation
-
-Available reduction operations (argument `op`{.input})  
-
-<br>
+# Available reduction operations
 
 <div class=column>
 | Operation    | Meaning              |
@@ -347,6 +346,9 @@ Available reduction operations (argument `op`{.input})
 
     `comm`{.input}
     : communicator
+
+    `-`{.ghost}
+    : `-`{.ghost}
 
 # Global reduction {.split-definition}
 
@@ -454,7 +456,7 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL,&
     : send buffer
     
     `sendcount`{.input}
-    : number of elements to send to each process
+    : number of elements to send
     
     `sendtype`{.input}
     : data type of send buffer elements
@@ -463,13 +465,16 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL,&
     : receive buffer
 
     `recvcount`{.input}
-    : number of elements received from any process
+    : number of elements received
     
     `recvtype`{.input} 
     : data type of receive buffer elements
 
     `comm`{.input} 
     : communicator
+    
+    `-`{.ghost}
+    : `-`{.ghost}
 
 # All-to-all example
 
