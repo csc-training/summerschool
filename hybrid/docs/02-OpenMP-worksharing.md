@@ -26,7 +26,7 @@ lang:   en
     - The construct must be followed by a loop construct
         - in C/C++ limited only to for-loops
     - It must reside inside a parallel region
-        - Combined construct with omp parallel:
+        - Combined construct with omp parallel:\
           `#pragma omp parallel for / !$omp parallel do`
 - The loop index is private by default
 - Work sharing can be adjusted with the schedule clause
