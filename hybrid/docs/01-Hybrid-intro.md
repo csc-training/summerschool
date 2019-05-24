@@ -133,13 +133,13 @@ I'm thread 2 in process 0
 # Thread safe initialization
 
 `MPI_Init_thread(required, provided)`
-  : `argc` {.input}, `argv` {.input}
+  : `argc`{.input}, `argv`{.input}
     : Command line arguments in C
-  : `required` {.input}
+  : `required`{.input}
     : Required thread safety level
-  : `provided` {.output}
+  : `provided`{.output}
     : Supported thread safety level
-  : `error` {.output}
+  : `error`{.output}
     : Error value; in C/C++ it's the return value of the function,
       and in Fortran an additional output parameter
 
