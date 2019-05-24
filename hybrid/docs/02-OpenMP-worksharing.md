@@ -61,11 +61,14 @@ lang:   en
 
 `schedule(static[,chunk])`
   : Blocks of iterations of size chunk for each thread
+
 `schedule(dynamic[,chunk])`
   : Chunk iterations off a queue until everything is done
+
 `schedule(guided[,chunk])`
   : Threads grab blocks of iterations, size of blocks starts from larger size
     and shrinks down to chunk
+
 `schedule(runtime)`
   : Schedule and chunk size are taken from environment variable
     `OMP_SCHEDULE`
@@ -100,15 +103,14 @@ for (int i=0; i < Nx; i++) {
 `lastprivate(list)`
   : Private variable where the original  variable is updated with the value
     from the "last" parallel _iteration step_ or _section_
-  : Variable can be both firstprivate and lastprivate
 
 ```c
 int n = 10;
 int a, b, i;
 #pragma omp parallel for private(i,a) lastprivate(b)
 for (i=0; i < n; i++) {
-	a = i;
-	b = i;
+    a = i;
+    b = i;
 }
 printf("private int is %d, lastprivate int is %d\n", a, b);
 ```
