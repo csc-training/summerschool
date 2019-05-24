@@ -61,7 +61,7 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
   perform the collective communication from a single thread (usually the
   master thread)
 - Note that MPI collective communication calls do not guarantee
-  synchronization of the thread order
+  synchronisation of the thread order
 
 
 # Thread-specific communicators
@@ -128,7 +128,7 @@ tid = omp_get_thread_num() + 1
   : sets CPU affinity for threads within each MPI task
     : Each thread can be pinned to a CPU core (cpu)
     : The threads may be set to float within a NUMA node (`numa_node`) or
-      the -d reservation (depth). With none the affinity control is
+      the `-d` reservation (depth). With none the affinity control is
       disabled.
 
 
@@ -147,7 +147,6 @@ tid = omp_get_thread_num() + 1
 
 - Multiple threads may make MPI calls simultaneously
 - Thread specific tags and/or communicators
-    - While waiting for the MPI-4 features
 - For collectives it is often better to use a single thread for
   communication
 - Thread affinity matters
@@ -183,7 +182,7 @@ tid = omp_get_thread_num() + 1
 # OpenMP task construct
 
 - Create a new task and add it to task queue
-    - Memorize data and code to be executed
+    - Memorise data and code to be executed
     - Task constructs can arbitrarily nested
 - Syntax (C/C++)
     ```c
@@ -210,10 +209,11 @@ tid = omp_get_thread_num() + 1
 #pragma omp single
 {
     int i=0;
-    while (i < 12 ) {
+    while (i < 12) {
         #pragma omp task
-        printf("Task %d by thread %d\n", i, omp_get_thread_num());
-
+        {
+            printf("Task %d by thread %d\n", i, omp_get_thread_num());
+        }
         i++;
     }
 }
@@ -223,6 +223,7 @@ tid = omp_get_thread_num() + 1
 # OpenMP task construct
 
 How many tasks does the following code create when executed with 4 threads?
+`a) 6  b) 4  c) 24`
 
 ```c
 #pragma omp parallel
@@ -230,17 +231,14 @@ How many tasks does the following code create when executed with 4 threads?
     int i=0;
     while (i < 6) {
         #pragma omp task
-        do_some_heavy_work();
-
+        {
+            do_some_heavy_work();
+        }
         i++;
     }
 }
 
 ```
-
-a) 6
-b) 4
-c) 24
 
 
 # Task execution model
@@ -249,9 +247,9 @@ c) 24
     - Can be same or different thread that created the task
     - By default, tasks are executed in arbitrary order
     - Each task is executed only once
-- Synchronization points
+- Synchronisation points
     - Implicit or explicit barriers
-    - `#pragma omp taskwait  / !$omp taskwait`
+    - `#pragma omp taskwait / !$omp taskwait`
         - Encountering task suspends until child tasks complete
 
 
@@ -269,7 +267,8 @@ c) 24
 
 # Data environment of a task
 
-What is the value of i that is printed out?  **a) i=0, b) i=6, c) i=100**
+What is the value of i that is printed out? `a) 0  b) 6  c) 100`
+
 ```c
 #pragma omp parallel
 {
@@ -285,14 +284,14 @@ What is the value of i that is printed out?  **a) i=0, b) i=6, c) i=100**
     }
     #pragma omp barrier
     if (omp_get_thread_num() == 0)
-        printf("i=%d\n", i);
+        printf("i is %d\n", i);
 }
 ```
 
 
 # Data environment of a task
 
-What is the value of i that is printed out? **a) i=0, b) i=6, c) >= 100**
+What is the value of i that is printed out? ` a) 0  b) 6  c) >= 100`
 
 ```c
 #pragma omp parallel
@@ -300,7 +299,7 @@ What is the value of i that is printed out? **a) i=0, b) i=6, c) >= 100**
     int i=0;
     #pragma omp master
     {
-        while (i < 6 ) {
+        while (i < 6) {
             #pragma omp task shared(i)
             if (omp_get_thread_num() == 1)
                 i=100;
@@ -309,7 +308,7 @@ What is the value of i that is printed out? **a) i=0, b) i=6, c) >= 100**
     }
     #pragma omp barrier
     if (omp_get_thread_num() == 0)
-        printf("i=%d\n", i);
+        printf("i is %d\n", i);
 }
 ```
 
@@ -319,7 +318,7 @@ What is the value of i that is printed out? **a) i=0, b) i=6, c) >= 100**
 - A task can itself generate new tasks
     - Useful when parallelising recursive algorithms
 - Recursive algorithm for Fibonacci numbers:
-  $F_n = F_{n-1} + F_{n-2}    F_0=0, F_1=1$
+  $F_0=0, \quad F_1=1, \quad F_n = F_{n-1} + F_{n-2}$
 
 <div class=column>
 ```c
@@ -329,35 +328,31 @@ What is the value of i that is printed out? **a) i=0, b) i=6, c) >= 100**
 }
 ```
 </div>
+
 <div class=column>
-<small>
 ```c
 int fibonacci(int n) {
     int fn, fnm;
-    if (n<2)
+    if (n < 2)
         return n;
     #pragma omp task shared(fn)
     fn = fibonacci(n-1);
-
     #pragma omp task shared(fnm)
     fnm = fibonacci(n-2);
-
-    /* Wait for child tasks to finish */
     #pragma omp taskwait
     return fn+fnm;
 }
 ```
-</small>
 </div>
 
 
 # OpenMP programming best practices
 
-- Maximize parallel regions
+- Maximise parallel regions
     - Reduce fork-join overhead, e.g. combine multiple parallel loops into one
       large parallel region
     - Potential for better cache re-usage
-- Parallelize outermost loops if possible
+- Parallelise outermost loops if possible
     - Move PARALLEL DO construct outside of inner loops
 - Reduce access to shared data
     - Possibly make small arrays private
@@ -367,14 +362,14 @@ int fibonacci(int n) {
 
 # OpenMP summary
 
-- OpenMP is an API for thread-based parallelization
+- OpenMP is an API for thread-based parallelisation
     - Compiler directives, runtime API, environment variables
     - Relatively easy to get started but specially efficient and/or real-world
-      parallelization non-trivial
+      parallelisation non-trivial
 - Features touched in this intro
     - Parallel regions, data-sharing attributes
     - Work-sharing and scheduling directives
-    - Task based parallelization
+    - Task based parallelisation
 
 
 # OpenMP summary
@@ -387,7 +382,7 @@ int fibonacci(int n) {
 - Other work-sharing clauses:
     - `workshare`, `sections`, `simd`
     - `teams`, `distribute`
-- More advanced ways to reduce synchronization overhead with `nowait` and
+- More advanced ways to reduce synchronisation overhead with `nowait` and
   `flush`
 - `threadprivate`, `copyin`, `cancel`
 - A user can define dependencies between tasks with the `depend` clause
@@ -396,6 +391,6 @@ int fibonacci(int n) {
 
 # Web resources
 
-- OpenMP homepage: http://openmp.org/
-- Good online tutorial: https://computing.llnl.gov/tutorials/openMP/
-- More online tutorials: http://openmp.org/wp/resources/#Tutorials
+- OpenMP homepage: <http://openmp.org/>
+- Good online tutorial: <https://computing.llnl.gov/tutorials/openMP/>
+- More online tutorials: <http://openmp.org/wp/resources/#Tutorials>
