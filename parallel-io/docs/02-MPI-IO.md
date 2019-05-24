@@ -46,20 +46,20 @@ lang:   en
 - All processes in a communicator open a file using
 
 `MPI_File_open(comm, filename, mode, info, fhandle)`
-  : `comm` {.input}
+  : `comm`{.input}
     : communicator that performs parallel I/O
 
-    `mode` {.input}
+    `mode`{.input}
     : `MPI_MODE_RDONLY`, `MPI_MODE_WRONLY`, `MPI_MODE_CREATE`,
       `MPI_MODE_RDWR`, ...
 
         - Mode parameters can be combined with + in Fortran and | in C/C++
 
-    `info` {.input}
+    `info`{.input}
     : Hints to implementation for optimal performance
       (No hints: `MPI_INFO_NULL`)
 
-    `fhandle` {.output}
+    `fhandle`{.output}
     : parallel file handle
 
 - File is closed using `MPI_File_close(fhandle)`
@@ -69,20 +69,20 @@ lang:   en
 # File writing at explicit location
 
 `MPI_File_write_at(fhandle, disp, buffer, count, datatype, status)`
-  : `disp` {.input}
+  : `disp`{.input}
     : displacement in bytes (with the default file view) from the
       beginning of file
 
-    `buffer` {.input}
+    `buffer`{.input}
     : buffer in memory from where to write the data
 
-    `count` {.input}
+    `count`{.input}
     : number of elements in the buffer
 
-    `datatype` {.input}
+    `datatype`{.input}
     : datatype of elements to write
 
-    `status` {.output}
+    `status`{.output}
     : similar to status in `MPI_Recv`, stores number of elements actually
       written
 
@@ -135,20 +135,20 @@ end program output
 # File reading at explicit location
 
 `MPI_File_read_at(fhandle, disp, buffer, count, datatype, status)`
-  : `disp` {.input}
+  : `disp`{.input}
     : displacement in bytes (with the default file view) from the
       beginning of file
 
-    `buffer` {.output}
+    `buffer`{.output}
     : buffer in memory where to read the data
 
-    `count` {.input}
+    `count`{.input}
     : number of elements in the buffer
 
-    `datatype` {.input}
+    `datatype`{.input}
     : datatype of elements to read
 
-    `status` {.output}
+    `status`{.output}
     : similar to status in `MPI_Recv`, stores number of elements actually read
 
 
@@ -160,10 +160,10 @@ end program output
   with
 
 `MPI_File_seek(fhandle, disp, whence)`
-  : `disp` {.input}
+  : `disp`{.input}
     : displacement in bytes (with the default file view)
 
-    `whence` {.input}
+    `whence`{.input}
     : `MPI_SEEK_SET`: the pointer is set to `disp`
     : `MPI_SEEK_CUR`: the pointer is set to the current pointer position
        plus `disp`
@@ -173,16 +173,16 @@ end program output
 # File writing at file pointer
 
 `MPI_File_write(fhandle, buffer, count, datatype, status)`
-  : `buffer` {.input}
+  : `buffer`{.input}
     : buffer in memory which holds the data
 
-    `count` {.input}
+    `count`{.input}
     : number of elements to write
 
-    `datatype` {.input}
+    `datatype`{.input}
     : datatype of elements to write
 
-    `status` {.output}
+    `status`{.output}
     : status object
 
 - Updates position of individual file pointer after writing
@@ -192,16 +192,16 @@ end program output
 # File reading at file pointer
 
 `MPI_File_read(fhandle, buffer, count, datatype, status)`
-  : `buffer` {.output}
+  : `buffer`{.output}
     : buffer in memory where to store the data
 
-    `count` {.input}
+    `count`{.input}
     : number of elements to read
 
-    `datatype` {.input}
+    `datatype`{.input}
     : datatype of elements to read
 
-    `status` {.output}
+    `status`{.output}
     : similar to status in `MPI_Recv`, amount of data read can be
       determined by `MPI_Get_count`
 
@@ -260,20 +260,20 @@ end program output
 # File view
 
 `MPI_File_set_view(fhandle, disp, etype, filetype, datarep, info)`
-  : `disp` {.input}
+  : `disp`{.input}
     : Offset from beginning of file. Always in bytes
 
-    `etype` {.input}
+    `etype`{.input}
     : Basic MPI type or user defined type. Specifies the unit of data access
 
-    `filetype` {.input}
+    `filetype`{.input}
     : Same type as etype or user defined type constructed of etype
 
-    `datarep` {.input}
+    `datarep`{.input}
     : Data representation (can be adjusted for portability)
     : `"native"`: store in same format as in memory
 
-    `info` {.input}
+    `info`{.input}
     : Hints for implementation that can improve performance
       (`MPI_INFO_NULL`: no hints)
 
