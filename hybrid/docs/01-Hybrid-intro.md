@@ -188,11 +188,11 @@ I'm thread 2 in process 0
 
 # Real-world hybrid applications
 
-- Vlasiator – space weather simulations
+- Vlasiator -- space weather simulations
     - Fluid in 6D spatial/velocity space: spatial grid with MPI, velocity
       grid with OpenMP
     - Lower memory footprint and better load balancing
-- CP2K – electronic structure simulations
+- CP2K -- electronic structure simulations
     - Especially so called hybrid functionals benefit from threading
     - Lower memory footprint allows more efficient computations
 
@@ -309,8 +309,8 @@ program hello
 end program hello
 ```
 ```bash
-> ftn –h omp omp_hello.f90 -o omp
-> aprun –e OMP_NUM_THREADS=4 -n 1 -d 4 ./omp
+> ftn -h omp omp_hello.f90 -o omp
+> aprun -e OMP_NUM_THREADS=4 -n 1 -d 4 ./omp
  Hello world! by thread             0
  Hello world! by thread             2
  Hello world! by thread             3
@@ -331,8 +331,8 @@ int main(int argc, char argv[]){
   }
 ```
 ```bash
-> cc –h omp omp_hello.c -o omp
-> aprun –e OMP_NUM_THREADS=4 -n 1 -d 4 ./omp
+> cc -h omp omp_hello.c -o omp
+> aprun -e OMP_NUM_THREADS=4 -n 1 -d 4 ./omp
  Hello world! by thread             2
  Hello world! by thread             3
  Hello world! by thread             0

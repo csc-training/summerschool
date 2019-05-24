@@ -97,7 +97,7 @@ int total = 0;
 #pragma omp critical(addup)
   total += sum;
 #pragma omp master
-  printf(“Grand total is: %5.2f\n”, total);
+  printf("Grand total is: %5.2f\n", total);
 }
 ```
 # OpenMP runtime library and environment variables {.section}
