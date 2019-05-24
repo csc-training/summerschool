@@ -6,6 +6,309 @@ lang:   en
 ---
 
 
+# Multi-GPU programming with OpenACC
+
+- Hardware
+    - Typical GPU node in a cluster
+- Programming models
+    - Single thread
+    - Threads with OpenMP
+    - Multiple processes with MPI
+
+
+# Typical HPC GPU cluster
+
+- Three levels of hardware parallelism
+    - GPU - different levels of threads
+    - Node - GPU, CPU and interconnect
+    - Machine - several nodes connected with interconnect
+
+FIXME: missing figure
+
+
+# Typical HPC GPU cluster
+
+- Parallelization
+    - OpenACC
+    - Threads (pthreads, OpenMP, TBB) or MPI for CPUs
+    - MPI between nodes
+
+FIXME: missing figure
+
+
+# Multi-GPU communication cases
+
+- All GPUs of a node are accessible from a single process and thread
+    - Data copies either directly or through CPU memory
+- Communication between nodes require message passing
+
+FIXME: missing table
+
+
+# Single node {.section}
+
+
+# Multi-GPU programming with OpenACC
+
+- OpenACC permits using multiple GPUs within one node by using the
+  `acc_get_num_devices` and `acc_set_device_num` functions
+- Asynchronous OpenACC calls, OpenMP threads or MPI processes must be used
+  in order to actually run kernels in parallel
+- Data transfers between GPUs must be done via CPU memory manually
+    - You can also use CUDA features or managed memory
+
+
+# Example
+
+```c
+for (int block = 0; block < blocks; block++) {
+    int first_row = block * blocksize;
+    int last_row = first_row + blocksize;
+    acc_set_device_num(block%gpus, acc_device_nvidia);
+#pragma acc parallel loop private(ii, ir, Ci, Cr) async(block%gpus)
+    for (ii = first_row; ii < last_row; ii++) {
+        ...
+    }
+#pragma acc update self(values[first_row:blocksize][0:cols]) async(block%gpus)
+}
+for (int gpu = 0; gpu < gpus; gpu++) {
+    acc_set_device_num(gpu, acc_device_nvidia);
+#pragma acc wait
+}
+```
+
+
+# OpenMP and OpenACC
+
+```c
+#pragma omp parallel private(first_row, last_row, gpu)
+{
+    gpu = omp_get_thread_num();  // Assign one thread per GPU
+    acc_set_device_num(gpu, acc_device_nvidia);
+    first_row = gpu  blocksize;
+    last_row = first_row + blocksize;
+    #pragma acc data copyout(iterations[first_row:blocksize][0:cols])
+    {
+        #pragma acc parallel loop private(ii, ir, Ci, Cr)
+        for (ii = first_row; ii < last_row; ii++) {
+            ...
+        }
+    }
+}
+```
+
+
+# MPI and OpenACC {.section}
+
+
+# Message-passing interface
+
+- MPI is an application programming interface (API) for communication
+  between separate processes
+    - The most widely used approach for *distributed* parallel computing
+- Parallel program is launched as set of independent, identical processes
+- The same program code and instructions
+- Can reside in different nodes
+    - or even in different computers
+
+
+# MPI ranks
+
+- MPI runtime assigns each process a rank
+    - identification of the processes
+    - ranks start from 0 and extent to N-1
+- Processes can perform different tasks and handle different data basing
+  on their rank
+
+FIXME: missing code
+
+
+# Data model
+
+- All variables and data structures are local to the process
+- Processes can exchange data by sending and receiving messages
+
+FIXME: missing figure
+
+
+# MPI communicator
+
+- Communicator is an object connecting a group of processes
+- Initially, there is always a communicator MPI_COMM_WORLD which
+  contains all the processes
+- Most MPI functions require communicator as an argument
+- Users can define own communicators
+
+
+# MPI Hello world!
+
+```c
+#include<stdio.h>
+#include<stdlib.h>
+#include<mpi.h>
+
+int main(int argc, char argv[])
+{
+    int i, myid, ntasks;
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
+    MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+    if (myid == 0) {
+        printf("In total there are %i tasks\n", ntasks);
+    }
+    printf("Hello from %i\n", myid);
+    MPI_Finalize();
+    return 0;
+}
+```
+
+
+# Multi-GPU programming with MPI+OpenACC
+
+- Idea: use MPI to transfer data between GPUs, use OpenACC-kernels for
+  computations
+- Additional complexity: GPU memory is separate from that of a CPU
+    - Without GPU-aware MPI-library: data must be transferred from the
+      device memory to the host memory and vice versa before performing
+      MPI-calls
+    - With GPU-aware MPI-library: data on the device can be directly used
+      in MPI-calls (via transparent RDMA)
+
+
+# MPI communication without GPU-aware MPI
+
+- MPI send
+    1. Copy data from the device to a buffer on the host
+    2. Send the data from the buffer on the **host** with MPI
+- MPI receive
+    1. Receive the data to a buffer on the **host** with MPI
+    2. Copy data from the buffer on the host to the device
+- To perform point-to-point communication, two additional buffers and data
+  transfers needed
+
+
+# MPI communication without GPU-aware MPI
+
+```c
+/* MPI_Send without GPU-aware MPI */
+#pragma acc update host(data[0:N])
+/* Send and receive */
+MPI_Send(data, N, MPI_DOUBLE, to, MPI_ANY_TAG, MPI_COMM_WORLD);
+
+/* MPI_Recv without GPU-aware MPI */
+MPI_Recv(data, N, MPI_DOUBLE, from, MPI_ANY_TAG, MPI_COMM_WORLD,
+         MPI_STATUS_IGNORE);
+/* Copy data from host to GPU */
+#pragma acc update device(data[0:N])
+```
+
+
+# GPU aware MPI
+
+- Can use the device pointer in MPI calls - no need for additional buffers
+    - No need for extra buffers and device-host-device copies
+
+FIXME: missing figure
+
+
+# Using device addresses with host_data
+
+- For accessing device addresses of data on the host OpenACC includes
+  **host_data** --construct with the **use_device** --clause
+- No additional data transfers needed between the host and the device,
+  data automatically accessed from the device memory via **R**emote
+  **D**irect **M**emory **A**ccess
+- Requires *library* and *device* support to function!
+
+
+# MPI communication with GPU-aware MPI
+
+- MPI send
+    - Send the data from the buffer on the **device** with MPI
+- MPI receive
+    - Receive the data to a buffer on the **device** with MPI
+- No additional buffers or data transfers needed to perform
+  communication
+
+
+# MPI communication with GPU-aware MPI
+
+```c
+/* MPI_Send with GPU-aware MPI */
+#pragma acc host_data use_device(data)
+{
+    MPI_Send(data, N, MPI_DOUBLE, to, MPI_ANY_TAG, MPI_COMM_WORLD);
+}
+
+/* MPI_Recv with GPU-aware MPI */
+#pragma acc host_data use_device(data)
+{
+    MPI_Recv(data, N, MPI_DOUBLE, from, MPI_ANY_TAG, MPI_COMM_WORLD,
+             MPI_STATUS_IGNORE);
+}
+```
+
+# GPU affinity {.section}
+
+
+# Selecting the GPU
+
+- Problem description:
+    - If a node has more than one GPU, all processes in the node can
+      access all GPUs of the node
+    - MPI processes do not have a priori information on the other ranks in
+      the same node
+    - Which GPU the MPI process should select?
+
+FIXME: missing figure
+
+
+# Selecting the GPU
+
+- Simple approach
+- Use batch system options to assign the ranks in linear fashion to the
+  cores
+    - Node 1 ranks: 0 1 2 3 4 5
+    - Node 2 ranks: 6 7 8 9 10 11
+- You may also assume that you know the number of processes per node to
+  compute the rank on the node
+    - **int nodeRank = rank % processesPerNode**
+- Another non-portable option is to use the environment variables of the
+  batch job system
+
+
+# Selecting the GPU (cont.)
+
+- Simple approach is not very robust
+- More portable and robust solution is to use MPI3 shared memory
+  communicators:
+
+```c
+MPI_Comm shared;
+int local_rank, local_size, num_gpus;
+
+MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, 0,
+                    MPI_INFO_NULL, &shared);
+MPI_Comm_size(shared, &local_size); // number of ranks in this node
+MPI_Comm_rank(shared, &local_rank); // my local rank
+num_gpus = acc_get_num_device(acc_device_nvidia); // num of gpus in node
+if (num_gpus == local_size) {
+    acc_set_device_num(local_rank);
+} // otherwise error
+```
+
+# Summary
+
+- Typical HPC cluster node has several GPUs in each node
+- Different programming models for shared and distributed memory
+    - Threads within a node
+    - Message passing between nodes
+- Selecting the GPUs with correct affinity
+
+
+# Routine directive {.section}
+
+
 # Function calls in compute regions
 
 - Often it can be useful to call functions within loops to improve
@@ -14,6 +317,7 @@ lang:   en
   calling functions
 - One has to instruct the compiler to compile a device version of the
   function
+
 
 # Routine directive
 
