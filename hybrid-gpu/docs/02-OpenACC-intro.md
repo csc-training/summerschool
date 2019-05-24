@@ -17,7 +17,7 @@ lang:   en
   [http://www.openacc.org](http://www.openacc.org/)
 
 
-# OpenACC v.s. CUDA
+# OpenACC vs. CUDA
 
 - Why OpenACC and not CUDA?
     - Easier to work with
@@ -41,45 +41,46 @@ lang:   en
 
 # OpenACC execution model
 
+<div class="column">
 - Program runs on the host CPU
 - Host offloads compute-intensive regions (*kernels*) and related data
   to the accelerator GPU
 - Compute kernels are executed by the GPU
+</div>
 
-FIXME: missing figure
+<div class="column">
+![](img/execution-model.png)
+</div>
 
 
 # OpenACC data model
 
+<div class="column">
 - If host memory is separate from accelerator device memory
     - host manages memory of the device
     - host copies data to/from the device
 - When memories are not separate, no copies are needed (difference is
   transparent to the user)
+</div>
 
-FIXME: missing figure
+<div class="column">
+![](img/data-movement.png)
+</div>
 
 
-# OpenACC directive format
+# OpenACC directive syntax
+
+|         | sentinel      | construct | clauses      |
+| ------- | ------------- | --------- | ------------ |
+| C/C++   | `#pragma acc` | `kernels` | `copy(data)` |
+| Fortran | `!$acc`       | `kernels` | `copy(data)` |
 
 - OpenACC uses compiler directives for defining compute regions (and data
   transfers) that are to be performed on a GPU
-    - Syntax: directive, construct, clauses
-    - C/C++: `#pragma acc kernels copy(data)`
-    - Fortran: `!$acc kernels copy(data)`
 - Important constructs
     - `parallel`, `kernels`, `data`, `loop`, `update`, `host_data`, `wait`
 - Often used clauses
     - `if (condition)`, `async(handle)`
-
-FIXME: add colors?
-
-
-# OpenACC directives
-
-- Sentinels precede each OpenACC directive
-- C/C++: `#pragma acc`
-- Fortran: `!$acc`
 
 
 # Compiling an OpenACC program
@@ -140,14 +141,18 @@ host code
 
 # OpenACC levels of parallelism
 
+<div class="column">
 - OpenACC has three levels of parallelism
-  - **Vector** threads work in SIMT (SIMD) fashion
-  - **Workers** compute a vector
-  - **Gangs** have one or more workers that share resources, such as
-    streaming multiprocessor
-  - Multiple gangs work independently
+    - **Vector** threads work in SIMT (SIMD) fashion
+    - **Workers** compute a vector
+    - **Gangs** have one or more workers that share resources, such as
+      streaming multiprocessor
+    - Multiple gangs work independently
+</div>
 
-FIXME: missing figure
+<div class="column">
+![](img/vector-workers-gang.png)
+</div>
 
 
 # OpenACC compute constructs
@@ -163,7 +168,7 @@ FIXME: missing figure
 - With similar work sharing, both can perform equally well
 
 
-# Compute constructs: kernels
+# Compute constructs: `kernels`
 
 - Define a region to be transferred to a sequence of kernels for
   execution on the accelerator device
@@ -174,7 +179,7 @@ FIXME: missing figure
 - The *kernels* will be executed in a *sequential* order
 
 
-# `kernels` construct: example
+# Example: `kernels`
 
 <div class="column">
 ## C/C++
@@ -220,7 +225,7 @@ call accdaxpy(216, 3.14D0, x, y)
 </div>
 
 
-# Compute constructs: parallel
+# Compute constructs: `parallel`
 
 - Define a region to be executed on the accelerator device
     - C/C++: `#pragma acc parallel [clauses]`
@@ -231,7 +236,7 @@ call accdaxpy(216, 3.14D0, x, y)
       simultaneously
 
 
-# Work sharing construct: loop
+# Work sharing construct: `loop`
 
 - Define a loop to be parallelized
     - C/C++: `#pragma acc loop [clauses]`
@@ -244,7 +249,7 @@ call accdaxpy(216, 3.14D0, x, y)
 - Loop index variables are `private` variables by default
 
 
-# `parallel` construct: example
+# Example: `parallel`
 
 <div class="column">
 ## C/C++
@@ -313,7 +318,7 @@ call accdaxpy(216, 3.14D0, x, y)
     - `ccff` -- add extra information to the object files for use by tools
 
 
-# Minfo example
+# Example: `-Minfo`
 
 ```bash
 $ pgcc -fast -Minfo=all -c util.c

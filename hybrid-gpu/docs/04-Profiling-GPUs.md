@@ -57,7 +57,6 @@ Time(%) Time      Name
 
 ```bash
 $ nvprof ./cg
-
 ...
 
 ==22639== Profiling result:
@@ -80,17 +79,18 @@ Time(%)     Time Calls      Avg       Min       Max  Name
 
 # NVIDIA visual profiler
 
-FIXME: missing figure
+![](img/nvidia-visual-profiler.png){.center}
 
 
 # Details on OpenACC compute construct
 
-FIXME: missing figure
+![](img/profiler-compute-construct.png){.center}
 
 
 # Details on memory copy
 
-FIXME: missing figure
+![](img/profiler-memory-copy.png){.center}
+
 
 # Optimization {.section}
 
@@ -276,14 +276,18 @@ for (int i=0; i<imax; i++) {
 
 # Coalesced memory access
 
+<div class="column">
 - Coalesced memory access
     - 32 threads accessing memory at the same time
     - 32 Byte access granularity
 - Overly simplified
     - Some cases 128 bytes access granularity
     - 128 byte coalesced accesses can improve performance
+</div>
 
-FIXME: missing figure
+<div class="column">
+![](img/memory-access.png)
+</div>
 
 
 # Summary
