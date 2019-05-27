@@ -20,9 +20,11 @@ lang:   en
 
 - Row of a matrix is not contiguous in memory in Fortran
 
+<p>
+
 ![](images/layout.svg){.center width=50%}
 
-<br>
+<p>
 
 - Several options for sending a row:
 	- Use several send commands for each element of a row
@@ -38,7 +40,7 @@ lang:   en
 	- Non-contiguous data with a single MPI call, e.g. rows or columns
       of a matrix
 	- Heterogeneous data (structs in C, types in Fortran)
-	- Larger messages, count is int in C
+	- Larger messages, count is `int` (32 bits) in C
 - Provide higher level of programming
 	- Code is more compact and maintainable
 - Needed for getting the most out of MPI I/O
@@ -58,15 +60,15 @@ lang:   en
 	- Several routines for different special cases
 - A new datatype must be committed before using it
 
-**`MPI_Type_commit`(`newtype`{.input})**
-  : `newtype`{.input} 
-    : the new datatype to commit
+    - **`MPI_Type_commit`(`newtype`{.input})**
+        : `newtype`{.input} 
+          : the new datatype to commit
 
 - A type should be freed after it is no longer needed
 
-**`MPI_Type_free`(`newtype`{.input})**
-  : `newtype`{.input}
-    : the old datatype that is freed 
+    - **`MPI_Type_free`(`newtype`{.input})**
+        : `newtype`{.input}
+          : the old datatype that is freed 
 
 # Datatype constructors
 
@@ -94,6 +96,7 @@ lang:   en
     : displacement between the blocks
 </div>
 <div class=column>
+<p>
 ![](images/type_vector.svg){.center width=100%}
 </div>
 
@@ -112,21 +115,34 @@ call mpi_send(a, 1, rowtype, dest, tag, comm, ierr)
 call mpi_type_free(rowtype, ierr)
 ```
 
+<p>
 ![](images/layout.svg){.center width=50%}
 
-# MPI_TYPE_INDEXED
+# MPI_TYPE_INDEXED {.split-def-3}
 
 - Creates a new type from blocks comprising identical elements
 	- The size and displacements of the blocks may vary
 
-**`MPI_Type_indexed`(`count`{.input}, `blocklens`{.input}, `displs`{.input},`oldtype`{.input}, `newtype`{.output})**
+**`MPI_Type_indexed`(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `oldtype`{.input}, `newtype`{.output})**
   :	`count`{.input} 
     : number of blocks
-  : `blocklens`{.input}	
+
+    `blocklens`{.input}	
     : lengths of the blocks (array)
-  : `displs`{.input} 
+
+    `displs`{.input} 
     : displacements (array) in extent of oldtypes
 
+    `oldtype`{.input}
+    : original type
+    
+    `newtype`{.output}
+    : new type
+
+    `-`{.ghost}
+    : `-`{.ghost}
+
+<p>
 ![](images/type_indexed.svg){.center width=100%}
 
 # Example: an upper triangular matrix
