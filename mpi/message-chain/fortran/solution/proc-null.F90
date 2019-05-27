@@ -3,10 +3,10 @@ program basic
   use iso_fortran_env, only : REAL64
 
   implicit none
-  integer, parameter :: size = 10000000
+  integer, parameter :: msgsize = 10000000
   integer :: rc, myid, ntasks
-  integer :: message(size)
-  integer :: receiveBuffer(size)
+  integer :: message(msgsize)
+  integer :: receiveBuffer(msgsize)
   integer :: status(MPI_STATUS_SIZE)
 
   real(REAL64) :: t0, t1
@@ -36,11 +36,11 @@ program basic
   t0 = mpi_wtime()
 
   ! Send and receive messages
-  call mpi_sendrecv(message, size, MPI_INTEGER, destination, myid + 1, &
-       receiveBuffer, size, MPI_INTEGER, source, MPI_ANY_TAG, &
+  call mpi_sendrecv(message, msgsize, MPI_INTEGER, destination, myid + 1, &
+       receiveBuffer, msgsize, MPI_INTEGER, source, MPI_ANY_TAG, &
        MPI_COMM_WORLD, status, rc)
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
-       ' Sent elements: ', size, &
+       ' Sent elements: ', msgsize, &
        '. Tag: ', myid + 1, &
        '. Receiver: ', destination
 

@@ -46,7 +46,7 @@ lang:   en
 </div>
 
 <div class=column>
-- Array originally on process #0 (P0)
+- Array initially on process #0 (P0)
 - Parallel algorithm
 	* **Scatter**  
 	Half of the array is sent to process 1
@@ -69,8 +69,9 @@ lang:   en
 
 **Step 1.1**: Receive call in scatter
 
+<p>
 ![](images/case_study_right-01.svg){.center width=50%}
-
+<p>
 P1 issues MPI_Recv to receive half of the array from P0
 </div>
 
@@ -83,8 +84,9 @@ P1 issues MPI_Recv to receive half of the array from P0
 <div class=coulumn>
 **Step 1.2**: Send call in scatter
 
+<p>
 ![](images/case_study_right-02.svg){.center width=50%}
-
+<p>
 P0 issues an MPI_Send to send the lower part of the array to P1
 </div>
 
@@ -96,8 +98,9 @@ P0 issues an MPI_Send to send the lower part of the array to P1
 <div class=coulumn>
 **Step 2**: Compute the sum in parallel
 
+<p>
 ![](images/case_study_right-03.svg){.center width=50%}
-
+<p>
 Both P0 & P1 compute their partial sums and store them locally
 </div>
 
@@ -106,12 +109,12 @@ Both P0 & P1 compute their partial sums and store them locally
 <div class=column>
 ![](images/case_study_left-05.svg){.center width=45%}
 </div>
-
 <div class=coulumn>
 **Step 3.1**: Receive call in reduction
 
+<p>
 ![](images/case_study_right-04.svg){.center width=50%}
-
+<p>
 P0 issues an MPI_Recv operation for receiving P1’s partial sum
 </div>
 
@@ -123,9 +126,10 @@ P0 issues an MPI_Recv operation for receiving P1’s partial sum
 <div class=coulumn>
 **Step 3.2**: Send call in reduction
 
+<p>
 ![](images/case_study_right-05.svg){.center width=50%}
-
- P1 sends the partial sum to P0
+<p>
+P1 sends the partial sum to P0
 </div>
 
 # Case study: parallel sum 
@@ -136,8 +140,9 @@ P0 issues an MPI_Recv operation for receiving P1’s partial sum
 <div class=coulumn>
 **Step 3.3**: compute the final answer
 
+<p>
 ![](images/case_study_right-06.svg){.center width=50%}
-
+<p>
 P0 computes the total sum
 </div>
 
@@ -165,6 +170,9 @@ P0 computes the total sum
     `error`{.output}
     : Error value; in C/C++ it’s the return value of the function, and
       in Fortran an additional output parameter
+
+    `-`{.ghost}
+    : `-`{.ghost}
 
 # Receive operation {.split-definition}
 
@@ -194,13 +202,16 @@ P0 computes the total sum
     `error`{.output}
     : As for send operation
 
+    `-`{.ghost}
+    : `-`{.ghost}
+
 # MPI datatypes
 
 - MPI has a number of predefined datatypes to represent data
 - Each C or Fortran datatype has a corresponding MPI datatype
-    - C examples: **`MPI_INT`** for **`int`** and **`MPI_DOUBLE`** for
-      **`double`**
-    - Fortran example: **`MPI_INTEGER`** for **`integer`**
+    - C examples: `MPI_INT` for `int` and `MPI_DOUBLE` for
+      `double`
+    - Fortran example: `MPI_INTEGER` for `integer`
 - One can also define custom datatypes
 
 # More features in point-to-point communication {.section}
@@ -208,12 +219,12 @@ P0 computes the total sum
 # Blocking routines & deadlocks
 
 - MPI_Send and MPI_Recv are blocking routines
-	- **`MPI_Send`** exits once the send buffer can be safely read and
+	- `MPI_Send` exits once the send buffer can be safely read and
       written to
-	- MPI_Recv exits once it has received the message in the receive
+	- `MPI_Recv` exits once it has received the message in the receive
       buffer
 - Completion depends on other processes => risk for *deadlocks*
-	- For example, all processes are in **`MPI_Recv`**
+	- For example, all processes are in `MPI_Recv`
 	- If deadlocked, the program is stuck forever
 
 # Typical point-to-point communication patterns
@@ -235,7 +246,7 @@ P0 computes the total sum
 
 - Sends one message and receives another one, with a single command
 	- Reduces risk for deadlocks
-- Parameters as in **`MPI_Send`** and **`MPI_Recv`**
+- Parameters as in `MPI_Send` and `MPI_Recv`
 - Destination rank and source rank can be same or different
 
 # Special parameter values 
@@ -274,14 +285,14 @@ P0 computes the total sum
 # Status parameter
 
 - Received elements  
-Use the function  
-**`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
+&emsp;Use the function  
+&emsp;**`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
 - Tag of the received message  
-C: 		**`status.MPI_TAG`**  
-Fortran: 	**`status(MPI_TAG)`**
+&emsp;C: `status.MPI_TAG`  
+&emsp;Fortran: `status(MPI_TAG)`
 - Rank of the sender  
-C: 		**`status.MPI_SOURCE`**  
-Fortran: 	**`status(MPI_SOURCE)`**
+&emsp;C: `status.MPI_SOURCE`  
+&emsp;Fortran: `status(MPI_SOURCE)`
 
 # Summary 
 

@@ -3,10 +3,10 @@ program basic
   use iso_fortran_env, only : REAL64
 
   implicit none
-  integer, parameter :: size = 10000000
+  integer, parameter :: msgsize = 10000000
   integer :: rc, myid, ntasks
-  integer :: message(size)
-  integer :: receiveBuffer(size)
+  integer :: message(msgsize)
+  integer :: receiveBuffer(msgsize)
   integer :: status(MPI_STATUS_SIZE)
 
   real(REAL64) :: t0, t1
@@ -22,14 +22,14 @@ program basic
   t0 = mpi_wtime()
 
   ! TODO: Send and receive as defined in the assignment
-  if ( myid < ntasks-1 ) then
+  if (myid < ntasks-1) then
 
      write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
-          ' Sent elements: ',size, &
+          ' Sent elements: ', msgsize, &
           '. Tag: ', myid+1, '. Receiver: ', myid+1
   end if
 
-  if ( myid > 0 ) then
+  if (myid > 0) then
 
      write(*,'(A10,I3,A,I3)') 'Receiver: ', myid, &
           ' First element: ', receiveBuffer(1)

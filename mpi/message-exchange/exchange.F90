@@ -1,11 +1,11 @@
 program exchange
   use mpi
   implicit none
-  integer, parameter :: size = 100
-  integer :: rc, myid, ntasks, count
+  integer, parameter :: msgsize = 100
+  integer :: rc, myid, ntasks
   integer :: status(MPI_STATUS_SIZE)
-  integer :: message(size)
-  integer :: receiveBuffer(size)
+  integer :: message(msgsize)
+  integer :: receiveBuffer(msgsize)
 
   call mpi_init(rc)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, rc)
@@ -14,12 +14,10 @@ program exchange
   message = myid
 
   ! TODO: Implement sending and receiving as defined in the assignment
-  if ( myid == 0 ) then
-
+  if (myid == 0) then
      write(*,'(A10,I3,A10,I3)') 'Rank: ', myid, &
           ' received ', receiveBuffer(1)
   else if (myid == 1) then
-
      write(*,'(A10,I3,A10,I3)') 'Rank: ', myid, &
           ' received ', receiveBuffer(1)
   end if
