@@ -8,33 +8,47 @@ lang:   en
 
 # Understanding datatypes: typemap
 
-- A datatype is defined by a typemap
-	- pairs of basic types and displacements (in bytes)
+- A datatype is defined by a _typemap_
+	- Typemap consists of pairs with basic types and displacements (in
+      bytes)
 	- E.g. MPI_INT={(int,0)}
 
+<p>
 ![](images/typemap.svg){.center width=100%}
 
 # Datatype constructors: MPI_TYPE_CREATE_STRUCT
 
-- The most general type constructor, creates a new type from heterogeneous blocks
+- The most general type constructor, creates a new type from
+  heterogeneous blocks
 	- E.g. Fortran types and C structures
 	- Input is the typemap
 
+<p>
 ![](images/create_struct.svg){.center width=70%}
 
-# Datatype constructors: MPI_TYPE_CREATE_STRUCT
+# Datatype constructors: MPI_TYPE_CREATE_STRUCT {.split-definition}
 
-**`MPI_Type_create_struct`(`count`{.input}, `blocklens`{.input},`displs`{.input}, `types`{.input}, `newtype`{.output})**
+MPI_Type_create_struct(`count`{.input}, `blocklens`{.input},`displs`{.input}, `types`{.input}, `newtype`{.output})
   : `count`{.input}
     : number of blocks
-  : `blocklens`{.input}
+
+    `blocklens`{.input}
     : lengths of blocks (array)
-  : `displs`{.input}
+
+    `displs`{.input}
     : displacements of blocks in bytes (array)
-  : `types`{.input}
+
+    `types`{.input}
     : types of blocks (array)
 
-![](images/create_struct.svg){.center width=50%}
+    `newtype`{.output}
+    : resulting new datatype
+    
+    `-`{.ghost}
+    : `-`{.ghost}
+
+<p>
+![](images/create_struct.svg){.center width=70%}
 		
 # Example: sending a C struct 
 
@@ -118,9 +132,7 @@ disp[0] = 0;
 
 # Reading extent and lower bound
 
-- Read current extent and lower bound
-
-**`MPI_Type_get_extent`(`type`{.input}, `lb`{.output}, `extent`{.output})**
+MPI_Type_get_extent(`type`{.input}, `lb`{.output}, `extent`{.output})
   : `type`{.input}
     : Datatype
   : `lb`{.output}
@@ -128,11 +140,9 @@ disp[0] = 0;
   : `extent`{.output}
     : Extent of type (in bytes)
 
-# Setting extent and lower bound
+# Setting new extent and lower bound
 
--  Set new extent and lower bound
-
-**`MPI_Type_create_resized`(`type`{.input}, `lb`{.input}, `extent`{.input}, `newtype`{.output})**
+MPI_Type_create_resized(`type`{.input}, `lb`{.input}, `extent`{.input}, `newtype`{.output})
   : `type`{.input}	
     : Old datatype
   : `lb`{.input} 
@@ -174,6 +184,8 @@ if ( extent != sizeof(particle[0] ) {
 - Structures and types as continuous stream of bytes: Communicate
   everything using MPI_BYTE
 	- Portability can be an issue - be careful
+
+<p>
 ```c
 struct ParticleStruct particle[1000];
 int psize;
@@ -183,17 +195,17 @@ MPI_Send(particle, 1000*psize, MPI_BYTE, ...);
 	
 # SUBARRAY TYPE {.section}
 
-# MPI_TYPE_CREATE_SUBARRAY {.split-definition}
+# MPI_TYPE_CREATE_SUBARRAY {.split-def-3}
 
-- Creates a type describing an N-dimensional subarray within an N-dimensional array
-
-**`MPI_Type_create_subarray`(`ndims`{.input}, `sizes`{.input}, `subsizes`{.input}, `offsets`{.input}, `order`{.input}, `oldtype`{.input}, `newtype`{.output})**
+<!--- Creates a type describing an N-dimensional subarray within an N-dimensional array
+-->
+MPI_Type_create_subarray(`ndims`{.input}, `sizes`{.input}, `subsizes`{.input}, `offsets`{.input}, `order`{.input}, `oldtype`{.input}, `newtype`{.output})
   : `ndims`{.input}
     : number of array dimensions
-
+    
     `sizes`{.input}
     : number of array elements in each dimension (array)
-
+  
     `subsizes`{.input}
     : number of subarray elements in each dimension (array)
 
@@ -201,33 +213,42 @@ MPI_Send(particle, 1000*psize, MPI_BYTE, ...);
     : starting point of subarray in each dimension (array)
 
     `order`{.input}
-    : storage order of the array. Either `MPI_ORDER_C` or `MPI_ORDER_FORTRAN`
+    : storage order of the array. Either `MPI_ORDER_C` or
+      `MPI_ORDER_FORTRAN`
+  
+    `oldtype`{.input}
+    : oldtype
+    
+    `newtype`{.output}
+    : resulting type
+
+    `-`{.ghost}
+    : `-`{.ghost}
 
 # Example: subarray
 
 <div class=column>
-<small>
 ```c
-int array_size[2]     = {5,5};
-int subarray_size[2]  = {2,3};
-int subarray_start[2] = {1,2};
-MPI_Datatype subtype;
+int a_size[2]    = {5,5};
+int sub_size[2]  = {2,3};
+int sub_start[2] = {1,2};
+MPI_Datatype sub_type;
 double array[5][5];
     
-for (i=0; i<array_size[0]; i++)
-  for (j=0; j<array_size[1]; j++)
+for(i = 0; i < a_size[0]; i++)
+  for(j = 0; j < a_size[1]; j++)
     array[i][j] = rank; 
-MPI_Type_create_subarray(2, array_size, subarray_size, subarray_start,
-				  MPI_ORDER_C, MPI_DOUBLE, &subtype);
-MPI_Type_commit(&subtype);
+MPI_Type_create_subarray(2, a_size, sub_size,
+  sub_start, MPI_ORDER_C, MPI_DOUBLE, &sub_type);
+MPI_Type_commit(&sub_type);
 if (rank==0)
-  MPI_Recv(array[0], 1, subtype, 1, 123, MPI_COMM_WORLD,
-  	MPI_STATUS_IGNORE);
+  MPI_Recv(array[0], 1, sub_type, 1, 123,
+    MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 if (rank==1) 
-  MPI_Send(array[0], 1, subtype, 0, 123, MPI_COMM_WORLD);
+  MPI_Send(array[0], 1, sub_type, 0, 123,
+  MPI_COMM_WORLD);
 
 ```
-</small>
 </div>
 <div class=column>
 ![](images/type_array.svg){.center width=100%}
@@ -291,7 +312,7 @@ MPI_Type_create_subarray(2, array_size,
 
 ```c
 //shift to the left
-MPI_Sendrecv(&array[2][2], 1, x_boundary, left, tag_left,       
+MPI_Sendrecv(&array[2][2], 1, x_boundary, left, tag_left,
              &array[2][6], 1, x_boundary, right, tag_right, 
              MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 ...
@@ -302,7 +323,7 @@ MPI_Sendrecv(&array[2][2], 1, x_boundary, left, tag_left,
 
 ```c
 //shift to the right
-MPI_Sendrecv(&array[2][4], 1, x_boundary, right, tag_right,       
+MPI_Sendrecv(&array[2][4], 1, x_boundary, right, tag_right,
              &array[2][0], 1, x_boundary, left, tag_left, 
              MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 ...

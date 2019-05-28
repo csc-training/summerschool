@@ -59,16 +59,9 @@ lang:   en
 - A new datatype is created from existing ones with a datatype constructor 	
 	- Several routines for different special cases
 - A new datatype must be committed before using it
-
     - **`MPI_Type_commit`(`newtype`{.input})**
-        : `newtype`{.input} 
-          : the new datatype to commit
-
 - A type should be freed after it is no longer needed
-
     - **`MPI_Type_free`(`newtype`{.input})**
-        : `newtype`{.input}
-          : the old datatype that is freed 
 
 # Datatype constructors
 
@@ -87,7 +80,7 @@ lang:   en
 - Creates a new type from equally spaced identical blocks
 
 <div class=column>
-**`MPI_Type_vector`(`count`{.input}, `blocklen`{.input}, `stride`{.input}, `oldtype`{.input}, `newtype`{.output})**
+MPI_Type_vector(`count`{.input}, `blocklen`{.input}, `stride`{.input}, `oldtype`{.input}, `newtype`{.output})
   : `count`{.input}
     : number of blocks
   : `blocklen`{.input} 
@@ -123,7 +116,7 @@ call mpi_type_free(rowtype, ierr)
 - Creates a new type from blocks comprising identical elements
 	- The size and displacements of the blocks may vary
 
-**`MPI_Type_indexed`(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `oldtype`{.input}, `newtype`{.output})**
+MPI_Type_indexed(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `oldtype`{.input}, `newtype`{.output})
   :	`count`{.input} 
     : number of blocks
 

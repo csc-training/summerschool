@@ -64,7 +64,7 @@ the task 0 to all other tasks
 
 - With `MPI_Bcast`, the task root sends a buffer of data to all other tasks
 
-**`MPI_Bcast`(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `root`{.input}, `comm`{.input})**
+MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `root`{.input}, `comm`{.input})
   : `buf`{.input}`fer`{.output} 
     : data to be distributed
 
@@ -89,13 +89,14 @@ the task 0 to all other tasks
 
 ![](images/scatter.svg){.center width=80%}
 
+<p>
 - Segments A, B, … may contain multiple elements
 
 # Scattering {.split-definition}
 
 - Task root sends an equal share of data to all other processes
 
-**`MPI_Scatter`(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.input}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.output})**
+MPI_Scatter(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
   : `sendbuf`{.input} 
     : send buffer (data to be scattered)
 	 
@@ -131,8 +132,8 @@ if (my_id==0) then
 		a(i) = i
 	end do
 end if
-call mpi_bcast(a,16,MPI_INTEGER,0, &
-		MPI_COMM_WORLD,rc)
+call mpi_bcast(a, 16, MPI_INTEGER, 0, &
+		MPI_COMM_WORLD, rc)
 if (my_id==3) print *, a(:)
 ```
 <small>
@@ -149,8 +150,8 @@ if (my_id==0) then
 		a(i) = i
 	end do
 end if
-call mpi_scatter(a,4,MPI_INTEGER, aloc,4 &
-	MPI_INTEGER, 0,MPI_COMM_WORLD,rc)
+call mpi_scatter(a, 4, MPI_INTEGER, aloc, 4 &
+	MPI_INTEGER, 0, MPI_COMM_WORLD, rc)
 if (my_id==3) print *, aloc(:)
 ```
 <small>
@@ -162,15 +163,17 @@ if (my_id==3) print *, aloc(:)
 
 # Vector version of MPI_Scatter {.split-definition}
 
-**`MPI_Scatterv`(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})**
+MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
   : `sendbuf`{.input}
     : send buffer
 
     `sendcounts`{.input} 
-    : array (of length ntasks) specifying the number of elements to send to each processor
+    : array (of length ntasks) specifying the number of elements to
+      send to each processor
 
     `displs`{.input} 
-    : array (of length ntasks). Entry i specifies the displacement(relative to sendbuf)
+    : array (of length ntasks). Entry i specifies the
+      displacement(relative to sendbuf)
 
     `sendtype`{.input} 
     : data type of send buffer elements
@@ -234,7 +237,7 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
 
 - `MPI_Gather`: Collect an equal share of data from all processes to root
 
-**`MPI_Gather`(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})**
+MPI_Gather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
   : `sendbuf`{.input}
     : send buffer (data to be gathered)
 
@@ -259,9 +262,9 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
     `comm`{.input}
     : communicator
 
-# Vector version of MPI_Gather {.split-definition}
+# Vector version of MPI_Gather {.split-def-3}
 
-**`MPI_Gatherv`(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcounts`{.input}, `displs`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})** 
+MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcounts`{.input}, `displs`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
   : `sendbuf`{.input}
     : send buffer
 
@@ -270,6 +273,9 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
 
     `sendtype`{.input} 
     : data type of send buffer elements
+    
+    `-`{.ghost}
+    : `-`{.ghost}
     
     `recvbuf`{.output} 	
     : receive buffer
@@ -290,6 +296,9 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
 
     `comm`{.input}
     : communicator
+    
+    `-`{.ghost}
+    : `-`{.ghost}
 
 # Reduce operation
 
@@ -322,10 +331,10 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
 
 # Reduce operation {.split-definition}
 
-- Applies a reduction operation op to sendbuf over the set of tasks
-  and places the result in recvbuf on root
+- Applies a reduction operation op to `sendbuf` over the set of tasks
+  and places the result in `recvbuf` on root
 
-**`MPI_Reduce`(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `root`{.input}, `comm`{.input})**
+MPI_Reduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `root`{.input}, `comm`{.input})
   : `sendbuf`{.input} 
     : send buffer
 
@@ -356,7 +365,7 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
   the result back to all processes
 	- Compare: `MPI_Reduce` + `MPI_Bcast` 
 
-**`MPI_Allreduce`(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `comm`{.input})**
+MPI_Allreduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `comm`{.input})
   : `sendbuf`{.input} 
     : starting address of send buffer
 
@@ -413,14 +422,13 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL,&
 - `MPI_Allgather` gathers data from each task and distributes the resulting data to each task
 	- Compare: `MPI_Gather` + `MPI_Bcast`
     
-<br>
-
+<p>
 ![](images/allgather.svg){.center width=50%}
 
 
 # All gather {.split-definition}
 
-**`MPI_Allgather`(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `comm`{.input})**
+MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
   : `sendbuf`{.input} 
     : send buffer
 
@@ -443,15 +451,17 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL,&
 
 - Send a distinct message from each task to every task
 
+<p>
 ![](images/alltoall.svg){.center width=80%}
 
-- ”Transpose” like operation
+<p>
+- "Transpose" like operation
 
 # All to all {.split-definition}
 
-- Sends a distinct message from each task to every task (compare: “All scatter”)
+- Sends a distinct message from each task to every task (compare: "All scatter")
 
-**`MPI_Alltoall`(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `comm`{.input})**
+MPI_Alltoall(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
   : `sendbuf`{.input}
     : send buffer
     
@@ -518,7 +528,8 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 
 # Summary
 
-- Collective communications involve all the processes within a communicator
+- Collective communications involve all the processes within a
+  communicator
 	- All processes must call them
 - Collective operations make code more transparent and compact
 - Collective routines allow optimizations by MPI library

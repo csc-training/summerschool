@@ -148,7 +148,7 @@ P0 computes the total sum
 
 # Send operation {.split-definition}
 
-`MPI_Send`(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
+MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
   : `buffer`{.input}
     : The data to be sent
     
@@ -176,7 +176,7 @@ P0 computes the total sum
 
 # Receive operation {.split-definition}
 
-`MPI_Recv`(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
+MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
   : `buffer`{.output}
     : Buffer for storing received data
     
@@ -238,11 +238,9 @@ P0 computes the total sum
 
 # Combined send & receive 
 
-**`MPI_Sendrecv`(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `dest`{.input}, 
-`sendtag`{.input}, `recvbuf`{.input}, `recvcount`{.input}, `recvtype`{.input}, 
-`source`{.input}, `recvtag`{.input}, `comm`{.input}, `status`{.output})**
-
-<br>
+MPI_Sendrecv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `dest`{.input}, `sendtag`{.input}, `recvbuf`{.input}, `recvcount`{.input}, `recvtype`{.input}, `source`{.input}, `recvtag`{.input}, `comm`{.input}, `status`{.output})
+  : `-`{.ghost}
+    : `-`{.ghost}
 
 - Sends one message and receives another one, with a single command
 	- Reduces risk for deadlocks
@@ -251,26 +249,26 @@ P0 computes the total sum
 
 # Special parameter values 
 
-**`MPI_Send`(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})**
+MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
+  : `-`{.ghost}
+    : `-`{.ghost}
 
-<br>
-
-| Parameter      | Special value    | Implication                                  |
-| ----------     | ---------------- | -------------------------------------------- |
-| `dest`{.input} | `MPI_PROC_NULL`  | Null destination, no operation takes place   |
+| Parameter          | Special value    | Implication                                  |
+| ----------         | ---------------- | -------------------------------------------- |
+| **`dest`{.input}** | `MPI_PROC_NULL`  | Null destination, no operation takes place   |
 
 # Special parameter values
 
-**`MPI_Recv`(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})**
+MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
+  : `-`{.ghost}
+    : `-`{.ghost}
 
-<br>
-
-| Parameter         | Special value       | Implication                                  |
-| ----------        | ----------------    | -------------------------------------------- |
-| `source`{.input}  | `MPI_PROC_NULL`     | No sender=no operation takes place           |
-|                   | `MPI_ANY_SOURCE`    | Receive from any sender                      |
-| `tag`{.input}     | `MPI_ANY_TAG`       | Receive messages with any tag                |
-| `source`{.output} | `MPI_STATUS_IGNORE` | Do not store any status data                 |
+| Parameter             | Special value       | Implication                                  |
+| ----------            | ----------------    | -------------------------------------------- |
+| **`source`{.input}**  | `MPI_PROC_NULL`     | No sender=no operation takes place           |
+|                       | `MPI_ANY_SOURCE`    | Receive from any sender                      |
+| **`tag`{.input}**     | `MPI_ANY_TAG`       | Receive messages with any tag                |
+| **`source`{.output}** | `MPI_STATUS_IGNORE` | Do not store any status data                 |
 
 # Status parameter 
 

@@ -159,14 +159,14 @@ Fortran`---> use mpi`
 
 - Synchronize processes
 
-`MPI_Barrier(comm)`
+MPI_Barrier(`comm`{.input})
   : `comm`{.input} 
     : communicator
 </div>
 <div class=column>
 - Synchronize processes
 
-`MPI_Barrier(comm)`
+MPI_Barrier(`comm`{.input})
   : `comm`{.input} 
     : communicator
 </div>
@@ -175,13 +175,13 @@ Fortran`---> use mpi`
 
 - Information about the communicator
 
-`MPI_Comm_size(comm, size)`
+MPI_Comm_size(`comm`{.input}, `size`{.output})
   : `comm`{.input}
     : communicator
   : `size`{.output}
     : number of processes in the communicator
 
-`MPI_Comm_rank(comm, rank)`
+MPI_Comm_rank(`comm`{.input}, `rank`{.output})
   : `comm`{.input}
     : communicator
   : `rank`{.output}

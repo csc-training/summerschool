@@ -28,7 +28,7 @@ lang:   en
 
 * **`MPI_Comm_split`** creates new communicators based on 'colors' and 'keys'
 
-**`MPI_Comm_split`(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})**
+MPI_Comm_split(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})
   : `comm`{.input}
     : communicator handle
 
@@ -42,7 +42,11 @@ lang:   en
     `newcomm`{.output} 
     : new communicator handle
 
-**If color = `MPI_UNDEFINED`, a process does not belong to any of the new communicators**
+    `-`{.ghost}
+    : `-`{.ghost}
+
+If color = `MPI_UNDEFINED`, a process does not belong to any of the
+new communicators
 
 # Creating new communicator
 
@@ -82,20 +86,27 @@ I am rank 1 in MPI_COMM_WORLD, but 0 in Comm 2.
 
 # Using an own communicator
 
-![](images/colorcomm1.svg){.center width=30%}
-
+<div class=column>
+<p>
 ```c
 if (myid%2 == 0) {
   color = 1;
 } else {
   color = 2;
 }
-MPI_Comm_split(MPI_COMM_WORLD, color, myid, &subcomm);
+MPI_Comm_split(MPI_COMM_WORLD, color, 
+               myid, &subcomm);
 MPI_Comm_rank(subcomm, &mysubid);
 MPI_Bcast(sendbuf, 8, MPI_INT, 0, subcomm);
 ```
-
-![](images/colorcomm2.svg){.center width=30%}
+</div>
+<div class=column>
+Before broadcast:
+![](images/colorcomm1.svg){width=90%}
+<p>
+After broadcast:
+![](images/colorcomm2.svg){width=90%}
+</div>
 
 # Communicator manipulation
 
