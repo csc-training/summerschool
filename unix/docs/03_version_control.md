@@ -53,24 +53,103 @@ the work is done for you by the version control system
 
   * e.g. it does what it can and shows you the places where it needs manual intervention
 
+# Version control with git {.section}
+
+# Starting a git repository: git init
+
+- We need to tell git to start "monitoring" our project folder
+- Git won't do or save anything unless we tell it to 
+- creates a `.git` folder. Don't touch this!
+	- contains all the info and data used by git, manual editing can/will break it
+- **Terminology:** A git _repository_ = A project folder were git is operating 
+
+
+
+```bash
+$ mkdir recipe
+$ cd recipe
+$ git init
+
+```
+
+# Choosing what we want to save: git add
+
+- Selecting what changes we want to save
+	- Moving and deleting files is also a change
+	- Could be a folder, a couple of files, a single file or just part of a file
+	 
+- You don't have to add all your changes at once! 
+
+- Does not change our files or save anything yet
+
+
+# Creating a snapshot: git commit 
+ - A commit is a saved state of your project
+ - All changes that were added using `git add` are now part of the commit  
+ - A commit can (should) have an associated commit message
+ 	* The message should be clear and concise: "Fixed bug #1234"
+ - Git allows us to compare, merge, and checkout commits
+ 	* Checkout a commit -> Set our project state to a specific commit 
+
+# Git file states: git status 
+ A file in a git repository can be in one of the following states
+
+ - **Untracked**: Untracked files are ignored by git
+ - **Unmodified**: The file is tracked by git, but no changes have been made 
+ - **Modfied**: The file is tracked by git and has been modified
+ - **Staged**:  The file has been added (`git add file1`) and is ready to be committed to your repository 
+
+`git status` shows the current state of your repository
+
+# Project history: git log
+
+* Each commit has a:
+	- Message 
+	- Author
+	- Unique id,  also called a commit hash
+	- Submission date
+
+* We use `git log` to inspect the history of our repository 
+
+# Whats the difference: git diff
+
+ * Show the difference between two commits
+ * Or the difference between a commit and the current state of your project
+ * The commit hash is used to refer to a specific commit
+
+# Remote repositories: Were things get really useful
+
+ * You can have multiple copies of the same project in different places
+ 	- A different folder, another computer, or a web-bases repository
+	- You have a copy, your coworker has a copy, and so on...  
+ 
+ * This is what enables collaboration and sharing changes
+
+ * You can also just copy a git repository and after that never interact with any one
+
 # Centralized vs. Distributed
-![](images/git_cent_dist.svg){.center width=80%}
 
-# Remote repositories
+* Git is a distributed version control system
+ 	- I.e every repository is self contained and _equally valid_ 
 
-- Modern Version control systems are distributed
+![](images/git_cent_dist.svg){.center width=50%}
 
-  * Git (and Mercurial,…)
-  * You may also encounter older non-distributed VCSs like svn
+# Remote repositories: Basic commands
+  * `git clone`, to copy a repository
+  * `git pull`, to retrieve changes from a remote repository  
+  * `git push`, to send our changes to a remote repository 
+
+# Remote repositories: Web services
 
 - Git is usually paired up with web-based repository
+  * GitHub
+  * Bitbucket
+  * GitLab 
 
-  * GitHub (140k matches in Google Scholar)
-  * Bitbucket (12k)
-  * GitLab (2k), SourceForge (160k, however…) etc.
-  * Your own server
+- **These are not the same as git**, they are services built on top of git
 
-Most modern and widely used combo: Git + Github
+- We will be using github, exercises and materials at  
+<https://github.com/csc-training/summerschool>
 
 # Social coding with git+Github
 
@@ -91,28 +170,43 @@ Most modern and widely used combo: Git + Github
 ![](images/coding_cv_1.png){.center}   
 ![](images/coding_cv_2.png){.center}
 
-# Initializing repositories
-- Git needs to be told that “start operating in this folder”
-	* ` git init `  
-	* ` git remote add origin github.com/user/repo.git`  
-	* ` git push`  
+# Creating repositories on github
 
-- Repository is now functioning and synced with GitHub
+<div class=column>
+1. Create a new repository in github
+2. After this you can:
+	- push a local repository to github 
+	<small>
+	```bash
+	$ git remote add origin https://github.com/User/repo.git
+	$ git push -u origin master
+	```
+	</small>
+	- clone the repository  
+	<small> 
+	```bash	
+	git clone https://github.com/User/repo.git
+	```
+	</small>
 
 
-# Initializing repositories, alternative way
+3. The local repository is now functioning and synced with github
+</div>
+<div class=column>
 
-- Create a new remote repository in GitHub  
+ ![](images/new_repo.png){.center width=60%}  
 
-![](images/new_repo.png)
+ ![](images/clone_repo.png){.center width=60%}
 
-- Clone (=download) it: `git clone https://github.com/user/repo.git`   
-![](images/clone_1.png){width=30%} \	 ---> \ ![](images/clone_2.png){width=30%}
+</div>
 
-# Forking & cloning repositories
 
-  - Sometimes you want to copy repository by somebody else
-  - This is called “forking” and can be done in GitHub
+
+# Forking repositories
+
+  - Copying a repository on GitHub to your own GitHub
+	* So a GitHub feature, _not a part of git_ 
+  - This is called “forking”
   - Forking a repository allows you to freely experiment with changes
     without affecting the original project.
   - Once forked, we can again clone the repository to ourselves
@@ -123,7 +217,7 @@ Most modern and widely used combo: Git + Github
 
 - Let’s fork & clone our first repository
 
-  * Fork `https://github.com/csc-training/summerschool`
+  * Fork <https://github.com/csc-training/summerschool>
   * `git clone https://github.com/user/summerschool`  
 
 ![](images/clone_fork.png){.center}
@@ -144,13 +238,6 @@ Most modern and widely used combo: Git + Github
 
 5. Commits are **push**ed to the remote repository: `git push`
  
-# Git file states
- A file in a git repository can be in one of the following states
-
- - **Untracked**: Untracked files are ignored by git
- - **Unmodified**: The file is tracked by git, but no changes have been made 
- - **Modfied**: The file is tracked by git and has been modified
- - **Staged**:  The file has been added (`git add file1`) and is ready to be committed to the local repository 
 
 
 
