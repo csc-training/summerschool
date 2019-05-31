@@ -104,7 +104,7 @@ lang:   en
 </div>
 
 <div class="column">
-![](img/volta-architecture.png){ height=120% }
+![](img/volta-architecture.png){ width=100% }
 </div>
 
 
