@@ -48,22 +48,29 @@ lang:   en
 - Usually major rewrites of programs required
 
 
-# Accelerators
-
+# Accelerator performance growth
 ![](img/peak-flop-development.png){.center}
 
-# Accelerators
+# Accelerators share of 500 fastest systems (Top500)
 
 ![](img/accelerator-share.png){.center width=75%}
 
-# Accelerators
+# US roadmap to Exascale
 
 ![](img/DoE-Exascale-Roadmap.png){.center width=75%}
 
-# Accelerators
+# EU roadmap to Exascale
 
 ![](img/eurohpc.jpg){.center width=75%}
 
+
+# Lumi - Pre-exascale system in Finland
+<div class="column">
+![](img/lumi1.png){}
+</div>
+<div class="column">
+![](img/lumi2.png){width=65%}
+</div>
 
 # Accelerator model today
 <div class="column">
@@ -220,8 +227,6 @@ More difficult, but more opportunities
     - 384 GB of main memory
     - 3.2 TB of fast local storage
     - Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth
-
-
 
 
 # Summary

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>Introduction to GPUs in HPC</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Introduction to GPUs in HPC</h1>
+  <p>CSC Summerschool, 2019-07</p>
+</section>
+
+<section id="high-performance-computing" class="slide level1" data-background-size="contain">
+<h1>High-performance computing</h1>
+<div class="column">
+<ul>
+<li>High performance computing is fueled by ever increasing performance</li>
+<li>Increasing performance allows breakthroughs in many major challenges that humankind faces today</li>
+<li>Not only hardware performance, algorithmic improvements have also added ordered of magnitude of real performance</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/top500-perf-dev.png" />
+</figure>
+</div>
+</section>
+<section id="hpc-through-the-ages" class="slide level1" data-background-size="contain">
+<h1>HPC through the ages</h1>
+<div class="column">
+<ul>
+<li>Achieving performance has been based on various strategies throughout the years
+<ul>
+<li>Frequency, vectorization, multinode, multicore ...</li>
+<li>Now performance is mostly limited by power consumption</li>
+</ul></li>
+<li>Accelerators provide compute resources based on a very high level of parallelism to reach high performance at low relative power consumption</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/microprocessor-trend-data.png" />
+</figure>
+</div>
+</section>
+<section id="accelerators" class="slide level1" data-background-size="contain">
+<h1>Accelerators</h1>
+<ul>
+<li>Specialized parallel hardware for floating point operations
+<ul>
+<li>Co-processors for traditional CPUs</li>
+<li>Based on highly parallel architectures</li>
+<li>Graphics processing units (GPU) have been the most common accelerators during the last few years</li>
+</ul></li>
+<li>Promises
+<ul>
+<li>Very high performance per node</li>
+</ul></li>
+<li>Usually major rewrites of programs required</li>
+</ul>
+</section>
+<section id="accelerator-performance-growth" class="slide level1" data-background-size="contain">
+<h1>Accelerator performance growth</h1>
+<figure>
+<img src="img/peak-flop-development.png" class="center" />
+</figure>
+</section>
+<section id="accelerators-share-of-500-fastest-systems-top500" class="slide level1" data-background-size="contain">
+<h1>Accelerators share of 500 fastest systems (Top500)</h1>
+<figure>
+<img src="img/accelerator-share.png" class="center" style="width:75.0%" />
+</figure>
+</section>
+<section id="us-roadmap-to-exascale" class="slide level1" data-background-size="contain">
+<h1>US roadmap to Exascale</h1>
+<figure>
+<img src="img/DoE-Exascale-Roadmap.png" class="center" style="width:75.0%" />
+</figure>
+</section>
+<section id="eu-roadmap-to-exascale" class="slide level1" data-background-size="contain">
+<h1>EU roadmap to Exascale</h1>
+<figure>
+<img src="img/eurohpc.jpg" class="center" style="width:75.0%" />
+</figure>
+</section>
+<section id="lumi---pre-exascale-system-in-finland" class="slide level1" data-background-size="contain">
+<h1>Lumi - Pre-exascale system in Finland</h1>
+<div class="column">
+<figure>
+<img src="img/lumi1.png" />
+</figure>
+</div>
+<div class="column">
+<figure>
+<img src="img/lumi2.png" style="width:65.0%" />
+</figure>
+</div>
+</section>
+<section id="accelerator-model-today" class="slide level1" data-background-size="contain">
+<h1>Accelerator model today</h1>
+<div class="column">
+<ul>
+<li>Connected to CPUs via PCIe</li>
+<li>Local memory
+<ul>
+<li>Smaller than main memory (32 GB in Puhti)</li>
+<li>Very high bandwidth (up to 900 GB/s)</li>
+<li>Latency high compared to compute performance</li>
+</ul></li>
+<li>Data must be copied over the PCIe bus</li>
+</ul>
+</div>
+<div class="column">
+<p><img src="img/gpuConnect.png" /> <img src="img/gpu-bws.png" style="width:100.0%" /></p>
+</div>
+</section>
+<section id="gpu-architecture" class="slide level1" data-background-size="contain">
+<h1>GPU architecture</h1>
+<ul>
+<li>Designed for running tens of thousands of threads simultaneously on thousands of cores</li>
+<li>Very small penalty for switching threads</li>
+<li>Running large amounts of threads hides memory access penalties</li>
+<li>Very expensive to synchronize all threads</li>
+<li>Now Nvidia GPUs have close to monopoly in HPC - will change in next few years</li>
+</ul>
+</section>
+<section id="gpu-architecture-nvidia-volta" class="slide level1" data-background-size="contain">
+<h1>GPU architecture: Nvidia Volta</h1>
+<div class="column">
+<ul>
+<li>80 streaming multi processor units (SM), each comprising many smaller Cuda cores
+<ul>
+<li>5120 single precision cores</li>
+<li>2560 double precision cores</li>
+<li>640 tensor cores</li>
+</ul></li>
+<li>Common L2 cache (6144 KB) for all multi processors</li>
+<li>HBM2 memory, typically 16 GB or 32 GB</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/volta-architecture.png" style="width:100.0%" />
+</figure>
+</div>
+</section>
+<section id="gpu-architecture-nvidia-volta-1" class="slide level1" data-background-size="contain">
+<h1>GPU architecture: Nvidia Volta</h1>
+<figure>
+<img src="img/volta-architecture.png" class="center" style="width:77.0%" />
+</figure>
+</section>
+<section id="gpu-architecture-nvidia-volta-sm" class="slide level1" data-background-size="contain">
+<h1>GPU architecture: Nvidia Volta SM</h1>
+<div class="column">
+<ul>
+<li>64 single precision cores</li>
+<li>32 double precision cores</li>
+<li>64 integer cores</li>
+<li>8 Tensore cores</li>
+<li>128 KB memory block for L1 and shared memory
+<ul>
+<li>0 - 96 KB can be set to user managed shared memory</li>
+<li>The rest is L1</li>
+</ul></li>
+<li>65536 registers - enables the GPU to run a very large number of threads</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/volta-sm-architecture.png" class="center" style="width:70.0%" />
+</figure>
+</div>
+</section>
+<section id="gpu-architecture-warps" class="slide level1" data-background-size="contain">
+<h1>GPU architecture: warps</h1>
+<ul>
+<li>All execution is done in terms of 32 threads, a warp</li>
+<li>In a warp 32 threads compute the same instruction on different data (SIMT)
+<ul>
+<li>Warps are further collected into thread blocks; each executed on one SM</li>
+<li>In case of divergence (if...) computation is done one branch at a time <img src="img/warps.png" class="center" style="width:120.0%" /></li>
+</ul></li>
+</ul>
+</section>
+<section id="challenges-in-using-accelerators" class="slide level1" data-background-size="contain">
+<h1>Challenges in using Accelerators</h1>
+<p><strong>Applicability</strong>: Is your algorithm suitable for GPU?</p>
+<p><strong>Programmability</strong>: Is the programming effort acceptable?</p>
+<p><strong>Portability</strong>: Rapidly evolving ecosystem and incompatibilities between vendors.</p>
+<p><strong>Availability</strong>: Can you access a (large scale) system with GPUs?</p>
+<p><strong>Scalability</strong>: Can you scale the GPU software efficiently to several nodes?</p>
+</section>
+<section id="using-gpus" class="slide level1" data-background-size="contain">
+<h1>Using GPUs</h1>
+<div class="column">
+<ol type="1">
+<li>Use existing GPU applications</li>
+<li>Use accelerated libraries</li>
+<li>Directive based methods
+<ul>
+<li>OpenMP</li>
+<li><strong>OpenACC</strong></li>
+</ul></li>
+<li>Use lower level language
+<ul>
+<li>CUDA</li>
+<li>HIP</li>
+<li>OpenCL</li>
+</ul></li>
+</ol>
+</div>
+<div class="column">
+<p>Easier, but more limited</p>
+<figure>
+<img src="img/arrow.png" style="width:15.0%" />
+</figure>
+<p>More difficult, but more opportunities</p>
+</div>
+</section>
+<section id="directive-based-accelerator-languages" class="slide level1" data-background-size="contain">
+<h1>Directive-based accelerator languages</h1>
+<ul>
+<li>Annotating code to pinpoint accelerator-offloadable regions</li>
+<li>OpenACC standard created in Nov 2011
+<ul>
+<li>Focus on optimizing productivity (reasonably good performance with minimal effort)</li>
+<li>Current standard is 2.7 (November 2018)</li>
+<li>Mostly Nvidia only</li>
+</ul></li>
+<li>OpenMP
+<ul>
+<li>Earlier only threading for CPUs</li>
+<li>4.5 also includes for the first time some support for accelerators</li>
+<li>5.0 standard vastly improved</li>
+<li>Dominant directive approach in the future?</li>
+</ul></li>
+</ul>
+</section>
+<section id="gpus-at-csc---taito-gpu" class="slide level1" data-background-size="contain">
+<h1>GPUs at CSC - Taito-GPU</h1>
+<ul>
+<li>12 nodes with
+<ul>
+<li>2 x K80 (Kepler), in total 4 GPUs each</li>
+<li>2 x Haswell CPU, 24 cores in total</li>
+</ul></li>
+<li>26 nodes with
+<ul>
+<li>4 x P100 (Pascal)</li>
+</ul></li>
+</ul>
+</section>
+<section id="gpus-at-csc---puhti-ai" class="slide level1" data-background-size="contain">
+<h1>GPUs at CSC - Puhti-AI</h1>
+<ul>
+<li>In total 80 nodes with a total peak performance of 2.7 Petaflops</li>
+<li>Each node has
+<ul>
+<li>Two latest generation Intel Xeon processors, code name Cascade Lake, with 20 cores each running at 2.1 GHz (Xeon Gold 6230)</li>
+<li>Four Nvidia Volta V100 GPUs with 32 GB of memory each</li>
+<li>384 GB of main memory</li>
+<li>3.2 TB of fast local storage</li>
+<li>Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth</li>
+</ul></li>
+</ul>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>HPC throughout the ages -- performance through parellelism</li>
+<li>Programming GPUs
+<ul>
+<li>CUDA, HIP</li>
+<li>Directive based methods</li>
+</ul></li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
