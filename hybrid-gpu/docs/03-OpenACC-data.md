@@ -21,15 +21,14 @@ lang:   en
 
 # Motivation for optimizing data movement
 
-- Identify parallelism
-- Express parallelism
-- Express data movement
-- Optimise loop performance
-    - When dealing with an accelerator GPU device attached to a PCIe bus,
-      **optimizing data movement** is often **essential** to achieving
-      good performance
+- When dealing with an accelerator GPU device attached to a PCIe bus,  **optimizing data movement** is often **essential** to achieving  good performance
+- The four key steps in porting to high performance accelerated code
+    1. Identify parallelism
+    2. Express parallelism
+    3. Express data movement
+    4. Optimise loop performance
+    5. Go to 1!
 
-FIXME: missing figure
 
 
 # Data lifetimes
@@ -99,51 +98,120 @@ end do
 
 # Data constructs: data clauses
 
+<div class="column">
 `present(var-list)`
-  : **on entry/exit:** assume that memory is allocated and that data
-    is present on the device
+  : `-`{.ghost}
+
+- **on entry/exit:** assume that memory is allocated and that data  is present on the device
+</div>
+<div class="column">
 `create(var-list)`
-  : **on entry:** allocate memory on the device, unless it was already
+  : `-`{.ghost}
+
+- **on entry:** allocate memory on the device, unless it was already
     present
-  : **on exit:** deallocate memory on the device, if it was allocated
+- **on exit:** deallocate memory on the device, if it was allocated
     on entry
+- In depth: *structured* reference count decremented, and deallocation happens if it goes to zero
 
-- Technically **structured** reference count decremented, and deallocation
-  happens if it goes to zero
-
+</div>
 
 # Data constructs: data clauses
 
 `copy(var-list)`
-  : **on entry:** If data is present on the device on entry, behave as
+  : `-`{.ghost}
+
+- **on entry:** If data is present on the device on entry, behave as
     with the `present` clause, otherwise allocate memory on the device
     and copy data from the host to the device.
-  : **on exit:** copy data from the device to the host and deallocate
+- **on exit:** copy data from the device to the host and deallocate
     memory on the device if it was allocated on entry
+
+
+# Data constructs: data clauses
+
+<div class="column">
+
 `copyin(var-list)`
-  : **on entry:** same as `copy` on entry
-  : **on exit:** deallocate memory on the device of it was allocated
+  : `-`{.ghost}
+
+- **on entry:** same as `copy` on entry
+- **on exit:** deallocate memory on the device of it was allocated
     on entry
+</div>
+<div class="column">
+
 `copyout(var-list)`
-  : **on entry:** If data is present on the device on entry, behave as
+  : `-`{.ghost}
+
+- **on entry:** If data is present on the device on entry, behave as
     with the `present` clause, otherwise allocate memory on the device
-  : **on exit:** same as `copy` on exit
+- **on exit:** same as `copy` on exit
+</div>
+
 
 
 # Data constructs: data clauses
 
 `reduction(operator:var-list)`
-  : Performs reduction on the (scalar) variables in list
-  : Private reduction variable is created for each gangs partial result
-  : Private reduction variable is initialized to operators initial value
-  : After parallel region the reduction operation is applied to private
-    variables and result is aggregated to the shared variable *and* the
-    aggregated result combined with the original value of the variable
+  : `-`{.ghost}
+
+- Performs reduction on the (scalar) variables in list
+- Private reduction variable is created for each gangs partial result
+- Private reduction variable is initialized to operators initial value
+- After parallel region the reduction operation is applied to private
+- variables and result is aggregated to the shared variable *and* the
+- aggregated result combined with the original value of the variable
 
 
-# Reduction operators
+# Reduction operators in C/C++ and Fortran
 
-FIXME: missing figure
+
+| Arithmetic Operator | Initial value |
+|----------|---------------|
+| `+`      | `0`           |
+| `-`      | `0`           |
+| `*`      | `1`           |
+| `max`    | least         |
+| `min`    | largest       |
+
+# Reduction operators in C/C++ only
+<div class="column">
+
+| Logical Operator | Initial value |
+|----------|---------------|
+| `&&`     | `1`           |
+| `||`     | `0`           |
+
+
+</div>
+
+<div class="column">
+| Bitwise Operator | Initial value |
+|----------|---------------|
+| `&`      | `~0`          |
+| `|`      | `0`           |
+| `^`      | `0`           |
+</div>
+
+# Reduction operators in Fortran
+
+<div class="column">
+| Logical Operator | Initial value |
+|------------------|---------------|
+| `.and.`          | `.true.`      |
+| `.or.`           | `.false.`     |
+| `.eqv.`          | `.true.`      |
+| `.neqv.`         | `.false.`     |
+</div>
+
+<div class="column">
+| Bitwise Operator | Initial value |
+|------------------|---------------|
+| `iand`           | all bits on   |
+| `ior`            | `0`           |
+| `ieor`           | `0`           |
+</div>
 
 
 # Data specification
@@ -151,10 +219,10 @@ FIXME: missing figure
 - Data clauses specify functionality for different variables
 - Overlapping data specifications are not allowed
 - For array data, *array ranges* can be specified
-  - C/C++: `arr[start_index:length]`, for instance `vec[0:n]`
-  - Fortran: `arr(start_index:end_index)`, for instance `vec(1:n)`
-  - Note: array data **must** be *contiguous* in memory (vectors,
-    multidimensional arrays etc.)
+    - C/C++: `arr[start_index:length]`, for instance `vec[0:n]`
+    - Fortran: `arr(start_index:end_index)`, for instance `vec(1:n)`
+- Note: array data **must** be *contiguous* in memory (vectors,
+      multidimensional arrays etc.)
 
 
 # Default data environment in compute constructs
@@ -183,7 +251,8 @@ int a[100], d[3][3], i, j;
     #pragma acc parallel loop present(a)
     for (int i=0; i<100; i++)
         a[i] = a[i] + 1;
-    #pragma acc parallel loop collapse(2) copyout(d)
+    #pragma acc parallel loop \
+          collapse(2) copyout(d)
     for (int i=0; i<3; ++i)
         for (int j=0; j<3; ++j)
             d[i][j] = i*3 + j + 1;
@@ -244,30 +313,62 @@ class Vector {
 };
 ```
 
-
 # Enter data clauses
 
-`if(condition)`
-  : Do nothing if condition is false
-`create(var-list)`
-  : Allocate memory on the device
-`copyin(var-list)`
-  : Allocate memory on the device and copy data from the host to the
-    device
 
+<div class=column>
+`if(condition)`
+  : `-`{.ghost}
+
+- Do nothing if condition is false
+
+<br>
+
+`create(var-list)`
+  : `-`{.ghost}
+
+- Allocate memory on the device
+
+</div>
+<div class=column>
+`copyin(var-list)`
+  : `-`{.ghost}
+
+- Allocate memory on the device and copy data from the host to the
+    device
+</div>
 
 # Exit data clauses
-
+<div class=column>
 `if(condition)`
-  : Do nothing if condition is false
-`delete(var-list)`
-  : Deallocate memory on the device
-`copyout(var-list)`
-  : Deallocate memory on the device and copy data from the device to the
-    host
+  : `-`{.ghost}
+  
+- Do nothing if condition is false
 
-- Technically **dynamic** reference count decremented, and deallocation
+<br>
+
+`delete(var-list)`
+  : `-`{.ghost}
+ 
+- Deallocate memory on the device
+- In depth: *dynamic* reference count decremented, and deallocation
   happens if it goes to zero
+
+</div>
+<div class=column>
+
+
+`copyout(var-list)`
+  : `-`{.ghost}
+
+- Deallocate memory on the device and copy data from the device to the
+    host
+- In depth: *dynamic* reference count decremented, and deallocation
+  happens if it goes to zero
+
+</div>
+
+
 
 
 # Data directive: update
@@ -310,7 +411,8 @@ int maxit=100;
     for (iter=0; iter < maxit; iter++) {
         /* Computations on device */
         acc_compute(a);
-        #pragma acc update self(a) if(iter % 10 == 0)
+        #pragma acc update self(a) \
+	            if(iter % 10 == 0)
     }
 }
 ```
@@ -329,7 +431,8 @@ integer, parameter :: maxit = 100
     do iter=1,maxit
         ! Computations on device
         call acc_compute(a)
-        !$acc update self(a) if(mod(iter,10)==0)
+        !$acc update self(a) 
+        !$acc& if(mod(iter,10)==0)
     end do
 !$acc end data
 ```
@@ -379,9 +482,10 @@ void init_point() {
 
 # Managed memory
 
-- Managed memory copies can be enabled using `--ta=tesla,cc60,managed`
-  option on PGI compilers
-- For full benefits Pascal generation GPU is needed
+- Managed memory copies can be enabled on PGI compilers
+    - Pascal (P100): `--ta=tesla,cc60,managed`
+    - Volta (V100): `--ta=tesla,cc70,managed`
+- For full benefits Pascal or Volta generation GPU is needed
 - Performance depends on the memory access patterns
     - For some cases performance is comparable with explicitly tuned
       versions
