@@ -221,3 +221,16 @@ void sum(int n, const double *v, double *res)
 ```
 </div>
 </small>
+
+
+# `acc_map_data()` function
+
+- `acc_map_data(hostptr, deviceptr, length)`
+    - Instructs the OpenACC runtime that it should map an existing device
+      array to the host array.
+    - Typically these have been allocated separately with malloc &
+      cudaMalloc
+- `acc_unmap_data(hostptr)`
+    - Reverse
+- Functions are only specified for C and C++
+- Enables one to use OpenACC functions in Cuda without deviceptr()

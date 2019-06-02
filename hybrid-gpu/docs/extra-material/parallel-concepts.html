@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML-full" type="text/javascript"></script>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+
+<section id="parallel-computing-concepts" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Parallel computing concepts</h1>
+</section>
+<section id="computing-in-parallel" class="slide level1" data-background-size="contain">
+<h1>Computing in parallel</h1>
+<ul>
+<li>Serial computing
+<ul>
+<li>Single processing unit (&quot;core&quot;) is used for solving a problem</li>
+</ul></li>
+</ul>
+<figure>
+<img src="img/serial.png" class="center" style="width:105.0%" />
+</figure>
+</section>
+<section id="computing-in-parallel-1" class="slide level1" data-background-size="contain">
+<h1>Computing in parallel</h1>
+<ul>
+<li>Parallel computing
+<ul>
+<li>A problem is split into smaller subtasks</li>
+<li>Multiple subtasks are processed <em>simultaneously</em> using multiple cores <img src="img/parallel1.png" class="center" style="width:120.0%" /></li>
+</ul></li>
+</ul>
+</section>
+<section id="exposing-parallelism" class="slide level1" data-background-size="contain">
+<h1>Exposing parallelism</h1>
+<div class="column">
+<ul>
+<li>Data parallelism
+<ul>
+<li>Data is distributed to processor cores</li>
+<li>Each core performs simultaneously (nearly) identical operations with different data</li>
+<li>Especially good on GPUs(!)</li>
+</ul></li>
+<li>Task parallelism
+<ul>
+<li>Different cores perform different operations with (the same or) different data</li>
+</ul></li>
+<li>These can be combined</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/dataparallelism.png" />
+</figure>
+</div>
+</section>
+<section id="parallel-scaling" class="slide level1" data-background-size="contain">
+<h1>Parallel scaling</h1>
+<div class="column">
+<ul>
+<li>Strong parallel scaling</li>
+<li>Constant problem size</li>
+<li>Execution time decreases in proportion to the increase in the number of cores</li>
+<li>Weak parallel scaling</li>
+<li>Increasing problem size</li>
+<li>Execution time remains constant when number of cores increases in proportion to the problem size</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/amdahl.png" />
+</figure>
+</div>
+</section>
+<section id="amdahls-law" class="slide level1" data-background-size="contain">
+<h1>Amdahl's law</h1>
+<div class="column">
+<ul>
+<li>Parallel programs often contain sequential parts</li>
+<li><em>Amdahl's law</em> gives the maximum speed-up in the presence of non-parallelizable parts</li>
+<li>Main reason for limited strong scaling</li>
+<li>Maximum speed-up is <small> <span class="math display">\[
+S=\frac{1}{ ( 1-F) + F/N}
+\]</span> </small></li>
+</ul>
+<p>where <span class="math inline">\(F\)</span> is the parallel fraction and <span class="math inline">\(N\)</span> is the number of cores</p>
+</div>
+<div class="column">
+<figure>
+<img src="img/amdahl2.png" />
+</figure>
+</div>
+</section>
+<section id="parallel-computing-concepts-1" class="slide level1" data-background-size="contain">
+<h1>Parallel computing concepts</h1>
+<ul>
+<li>Load balance
+<ul>
+<li>Distribution of workload to different cores</li>
+</ul></li>
+<li>Parallel overhead
+<ul>
+<li>Additional operations which are not present in serial calculation</li>
+<li>Synchronization, redundant computations, communications</li>
+</ul></li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

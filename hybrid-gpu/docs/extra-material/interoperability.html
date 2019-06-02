@@ -282,6 +282,22 @@ __global__
 </div>
 <p></small></p>
 </section>
+<section id="acc_map_data-function" class="slide level1" data-background-size="contain">
+<h1><code>acc_map_data()</code> function</h1>
+<ul>
+<li><code>acc_map_data(hostptr, deviceptr, length)</code>
+<ul>
+<li>Instructs the OpenACC runtime that it should map an existing device array to the host array.</li>
+<li>Typically these have been allocated separately with malloc &amp; cudaMalloc</li>
+</ul></li>
+<li><code>acc_unmap_data(hostptr)</code>
+<ul>
+<li>Reverse</li>
+</ul></li>
+<li>Functions are only specified for C and C++</li>
+<li>Enables one to use OpenACC functions in Cuda without deviceptr()</li>
+</ul>
+</section>
     </div>
   </div>
 

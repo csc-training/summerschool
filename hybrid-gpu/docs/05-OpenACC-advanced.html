@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>OpenACC: advanced topics</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>OpenACC: advanced topics</h1>
+  <p>CSC Summerschool, 2019-07</p>
+</section>
+
+<section id="asynchronous-operations" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Asynchronous operations</h1>
+</section>
+<section id="motivation" class="slide level1" data-background-size="contain">
+<h1>Motivation</h1>
+<ul>
+<li>By default, the local thread will wait until OpenACC compute or data construct has completed its execution</li>
+<li>Potential parallelism in overlapping compute, data transfers, MPI, etc.</li>
+</ul>
+<figure>
+<img src="img/synchronous.png" class="center" />
+</figure>
+</section>
+<section id="asynchronous-execution-async-and-wait" class="slide level1" data-background-size="contain">
+<h1>Asynchronous execution: async and wait</h1>
+<ul>
+<li><code>async[(int-expr)]</code> <strong>clause</strong> enables one to enqueue compute and data operations, and local (host) thread will continue execution
+<ul>
+<li>Order is preserved for enqueued operations</li>
+<li>OpenACC <code>async</code> clause is supported by constructs:<br />
+<code>parallel</code>, <code>kernels</code>,<br />
+<code>enter data</code>, <code>exit data</code>,<br />
+<code>update</code>, <code>wait</code></li>
+</ul></li>
+<li><code>wait[(int-expr-list)]</code> <strong>directive</strong> causes the CPU thread to wait for completion of asynchronous operations
+<ul>
+<li>C/C++: <code>#pragma acc wait [(int-expr-list)] [clauses]</code></li>
+<li>Fortran: <code>!$acc wait [(int-expr-list)] [clauses]</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="openacc-and-asynchronous-execution" class="slide level1" data-background-size="contain">
+<h1>OpenACC and asynchronous execution</h1>
+<figure>
+<img src="img/async.png" class="center" />
+</figure>
+</section>
+<section id="multiple-queues" class="slide level1" data-background-size="contain">
+<h1>Multiple queues</h1>
+<ul>
+<li>One can have multiple queues, enabling one to overlap execution of kernels and data operations</li>
+<li><code>async</code> clause
+<ul>
+<li>non-negative integer argument, defining on which queue the operation is placed</li>
+<li>Within one queue order is preserved, in different queues operations have no coupling</li>
+<li>If no queue is given the default queue is used</li>
+</ul></li>
+<li><code>wait</code> directive
+<ul>
+<li>list of integers as argument, defining which queues to wait on.</li>
+<li>By default it waits for all.</li>
+</ul></li>
+</ul>
+</section>
+<section id="openacc-and-asynchronous-execution-1" class="slide level1" data-background-size="contain">
+<h1>OpenACC and asynchronous execution</h1>
+<figure>
+<img src="img/2queues.png" class="center" />
+</figure>
+</section>
+<section id="example-c-a-b-12" class="slide level1" data-background-size="contain">
+<h1>Example c = a + b (1/2)</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">//Initialization of a,b,c</span>
+
+a = malloc(<span class="kw">sizeof</span>(<span class="dt">double</span>) * N);
+b = malloc(<span class="kw">sizeof</span>(<span class="dt">double</span>) * N);
+c = malloc(<span class="kw">sizeof</span>(<span class="dt">double</span>) * N);
+
+<span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; N;i++) {
+    a[i] = i;
+    b[i] = i;
+}</code></pre></div>
+</section>
+<section id="example-c-a-b-22" class="slide level1" data-background-size="contain">
+<h1>Example c = a + b (2/2)</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#pragma acc data create(a[:N], b[:N], c[:N])</span>
+{
+    t1 = omp_get_wtime();
+    <span class="cf">for</span>(q = <span class="dv">0</span>; q &lt; queues; q++) {
+        qLength = N / queues;
+        qStart = q  qLength;
+        <span class="pp">#pragma acc update device(a[qStart:qLength], b[qStart:qLength]) async(q)</span>
+        <span class="pp">#pragma acc parallel loop async(q)</span>
+        <span class="cf">for</span> (<span class="dt">int</span> i = qStart; i &lt; qStart + qLength; i++) {
+            c[i] = a[i] + b[i];
+        }
+        <span class="pp">#pragma acc update self(c[qStart:qLength]) async(q)</span>
+    } <span class="co">//end for (q)</span>
+    <span class="pp">#pragma acc wait</span>
+    t2 = omp_get_wtime();
+} <span class="co">//end acc data</span>
+
+printf(<span class="st">&quot;compute in %g sn&quot;</span>, t2 - t1);</code></pre></div>
+</section>
+<section id="multi-gpu-programming-with-openacc" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Multi-GPU programming with OpenACC</h1>
+</section>
+<section id="multi-gpu-programming-with-openacc-1" class="slide level1" data-background-size="contain">
+<h1>Multi-GPU programming with OpenACC</h1>
+<div class="column">
+<p>Three levels of hardware parallelism in a supercomputer</p>
+<ol type="1">
+<li>GPU - different levels of threads</li>
+<li>Node - GPU, CPU and interconnect</li>
+<li>Machine - several nodes connected with interconnect</li>
+</ol>
+</div>
+<div class="column">
+<p>Three parallelization methods</p>
+<ol type="1">
+<li>OpenACC</li>
+<li>OpenMP or MPI</li>
+<li>MPI between nodes</li>
+</ol>
+</div>
+<figure>
+<img src="img/gpu-cluster.png" class="center" />
+</figure>
+</section>
+<section id="multi-gpu-communication-cases" class="slide level1" data-background-size="contain">
+<h1>Multi-GPU communication cases</h1>
+<ul>
+<li>Single node multi-GPU programming
+<ul>
+<li>All GPUs of a node are accessible from single process and its OpenMP threads</li>
+<li>Data copies either directly or through CPU memory</li>
+</ul></li>
+<li>Multi node multi-GPU programming
+<ul>
+<li>Communication between nodes requires message passing, MPI</li>
+</ul></li>
+<li>In this lecture we will in detail only discuss parallelization with MPI
+<ul>
+<li>This enables direct scalability from single to multi-node</li>
+</ul></li>
+</ul>
+</section>
+<section id="selecting-device" class="slide level1" data-background-size="contain">
+<h1>Selecting device</h1>
+<ul>
+<li>OpenACC permits using multiple GPUs within one node by using the <code>acc_get_num_devices</code> and <code>acc_set_device_num</code> functions</li>
+<li>Asynchronous OpenACC calls, OpenMP threads or MPI processes must be used in order to actually run kernels in parallel</li>
+<li>Issue when using MPI:
+<ul>
+<li>If a node has more than one GPU, all processes in the node can access all GPUs of the node</li>
+<li>MPI processes do not have a priori information on the other ranks in the same node</li>
+<li>Which GPU the MPI process should select?</li>
+</ul></li>
+</ul>
+</section>
+<section id="selecting-the-device-in-mpi" class="slide level1" data-background-size="contain">
+<h1>Selecting the device in MPI</h1>
+<ul>
+<li>Model is to use <strong>one</strong> MPI task per GPU</li>
+<li>Launching job
+<ul>
+<li>Launch you application so that there are as many MPI tasks per node as there are GPUs</li>
+<li>Make sure the affinity is correct - processes equally split between the two sockets (that nodes typically have)</li>
+<li>Read the user guide of the system for details how to do this!</li>
+</ul></li>
+<li>In the code a portable and robust solution is to use MPI3 shared memory communicators to split the GPUs between processes</li>
+<li>Note that you can also use OpenMP to utilize all cores in the node for computations on CPU side</li>
+</ul>
+</section>
+<section id="selecting-the-device-in-mpi-1" class="slide level1" data-background-size="contain">
+<h1>Selecting the device in MPI</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">MPI_Comm shared;
+<span class="dt">int</span> local_rank, local_size, num_gpus;
+
+MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, <span class="dv">0</span>,
+                    MPI_INFO_NULL, &amp;shared);
+MPI_Comm_size(shared, &amp;local_size); <span class="co">// number of ranks in this node</span>
+MPI_Comm_rank(shared, &amp;local_rank); <span class="co">// my local rank</span>
+num_gpus = acc_get_num_device(acc_device_nvidia); <span class="co">// num of gpus in node</span>
+<span class="cf">if</span> (num_gpus == local_size) {
+    acc_set_device_num(local_rank);
+} <span class="co">// otherwise error</span></code></pre></div>
+</section>
+<section id="data-transfers" class="slide level1" data-background-size="contain">
+<h1>Data transfers</h1>
+<ul>
+<li>Idea: use MPI to transfer data between GPUs, use OpenACC-kernels for computations</li>
+<li>Additional complexity: GPU memory is separate from that of a CPU</li>
+<li>GPU-aware MPI-library
+<ul>
+<li>Can use the device pointer in MPI calls - no need for additional buffers</li>
+<li>No need for extra buffers and device-host-device copies</li>
+<li>If enabled on system data will be transferred via transparent RDMA</li>
+</ul></li>
+<li>Without GPU-aware MPI-library
+<ul>
+<li>Data must be transferred from the device memory to the host memory and vice versa before performing MPI-calls</li>
+</ul></li>
+</ul>
+</section>
+<section id="using-device-addresses-with-host_data" class="slide level1" data-background-size="contain">
+<h1>Using device addresses with host_data</h1>
+<ul>
+<li>For accessing device addresses of data on the host OpenACC includes <code>host_data</code> construct with the <code>use_device</code> clause</li>
+<li>No additional data transfers needed between the host and the device, data automatically accessed from the device memory via <strong>R</strong>emote <strong>D</strong>irect <strong>M</strong>emory <strong>A</strong>ccess</li>
+<li>Requires <em>library</em> and <em>device</em> support to function!</li>
+</ul>
+</section>
+<section id="mpi-communication-with-gpu-aware-mpi" class="slide level1" data-background-size="contain">
+<h1>MPI communication with GPU-aware MPI</h1>
+<ul>
+<li>MPI send
+<ul>
+<li>Send the data from the buffer on the <strong>device</strong> with MPI</li>
+</ul></li>
+<li>MPI receive
+<ul>
+<li>Receive the data to a buffer on the <strong>device</strong> with MPI</li>
+</ul></li>
+<li>No additional buffers or data transfers needed to perform communication</li>
+</ul>
+</section>
+<section id="mpi-communication-with-gpu-aware-mpi-1" class="slide level1" data-background-size="contain">
+<h1>MPI communication with GPU-aware MPI</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/* MPI_Send with GPU-aware MPI */</span>
+<span class="pp">#pragma acc host_data use_device(data)</span>
+{
+    MPI_Send(data, N, MPI_DOUBLE, to, MPI_ANY_TAG, MPI_COMM_WORLD);
+}
+
+<span class="co">/* MPI_Recv with GPU-aware MPI */</span>
+<span class="pp">#pragma acc host_data use_device(data)</span>
+{
+    MPI_Recv(data, N, MPI_DOUBLE, from, MPI_ANY_TAG, MPI_COMM_WORLD,
+             MPI_STATUS_IGNORE);
+}</code></pre></div>
+</section>
+<section id="routine-directive" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Routine directive</h1>
+</section>
+<section id="function-calls-in-compute-regions" class="slide level1" data-background-size="contain">
+<h1>Function calls in compute regions</h1>
+<ul>
+<li>Often it can be useful to call functions within loops to improve readability and modularisation</li>
+<li>By default OpenACC does not create accelerated regions for loops calling functions</li>
+<li>One has to instruct the compiler to compile a device version of the function</li>
+</ul>
+</section>
+<section id="routine-directive-1" class="slide level1" data-background-size="contain">
+<h1>Routine directive</h1>
+<ul>
+<li>Define a function to be compiled for an accelerator as well as the host
+<ul>
+<li>C/C++: <code>#pragma acc routine (name) [clauses]</code></li>
+<li>Fortran: <code>!$acc routine (name) [clauses]</code></li>
+</ul></li>
+<li>The directive should be placed at the function declaration
+<ul>
+<li>Visible both to function definition (actual code) and call site</li>
+</ul></li>
+<li>Optional name enables the directive to be declared separately</li>
+</ul>
+</section>
+<section id="routine-directive-2" class="slide level1" data-background-size="contain">
+<h1>Routine directive</h1>
+<ul>
+<li>Clauses defining level of parallelism in function
+<ul>
+<li><code>gang</code> Function contains gang level parallelism</li>
+<li><code>worker</code> Function contains worker level parallelism</li>
+<li><code>vector</code> Function contains vector level parallelism</li>
+<li><code>seq</code> Function is not OpenACC parallel</li>
+</ul></li>
+<li>Other clauses
+<ul>
+<li><code>nohost</code> Do not compile host version</li>
+<li><code>bind(string)</code> Define name to use when calling function in accelerated region</li>
+</ul></li>
+</ul>
+</section>
+<section id="routine-directive-example" class="slide level1" data-background-size="contain">
+<h1>Routine directive example</h1>
+<div class="column">
+<h2 id="cc">C/C++</h2>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#pragma acc routine vector</span>
+<span class="dt">void</span> foo(<span class="dt">float</span>* v, <span class="dt">int</span> i, <span class="dt">int</span> n) {
+    <span class="pp">#pragma acc loop vector</span>
+    <span class="cf">for</span> ( <span class="dt">int</span> j=<span class="dv">0</span>; j&lt;n; ++j) {
+        v[i*n+j] = <span class="fl">1.0f</span>/(i*j);
+    }
+}
+
+<span class="pp">#pragma acc parallel loop</span>
+<span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">0</span>; i&lt;n; ++i) {
+    foo(v,i);
+    <span class="co">// call on the device</span>
+}</code></pre></div>
+<p><small> Example from <a href="https://devblogs.nvidia.com/parallelforall/7-powerful-new-features-openacc-2-0/" class="uri">https://devblogs.nvidia.com/parallelforall/7-powerful-new-features-openacc-2-0/</a> </small></p>
+</div>
+<div class="column">
+<h2 id="fortran">Fortran</h2>
+<div class="sourceCode"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span class="kw">subroutine</span> foo(v, i, n)
+  <span class="co">!$acc routine vector</span>
+<span class="dt">  real</span> <span class="dt">::</span> v(:,:)
+  <span class="dt">integer</span> <span class="dt">::</span> i, n
+  <span class="co">!$acc loop vector</span>
+  <span class="kw">do</span> j<span class="kw">=</span><span class="dv">1</span>,n
+     v(i,j) <span class="kw">=</span> <span class="fl">1.0</span><span class="kw">/</span>(i<span class="kw">*</span>j)
+  <span class="kw">enddo</span>
+<span class="kw">end subroutine</span>
+
+<span class="co">!$acc parallel loop</span>
+<span class="kw">do</span> i<span class="kw">=</span><span class="dv">1</span>,n
+  <span class="kw">call</span> foo(v,i,n)
+<span class="kw">enddo</span>
+<span class="co">!$acc end parallel loop</span></code></pre></div>
+</div>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>Asynchronous execution
+<ul>
+<li>Enables better performance by overlapping different operations</li>
+</ul></li>
+<li>Typical HPC cluster node has several GPUs in each node
+<ul>
+<li>Selecting the GPUs with correct affinity</li>
+<li>Data transfers using MPI</li>
+</ul></li>
+<li>Routine directive
+<ul>
+<li>Enables one to write device functions that can be called within parallel loops</li>
+</ul></li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
