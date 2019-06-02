@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>Introduction to C</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Introduction to C</h1>
+  <p>CSC Summerschool, 2019-07</p>
+</section>
+
+<section id="data-structures" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Data structures</h1>
+</section>
+<section id="arrays" class="slide level1" data-background-size="contain">
+<h1>Arrays</h1>
+<ul>
+<li>Static arrays declared as <strong>&lt;type&gt; name[N]</strong> where <strong>N</strong> is the size of the array
+<ul>
+<li><strong>int i[10]</strong> array of 10 integers<br />
+</li>
+<li><strong>float f[3]</strong> array of 3 floats<br />
+</li>
+<li><strong>char c[60]</strong> string of 60 letters<br />
+</li>
+</ul></li>
+<li>elements indexed starting from zero
+<ul>
+<li><strong>i[3]</strong> 4th element of array i<br />
+</li>
+</ul></li>
+<li>multi-dimensional arrays possible
+<ul>
+<li><strong>int m[10][20]</strong> a 10x20 matrix</li>
+</ul></li>
+</ul>
+</section>
+<section id="arrays-1" class="slide level1" data-background-size="contain">
+<h1>Arrays</h1>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// integer vector</span>
+ <span class="dt">int</span> triplet[<span class="dv">3</span>];
+ triplet[<span class="dv">0</span>] = <span class="dv">1</span>;
+ triplet[<span class="dv">1</span>] = <span class="dv">2</span> * triplet[<span class="dv">0</span>];
+ triplet[<span class="dv">2</span>] =
+ triplet[<span class="dv">0</span>] + triplet[<span class="dv">1</span>];
+
+ <span class="co">// string</span>
+<span class="dt">char</span> word[] = <span class="st">&quot;hello!&quot;</span>;
+printf(word); <span class="co">// hello!</span></code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// 2-dim matrix</span>
+<span class="dt">int</span> i,j;
+<span class="dt">float</span> matrix[<span class="dv">5</span>][<span class="dv">5</span>];
+
+<span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;<span class="dv">5</span>; i++){
+    <span class="cf">for</span> (j=<span class="dv">0</span>; j&lt;<span class="dv">5</span>; j++){
+        matrix[i][j] = i*j;
+        }
+     }
+
+<span class="co">// print the 2nd row</span>
+<span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;<span class="dv">5</span>; i++){
+    printf(<span class="st">&quot;%f &quot;</span>, matrix[<span class="dv">1</span>][i]);
+    }</code></pre></div>
+</div>
+</section>
+<section id="pointer-arithmetic-and-arrays" class="slide level1" data-background-size="contain">
+<h1>Pointer arithmetic and arrays</h1>
+<ul>
+<li><p>Pointers can be added to or subtracted from</p>
+<ul>
+<li>This shifts the pointer to a new memory address before or after the current one</li>
+<li>Each step is <strong>sizeof(pointer_datatype)</strong> bytes, i.e. the memory size of the pointer's data type (Watch out for out-of-bounds memory errors!)</li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> vector[<span class="dv">10</span>], *ptr;
+
+ptr = &amp;vector[<span class="dv">0</span>]; <span class="co">// *ptr -&gt; vector[0]</span>
+ptr = vector; <span class="co">// name of array works as pointer to the beginning</span>
+ptr++; <span class="co">// *ptr -&gt; vector[1]</span>
+ptr += <span class="dv">3</span>; <span class="co">// *ptr -&gt; vector[4]</span>
+ptr--; <span class="co">// *ptr -&gt; vector[3]</span></code></pre></div>
+</section>
+<section id="structures" class="slide level1" data-background-size="contain">
+<h1>Structures</h1>
+<div class="column">
+<ul>
+<li>Multiple variables of arbitrary type can be grouped together in a -*struct**</li>
+<li>Member <strong>y</strong> of struct <strong>x</strong> accessed with <strong>x.y</strong> (or <strong>x-&gt;y</strong> if x is a pointer)</li>
+</ul>
+</div>
+<div class="column">
+<p><small></p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">struct</span> s {
+    <span class="dt">int</span> i;
+    <span class="dt">float</span> f;
+} one;
+
+<span class="kw">typedef</span> <span class="kw">struct</span> {
+    <span class="dt">int</span> count;
+    <span class="dt">float</span> price;
+} apple;
+
+apple a;
+a.count = <span class="dv">7</span>;
+a.price = <span class="fl">1.24</span>;
+cost = a.count * a.price;
+
+<span class="co">// with pointers</span>
+apple *ptr;
+ptr = &amp;a;
+c = ptr-&gt;count;
+ptr-&gt;price = <span class="fl">0.89</span>;</code></pre></div>
+<p></small></p>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

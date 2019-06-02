@@ -10,9 +10,9 @@ lang:   en
 # Arrays
 
   - Static arrays declared as **\<type\> name\[N\]** where **N** is the size of the array   
-    * **int i\[10\]** array of 10 integers   
-    * **float f\[3\]** array of 3 floats   
-    * **char c\[60\]** string of 60 letters  
+      - **int i\[10\]** array of 10 integers   
+      - **float f\[3\]** array of 3 floats   
+      - **char c\[60\]** string of 60 letters  
   - elements indexed starting from zero   
   	* **i\[3\]** 4th element of array i  
   - multi-dimensional arrays possible   
@@ -56,9 +56,9 @@ for (i=0; i<5; i++){
 
 - Pointers can be added to or subtracted from
 
-  * This shifts the pointer to a new memory address before or after the
+    - This shifts the pointer to a new memory address before or after the
     current one
-  * Each step is **sizeof(pointer\_datatype)** bytes, i.e. the memory size of the pointer's data type
+    - Each step is **sizeof(pointer\_datatype)** bytes, i.e. the memory size of the pointer's data type
 (Watch out for out-of-bounds memory errors!)
 
 ```c
@@ -73,7 +73,7 @@ ptr--; // *ptr -> vector[3]
 # Structures
 <div class=column>
   - Multiple variables of arbitrary type can be grouped together in a
-    **struct**
+      -*struct**
   - Member **y** of struct **x** accessed with **x.y** (or **x-\>y** if
     x is a pointer)
 </div>

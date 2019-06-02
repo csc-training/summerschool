@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>Introduction to C</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Introduction to C</h1>
+  <p>CSC Summerschool, 2019-07</p>
+</section>
+
+<section id="control-structures-and-loops" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Control structures and loops</h1>
+</section>
+<section id="control-structures-if-else" class="slide level1" data-background-size="contain">
+<h1>Control structures // if – else</h1>
+<div class="column">
+<ul>
+<li>if (<em>conditional</em>) {<em>TRUE</em>} else {<em>FALSE</em>}</li>
+<li>negation: <strong>!</strong></li>
+<li>non-zero value == TRUE</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (i &lt; <span class="dv">100</span>) {
+    data[i] = x[i] + c
+} <span class="cf">else</span> {
+    data[i] = x[i] - c
+}</code></pre></div>
+</div>
+<div class="column">
+<p>Test operators:</p>
+<pre><code>== equal to
+
+!= not equal to
+
+&amp;&amp; AND
+
+|| OR
+
+&lt; less than
+
+&gt; greater than
+
+&lt;= less or equal
+
+&gt;= greater or equal</code></pre>
+</div>
+</section>
+<section id="control-structures-if-else-1" class="slide level1" data-background-size="contain">
+<h1>Control structures // if – else</h1>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// simple if-else</span>
+<span class="cf">if</span> (x &gt; <span class="fl">1.2</span>) {
+    y = <span class="dv">4</span>*x*r; <span class="co">// TRUE</span>
+} <span class="cf">else</span> {
+    y = <span class="fl">0.0</span>; <span class="co">// FALSE</span>
+}
+
+<span class="co">// else is optional</span>
+
+<span class="cf">if</span> (x || y) {
+    z += x + y;
+}</code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// complex if-elseif-else</span>
+
+<span class="cf">if</span> ((x &gt; <span class="fl">1.2</span>) &amp;&amp; (i != <span class="dv">0</span>) ){
+    y = x / i; <span class="co">// 1st TRUE</span>
+} <span class="cf">else</span> <span class="cf">if</span> (x &lt; <span class="fl">1.0</span> ) {
+    y = -x; <span class="co">// 1st FALSE</span>
+<span class="co">// 2nd TRUE</span>
+} <span class="cf">else</span> {
+    y = <span class="fl">0.0</span>; <span class="co">// 1st, 2nd FALSE</span>
+}</code></pre></div>
+</div>
+</section>
+<section id="control-structures-switch" class="slide level1" data-background-size="contain">
+<h1>Control structures // switch</h1>
+<pre><code>switch (...) {        // conditional expression 
+    case (...):      // test value
+        ...    // Do something
+        break;  // end of branch
+    default:      // default branch executed if nothing else matches
+        ...    // Do something
+    }</code></pre>
+<ul>
+<li><p>condition:</p>
+<ul>
+<li>single variable OR complex expression</li>
+</ul></li>
+<li><p>branch(=case) with matching value chosen</p></li>
+<li><p>break stops branch</p></li>
+</ul>
+</section>
+<section id="control-structures-switch-1" class="slide level1" data-background-size="contain">
+<h1>Control structures // switch</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// simple switch based on the</span>
+ <span class="co">// value of integer i</span>
+ <span class="cf">switch</span> (i) {
+     <span class="cf">case</span> <span class="dv">1</span>:
+         printf(<span class="st">&quot;one</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+         <span class="cf">break</span>;
+     <span class="cf">case</span> <span class="dv">2</span>:
+        printf(<span class="st">&quot;two</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        <span class="cf">break</span>;
+    <span class="cf">default</span>:
+        printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        <span class="cf">break</span>; <span class="co">//  good style to break even the last branch</span>
+    }</code></pre></div>
+</section>
+<section id="control-structures-switch-2" class="slide level1" data-background-size="contain">
+<h1>Control structures // switch</h1>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) { <span class="co">// A</span>
+    <span class="cf">case</span> <span class="dv">1</span>:
+        printf(<span class="st">&quot;one</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+    <span class="cf">case</span> <span class="dv">2</span>:
+        printf(<span class="st">&quot;two</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+    <span class="cf">default</span>:
+        printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+}
+
+<span class="cf">switch</span> (i) {  <span class="co">// C</span>
+    <span class="cf">case</span> <span class="dv">1</span>:
+        printf(<span class="st">&quot;one</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        <span class="cf">break</span>;
+    <span class="cf">case</span> <span class="dv">2</span>:
+        printf(<span class="st">&quot;two</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        <span class="cf">break</span>;
+    <span class="cf">default</span>:
+        printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+}</code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) { <span class="co">// B</span>
+    <span class="cf">default</span>:
+        printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+    <span class="cf">case</span> <span class="dv">1</span>:
+        printf(<span class="st">&quot;one</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        <span class="cf">break</span>;
+    <span class="cf">case</span> <span class="dv">2</span>:
+        printf(<span class="st">&quot;two</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        <span class="cf">break</span>;
+}</code></pre></div>
+<p>In each case, what would be printed on the screen if i is 1, 2, or 3?</p>
+</div>
+</section>
+<section id="loops-while" class="slide level1" data-background-size="contain">
+<h1>Loops // while</h1>
+<ul>
+<li><strong>while (<em>condition</em>) {<em>code block</em>}</strong></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">i = <span class="dv">0</span> <span class="co">// loop i = 0..99 with an increment of one</span>
+<span class="cf">while</span> (i&lt;<span class="dv">100</span>) {
+    data\[i\] = x\[i\] + c
+    i++;
+}</code></pre></div>
+<ul>
+<li><p>Code block executes repeatedly as long as condition is TRUE</p></li>
+<li><p>Condition executed <em>before</em> iteration</p></li>
+<li><p><strong>do {...} while (...)</strong></p></li>
+<li><p>Block executed at least once</p></li>
+</ul>
+</section>
+<section id="loops-for" class="slide level1" data-background-size="contain">
+<h1>Loops // for</h1>
+<ul>
+<li><strong>for (&lt;init&gt;; &lt;condition&gt;; &lt;after&gt;) {...}</strong></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// loop i = 0..99 with an increment of one</span>
+<span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;<span class="dv">100</span>; i++) {
+    data[i] = x[i] + c
+}</code></pre></div>
+<ul>
+<li><strong>&lt;init&gt;</strong> execute once before entering the loop</li>
+<li><strong>&lt;condition&gt;</strong> stop loop when condition is FALSE</li>
+<li><strong>&lt;after&gt;</strong> execute after each iteration</li>
+</ul>
+</section>
+<section id="loops-for-1" class="slide level1" data-background-size="contain">
+<h1>Loops // for</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// loop using a for-statement</span>
+ <span class="co">// i is incremented after each iteration</span>
+ <span class="cf">for</span> (i=<span class="dv">0</span>; i\&lt;bar; i++) {
+     x += i\*<span class="fl">3.14</span> + c;
+     c = i + <span class="dv">2</span>;
+ }</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// the same loop but with a while-statement</span>
+ i=<span class="dv">0</span>;
+ <span class="cf">while</span> (i &lt; bar) {
+     x += i\*<span class="fl">3.14</span> + c;
+     c = i + <span class="dv">2</span>;
+     i++;
+ }</code></pre></div>
+</section>
+<section id="jump-statements" class="slide level1" data-background-size="contain">
+<h1>Jump statements</h1>
+<div class="column">
+<ul>
+<li><p><strong>break</strong></p>
+<ul>
+<li>end a loop (for, while, do) or a switch statement</li>
+</ul></li>
+<li><p><strong>continue</strong></p>
+<ul>
+<li>continue with the next iteration of a loop</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// jump out of a loop</span>
+<span class="cf">for</span> (i=<span class="dv">0</span>; i\&lt;<span class="dv">10</span>; i++) {
+    printf(<span class="st">&quot;in loop&quot;</span>);
+    <span class="cf">if</span> (i == x)
+        <span class="cf">break</span>;
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// jump to the next iteration</span>
+<span class="cf">for</span> (i=<span class="dv">0</span>; i\&lt;<span class="dv">10</span>; i++) {
+    <span class="cf">if</span> (i \&lt; x)
+        <span class="cf">continue</span>;
+    printf(<span class="st">&quot;in loop&quot;</span>);
+}</code></pre></div>
+</div>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>Conditional branching: <strong>if-else</strong>, <strong>switch</strong></li>
+<li>Looping as long as condition is true: <strong>while</strong>, <strong>do – while</strong></li>
+<li>Fixed number of loop passes: <strong>for</strong></li>
+<li>Jump statements: <strong>continue</strong>, <strong>break</strong></li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
