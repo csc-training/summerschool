@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>Introduction to C</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Introduction to C</h1>
+  <p>CSC Summerschool, 2019-07</p>
+</section>
+
+<section id="functions" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Functions</h1>
+</section>
+<section id="functions-1" class="slide level1" data-background-size="contain">
+<h1>Functions</h1>
+<ul>
+<li>Functions are the only subroutine type in C
+<ul>
+<li>But functions do not have to return anything</li>
+</ul></li>
+</ul>
+<p>Function definitions are of form</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">type func-name(param-list)
+{
+
+<span class="co">/* body of function */</span>
+
+}</code></pre></div>
+<ul>
+<li>Here <strong>type</strong> is the return type of the function
+<ul>
+<li><strong>void</strong> means that function does not return anything</li>
+</ul></li>
+</ul>
+</section>
+<section id="main-function" class="slide level1" data-background-size="contain">
+<h1>main function</h1>
+<ul>
+<li>Every C program has a main function where the program execution starts</li>
+</ul>
+<dl>
+<dt>int main(int <code class="input">argc</code>, char <code class="input">*argv[]</code>)</dt>
+<dd><dl>
+<dt><code class="input">argc</code></dt>
+<dd>Number of arguments on command line
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="input">*argv[]</code></dt>
+<dd>Array of strings with the arguments on command line. The first argument is always the name of the binary
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="input">return value</code></dt>
+<dd>Error code, zero means success, non-zero values are errors
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])
+{
+<span class="co">/* body of function */</span>
+}</code></pre></div>
+</section>
+<section id="function-example" class="slide level1" data-background-size="contain">
+<h1>Function example</h1>
+<ul>
+<li>This function returns the sum of two integer arguments:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+
+<span class="dt">int</span> add(<span class="dt">int</span> a, <span class="dt">int</span> b) {
+    <span class="cf">return</span> a + b;
+}
+
+<span class="co">//by using void, argc and argv can be omitted</span>
+<span class="dt">int</span> main(<span class="dt">void</span>) {
+    <span class="dt">int</span> val;
+    val = add(<span class="dv">3</span>, <span class="dv">6</span>);
+    printf(“Sum is %i\n”, val);
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
+</section>
+<section id="variable-scoping" class="slide level1" data-background-size="contain">
+<h1><strong>Variable scoping</strong></h1>
+<div class="column">
+<ul>
+<li>Variable scoping in C is local unless defined otherwise
+<ul>
+<li>Variables declared in the function definition are only visible inside the function body</li>
+<li>Variables of calling scope are not visible inside function body</li>
+</ul></li>
+</ul>
+</div>
+<div class="colum">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> funcB(<span class="dt">float</span> a) {
+    <span class="dt">int</span> counter;
+    <span class="co">//counter not accessible from funcA</span>
+    ...
+}
+
+<span class="dt">int</span> funcA(<span class="dt">void</span>) {
+    <span class="dt">float</span> value1, value2;
+    <span class="co">//Not accessible from funcB</span>
+    funcB(value1);
+    ...
+}</code></pre></div>
+</div>
+</section>
+<section id="arguments" class="slide level1" data-background-size="contain">
+<h1>Arguments</h1>
+<div class="column">
+<ul>
+<li>All arguments are passed as <em>values</em>
+<ul>
+<li>Copy of the value is passed to the function</li>
+<li>Functions can not change the value of a variable in the <em>calling scope</em></li>
+</ul></li>
+<li>Pointers can be used to pass a reference to a variable as an argument!</li>
+</ul>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> funcB(<span class="dt">int</span> a) {
+
+    a += <span class="dv">10</span>;
+
+}
+
+<span class="dt">int</span> funcA(<span class="dt">void</span>) {
+    <span class="dt">int</span> var = <span class="dv">0</span>;
+    funcB(var);
+    <span class="co">// var is still 0\!</span>
+    ...
+}</code></pre></div>
+</div>
+</section>
+<section id="functions-with-pointers" class="slide level1" data-background-size="contain">
+<h1>Functions with pointers</h1>
+<ul>
+<li>Pointers allow “returning” of multiple values</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// passing by reference</span>
+<span class="dt">void</span> add_pi(<span class="dt">float</span> *a, <span class="dt">int</span> *b) {
+    <span class="dt">float</span> pi=<span class="fl">3.14</span>;
+    *a += pi;
+    (*b)++;
+}
+
+<span class="dt">float</span> a=<span class="fl">1.0</span>;
+<span class="dt">int</span> b=<span class="dv">1</span>;
+add_pi(&amp;a, &amp;b); <span class="co">// a=4.14 b=2</span></code></pre></div>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
