@@ -18,41 +18,51 @@ lang:   en
 # malloc
 
 - malloc function is defined in header file stdlib.h: 
-	* **void\* malloc(size\_t size);**
+- The memory area returned by the malloc is uninitialized!	
 
-- **malloc** returns a pointer of type **void** to a memory location with
-allocated space of size **size** bytes
+void malloc(size\_t `size`{.input});
+  : `size`{.input}
+    : Size of allocated memory in bytes
+  : `return value`{.output} 
+    : Pointer of type **void** to a memory location with
+allocated space. If allocation fails, **malloc** returns **NULL\!**
 
-  * If allocation fails, **malloc** returns **NULL\!**
 
-- The memory area returned by the malloc is uninitialized!
 
 # Dynamic arrays
 
 - **malloc** can be used to allocate space for arrays
 
-  * **malloc** returns a pointer to the beginning of the array
-  * Elements can be accessed with normal array syntax
+    - **malloc** returns a pointer to the beginning of the array
+    - Elements can be accessed with normal array syntax
 
 - The size of memory allocation can be determined using **sizeof**
 operator which returns the size of the argument in bytes
 
-- Example for a dynamic array of five integers: 
-	* **int \*ptr = (int \*) malloc(5 \* sizeof(int));**
+
+```c
+// Example for a dynamic array of five integers 
+int *ptr = (int *) malloc(5 * sizeof(int));
+```
 
 # free
 
 - **free** deallocates previous allocated object 
-	* **void free(void\*ptr);**
+
+void free(void* `ptr`{.input});
+  : `ptr`{.input}
+    : Pointer to memory area to be deallocated
+
 
 - After freeing you should not try to access any part of the allocation
 
 - Calling free with a pointer that does not point to a allocated memory
 can crash the code
 
-  * Calling free twice is a common mistake\!
+    - Calling free twice is a common mistake\!
 
 # Dynamic arrays
+
 ```c
  int n_elems = 32;
  float *prices;
@@ -75,8 +85,8 @@ can crash the code
 
 - It is possible to have pointer references to pointers
 
-  * This is very useful when functions have to manipulate values of arguments of pointer type
-  * Multidimensional arrays are also naturally mapped into pointers of pointers
+    - This is very useful when functions have to manipulate values of arguments of pointer type
+    - Multidimensional arrays are also naturally mapped into pointers of pointers
 
 # Pointer to a pointer example
 ```c
@@ -100,46 +110,25 @@ int main(void) {
 
 - No real multi-dimensional arrays in C, so really just arrays of arrays
 
-  * Two dimensional array maps to a variable that is a pointer to a pointer
+    - Two dimensional array maps to a variable that is a pointer to a pointer
 
 - Memory management by hand
 
-  * There are at least two different ways to do the allocation
-  * Easy to make mistakes, _beware here lieth dragons!_
+    - There are one correct way to do the allocation
+    - Easy to make mistakes, _beware here lieth dragons!_
+    - More than 2 allocations is never needed
 
 - Often best to just use 1D array and map N dimensional indices
-
-# Allocating row-by-row
-<div class=column>
-```c
- int i;
- int rows = 4, cols = 8;
- float **matrix;
-
- /* allocate memory */
- matrix = malloc(rows * sizeof(float *));
- for (i = 0; i < rows; i++){
- 	matrix[i] = malloc(cols * sizeof(float));
- }
- 
- // start using the 2D array
- matrix[0][2] = 3.14;
-```
-</div>
-<div class=column>
-![](images/allocation1-01.svg){.center width=80%}  
-**Do not do this!**
-</div>
 
 # Dynamic multi-dimensional arrays
 
 - Dynamic 2D array in *contiguous* memory:
-  * First, allocate memory for pointers to the first element of each row
-  * Second, allocate memory for all elements
-  * Third, point each row at the first element of that row
+    - First, allocate memory for pointers to the first element of each row
+    - Second, allocate memory for all elements
+    - Third, point each row at the first element of that row
 
 # Dynamic multi-dimensional arrays
-<small>
+
 ```c
  /* allocate memory */
  matrix = malloc(rows * sizeof(float *));
@@ -152,17 +141,17 @@ int main(void) {
  matrix[0][2] = 3.14;
 ```
 ![](images/allocation2-01.svg){.center width=100%}
-</small>
+
 
 # **Memory layout**
 
 - Allocating space for the whole array using a single malloc call is the
 recommended way
 
-  * Number of expensive malloc calls is minimized
-  * Array is represented as one contiguous block in memory
-  * It can be copied without looping over rows
-  * Most IO and numerical libraries assume contiguous storage
+    - Number of expensive malloc calls is minimized
+    - Array is represented as one contiguous block in memory
+    - It can be copied without looping over rows
+    - Most IO and numerical libraries assume contiguous storage
 
 # Dynamic multi-dimensional arrays
 
@@ -181,11 +170,11 @@ recommended way
 - Allocate memory for all elements as normal 1D array
 - Compute indices so that the 1D memory area map to the 2D array we want to represent
 - Benefits
-  * The compiler understands better the code, and hence performance may be better
-  * Allocation and deallocation easier
-  * Straightforward to generalize to higher dimensions
+    - The compiler understands better the code, and hence performance may be better
+    - Allocation and deallocation easier
+    - Straightforward to generalize to higher dimensions
 - Drawbacks
-  * Code may look less elegant
+    - Code may look less elegant
 
 # Using indexing to represent 2D array
 ```c
