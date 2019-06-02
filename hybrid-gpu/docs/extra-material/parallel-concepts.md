@@ -60,16 +60,17 @@
 - *Amdahl's law* gives the maximum speed-up in the presence of
   non-parallelizable parts
 - Main reason for limited strong scaling
-
-</div>
-<div class="column">
-Maximum speed-up is
+-  Maximum speed-up is
+<small>
 $$
 S=\frac{1}{ ( 1-F) + F/N}
 $$
+</small>
+
 where $F$ is the parallel fraction and $N$ is the number of cores
 
-
+</div>
+<div class="column">
 ![](img/amdahl2.png){ }
 </div>
 

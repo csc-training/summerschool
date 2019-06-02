@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>OpenACC: interoperability</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>OpenACC: interoperability</h1>
+  <p>CSC Summerschool, 2019-07</p>
+</section>
+
+<section id="interoperability-with-libraries" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Interoperability with libraries</h1>
+</section>
+<section id="interoperability-with-libraries-1" class="slide level1" data-background-size="contain">
+<h1>Interoperability with libraries</h1>
+<ul>
+<li>Often it may be useful to integrate the accelerated OpenACC code with other accelerated libraries</li>
+<li>MPI: MPI libraries are CUDA-aware</li>
+<li>CUDA: It is possible to mix OpenACC and CUDA
+<ul>
+<li>Use OpenACC for memory management</li>
+<li>Introduce OpenACC in existing GPU code</li>
+<li>Use CUDA for tightest kernels, otherwise OpenACC</li>
+</ul></li>
+<li>Numerical GPU libraries: CUBLAS, CUFFT, MAGMA, CULA...</li>
+<li>Thrust, etc.</li>
+</ul>
+</section>
+<section id="device-data-interoperability" class="slide level1" data-background-size="contain">
+<h1>Device data interoperability</h1>
+<ul>
+<li>OpenACC includes methods to access to device data pointers</li>
+<li>Device data pointers can be used to interoperate with libraries and other programming techniques available for accelerator devices
+<ul>
+<li>CUDA kernels and cuBLAS libraries</li>
+<li>CUDA-aware MPI libraries</li>
+</ul></li>
+<li>Some features are still under active development, many things may not yet work as they are supposed to!</li>
+</ul>
+</section>
+<section id="data-constructs-host_data" class="slide level1" data-background-size="contain">
+<h1>Data constructs: <code>host_data</code></h1>
+<ul>
+<li>Define a device address to be available on the host
+<ul>
+<li>C/C++: <code>#pragma acc host_data [clause]</code></li>
+<li>Fortran:<code>!$acc host_data [clause]</code></li>
+</ul></li>
+<li>Only a single clause is allowed: C/C++, Fortran: <code>use_device(var-list)</code></li>
+<li>Within the construct, all the variables in <code>var-list</code> are referred to by using their device addresses</li>
+</ul>
+</section>
+<section id="host_data-construct-example-with-cublas" class="slide level1" data-background-size="contain">
+<h1>host_data construct: example with cublas</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">cublasInit();
+<span class="dt">double</span> x,y;
+<span class="co">//Allocate and initialise x</span>
+<span class="pp">#pragma acc data copyin(x[:n]) copy(y[:n])</span>
+{
+    <span class="pp">#pragma acc host_data use_device(x,y) {</span>
+        cublasDaxpy(n, a, x, <span class="dv">1</span>, y, <span class="dv">1</span>);
+    } <span class="co">// #pragma acc host_data</span>
+} <span class="co">// #pragma acc data</span>
+}
+b</code></pre></div>
+<ul>
+<li>Using PGI/OpenACC compiler, the cuBLAS can be accessed by providing the library to the linker : <code>-L$CUDA_INSTALL_PATH/lib64 --lcublas</code></li>
+<li>Recent versions: <code>-Mcudalib=cublas</code></li>
+</ul>
+</section>
+<section id="calling-cuda-kernel-from-openacc-program" class="slide level1" data-background-size="contain">
+<h1>Calling CUDA-kernel from OpenACC-program</h1>
+<ul>
+<li>In this scenario we have a (main) program written in C/C++ (or Fortran) and this driver uses OpenACC directives
+<ul>
+<li>CUDA-kernels must be called with help of OpenACC <code>host_data</code></li>
+</ul></li>
+<li>Interface function in CUDA-file must have <code>extern &quot;C&quot; void func(...)</code></li>
+<li>The CUDA-codes are compiled with NVIDIA <code>nvcc</code> compiler, e.g. <code>nvcc -c -O4 --restrict -arch=sm_35 daxpy_cuda.cu</code></li>
+<li>The OpenACC-codes are compiled with PGI-compiler e.g. <code>pgcc -c -acc -O4 call_cuda_from_openacc.c</code></li>
+<li>Linking with PGI-compiler must also have <code>-acc -Mcuda</code> e.g. <code>pgcc -acc -Mcuda call_cuda_from_openacc.o daxpy_cuda.o</code></li>
+</ul>
+</section>
+<section id="calling-cuda-kernel-from-openacc-program-1" class="slide level1" data-background-size="contain">
+<h1>Calling CUDA-kernel from OpenACC-program</h1>
+<small>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// call_cuda_from_openacc.c</span>
+
+<span class="kw">extern</span> <span class="dt">void</span> daxpy(<span class="dt">int</span> n, <span class="dt">double</span> a,
+                  <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">double</span> *y);
+
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])
+{
+    <span class="dt">int</span> n = (argc &gt; <span class="dv">1</span>) ? atoi(argv[<span class="dv">1</span>]) : (<span class="dv">1</span> &lt;&lt; <span class="dv">27</span>);
+    <span class="dt">const</span> <span class="dt">double</span> a = <span class="fl">2.0</span>;
+    <span class="dt">double</span> *x = malloc(n * <span class="kw">sizeof</span>(*x));
+    <span class="dt">double</span> *y = malloc(n * <span class="kw">sizeof</span>(*y));
+
+    <span class="pp">#pragma acc data create(x[0:n], y[0:n])</span>
+    {
+        <span class="co">// Initialize x &amp; y</span>
+        ...
+        <span class="co">// Call CUDA-kernel</span>
+        <span class="pp">#pragma acc host_data use_device(x,y)</span>
+        daxpy(n, a, x, y);
+        ...
+    } <span class="co">// #pragma acc data</span></code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// daxpy_cuda.cu</span>
+
+__global__
+<span class="dt">void</span> daxpy_kernel(<span class="dt">int</span> n, <span class="dt">double</span> a,
+                  <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">double</span> *y)
+{ <span class="co">// The actual CUDA-kernel</span>
+    <span class="dt">int</span> tid = blockIdx.x * blockDim.x + threadIdx.x;
+    <span class="dt">int</span> stride = blockDim.x * gridDim.x;
+    <span class="cf">while</span> (tid &lt; n) {
+        y[tid] += a * x[tid];
+        tid += stride;
+    }
+}
+<span class="kw">extern</span> <span class="st">&quot;C&quot;</span> <span class="dt">void</span> daxpy(<span class="dt">int</span> n, <span class="dt">double</span> a,
+                      <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">double</span> *y)
+{ <span class="co">// This can be called from C/C++ or Fortran</span>
+    dim3 blockdim = dim3(<span class="dv">256</span>,<span class="dv">1</span>,<span class="dv">1</span>);
+    dim3 griddim = dim3(<span class="dv">65536</span>,<span class="dv">1</span>,<span class="dv">1</span>);
+    daxpy_kernel&lt;&lt;&lt;griddim,blockdim&gt;&gt;&gt;(n, a, x, y);
+}</code></pre></div>
+</div>
+<p></small></p>
+</section>
+<section id="calling-openacc-routines-from-cuda-programs" class="slide level1" data-background-size="contain">
+<h1>Calling OpenACC-routines from CUDA-programs</h1>
+<ul>
+<li>In this scenario we have a (main) program written in CUDA and it calls functions written (C/C++/Fortran) with OpenACC extension
+<ul>
+<li>Interface to these functions must have <code>extern &quot;C&quot; void func(...)</code></li>
+</ul></li>
+<li>OpenACC routines must relate to CUDA-arrays via <code>deviceptr</code></li>
+<li>The CUDA-codes are still compiled with <code>nvcc</code> compiler, e.g. <code>nvcc -c -O4 --restrict -arch=sm_35 call_openacc_from_cuda.cu</code></li>
+<li>The OpenACC-codes are compiled again with PGI-compiler e.g. <code>pgcc -c -acc -O4 daxpy_openacc.c</code></li>
+<li>Linking must still be done with PGI using <code>-acc -Mcuda</code> e.g. <code>pgcc -acc -Mcuda call_openacc_from_cuda.o daxpy_openacc.o</code></li>
+</ul>
+</section>
+<section id="data-clauses-deviceptr" class="slide level1" data-background-size="contain">
+<h1>Data clauses: deviceptr</h1>
+<ul>
+<li>Declare data to reside on the device <code>deviceptr(var-list)</code>
+<ul>
+<li><strong>on entry/on exit:</strong> do not allocate or move data</li>
+</ul></li>
+<li>Can be used in <code>data</code>, <code>kernels</code> or <code>parallel</code> constructs</li>
+<li>Heavy restrictions for variables declared in <code>var-list</code>:
+<ul>
+<li>C/C++: Variables must be pointer variables</li>
+<li>Fortran: Variables must be dummy arguments and may not have the <code>POINTER</code>, <code>ALLOCATABLE</code> or <code>SAVE</code> attributes</li>
+</ul></li>
+<li>In C/C++ (and partially in Fortran) device pointers can be manipulated through OpenACC API</li>
+</ul>
+</section>
+<section id="calling-openacc-routines-from-cuda-programs-1" class="slide level1" data-background-size="contain">
+<h1>Calling OpenACC-routines from CUDA-programs</h1>
+<small>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// call_openacc_from_cuda.cu</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;cuda.h&gt;</span>
+<span class="kw">extern</span> <span class="st">&quot;C&quot;</span> <span class="dt">void</span> daxpy(<span class="dt">int</span> n, <span class="dt">double</span> a,
+                      <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">double</span> *y);
+<span class="kw">extern</span> <span class="st">&quot;C&quot;</span> <span class="dt">void</span> init(<span class="dt">int</span> n, <span class="dt">double</span> scaling, <span class="dt">double</span> *v);
+<span class="kw">extern</span> <span class="st">&quot;C&quot;</span> <span class="dt">void</span> sum(<span class="dt">int</span> n, <span class="dt">const</span> <span class="dt">double</span> *v, <span class="dt">double</span> *res);
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])
+{
+    <span class="dt">int</span> n = (argc &gt; <span class="dv">1</span>) ? atoi(argv[<span class="dv">1</span>]) : (<span class="dv">1</span> &lt;&lt; <span class="dv">27</span>);
+    <span class="dt">double</span> *x, *y, *s, tmp;
+    <span class="co">// Allocate data on device</span>
+    cudaMalloc((<span class="dt">void</span> **)&amp;x, (<span class="dt">size_t</span>)n*<span class="kw">sizeof</span>(*x));
+    cudaMalloc((<span class="dt">void</span> **)&amp;y, (<span class="dt">size_t</span>)n*<span class="kw">sizeof</span>(*y));
+    cudaMalloc((<span class="dt">void</span> **)&amp;s, (<span class="dt">size_t</span>)<span class="dv">1</span>*<span class="kw">sizeof</span>(*s)); <span class="co">// &quot;sum&quot;</span>
+    <span class="co">// All these are written in C + OpenACC</span>
+    init(n,  <span class="fl">1.0</span>, x); init(n, <span class="fl">-1.0</span>, y);
+    daxpy(n, a, x, y);
+    sum(n, y, s); <span class="co">// A check-sum : &quot;sum(y[0:n])”</span>
+
+    cudaMemcpy(&amp;tmp,s,(<span class="dt">size_t</span>)<span class="dv">1</span>*<span class="kw">sizeof</span>(*s),
+                       cudaMemcpyDeviceToHost); <span class="co">// chksum</span>
+    cudaFree(x); cudaFree(y); cudaFree(s);</code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// daxpy_openacc.c</span>
+<span class="dt">void</span> daxpy(<span class="dt">int</span> n, <span class="dt">double</span> a,
+           <span class="dt">const</span> <span class="dt">double</span> *<span class="dt">restrict</span> x, <span class="dt">double</span> *<span class="dt">restrict</span> y)
+{
+    <span class="pp">#pragma acc parallel loop deviceptr(x,y)</span>
+    <span class="cf">for</span> (<span class="dt">int</span> j=<span class="dv">0</span>; j&lt;n; ++j)
+        y[j] += a*x[j];
+}
+<span class="dt">void</span> init(<span class="dt">int</span> n, <span class="dt">double</span> scaling, <span class="dt">double</span> *v)
+{
+    <span class="pp">#pragma acc parallel loop deviceptr(v)</span>
+    <span class="cf">for</span> (<span class="dt">int</span> j=<span class="dv">0</span>; j&lt;n; ++j)
+        v[j] = scaling * j;
+}
+<span class="dt">void</span> sum(<span class="dt">int</span> n, <span class="dt">const</span> <span class="dt">double</span> *v, <span class="dt">double</span> *res)
+{
+    <span class="pp">#pragma acc kernels deviceptr(v,res)</span>
+    {
+        <span class="dt">double</span> s = <span class="dv">0</span>;
+        <span class="pp">#pragma acc loop reduction(+:s)</span>
+        <span class="cf">for</span> (<span class="dt">int</span> j=<span class="dv">0</span>; j&lt;n; ++j)
+            s += v[j];
+        <span class="co">// *res = s; // not supported for deviceptr</span>
+        <span class="pp">#pragma acc loop seq</span>
+        <span class="cf">for</span> (<span class="dt">int</span> j=<span class="dv">0</span>; j&lt;<span class="dv">1</span>; ++j)
+            res[j] = s;
+    }
+}</code></pre></div>
+</div>
+<p></small></p>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
