@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>Introduction to C</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Introduction to C</h1>
+  <p>CSC Summerschool, 2019-07</p>
+</section>
+
+<section id="what-is-c" class="slide level1" data-background-size="contain">
+<h1>What is C?</h1>
+<ul>
+<li><p>C is a <em>general-purpose</em> programming language initially developed by Dennis Ritchie between 1969 and 1973 at AT&amp;T Bell Labs</p></li>
+<li>It is an imperative procedural language intended for system software</li>
+<li>Strong ties with UNIX operating system</li>
+<li>It has influenced many other programming languages</li>
+<li><p>C++, C#, ObjC, Java, JavaScript, Go, csh, ...</p></li>
+</ul>
+</section>
+<section id="why-c" class="slide level1" data-background-size="contain">
+<h1>Why C?</h1>
+<ul>
+<li><p>It’s popular and widely used</p></li>
+<li>Available on almost all platforms</li>
+<li><p>Lots of libraries for different tasks</p></li>
+<li><p>Provides a relatively low-level (or mid-level) access to the operating system and hardware</p></li>
+<li>System-level programming, embedded systems</li>
+<li><p>Can lead to better performance</p></li>
+</ul>
+</section>
+<section id="standards" class="slide level1" data-background-size="contain">
+<h1>Standards</h1>
+<ul>
+<li>First standard by ANSI in 1989, known as “ANSI C” or C89
+<ul>
+<li>Still the best choice when portability is important!</li>
+<li>ISO adopted the same standard in 1990 (C90)</li>
+</ul></li>
+<li>Next revision in 1999, C99
+<ul>
+<li>New datatypes, complex numbers, variable length arrays,...</li>
+</ul></li>
+<li>Current standard is C11
+<ul>
+<li>Improved Unicode support, atomic operations, multi-threading, bounds-checked functions, ...</li>
+</ul></li>
+</ul>
+<p><strong>On this course we will use mainly ANSI C/C90 or C99</strong></p>
+</section>
+<section id="getting-started" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Getting started</h1>
+</section>
+<section id="look-and-feel" class="slide level1" data-background-size="contain">
+<h1>Look and feel</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/* Computing the factorial of an specified (by the user) number */</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+
+<span class="dt">int</span> fact(<span class="dt">int</span> n);
+
+<span class="dt">int</span> main(<span class="dt">void</span>){
+    <span class="dt">int</span> current;
+    printf(<span class="st">&quot;Enter some POSITIVE integer (non-positive to finish): &quot;</span>);
+    scanf(<span class="st">&quot;%d&quot;</span>, &amp;current);
+    <span class="cf">while</span> (current &gt; <span class="dv">0</span>) {
+        printf(<span class="st">&quot;Factorial of %d is %d</span><span class="sc">\n</span><span class="st">&quot;</span>, current, fact(current));
+        printf(<span class="st">&quot;Enter a POSITIVE integer (non-positive to finish): &quot;</span>);
+        scanf(<span class="st">&quot;%d&quot;</span>, &amp;current);
+    }
+}
+<span class="co">/* This function returns the factorial of the specified integer (n)*/</span>
+<span class="dt">int</span> fact(<span class="dt">int</span> n) {
+...</code></pre></div>
+</section>
+<section id="basic-syntax" class="slide level1" data-background-size="contain">
+<h1>Basic syntax</h1>
+<div class="column">
+<ul>
+<li>Code is case sensitive</li>
+<li>Statements terminate with ;</li>
+<li>{} enclose blocks</li>
+<li>There are two ways to comment :</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/* </span>
+<span class="co">This is a very long and </span>
+<span class="co">complicated comment,</span>
+<span class="co">which contains a lot of </span>
+<span class="co">useful information </span>
+<span class="co">*/</span>
+
+<span class="co">// This is a short comment</span></code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/* example function */</span>
+<span class="dt">float</span> foo(<span class="dt">int</span> bar) {
+    <span class="dt">int</span> i, c=<span class="dv">0</span>;
+    <span class="dt">float</span> x;
+    x = <span class="fl">0.1</span>;
+    <span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;bar; i++) {
+        x += i\*<span class="fl">3.14</span> + c;
+        c = i + <span class="dv">2</span>;
+    }
+    <span class="cf">return</span> x;
+}</code></pre></div>
+</div>
+</section>
+<section id="basic-syntax-1" class="slide level1" data-background-size="contain">
+<h1>Basic syntax</h1>
+<p>Free format</p>
+<ul>
+<li>whitespace, newlines, layout etc. do not matter … <strong>To the computer!!</strong></li>
+</ul>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/* example function */</span>
+<span class="dt">float</span> foo(<span class="dt">int</span> 
+bar) {<span class="dt">int</span> i,c=<span class="dv">0</span>;<span class="dt">float</span> x;x = <span class="fl">0.1</span>;<span class="cf">for</span>
+(i     =<span class="dv">0</span>;i&lt;bar;
+i++) {
+x += i*<span class="fl">3.14</span>       + c;
+c = i + <span class="dv">2</span>;}<span class="cf">return</span> x;}</code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/* same example function? */</span>
+<span class="dt">float</span> foo(<span class="dt">int</span> bar) {
+    <span class="dt">int</span> i, c=<span class="dv">0</span>;
+    <span class="dt">float</span> x;
+    x = <span class="fl">0.1</span>;
+    <span class="cf">for</span> (i=<span class="dv">0</span>; i&lt; bar; i++) {
+        x += i * <span class="fl">3.14</span> + c;
+        c = i + <span class="dv">2</span>;
+    }
+    <span class="cf">return</span> x;
+}</code></pre></div>
+</div>
+</section>
+<section id="simple-input-output-io" class="slide level1" data-background-size="contain">
+<h1>Simple Input / Output (I/O)</h1>
+<ul>
+<li>stdio-library is almost always needed. To include it use:<br />
+<code>#include &lt;stdio.h&gt;</code></li>
+<li>For printing a text on the screen use <code>printf()</code></li>
+</ul>
+<dl>
+<dt>printf(<code class="input">template</code> <code class="input">{,variables}</code>)</dt>
+<dd><dl>
+<dt><code class="input">template</code></dt>
+<dd>arbitrary string with optional placeholders for data from variables
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="input">{,variables}</code></dt>
+<dd>(optional) a list of variables
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="basic-io" class="slide level1" data-background-size="contain">
+<h1>Basic I/O</h1>
+<ul>
+<li>Special characters that can be used in the template string:<br />
+<strong>\n</strong> newline<br />
+<strong>\t</strong> horizontal tab<br />
+<strong>\”</strong> double quote<br />
+<strong>\\</strong> literal backlash<br />
+</li>
+<li><p>Placeholders are marked with <strong>%</strong> followed by formatting and type information</p></li>
+<li><p>For now, we will just use the following formattings:<br />
+<strong>%d</strong> integer value<br />
+<strong>%f</strong> float value<br />
+<strong>%s</strong> string</p></li>
+</ul>
+</section>
+<section id="basic-io-example" class="slide level1" data-background-size="contain">
+<h1>Basic I/O example</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
+    printf(<span class="st">&quot;The answer is %d.</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="dv">42</span>);
+    printf(<span class="st">&quot;Pi equals to %.2f&quot;</span>, <span class="fl">3.14159265</span>);
+    printf(<span class="st">&quot; ...at least to the %dnd decimal.</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="dv">2</span>);
+    <span class="cf">return</span> <span class="dv">0</span>;
+
+}
+
+<span class="co">//output:</span>
+<span class="co">// The answer is 42.</span>
+<span class="co">// Pi equals to 3.14 ...at least to the 2nd decimal.</span></code></pre></div>
+</section>
+<section id="the-transition-from-code-to-program" class="slide level1" data-background-size="contain">
+<h1><strong>The transition from Code to program</strong></h1>
+<div class="column">
+<ul>
+<li>Compiling:
+<ul>
+<li>Transforming the C source code to machine language</li>
+</ul></li>
+<li>Linker:
+<ul>
+<li>Combines object files generated by the compiler into a single executable program</li>
+</ul></li>
+<li>The result is an executable binary file</li>
+</ul>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*file.c*/</span>
+<span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+
+<span class="dt">void</span> main() {
+    <span class="dt">int</span> i,j=<span class="dv">0</span>;
+    <span class="dt">float</span> f=<span class="fl">1.0</span>;
+
+    <span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;<span class="dv">8</span>; i++) {
+    j += i;
+    f *= j+i;
+}</code></pre></div>
+</div>
+</section>
+<section id="lets-try-it-out" class="slide level1" data-background-size="contain">
+<h1>Let's try it out!</h1>
+<ul>
+<li>Write the classic first program in C:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span>
+<span class="dt">void</span> main(){
+    printf(<span class="st">&quot;Hello World!</span><span class="sc">\n</span><span class="st">&quot;</span>);
+}</code></pre></div>
+<ul>
+<li>Compile the code:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">gcc</span> -o hello hello.c</code></pre></div>
+<ul>
+<li>Test your program:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">./hello</span>
+<span class="ex">Hello</span> World!</code></pre></div>
+</section>
+<section id="datatypes-variables-assignment-and-operators" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Datatypes, variables, assignment and operators</h1>
+</section>
+<section id="basic-data-types" class="slide level1" data-background-size="contain">
+<h1>Basic data types</h1>
+<ul>
+<li>Basic datatypes in C are:
+<ul>
+<li><strong>char</strong> character</li>
+<li><strong>int</strong> integer number</li>
+<li><strong>long</strong> long integer number</li>
+<li><strong>float</strong> floating point number</li>
+<li><strong>double</strong> double precision float</li>
+</ul></li>
+<li>C has also <em>pointer</em> types</li>
+<li>There is also a special type <strong>void</strong></li>
+</ul>
+</section>
+<section id="variables" class="slide level1" data-background-size="contain">
+<h1>Variables</h1>
+<div class="column">
+<ul>
+<li>Data types of the variables are static</li>
+<li>Declare variables before using them</li>
+<li>Valid variable names in C:<br />
+<code>[a-z][A-Z][0-9]_</code></li>
+<li>Scope of a variable is always local unless otherwise declared</li>
+</ul>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// variable declaration</span>
+<span class="dt">int</span> i;
+<span class="dt">float</span> f, g;
+<span class="dt">double</span> total=<span class="fl">1.9</span>;
+<span class="co">// valid names</span>
+<span class="dt">int</span> i3, myINT, I_o;
+<span class="dt">float</span> o3Gf_ry9;
+<span class="co">// invalid names</span>
+<span class="dt">int</span> <span class="dv">33</span>, 9a, i-o;
+<span class="dt">float</span> o3.Gf;
+<span class="co">// data type matters</span>
+<span class="dt">char</span> c;
+<span class="dt">float</span> f;
+
+f = <span class="fl">1.234</span>;
+c = f; <span class="co">// ERROR!, wrong data type</span></code></pre></div>
+</div>
+</section>
+<section id="variable-assignment" class="slide level1" data-background-size="contain">
+<h1>Variable assignment</h1>
+<div class="column">
+<ul>
+<li><p>Assign a value to a variable: <strong>variable = value;</strong></p></li>
+<li><p>Both should have the same data type</p></li>
+<li>implicit conversion between compatible types</li>
+<li>explicit conversion (typecast) syntax: <strong>(type) var</strong></li>
+</ul>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// examples of assignment</span>
+count = <span class="dv">10</span>;
+i = j = <span class="dv">0</span>;
+k = i*j + <span class="dv">1</span>;
+
+<span class="co">// assign at declaration</span>
+<span class="dt">int</span> i = <span class="dv">4</span>;
+
+<span class="co">// typecast from int to float</span>
+<span class="dt">int</span> i;
+<span class="dt">float</span> f;
+i = <span class="dv">5</span> * <span class="dv">21</span>;
+f = (<span class="dt">float</span>) i;
+
+<span class="co">// watch out for operator order</span>
+(<span class="dt">float</span>) i/<span class="dv">5</span> != (<span class="dt">float</span>) (i/<span class="dv">5</span>)</code></pre></div>
+</div>
+</section>
+<section id="arithmetics" class="slide level1" data-background-size="contain">
+<h1>Arithmetics</h1>
+<ul>
+<li>Operators:
+<ul>
+<li><code>+</code> addition</li>
+<li><code>-</code> subtraction</li>
+<li><code>*</code> multiplication</li>
+<li><code>/</code> division</li>
+<li><code>%</code> modulus</li>
+</ul></li>
+<li>Operator precedence
+<ol type="1">
+<li><code>% * /</code></li>
+<li><code>+ -</code></li>
+</ol></li>
+<li>Parentheses <code>()</code> group operations and change evaluation order</li>
+</ul>
+</section>
+<section id="compound-assignment" class="slide level1" data-background-size="contain">
+<h1><strong>Compound assignment</strong></h1>
+<div class="column">
+<ul>
+<li>C has a short-hand notation for combined arithmetic operation and assignment<br />
+<code>a += b &lt;--&gt; a = a + b</code><br />
+<code>a -= b &lt;--&gt; a = a - b</code><br />
+<code>a *= b &lt;--&gt; a = a * b</code><br />
+<code>a /= b &lt;--&gt; a = a / b</code><br />
+<code>a++    &lt;--&gt; a = a + 1</code><br />
+<code>a--    &lt;--&gt; a = a - 1</code></li>
+</ul>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// example of compound assignment</span>
+<span class="dt">int</span> count = <span class="dv">10</span>;
+
+count += <span class="dv">5</span>; <span class="co">// now count is 15</span>
+
+count /= <span class="dv">3</span>; <span class="co">// and now count is 5</span>
+
+<span class="co">// Adding one to count </span>
+count++;
+
+<span class="co">// This is also valid (prefix)!</span>
+++count;</code></pre></div>
+</div>
+</section>
+<section id="arithmetics-and-assignment-examples" class="slide level1" data-background-size="contain">
+<h1>Arithmetics and assignment examples</h1>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// addition, substraction</span>
+ i = <span class="dv">5</span> + <span class="dv">2</span>;
+ i = <span class="dv">5</span> – <span class="dv">2</span>;
+ i += <span class="dv">1</span>; <span class="co">// i = i + 1</span>
+ f -= <span class="fl">3.4</span>;
+ i++; <span class="co">// i = i + 1</span>
+ i--;
+
+ <span class="co">// multiplication, division</span>
+ i = <span class="dv">5</span> * <span class="dv">2</span>;
+ i = <span class="dv">5</span> / <span class="dv">2</span>; <span class="co">// integer division</span>
+ f *= <span class="fl">3.0</span> / <span class="fl">4.2</span>;
+
+ <span class="co">// modulus</span>
+ m = <span class="dv">25</span> % <span class="dv">3</span>; </code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// grouping with ()s</span>
+b = a * (<span class="fl">1.3</span> + (<span class="dv">25</span>%<span class="dv">3</span>));
+
+<span class="co">// watch out!</span>
+f = <span class="dv">1</span> + q / (<span class="dv">1</span> - q);
+f = (<span class="dv">1</span> + q) / (<span class="dv">1</span> - q);
+
+<span class="co">// also functions use ()</span>
+f = r * sin(theta);
+f = (r + p)*sin(theta);</code></pre></div>
+</div>
+</section>
+<section id="pointers" class="slide level1" data-background-size="contain">
+<h1>Pointers</h1>
+<ul>
+<li>A variable is actually a reference to a memory location</li>
+<li>The contents of the memory block determine the value of a variable</li>
+<li>Memory addresses can be stored (and manipulated) in pointers</li>
+<li>Pointers are one of the key features (and one of the most difficult) of the C language!</li>
+</ul>
+</section>
+<section id="pointers-1" class="slide level1" data-background-size="contain">
+<h1>Pointers</h1>
+<ul>
+<li>Pointers have a type (<strong>int, char</strong> etc.)</li>
+<li>Stores a memory address containing data of corresponding type <img src="images/pointer1-01.svg" class="center" style="width:100.0%" /></li>
+</ul>
+</section>
+<section id="pointers-2" class="slide level1" data-background-size="contain">
+<h1>Pointers</h1>
+<ul>
+<li>The address of a variable is obtained with <code>&amp;</code></li>
+<li>The value pointed at by a pointer (the contents of the address) can be accessed by de-referencing the pointer with <code>*</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> *p, a;
+a = <span class="dv">5</span>;
+
+<span class="co">// get address of a</span>
+p = &amp;a;
+
+<span class="co">// assign to a the value pointed at by *p plus 2</span>
+a = (*p) + <span class="dv">2</span>; <span class="co">// a=7</span></code></pre></div>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>Short history and different standards</li>
+<li>Basic syntax</li>
+<li>Variables and their type, assignment of values</li>
+<li>Arithmetic operations</li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
