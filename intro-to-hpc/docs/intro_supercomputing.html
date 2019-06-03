@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>Introduction to supercomputing</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Introduction to supercomputing</h1>
+  <p>CSC Summerschool, 2019-06</p>
+</section>
+
+<section id="what-is-high-performance-computing" class="slide level1" data-background-size="contain">
+<h1>What is high-performance computing?</h1>
+<ul>
+<li>Utilising computer power that is much larger than available in typical desktop computer</li>
+<li>Performance of HPC system (i.e. supercomputer) is often measured in floating point operations per second (flop/s)
+<ul>
+<li>For software, other measures can be more meaningful</li>
+</ul></li>
+<li>Currently, the most powerful system reaches ~100 x 10^15 flop/s (100 Pflop / s)</li>
+</ul>
+</section>
+<section id="what-is-high-performance-computing-1" class="slide level1" data-background-size="contain">
+<h1>What is high-performance computing?</h1>
+<figure>
+<img src="images/cray.png" class="center" style="width:30.0%" />
+</figure>
+</section>
+<section id="top-500-list" class="slide level1" data-background-size="contain">
+<h1>Top 500 list</h1>
+<figure>
+<img src="images/top_500.png" class="center" style="width:50.0%" />
+</figure>
+</section>
+<section id="what-are-supercomputers-used-for" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>What are supercomputers used for?</h1>
+</section>
+<section id="materials-science" class="slide level1" data-background-size="contain">
+<h1>Materials science</h1>
+<div class="column">
+<ul>
+<li>New materials
+<ul>
+<li>Design of meta-materials</li>
+<li>Hydrogen storage</li>
+</ul></li>
+<li>New methods for catalysis
+<ul>
+<li>Industrial processes</li>
+<li>Air and water purification</li>
+</ul></li>
+<li>Design of devices from first principles</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="images/mat.png" class="center" style="width:80.0%" />
+</figure>
+</div>
+</section>
+<section id="life-sciences" class="slide level1" data-background-size="contain">
+<h1>Life sciences</h1>
+<div class="column">
+<ul>
+<li>Next-generation sequencing techniques</li>
+<li>Identifying genomic variants associated with common complex diseases</li>
+<li>Understanding the natural development of diseases</li>
+<li>Medical imaging and diagnostics</li>
+<li>Simulated surgeries</li>
+<li>Predicting protein folding</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="images/life.png" class="center" style="width:80.0%" />
+</figure>
+</div>
+</section>
+<section id="earth-sciences" class="slide level1" data-background-size="contain">
+<h1>Earth sciences</h1>
+<div class="column">
+<ul>
+<li>Long term climate modeling
+<ul>
+<li>Coupling atmospheric, ocean and land models</li>
+<li>Understanding and predicting the climate change</li>
+</ul></li>
+<li>High-resolution weather prediction
+<ul>
+<li>Predicting extreme weather conditions</li>
+<li>District-scale forecasts</li>
+<li>Ensembles</li>
+</ul></li>
+<li>Whole-Earth seismological models</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="images/earth.png" class="center" style="width:80.0%" />
+</figure>
+</div>
+</section>
+<section id="artificial-intelligence" class="slide level1" data-background-size="contain">
+<h1>Artificial intelligence</h1>
+<div class="column">
+<ul>
+<li>Machine learning
+<ul>
+<li>deep neural networks</li>
+</ul></li>
+<li>Large scale data analysis</li>
+<li>Interpreting experimental data</li>
+<li>Prediction of material properties</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="images/ai.png" class="center" style="width:80.0%" />
+</figure>
+</div>
+</section>
+<section id="utilizing-hpc-in-scientific-research" class="slide level1" data-background-size="contain">
+<h1>Utilizing HPC in scientific research</h1>
+<figure>
+<img src="images/sci.svg" class="center" style="width:40.0%" />
+</figure>
+<ul>
+<li><strong>Goal for this school: everyone is able to write and modify HPC applications!</strong></li>
+</ul>
+</section>
+<section id="what-are-supercomputers-made-of" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>What are supercomputers made of?</h1>
+</section>
+<section id="cpu-frequency-development" class="slide level1" data-background-size="contain">
+<h1>CPU frequency development</h1>
+<ul>
+<li>Power consumption of CPU: <code>~</code>f^3</li>
+</ul>
+<figure>
+<img src="images/freq.png" class="center" style="width:60.0%" />
+</figure>
+</section>
+<section id="parallel-processing" class="slide level1" data-background-size="contain">
+<h1>Parallel processing</h1>
+<ul>
+<li>Modern (super)computers rely on parallel processing</li>
+<li><strong>Multiple</strong> CPU cores
+<ul>
+<li><code>#</code>1 system has <code>~</code>10 000 000 cores</li>
+</ul></li>
+<li>Vectorization
+<ul>
+<li>Single instruction can process multiple data (SIMD)</li>
+</ul></li>
+<li>Pipelining
+<ul>
+<li>Core executes different parts of instructions in parallel</li>
+</ul></li>
+<li>Accelerators
+<ul>
+<li>GPUs</li>
+</ul></li>
+</ul>
+</section>
+<section id="anatomy-of-supercomputer" class="slide level1" data-background-size="contain">
+<h1>Anatomy of supercomputer</h1>
+<ul>
+<li>Supercomputers consist of nodes connected with high-speed network
+<ul>
+<li>Latency <code>~</code>1 µs, bandwidth <code>~</code>10 GB / s</li>
+</ul></li>
+<li>A node can contain several multicore CPUS</li>
+<li>Additionally, node can contain one or more accelerators</li>
+<li>Memory within the node is directly usable by all CPU cores</li>
+</ul>
+<figure>
+<img src="images/anatomy.svg" class="center" style="width:60.0%" />
+</figure>
+</section>
+<section id="supercomputer-autopsy-sisu.csc.fi" class="slide level1" data-background-size="contain">
+<h1>Supercomputer autopsy – Sisu.csc.fi</h1>
+<figure>
+<img src="images/sisu.svg" class="center" style="width:80.0%" />
+</figure>
+</section>
+<section id="from-laptop-to-tier-0" class="slide level1" data-background-size="contain">
+<h1>From laptop to Tier-0</h1>
+<div class="column">
+<figure>
+<img src="images/tier.svg" class="center" style="width:80.0%" />
+</figure>
+</div>
+<div class="column">
+<ul>
+<li>The most fundamental difference between a small university cluster and Tier-0 supercomputer is the number of nodes
+<ul>
+<li>The interconnect in high end systems is often also more capable</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="cloud-computing" class="slide level1" data-background-size="contain">
+<h1>Cloud computing</h1>
+<ul>
+<li>Cloud infrastructure is run on top of normal HPC system:
+<ul>
+<li>Shared memory nodes connected by network</li>
+</ul></li>
+<li>User obtains <strong>virtual</strong> machines</li>
+<li>Infrastructure as a service (IaaS)
+<ul>
+<li>User has full freedom (and responsibility) of operating system and the whole software environment</li>
+</ul></li>
+<li>Platform as a service (PaaS)
+<ul>
+<li>User develops and runs software within the provided environment</li>
+</ul></li>
+</ul>
+</section>
+<section id="cloud-computing-and-hpc" class="slide level1" data-background-size="contain">
+<h1>Cloud computing and HPC</h1>
+<ul>
+<li>Suitability of cloud computing for HPC depends heavily on application
+<ul>
+<li>Single node performance is often ok</li>
+</ul></li>
+<li>Virtualization adds overhead especially for the networking
+<ul>
+<li>Some providers offer high-speed interconnects with a higher price</li>
+</ul></li>
+<li>Moving data out from the cloud can be expensive</li>
+<li>Currently, cloud computing is not very cost-effective solution for most large scale HPC simulations</li>
+</ul>
+</section>
+<section id="parallel-computing-concepts" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Parallel computing concepts</h1>
+</section>
+<section id="computing-in-parallel" class="slide level1" data-background-size="contain">
+<h1>Computing in parallel</h1>
+<ul>
+<li>Parallel computing
+<ul>
+<li>A problem is split into smaller subtasks</li>
+<li>Multiple subtasks are processed simultaneously using multiple cores<Paste></li>
+</ul></li>
+</ul>
+<figure>
+<img src="images/compp.svg" class="center" style="width:40.0%" />
+</figure>
+</section>
+<section id="types-of-parallel-problems" class="slide level1" data-background-size="contain">
+<h1>Types of parallel problems</h1>
+<ul>
+<li>Tightly coupled
+<ul>
+<li>Lots of interaction between subtasks</li>
+<li>Weather simulation</li>
+<li>Low latency, high speed interconnect is essential</li>
+</ul></li>
+<li>Embarrassingly parallel
+<ul>
+<li>Very little (or no) interaction between subtasks</li>
+<li>Sequence alignment queries for multiple independent sequences in bioinformatics</li>
+</ul></li>
+</ul>
+</section>
+<section id="exposing-parallelism" class="slide level1" data-background-size="contain">
+<h1>Exposing parallelism</h1>
+<div class="column">
+<ul>
+<li>Data parallelism
+<ul>
+<li>Data is distributed across cores</li>
+<li>Each core performs simultaneously (nearly) identical operations with different data</li>
+<li>Cores may need to interact with each other, e.g. exchange information about data on domain boundaries</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="images/eparallel.svg" class="center" style="width:80.0%" />
+</figure>
+</div>
+</section>
+<section id="exposing-parallelism-1" class="slide level1" data-background-size="contain">
+<h1>Exposing parallelism</h1>
+<ul>
+<li>Task farm (master / worker)</li>
+</ul>
+<figure>
+<img src="images/farm.svg" class="center" style="width:60.0%" />
+</figure>
+<ul>
+<li>Master sends tasks to workers and receives results</li>
+<li>There are normally more tasks than workers, and tasks are assigned dynamically</li>
+</ul>
+</section>
+<section id="exposing-parallelism-2" class="slide level1" data-background-size="contain">
+<h1>Exposing parallelism</h1>
+<ul>
+<li>MapReduce is special task farm like approach suitable especially for large scale data analysis</li>
+<li>Two types of workers
+<ul>
+<li>Map: given an input data, emit list of (key, value) pairs</li>
+<li>Reduce: combine the values for a key</li>
+</ul></li>
+<li>User works only with serial code for Map and Reduce operations</li>
+<li>MapReduce framework takes care of parallelization and data distribution</li>
+</ul>
+</section>
+<section id="parallel-scaling" class="slide level1" data-background-size="contain">
+<h1>Parallel scaling</h1>
+<div class="column">
+<ul>
+<li>Strong parallel scaling
+<ul>
+<li>Constant problem size</li>
+<li>Execution time decreases in proportion to the increase in the number of cores</li>
+</ul></li>
+<li>Weak parallel scaling
+<ul>
+<li>Increasing problem size</li>
+<li>Execution time remains constant when number of cores increases in proportion to the problem size</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="images/scaling.png" class="center" style="width:80.0%" />
+</figure>
+</div>
+</section>
+<section id="what-limits-parallel-scaling" class="slide level1" data-background-size="contain">
+<h1>What limits parallel scaling</h1>
+<ul>
+<li>Load imbalance
+<ul>
+<li>Distribution of workload to different cores varies</li>
+</ul></li>
+<li>Parallel overheads
+<ul>
+<li>Additional operations which are not present in serial calculation</li>
+<li>Synchronization, redundant computations, communications</li>
+</ul></li>
+<li>Amdahl’s law: the fraction of non-parallelizable parts establishes the limit on how many cores can be harnessed</li>
+</ul>
+</section>
+<section id="parallel-programming" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Parallel programming</h1>
+</section>
+<section id="programming-languages" class="slide level1" data-background-size="contain">
+<h1>Programming languages</h1>
+<ul>
+<li>The de facto standard programming languages in HPC are (still!) C/C++ and Fortran</li>
+<li>Higher level languages like Python and Julia are gaining popularity
+<ul>
+<li>Often computationally intensive parts are still written in C/C++ or Fortran</li>
+</ul></li>
+<li>For some applications there are high-level frameworks with interfaces to multiple languages
+<ul>
+<li>TensorFlow for deep learning</li>
+<li>Spark for MapReduce</li>
+</ul></li>
+</ul>
+</section>
+<section id="parallel-programming-models" class="slide level1" data-background-size="contain">
+<h1>Parallel programming models</h1>
+<ul>
+<li>Parallel execution is based on threads or processes (or both) which run at the same time on different CPU cores</li>
+<li>Processes
+<ul>
+<li>Interaction is based on exchanging messages between processes</li>
+<li>MPI (Message passing interface)</li>
+</ul></li>
+<li>Threads
+<ul>
+<li>Interaction is based on shared memory, i.e. each thread can access directly other threads data</li>
+<li>OpenMP, pthreads</li>
+</ul></li>
+</ul>
+</section>
+<section id="parallel-programming-models-1" class="slide level1" data-background-size="contain">
+<h1>Parallel programming models</h1>
+<img src="images/processes-threads.svg" class="center" style="width:80.0%" />
+<div class="column">
+<p><strong>MPI: Processes</strong></p>
+<ul>
+<li>Independent execution units</li>
+<li>MPI launches N processes at application startup</li>
+<li>Works over multiple nodes</li>
+</ul>
+</div>
+<div class="column">
+<p><strong>OpenMP: Threads</strong></p>
+<ul>
+<li>Threads share memory space</li>
+<li>Threads are created and destroyed (parallel regions)</li>
+<li>Limited to a single node</li>
+</ul>
+</div>
+</section>
+<section id="future-of-high-performance-computing" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Future of High-performance computing</h1>
+</section>
+<section id="exascale-challenge" class="slide level1" data-background-size="contain">
+<h1>Exascale challenge</h1>
+<ul>
+<li>Performance of supercomputers has increased exponentially for a long time</li>
+<li>However, there are unprecedented challenges in reaching exascale (1 x 10^18 flop/s)
+<ul>
+<li>Power consumption: scaling current <code>#</code>1 energy efficient system would still require <code>~</code>60 MW</li>
+<li>Fault tolerance: with current technology exascale system experiences hardware failure every few hours</li>
+<li>Application scalability: how to program for 100 000 000 cores?</li>
+</ul></li>
+</ul>
+</section>
+<section id="quantum-computing" class="slide level1" data-background-size="contain">
+<h1>Quantum computing</h1>
+<ul>
+<li>Quantum computers can solve certain types of problems exponentially faster than classical computers</li>
+<li>General purpose quantum computer is still far away</li>
+<li>For optimisation problems, D-Wave computer based on quantum annealing is already commercially available</li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
