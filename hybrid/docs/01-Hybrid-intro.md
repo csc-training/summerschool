@@ -78,6 +78,8 @@ lang:   en
 </div>
 
 <div class="column">
+FIXME
+
 ![](img/supercomputer-node-hybrid.png)
 </div>
 
@@ -91,8 +93,8 @@ lang:   en
 
 int main(int argc, char *argv[]) {
     int my_id, omp_rank;
-    int provided, required=MPI_THREAD_FUNNELED;
-
+    int provided;
+    int required = MPI_THREAD_FUNNELED;
     MPI_Init_thread(&argc, &argv, required,
                     &provided);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
@@ -136,18 +138,13 @@ I'm thread 2 in process 0
   : `argc`{.input}, `argv`{.input}
     : Command line arguments in C
   : `required`{.input}
-    : Required thread safety level
+    : Required thread safety level, one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
   : `provided`{.output}
-    : Supported thread safety level
+    : Supported thread safety level, one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
   : `error`{.output}
     : Error value; in C/C++ it's the return value of the function,
       and in Fortran an additional output parameter
 
-- Pre-defined integer constants:
-  ```
-  MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED
-  < MPI_THREAD_MULTIPLE
-  ```
 
 
 # Hybrid programming styles: fine/coarse grained
@@ -188,11 +185,11 @@ I'm thread 2 in process 0
 
 # Real-world hybrid applications
 
-- Vlasiator -- space weather simulations
+- Vlasiator - space weather simulations
     - Fluid in 6D spatial/velocity space: spatial grid with MPI, velocity
       grid with OpenMP
     - Lower memory footprint and better load balancing
-- CP2K -- electronic structure simulations
+- CP2K - electronic structure simulations
     - Especially so called hybrid functionals benefit from threading
     - Lower memory footprint allows more efficient computations
 
@@ -256,10 +253,10 @@ I'm thread 2 in process 0
 * Compiler directives, i.e. language extensions, for shared memory
   parallelization
 
-|`   `    | directive     | construct     |clauses      |
-|-----    |-----------    |-------------  |-----          |
-|C/C++  | `#pragma omp` | `parallel`     | `shared(data)`  |
-|Fortran| `!$omp`          | `parallel`    | `shared(data)`  |
+|       | directive     | construct   | clauses         |
+|-------|---------------|-------------|-----------------|
+|C/C++  | `#pragma omp` | `parallel`  | `shared(data)`  |
+|Fortran| `!$omp`       | `parallel`  | `shared(data)`  |
 
 * Runtime library routines (Intel: libiomp5, GNU: libgomp)
     - Conditional compilation to build serial version
