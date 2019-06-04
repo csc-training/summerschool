@@ -4,7 +4,7 @@ In this exercise we combine collective communcation with user defined
 communicators. Write a program for four MPI processes, such that each
 process has a data vector with the following data:
 
-![](img/sendbuffer.svg)
+![](img/sendbuffer.png)
 
 In addition, each task has a receive buffer for eight elements and the
 values in the buffer are initialized to -1.
