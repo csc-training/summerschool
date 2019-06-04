@@ -1,8 +1,9 @@
 program output
-  use mpi
+  use mpi_f08
   implicit none
-  integer :: err, i, myid, file, intsize
-  integer :: status(MPI_STATUS_SIZE)
+  integer :: err, i, myid, intsize
+  type(mpi_file) :: file
+  type(mpi_status) :: status
   integer, parameter :: count=100
   integer(kind=mpi_offset_kind) :: disp
   integer :: buf(count)

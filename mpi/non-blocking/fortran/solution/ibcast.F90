@@ -1,15 +1,16 @@
 program broadcast
-  use mpi
+  use mpi_f08
   implicit none
 
   integer, parameter :: n_mpi_tasks = 4
 
-  integer :: ntasks, rank, ierr, i, color, sub_comm
+  integer :: ntasks, rank, ierr
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
 
-  integer :: status(MPI_STATUS_SIZE)
-  integer :: rc, request
+  type(mpi_status) :: status
+  type(mpi_request) :: request
+  integer :: rc
 
   call mpi_init(ierr)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)

@@ -49,7 +49,7 @@ contains
   end subroutine set_field_dimensions
 
   subroutine parallel_setup(parallel, nx, ny)
-    use mpi
+    use mpi_f08
 
     implicit none
 

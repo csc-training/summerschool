@@ -1,7 +1,7 @@
 ! I/O routines for heat equation solver
 module io
   use heat
-  use mpi
+  use mpi_f08
 
 contains
 
@@ -113,13 +113,13 @@ contains
     type(parallel_data), intent(in) :: parallel
     integer, intent(in) :: iter
 
-    integer :: fp
+    type(mpi_file) :: fp
     integer(kind=MPI_OFFSET_KIND) :: disp
     integer :: local_size
     integer :: ierr
 
     ! open the file and write the dimensions
-    call mpi_file_open(MPI_COMM_WORLD, "HEAT_RESTART.dat",  &
+    call mpi_file_open(MPI_COMM_WORLD, CHECKPOINT,  &
          & MPI_MODE_CREATE + MPI_MODE_WRONLY, &
          & MPI_INFO_NULL, fp, ierr)
     if (parallel%rank == 0) then
@@ -161,7 +161,7 @@ contains
     integer, intent(out) :: iter
 
     integer :: rows, cols
-    integer :: fp
+    type(mpi_file) :: fp
     integer(kind=MPI_OFFSET_KIND) :: disp
     integer :: local_size
     integer :: ierr

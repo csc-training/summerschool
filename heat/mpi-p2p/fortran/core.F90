@@ -6,7 +6,7 @@ contains
 
   ! Exchange the boundary data between MPI tasks
   subroutine exchange(field0, parallel)
-    use mpi
+    use mpi_f08
 
     implicit none
 

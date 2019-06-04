@@ -6,34 +6,8 @@ program introductions
 
 
   names = [ &
-       "Ali Afzalifar              ", &     
-       "Amin Mirzai                ", &
-       "Annabella Mondino Llermanos", &   
-       "Arianna Toniato            ", &
-       "Carlton Xavier             ", & 
-       "Daragh Matthews            ", &   
-       "Heidi Rytkönen             ", & 
-       "Henrik Nortamo             ", &    
-       "Irina Osadchuk             ", &
-       "Joonas Nättilä             ", &   
-       "Jonathan Velasco           ", & 
-       "Jussi Enkovaara            ", &
-       "Juho Jalava                ", & 
-       "Kukka-Emilia Huhtinen      ", &
-       "Lauri Tuppi                ", &            
-       "Leevi Tuikka               ", &
-       "Mahmoud Shepero            ", &  
-       "Marko Kallio               ", &
-       "Marta Lopez                ", &
-       "Mehran Kiani               ", &         
-       "Mika Jalava                ", &
-       "Nadir Khan                 ", & 
-       "Pekka Manninen             ", &         
-       "Ruixue Feng                ", & 
-       "Sami Ilvonen               ", &
-       "Seija Sirkiä               ", &
-       "Tomas Panoc                ", &
-       "Tova Jarnerud              "  ]
+       "Matti Meikalainen          ", &
+       "Oskari Olematon            "  ]
 
   allocate (order(size(names)))
   call randomize_order(order)

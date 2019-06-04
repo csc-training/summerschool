@@ -1,6 +1,6 @@
 program hello
   use omp_lib
-  use mpi
+  use mpi_f08
   implicit none
   integer :: my_id, tid, rc
   integer :: provided, required=MPI_THREAD_FUNNELED
