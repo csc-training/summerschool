@@ -1,28 +1,27 @@
----
-title: User-defined communicators 
-author: CSC Summerschool
-date:   2019-06
-lang:   en
----
+# User-defined communicators {.section}
 
 # Communicators
 
 - The communicator determines the "communication universe" 
-	- The source and destination of a message is identified by process rank within the communicator
+    - The source and destination of a message is identified by process rank 
+      *within* the communicator
 - So far: `MPI_COMM_WORLD`
 - Processes can be divided into subcommunicators
-	- Task level parallelism with process groups performing separate tasks Parallel I/O
+    - Task level parallelism with process groups performing separate tasks
+    - Collective communication within a group of processes
+    - Parallel I/O
 
 # Communicators
 
+<div class="column">
 - Communicators are dynamic
 - A task can belong simultaneously to several communicators
-	- In each of them it has a unique ID, however
-	- Communication is normally within the communicator
-
-# Creating a new communicator
-
+    - Unique rank in each communicator
+</div>
+<div class="column">
 ![](images/communicator.svg){.center width=80%}
+</div>
+
 
 # Creating new communicator {.split-definition}
 
@@ -30,14 +29,16 @@ lang:   en
 
 MPI_Comm_split(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})
   : `comm`{.input}
-    : communicator handle
+    : communicator
 
     `color`{.input}
-    : control of subset assignment, processes with the same color
-      belong to the same new communicator
+    : processes with the same "color" belong to the same new communicator
+
+    `-`{.ghost}
+    : `-`{.ghost}
 
     `key`{.input} 
-    : control of rankassignment 
+    : control of rank assignment 
 
     `newcomm`{.output} 
     : new communicator handle
@@ -80,7 +81,7 @@ I am rank 5 in MPI_COMM_WORLD, but 2 in Comm 2.
 I am rank 1 in MPI_COMM_WORLD, but 0 in Comm 2.
 ```
 
-![](images/communicator.svg){.center width=80%}
+![](images/communicator.svg){.center width=50%}
 
 </div>
 
@@ -127,6 +128,6 @@ After broadcast:
 	- Task parallelism, using libraries, I/O,...
 - We introduced one way of creating new communicators via
   `MPI_Comm_split`
-	- Tasks assigned with a color, which can be `MPI_UNDEFINED` if the
+	- Tasks assigned with a "color", which can be `MPI_UNDEFINED` if the
       task is excluded in all resulting communicators
 	- Other ways (via MPI groups) exist
