@@ -9,9 +9,9 @@ lang:   en
 # Understanding datatypes: typemap
 
 - A datatype is defined by a _typemap_
-	- Typemap consists of pairs with basic types and displacements (in
+    - Typemap consists of pairs with basic types and displacements (in
       bytes)
-	- E.g. MPI_INT={(int,0)}
+    - E.g. MPI_INT={(int,0)}
 
 <p>
 ![](images/typemap.svg){.center width=100%}
@@ -20,15 +20,15 @@ lang:   en
 
 - The most general type constructor, creates a new type from
   heterogeneous blocks
-	- E.g. Fortran types and C structures
-	- Input is the typemap
+    - E.g. Fortran types and C structures
+    - Input is the typemap
 
 <p>
 ![](images/create_struct.svg){.center width=70%}
 
 # Datatype constructors: MPI_TYPE_CREATE_STRUCT {.split-definition}
 
-MPI_Type_create_struct(`count`{.input}, `blocklens`{.input},`displs`{.input}, `types`{.input}, `newtype`{.output})
+MPI_Type_create_struct(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `types`{.input}, `newtype`{.output})
   : `count`{.input}
     : number of blocks
 
@@ -49,8 +49,8 @@ MPI_Type_create_struct(`count`{.input}, `blocklens`{.input},`displs`{.input}, `t
 
 <p>
 ![](images/create_struct.svg){.center width=70%}
-		
-# Example: sending a C struct 
+
+# Example: sending a C struct
 
 ```c
 /* Structure for particles */
@@ -62,23 +62,25 @@ struct ParticleStruct {
 struct ParticleStruct particle[1000];
 MPI_Datatype Particletype;
 
-MPI_Datatype type[3]={MPI_INT, MPI_DOUBLE, MPI_DOUBLE};
-int blocklen[3]={1,3,3};
-MPI_Aint disp[3]={0, sizeof(double), 4*sizeof(double)};
+MPI_Datatype type[3] = {MPI_INT, MPI_DOUBLE, MPI_DOUBLE};
+int blocklen[3] = {1, 3, 3};
+MPI_Aint disp[3] = {0, sizeof(double), 4*sizeof(double)};
 ...
-MPI_Type_create_struct(3, blocklen, disp, type, &Particletype); MPI_Type_commit(&Particletype);
+MPI_Type_create_struct(3, blocklen, disp, type, &Particletype);
+MPI_Type_commit(&Particletype);
 
 MPI_Send(particle, 1000, Particletype, dest, tag, MPI_COMM_WORLD);
 MPI_Type_free(&Particletype);
 ```
+
 # Determining displacements
 
-- The previous example defines and assumes a certain alignment for the
+- The previous example defines and assumes a certain _alignment_ for the
   data within the structure
 - The displacements can (and should!) be determined by using the
   function **`MPI_Get_address`(`pointer`{.input},
   `address`{.output})**
-	- The address of the variable is returned, which can then be used
+    - The address of the variable is returned, which can then be used
       for determining relative displacements
 
 # Determining displacements
@@ -109,9 +111,9 @@ disp[0] = 0;
 - Sending of an array of the `ParticleStruct` structures may have a
   portability issue: it assumes that array elements are packed in
   memory
-	- Implicit assumption: the extent of the datatype was the same as
+    - Implicit assumption: the extent of the datatype was the same as
       the size of the C struct
-	- This is not necessarily the case
+    - This is not necessarily the case
 - If there are gaps in memory between the successive structures,
   sending does not work correctly
 
@@ -121,10 +123,10 @@ disp[0] = 0;
 
 - Sending multiple user-defined types at once may not behave as expected
 - The _lower bound_ describes where the datatype starts
-	- LB: min(dispj) 
+    - LB: min(disp~j~)
 - The _extent_ describes the stride at which contiguous elements are
   read or written when sending multiple elements
-	- Extent = max(dispj + sizej) – LB + padding
+    - Extent = max(disp~j~ + size~j~) – LB + padding
 
 # Multiple MPI_TYPE_VECTOR
 
@@ -143,7 +145,7 @@ MPI_Type_get_extent(`type`{.input}, `lb`{.output}, `extent`{.output})
 # Setting new extent and lower bound
 
 MPI_Type_create_resized(`type`{.input}, `lb`{.input}, `extent`{.input}, `newtype`{.output})
-  : `type`{.input}	
+  : `type`{.input}
     : Old datatype
   : `lb`{.input} 
     : New lower bound (in bytes)
@@ -178,12 +180,12 @@ if ( extent != sizeof(particle[0] ) {
 # Other ways of communicating non-uniform data
 
 - Non-contiguous data by manual packing
-	- Copy data into or out from temporary buffer
-	- Use MPI_Pack and MPI_Unpack functions
-	- Performance will likely be an issue
+    - Copy data into or out from temporary buffer
+    - Use MPI_Pack and MPI_Unpack functions
+    - Performance will likely be an issue
 - Structures and types as continuous stream of bytes: Communicate
   everything using MPI_BYTE
-	- Portability can be an issue - be careful
+    - Portability can be an issue - be careful
 
 <p>
 ```c
@@ -192,7 +194,7 @@ int psize;
 psize = sizeof(particle[0]);
 MPI_Send(particle, 1000*psize, MPI_BYTE, ...);
 ```
-	
+
 # SUBARRAY TYPE {.section}
 
 # MPI_TYPE_CREATE_SUBARRAY {.split-def-3}
@@ -260,10 +262,10 @@ if (rank==1)
 - A solver requires a stencil of two cells in each direction to
   compute the next timestep
 - The distributed 2D grid
-	- Two-element ghost layers,each process has allocated a 8 x 8 grid
+    - Two-element ghost layers,each process has allocated a 8 x 8 grid
       patch
-	- Each process computes a 4 x 4 patch of total system
-	- Need to communicate 2x4 and 4x2 patches
+    - Each process computes a 4 x 4 patch of total system
+    - Need to communicate 2x4 and 4x2 patches
 </div>
 <div class=column>
 ![](images/halo_grid.svg){.center width=100%}
@@ -282,8 +284,8 @@ int array_size[2] = {4 + 2 + 2, 4 + 2 + 2};
 int x_size[2] = {4,2};
 int offset[2] = {0,0};   
 MPI_Type_create_subarray(2, array_size, 
-	x_size, offset, 
-	MPI_ORDER_C, MPI_DOUBLE, &x_boundary);
+    x_size, offset,
+    MPI_ORDER_C, MPI_DOUBLE, &x_boundary);
 
 ```
 </div>
@@ -301,10 +303,10 @@ MPI_Type_create_subarray(2, array_size,
 ```c
 int array_size[2] = {4 + 2 + 2, 4 + 2 + 2};
 int y_size[2] = {2,4};
-int offset[2] = {0,0};   
+int offset[2] = {0,0};
 MPI_Type_create_subarray(2, array_size, 
-	y_size, offset, 
-	MPI_ORDER_C, MPI_DOUBLE, &y_boundary);
+    y_size, offset,
+    MPI_ORDER_C, MPI_DOUBLE, &y_boundary);
 ```
 </div>
 
@@ -335,10 +337,10 @@ MPI_Sendrecv(&array[2][4], 1, x_boundary, right, tag_right,
 
 - User-defined types enable communication of non-contiguous or
   heterogeneous data with single MPI communication operations
-	- Improves code readability & portability
-	- Allows optimizations by the MPI runtime
+    - Improves code readability & portability
+    - Allows optimizations by the MPI runtime
 - In the second part we
-	- Introduced the concepts of extent and typemap
-	- Discussed describing structures/types
-	- Covered another advanced type constructor, `MPI_Type_create_subarray`
+    - Introduced the concepts of extent and typemap
+    - Discussed describing structures/types
+    - Covered another advanced type constructor, `MPI_Type_create_subarray`
 
