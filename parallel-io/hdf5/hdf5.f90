@@ -1,5 +1,5 @@
 program hdf5io
-  use mpi
+  use mpi ! HDF5 does not (yet) support mpi f08 interface
   use, intrinsic :: iso_fortran_env, only : error_unit, output_unit
   implicit none
 

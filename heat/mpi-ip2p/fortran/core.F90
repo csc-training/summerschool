@@ -7,7 +7,7 @@ contains
   ! Exchange the boundary data between MPI tasks
   ! part 1: start communication
   subroutine exchange_init(field0, parallel)
-    use mpi
+    use mpi_f08
 
     implicit none
 
@@ -38,7 +38,7 @@ contains
 
   ! Finalize the non-blocking communication
   subroutine exchange_finalize(parallel)
-    use mpi
+    use mpi_f08
     implicit none
     type(parallel_data), intent(inout) :: parallel
     integer :: ierr

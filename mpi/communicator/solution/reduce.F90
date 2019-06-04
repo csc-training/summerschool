@@ -1,10 +1,11 @@
 program coll_exer
-  use mpi
+  use mpi_f08
   implicit none
 
   integer, parameter :: n_mpi_tasks = 4
 
-  integer :: ntasks, rank, ierr, i, color, sub_comm
+  integer :: ntasks, rank, ierr, i, color
+  type(mpi_comm) :: sub_comm
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
 

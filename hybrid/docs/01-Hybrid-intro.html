@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>Hybrid MPI+OpenMP programming</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Hybrid MPI+OpenMP programming</h1>
+  <p>CSC Summerschool, 2019-07</p>
+</section>
+
+<section id="processes-and-threads" class="slide level1" data-background-size="contain">
+<h1>Processes and threads</h1>
+<figure>
+<img src="img/processes-threads.png" />
+</figure>
+<div class="column">
+<h2 id="process">Process</h2>
+<ul>
+<li>Independent execution units</li>
+<li>Have their own state information and <em>own memory</em> address space</li>
+</ul>
+</div>
+<div class="column">
+<h2 id="thread">Thread</h2>
+<ul>
+<li>A single process may contain multiple threads</li>
+<li>Have their own state information, but <em>share</em> the <em>same memory</em> address space</li>
+</ul>
+</div>
+</section>
+<section id="processes-and-threads-1" class="slide level1" data-background-size="contain">
+<h1>Processes and threads</h1>
+<figure>
+<img src="img/processes-threads.png" />
+</figure>
+<div class="column">
+<h2 id="process-1">Process</h2>
+<ul>
+<li>Long-lived: spawned when parallel program started, killed when program is finished</li>
+<li>Explicit communication between processes</li>
+</ul>
+</div>
+<div class="column">
+<h2 id="thread-1">Thread</h2>
+<ul>
+<li>Short-lived: created when entering a parallel region, destroyed (joined) when region ends</li>
+<li>Communication through shared memory</li>
+</ul>
+</div>
+</section>
+<section id="hybrid-programming" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Hybrid programming</h1>
+</section>
+<section id="hybrid-programming-launch-threads-openmp-within-processes-mpi" class="slide level1" data-background-size="contain">
+<h1>Hybrid programming: Launch threads (OpenMP) <em>within</em> processes (MPI)</h1>
+<div class="column">
+<h2 id="process-2">Process</h2>
+<ul>
+<li>Independent execution units</li>
+<li>MPI launches N processes at application startup</li>
+</ul>
+</div>
+<div class="column">
+<h2 id="thread-2">Thread</h2>
+<ul>
+<li>Threads share memory space</li>
+<li>Threads are created and destroyed (parallel regions)</li>
+</ul>
+</div>
+</section>
+<section id="hybrid-programming-1" class="slide level1" data-background-size="contain">
+<h1>Hybrid programming</h1>
+<div class="column">
+<ul>
+<li>Shared memory programming inside a node, message passing between nodes</li>
+<li>Matches well modern supercomputer hardware</li>
+<li>Often one MPI task / socket, but one should experiment with the ratio</li>
+</ul>
+</div>
+<div class="column">
+<p>FIXME</p>
+<figure>
+<img src="img/supercomputer-node-hybrid.png" />
+</figure>
+</div>
+</section>
+<section id="example-hybrid-hello" class="slide level1" data-background-size="contain">
+<h1>Example: Hybrid hello</h1>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;mpi.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;omp.h&gt;</span>
+
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
+    <span class="dt">int</span> my_id, omp_rank;
+    <span class="dt">int</span> provided;
+    <span class="dt">int</span> required = MPI_THREAD_FUNNELED;
+    MPI_Init_thread(&amp;argc, &amp;argv, required,
+                    &amp;provided);
+    MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_id);
+<span class="pp">#pragma omp parallel private(omp_rank)</span>
+{
+    omp_rank = omp_get_thread_num();
+    printf(<span class="st">&quot;I&#39;m thread %d in process %d</span><span class="sc">\n</span><span class="st">&quot;</span>,
+           omp_rank, my_id);
+}
+    MPI_Finalize();
+}</code></pre></div>
+</div>
+<div class="column">
+<pre class="shell"><code>$ cc hybrid-hello.c -o hybrid-hello
+$ aprun -n 2 -d 4 -e OMP_NUM_THREADS=4
+  ./hybrid-hello
+
+I&#39;m thread 0 in process 0
+I&#39;m thread 0 in process 1
+I&#39;m thread 2 in process 1
+I&#39;m thread 3 in process 1
+I&#39;m thread 1 in process 1
+I&#39;m thread 3 in process 0
+I&#39;m thread 1 in process 0
+I&#39;m thread 2 in process 0</code></pre>
+</div>
+</section>
+<section id="thread-support-in-mpi" class="slide level1" data-background-size="contain">
+<h1>Thread support in MPI</h1>
+<figure>
+<img src="img/mpi-thread-support.png" />
+</figure>
+</section>
+<section id="thread-safe-initialization" class="slide level1" data-background-size="contain">
+<h1>Thread safe initialization</h1>
+<dl>
+<dt><code>MPI_Init_thread(required, provided)</code></dt>
+<dd><dl>
+<dt><code class="input">argc</code>, <code class="input">argv</code></dt>
+<dd>Command line arguments in C
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="input">required</code></dt>
+<dd>Required thread safety level, one of <code>MPI_THREAD_SINGLE &lt;  MPI_THREAD_FUNNELED &lt; MPI_THREAD_SERIALIZED &lt; MPI_THREAD_MULTIPLE</code>
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="output">provided</code></dt>
+<dd>Supported thread safety level, one of <code>MPI_THREAD_SINGLE &lt;  MPI_THREAD_FUNNELED &lt; MPI_THREAD_SERIALIZED &lt; MPI_THREAD_MULTIPLE</code>
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="output">error</code></dt>
+<dd>Error value; in C/C++ it's the return value of the function, and in Fortran an additional output parameter
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="hybrid-programming-styles-finecoarse-grained" class="slide level1" data-background-size="contain">
+<h1>Hybrid programming styles: fine/coarse grained</h1>
+<ul>
+<li>Fine-grained
+<ul>
+<li>Use <strong>omp parallel do/for</strong> on the most intensive loops</li>
+<li>Possible to hybridize an existing MPI code with little effort and in parts</li>
+</ul></li>
+<li>Coarse-grained
+<ul>
+<li>Use OpenMP threads to replace MPI tasks</li>
+<li>Whole (or most of) program within the same parallel region</li>
+<li>More likely to scale over the whole node, enables all cores to communicate (if supported by MPI implementation)</li>
+</ul></li>
+</ul>
+</section>
+<section id="potential-advantages-of-the-hybrid-approach" class="slide level1" data-background-size="contain">
+<h1>Potential advantages of the hybrid approach</h1>
+<ul>
+<li>Fewer MPI processes for a given amount of cores
+<ul>
+<li>Improved load balance</li>
+<li>All-to-all communication bottlenecks alleviated</li>
+<li>Decreased memory consumption if an implementation uses replicated data</li>
+</ul></li>
+<li>Additional parallelization levels may be available</li>
+<li>Possibility for dedicating threads for different tasks
+<ul>
+<li>e.g. dedicated communication thread or parallel I/O</li>
+<li>Note that OpenMP worksharing constructs (e.g. OMP DO) will not be applicable when dedicating threads</li>
+</ul></li>
+</ul>
+</section>
+<section id="disadvantages-of-hybridization" class="slide level1" data-background-size="contain">
+<h1>Disadvantages of hybridization</h1>
+<ul>
+<li>Increased overhead from thread creation/destruction</li>
+<li>More complicated programming
+<ul>
+<li>Code readability and maitainability issues</li>
+</ul></li>
+<li>Thread support in MPI and other libraries needs to be considered</li>
+</ul>
+</section>
+<section id="real-world-hybrid-applications" class="slide level1" data-background-size="contain">
+<h1>Real-world hybrid applications</h1>
+<ul>
+<li>Vlasiator - space weather simulations
+<ul>
+<li>Fluid in 6D spatial/velocity space: spatial grid with MPI, velocity grid with OpenMP</li>
+<li>Lower memory footprint and better load balancing</li>
+</ul></li>
+<li>CP2K - electronic structure simulations
+<ul>
+<li>Especially so called hybrid functionals benefit from threading</li>
+<li>Lower memory footprint allows more efficient computations</li>
+</ul></li>
+</ul>
+</section>
+<section id="real-world-hybrid-applications-1" class="slide level1" data-background-size="contain">
+<h1>Real-world hybrid applications</h1>
+<ul>
+<li>Vlasiator, 200 nodes (4800 cores) on Sisu</li>
+</ul>
+<p><small></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 19%" />
+<col style="width: 16%" />
+<col style="width: 23%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Threads per process</th>
+<th>Hyperthreads per core</th>
+<th>MPI ranks per node</th>
+<th>Performance (108 cells/s)</th>
+<th>Memory use per node (GB)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>24</td>
+<td>1.06</td>
+<td>28.4</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>12</td>
+<td>1.06</td>
+<td>24.6</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>1</td>
+<td>6</td>
+<td>1.04</td>
+<td>22.8</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>1.02</td>
+<td>22.2</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>2</td>
+<td>24</td>
+<td>1.35</td>
+<td>28.5</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>2</td>
+<td>12</td>
+<td>1.33</td>
+<td>24.6</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>2</td>
+<td>8</td>
+<td>1.32</td>
+<td>23.4</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>2</td>
+<td>4</td>
+<td>1.25</td>
+<td>22.2</td>
+</tr>
+</tbody>
+</table>
+<p></small></p>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>Hybrid programming maps well to modern hardware</li>
+<li>In theory, hybrid programming offers several advantages</li>
+<li>In practice, all the advantages can be difficult to realize</li>
+<li>As number of cores inside a node increases, advantages of hybrid approach are likely to become more and more relevant</li>
+<li>MPI provides different levels of thread support</li>
+</ul>
+</section>
+<section id="openmp" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>OpenMP</h1>
+</section>
+<section id="what-is-openmp" class="slide level1" data-background-size="contain">
+<h1>What is OpenMP?</h1>
+<ul>
+<li>A collection of <em>compiler directives</em> and <em>library routines</em> for <strong>multi-threaded</strong>, <strong>shared-memory parallelization</strong></li>
+<li>Fortran 77/9X/03 and C/C++ are supported</li>
+<li>Latest version of the standard is 4.5 (November 2015)
+<ul>
+<li>support for attached devices</li>
+<li>support for thread affinity</li>
+</ul></li>
+</ul>
+</section>
+<section id="why-would-you-want-to-learn-openmp" class="slide level1" data-background-size="contain">
+<h1>Why would you want to learn OpenMP?</h1>
+<ul>
+<li>OpenMP parallelized program can be run on your many-core workstation or on a node of a cluster</li>
+<li>Enables one to parallelize one part of the program at a time
+<ul>
+<li>Get some speedup with a limited investment in time</li>
+<li>Efficient and well scaling code still requires effort</li>
+</ul></li>
+<li>Serial and OpenMP versions can easily coexist</li>
+<li>Hybrid MPI+OpenMP programming</li>
+</ul>
+</section>
+<section id="three-components-of-openmp" class="slide level1" data-background-size="contain">
+<h1>Three components of OpenMP</h1>
+<ul>
+<li>Compiler directives, i.e. language extensions, for shared memory parallelization</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>directive</th>
+<th>construct</th>
+<th>clauses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>C/C++</td>
+<td><code>#pragma omp</code></td>
+<td><code>parallel</code></td>
+<td><code>shared(data)</code></td>
+</tr>
+<tr class="even">
+<td>Fortran</td>
+<td><code>!$omp</code></td>
+<td><code>parallel</code></td>
+<td><code>shared(data)</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Runtime library routines (Intel: libiomp5, GNU: libgomp)
+<ul>
+<li>Conditional compilation to build serial version</li>
+</ul></li>
+<li>Environment variables
+<ul>
+<li>Specify the number of threads, thread affinity etc.</li>
+</ul></li>
+</ul>
+</section>
+<section id="openmp-directives" class="slide level1" data-background-size="contain">
+<h1>OpenMP directives</h1>
+<ul>
+<li>Sentinels precede each OpenMP directive
+<ul>
+<li>C/C++: <code>#pragma omp</code></li>
+<li>Fortran: <code>!$omp</code></li>
+</ul></li>
+<li><p>Conditional compilation with <code>_OPENMP</code> macro:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#ifdef _OPENMP</span>
+OpenMP specific code
+<span class="pp">#else</span>
+Code without OpenMP
+<span class="pp">#endif</span></code></pre></div></li>
+</ul>
+</section>
+<section id="compiling-an-openmp-program" class="slide level1" data-background-size="contain">
+<h1>Compiling an OpenMP program</h1>
+<ul>
+<li>Compilers that support OpenMP usually require an option that enables the feature
+<ul>
+<li>GNU: <code>-fopenmp</code></li>
+<li>Intel: <code>-qopenmp</code></li>
+<li>Cray: <code>-h omp</code>
+<ul>
+<li>OpenMP enabled by default, -h noomp disables</li>
+</ul></li>
+<li>PGI: <code>-mp[=nonuma,align,allcores,bind]</code></li>
+<li>Without these options a serial version is compiled!</li>
+</ul></li>
+</ul>
+</section>
+<section id="example-helloworld-with-openmp" class="slide level1" data-background-size="contain">
+<h1>Example: Helloworld with OpenMP</h1>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span class="kw">program</span> hello
+  <span class="kw">use</span> omp_lib
+  <span class="dt">integer</span> <span class="dt">::</span> omp_rank
+<span class="co">!$omp parallel private(omp_rank)</span>
+  omp_rank <span class="kw">=</span> omp_get_thread_num()
+  <span class="fu">print</span> <span class="kw">*</span>, <span class="st">&#39;Hello world! by </span><span class="kw">&amp;</span>
+<span class="st">        </span>thread <span class="st">&#39;</span>, omp_rank
+<span class="co">!$omp end parallel</span>
+<span class="kw">end program</span> hello</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="op">&gt;</span> <span class="ex">ftn</span> -h omp omp_hello.f90 -o omp
+<span class="op">&gt;</span> <span class="ex">aprun</span> -e OMP_NUM_THREADS=4 -n 1 -d 4 ./omp
+ <span class="ex">Hello</span> world! by thread             0
+ <span class="ex">Hello</span> world! by thread             2
+ <span class="ex">Hello</span> world! by thread             3
+ <span class="ex">Hello</span> world! by thread             1</code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+<span class="pp">#include </span><span class="im">&lt;omp.h&gt;</span>
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> argv[]){
+  <span class="dt">int</span> omp_rank;
+<span class="pp">#pragma omp parallel private(omp_rank){</span>
+  omp_rank = omp_get_thread_num();
+  printf(<span class="st">&quot;Hello world! by</span>
+      thread %d<span class="st">&quot;, omp_rank);}</span>
+  }</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="op">&gt;</span> <span class="fu">cc</span> -h omp omp_hello.c -o omp
+<span class="op">&gt;</span> <span class="ex">aprun</span> -e OMP_NUM_THREADS=4 -n 1 -d 4 ./omp
+ <span class="ex">Hello</span> world! by thread             2
+ <span class="ex">Hello</span> world! by thread             3
+ <span class="ex">Hello</span> world! by thread             0
+ <span class="ex">Hello</span> world! by thread             1</code></pre></div>
+</div>
+</section>
+<section id="parallel-regions-and-data-sharing" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Parallel regions and data sharing</h1>
+</section>
+<section id="parallel-construct" class="slide level1" data-background-size="contain">
+<h1>Parallel construct</h1>
+<div class="column">
+<ul>
+<li>Defines a parallel region
+<ul>
+<li>C/C++: <code>#pragma omp parallel [clauses]</code></li>
+<li>Fortran: <code>!$omp parallel [clauses]</code></li>
+<li>Prior to it only one thread, master</li>
+<li>Creates a team of threads: master+slave threads</li>
+<li>At end of the block is a barrier and all shared data is synchronized</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<p>SPMD: Single Program Multiple Data <img src="img/omp-parallel.png" /></p>
+</div>
+</section>
+<section id="how-do-the-threads-interact" class="slide level1" data-background-size="contain">
+<h1>How do the threads interact?</h1>
+<ul>
+<li>Because of the shared address space threads can interact using <em>shared variables</em></li>
+<li>Threads often need some <em>private work space</em> together with shared variables
+<ul>
+<li>for example the index variable of a loop</li>
+</ul></li>
+<li>Visibility of different variables is defined using <em>data-sharing clauses</em> in the parallel region definition</li>
+</ul>
+</section>
+<section id="omp-parallel-data-sharing-clauses" class="slide level1" data-background-size="contain">
+<h1>omp parallel: data-sharing clauses</h1>
+<ul>
+<li><strong>private(list)</strong>
+<ul>
+<li>Private variables are stored in the private stack of each thread</li>
+<li>Undefined initial value</li>
+<li>Undefined value after parallel region</li>
+</ul></li>
+<li><strong>firstprivate(list)</strong>
+<ul>
+<li>Same as private variable, but with an initial value that is the same as the original objects defined outside the parallel region</li>
+</ul></li>
+</ul>
+</section>
+<section id="omp-parallel-data-sharing-clauses-1" class="slide level1" data-background-size="contain">
+<h1>omp parallel: data-sharing clauses</h1>
+<ul>
+<li><strong>shared(list)</strong>
+<ul>
+<li>All threads can write to, and read from</li>
+<li>a shared variable</li>
+<li>Variables are shared by default</li>
+</ul></li>
+<li><strong>default(private/shared/none)</strong>
+<ul>
+<li>Sets default for variables to be shared, private or not defined</li>
+<li>In C/C++ default(private) is not allowed</li>
+<li>default(none) can be useful for debugging as each variable has to be defined manually</li>
+</ul></li>
+</ul>
+<p><em>Race condition = a thread accesses a variable while another writes into it</em></p>
+</section>
+<section id="default-behaviour" class="slide level1" data-background-size="contain">
+<h1>Default behaviour</h1>
+<ul>
+<li>Most variables are <em>shared</em> by default
+<ul>
+<li>Global variables are shared among threads
+<ul>
+<li>C: static variables, file scope variables</li>
+<li>Fortran: save and module variables, common blocks</li>
+<li><code>threadprivate(list)</code> can be used to make a private copy</li>
+</ul></li>
+</ul></li>
+<li>Private by default:
+<ul>
+<li>Stack variables of functions called from parallel region</li>
+<li>Automatic variables within a block</li>
+</ul></li>
+</ul>
+</section>
+<section id="data-sharing-example" class="slide level1" data-background-size="contain">
+<h1>Data sharing example</h1>
+<div class="column">
+<p>main.c</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> A[<span class="dv">5</span>];
+
+<span class="dt">int</span> main(<span class="dt">void</span>) {
+    <span class="dt">int</span> B[<span class="dv">2</span>];
+<span class="pp">#pragma omp parallel</span>
+{
+    <span class="dt">float</span> c;
+    do_things(B);
+    ...
+}
+    <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
+</div>
+<div class="column">
+<p>kernel.c</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">extern</span> <span class="dt">int</span> A[<span class="dv">5</span>];
+
+<span class="dt">void</span> do_things(<span class="dt">int</span> *var) {
+    <span class="dt">double</span> wrk[<span class="dv">10</span>];
+    <span class="dt">static</span> <span class="dt">int</span> status;
+    ...
+}</code></pre></div>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

@@ -1,5 +1,5 @@
 program basic
-  use mpi
+  use mpi_f08
   use iso_fortran_env, only : REAL64
 
   implicit none
@@ -7,7 +7,7 @@ program basic
   integer :: rc, myid, ntasks
   integer :: message(msgsize)
   integer :: receiveBuffer(msgsize)
-  integer :: status(MPI_STATUS_SIZE)
+  type(mpi_status) :: status
 
   real(REAL64) :: t0, t1
 

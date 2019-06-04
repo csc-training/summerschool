@@ -1,17 +1,28 @@
 ---
 title:  Message-Passing Interface (MPI) 
 author: CSC Summerschool
-date:   2019-06
+date:   2019
 lang:   en
 ---
 
+# Basic concepts in MPI {.section}
+
+# Message-passing interface
+
+- MPI is an application programming interface (API) for distributed parallel 
+  computing
+- MPI programs are portable and scalable
+    - the same program can run on different types of computers, from 
+      laptops to supercomputers
+- MPI is flexible and comprehensive 
+    - large (hundreds of procedures)
+    - concise (only 10-20 procedures are typically needed)
+
 # Processes and threads
 
-![](images/processes-threads.svg){.center width=100%}
+![](images/processes-threads-highlight-proc.svg){.center width=90%}
 
 <div class="column">
-
-<br>
 
 ## Process
 
@@ -22,8 +33,6 @@ lang:   en
 
 <div class="column">
 
-<br>
-
 ## Thread
 
 - A single process may contain multiple threads
@@ -33,68 +42,27 @@ lang:   en
 </div>
 
 
-# Processes and threads
-
-![](images/processes-threads.svg){.center width=100%}
-
-
-<div class="column">
-
-<br>
-
-## Process
-
-- Long-lived: spawned when parallel program started, killed when
-  program is finished
-- Explicit communication between processes
-
-</div>
-
-<div class="column">
-
-<br>
-
-## Thread
-
-- Short-lived: created when entering a parallel region, destroyed
-  (joined) when region ends
-- Communication through shared memory
-
-</div>
-
-# Getting started with MPI {.section}
-
-# Message-passing interface
-
-- MPI is an application programming interface (API) for communication
-  between separate processes
-    - The most popular *distributed* parallel computing method
-    - MPI programs are portable and scalable
-- MPI is flexible and comprehensive
-    - Several communication methods and patterns
-    - Parallel IO
-- MPI standardization by MPI Forum
-    - Latest version is 3.1, version 1.0 in 1994
 
 # Execution model in MPI
 
 - Parallel program is launched as set of *independent*, *identical
   processes*
-    - The same program code and instructions
-- MPI runtime assigns each process a *rank*
-    - identification of the processes
-    - Processes can perform different tasks and handle different data
-      basing on their rank
-    - Can reside in different nodes
-- The way to launch parallel program is implementation dependent
+    - execute the *same program code* and instructions
+    - processes can reside in different nodes (or even in different computers)
+- The way to launch parallel program depends on the computing system
+    - mpiexec, mpirun, aprun, srun, ...
+    - aprun on sisu.csc.fi, srun on taito.csc.fi
 
 # MPI ranks
 
+<div class="column">
 - MPI runtime assigns each process a unique rank
-	- identification of the processes
-	- ranks start from 0 and extend to N-1
-- Processes can perform different tasks and handle different data basing on their rank
-
+    - identification of the processes
+    - ranks start from 0 and extend to N-1
+- Processes can perform different tasks and handle different data based 
+  on their rank
+</div>
+<div class="column">
 ```c
 if (rank == 0) {
    ...
@@ -103,73 +71,84 @@ if (rank == 1) {
    ...
    }
 ```
+</div>
 
 # Data model
 
 - All variables and data structures are local to the process
 - Processes can exchange data by sending and receiving messages
 
+![](images/data-model.svg){.center width=100%}
+
 # The MPI library
 
 - Information about the communication framework
     - number of processes
-	- rank of the process
+    - rank of the process
 - Communication between processes
-	- sending and receiving messages between two processes
-	- sending and receiving messages between several processes
+    - sending and receiving messages between two processes
+    - sending and receiving messages between several processes
 - Synchronization between processes
 - Advanced features
+
+# MPI communicator
+
+- Communicator is an object connecting a group of processes, i.e. the
+  communication framework
+- Most MPI functions require communicator as an argument
+- Initially, there is always a communicator **MPI_COMM_WORLD** which
+  contains all the processes
+- Users can define custom communicators
 
 # Programming MPI
 
 - The MPI standard defines interfaces to C and Fortran programming languages
 	- There are unofficial bindings to eg. Python, Perl and Java
-- C call convention  *Case sensitive*   
+- C call convention (*case sensitive*)<br>
 `rc = MPI_Xxxx(parameter,...)`
-	- some arguments have to be passed as pointers
-- Fortran call convention *Case insensitive*  
+    - some arguments have to be passed as pointers
+- Fortran call convention (*case insensitive*)<br>
 `call mpi_xxxx(parameter,..., rc)`
-	* return code in the last argument<Paste>
+    - return code in the last argument
 
 # Writing an MPI program
 
-- Include the MPI header files   
-C`---> #include <mpi.h>`   
-Fortran`---> use mpi`
+- C: include the MPI header file
+```c
+#include <mpi.h>
+```
+- Fortran: use MPI module
+```fortran
+use mpi_f08
+```
+(older Fortran codes might have `use mpi` or `include 'mpif.h'`)
+
 - Start by calling the routine **MPI_Init**
 - Write the program
 - Call **MPI_Finalize** before exiting from the main program
 
 # Presenting syntax
 
-![](images/presenting_syntax.svg){.center width=90%}
+- MPI calls are presented as pseudocode
+    - actual C and Fortran interfaces are given in reference section
+    - Fortran error code argument not included
+
+MPI_Function(`arg1`{.input}, `arg2`{.output})
+  : `arg1`{.input}
+    : input arguments in red
+  : `arg2`{.output}
+    : output arguments in blue
+
 
 # First five MPI commands
 
-<div class=column>
-- Set up the MPI environment
+- Initialization and finalization
 
-**`MPI_Init()`**
+MPI_Init
+  : (in C `argc`{.input} and `argv`{.input} pointer arguments are needed)
 
-<br>
-
-- Finalize MPI environment
-
-**`MPI_Finalize()`**
-
-- Synchronize processes
-
-MPI_Barrier(`comm`{.input})
-  : `comm`{.input} 
-    : communicator
-</div>
-<div class=column>
-- Synchronize processes
-
-MPI_Barrier(`comm`{.input})
-  : `comm`{.input} 
-    : communicator
-</div>
+MPI_Finalize
+  : 
 
 # First five MPI commands
 
@@ -187,16 +166,15 @@ MPI_Comm_rank(`comm`{.input}, `rank`{.output})
   : `rank`{.output}
     : rank of this process
 
-# MPI communicator
+# First five MPI commands
 
-- Communicator is an object connecting a group of processes, i.e. the
-  communication framework
-- Most MPI functions require communicator as an argument, i.e. take
-  place in a given context
-- Initially, there is always a communicator **MPI_COMM_WORLD** which
-  contains all the processes and **MPI_COMM_SELF** that includes only
-  the calling rank
-- Users can define custom communicators
+- Synchronization between processes
+    - wait until everybody within the communicator reaches the call 
+
+MPI_Barrier(`comm`{.input})
+  : `comm`{.input}
+    : communicator
+
 
 # Summary 
 

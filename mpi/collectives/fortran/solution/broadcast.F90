@@ -1,5 +1,5 @@
 program coll_exer
-  use mpi
+  use mpi_f08
   implicit none
 
   integer, parameter :: n_mpi_tasks = 4

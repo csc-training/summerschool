@@ -9,7 +9,7 @@ lang:   en
 
 - Non-blocking communication operations return immediately and perform
   sending/receiving in the background
-	- `MPI_Isend` & `MPI_Irecv`
+    - `MPI_Isend` & `MPI_Irecv`
 - Enables some computing concurrently with communication
 - Avoids many common dead-lock situations
 - Also collective operations available as non-blocking versions
@@ -26,7 +26,7 @@ MPI_Isend(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input},
       that the operation is over
   : `request`{.output}
     : a handle that is used when checking if the operation has
-      finished (integer in Fortran, `MPI_Request` in C)
+      finished (`type(mpi_request)` in Fortran, `MPI_Request` in C)
 
 # Non-blocking receive
 
@@ -47,7 +47,7 @@ MPI_Irecv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.inpu
     - `MPI_Wait`, `MPI_Waitall`, ...
         - Waits for the communication started with `MPI_Isend` or
           `MPI_Irecv` to finish (blocking)
-	- `MPI_Test`, ...
+    - `MPI_Test`, ...
         - Tests if the communication has finished (non-blocking)
 - You can mix non-blocking and blocking routines
     - e.g., receive a message sent by `MPI_Isend` with `MPI_Recv`
@@ -189,15 +189,15 @@ them
   collective communication
 
 - The same syntax as for blocking collectives, besides 
-	- “I” at the front of the name (`MPI_Alltoall` -> `MPI_Ialltoall`)
-	- The request parameter at the end of the list of arguments
-	- The completion needs to be waited
+    - “I” at the front of the name (`MPI_Alltoall` -> `MPI_Ialltoall`)
+    - The request parameter at the end of the list of arguments
+    - The completion needs to be waited
 
 # Non-blocking collectives
 
 - Restrictions
-	- Have to be called in same order by all ranks in a communicator
-	- Mixing of blocking and non-blocking collectives not allowed
+    - Have to be called in same order by all ranks in a communicator
+    - Mixing of blocking and non-blocking collectives not allowed
 
 # Non-blocking collectives
 
@@ -235,13 +235,13 @@ MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `ro
 - Often a communication with same argument list is repeatedly executed
 - It may be possible to optimize such pattern by persistent
   communication requests
-	- Can be thought as a ”communication port”
+    - Can be thought as a ”communication port”
 - Usage
-	- Create requests: `MPI_Send_init` & `MPI_Recv_init`
-		- Initiation and starting of communication separated in
+    - Create requests: `MPI_Send_init` & `MPI_Recv_init`
+        - Initiation and starting of communication separated in
           addition to communication and completion
-	- Start communication: `MPI_Start` / `MPI_Startall`
-	- Complete communication: `MPI_Wait` / `MPI_Waitall`
+    - Start communication: `MPI_Start` / `MPI_Startall`
+    - Complete communication: `MPI_Wait` / `MPI_Waitall`
 
 # Persistent communication
 
@@ -270,10 +270,10 @@ MPI_Request_free (&recv_obj); MPI_Request_free (&send_obj);
 - Non-blocking communication is usually the smarter way to do
   point-to-point communication in MPI
 - Non-blocking communication core features
-	- Open receives with `MPI_Irecv`
-	- Start sending with `MPI_Isend`
-	- Possibly do something else while the communication takes place
-	- Complete the communication with `MPI_Wait` or a variant
+    - Open receives with `MPI_Irecv`
+    - Start sending with `MPI_Isend`
+    - Possibly do something else while the communication takes place
+    - Complete the communication with `MPI_Wait` or a variant
 - MPI-3 contains also non-blocking collectives
 - Persistent communication may enable optimization
 

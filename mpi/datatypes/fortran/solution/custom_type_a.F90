@@ -1,10 +1,10 @@
 program datatype1
-  use mpi
+  use mpi_f08
   implicit none
 
   integer, dimension(8,8) :: array
   integer :: rank, ierr
-  integer :: rowtype
+  type(mpi_datatype) :: rowtype
   integer :: i, j
 
   call mpi_init(ierr)

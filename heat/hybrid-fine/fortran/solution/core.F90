@@ -6,7 +6,7 @@ contains
 
   ! Exchange the boundary data between MPI tasks
   subroutine exchange(field0, parallel)
-    use mpi
+    use mpi_f08
 
     implicit none
 
@@ -14,7 +14,7 @@ contains
     type(parallel_data), intent(in) :: parallel
 
     integer :: ierr
-    integer :: reqs(4)
+    type(mpi_request) :: reqs(4)
 
     ! Send to left, receive from right
     call mpi_isend(field0%data(:, 1), field0%nx + 2, MPI_DOUBLE_PRECISION, &

@@ -1,21 +1,24 @@
 program datatype_struct
-  use mpi
+  use mpi_f08
+  use iso_fortran_env, only : real64
   implicit none
+
   type particle
      real :: coords(3)
      integer :: charge
      character(len=2) :: label
   end type particle
+
   integer, parameter :: n = 1000
-  integer :: i, ierror,  myid,  ntasks, tag
+  integer :: i, ierror,  myid,  ntasks
   type(particle) :: particles(n)
 
-  integer, parameter :: cnt=3
-  integer:: particle_mpi_type, temp_type
-  integer:: types(cnt),blocklen(cnt)
+  integer, parameter :: cnt = 3
+  type(mpi_datatype) :: particle_mpi_type, temp_type, types(cnt)
+  integer:: blocklen(cnt)
   integer(KIND=MPI_ADDRESS_KIND) :: disp(cnt)
   integer(KIND=MPI_ADDRESS_KIND) :: lb1, lb2, extent
-  real(8) :: t1,t2
+  real(real64) :: t1, t2
 
   call MPI_INIT(ierror)
   call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierror)
@@ -31,25 +34,24 @@ program datatype_struct
   end if
 
   ! TODO: Determine the true extent of one particle struct
-  call MPI_GET_ADDRESS(particles(1),lb1,ierror)
-  call MPI_GET_ADDRESS(particles(2),lb2,ierror)
-  extent = lb2 - lb1
+  call MPI_GET_ADDRESS(particles(1), lb1, ierror)
+  call MPI_GET_ADDRESS(particles(2), lb2, ierror)
+  extent = MPI_AINT_DIFF(lb2, lb1)
 
-
-  t1=MPI_WTIME()
+  t1 = MPI_WTIME()
   ! TODO: send and receive using the MPI_BYTE datatype
   if(myid == 0) then
-     do i=1,1000
-        call MPI_SEND(particles, n*extent, MPI_BYTE, 1, i, &
-             MPI_COMM_WORLD,ierror)
+     do i = 1, 1000
+        call MPI_SEND(particles, int(n*extent), MPI_BYTE, 1, i, &
+             & MPI_COMM_WORLD, ierror)
      end do
   else if(myid == 1) then
-     do i=1, 1000
-        call MPI_RECV(particles, n*extent, MPI_BYTE, 0, i, &
-             MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierror)
+     do i = 1, 1000
+        call MPI_RECV(particles, int(n*extent), MPI_BYTE, 0, i, &
+             & MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierror)
      end do
   end if
-  t2=MPI_WTIME()
+  t2 = MPI_WTIME()
 
   write(*,*) "Time: ", myid, (t2-t1) / 1000d0
   write(*,*) "Check:", myid, particles(n)%coords(1)
