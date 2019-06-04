@@ -1,7 +1,7 @@
 ! I/O routines for heat equation solver
 module io
   use heat
-  use mpi
+  use mpi_f08
 
 contains
 
@@ -113,7 +113,7 @@ contains
     type(parallel_data), intent(in) :: parallel
     integer, intent(in) :: iter
 
-    ! TODO: open the file called CHECKPOINT (defined in heat.h)
+    ! TODO: open the file called CHECKPOINT (defined in heat module)
 
     ! TODO: rank 0 writes out a header that has three values:
     !   temperature->nx_full

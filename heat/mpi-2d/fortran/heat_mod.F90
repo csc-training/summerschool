@@ -1,5 +1,6 @@
 ! Field metadata for heat equation solver
 module heat
+  use mpi_f08
   use iso_fortran_env, only : REAL64
   implicit none
 
@@ -20,11 +21,10 @@ module heat
      integer :: size
      integer :: rank
      integer :: nup, ndown, nleft, nright  ! Ranks of neighbouring MPI tasks
-     integer :: comm
-     integer :: rowtype                    ! MPI Datatype for communication of rows
-     integer :: columntype                 ! MPI Datatype for communication of columns
-     integer :: subarraytype               ! MPI Datatype for communication of inner region
-
+     type(mpi_comm) :: comm
+     type(mpi_datatype) :: rowtype         ! MPI Datatype for communication of rows
+     type(mpi_datatype) :: columntype      ! MPI Datatype for communication of columns
+     type(mpi_datatype) :: subarraytype    ! MPI Datatype for communication of inner region
   end type parallel_data
 
 contains
@@ -54,7 +54,7 @@ contains
   end subroutine set_field_dimensions
 
   subroutine parallel_setup(parallel, nx, ny)
-    use mpi
+    use mpi_f08
 
     implicit none
 

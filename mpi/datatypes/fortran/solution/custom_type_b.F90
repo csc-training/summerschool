@@ -1,10 +1,10 @@
 program datatype1
-  use mpi
+  use mpi_f08
   implicit none
 
   integer, dimension(8,8) :: array
   integer :: rank, ierr
-  integer :: indexedtype
+  type(mpi_datatype) :: indexedtype
   integer, dimension(4) :: counts, displs
   integer :: i, j
 

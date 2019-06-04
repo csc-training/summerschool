@@ -1,5 +1,5 @@
 program pario
-  use mpi
+  use mpi_f08
   use, intrinsic :: iso_fortran_env, only : error_unit, output_unit
   implicit none
 

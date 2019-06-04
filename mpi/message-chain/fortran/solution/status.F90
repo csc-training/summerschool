@@ -1,5 +1,5 @@
 program basic
-  use mpi
+  use mpi_f08
   use iso_fortran_env, only : REAL64
 
   implicit none
@@ -7,7 +7,7 @@ program basic
   integer :: rc, myid, ntasks
   integer :: message(msgsize)
   integer :: receiveBuffer(msgsize)
-  integer :: status(MPI_STATUS_SIZE)
+  type(mpi_status) :: status
 
   real(REAL64) :: t0, t1
 
@@ -48,8 +48,8 @@ program basic
        '. Receiver: ', destination
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Receiver: ', myid, &
        ' Received elements: ', count, &
-       '. Tag: ', status(MPI_TAG), &
-       '. Sender: ', status(MPI_SOURCE)
+       '. Tag: ', status%MPI_TAG, &
+       '. Sender: ', status%MPI_SOURCE
 
   ! Finalize measuring the time and print it out
   t1 = mpi_wtime()

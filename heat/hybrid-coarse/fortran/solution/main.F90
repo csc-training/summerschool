@@ -6,7 +6,7 @@ program heat_solve
   use io
   use setup
   use utilities
-  use mpi
+  use mpi_f08
   use omp_lib
 
   implicit none

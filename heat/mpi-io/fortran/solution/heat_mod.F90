@@ -22,6 +22,8 @@ module heat
      integer :: nleft, nright  ! Ranks of neighbouring MPI tasks
   end type parallel_data
 
+  character(len=*), parameter :: CHECKPOINT = "HEAT_RESTART.dat"
+
 contains
   ! Initialize the field type metadata
   ! Arguments:
@@ -49,7 +51,7 @@ contains
   end subroutine set_field_dimensions
 
   subroutine parallel_setup(parallel, nx, ny)
-    use mpi
+    use mpi_f08
 
     implicit none
 

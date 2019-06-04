@@ -1,5 +1,5 @@
 program datatype1
-  use mpi
+  use mpi_f08
   implicit none
 
   integer, dimension(8,8) :: array

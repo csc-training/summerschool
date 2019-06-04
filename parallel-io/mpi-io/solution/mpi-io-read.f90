@@ -1,5 +1,5 @@
 program pario
-  use mpi
+  use mpi_f08
   use, intrinsic :: iso_fortran_env, only : error_unit, output_unit
   implicit none
 
@@ -35,7 +35,8 @@ contains
 
   subroutine mpiio_reader()
     implicit none
-    integer :: fh, rc, dsize
+    integer :: rc, dsize
+    type(mpi_file) :: fh
     integer(kind=MPI_OFFSET_KIND) :: offset;
 
     call mpi_type_size(MPI_INTEGER, dsize, rc)

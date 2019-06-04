@@ -1,5 +1,5 @@
 program cart_test
-  use mpi
+  use mpi_f08
   implicit none
 
   integer :: ntask,  & ! number of MPI tasks

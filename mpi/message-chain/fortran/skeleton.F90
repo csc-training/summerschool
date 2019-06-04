@@ -1,5 +1,5 @@
 program basic
-  use mpi
+  use mpi_f08
   use iso_fortran_env, only : REAL64
 
   implicit none

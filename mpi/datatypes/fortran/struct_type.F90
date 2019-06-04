@@ -1,5 +1,5 @@
 program datatype_struct
-  use mpi
+  use mpi_f08
   implicit none
   type particle
      real :: coords(3)

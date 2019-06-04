@@ -1,8 +1,7 @@
 program ex1
-  use mpi
+  use mpi_f08
   implicit none
   integer :: rc, myid, ntasks
-
 
   call MPI_INIT(rc)
 

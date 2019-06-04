@@ -1,6 +1,6 @@
 program hybridhello
   use omp_lib
-  use mpi
+  use mpi_f08
   implicit none
   integer :: provided, my_id, ntask, tid, rc
 
