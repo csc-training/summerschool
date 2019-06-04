@@ -44,6 +44,6 @@ lang:   en
 
 - Create a local text file, for example, "name.txt" with your first name as the contents
 - Copy your text file to Sisu using scp  
-	`$ scp local.txt trng99@sisu.csc.fi:~/`
+	`$ scp local.txt trainingxxx@sisu.csc.fi:~/`
 - Login to Sisu using ssh, check that file is there, and modify it: for example, add your last name to it
 - Copy the modified file back to your local computer, and check that the file has changed.
