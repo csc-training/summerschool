@@ -48,15 +48,15 @@ lang:   en
 <div class=column>
 - Array initially on process #0 (P0)
 - Parallel algorithm
-	* **Scatter**  
-	Half of the array is sent to process 1
+    * **Scatter**  
+    Half of the array is sent to process 1
 
-	* **Compute**  
-	P0 & P1 sum independently their segments
+    * **Compute**  
+    P0 & P1 sum independently their segments
 
-	* **Reduction**  
-	Partial sum on P1 sent to P0 
-	P0 sums the partial sums
+    * **Reduction**  
+    Partial sum on P1 sent to P0
+    P0 sums the partial sums
 
 </div>
 
@@ -188,7 +188,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
     : Type of each element in buffer
     
     `source`{.input}
- 	: Sender of the message
+    : Sender of the message
     
     `tag`{.input}
     : Number identifying the message
@@ -219,13 +219,13 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 # Blocking routines & deadlocks
 
 - MPI_Send and MPI_Recv are blocking routines
-	- `MPI_Send` exits once the send buffer can be safely read and
+    - `MPI_Send` exits once the send buffer can be safely read and
       written to
-	- `MPI_Recv` exits once it has received the message in the receive
+    - `MPI_Recv` exits once it has received the message in the receive
       buffer
 - Completion depends on other processes => risk for *deadlocks*
-	- For example, all processes are in `MPI_Recv`
-	- If deadlocked, the program is stuck forever
+    - For example, all processes are in `MPI_Recv`
+    - If deadlocked, the program is stuck forever
 
 # Typical point-to-point communication patterns
 
@@ -243,7 +243,7 @@ MPI_Sendrecv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `dest`{
     : `-`{.ghost}
 
 - Sends one message and receives another one, with a single command
-	- Reduces risk for deadlocks
+    - Reduces risk for deadlocks
 - Parameters as in `MPI_Send` and `MPI_Recv`
 - Destination rank and source rank can be same or different
 
@@ -274,11 +274,12 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 - The status parameter in `MPI_Recv` contains information about the
   received data after the call has completed, e.g.
-	- Number of received elements
-	- Tag of the received message
-	- Rank of the sender
+    - Number of received elements
+    - Tag of the received message
+    - Rank of the sender
 - In C the status parameter is a struct
-- In Fortran it is an integer array of size `MPI_STATUS_SIZE`
+- In Fortran the status parameter is of type `mpi_status`
+    - Old interface: integer array of size `MPI_STATUS_SIZE`
 
 # Status parameter
 
@@ -287,10 +288,10 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 &emsp;**`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
 - Tag of the received message  
 &emsp;C: `status.MPI_TAG`  
-&emsp;Fortran: `status(MPI_TAG)`
+&emsp;Fortran: `status%mpi_tag` (old version `status(MPI_TAG)`)
 - Rank of the sender  
 &emsp;C: `status.MPI_SOURCE`  
-&emsp;Fortran: `status(MPI_SOURCE)`
+&emsp;Fortran: `status%mpi_source` (old version `status(MPI_SOURCE)`)
 
 # Summary 
 
