@@ -34,17 +34,11 @@ MPI_Comm_split(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output
     `color`{.input}
     : processes with the same "color" belong to the same new communicator
 
-    `-`{.ghost}
-    : `-`{.ghost}
-
     `key`{.input} 
     : control of rank assignment 
 
     `newcomm`{.output} 
     : new communicator handle
-
-    `-`{.ghost}
-    : `-`{.ghost}
 
 If color = `MPI_UNDEFINED`, a process does not belong to any of the
 new communicators
