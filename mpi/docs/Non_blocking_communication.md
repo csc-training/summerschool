@@ -7,17 +7,15 @@ lang:   en
 
 # Non-blocking communication 
 
-- Non-blocking communication operations return immediately and perform
-  sending/receiving in the background
+- Non-blocking communication operations return immediately and perform sending/receiving in the background
     - `MPI_Isend` & `MPI_Irecv`
 - Enables some computing concurrently with communication
 - Avoids many common dead-lock situations
-- Also collective operations available as non-blocking versions
+- Collective operations are also available as non-blocking versions
 
 # Non-blocking send
 
-Parameters similar to **`MPI_Send`** but has an additional request
-parameter
+Parameters similar to **`MPI_Send`** but has an additional request parameter.
 
 <p>
 MPI_Isend(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
@@ -30,7 +28,7 @@ MPI_Isend(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input},
 
 # Non-blocking receive
 
-Parameters similar to **`MPI_Recv`** but has no status parameter
+Parameters similar to **`MPI_Recv`** but has no status parameter.
 
 <p>
 MPI_Irecv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
@@ -49,6 +47,7 @@ MPI_Irecv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.inpu
           `MPI_Irecv` to finish (blocking)
     - `MPI_Test`, ...
         - Tests if the communication has finished (non-blocking)
+    - Remember: successfully finished send does not mean successful receive!
 - You can mix non-blocking and blocking routines
     - e.g., receive a message sent by `MPI_Isend` with `MPI_Recv`
 
@@ -72,8 +71,7 @@ MPI_Waitall(`count`{.input}, `requests`{.input}, `status`{.output})
   : `status`{.output}
     : array of statuses for the operations that are waited for
 
-A call to `MPI_Waitall` returns when all operations identified by the
-array of requests are complete
+A call to `MPI_Waitall` returns when all operations identified by the array of requests are complete.
 
 # Non-blocking test for non-blocking operations
 
@@ -85,8 +83,9 @@ MPI_Test(`request`{.input}, `flag`{.output}, `status`{.output})
   : `status`{.output}
     : status for the completed operation
 
-A call to `MPI_Test` is non-blocking. It allows one to schedule
-alternative activities while periodically checking for completion.
+A call to `MPI_Test` is non-blocking. It allows one to schedule alternative activities while periodically checking for completion.
+
+`MPI_Probe` is a similar kind of operation (see later slides).
 
 # Typical usage pattern
 
@@ -129,8 +128,7 @@ alternative activities while periodically checking for completion.
     : status for the completed operations
 
 <p>
-A call to `MPI_Waitany` returns when one operation identified by the
-array of requests is complete
+A call to `MPI_Waitany` returns when one operation identified by the array of requests is complete.
 
 # Wait for non-blocking operations {.split-definition}
 
@@ -154,7 +152,7 @@ MPI_Waitsome(`count`{.input}, `requests`{.input}, `done`{.output}, `index`{.outp
     : `-`{.ghost}
 
 <p>
-Returns when one or more operations is/are complete
+Returns when one or more operations is/are complete.
 
 # Message Probing {.split-definition}
 
@@ -179,25 +177,22 @@ MPI_Iprobe(`source`{.input}, `tag`{.input}, `comm`{.input}, `flag`{.output}, `st
     : `-`{.ghost}
 
 <p>
-Allows incoming messages to be checked, without actually receiving
-them
+Allows incoming messages to be checked, without actually receiving them.
 
 # Non-blocking collectives
 
-- Non-blocking collectives (“I-collectives”) enable the overlapping of
-  communication and computation together with the benefits of
-  collective communication
+- Non-blocking collectives (“``I``-collectives”) enable the overlapping of communication and computation together with the benefits of collective communication.
 
-- The same syntax as for blocking collectives, besides 
-    - “I” at the front of the name (`MPI_Alltoall` -> `MPI_Ialltoall`)
-    - The request parameter at the end of the list of arguments
-    - The completion needs to be waited
+- Same syntax as for blocking collectives, besides 
+    - “``I``” at the front of the name (`MPI_Alltoall` -> `MPI_Ialltoall`)
+    - Request parameter at the end of the list of arguments
+    - Completion needs to be waited
 
 # Non-blocking collectives
 
 - Restrictions
     - Have to be called in same order by all ranks in a communicator
-    - Mixing of blocking and non-blocking collectives not allowed
+    - Mixing of blocking and non-blocking collectives is not allowed
 
 # Non-blocking collectives
 
@@ -205,7 +200,7 @@ them
 
 ![](images/blue_arrow.svg){width=1%} (Computation) work 1  
 ![](images/green_arrow.svg){width=1%} (Computation) work 2, not
-involving data in the Allreduce operation
+involving data in the ``Allreduce`` operation
 
 # Example: Non-blocking broadcasting {.split-definition}
  
@@ -233,13 +228,11 @@ MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `ro
 # Persistent communication
 
 - Often a communication with same argument list is repeatedly executed
-- It may be possible to optimize such pattern by persistent
-  communication requests
+- It may be possible to optimize such pattern by persistent communication requests
     - Can be thought as a ”communication port”
-- Usage
+- Usage:
     - Create requests: `MPI_Send_init` & `MPI_Recv_init`
-        - Initiation and starting of communication separated in
-          addition to communication and completion
+        - Initiation and starting of communication separated in addition to communication and completion
     - Start communication: `MPI_Start` / `MPI_Startall`
     - Complete communication: `MPI_Wait` / `MPI_Waitall`
 
@@ -267,8 +260,7 @@ MPI_Request_free (&recv_obj); MPI_Request_free (&send_obj);
 
 # Summary
 
-- Non-blocking communication is usually the smarter way to do
-  point-to-point communication in MPI
+- Non-blocking communication is usually the smarter way to do point-to-point communication in MPI.
 - Non-blocking communication core features
     - Open receives with `MPI_Irecv`
     - Start sending with `MPI_Isend`
