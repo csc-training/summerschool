@@ -1,49 +1,52 @@
 ---
 title:  Make, modules and batch jobs
 author: CSC Summerschool 
-date:   2019-07
+date:   2019
 lang:   en
 ---
+# Make {.section}
 
 # Compiling and linking: a reminder
 
-- A compiler turns a source code file into an object file of machine code that the processor can understand
+<div class=column>
+- A compiler turns a source code file into an object file of machine code that 
+  the processor can understand
 - A linker combines several compiled object files into one executable file
 - Together, compiling and linking can be called building
-
+</div>
+<div class=column>
+![](images/building.svg){.center}
+</div>
 
 # Compiling and linking: possible problems
 
 - Programs should usually be separated into several files
-	* -> complicated dependency structures
+    - $\Rightarrow$ complicated dependency structures
 - Building large programs takes time
-	* rebuilding just what we changed? 
+    - rebuilding just what we changed? 
 - Having different options when building 
-	* debug versions, enabling/disabling features, etc.
+    - debug versions, enabling/disabling features, etc.
 
-
-
-# Make {.section}
 
 # Make: Purpose 
 
-Make allows you to define how to build parts of a program and how they depend on other parts. _This enables_:
-
-- Building parts of a program and only rebuilding nessecsary parts
-
-- Building different version and configurations of a program 
+- Make allows you to define how to build parts of a program and how they 
+  depend on other parts. This enables:
+    - Building parts of a program and only rebuilding nessecsary parts
+    - Building different version and configurations of a program 
 
  ![](images/depend.png){.center width=40%}
 
 
-# Make: Makefiles
+# Make rules
 
 <div class=column>
-Make works with **rules**. With rules you define how some part of your program is built.
+Make **rules** define how some part of your program is built.
 
 - **Target**: The output or aim of your rule  
 - **Dependecy**: What your target depends on
 - **Recipe**: How you produce your target
+- Rules are defined in a file which is normally named **Makefile**
 
 </div>
 
@@ -60,6 +63,7 @@ _A make rule_
 <div class=column>
 - Dependencies can be files or other rules  
 - Recipes consist of one or more shell commands
+    - Recipe lines start with **tabulator**
 - If the dependencies are newer then the target, make runs the recipe
 - Run make with ` make target`
 	* By default make runs the first rule in the file
@@ -78,10 +82,29 @@ clean:
 	rm -f main.o functions.o main
 
 ```
-
 </div>
 
+# Variables and patterns in rules
 
+<div class=column>
+- It is possible to define variables, for example compiler and link commands 
+  and flags
+- Targets, dependencies and recipes can contain special wild cards
+</div>
+
+<div class=column>
+```makefile
+CC=cc
+CCFLAGS=-O3 
+...
+
+# Files of the form filename.o depend on 
+# filename.c
+%.o: %.c
+        $(CC) $(CCFLAGS) -c $< -o $@
+
+```
+</div>
 
 
 # Modules and batch job system {.section}
@@ -136,7 +159,7 @@ Get information about a module or, if no argument is given, about the module sub
 # Batch job file on Sisu
 
 
-run.sbatch
+my_job.sh
 ```bash
 #!/bin/bash                      | Invokes bash shell
 #SBATCH -J my_job_name           | Defines a name for your job
