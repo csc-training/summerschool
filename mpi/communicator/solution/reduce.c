@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
     print_buffers(printbuf, sendbuf, 2 * NTASKS);
 
     /* Create new communicator and reduce the data */
-    init_buffers(sendbuf, recvbuf, 2 * NTASKS);
     if (rank / 2 == 0) {
         color = 1;
     } else {

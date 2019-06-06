@@ -5,10 +5,10 @@ program cart_test
   integer :: ntask,  & ! number of MPI tasks
        my_id,        & ! MPI rank of the task
        rc,           & ! return code
-       comm2d,       & ! Cartesian communicator
        neighbors(4), & ! neighbors in the 2D grid
        coord(0:1),   & ! coordinates in the grid
        dims(0:1)       ! dimensions of the grid
+  type(mpi_comm) :: comm2d ! Cartesian communicator
   logical, dimension(2) :: period = (/ .true., .true. /)
   integer :: irank
 

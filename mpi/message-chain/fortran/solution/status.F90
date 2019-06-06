@@ -37,19 +37,19 @@ program basic
   t0 = mpi_wtime()
 
   ! Send and receive messages
-  call mpi_sendrecv(message, msgsize, MPI_INTEGER, destination, myid + 1, &
-       receiveBuffer, msgsize, MPI_INTEGER, source, MPI_ANY_TAG, &
-       MPI_COMM_WORLD, status, rc)
+  call mpi_sendrecv(message, msgsize, MPI_INTEGER, destination, &
+       & myid + 1, receiveBuffer, msgsize, MPI_INTEGER, source, &
+       & MPI_ANY_TAG, MPI_COMM_WORLD, status, rc)
   ! Use status parameter to find out the no. of elements received
   call mpi_get_count(status, MPI_INTEGER, count, rc)
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
-       ' Sent elements: ', msgsize, &
-       '. Tag: ', myid + 1, &
-       '. Receiver: ', destination
+       & ' Sent elements: ', msgsize, &
+       & '. Tag: ', myid + 1, &
+       & '. Receiver: ', destination
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Receiver: ', myid, &
-       ' Received elements: ', count, &
-       '. Tag: ', status%MPI_TAG, &
-       '. Sender: ', status%MPI_SOURCE
+       & ' Received elements: ', count, &
+       & '. Tag: ', status%MPI_TAG, &
+       & '. Sender: ', status%MPI_SOURCE
 
   ! Finalize measuring the time and print it out
   t1 = mpi_wtime()

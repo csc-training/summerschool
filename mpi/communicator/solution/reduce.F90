@@ -4,7 +4,7 @@ program coll_exer
 
   integer, parameter :: n_mpi_tasks = 4
 
-  integer :: ntasks, rank, ierr, i, color
+  integer :: ntasks, rank, ierr, color
   type(mpi_comm) :: sub_comm
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
@@ -27,12 +27,12 @@ program coll_exer
   call print_buffers(sendbuf)
 
   ! Create new communicator and reduce the data
-  call init_buffers
   if (rank / 2 == 0) then
      color = 1
   else
      color = 2
   end if
+
   call mpi_comm_split(MPI_COMM_WORLD, color, rank, sub_comm, ierr)
   call mpi_reduce(sendbuf, recvbuf, 2*n_mpi_tasks, MPI_INTEGER, MPI_SUM, 0, &
        & sub_comm, ierr)

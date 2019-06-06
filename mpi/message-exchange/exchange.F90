@@ -3,7 +3,7 @@ program exchange
   implicit none
   integer, parameter :: msgsize = 100
   integer :: rc, myid, ntasks
-  integer :: status(MPI_STATUS_SIZE)
+  type(mpi_status) :: status
   integer :: message(msgsize)
   integer :: receiveBuffer(msgsize)
 

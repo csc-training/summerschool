@@ -3,10 +3,10 @@ program chain
   use iso_fortran_env, only : REAL64
 
   implicit none
-  integer, parameter :: size = 10000000
+  integer, parameter :: msgsize = 10000000
   integer :: rc, myid, ntasks
-  integer :: message(size)
-  integer :: receiveBuffer(size)
+  integer :: message(msgsize)
+  integer :: receiveBuffer(msgsize)
   type(mpi_status) :: status(2)
 
   real(REAL64) :: t0, t1
@@ -38,10 +38,10 @@ program chain
   t0 = mpi_wtime()
 
   ! Describe the receiving request
-  call mpi_recv_init(receiveBuffer, size, MPI_INTEGER, source, &
+  call mpi_recv_init(receiveBuffer, msgsize, MPI_INTEGER, source, &
        MPI_ANY_TAG, MPI_COMM_WORLD, requests(1), rc)
   ! Describe the sending request
-  call mpi_send_init(message, size, MPI_INTEGER, destination, &
+  call mpi_send_init(message, msgsize, MPI_INTEGER, destination, &
        myid + 1, MPI_COMM_WORLD, requests(2), rc)
 
   ! Start communication
@@ -54,7 +54,7 @@ program chain
   ! Use status parameter to find out the no. of elements received
   call mpi_get_count(status(1), MPI_INTEGER, count, rc)
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
-       ' Sent elements: ', size, &
+       ' Sent elements: ', msgsize, &
        '. Tag: ', myid + 1, &
        '. Receiver: ', destination
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Receiver: ', myid, &
