@@ -7,8 +7,7 @@
 
 - [Collective operations](collectives)
 - [Communicators and collectives](communicator)
+- [Using custom datatypes](datatypes)
 - [Non-blocking communication](non-blocking)
 - [Non-blocking communication in heat equation](../heat/mpi-ip2p)
-- [Using custom datatypes](datatypes)
 - [Bonus: Two-dimensional heat equation](../heat/mpi-2d)
-
