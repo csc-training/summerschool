@@ -17,7 +17,7 @@ lang:   en
 - Programs should usually be separated into several files
 	* -> complicated dependency structures
 - Building large programs takes time
-	* rebuilding just what we changed? 
+	* rebuilding only the parts we changed? 
 - Having different options when building 
 	* debug versions, enabling/disabling features, etc.
 
@@ -29,9 +29,9 @@ lang:   en
 
 Make allows you to define how to build parts of a program and how they depend on other parts. _This enables_:
 
-- Building parts of a program and only rebuilding nessecsary parts
+- Building parts of a program and only rebuilding necessary parts
 
-- Building different version and configurations of a program 
+- Building different versions and configurations of a program 
 
  ![](images/depend.png){.center width=40%}
 
@@ -42,7 +42,7 @@ Make allows you to define how to build parts of a program and how they depend on
 Make works with **rules**. With rules you define how some part of your program is built.
 
 - **Target**: The output or aim of your rule  
-- **Dependecy**: What your target depends on
+- **Dependency**: What your target depends on
 - **Recipe**: How you produce your target
 
 </div>
@@ -62,7 +62,7 @@ _A make rule_
 - Recipes consist of one or more shell commands
 - If the dependencies are newer then the target, make runs the recipe
 - Run make with ` make target`
-	* By default make runs the first rule in the file
+	* Without an argument, make runs the first rule in the file
 </div>
 
 <div class=column>
@@ -89,10 +89,10 @@ clean:
 # Module environment on Sisu
 
 - Supercomputers have a large number of users with different needs for development environments and applications
-- _Environment modules_ provide a convenient way to dynamically change the user's
-environment so that different compiler suites and application versions can be used more easily
+- _Environment modules_ provide a convenient way to dynamically change the user's environment 
+- In this way, different compiler suites and application versions can be used more easily
 	* They basically just change where things are "pointing". So when you run `gcc` the loaded module decides 
-are you using version 4.9 or 5.3 or 6.0 and so on
+whether you are using version 4.9 or 5.3 or 6.0 and so on
 	* Most programs requires loading a module to be accessible
 
 # Most common Module commands in Sisu
@@ -120,7 +120,7 @@ Get information about a module or, if no argument is given, about the module sub
 
 # Batch queue system
 
-- On a cluster you can't run programs instantly. Instead you submit your program/simulation (ie. job) to a queue. 
+- On a cluster you can't run programs instantly. Instead you submit your program/simulation (i.e. job) to a queue. 
 	* The queue enables effective and fair resource usage.
 	* CSC uses SLURM as the queue system
 
@@ -129,9 +129,8 @@ Get information about a module or, if no argument is given, about the module sub
 - When running a job on a supercomputer you need to:
 	- Describe how you want to run the job and what resources you need
 	- Add a command that launches your program: 
-		- Sisu uses **aprun** 
-		- Taito uses **srun** 
 	- Submit your job to a queue
+- This is done with a batch job file
 
 # Batch job file on Sisu
 
