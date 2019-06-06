@@ -18,7 +18,7 @@ program datatype_struct
   integer :: blocklen(cnt)
   integer(KIND=MPI_ADDRESS_KIND) :: disp(cnt)
   integer(KIND=MPI_ADDRESS_KIND) :: lb, extent
-  real(real64) :: t1,t2
+  real(real64) :: t1, t2
 
   call MPI_INIT(ierror)
   call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierror)
@@ -34,8 +34,8 @@ program datatype_struct
   end if
 
   ! TODO: define the datatype for type particle
-  types = [ MPI_REAL, MPI_INTEGER, MPI_CHARACTER ]
-  blocklen = [ 3, 1, 2 ]
+  types = [MPI_REAL, MPI_INTEGER, MPI_CHARACTER]
+  blocklen = [3, 1, 2]
   call MPI_GET_ADDRESS(particles(1)%coords, disp(1), ierror)
   call MPI_GET_ADDRESS(particles(1)%charge, disp(2), ierror)
   call MPI_GET_ADDRESS(particles(1)%label, disp(3), ierror)
@@ -52,7 +52,7 @@ program datatype_struct
   call MPI_GET_ADDRESS(particles(1),disp(1),ierror)
   call MPI_GET_ADDRESS(particles(2),disp(2),ierror)
   ! TODO: resize the particle_mpi_type
-  if(extent /= disp(2)-disp(1)) then
+  if(extent /= disp(2) - disp(1)) then
      temp_type = particle_mpi_type
      lb = 0
      extent = MPI_AINT_DIFF(disp(2), disp(1))

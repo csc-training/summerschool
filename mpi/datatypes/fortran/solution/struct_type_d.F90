@@ -15,7 +15,7 @@ program datatype_struct
 
   integer, parameter :: cnt = 3
   type(mpi_datatype) :: particle_mpi_type, temp_type, types(cnt)
-  integer:: blocklen(cnt)
+  integer :: blocklen(cnt)
   integer(KIND=MPI_ADDRESS_KIND) :: disp(cnt)
   integer(KIND=MPI_ADDRESS_KIND) :: lb1, lb2, extent
   real(real64) :: t1, t2
