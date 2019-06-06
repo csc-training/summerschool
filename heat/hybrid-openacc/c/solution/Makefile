@@ -12,8 +12,8 @@ LIBS=-lpng -lz
 endif
 
 ifeq ($(COMP),pgi)
-CC=pgcc
-CCFLAGS=-g -acc -O3 -ta=tesla,cuda9.0,kepler+ -I$(COMMONDIR)
+CC=mpicc
+CCFLAGS=-g -acc -O3 -ta=tesla,cuda10.0,kepler+ -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng
 endif
