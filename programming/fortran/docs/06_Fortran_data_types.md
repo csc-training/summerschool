@@ -1,4 +1,9 @@
-# Derived data types{.section}
+# More about data types{.section}
+
+# Outline
+
+- Precision of built-in data types
+- Derived data types
 
 # Built-in data types in Fortran
 
@@ -15,15 +20,31 @@
 - Fortran standard does not specify the precision of numeric types, i.e.
   how many bits are used for representing the number
     - Default is often 32 bits (real has then 7 significant digits)
-- The numerical precision can be controlled through the kind parameter
-- The **iso_fortran_env** modules contains several standard precision types
+- The numerical precision can be controlled through the `kind` parameter:
+    - `real(kind=dp) :: number`
+    - Value of `kind` is integer which determines the precision
+    - Before Fortran 2003, the precision was typically defined with the help of
+      `selected_int_kind` and `selected_real_kind` functions
+    - Nowadays one should use the standard precision types defined in the 
+      **iso_fortran_env** module
+
+# Precision of built-in numeric types  
+  
+- The **iso_fortran_env** module  contains several standard precision types
     - real32, real64, real128, int16, int32, ...
+- It is often a good practice to specify precision in a constant module variable
+    - Precision can be changed with single modification
+
 
 ```fortran
-use iso_fortran_env, only : real64, int16 
-! ... 
-real(kind=real64):: double_precision_number
-integer(kind=int16) :: short_integer_number
+module precision
+   use iso_fortran_env, only : real64, int16 
+   integer, parameter :: rp=real64, ip=int16
+end module
+...
+use precision
+real(kind=rp):: double_precision_number
+integer(kind=ip) :: short_integer_number
 ```
 
 # What is a derived data type?
@@ -161,7 +182,7 @@ end do
 ```
 <center>
 
-![](img/fortran_mem_layout_scattered.png)
+![](img/fortran_mem_layout_scattered.png){.center width=70%}
 
 </center>
 
@@ -184,7 +205,7 @@ end do
 
 <center>
 
-![](img/fortran_mem_layout_contiguous.png)
+![](img/fortran_mem_layout_contiguous.png){.center width=70%}
 
 </center>
 
