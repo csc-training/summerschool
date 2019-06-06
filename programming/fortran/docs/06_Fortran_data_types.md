@@ -1,4 +1,4 @@
-# More about data types{.section}
+# User defined data types{.section}
 
 # Outline
 
