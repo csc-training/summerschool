@@ -1,4 +1,4 @@
-# Fortran arrays
+# Fortran arrays {.section}
 
 # Outline
 
@@ -127,14 +127,14 @@ deallocate (mat) ! Destroys the allocation (and the contents of the array)
 
 ```fortran
 subroutine calculate(m, n)
-integer :: m, n ! intended dimensions
-integer :: idx(0:m-1) ! an automatic array
-real :: mat(m,n) ! an automatic array
-! no explicit allocate – but no checks upon failure either
-...
-call do_something(m, n, idx, mat)
-...
-! no explicit deallocate - memory gets reclaimed automatically
+  integer :: m, n ! intended dimensions
+  integer :: idx(0:m-1) ! an automatic array
+  real :: mat(m,n) ! an automatic array
+  ! no explicit allocate – but no checks upon failure either
+  ...
+  call do_something(m, n, idx, mat)
+  ...
+  ! no explicit deallocate - memory gets reclaimed automatically
 end subroutine calculate
 ```
 
@@ -153,6 +153,7 @@ end subroutine calculate
 - **`count(l_array[,dim])`** returns the count of elements which are
   **`.true.`** in the logical **`l_array`**
 - **`sum(array[,dim][,mask])`** returns the sum of the elements
+    - optional `mask` argument is logical array with the same shape as `array`
 
 # Array intrinsic functions
 
@@ -176,8 +177,8 @@ call random_number(x)
 print *, size(x), size(v) ! prints m * n, n
 print *, shape(x)         ! prints m, n
 print *, size(shape(x))   ! prints 2
-print *, count(x >= 0)
-print *, sum(x, dim=2, mask=x < 0.5) ! the result is a vector
+print *, count(x >= 0, dim=2)  ! the result is a vector
+print *, sum(x, mask=x < 0.5)  ! performs sum of elements smaller than 0.5
 
 v(1:n) = [ (j, j=1,n) ]
 print *, any(v > -1 .and. v < 1)
@@ -193,9 +194,9 @@ print *, minloc(v), maxloc(v)
 
 ```fortran
 integer :: m, n
-real :: a(m, n), v(m*n)
+real :: A(m, n), V(m*n)
 ...
-! convert a (m-by-n matrix) into v (a m x n vector) without loops
+! convert A (m-by-n matrix) into V (vector of length m*n) without loops
 v = reshape(a, shape(v))
 ```
 
@@ -243,6 +244,7 @@ forall (j=2:100) a(j,j-1) = c(j)
   variables*
 - Pointer variables are usually employed to *refer* to another array or
   array section
+    - The another array needs to be declared with **`target`** attribute
 - A pointer variable can also be a sole variable itself, used together
   with **`allocate`** for dynamic memory allocation
     - This is not a recommended practice
@@ -252,18 +254,20 @@ Fortran
 
 # Pointers to arrays
 
-- A pointer array can refer to an already allocated memory region,
-  declared as a target
+- Pointers can be used in assignment like normal arrays  
 
 ```fortran
-integer, pointer :: p_x(:)
+integer, pointer :: p(:)  ! Number of dimensions needs to be declared
 integer, target :: x(1000)
+integer, target, allocatable :: y(:)
 ...
-p_x => x  ! The pointer array can point to a whole array or a part of it, no need to reallocate
-p_x => x(2:300)
-p_x => x(1:1000:5)
-...
-p_x(1) = 0   ! This would change the value of x(1) too
+p => x           ! The pointer array can point to a whole array 
+p => x(2:300:5)  ! or a part of it, no need to reallocate
+print * p(1)  ! p(1) points to x(2)
+p(2) = 0   ! This would change the value of x(3) too
+
+p => y   ! Now p points to another array y (which needs to be allocated)
+
 nullify(p_x) ! Now p_x points to nothing
 ```
 
