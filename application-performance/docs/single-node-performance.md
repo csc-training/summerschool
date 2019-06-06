@@ -1,14 +1,8 @@
----
-title: Single node performance analysis
-author: CSC Summerschool
-date:   2019-06
-lang:   en
----
-
+# Single node performance analysis {.section}
 
 # Performance analysis
 
-![](images/perf_a.png){.center width=60%}
+![](images/perf-analysis-single-core.svg){.center width=60%}
 
 # Introduction
 * Don’t speculate about performance – measure it!
