@@ -16,8 +16,8 @@ lang:   en
 
 # Why is this a problem for you ?
 
-* Keeping track of all of your changes requires a lot of work 
-* Sharing code with colleagues and collaborating is slow and prone to errors
+- Keeping track of all of your changes requires a lot of work 
+- Sharing code with colleagues and collaborating is slow and prone to errors
  
 ## You spend less time on things that actually matter! 
 Writing your code/scripts, running simulations and getting results 
@@ -30,11 +30,11 @@ What is the exact version/revision of your code used to produce some results?
 
 - A version control system (VCS) is a kind of a “time machine”
 
-  * Keeps track of changes made to files
+  - Keeps track of changes made to files
 
 - And a project manager
 
-  * Keeps track of multiple versions of the code
+  - Keeps track of multiple versions of the code
 
 - Imagine it as something that sits inside your folder and helps you with
 your files
@@ -51,7 +51,7 @@ single command
 - You can manually decide what to do with conflicting regions and some of
 the work is done for you by the version control system
 
-  * e.g. it does what it can and shows you the places where it needs manual intervention
+  - e.g. it does what it can and shows you the places where it needs manual intervention
 
 # Version control with git {.section}
 
@@ -95,9 +95,9 @@ $ git add ingredients.txt
  - A commit is a saved state of your project
  - All changes that were added using `git add` are now part of the commit  
  - A commit can (should) have an associated commit message
- 	* The message should be clear and concise: "Fixed bug #1234"
+ 	- The message should be clear and concise: "Fixed bug #1234"
  - Git allows us to compare, merge, and checkout commits
- 	* Checkout a commit -> Set our project state to a specific commit 
+ 	- Checkout a commit -> Set our project state to a specific commit 
 
 ```bash
 $ git commit
@@ -116,48 +116,48 @@ $ git commit
 
 # Project history: git log
 
-* Each commit has a:
+- Each commit has a:
 	- Message 
 	- Author
 	- Unique id,  also called a commit hash
 	- Submission date
 
-* We use `git log` to inspect the history of our repository 
+- We use `git log` to inspect the history of our repository 
 
 # Whats the difference: git diff
 
- * Show the difference between two commits
- * Or the difference between a commit and the current state of your project
- * The commit hash is used to refer to a specific commit
+ - Show the difference between two commits
+ - Or the difference between a commit and the current state of your project
+ - The commit hash is used to refer to a specific commit
 
 # Remote repositories: Were things get really useful
 
- * You can have multiple copies of the same project in different places
+ - You can have multiple copies of the same project in different places
  	- A different folder, another computer, or a web-bases repository
 	- You have a copy, your coworker has a copy, and so on...  
  
- * This is what enables collaboration and sharing changes
+ - This is what enables collaboration and sharing changes
 
- * You can also just copy a git repository and after that never interact with any one
+ - You can also just copy a git repository and after that never interact with any one
 
 # Centralized vs. Distributed
 
-* Git is a distributed version control system
+- Git is a distributed version control system
  	- I.e every repository is self contained and _equally valid_ 
 
 ![](images/git_cent_dist.svg){.center width=50%}
 
 # Remote repositories: Basic commands
-  * `git clone`, to copy a repository
-  * `git pull`, to retrieve changes from a remote repository  
-  * `git push`, to send our changes to a remote repository 
+  - `git clone`, to copy a repository
+  - `git pull`, to retrieve changes from a remote repository  
+  - `git push`, to send our changes to a remote repository 
 
 # Remote repositories: Web services
 
 - Git is usually paired up with web-based repository
-  * GitHub
-  * Bitbucket
-  * GitLab 
+  - GitHub
+  - Bitbucket
+  - GitLab 
 
 - **These are not the same as git**, they are services built on top of git
 
@@ -168,7 +168,7 @@ $ git commit
 
 - Interact with collaborators
 
-  * Scales from 1 to 1000+ contributors (may include your supervisor
+  - Scales from 1 to 1000+ contributors (may include your supervisor
     too\!)
 
 - Open projects enable other people to join too
@@ -218,7 +218,7 @@ $ git commit
 # Forking repositories
 
   - Copying a repository on GitHub to your own GitHub
-	* So a GitHub feature, _not a part of git_ 
+	- So a GitHub feature, _not a part of git_ 
   - This is called “forking”
   - Forking a repository allows you to freely experiment with changes
     without affecting the original project.
@@ -230,8 +230,8 @@ $ git commit
 
 - Let’s fork & clone our first repository
 
-  * Fork <https://github.com/csc-training/summerschool>
-  * `git clone https://github.com/user/summerschool`  
+  - Fork <https://github.com/csc-training/summerschool>
+  - `git clone https://github.com/user/summerschool`  
 
 ![](images/clone_fork.png){.center}
 
@@ -239,13 +239,13 @@ $ git commit
 
 1. New file changes are **pull**ed from the remote repository: `git pull`
 
-	* Files are now up-to-date (in respect to the remote repository)
+	- Files are now up-to-date (in respect to the remote repository)
 
 2. Something is modified 
-	* E.g. editing, adding or removing a file 
+	- E.g. editing, adding or removing a file 
 
 3. Modifications are **add**ed for commit: `git add file.c`
-	* Think of this as putting your file changes into a package
+	- Think of this as putting your file changes into a package
 
 4. Changes are **commit**ted to the local repository: `git commit`
 
@@ -257,13 +257,13 @@ $ git commit
 # Git Workflow
 
 - At every point, you can check the current status of the local repository
-  * `git status`
-  * What is changed? What is staged for commit?
+  - `git status`
+  - What is changed? What is staged for commit?
 
 - Sometimes it is useful to drop local changes
 
-  * `git stash`
-  * Restores the local repository to the latest commit by stashing your changes (they can be retrieved later on)
+  - `git stash`
+  - Restores the local repository to the latest commit by stashing your changes (they can be retrieved later on)
 
 - These are super useful, hence, use them often\!
 
@@ -273,12 +273,12 @@ $ git commit
 - A branch is just a pointer to a commit 
 - You can freely create new branches
 
-  * `git branch new_branch_name`
-  * `git checkout new_branch_name`
+  - `git branch new_branch_name`
+  - `git checkout new_branch_name`
 
 - Extremely useful when you are working on multiple things/features
-	* Allows you to keep a properly working version of a program, even though you are in the middle of major modifications.
-	* Great for still unstable features
+	- Allows you to keep a properly working version of a program, even though you are in the middle of major modifications.
+	- Great for still unstable features
 
 
 # Branching
@@ -313,7 +313,7 @@ commits
 
   - If you are not using git, start using it\!
   - Remember the standard workflow: 
-  	* pull -> modify -> add -> commit -> push
+  	- pull -> modify -> add -> commit -> push
   - Explore GitHub, there are many cool repositories\!
    
   - Experiment with git and try out different features, its better to make mistakes now than later.
