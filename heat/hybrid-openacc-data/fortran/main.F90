@@ -29,7 +29,7 @@ program heat_solve
   call initialize(current, previous, nsteps, parallelization)
 
   ! Copy fields to device
-  enter_data(current, previous)
+  call enter_data(current, previous)
 
   ! Draw the picture of the initial state
   call write_field(current, 0, parallelization)
@@ -55,13 +55,13 @@ program heat_solve
   end do
 
   ! Copy fields back from device
-  exit_data(current, previous)
+  call exit_data(current, previous)
 
   stop = mpi_wtime()
 
   if (parallelization % rank == 0) then
      write(*,'(A,F7.3,A)') 'Iteration took ', stop - start, ' seconds.'
-     write(*,'(A,G0)') 'Reference value at 5,5: ', previous % data(5,5)
+     write(*,'(A,F14.8)') 'Reference value at 5,5: ', previous % data(5,5)
   end if
 
   call finalize(current, previous)

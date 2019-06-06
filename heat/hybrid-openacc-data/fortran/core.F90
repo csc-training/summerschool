@@ -45,7 +45,7 @@ contains
 
     implicit none
 
-    type(field), intent(inout) :: curr, prev
+    type(field), target, intent(inout) :: curr, prev
     real(dp) :: a, dt
     integer :: i, j, nx, ny
     real(dp) :: dx, dy
@@ -61,8 +61,8 @@ contains
     currdata => curr%data
     prevdata => prev%data
 
-    !$acc parallel loop private(i,j) copyin(prevdata[0:nx+1,0:y+1]) &
-    !$acc               copyout(currdata[0:nx+1,0:ny+1]) collapse(2)
+    !$acc parallel loop private(i,j) copyin(prevdata(0:nx+1,0:ny+1)) &
+    !$acc               copyout(currdata(0:nx+1,0:ny+1)) collapse(2)
     do j = 1, ny
        do i = 1, nx
           currdata(i, j) = prevdata(i, j) + a * dt * &
@@ -82,7 +82,7 @@ contains
   !   prev (type(field)): values from previous time step
   subroutine enter_data(curr, prev)
     implicit none
-    type(field), intent(in) :: curr, prev
+    type(field), target, intent(in) :: curr, prev
     real(kind=dp), pointer, contiguous :: currdata(:,:), prevdata(:,:)
 
     currdata => curr%data
@@ -96,7 +96,7 @@ contains
   !   prev (type(field)): values from previous time step
   subroutine exit_data(curr, prev)
     implicit none
-    type(field) :: curr, prev
+    type(field), target :: curr, prev
     real(kind=dp), pointer, contiguous :: currdata(:,:), prevdata(:,:)
 
     currdata => curr%data
@@ -109,7 +109,7 @@ contains
   !   temperature (type(field)): temperature field
   subroutine update_host(temperature)
     implicit none
-    type(field) :: temperature
+    type(field), target :: temperature
     real(kind=dp), pointer, contiguous :: tempdata(:,:)
 
     tempdata => temperature%data
@@ -121,8 +121,9 @@ contains
   !   temperature (type(field)): temperature field
   subroutine update_device_boundary(temperature)
     implicit none
-    type(field) :: temperature
+    type(field), target :: temperature
     real(kind=dp), pointer, contiguous :: tempdata(:,:)
+    integer :: nx, ny
 
     tempdata => temperature%data
 
