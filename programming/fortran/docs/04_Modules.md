@@ -8,7 +8,7 @@
 
 # Modular programming
 
-- By now, we have implemented the whole application in a single file.
+- By now, we have implemented the whole application in a single file
 - Larger applications should be divided into small, minimally dependent *modules*
     - Aim is to build complex behaviour from simple self-contained components
     - Modules can be tested and debugged separately
@@ -25,7 +25,7 @@
 # Module defition and usage
 
 - Module is defined with the `module` keyword and used from main program 
-  or other module with the `use` keyword
+  or other modules with the `use` keyword
 - Depending on the complexity of module, one file can contain a single or 
   multiple module definitions
     - Only related modules should be grouped into the same file
@@ -108,8 +108,8 @@ gfortran -o myexe mymod.o myprog.o
 - Prodecures are defined after **contains** keyword
 
 <div class="column">
-**Function definition in module**
-```fortran
+Function definition in module
+```{.fortran emphasize=5:3-5:10,6:10-6:22}
 module geometry
   implicit none
   real, parameter :: pi = 3.14
@@ -119,14 +119,14 @@ module geometry
       implicit none
       real :: x, y
       dist = sqrt(x**2 + y**2)
-    end function dis
+    end function dist
 
 end module geometry
 ```
 </div>
 <div class="column">
-**Usage**
-```fortran
+Usage
+```{.fortran emphasize=2:3-2:14,6:7-6:10}
 program testprog 
   use geometry
   implicit none
@@ -144,8 +144,8 @@ end program testprog
 - Prodecures are defined after **contains** keyword
 
 <div class="column">
-**Subroutine definition in module**
-```fortran
+Subroutine definition in module
+```{.fortran emphasize=5:3-5:10,6:5-6:19}
 module geometry
   implicit none
   real, parameter :: pi = 3.14
@@ -155,20 +155,20 @@ module geometry
       implicit none
       real :: x, y, d
       d = sqrt(x**2 + y**2)
-    end subroutine dis
+    end subroutine dist
 
 end module geometry
 ```
 </div>
 <div class="column">
-**Usage**
-```fortran
+Usage
+```{.fortran emphasize=2:3-2:14,6:3-6:11}
 program testprog 
   use geometry
   implicit none
 
   real :: d
-  dist(2.0, 3.4, d)
+  call dist(2.0, 3.4, d)
 
 end program testprog
 ```
