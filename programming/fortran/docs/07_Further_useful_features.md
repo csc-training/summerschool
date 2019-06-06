@@ -1,4 +1,4 @@
-# Some Further useful features in Fortran
+# Some further useful features in Fortran{.section}
 
 # Outline
 
@@ -26,7 +26,7 @@ module swapmod
   interface swap
      module procedure swap_real, swap_char
   end interface swap
-contains
+ contains
   subroutine swap_real(a, b)
     real, intent(inout) :: a, b
     real :: temp
