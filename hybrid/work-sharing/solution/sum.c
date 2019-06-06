@@ -16,7 +16,7 @@ int main(void)
 
     #pragma omp parallel for default(shared) private(i)
     for (i = 0; i < NX; i++) {
-        vecC[i] = vecA[i] * vecB[i];
+        vecC[i] = vecA[i] + vecB[i];
     }
 
     sum = 0.0;

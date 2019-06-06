@@ -41,7 +41,7 @@ contains
 
     implicit none
 
-    type(field), intent(inout) :: curr, prev
+    type(field), target, intent(inout) :: curr, prev
     real(dp) :: a, dt
     integer :: i, j, nx, ny
     real(dp) :: dx, dy
@@ -58,8 +58,8 @@ contains
     prevdata => prev%data
 
     ! TODO: use OpenACC to parallelise the loops
-    !$acc parallel loop private(i,j) copyin(prevdata[0:nx+1,0:y+1]) &
-    !$acc               copyout(currdata[0:nx+1,0:ny+1]) collapse(2)
+    !$acc parallel loop private(i,j) copyin(prevdata(0:nx+1,0:ny+1)) &
+    !$acc               copyout(currdata(0:nx+1,0:ny+1)) collapse(2)
     do j = 1, ny
        do i = 1, nx
           currdata(i, j) = prevdata(i, j) + a * dt * &
