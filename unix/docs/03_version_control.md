@@ -82,6 +82,14 @@ $ git init
 
 - Does not change our files or save anything yet
 
+```bash
+.... editing some files
+$ git add ingredients.txt
+
+```
+
+
+
 
 # Creating a snapshot: git commit 
  - A commit is a saved state of your project
@@ -90,6 +98,11 @@ $ git init
  	* The message should be clear and concise: "Fixed bug #1234"
  - Git allows us to compare, merge, and checkout commits
  	* Checkout a commit -> Set our project state to a specific commit 
+
+```bash
+$ git commit
+
+```
 
 # Git file states: git status 
  A file in a git repository can be in one of the following states
@@ -254,23 +267,35 @@ $ git init
 
 - These are super useful, hence, use them often\!
 
-# Advanced features - Branching
+# Branching
 
 - By default everything is happening at “master” branch
-
+- A branch is just a pointer to a commit 
 - You can freely create new branches
 
   * `git branch new_branch_name`
   * `git checkout new_branch_name`
 
-- `git pull` is actually `git fetch` && `git merge` that fetches remote master
-branch and merges it into local master branch
+- Extremely useful when you are working on multiple things/features
+	* Allows you to keep a properly working version of a program, even though you are in the middle of major modifications.
+	* Great for still unstable features
 
-- Allows to work on some aspect of the project and then fall back to the
-master branch if needed
 
-  * Changes made to the new branch are stored
-  * Files can be restored to the default master branch version
+# Branching
+<div class=column>
+
+ ![](images/git_master.png){.center width=100%}
+</div>
+<div class=column>
+ ![](images/git_branch.png){.center width=100%}
+
+</div>
+
+
+
+
+
+
 
 # Advanced features - Pull requests
 
@@ -289,9 +314,10 @@ commits
   - If you are not using git, start using it\!
   - Remember the standard workflow: 
   	* pull -> modify -> add -> commit -> push
-  - Explore GitHub, there are quite a many cool repositories\!
-  - Check [<span class="underline">https://help.github.com/</span>](https://help.github.com/)
-	* it has an answer to everything git-related\!
+  - Explore GitHub, there are many cool repositories\!
+   
+  - Experiment with git and try out different features, its better to make mistakes now than later.
+  
 
 # Version control git commands
 
