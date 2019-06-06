@@ -35,7 +35,8 @@ contains
 
   subroutine mpiio_writer()
     implicit none
-    integer :: fh, rc, dsize
+    integer :: rc, dsize
+    type(mpi_file) :: fh
     integer(kind=MPI_OFFSET_KIND) :: offset;
 
     call mpi_type_size(MPI_INTEGER, dsize, rc)

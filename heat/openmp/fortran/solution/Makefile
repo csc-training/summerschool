@@ -22,6 +22,15 @@ LDFLAGS=
 LIBS=-lpng
 endif
 
+ifeq ($(COMP),intel)
+FC=ifort
+CC=icc
+FCFLAGS=-qopenmp -O3 -warn all
+CCFLAGS=-qopenmp -O3 -Wall -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+endif
+
 EXE=heat_omp
 OBJS=main.o heat_mod.o core.o setup.o utilities.o io.o pngwriter_mod.o
 OBJS_PNG=$(COMMONDIR)/pngwriter.o

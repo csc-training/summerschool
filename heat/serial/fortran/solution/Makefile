@@ -2,7 +2,7 @@ ifeq ($(COMP),)
 COMP=cray
 endif
 
-COMMONDIR=../../../common/
+COMMONDIR=../../../common
 
 ifeq ($(COMP),cray)
 FC=ftn
@@ -17,6 +17,15 @@ ifeq ($(COMP),gnu)
 FC=gfortran
 CC=gcc
 FCFLAGS=-O3 -Wall 
+CCFLAGS=-O3 -Wall -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+endif
+
+ifeq ($(COMP),intel)
+FC=ifort
+CC=icc
+FCFLAGS=-O3 -warn all
 CCFLAGS=-O3 -Wall -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng

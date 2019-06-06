@@ -80,17 +80,17 @@ contains
     ! Ensure that the grid is divisible to the MPI tasks
     if (dims(1) * dims(2) /= world_size) then
        write(*,*) 'Cannot make square MPI grid, please use number of CPUs which is power of two', &
-            dims(1), dims(2), world_size
+            & dims(1), dims(2), world_size
        call mpi_abort(MPI_COMM_WORLD, -1, ierr)
     end if
     if (nx_local * dims(1) /= nx) then
        write(*,*) 'Cannot divide grid evenly to processors in x-direction', &
-            nx_local, dims(1), nx
+            & nx_local, dims(1), nx
        call mpi_abort(MPI_COMM_WORLD, -2, ierr)
     end if
     if (ny_local * dims(2) /= ny) then
        write(*,*) 'Cannot divide grid evenly to processors in y-direction', &
-            ny_local, dims(2), ny
+            & ny_local, dims(2), ny
        call mpi_abort(MPI_COMM_WORLD, -2, ierr)
     end if
 
