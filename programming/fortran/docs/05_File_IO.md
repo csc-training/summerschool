@@ -261,16 +261,16 @@ write(10) dbheader
      - Actual files are not involved at all
 
 ```fortran
-character(len=13) :: cl1
-character(len=60) :: cl2
+character(len=13) :: s1
+character(len=60) :: s2
 integer :: njobs, istep
 
 ! extract a number from character string 
-cl1 = 'time step\# 10'
-read(cl1,fmt='(10x,i3)') istep
+s1 = 'time step\# 10'
+read(s1,fmt='(10x,i3)') istep
 ! write data to a character string
 njobs = 2014
-write(cl2,'(a,i0)') 'the number of jobs completed = ', njobs
+write(s2,'(a,i0)') 'the number of jobs completed = ', njobs
 ```
 
 # Command line input
