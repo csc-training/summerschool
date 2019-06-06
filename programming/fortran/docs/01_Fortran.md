@@ -1,4 +1,9 @@
-# Introduction to Fortran 95/2003 {.section}
+---
+title:  Introduction to Fortran 95/2003
+author: CSC Summerschool
+date:   2019
+lang:   en
+---
 
 # Getting started with Fortran {.section}
 
@@ -30,7 +35,7 @@
 
 - John W. Backus et al (1954): The IBM Mathematical **For**mula
   **Tran**slating System
-- Early years development: Fortran II (1958), Fortran IV (1961),
+- Early years development: Fortran II (1958), Fortran IV (1961)
   Fortran 66 & Basic Fortran (1966)
 - Fortran 77 (1978)
 - Fortran 90 (1991) a major revision and Fortran 95 (1997) a minor
@@ -242,7 +247,8 @@ end do
  ! condition controlled loop (do while) totalsum = 0.0
  read(*,*) x
  do while (x > 0) 
-   totalsum = totalsum + x read(*,*) x 
+   totalsum = totalsum + x 
+   read(*,*) x 
  end do
 ```
 
