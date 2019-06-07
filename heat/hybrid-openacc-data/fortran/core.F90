@@ -61,8 +61,8 @@ contains
     currdata => curr%data
     prevdata => prev%data
 
-    !$acc parallel loop private(i,j) copyin(prevdata(0:nx+1,0:ny+1)) &
-    !$acc               copyout(currdata(0:nx+1,0:ny+1)) collapse(2)
+    !$acc parallel loop private(i,j) &
+    !$acc present(prevdata(0:nx+1,0:ny+1), currdata(0:nx+1,0:ny+1)) collapse(2)
     do j = 1, ny
        do i = 1, nx
           currdata(i, j) = prevdata(i, j) + a * dt * &
@@ -126,6 +126,8 @@ contains
     integer :: nx, ny
 
     tempdata => temperature%data
+    nx = temperature%nx
+    ny = temperature%ny
 
     ! TODO: copy the outer boundary values (coming from the neighbours)
     !       from the host to the device

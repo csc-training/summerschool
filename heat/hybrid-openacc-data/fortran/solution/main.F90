@@ -22,7 +22,7 @@ program heat_solve
 
   integer :: iter
 
-  real(kind=dp) :: start, stop ! Timers
+  real(kind=dp) :: start_time, stop_time ! Timers
 
   call mpi_init(ierr)
 
@@ -41,7 +41,7 @@ program heat_solve
   ! Main iteration loop, save a picture every
   ! image_interval steps
 
-  start =  mpi_wtime()
+  start_time =  mpi_wtime()
 
   do iter = 1, nsteps
      call exchange(previous, parallelization)
@@ -57,10 +57,11 @@ program heat_solve
   ! Copy fields back from device
   call exit_data(current, previous)
 
-  stop = mpi_wtime()
+  stop_time = mpi_wtime()
 
   if (parallelization % rank == 0) then
-     write(*,'(A,F7.3,A)') 'Iteration took ', stop - start, ' seconds.'
+     write(*,'(A,F7.3,A)') 'Iteration took ', &
+          & stop_time - start_time, ' seconds.'
      write(*,'(A,F14.8)') 'Reference value at 5,5: ', previous % data(5,5)
   end if
 

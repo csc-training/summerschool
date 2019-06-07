@@ -60,8 +60,8 @@ contains
     currdata => curr%data
     prevdata => prev%data
 
-    !$acc parallel loop private(i,j) copyin(prevdata(0:nx+1,0:ny+1)) &
-    !$acc               copyout(currdata(0:nx+1,0:ny+1)) collapse(2)
+    !$acc parallel loop private(i,j) &
+    !$acc present(prevdata(0:nx+1,0:ny+1), currdata(0:nx+1,0:ny+1)) collapse(2)
     do j = 1, ny
        do i = 1, nx
           currdata(i, j) = prevdata(i, j) + a * dt * &
@@ -74,7 +74,7 @@ contains
     !$end parallel loop
 
     ! Copy the updated boundary to the host
-    !$acc update host(currdata(2:2,1:ny+2), currdata(nx+1:nx+1,1:ny+2))
+    !$acc update host(currdata(0:nx+1,1:1), currdata(0:nx+1,ny:ny))
   end subroutine evolve
 
   ! Start a data region and copy temperature fields to the device
@@ -129,7 +129,7 @@ contains
     nx = temperature%nx
     ny = temperature%ny
 
-    !$acc update device(tempdata(1:1,1:ny+2), tempdata(nx+2:nx+2,1:ny+2))
+    !$acc update device(tempdata(0:nx+1,0:0), tempdata(0:nx+1,ny+1:ny+1))
   end subroutine update_device_boundary
 
 end module core
