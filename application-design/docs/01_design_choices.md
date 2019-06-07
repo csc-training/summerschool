@@ -243,23 +243,6 @@ lang:   en
     - but, sometimes the burst performance is too good...
         - 10k cores writing ~TBs of data in seconds is nice for the user but file system might not like it
 
-# Open vs closed source
-
-<div class=column>
-- And what about code availability?
-- Open source
-    - right thing to do
-    - opens collaborations
-    - easier outside help
-    - funding agencies support this
-</div>
-<div class=column>
-- negative:
-    - loose some control?
-    - do you loose investment?
-</div>
-
-- **Question**: What do you think?
 
 # Summary 
 - Software design is all about planning (agile development)
