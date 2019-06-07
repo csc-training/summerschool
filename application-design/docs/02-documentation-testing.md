@@ -33,7 +33,7 @@
 
 # How to document?
 
-- Documentation is part of the code
+- Documentation should be part of the code
 - Keep the documentation close to source
     - Same versioning as for the code
     - Guides in e.g. `docs` subdirectory
@@ -41,7 +41,8 @@
       the defition
         - many tools can generate automatically API documention from comments
     - Non-obvious implementation choices in comments in source code
-- Tools for documentation: RST and Markdown markup languages, wikis, Doxygen
+- Tools for documentation: RST and Markdown markup languages, wikis, Doxygen, 
+  github pages and readthedocs for hosting
 
 # How is your code documented?
 
@@ -51,6 +52,7 @@
 
 <div class=column>
 GPAW
+
 - User developer guides, tutorials etc. written in RST
 - www-site generated with Sphinx
 - APIs in Python docstrings
@@ -59,7 +61,139 @@ GPAW
 
 <div class=column>
 PlasmaBox
+
 - TODO
+
 </div>
 
 # Testing
+
+**Simulations and analysis with untested software <br>
+do not constitute science!**
+
+<p>
+
+- Experimental scientist would never conduct an experiment with uncalibrated 
+  detectors
+- Computational scientist should never conduct simulations with untested 
+  software
+
+
+# Why software needs to be tested?
+
+- Ensure expected functionality
+- Ensure expected functionality is preserved
+    - software is fragile, bugs lurk in easily
+    - in large projects innocent looking changes can have surprising side 
+      effects
+- Testing helps detecting errors early
+- Testing is essential for reproducibility of results
+- Tests make is easier to verify whether software is correctly installed
+
+# Defensive programming
+
+- Would you trust a software ...
+    - ... when its tests do not pass?
+    - ... if the tests are never run?
+    - ... if there are no tests at all?
+- Assume mistakes will happen and introduce guards agains them
+- Test drive development
+    - Tests are written before actually implementing the functionality
+
+# What should be tested in software ?
+
+- Validity of physical model
+    - comparison to experimental results
+- Validity of numerical methods and implementation
+    - Comparison to analytic solutions of special cases
+    - Conservation laws and symmetries
+- Correct functioning of individual subroutines and modules
+- Performance
+    - changes in software may lead into degragation in performance
+
+# Unit testing
+
+- Tests for smallest testable part of an application
+    - function, module or class
+- Ideally, tests are independent of each other
+- Frameworks: cUnit, cppunit, pFUnit, Google Test, pytest, ...
+- Client code which executes tests can be also hand-written
+- Unit testing helps in managing complexity
+    - well structured and modular code is easy to test
+
+# Integration testing
+
+- Combining individual software modules and testing as group
+    - "trivial" changes in code can have surprising side effects
+    - example: testing a specific solver which utilizes several modules
+- At the highest level tests the whole application
+- Recommended to be combined with unit testing
+
+# Challenges with HPC
+
+- Behavior can depend on the number of threads and MPI tasks
+    - Parallel components should be tested with multiple different 
+      parallelization schemes
+- Large scale integration tests can be time consuming
+- Changes in program code may also lead to degradation in performance and 
+  scalability
+     - tests should track also the performance
+- Performance is often system/architecture specific
+    - preferably test on multiple architectures
+
+# Continuous integration
+
+- Automatic testing
+    - build test ensures that code is always in a "working state"
+- Unit and integration tests can be run automatically after build succeeds
+- Nightly / weekly tests
+    - Software is built and tested at specified times
+- Test at "commit"
+    - test set is run when new code is pushed to main repository
+- Nightly and "commit" tests can exclude time consuming tests
+
+# Continuous integration
+
+<div class=column>
+- Test system should send a notification when test fails
+    - mailing list, IRC, Flowdock, …
+- Test status can be shown also in www-page
+- Tools for continuous integration:
+    - TravisCI: widely used, nice integration to Github
+    - Jenkins: support for complex automation tasks
+    - GitlabCI
+</div>
+<div class=column>
+![](images/ci-flowchart.svg){.center width=90%}
+</div>
+
+# How is your code tested?
+
+**Discuss** within your table!
+
+# Testing in GPAW & PlasmaBox
+
+<div class=column>
+GPAW
+
+- Wide test set
+    - Unit tests and integration tests
+- Continuous integration with GitlabCI
+- Developers should run tests manually before pushing
+- Tests set should run after installation
+
+</div>
+
+<div class=column>
+PlasmaBox
+
+- TODO
+
+</div>
+
+# Take home messages
+
+- Document your code
+- Test your code, prefer automatic testing
+
+
