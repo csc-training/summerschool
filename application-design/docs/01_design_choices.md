@@ -1,7 +1,7 @@
 ---
 title:  Application design
 author: CSC Summerschool
-date:   2019-06
+date:   2019
 lang:   en
 ---
 
@@ -21,17 +21,21 @@ lang:   en
 
 # GPAW
 <div class=column>
-* Density functional theory-based atomic structure code
-* Python + HPC libraries (numpy, BLAS, LAPACK)
-    - massively parallel 
-    - TODO: add details & image
+* Density-functional theory -based electronic structure
+* Python + C + libraries (numpy, BLAS, LAPACK)
+    - various parallelization levels with MPI
+    - over 10k cores with some modes
+    - ~20 developers all around world
 </div>
 <div class=column>
-![](images/gpaw.jpg){.center width=80%}
+![](images/gpaw-logo.svg){.center width=50%}
+
+![](images/gpaw.jpg){.center width=50%}
 </div>
 
 
 # Why develop software? 
+
 * To do science
 * To create a product
 
@@ -77,8 +81,10 @@ lang:   en
 </div>
 <div class=column>
 * GPAW
-    - existing code
-    - TODO: details
+    - existing code with basic features mostly working (95 %) in 2005
+    - choice of physical model and  programming languages had been made
+    - production ready in 2008-2009
+        - science done already earlier
 </div>
 
 
@@ -109,9 +115,6 @@ lang:   en
     - release
     - feedback
 </div>
-
-# GPAW: Development strategies
-* TODO: describe/present GPAW development?
 
 
 # Parallelization strategies
@@ -212,12 +215,14 @@ lang:   en
 - **Questions**: Choices in your software and experiences about them?
 
 # GPAW: Modular design
-- TODO? discuss some modular design aspect?
-- TODO? discuss some build system?
-- TODO? discuss usage of libraries?
+- Object oriented features and Python modules heavily utilized
+- Main numerical kernels well separated from high level algorithms
+- New features can be developed independently
+![](images/gpaw-codebase.png){width=40%}
 
 
 # Data formats
+
 - Data has to be "designed" too
 - Data formats
     - not just plain text files/binary files
@@ -230,7 +235,9 @@ lang:   en
 - Remember also that large simulations produce lots of data
     - storing "big data" is an issue
 
+
 # PlasmaBox: IO issues
+
 - PlasmaBox uses rank-independent multiple-file IO strategy
     - excellent performance as there is no synching
     - but, sometimes the burst performance is too good...
