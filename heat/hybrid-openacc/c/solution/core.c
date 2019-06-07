@@ -35,7 +35,7 @@ void evolve(field *curr, field *prev, double a, double dt)
     double **currdata, **prevdata;
 
     /* HINT: to help the compiler do not access members of structures
-     * within OpenACC parallel regions */
+     *       within OpenACC parallel regions */
     currdata = curr->data;
     prevdata = prev->data;
     nx = curr->nx;
@@ -47,7 +47,7 @@ void evolve(field *curr, field *prev, double a, double dt)
     dx2 = prev->dx * prev->dx;
     dy2 = prev->dy * prev->dy;
 #pragma acc parallel loop private(i,j) copyin(prevdata[0:nx+2][0:ny+2]) \
-    copyout(currdata[0:nx+2][0:ny+2]) collapse(2)
+    copyout(currdata[1:nx+1][1:ny+1]) collapse(2)
     for (i = 1; i < nx + 1; i++) {
         for (j = 1; j < ny + 1; j++) {
             currdata[i][j] = prevdata[i][j] + a * dt *

@@ -61,5 +61,7 @@ void allocate_field(field *temperature);
 
 void finalize(field *temperature1, field *temperature2);
 
+void update_device_boundary(field *temperature);
+
 #endif  /* __HEAT_H__ */
 
