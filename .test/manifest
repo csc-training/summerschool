@@ -83,40 +83,40 @@
 [programming/c/datatypes-expressions/solution/pointers.c]
   type=pass
 
-[openmp/lib-funcs/solution/hello.F90] +omp
+[hybrid/lib-funcs/solution/hello.F90] +omp
   type=pass
 
-[openmp/lib-funcs/solution/hello.c] +omp
+[hybrid/lib-funcs/solution/hello.c] +omp
   type=pass
 
-[openmp/race-condition/solution/vectorsum.F90] +omp
+[hybrid/race-condition/solution/vectorsum.F90] +omp
   type=pass
 
-[openmp/race-condition/solution/vectorsum.c] +omp
+[hybrid/race-condition/solution/vectorsum.c] +omp
   type=pass
 
-[openmp/tasks/fortran/solution] +omp
+[hybrid/tasks/fortran/solution] +omp
   type=pass
 
-[openmp/tasks/c/solution] +omp
+[hybrid/tasks/c/solution] +omp
   type=pass
 
-[openmp/hello-world/solution/hello.F90] +omp
+[hybrid/test/solution/hello.F90] +omp
   type=pass
 
-[openmp/hello-world/solution/hello.c] +omp
+[hybrid/test/solution/hello.c] +omp
   type=pass
 
-[openmp/work-sharing/solution/sum.F90] +omp
+[hybrid/work-sharing/solution/sum.F90] +omp
   type=pass
 
-[openmp/work-sharing/solution/sum.c] +omp
+[hybrid/work-sharing/solution/sum.c] +omp
   type=pass
 
-[openmp/data-sharing/solution/variables.F90] +omp
+[hybrid/data-sharing/solution/variables.F90] +omp
   type=pass
 
-[openmp/data-sharing/solution/variables.c] +omp
+[hybrid/data-sharing/solution/variables.c] +omp
   type=pass
 
 [mpi/message-exchange/solution/exchange.F90] +mpi
@@ -209,12 +209,6 @@
 [mpi/communicator/solution/reduce.F90] +mpi
   type=pass
 
-[mpi/mpi-io/solution/mpiio.c] +mpi
-  type=pass
-
-[mpi/mpi-io/solution/mpiio.f90] +mpi
-  type=pass
-
 [mpi/message-chain/fortran/solution/sendrecv.F90] +mpi
   type=pass
 
@@ -239,23 +233,6 @@
 [mpi/message-chain/c/solution/send-recv.c] +mpi
   type=pass
 
-[mpi/posix-io/fortran/solution/spokesman.f90] +mpi
-  type=pass
-
-[mpi/posix-io/fortran/solution/spokesman_reader.f90] +mpi
-  type=pass
-
-[mpi/posix-io/fortran/solution/separate-files.f90] +mpi
-  type=pass
-
-[mpi/posix-io/c/solution/spokesman.c] +mpi
-  type=pass
-
-[mpi/posix-io/c/solution/spokesman_reader.c] +mpi
-  type=pass
-
-[mpi/posix-io/c/solution/separate-files.c] +mpi
-  type=pass
 
 [hybrid/multiple/solution/multiple.c] +mpi +omp
   type=pass
@@ -330,3 +307,34 @@
 [heat/hybrid-fine/c/solution] +mpi +omp
   type=pass
   export=('MPICH_MAX_THREAD_SAFETY=multiple')
+
+[parallel-io/mpi-io/solution/mpi-io.c] +mpi
+  type=pass
+
+[parallel-io/mpi-io/solution/mpi-io-read.c] +mpi
+  type=pass
+
+[parallel-io/mpi-io/solution/mpi-io.f90] +mpi
+  type=pass
+
+[parallel-io/mpi-io/solution/mpi-io-read.f90] +mpi
+  type=pass
+
+[parallel-io/posix/c/solution/spokesman.c] +mpi
+  type=pass
+
+[parallel-io/posix/c/solution/spokesman_reader.c] +mpi
+  type=pass
+
+[parallel-io/posix/c/solution/separate-files.c] +mpi
+  type=pass
+
+
+[parallel-io/posix/fortran/solution/spokesman.f90] +mpi
+  type=pass
+
+[parallel-io/posix/fortran/solution/spokesman_reader.f90] +mpi
+  type=pass
+
+[parallel-io/posix/fortran/solution/separate-files.f90] +mpi
+  type=pass
