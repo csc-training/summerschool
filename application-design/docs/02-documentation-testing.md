@@ -1,5 +1,10 @@
 # Documenting and testing {.section}
 
+<small>
+Material is partly based on work by Software Carpentry and Code Refinery 
+licensed under CC BY-SA 4.0
+</small>
+
 # Why to document your code?
 
 - You will forget details
