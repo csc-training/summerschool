@@ -130,6 +130,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 </section>
+<section id="pure-mpi-programming" class="slide level1" data-background-size="contain">
+<h1>Pure MPI programming</h1>
+<div class="column">
+<ul>
+<li>One MPI task per core</li>
+<li>On a modern Supercomputer with 40 - 128 cores per node the amount of ranks and messages is huge</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/hybrid-node-2.png" />
+</figure>
+</div>
+</section>
 <section id="hybrid-programming-1" class="slide level1" data-background-size="contain">
 <h1>Hybrid programming</h1>
 <div class="column">
@@ -140,9 +154,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 <div class="column">
-<p>FIXME</p>
 <figure>
-<img src="img/supercomputer-node-hybrid.png" />
+<img src="img/hybrid-node-3.png" />
 </figure>
 </div>
 </section>
@@ -193,7 +206,7 @@ I&#39;m thread 2 in process 0</code></pre>
 <section id="thread-safe-initialization" class="slide level1" data-background-size="contain">
 <h1>Thread safe initialization</h1>
 <dl>
-<dt><code>MPI_Init_thread(required, provided)</code></dt>
+<dt>MPI_Init_thread(<code class="input">argc</code>, <code class="input">argv</code>, <code class="input">required</code>, <code class="output">provided</code>)</dt>
 <dd><dl>
 <dt><code class="input">argc</code>, <code class="input">argv</code></dt>
 <dd>Command line arguments in C
@@ -202,13 +215,13 @@ I&#39;m thread 2 in process 0</code></pre>
 </dd>
 <dd><dl>
 <dt><code class="input">required</code></dt>
-<dd>Required thread safety level, one of <code>MPI_THREAD_SINGLE &lt;  MPI_THREAD_FUNNELED &lt; MPI_THREAD_SERIALIZED &lt; MPI_THREAD_MULTIPLE</code>
+<dd>Required thread safety level, integer that is one of <code>MPI_THREAD_SINGLE &lt;  MPI_THREAD_FUNNELED &lt; MPI_THREAD_SERIALIZED &lt; MPI_THREAD_MULTIPLE</code>
 </dd>
 </dl>
 </dd>
 <dd><dl>
 <dt><code class="output">provided</code></dt>
-<dd>Supported thread safety level, one of <code>MPI_THREAD_SINGLE &lt;  MPI_THREAD_FUNNELED &lt; MPI_THREAD_SERIALIZED &lt; MPI_THREAD_MULTIPLE</code>
+<dd>Supported thread safety level, pointer to integer that is one of <code>MPI_THREAD_SINGLE &lt;  MPI_THREAD_FUNNELED &lt; MPI_THREAD_SERIALIZED &lt; MPI_THREAD_MULTIPLE</code>
 </dd>
 </dl>
 </dd>

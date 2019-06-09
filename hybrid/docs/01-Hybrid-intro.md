@@ -66,6 +66,19 @@ lang:   en
   - Threads are created and destroyed (parallel regions)
 </div>
 
+# Pure MPI programming
+
+<div class="column">
+  - One MPI task per core
+  - On a modern Supercomputer with 40 - 128 cores per node the amount of ranks and messages is huge
+</div>
+
+<div class="column">
+
+![](img/hybrid-node-2.png)
+
+</div>
+
 
 # Hybrid programming
 
@@ -78,10 +91,10 @@ lang:   en
 </div>
 
 <div class="column">
-FIXME
 
-![](img/supercomputer-node-hybrid.png)
+![](img/hybrid-node-3.png)
 </div>
+
 
 # Example: Hybrid hello
 
@@ -134,13 +147,13 @@ I'm thread 2 in process 0
 
 # Thread safe initialization
 
-`MPI_Init_thread(required, provided)`
+MPI_Init_thread(`argc`{.input}, `argv`{.input}, `required`{.input}, `provided`{.output})
   : `argc`{.input}, `argv`{.input}
     : Command line arguments in C
   : `required`{.input}
-    : Required thread safety level, one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
+    : Required thread safety level, integer that is one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
   : `provided`{.output}
-    : Supported thread safety level, one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
+    : Supported thread safety level, pointer to integer that is one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
   : `error`{.output}
     : Error value; in C/C++ it's the return value of the function,
       and in Fortran an additional output parameter

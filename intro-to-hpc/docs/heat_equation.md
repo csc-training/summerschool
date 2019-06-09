@@ -13,7 +13,7 @@ lang:   en
 * Particles are hard spheres
 * They interact with neighbours inside some effective range
 	- This way the particles appear “viscous”
-* See live demo with Sisunen
+* See live demo 
 
 </div>
 <div class=column>

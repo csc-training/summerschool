@@ -45,6 +45,9 @@ FIXME: missing figure?
 
 `reduction(operator:list)`
   : Performs reduction on the (scalar) variables in list
+  : `-`{.ghost}
+
+
 
 - Private reduction variable is created for each thread's partial result
 - Private reduction variable is initialized to operator's initial value
@@ -52,10 +55,55 @@ FIXME: missing figure?
   variables and result is aggregated to the shared variable
 
 
-# Reduction operators
 
-![](img/reduction-operators.png)
 
+# Reduction operators in C/C++ 
+<div class="column">
+
+| Operator | Initial value |
+|----------|---------------|
+| `+b`     | `0`           |
+| `-`      | `0`           |
+| `*`      | `1`           |
+| `&&`     | `1`           |
+| `||`     | `0`           |
+
+</div>
+
+<div class="column">
+| Bitwise Operator | Initial value |
+|----------|---------------|
+| `&`      | `~0`          |
+| `|`      | `0`           |
+| `^`      | `0`           |
+</div>
+
+# Reduction operators in Fortran
+
+<small>
+<div class="column">
+| Operator         | Initial value |
+|------------------|---------------|
+| `+`              | `0`           |
+| `-`              | `0`           |
+| `*`              | `1`           |
+| `max`            | least         |
+| `min`            | largest       |
+| `.and.`          | `.true.`      |
+| `.or.`           | `.false.`     |
+| `.eqv.`          | `.true.`      |
+| `.neqv.`         | `.false.`     |
+</div>
+
+<div class="column">
+| Bitwise Operator | Initial value |
+|------------------|---------------|
+| `.iand.`           | all bits on   |
+| `.ior.`            | `0`           |
+| `.ieor.`           | `0`           |
+</div>
+
+</small>
 
 # Race condition avoided with reduction
 
@@ -84,7 +132,7 @@ for(i=0; i < n; i++) {
 # Failing example
 
 ```c
-#pragma omp parallel shared(global_counter), private(tnum, delay, rem)
+#pragma omp parallel shared(global_counter) private(tnum, delay, rem)
 {
   tnum = omp_get_thread_num();
   delay.tv_sec = 0;
@@ -99,39 +147,59 @@ for(i=0; i < n; i++) {
 
 # Execution control constructs
 
-* **barrier**
-    - When a thread reaches a barrier it only continues after all the threads in the same thread team have reached it
-        * Each barrier must be encountered by all threads in a team, or none at all
-        * The sequence of work-sharing regions and barrier regions encountered must be same for all threads in team
-    - Implicit barrier at the end of: do, parallel, sections, single, workshare
+`barrier`
+  : `-`{.ghost}
+
+- When a thread reaches a barrier it only continues after all the threads in the same thread team have reached it
+    - Each barrier must be encountered by all threads in a team, or none at all
+    -The sequence of work-sharing regions and barrier regions encountered must be same for all threads in team
+- Implicit barrier at the end of: do, parallel, sections, single, workshare
 
 # Execution control constructs
 
-* **master**
-    - Specifies a region that should be executed only by the master thread
-    - Note that there is no implicit barrier at end
-* **single**
-    - Specifies that a regions should be executed only by a single (arbitrary) thread
-    - Other threads wait (implicit barrier)
+`master`
+  : `-`{.ghost}
+   
+- Specifies a region that should be executed only by the master thread
+- Note that there is no implicit barrier at end
+
+
+`single`
+  : `-`{.ghost}
+    
+- Specifies that a regions should be executed only by a single (arbitrary) thread
+- Other threads wait (implicit barrier)
 
 # Execution control constructs
 
-* **critical[(name)]**
-    - A section that is executed by only one thread at a time
-    - Optional name specifies global identifier for critical section
-    - Unnamed critical sections are treated as the same section
-* **flush[(name)]**
-    - Synchronizes the memory of all threads
-    - Only needed in some special cases
-    - Implicit flush at
-        * All explicit and implicit barriers
-        * Entry to / exit from critical section and lock routines
+`critical[(name)]`
+  : `name` Optional name specifies global identifier for critical section
+  : `-`{.ghost}
+  
+- A section that is executed by only one thread at a time
+- Unnamed critical sections are treated as the same section
 
 # Execution control constructs
-* **atomic**
-    - Strictly limited construct to update a single value, can not be applied to code blocks
-    - Only guarantees atomic update, does not protect function calls
-    - Can be faster on hardware platforms that support atomic updates
+
+`flush[(name)]`
+  : `-`{.ghost}
+
+<br>
+
+- Synchronizes the memory of all threads
+- Only needed in some special cases
+- Implicit flush at
+    - All explicit and implicit barriers
+    - Entry to / exit from critical section and lock routines
+
+# Execution control constructs
+
+`atomic`
+  : `-`{.ghost}
+
+- Strictly limited construct to update a single value, can not be applied to code blocks
+- Only guarantees atomic update, does not protect function calls
+- Can be faster on hardware platforms that support atomic updates
 
 # Example: reduction using critical section
 
@@ -192,9 +260,24 @@ int total = 0;
 * Function definitions are in
     - C/C++ header file `omp`.h
     - `omp_lib` Fortran module (`omp_lib`.h header in some implementations)
-* Two useful routines for distributing work load:
+* Two useful routines for finding out threadid, and number of threads:
     - `omp_get_num_threads()`
     - `omp_get_thread_num()`
+
+
+# Some useful environment variables
+
+|Variable          | Action                             |
+|---------         |------------------                        |
+|OMP_NUM_THREADS   |Number of threads to use                       |
+|OMP_SCHEDULE       |Default scheduling                           |
+|OMP_PROC_BIND       |Bind threads to CPUs                       |
+|OMP_PLACES       |Specify the bindings between threads and CPUs           |
+|OMP_DISPLAY_ENV   |Print the current OpenMP environment info on stderr           |
+|OMP_STACKSIZE       |Default size of thread stack                   |
+|OMP_THREAD_LIMIT  |Maximum number of threads to use                   |
+
+<!--
 
 # List of environment variables (OpenMP 4.5)
 
@@ -218,17 +301,6 @@ int total = 0;
 `OMP_DEFAULT_DEVICE`
 </div>
 
-# Some useful environment variables
-
-|Variable        | Action                             |
-|---------       |------------------                        |
-|OMP_NUM_THREADS   |Number of threads to use                       |
-|OMP_SCHEDULE       |Default scheduling                           |
-|OMP_PROC_BIND       |Bind threads to CPUs                       |
-|OMP_PLACES       |Specify the bindings between threads and CPUs           |
-|OMP_DISPLAY_ENV   |Print the current OpenMP environment info on stderr           |
-|OMP_STACKSIZE       |Default size of thread stack                   |
-|OMP_THREAD_LIMIT  |Maximum number of threads to use                   |
 
 # Parallelizing a loop with library functions
 
@@ -264,6 +336,7 @@ int total = 0;
 }
 
 ```
+-->
 
 # Summary
 
