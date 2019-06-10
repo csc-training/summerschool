@@ -137,7 +137,8 @@ MPI_Function(`arg1`{.input}, `arg2`{.output})
   : `arg1`{.input}
     : input arguments in red
   : `arg2`{.output}
-    : output arguments in blue
+    : output arguments in blue. Note that in C the output arguments are always
+      pointers to a variable
 
 
 # First five MPI commands
