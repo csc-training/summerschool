@@ -76,34 +76,39 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <section id="control-structures-if-else" class="slide level1" data-background-size="contain">
 <h1>Control structures // if – else</h1>
 <div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (i &lt; <span class="dv">100</span>) {
+    data[i] = x[i] + c;
+} <span class="cf">else</span> {
+    data[i] = x[i] - c;
+}</code></pre></div>
 <ul>
-<li>if (<em>conditional</em>) {<em>TRUE</em>} else {<em>FALSE</em>}</li>
+<li>if (<em>condition</em>) {<code class="input">TRUE</code>} else {<code class="output">FALSE</code>}</li>
 <li>negation: <strong>!</strong></li>
 <li>non-zero value == TRUE</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (i &lt; <span class="dv">100</span>) {
-    data[i] = x[i] + c
-} <span class="cf">else</span> {
-    data[i] = x[i] - c
-}</code></pre></div>
 </div>
 <div class="column">
-<p>Test operators:</p>
-<pre><code>== equal to
-
-!= not equal to
-
-&amp;&amp; AND
-
-|| OR
-
-&lt; less than
-
-&gt; greater than
-
-&lt;= less or equal
-
-&gt;= greater or equal</code></pre>
+<ul>
+<li><dl>
+<dt>Test operators:</dt>
+<dd>== equal to
+</dd>
+<dd>!= not equal to
+</dd>
+<dd>&amp;&amp; AND
+</dd>
+<dd>|| OR
+</dd>
+<dd>&lt; less than
+</dd>
+<dd>&gt; greater than
+</dd>
+<dd>&lt;= less or equal
+</dd>
+<dd>&gt;= greater or equal
+</dd>
+</dl></li>
+</ul>
 </div>
 </section>
 <section id="control-structures-if-else-1" class="slide level1" data-background-size="contain">
@@ -113,11 +118,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="cf">if</span> (x &gt; <span class="fl">1.2</span>) {
     y = <span class="dv">4</span>*x*r; <span class="co">// TRUE</span>
 } <span class="cf">else</span> {
-    y = <span class="fl">0.0</span>; <span class="co">// FALSE</span>
+    y = <span class="fl">0.0</span>;   <span class="co">// FALSE</span>
 }
 
-<span class="co">// else is optional</span>
 
+<span class="co">// else is optional</span>
 <span class="cf">if</span> (x || y) {
     z += x + y;
 }</code></pre></div>
@@ -125,31 +130,34 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="column">
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// complex if-elseif-else</span>
 
-<span class="cf">if</span> ((x &gt; <span class="fl">1.2</span>) &amp;&amp; (i != <span class="dv">0</span>) ){
-    y = x / i; <span class="co">// 1st TRUE</span>
-} <span class="cf">else</span> <span class="cf">if</span> (x &lt; <span class="fl">1.0</span> ) {
-    y = -x; <span class="co">// 1st FALSE</span>
-<span class="co">// 2nd TRUE</span>
+<span class="cf">if</span> ( (x &gt; <span class="fl">1.2</span>) &amp;&amp; (i != <span class="dv">0</span>) ){
+    y = x / i;     <span class="co">// 1st TRUE</span>
+} <span class="cf">else</span> <span class="cf">if</span> ( x &lt; <span class="fl">1.0</span> ) {
+    y = -x;        <span class="co">// 1st FALSE</span>
+                   <span class="co">// 2nd TRUE</span>
 } <span class="cf">else</span> {
-    y = <span class="fl">0.0</span>; <span class="co">// 1st, 2nd FALSE</span>
-}</code></pre></div>
+    y = <span class="fl">0.0</span>;       <span class="co">// 1st, 2nd FALSE</span>
+}
+
+
+</code></pre></div>
 </div>
 </section>
 <section id="control-structures-switch" class="slide level1" data-background-size="contain">
 <h1>Control structures // switch</h1>
-<pre><code>switch (...) {        // conditional expression 
-    case (...):      // test value
-        ...    // Do something
-        break;  // end of branch
-    default:      // default branch executed if nothing else matches
-        ...    // Do something
-    }</code></pre>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (...) {        <span class="co">// conditional expression </span>
+    <span class="cf">case</span> (...):       <span class="co">// test value</span>
+        ...           <span class="co">// do something</span>
+        <span class="cf">break</span>;        <span class="co">// end of branch</span>
+    <span class="cf">default</span>:          <span class="co">// default branch executed if nothing else matches</span>
+        ...           <span class="co">// do something</span>
+}</code></pre></div>
 <ul>
-<li><p>condition:</p>
+<li>condition:
 <ul>
 <li>single variable OR complex expression</li>
 </ul></li>
-<li><p>branch(=case) with matching value chosen</p></li>
+<li><p>branch (<em>= case</em>) with matching value chosen</p></li>
 <li><p>break stops branch</p></li>
 </ul>
 </section>
@@ -159,41 +167,40 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
  <span class="co">// value of integer i</span>
  <span class="cf">switch</span> (i) {
      <span class="cf">case</span> <span class="dv">1</span>:
-         printf(<span class="st">&quot;one</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+         printf(<span class="st">&quot;one</span><span class="sc">\n</span><span class="st">&quot;</span>);
          <span class="cf">break</span>;
      <span class="cf">case</span> <span class="dv">2</span>:
-        printf(<span class="st">&quot;two</span><span class="sc">\\</span><span class="st">n&quot;</span>);
-        <span class="cf">break</span>;
-    <span class="cf">default</span>:
-        printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
-        <span class="cf">break</span>; <span class="co">//  good style to break even the last branch</span>
+         printf(<span class="st">&quot;two</span><span class="sc">\n</span><span class="st">&quot;</span>);
+         <span class="cf">break</span>;
+     <span class="cf">default</span>:
+         printf(<span class="st">&quot;many</span><span class="sc">\n</span><span class="st">&quot;</span>);
+         <span class="cf">break</span>;              <span class="co">// good style to break even the last branch</span>
     }</code></pre></div>
 </section>
 <section id="control-structures-switch-2" class="slide level1" data-background-size="contain">
 <h1>Control structures // switch</h1>
 <div class="column">
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) { <span class="co">// A</span>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                                A
     <span class="cf">case</span> <span class="dv">1</span>:
-        printf(<span class="st">&quot;one</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        printf(<span class="st">&quot;one</span><span class="sc">\n</span><span class="st">&quot;</span>);
     <span class="cf">case</span> <span class="dv">2</span>:
-        printf(<span class="st">&quot;two</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        printf(<span class="st">&quot;two</span><span class="sc">\n</span><span class="st">&quot;</span>);
     <span class="cf">default</span>:
-        printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
-}
-
-<span class="cf">switch</span> (i) {  <span class="co">// C</span>
+        printf(<span class="st">&quot;many</span><span class="sc">\n</span><span class="st">&quot;</span>);
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                                B
     <span class="cf">case</span> <span class="dv">1</span>:
-        printf(<span class="st">&quot;one</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        printf(<span class="st">&quot;one</span><span class="sc">\n</span><span class="st">&quot;</span>);
         <span class="cf">break</span>;
     <span class="cf">case</span> <span class="dv">2</span>:
-        printf(<span class="st">&quot;two</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        printf(<span class="st">&quot;two</span><span class="sc">\n</span><span class="st">&quot;</span>);
         <span class="cf">break</span>;
     <span class="cf">default</span>:
-        printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
+        printf(<span class="st">&quot;many</span><span class="sc">\n</span><span class="st">&quot;</span>);
 }</code></pre></div>
 </div>
 <div class="column">
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) { <span class="co">// B</span>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                                C
     <span class="cf">default</span>:
         printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
     <span class="cf">case</span> <span class="dv">1</span>:
@@ -206,21 +213,36 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>In each case, what would be printed on the screen if i is 1, 2, or 3?</p>
 </div>
 </section>
+<section id="control-structures-operator" class="slide level1" data-background-size="contain">
+<h1>Control structures // ? : operator</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">Exp1 ? Exp2 : Exp3;</code></pre></div>
+<p>The value of a ? expression is determined like this:</p>
+<ul>
+<li>Exp1 is evaluated.
+<ul>
+<li>If it is <code class="input">TRUE</code>, then Exp2</li>
+<li>If Exp1 is <code class="output">FALSE</code>, then Exp3</li>
+</ul></li>
+</ul>
+</section>
 <section id="loops-while" class="slide level1" data-background-size="contain">
 <h1>Loops // while</h1>
 <ul>
 <li><strong>while (<em>condition</em>) {<em>code block</em>}</strong></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">i = <span class="dv">0</span> <span class="co">// loop i = 0..99 with an increment of one</span>
-<span class="cf">while</span> (i&lt;<span class="dv">100</span>) {
-    data\[i\] = x\[i\] + c
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">i = <span class="dv">0</span>;
+<span class="co">// loop i = 0..99 with an increment of one</span>
+<span class="cf">while</span> ( i &lt; <span class="dv">100</span> ) {
+    data[i] = x[i] + c;
     i++;
 }</code></pre></div>
 <ul>
 <li><p>Code block executes repeatedly as long as condition is TRUE</p></li>
 <li><p>Condition executed <em>before</em> iteration</p></li>
-<li><p><strong>do {...} while (...)</strong></p></li>
-<li><p>Block executed at least once</p></li>
+<li><p><strong>do {<em>code block</em>} while (<em>condition</em>)</strong></p>
+<ul>
+<li>Block executed at least once</li>
+</ul></li>
 </ul>
 </section>
 <section id="loops-for" class="slide level1" data-background-size="contain">
@@ -229,8 +251,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><strong>for (&lt;init&gt;; &lt;condition&gt;; &lt;after&gt;) {...}</strong></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// loop i = 0..99 with an increment of one</span>
-<span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;<span class="dv">100</span>; i++) {
-    data[i] = x[i] + c
+<span class="cf">for</span> ( i = <span class="dv">0</span>; i &lt; <span class="dv">100</span>; i++ ) {
+    data[i] = x[i] + c;
 }</code></pre></div>
 <ul>
 <li><strong>&lt;init&gt;</strong> execute once before entering the loop</li>
@@ -242,14 +264,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1>Loops // for</h1>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// loop using a for-statement</span>
  <span class="co">// i is incremented after each iteration</span>
- <span class="cf">for</span> (i=<span class="dv">0</span>; i\&lt;bar; i++) {
-     x += i\*<span class="fl">3.14</span> + c;
+ <span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;bar; i++) {
+     x += i*<span class="fl">3.14</span> + c;
      c = i + <span class="dv">2</span>;
  }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// the same loop but with a while-statement</span>
  i=<span class="dv">0</span>;
  <span class="cf">while</span> (i &lt; bar) {
-     x += i\*<span class="fl">3.14</span> + c;
+     x += i*<span class="fl">3.14</span> + c;
      c = i + <span class="dv">2</span>;
      i++;
  }</code></pre></div>
@@ -283,13 +305,36 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 }</code></pre></div>
 </div>
 </section>
+<section id="jump-statements-1" class="slide level1" data-background-size="contain">
+<h1>Jump statements</h1>
+<div class="column">
+<ul>
+<li><p><strong>goto</strong></p>
+<ul>
+<li>jump to a labeled statement in the same function</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// jump to a labeled statement</span>
+<span class="dt">int</span> a = <span class="dv">10</span>;
+LOOP:<span class="cf">do</span>
+{
+    <span class="cf">if</span>( a == <span class="dv">15</span>) {
+        a = a + <span class="dv">1</span>;
+        <span class="cf">goto</span> LOOP;
+    }
+    a++;
+}<span class="cf">while</span>( a &lt; <span class="dv">20</span> );</code></pre></div>
+</div>
+</section>
 <section id="summary" class="slide level1" data-background-size="contain">
 <h1>Summary</h1>
 <ul>
-<li>Conditional branching: <strong>if-else</strong>, <strong>switch</strong></li>
-<li>Looping as long as condition is true: <strong>while</strong>, <strong>do – while</strong></li>
-<li>Fixed number of loop passes: <strong>for</strong></li>
-<li>Jump statements: <strong>continue</strong>, <strong>break</strong></li>
+<li><p>Conditional branching: <strong>if-else</strong>, <strong>switch</strong></p></li>
+<li><p>Looping as long as condition is true: <strong>while</strong>, <strong>do – while</strong></p></li>
+<li><p>Fixed number of loop passes: <strong>for</strong></p></li>
+<li><p>Jump statements: <strong>continue</strong>, <strong>break</strong>, <strong>goto</strong></p></li>
 </ul>
 </section>
     </div>
