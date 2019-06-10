@@ -78,7 +78,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><p>C preprocessor is a part of the compiler that does initial text substitution, manipulation, inclusion and other activities before the actual translation is done</p>
 <ul>
-<li>We have already used <code>\#include</code>, which includes a file</li>
+<li>We have already used <strong><code>#include</code></strong>, which includes a file</li>
 </ul></li>
 <li><p>C relies heavily on preprocessor to accomplish</p>
 <ul>
@@ -91,12 +91,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <section id="directives" class="slide level1" data-background-size="contain">
 <h1>Directives</h1>
 <ul>
-<li><p>Preprocessor directives start with <code>#</code>, which has to be first token on a line</p></li>
+<li><p>Preprocessor directives start with <strong><code>#</code></strong>, which has to be first token on a line</p></li>
 <li><p>Directives are limited to one line</p>
 <ul>
-<li>Line can be continued using <code>\</code></li>
+<li>Line can be continued using <strong><code>\</code></strong></li>
 </ul></li>
-<li><p>Directives are not statements, do not end the line with <code>;</code></p></li>
+<li><p>Directives are not statements, do not end the line with <strong><code>;</code></strong></p></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// These are ok</span>
 <span class="pp">#define one</span>
@@ -108,9 +108,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <section id="define" class="slide level1" data-background-size="contain">
 <h1>#define</h1>
 <ul>
-<li><code>#define</code> can be used to define “objects” or macros</li>
-<li>It has the form of <code>#define</code> <em><code>identifier</code></em> <em><code>replacement</code></em></li>
-<li>After the definition all instances of <em><code>identifier</code></em> are replaced with <em><code>replacement</code></em></li>
+<li><p><strong>#define <em>identifier</em> <em>replacement</em></strong></p></li>
+<li><p><strong>#define</strong> can be used to define “objects” or macros</p></li>
+<li><p>After the definition all instances of <strong><em>identifier</em></strong> are replaced with <strong><em>replacement</em></strong></p></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// Example</span>
 <span class="pp">#define ONE 1</span>
@@ -119,12 +119,26 @@ printf(“Value is %i\n”, ONE);
 
 <span class="co">// Result: Value is 1</span></code></pre></div>
 </section>
+<section id="typedef-vs.-define" class="slide level1" data-background-size="contain">
+<h1>Typedef vs. #define</h1>
+<ul>
+<li><strong>Typedef</strong> is limited to giving symbolic names to types only
+<ul>
+<li><strong>#define</strong> can be used to define alias for values as well</li>
+</ul></li>
+<li><strong>Typedef</strong> interpretation is performed by the compiler
+<ul>
+<li><strong>#define</strong> statements are processed by the preprocessor</li>
+</ul></li>
+</ul>
+</section>
 <section id="directives-1" class="slide level1" data-background-size="contain">
 <h1>Directives</h1>
 <ul>
-<li><p><code>#ifdef, #ifndef</code></p>
+<li><p><strong>#ifdef, #ifndef</strong></p>
 <ul>
-<li>checks whether a macro is defined (/ not defined)</li>
+<li>checks whether a macro is defined (/ not defined)<br />
+</li>
 <li>if check is true, then includes the enclosed code</li>
 </ul></li>
 </ul>
@@ -142,16 +156,13 @@ printf(“Value is %i\n”, ONE);
 <section id="definitions-on-compiler-command-line" class="slide level1" data-background-size="contain">
 <h1>Definitions on compiler command line</h1>
 <ul>
-<li>It is also possible to set preprocessor definitions on the compiler command line</li>
-<li>Most compilers accept option <code>-D</code> for this purpose:
-<ul>
-<li><code>gcc -DONE=1 -DUSE_FEATURE</code><br />
-is equivalent with<br />
-</li>
-<li><code>#define ONE 1</code><br />
-<code>#define USE_FEATURE</code></li>
-</ul></li>
+<li><p>It is also possible to set preprocessor definitions on the compiler command line</p></li>
+<li><p>Most compilers accept option <code>-D</code> for this purpose:</p></li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">gcc</span> -DONE=1 -DUSE_FEATURE</code></pre></div>
+<p>is equivalent with</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#define ONE 1 </span>
+<span class="pp">#define USE_FEATURE</span></code></pre></div>
 </section>
 <section id="the-transition-from-code-to-program" class="slide level1" data-background-size="contain">
 <h1>The transition from Code to program</h1>
@@ -170,7 +181,7 @@ is equivalent with<br />
 </div>
 <div class="column">
 <figure>
-<img src="images/codeToP-01.svg" class="center" style="width:80.0%" />
+<img src="images/codeToP-02.svg" class="center" style="width:100.0%" />
 </figure>
 </div>
 </section>
@@ -193,16 +204,18 @@ is equivalent with<br />
 <h1>Compilation: working with several files</h1>
 <div class="column">
 <ul>
-<li>We use header files to define functions that we can use later</li>
-<li>Making .h files for your functions allows you to ‘include’ them in your code</li>
-<li>Function prototypes introduce the return value, name and argument of the function to the compiler</li>
+<li><p>We use header files to define functions that we can use later</p></li>
+<li><p>Making .h files for your functions allows you to ‘include’ them in your code</p></li>
+<li><strong>Function prototypes</strong> introduce the return value, name and argument of the function to the compiler</li>
 </ul>
 </div>
 <div class="column">
+<p>File: add.c</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// we implement the function ‘add’</span>
 <span class="dt">int</span> add(<span class="dt">int</span> first, <span class="dt">int</span> second){
     <span class="cf">return</span> first + second;
 }</code></pre></div>
+<p>File: add.h</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// we define the function ‘add’</span>
 <span class="pp">#ifndef ADD_H</span>
 <span class="pp">#define ADD_H</span>
@@ -215,7 +228,7 @@ is equivalent with<br />
 <section id="compilation-working-with-several-files-1" class="slide level1" data-background-size="contain">
 <h1>Compilation: working with several files</h1>
 <ul>
-<li>Another .c file can then use the function <code>add()</code> by including theheader file:</li>
+<li>Another .c file can then use the function <code>add()</code> by including the header file:</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// we can use #include &quot;&quot; or #include &lt;&gt;</span>
 <span class="pp">#include </span><span class="im">&quot;add.h&quot;</span>
@@ -229,30 +242,30 @@ is equivalent with<br />
 <ul>
 <li><p>So, this is how headers work:</p>
 <ul>
-<li>main() would be in one file, the others will contain functions</li>
-<li>Headers usually only contain definitions of data types, function prototypes and C preprocessor commands</li>
-<li>We include the header into the C files</li>
-<li>We compile the different files and the compiler calls the header file</li>
+<li><p>main() would be in one file, the others will contain functions</p></li>
+<li><p>Headers usually only contain definitions of data types, function prototypes and C preprocessor commands</p></li>
+<li><p>We include the header into the C files</p></li>
+<li><p>We compile the different files and the compiler calls the header file</p></li>
 </ul></li>
 </ul>
 </section>
 <section id="the-transition-from-code-to-program-1" class="slide level1" data-background-size="contain">
 <h1>The transition from Code to program</h1>
+<p>In complex projects:</p>
 <ul>
-<li>In complex projects:
-<ul>
-<li><p>Compile each source code file (.c) into an object file (.o)</p>
+<li>Compile each source code file (.c) into an object file (.o)</li>
+</ul>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">gcc</span> -c main.c
-$ <span class="fu">gcc</span> -c add.c</code></pre></div></li>
-<li><p>Link object files into a binary and execute the binary</p>
+$ <span class="fu">gcc</span> -c add.c</code></pre></div>
+<ul>
+<li>Link object files into a binary and execute the binary</li>
+</ul>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">gcc</span> -o foo main.o add.o
 $ <span class="ex">./foo</span>
 <span class="ex">Modify</span> “add.c”
 $ <span class="fu">gcc</span> –c add.c
 $ <span class="fu">gcc</span> -o foo main.o add.o
-$ <span class="ex">./foo</span></code></pre></div></li>
-</ul></li>
-</ul>
+$ <span class="ex">./foo</span></code></pre></div>
 </section>
 <section id="libraries" class="slide level1" data-background-size="contain">
 <h1>Libraries</h1>
@@ -260,24 +273,21 @@ $ <span class="ex">./foo</span></code></pre></div></li>
 <li><p>Libraries contain functions, data types and constants that can be used by multiple programs</p></li>
 <li><p>Two components:</p>
 <ul>
-<li>header: function etc. definitions</li>
+<li>header: function etc. definitions<br />
+</li>
 <li>object code in a library file (shared .so or static .a)</li>
 </ul></li>
-<li><p>When creating the executable binary file, an additional flag (<code>–llibrary_name</code>) is given to the linker to include the library</p></li>
+<li><p>When creating the executable binary file, an additional flag (<code>l_library name</code>) is given to the linker to include the library</p></li>
 </ul>
 </section>
 <section id="libraries-1" class="slide level1" data-background-size="contain">
 <h1>Libraries</h1>
 <div class="column">
 <ul>
-<li>Math operations
-<ul>
-<li><code>#include &lt;math.h&gt;</code><br />
-</li>
-<li>link with -lm flag!</li>
-</ul></li>
-<li>It includes the most common mathematical functions, e.g. <code>sin()</code>, <code>cos()</code>, <code>log()</code> etc.</li>
-<li>Also includes constants such as <code>M_PI</code> for π</li>
+<li>Math operations<br />
+<small> <code>#include &lt;math.h&gt;</code> + link with -<code>lm</code> flag! </small></li>
+<li><p>It includes the most common mathematical functions, e.g. <code>sin()</code>, <code>cos()</code>, <code>log()</code> etc.</p></li>
+<li><p>Also includes constants such as <code>M_PI</code> for π</p></li>
 <li>For power operation function <code>pow()</code> is used (^ is bit-wise XOR in C!)</li>
 </ul>
 </div>
@@ -286,14 +296,17 @@ $ <span class="ex">./foo</span></code></pre></div></li>
 <span class="dt">int</span> main () {
     <span class="dt">float</span> r, theta;
     <span class="dt">double</span> area, y;
-<span class="co">// radius and an angle</span>
+
+    <span class="co">// radius and an angle</span>
     r = <span class="fl">1.2</span>;
     theta = <span class="fl">0.456</span>;
-<span class="co">// calculate something</span>
+
+    <span class="co">// calculate something</span>
     area = M_PI * pow(r,<span class="dv">2</span>);
     y = sin(theta)+ cos(theta/<span class="fl">2.0</span>);
     y += exp(-<span class="fl">3.1</span> * area);
-<span class="co">// echo results</span>
+
+    <span class="co">// echo results</span>
     printf(<span class="st">&quot;area is %f</span><span class="sc">\n</span><span class="st">&quot;</span>, area);
     printf(<span class="st">&quot;y=%.18e</span><span class="sc">\n</span><span class="st">&quot;</span>, y);
 }</code></pre></div>
@@ -302,22 +315,24 @@ $ <span class="ex">./foo</span></code></pre></div></li>
 <section id="linking-with-libraries" class="slide level1" data-background-size="contain">
 <h1>Linking with libraries</h1>
 <ul>
-<li><p>Add libraries in linking phase</p>
+<li>Add libraries in linking phase</li>
+</ul>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">gcc</span> -c main.c
 $ <span class="fu">gcc</span> -o foo main.o -lm
-$<span class="ex">./foo</span></code></pre></div></li>
-</ul>
+$<span class="ex">./foo</span></code></pre></div>
 </section>
 <section id="compiler-optimization" class="slide level1" data-background-size="contain">
 <h1>Compiler optimization</h1>
 <ul>
-<li><p>Compiler flags provides possibilities of also for code optimization. Few instances of the optimization flags are<br />
-<code>-O, -O0, -O1, -O2, -O3, -Os.</code></p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">gcc</span> -O3 -o toroid -lm toroid.c
-$ <span class="ex">./toroid</span></code></pre></div></li>
-<li><p>For further information check the manual of gcc:</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">man</span> gcc</code></pre></div></li>
+<li>Compiler flags provides possibilities of also for code optimization. Few instances of the optimization flags are<br />
+<code>-O, -O0, -O1, -O2, -O3, -Os.</code></li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">gcc</span> -O3 -o toroid -lm toroid.c
+$ <span class="ex">./toroid</span></code></pre></div>
+<ul>
+<li>For further information check the manual of gcc:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">man</span> gcc</code></pre></div>
 </section>
 <section id="file-io" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
 <h1>File I/O</h1>
@@ -325,28 +340,56 @@ $ <span class="ex">./toroid</span></code></pre></div></li>
 <section id="file-io-1" class="slide level1" data-background-size="contain">
 <h1><code>File I/O</code></h1>
 <ul>
-<li><code>FILE* fopen(&lt;filename&gt;, &lt;mode&gt;)</code>
+<li><p><strong>FILE* fopen(&lt;filename&gt;, &lt;mode&gt;)</strong></p>
 <ul>
-<li><code>&lt;filename&gt;</code> name of a file</li>
-<li><code>&lt;mode&gt;</code> read (r), write (w), append (a), read+write (r+w), binary mode (rb) ...</li>
-<li><code>FILE</code> pointer to file</li>
+<li><dl>
+<dt><strong>&lt;filename&gt;</strong></dt>
+<dd>name of a file
+</dd>
+</dl></li>
+<li><dl>
+<dt><strong>&lt;mode&gt;</strong></dt>
+<dd>read (r), write (w), append (a)
+</dd>
+<dd>read+write (r+w)
+</dd>
+<dd>binary mode (rb) ...
+</dd>
+</dl></li>
+<li><dl>
+<dt><strong>FILE</strong></dt>
+<dd>pointer to file
+</dd>
+</dl></li>
 </ul></li>
-<li><code>fclose(FILE*)</code> closes file</li>
-<li><code>fflush(FILE*)</code> flush I/O buffer to disk</li>
+<li><p><strong>fclose(FILE*)</strong> closes file</p></li>
+<li><p><strong>fflush(FILE*)</strong> flush I/O buffer to disk</p></li>
 </ul>
 </section>
 <section id="file-io-2" class="slide level1" data-background-size="contain">
 <h1>File I/O</h1>
 <ul>
-<li><p><code>stdout, stderr</code></p>
+<li><p><strong>stdout, stderr</strong></p>
 <ul>
-<li>special output streams for STDOUT and STDERR (stdio.h)</li>
+<li>special output streams for <code>STDOUT</code> and <code>STDERR</code> (stdio.h)</li>
 </ul></li>
-<li><p><code>fprintf(&lt;file&gt;, &lt;template&gt; {,&lt;variables&gt;})</code></p>
+<li><p><strong>fprintf(&lt;file&gt;, &lt;template&gt; {,&lt;variables&gt;})</strong></p>
 <ul>
-<li><p><code>&lt;file&gt;</code> pointer to an open file</p></li>
-<li><p><code>&lt;template&gt;</code> arbitrary string with optional placeholders for data from variables</p></li>
-<li><p><code>&lt;variables&gt;</code> (optional) a list of variables</p></li>
+<li><dl>
+<dt><strong>&lt;file&gt;</strong></dt>
+<dd>pointer to an open file
+</dd>
+</dl></li>
+<li><dl>
+<dt><strong>&lt;template&gt;</strong></dt>
+<dd>arbitrary string with optional placeholders for data from variables
+</dd>
+</dl></li>
+<li><dl>
+<dt><strong>&lt;variables&gt;</strong></dt>
+<dd>(optional) a list of variables
+</dd>
+</dl></li>
 </ul></li>
 </ul>
 </section>
@@ -380,21 +423,21 @@ fprintf(stderr,<span class="st">&quot;Pi equals to %.2f (at least to the %dnd de
 <section id="file-io-5" class="slide level1" data-background-size="contain">
 <h1>File I/O</h1>
 <ul>
-<li><p><code>fgets(char *buffer, int size, FILE *stream)</code></p>
+<li><p><strong>fgets(char *buffer, int size, FILE *stream)</strong></p>
 <ul>
-<li>Reads a single line from file pointer stream</li>
-<li>Assigns string to buffer</li>
-<li>The size parameter defines the max. size of characters to read.</li>
+<li><p>Reads a single line from file pointer stream</p></li>
+<li><p>Assigns string to buffer</p></li>
+<li><p>The size parameter defines the max. size of characters to read.</p></li>
 </ul></li>
 </ul>
 </section>
 <section id="file-io-6" class="slide level1" data-background-size="contain">
 <h1>File I/O</h1>
 <ul>
-<li><p><code>fscanf(FILE *stream, char *format, ...)</code></p>
+<li><p><strong>fscanf(FILE *stream, char *format, ...)</strong></p>
 <ul>
-<li>scan input according to format e.g. &quot;name: %s age: %d&quot;</li>
-<li>store values of placeholders (%s etc.) to pointers</li>
+<li><p>scan input according to format e.g. <code>&quot;name: %s age: %d&quot;</code></p></li>
+<li><p>store values of placeholders (%s etc.) to pointers</p></li>
 </ul></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// read max 64 characters from FILE *fp</span>
@@ -407,13 +450,13 @@ fscanf(fp, <span class="st">&quot;name: %s age: %d&quot;</span>, &amp;name, &amp
 <section id="summary" class="slide level1" data-background-size="contain">
 <h1>Summary</h1>
 <ul>
-<li>Basic syntax</li>
-<li>Overall structure: <em>#include, functions, main()</em></li>
-<li>Data types: <em>int, float, ..., struct</em></li>
-<li>Control structures: <em>for, while, if/else, switch/case</em></li>
-<li>Memory management: <em>pointers, malloc(), ...</em></li>
-<li>I/O: <em>files, stdin, stdout</em></li>
-<li>Compiling &amp; linking</li>
+<li><p>Basic syntax</p></li>
+<li><p>Overall structure: <strong>#include</strong>, <strong>functions</strong>, <strong>main()</strong></p></li>
+<li><p>Data types: <strong>int</strong>, <strong>float</strong>, <strong>...</strong>, <strong>struct</strong></p></li>
+<li><p>Control structures: <strong>for</strong>, <strong>while</strong>, <strong>if/else</strong>, <strong>switch/case</strong></p></li>
+<li><p>Memory management: <strong>pointers</strong>, <strong>malloc()</strong>, <strong>...</strong></p></li>
+<li><p>I/O: <strong>files</strong>, <strong>stdin</strong>, <strong>stdout</strong></p></li>
+<li><p>Compiling &amp; linking</p></li>
 </ul>
 </section>
 <section id="web-resources" class="slide level1" data-background-size="contain">

@@ -13,7 +13,7 @@ lang:   en
 substitution, manipulation, inclusion and other activities before the
 actual translation is done
 
-    - We have already used `\#include`, which includes a file
+    - We have already used **`#include`**, which includes a file
 
 - C relies heavily on preprocessor to accomplish
 
@@ -21,16 +21,18 @@ actual translation is done
     - Source code control
     - Debugging
 
+
+
 # Directives
 
-- Preprocessor directives start with `#`, which has to be first token
+- Preprocessor directives start with **`#`**, which has to be first token
 on a line
 
 - Directives are limited to one line
 
-    - Line can be continued using `\`
+    - Line can be continued using **`\`**
 
-- Directives are not statements, do not end the line with `;`
+- Directives are not statements, do not end the line with **`;`**
 
 ```c
 // These are ok
@@ -42,11 +44,13 @@ int i; #define one
 ```
 
 
-# \#define
 
-  - `#define` can be used to define “objects” or macros
-  - It has the form of `#define` *`identifier`* *`replacement`*
-  - After the definition all instances of *`identifier`* are replaced with *`replacement`*
+# \#define
+- **\#define _identifier_  _replacement_**
+
+- **\#define** can be used to define “objects” or macros
+
+- After the definition all instances of **_identifier_** are replaced with **_replacement_**
 
 ```c
 // Example
@@ -56,11 +60,23 @@ printf(“Value is %i\n”, ONE);
 
 // Result: Value is 1
 ```
+
+
+
+# Typedef vs. \#define
+- **Typedef** is limited to giving symbolic names to types only  
+    - **\#define** can be used to define alias for values as well
+
+- **Typedef** interpretation is performed by the compiler  
+    - **\#define** statements are processed by the preprocessor
+
+
+
 # Directives
 
-- `#ifdef, #ifndef`
+- **\#ifdef, \#ifndef**
 
-    - checks whether a macro is defined (/ not defined)
+    - checks whether a macro is defined (\/ not defined)  
     - if check is true, then includes the enclosed code
 
 ```c
@@ -76,14 +92,25 @@ printf(“Value is %i\n”, ONE);
 #endif
 ```
 
+
+
 # Definitions on compiler command line
 
-  - It is also possible to set preprocessor definitions on the compiler command line
-  - Most compilers accept option `-D` for this purpose:  
-     - `gcc -DONE=1 -DUSE_FEATURE`  
-   is equivalent with   
-     - `#define ONE 1 `  
-       `#define USE_FEATURE`
+- It is also possible to set preprocessor definitions on the compiler command line
+
+- Most compilers accept option `-D` for this purpose:
+
+```bash
+gcc -DONE=1 -DUSE_FEATURE
+```
+  is equivalent with
+
+```c
+#define ONE 1 
+#define USE_FEATURE
+```
+
+
 
 # The transition from Code to program
 <div class=column>
@@ -99,8 +126,10 @@ printf(“Value is %i\n”, ONE);
 - The result is an executable binary file
 </div>
 <div class=column>
-![](images/codeToP-01.svg){.center width=80%}
+![](images/codeToP-02.svg){.center width=100%}
 </div>
+
+
 
 # `Working with several files and libraries`
 
@@ -114,22 +143,27 @@ printf(“Value is %i\n”, ONE);
 
     - Most IDEs also provide a tools for building this kind of compilation
 
+
+
 # Compilation: working with several files
 <div class=column>
-  - We use header files to define functions that we can use later
-  - Making .h files for your functions allows you to ‘include’ them in your code
-  - Function prototypes introduce the return value, name and argument of the function
-  to the compiler
+- We use header files to define functions that we can use later
+
+- Making .h files for your functions allows you to ‘include’ them in your code
+
+- **Function prototypes** introduce the return value, name and argument of the function to the compiler
 </div>
 <div class=column>
 
+File: add.c
 ```c
 // we implement the function ‘add’
 int add(int first, int second){
-	return first + second;
+    return first + second;
 }
 ```
 
+File: add.h
 ```c
 // we define the function ‘add’
 #ifndef ADD_H
@@ -142,37 +176,48 @@ int add(int first, int second);
 </div>
 
 
+
 # Compilation: working with several files
 
-  - Another .c file can then use the function `add()` by including theheader file:
+- Another .c file can then use the function `add()` by including the header file:
 
 ```c
 // we can use #include "" or #include <>
 #include "add.h"
 
 int example(int x){
-	return add(x, add(x,x));
+    return add(x, add(x,x));
 }
 ```
+
+
 
 # Compilation: working with several files
 
 - So, this is how headers work:
 
-    - main() would be in one file, the others will contain functions
-    - Headers usually only contain definitions of data types, function prototypes and C preprocessor commands
-    - We include the header into the C files
-    - We compile the different files and the compiler calls the header file
+    - main() would be in one file, the others will contain functions  
+
+    - Headers usually only contain definitions of data types, function prototypes and C preprocessor commands  
+
+    - We include the header into the C files  
+
+    - We compile the different files and the compiler calls the header file  
+
+
 
 # The transition from Code to program
 
-- In complex projects:
-	* Compile each source code file (.c) into an object file (.o)
+In complex projects:
+
+- Compile each source code file (.c) into an object file (.o)
+
 ```bash
 $ gcc -c main.c
 $ gcc -c add.c
 ```
-	* Link object files into a binary and execute the binary
+- Link object files into a binary and execute the binary
+
 ```bash
 $ gcc -o foo main.o add.o
 $ ./foo
@@ -182,6 +227,8 @@ $ gcc -o foo main.o add.o
 $ ./foo
 ```
 
+
+
 # Libraries
 
 - Libraries contain functions, data types and constants that can be used
@@ -189,95 +236,121 @@ by multiple programs
 
 - Two components:
 
-    - header: function etc. definitions
+    - header: function etc. definitions  
     - object code in a library file (shared .so or static .a)
 
 - When creating the executable binary file, an additional flag
-(`–llibrary_name`) is given to the linker to include the library
+(`l_library name`) is given to the linker to include the library
+
+
 
 # Libraries
 <div class=column>
-  - Math operations  
-      - `#include <math.h>`  
-      - link with -lm flag!
-  - It includes the most common mathematical functions, e.g. `sin()`, `cos()`, `log()` etc.
-  - Also includes constants such as `M_PI` for π
-  - For power operation function `pow()` is used (^ is bit-wise XOR in C!)
+- Math operations  
+<small>
+    `#include <math.h>`  +  link with -`lm` flag!
+</small>
+- It includes the most common mathematical functions, e.g. `sin()`, `cos()`, `log()` etc.
+
+- Also includes constants such as `M_PI` for π
+
+- For power operation function `pow()` is used (^ is bit-wise XOR in C!)
 </div>
 <div class=column>
 
 ```c
 #include <math.h>
 int main () {
-	float r, theta;
-	double area, y;
-// radius and an angle
-	r = 1.2;
-	theta = 0.456;
-// calculate something
-	area = M_PI * pow(r,2);
-	y = sin(theta)+ cos(theta/2.0);
-	y += exp(-3.1 * area);
-// echo results
-	printf("area is %f\n", area);
-	printf("y=%.18e\n", y);
+    float r, theta;
+    double area, y;
+
+    // radius and an angle
+    r = 1.2;
+    theta = 0.456;
+
+    // calculate something
+    area = M_PI * pow(r,2);
+    y = sin(theta)+ cos(theta/2.0);
+    y += exp(-3.1 * area);
+
+    // echo results
+    printf("area is %f\n", area);
+    printf("y=%.18e\n", y);
 }
 ```
 </div>
 
 
 
-
-
 # Linking with libraries
 
+- Add libraries in linking phase
 
-  - Add libraries in linking phase
 ```bash
 $ gcc -c main.c
 $ gcc -o foo main.o -lm
 $./foo
 ```
 
+
+
 # Compiler optimization
 
- - Compiler flags provides possibilities of also for code optimization. Few instances of the optimization flags are  
+- Compiler flags provides possibilities of also for code optimization. Few instances of the optimization flags are  
  `-O, -O0, -O1, -O2, -O3, -Os.`
+
 ```bash
 $ gcc -O3 -o toroid -lm toroid.c
 $ ./toroid
 ```
-  - For further information check the manual of gcc:
+
+- For further information check the manual of gcc:
+
 ```bash
 $ man gcc
 ```
+
 
 
 # File I/O{.section}
 
 # `File I/O`
 
-  - `FILE* fopen(<filename>, <mode>)`
-  	* `<filename>` name of a file
-	* `<mode>` read (r), write (w), append (a), read+write (r+w), binary mode (rb) ...
-	* `FILE` pointer to file
-  - `fclose(FILE*)` closes file
-  - `fflush(FILE*)` flush I/O buffer to disk
+- **FILE\* fopen(\<filename\>, \<mode\>)**
+
+    - **\<filename\>**
+      : name of a file  
+    - **\<mode\>**
+      : read (r), write (w), append (a)
+      : read+write (r+w)
+      : binary mode (rb) ...  
+    - **FILE**
+      : pointer to file  
+
+- **fclose(FILE\*)** closes file
+
+- **fflush(FILE\*)** flush I\/O buffer to disk
+
 
 
 # File I/O
 
-- `stdout, stderr`
+- **stdout, stderr**
 
-    - special output streams for STDOUT and STDERR (stdio.h)
+    - special output streams for `STDOUT` and `STDERR` (stdio.h)
 
-- `fprintf(<file>, <template> {,<variables>})`
+- **fprintf(\<file\>, \<template\> {,\<variables\>})**
 
- 	* `<file>` pointer to an open file
+    - **\<file\>**
+      : pointer to an open file
 
- 	* `<template>` arbitrary string with optional placeholders for data from variables
+    - **\<template\>**
+      : arbitrary string with optional placeholders for data from variables
 
- 	* `<variables>` (optional) a list of variables
+    - **\<variables\>**
+      : (optional) a list of variables
+
+
 
 # File I/O
 
@@ -292,6 +365,9 @@ fprintf(stderr,"Pi equals to %.2f (at least to the %dnd decimal).\n",3.14159265,
 //output (STDERR):
 // Pi equals to 3.14 (at least to the 2nd decimal).
 ```
+
+
+
 # File I/O
 
 ```c
@@ -310,19 +386,25 @@ fprintf(stderr,"Pi equals to %.2f (at least to the %dnd decimal).\n",3.14159265,
 ```
 
 
+
 # File I/O
 
-- `fgets(char *buffer, int size, FILE *stream)`
+- **fgets(char \*buffer, int size, FILE \*stream)**
 
     - Reads a single line from file pointer stream
+
     - Assigns string to buffer
+
     - The size parameter defines the max. size of characters to read.
+
+
 
 # File I/O
 
-- `fscanf(FILE *stream, char *format, ...)`
+- **fscanf(FILE \*stream, char \*format, ...)**
 
-    - scan input according to format e.g. "name: %s age: %d"
+    - scan input according to format e.g. `"name: %s age: %d"`
+
     - store values of placeholders (%s etc.) to pointers
 
 ```c
@@ -334,13 +416,21 @@ fgets(buffer, 64, fp);
 fscanf(fp, "name: %s age: %d", &name, &age);
 ```
 
+
+
 # Summary
   - Basic syntax
-  - Overall structure: _#include, functions, main()_
-  - Data types: _int, float, ..., struct_
-  - Control structures: _for, while, if/else, switch/case_
-  - Memory management: _pointers, malloc(), ..._
-  - I/O: _files, stdin, stdout_
+
+  - Overall structure: **\#include**, **functions**, **main()**
+
+  - Data types: **int**, **float**, **...**, **struct**
+
+  - Control structures: **for**, **while**, **if\/else**, **switch\/case**
+
+  - Memory management: **pointers**, **malloc()**, **...**
+
+  - I/O: **files**, **stdin**, **stdout**
+
   - Compiling & linking
 
 # Web resources

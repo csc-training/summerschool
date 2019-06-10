@@ -99,16 +99,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <section id="arrays-1" class="slide level1" data-background-size="contain">
 <h1>Arrays</h1>
 <div class="column">
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// integer vector</span>
- <span class="dt">int</span> triplet[<span class="dv">3</span>];
- triplet[<span class="dv">0</span>] = <span class="dv">1</span>;
- triplet[<span class="dv">1</span>] = <span class="dv">2</span> * triplet[<span class="dv">0</span>];
- triplet[<span class="dv">2</span>] =
- triplet[<span class="dv">0</span>] + triplet[<span class="dv">1</span>];
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// integer vector</span>
+<span class="dt">int</span> triplet[<span class="dv">3</span>];
+triplet[<span class="dv">0</span>] = <span class="dv">1</span>;
+triplet[<span class="dv">1</span>] = <span class="dv">2</span> * triplet[<span class="dv">0</span>];
+triplet[<span class="dv">2</span>] = triplet[<span class="dv">0</span>] + triplet[<span class="dv">1</span>];
 
- <span class="co">// string</span>
+
+<span class="co">// string</span>
 <span class="dt">char</span> word[] = <span class="st">&quot;hello!&quot;</span>;
-printf(word); <span class="co">// hello!</span></code></pre></div>
+printf(word); <span class="co">// hello!</span>
+
+
+
+
+</code></pre></div>
 </div>
 <div class="column">
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// 2-dim matrix</span>
@@ -118,38 +123,60 @@ printf(word); <span class="co">// hello!</span></code></pre></div>
 <span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;<span class="dv">5</span>; i++){
     <span class="cf">for</span> (j=<span class="dv">0</span>; j&lt;<span class="dv">5</span>; j++){
         matrix[i][j] = i*j;
-        }
-     }
+    }
+}
 
 <span class="co">// print the 2nd row</span>
 <span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;<span class="dv">5</span>; i++){
     printf(<span class="st">&quot;%f &quot;</span>, matrix[<span class="dv">1</span>][i]);
-    }</code></pre></div>
+}</code></pre></div>
 </div>
 </section>
 <section id="pointer-arithmetic-and-arrays" class="slide level1" data-background-size="contain">
 <h1>Pointer arithmetic and arrays</h1>
 <ul>
-<li><p>Pointers can be added to or subtracted from</p>
+<li>Pointers can be added to or subtracted from
 <ul>
-<li>This shifts the pointer to a new memory address before or after the current one</li>
-<li>Each step is <strong>sizeof(pointer_datatype)</strong> bytes, i.e. the memory size of the pointer's data type (Watch out for out-of-bounds memory errors!)</li>
+<li>This shifts the pointer to a new memory address before or after the current one<br />
+</li>
+<li>Each step is <strong>sizeof(pointer_datatype)</strong> bytes, i.e. the memory size of the pointer's data type</li>
 </ul></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">float</span> vector[<span class="dv">10</span>], *ptr;
 
-ptr = &amp;vector[<span class="dv">0</span>]; <span class="co">// *ptr -&gt; vector[0]</span>
-ptr = vector; <span class="co">// name of array works as pointer to the beginning</span>
-ptr++; <span class="co">// *ptr -&gt; vector[1]</span>
-ptr += <span class="dv">3</span>; <span class="co">// *ptr -&gt; vector[4]</span>
-ptr--; <span class="co">// *ptr -&gt; vector[3]</span></code></pre></div>
+ptr = &amp;vector[<span class="dv">0</span>];   <span class="co">// *ptr -&gt; vector[0]</span>
+ptr = vector;       <span class="co">// name of array works as pointer to the beginning</span>
+ptr++;              <span class="co">// *ptr -&gt; vector[1]</span>
+ptr += <span class="dv">3</span>;           <span class="co">// *ptr -&gt; vector[4]</span>
+ptr--;              <span class="co">// *ptr -&gt; vector[3]</span></code></pre></div>
+<p><strong><em>Watch out for out-of-bounds memory errors!</em></strong></p>
+</section>
+<section id="arrays-in-functions" class="slide level1" data-background-size="contain">
+<h1>Arrays in functions</h1>
+<ul>
+<li>Passing arrays to functions
+<ul>
+<li>Pass a pointer to an array by specifying the array's name</li>
+</ul></li>
+<li>Return array from a function</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> myFunction(<span class="dt">int</span> *param) {
+    ...
+}
+
+<span class="dt">int</span> * myFunction() {
+    <span class="dt">int</span> r[<span class="dv">10</span>];
+    ...
+    <span class="cf">return</span> r;
+}</code></pre></div>
 </section>
 <section id="structures" class="slide level1" data-background-size="contain">
 <h1>Structures</h1>
 <div class="column">
 <ul>
-<li>Multiple variables of arbitrary type can be grouped together in a -*struct**</li>
-<li>Member <strong>y</strong> of struct <strong>x</strong> accessed with <strong>x.y</strong> (or <strong>x-&gt;y</strong> if x is a pointer)</li>
+<li><p>Multiple variables of arbitrary type can be grouped together in a <strong>struct</strong></p></li>
+<li><p>Member <strong>y</strong> of struct <strong>x</strong> accessed with <strong>x.y</strong> (or <strong>x-&gt;y</strong> if x is a pointer)</p></li>
+<li><p><strong>Typedef</strong> keyword gives a name to a data type, also user-defined ones</p></li>
 </ul>
 </div>
 <div class="column">
@@ -158,6 +185,9 @@ ptr--; <span class="co">// *ptr -&gt; vector[3]</span></code></pre></div>
     <span class="dt">int</span> i;
     <span class="dt">float</span> f;
 } one;
+
+<span class="kw">struct</span> s x;
+x.i = <span class="dv">4</span>;
 
 <span class="kw">typedef</span> <span class="kw">struct</span> {
     <span class="dt">int</span> count;
@@ -169,7 +199,9 @@ a.count = <span class="dv">7</span>;
 a.price = <span class="fl">1.24</span>;
 cost = a.count * a.price;
 
+
 <span class="co">// with pointers</span>
+
 apple *ptr;
 ptr = &amp;a;
 c = ptr-&gt;count;
