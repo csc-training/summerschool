@@ -69,7 +69,7 @@ end program switch
 - Procedures can also be assigned to operators
     - For example **`*`**, **`+`**, **`-`**, **`==`**, **`<`**, **`>`**
     - Own operator names can be used too, for example **`.dot.`**
-- Especially useful together with user-defined datatypes
+- Especially useful together with user-defined data types
 
 # Overloading operators
 

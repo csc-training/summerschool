@@ -22,7 +22,7 @@
     - *Grouping* routines and data structures
     - Defining *generic procedures* and custom operators
 
-# Module defition and usage
+# Module definition and usage
 
 - Module is defined with the `module` keyword and used from main program 
   or other modules with the `use` keyword
@@ -105,7 +105,7 @@ gfortran -o myexe mymod.o myprog.o
 # Defining procedures in modules
 
 - In most cases, procedures should be defined in modules
-- Prodecures are defined after **contains** keyword
+- Procedures are defined after **contains** keyword
 
 <div class="column">
 Function definition in module
@@ -141,7 +141,7 @@ end program testprog
 # Defining procedures
 
 - In most cases, procedures should be defined in modules
-- Prodecures are defined after **contains** keyword
+- Procedures are defined after **contains** keyword
 
 <div class="column">
 Subroutine definition in module
@@ -414,7 +414,7 @@ end subroutine mySubroutine
 # Summary
 
 - Diving program into modules makes it easer to develop and debug
-- Fortran modules can contain procedures, variables and type defintions
-- Prodedures should in most cases be implemented in modules
+- Fortran modules can contain procedures, variables and type definitions
+- Procedures should in most cases be implemented in modules
 - By default, Fortran procedures can modify arguments
     - intent attributes can be used for avoiding unwanted side effects
