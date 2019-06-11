@@ -67,8 +67,11 @@ GPAW
 <div class=column>
 PlasmaBox
 
-- TODO
-
+- Main structure described in a publication 
+- GitHub Readmes + www-site with sphinx
+- API automatically documented with doxygen+breathe
+- <https://github.com/natj/plasmabox>
+- <https://plasmabox.readthedocs.io>
 </div>
 
 # Testing
@@ -192,7 +195,9 @@ GPAW
 <div class=column>
 PlasmaBox
 
-- TODO
+- Each module covered with unit tests (pytest)
+- Physics tested with bigger integration tests
+- Continuous integration with TravisCI
 
 </div>
 
