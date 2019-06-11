@@ -73,8 +73,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <section id="control-structures-and-loops" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
 <h1>Control structures and loops</h1>
 </section>
-<section id="control-structures-if-else" class="slide level1" data-background-size="contain">
-<h1>Control structures // if – else</h1>
+<section id="if-else" class="slide level1" data-background-size="contain">
+<h1>if – else</h1>
 <div class="column">
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (i &lt; <span class="dv">100</span>) {
     data[i] = x[i] + c;
@@ -83,36 +83,36 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 }</code></pre></div>
 <ul>
 <li>if (<em>condition</em>) {<code class="input">TRUE</code>} else {<code class="output">FALSE</code>}</li>
-<li>negation: <strong>!</strong></li>
-<li>non-zero value == TRUE</li>
+<li>negation: <strong><code>!</code></strong></li>
+<li>non-zero value == <code>TRUE</code></li>
 </ul>
 </div>
 <div class="column">
 <ul>
 <li><dl>
 <dt>Test operators:</dt>
-<dd>== equal to
+<dd><code>==</code> equal to
 </dd>
-<dd>!= not equal to
+<dd><code>!=</code> not equal to
 </dd>
-<dd>&amp;&amp; AND
+<dd><code>&amp;&amp;</code> AND
 </dd>
-<dd>|| OR
+<dd><code>||</code> OR
 </dd>
-<dd>&lt; less than
+<dd><code>&lt;</code> less than
 </dd>
-<dd>&gt; greater than
+<dd><code>&gt;</code> greater than
 </dd>
-<dd>&lt;= less or equal
+<dd><code>&lt;=</code> less or equal
 </dd>
-<dd>&gt;= greater or equal
+<dd><code>&gt;=</code> greater or equal
 </dd>
 </dl></li>
 </ul>
 </div>
 </section>
-<section id="control-structures-if-else-1" class="slide level1" data-background-size="contain">
-<h1>Control structures // if – else</h1>
+<section id="if-else-1" class="slide level1" data-background-size="contain">
+<h1>if – else</h1>
 <div class="column">
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// simple if-else</span>
 <span class="cf">if</span> (x &gt; <span class="fl">1.2</span>) {
@@ -143,8 +143,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </code></pre></div>
 </div>
 </section>
-<section id="control-structures-switch" class="slide level1" data-background-size="contain">
-<h1>Control structures // switch</h1>
+<section id="switch" class="slide level1" data-background-size="contain">
+<h1>switch</h1>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (...) {        <span class="co">// conditional expression </span>
     <span class="cf">case</span> (...):       <span class="co">// test value</span>
         ...           <span class="co">// do something</span>
@@ -161,8 +161,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>break stops branch</p></li>
 </ul>
 </section>
-<section id="control-structures-switch-1" class="slide level1" data-background-size="contain">
-<h1>Control structures // switch</h1>
+<section id="switch-1" class="slide level1" data-background-size="contain">
+<h1>switch</h1>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// simple switch based on the</span>
  <span class="co">// value of integer i</span>
  <span class="cf">switch</span> (i) {
@@ -177,10 +177,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
          <span class="cf">break</span>;              <span class="co">// good style to break even the last branch</span>
     }</code></pre></div>
 </section>
-<section id="control-structures-switch-2" class="slide level1" data-background-size="contain">
-<h1>Control structures // switch</h1>
+<section id="switch-2" class="slide level1" data-background-size="contain">
+<h1>switch</h1>
 <div class="column">
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                                A
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                            A
     <span class="cf">case</span> <span class="dv">1</span>:
         printf(<span class="st">&quot;one</span><span class="sc">\n</span><span class="st">&quot;</span>);
     <span class="cf">case</span> <span class="dv">2</span>:
@@ -188,7 +188,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="cf">default</span>:
         printf(<span class="st">&quot;many</span><span class="sc">\n</span><span class="st">&quot;</span>);
 }</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                                B
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                            B
     <span class="cf">case</span> <span class="dv">1</span>:
         printf(<span class="st">&quot;one</span><span class="sc">\n</span><span class="st">&quot;</span>);
         <span class="cf">break</span>;
@@ -200,7 +200,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 }</code></pre></div>
 </div>
 <div class="column">
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                                C
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">switch</span> (i) {                            C
     <span class="cf">default</span>:
         printf(<span class="st">&quot;many</span><span class="sc">\\</span><span class="st">n&quot;</span>);
     <span class="cf">case</span> <span class="dv">1</span>:
@@ -213,10 +213,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>In each case, what would be printed on the screen if i is 1, 2, or 3?</p>
 </div>
 </section>
-<section id="control-structures-operator" class="slide level1" data-background-size="contain">
-<h1>Control structures // ? : operator</h1>
+<section id="operator" class="slide level1" data-background-size="contain">
+<h1><code>?</code> <code>:</code> operator</h1>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">Exp1 ? Exp2 : Exp3;</code></pre></div>
-<p>The value of a ? expression is determined like this:</p>
+<p>The value of a <code>?</code> expression is determined like this:</p>
 <ul>
 <li>Exp1 is evaluated.
 <ul>
@@ -225,8 +225,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul>
 </section>
-<section id="loops-while" class="slide level1" data-background-size="contain">
-<h1>Loops // while</h1>
+<section id="while" class="slide level1" data-background-size="contain">
+<h1>while</h1>
 <ul>
 <li><strong>while (<em>condition</em>) {<em>code block</em>}</strong></li>
 </ul>
@@ -245,8 +245,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul>
 </section>
-<section id="loops-for" class="slide level1" data-background-size="contain">
-<h1>Loops // for</h1>
+<section id="for" class="slide level1" data-background-size="contain">
+<h1>for</h1>
 <ul>
 <li><strong>for (&lt;init&gt;; &lt;condition&gt;; &lt;after&gt;) {...}</strong></li>
 </ul>
@@ -260,8 +260,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><strong>&lt;after&gt;</strong> execute after each iteration</li>
 </ul>
 </section>
-<section id="loops-for-1" class="slide level1" data-background-size="contain">
-<h1>Loops // for</h1>
+<section id="for-1" class="slide level1" data-background-size="contain">
+<h1>for</h1>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"> <span class="co">// loop using a for-statement</span>
  <span class="co">// i is incremented after each iteration</span>
  <span class="cf">for</span> (i=<span class="dv">0</span>; i&lt;bar; i++) {

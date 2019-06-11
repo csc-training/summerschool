@@ -186,7 +186,7 @@ printf(“Value is %i\n”, ONE);
 </div>
 </section>
 <section id="working-with-several-files-and-libraries" class="slide level1" data-background-size="contain">
-<h1><code>Working with several files and libraries</code></h1>
+<h1>Working with several files and libraries</h1>
 <ul>
 <li><p>Advantages:</p>
 <ul>
@@ -194,7 +194,7 @@ printf(“Value is %i\n”, ONE);
 <li>Function definitions can be re-used in other programs</li>
 <li>Changing a file, only that file needs to be re-compiled to rebuild the program</li>
 </ul></li>
-<li><p>UNIX ‘make’ can be very useful tool for this!</p>
+<li><p>UNIX command <strong><code>make</code></strong> can be very useful tool for this!</p>
 <ul>
 <li>Most IDEs also provide a tools for building this kind of compilation</li>
 </ul></li>
@@ -242,7 +242,7 @@ printf(“Value is %i\n”, ONE);
 <ul>
 <li><p>So, this is how headers work:</p>
 <ul>
-<li><p>main() would be in one file, the others will contain functions</p></li>
+<li><p><code>main()</code> would be in one file, the others will contain functions</p></li>
 <li><p>Headers usually only contain definitions of data types, function prototypes and C preprocessor commands</p></li>
 <li><p>We include the header into the C files</p></li>
 <li><p>We compile the different files and the compiler calls the header file</p></li>
@@ -277,7 +277,7 @@ $ <span class="ex">./foo</span></code></pre></div>
 </li>
 <li>object code in a library file (shared .so or static .a)</li>
 </ul></li>
-<li><p>When creating the executable binary file, an additional flag (<code>l_library name</code>) is given to the linker to include the library</p></li>
+<li><p>When creating the executable binary file, an additional flag (<code>-l</code><em>library name</em>) is given to the linker to include the library</p></li>
 </ul>
 </section>
 <section id="libraries-1" class="slide level1" data-background-size="contain">

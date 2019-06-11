@@ -10,13 +10,13 @@ lang:   en
 # Arrays
 
 - Static arrays declared as **\<type\> name\[N\]** where **N** is the size of the array  
-    - **int i\[10\]** array of 10 integers  
-    - **float f\[3\]** array of 3 floats  
-    - **char c\[60\]** string of 60 letters  
+    - **`int i[10]`** array of 10 integers  
+    - **`float f[3]`** array of 3 floats  
+    - **`char c[60]`** string of 60 letters  
 - elements indexed starting from zero  
-    - **i\[3\]** 4th element of array i  
+    - **`i[3]`** 4th element of array i  
 - multi-dimensional arrays possible  
-    - **int m\[10\]\[20\]** a 10x20 matrix
+    - **`int m[10][20]`** a 10x20 matrix
 
 
 

@@ -7,7 +7,7 @@ lang:   en
 
 # Control structures and loops {.section}
 
-# Control structures // if – else 
+# if – else 
 
 <div class="column">
 ```c
@@ -20,25 +20,25 @@ if (i < 100) {
 
 
 - if (_condition_) {`TRUE`{.input}} else {`FALSE`{.output}}
-- negation:  **!**
-- non-zero value == TRUE
+- negation:  **`!`**
+- non-zero value == `TRUE`
 </div>
 
 <div class="column">
 - Test operators:
-  : == equal to
-  : != not equal to
-  : && AND
-  : || OR
-  : \< less than
-  : \> greater than
-  : \<= less or equal
-  : \>= greater or equal
+  : `==` equal to
+  : `!=` not equal to
+  : `&&` AND
+  : `||` OR
+  : `<` less than
+  : `>` greater than
+  : `<=` less or equal
+  : `>=` greater or equal
 </div>
 
 
 
-# Control structures // if – else
+# if – else
 <div class=column>
 
 ```c
@@ -79,7 +79,7 @@ if ( (x > 1.2) && (i != 0) ){
 
 
 
-# Control structures // switch
+# switch
 ```c
 switch (...) {        // conditional expression 
     case (...):       // test value
@@ -98,7 +98,7 @@ switch (...) {        // conditional expression
 
 
 
-# Control structures // switch
+# switch
 
 ```c
  // simple switch based on the
@@ -119,11 +119,11 @@ switch (...) {        // conditional expression
 
 
 
-# Control structures // switch
+# switch
 
 <div class=column>
 ```c
-switch (i) {								A
+switch (i) {							A
     case 1:
         printf("one\n");
     case 2:
@@ -133,7 +133,7 @@ switch (i) {								A
 }
 ```
 ```c
-switch (i) {								B
+switch (i) {							B
     case 1:
         printf("one\n");
         break;
@@ -150,7 +150,7 @@ switch (i) {								B
 <div class=column>
 
 ```c
-switch (i) {								C
+switch (i) {							C
     default:
         printf("many\\n");
     case 1:
@@ -168,13 +168,13 @@ In each case, what would be printed on the screen if i is 1, 2, or 3?
 
 
 
-# Control structures // ? : operator
+# `?` `:` operator
 
 ```c
 Exp1 ? Exp2 : Exp3;
 ```
 
-The value of a ? expression is determined like this:
+The value of a `?` expression is determined like this:
 
 - Exp1 is evaluated.
     - If it is `TRUE`{.input}, then Exp2
@@ -182,7 +182,7 @@ The value of a ? expression is determined like this:
 
 
 
-# Loops // while
+# while
 - **while (_condition_) {_code block_}**
 
 ```c
@@ -203,7 +203,7 @@ while ( i < 100 ) {
 
 
 
-# Loops // for
+# for
 - **for (\<init\>; \<condition\>; \<after\>) {...}**
 
 ```c
@@ -217,7 +217,7 @@ for ( i = 0; i < 100; i++ ) {
 * **\<after\>**       execute after each iteration
 
 
-# Loops // for
+# for
 
 ```c
  // loop using a for-statement

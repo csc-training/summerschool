@@ -131,7 +131,7 @@ gcc -DONE=1 -DUSE_FEATURE
 
 
 
-# `Working with several files and libraries`
+# Working with several files and libraries
 
 - Advantages:
 
@@ -139,7 +139,7 @@ gcc -DONE=1 -DUSE_FEATURE
     - Function definitions can be re-used in other programs
     - Changing a file, only that file needs to be re-compiled to rebuild the program
 
-- UNIX ‘make’ can be very useful tool for this!
+- UNIX command **`make`** can be very useful tool for this!
 
     - Most IDEs also provide a tools for building this kind of compilation
 
@@ -196,7 +196,7 @@ int example(int x){
 
 - So, this is how headers work:
 
-    - main() would be in one file, the others will contain functions  
+    - `main()` would be in one file, the others will contain functions  
 
     - Headers usually only contain definitions of data types, function prototypes and C preprocessor commands  
 
@@ -240,7 +240,7 @@ by multiple programs
     - object code in a library file (shared .so or static .a)
 
 - When creating the executable binary file, an additional flag
-(`l_library name`) is given to the linker to include the library
+(`-l`_library name_) is given to the linker to include the library
 
 
 
