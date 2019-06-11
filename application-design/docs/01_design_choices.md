@@ -117,6 +117,7 @@ GPAW
 # Agile development model
 
 <div class=column>
+    
 - Focused on iterative and incremental development
     - quick prototyping
     - supports continuous publication
@@ -125,6 +126,7 @@ GPAW
 </div>
 
 <div class=column>
+    
 - Development cycle
     - plan
     - design
@@ -136,7 +138,6 @@ GPAW
 
 
 # Parallelization strategies
-
 - Planning includes thinking what is the target platform
 - Target machines: laptops, small clusters, supercomputers
     - openMP, MPI, MPI+OpenMP, GPUs
