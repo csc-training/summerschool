@@ -109,7 +109,7 @@ $ git commit
 
  - **Untracked**: Untracked files are ignored by git
  - **Unmodified**: The file is tracked by git, but no changes have been made 
- - **Modfied**: The file is tracked by git and has been modified
+ - **Modified**: The file is tracked by git and has been modified
  - **Staged**:  The file has been added (`git add file1`) and is ready to be committed to your repository 
 
 `git status` shows the current state of your repository
