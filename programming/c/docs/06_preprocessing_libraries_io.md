@@ -314,7 +314,7 @@ $ man gcc
 
 # File I/O{.section}
 
-# `File I/O`
+# File I/O
 
 - **FILE\* fopen(\<filename\>, \<mode\>)**
 
