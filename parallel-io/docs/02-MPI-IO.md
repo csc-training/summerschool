@@ -45,7 +45,7 @@ lang:   en
 
 - All processes in a communicator open a file using
 
-`MPI_File_open(comm, filename, mode, info, fhandle)`
+MPI_File_open(`comm`{.input}, `filename`{.input}, `mode`{.input}, `info`{.input}, `fhandle`{.output})
   : `comm`{.input}
     : communicator that performs parallel I/O
 
@@ -68,7 +68,7 @@ lang:   en
 
 # File writing at explicit location
 
-`MPI_File_write_at(fhandle, disp, buffer, count, datatype, status)`
+MPI_File_write_at(`fhandle`{.input}, `disp`{.input}, `buffer`{.input}, `count`{.input}, `datatype`{.input}, `status`{.output})
   : `disp`{.input}
     : displacement in bytes (with the default file view) from the
       beginning of file
@@ -91,10 +91,10 @@ lang:   en
 
 ```fortran
 program output
-use mpi
+use mpi_f08
 implicit none
-
-integer :: err, i, myid, file, intsize
+type(mpi_file) :: file
+integer :: err, i, myid, intsize
 integer :: status(mpi_status_size)
 integer, parameter :: count=100
 integer, dimension(count) :: buf
@@ -134,7 +134,7 @@ end program output
 
 # File reading at explicit location
 
-`MPI_File_read_at(fhandle, disp, buffer, count, datatype, status)`
+MPI_File_read_at(`fhandle`{.input}, `disp`{.input}, `buffer`{.output}, `count`{.input}, `datatype`{.input}, `status`{.output})
   : `disp`{.input}
     : displacement in bytes (with the default file view) from the
       beginning of file
@@ -159,7 +159,7 @@ end program output
 - It is also possible to set the location of file pointer separately
   with
 
-`MPI_File_seek(fhandle, disp, whence)`
+MPI_File_seek(`fhandle`{.input}, `disp`{.input}, `whence`{.input})
   : `disp`{.input}
     : displacement in bytes (with the default file view)
 
@@ -172,7 +172,7 @@ end program output
 
 # File writing at file pointer
 
-`MPI_File_write(fhandle, buffer, count, datatype, status)`
+MPI_File_write(`fhandle`{.input}, `buffer`{.input}, `count`{.input}, `datatype`{.input}, `status`{.output})
   : `buffer`{.input}
     : buffer in memory which holds the data
 
@@ -191,7 +191,7 @@ end program output
 
 # File reading at file pointer
 
-`MPI_File_read(fhandle, buffer, count, datatype, status)`
+MPI_File_read(`fhandle`{.input}, `buffer`{.output}, `count`{.input}, `datatype`{.input}, `status`{.output})
   : `buffer`{.output}
     : buffer in memory where to store the data
 
@@ -259,7 +259,7 @@ end program output
 
 # File view
 
-`MPI_File_set_view(fhandle, disp, etype, filetype, datarep, info)`
+MPI_File_set_view(`fhandle`{.input}, `disp`{.input}, `etype`{.input}, `filetype`{.input}, `datarep`{.input}, `info`{.input})
   : `disp`{.input}
     : Offset from beginning of file. Always in bytes
 
