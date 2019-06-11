@@ -37,7 +37,7 @@ on a line
 ```c
 // These are ok
 #define one
-	#define two
+#define two
 
 // Not the first token - WRONG!
 int i; #define one
