@@ -135,12 +135,13 @@ for (i=0; i<N; i++)
    C[i]=B[i]+A[i];
 
 ```
+<p>
 ![](images/simd.svg){.center width=100%}
 </div>
 
 # Code optimization cycle
 
-![](images/code_cycle.png){.center width=60%}
+![](images/perf-analysis-mpi.svg){.center width=60%}
 
 # Selecting the test case
 
@@ -154,7 +155,7 @@ for (i=0; i<N; i++)
 </div>
 
 <div class=column>
-![](images/test_case.png){.center width=80%}
+![](images/test_case.png){.center width=70%}
 </div>
 
 # On compilers and performance {.section}
