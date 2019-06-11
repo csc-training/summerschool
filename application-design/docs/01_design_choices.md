@@ -17,7 +17,9 @@ lang:   en
     - massively parallel with runs on >10k cores
 </div>
 <div class=column>
+    
 ![](images/plasma.png){.center width=100%}
+
 </div>
 
 # GPAW
@@ -29,6 +31,7 @@ lang:   en
     - ~20 developers all around world
 </div>
 <div class=column>
+    
 ![](images/gpaw-logo.svg){.center width=50%}
 
 ![](images/gpaw.jpg){.center width=50%}
@@ -43,11 +46,14 @@ lang:   en
 - Supercomputing platforms enable investigating bigger and more complex problems
 
 <div class=column>
+    
 - **Do science**
     - scientific articles
     - method-oriented articles presenting code and methods
 </div>
+
 <div class=column>
+    
 - **Code as a product**
     - prestige and fame
     - gateway into projects, collaborations
@@ -66,7 +72,9 @@ lang:   en
 </div>
 
 <div class=column>
+    
 ![](images/current.png){.center width=80%}
+
 </div>
 
 # Starting position
@@ -78,6 +86,7 @@ lang:   en
 # Cases PlasmaBox & GPAW
 
 <div class=column>
+    
 PlasmaBox
 
 - new code 
@@ -86,6 +95,7 @@ PlasmaBox
 </div>
 
 <div class=column>
+    
 GPAW
 
 - existing code with basic features mostly working (95 %) in 2005
@@ -161,7 +171,7 @@ GPAW
     - most common are C, C++, Fortran
     - mostly matter of taste
 - C++ more object-oriented features and many more data structures (maps, lists, etc.); low-level memory management
-- Fortran is really for number crunching, good array syntax
+- Fortran is really good for number crunching, good array syntax
 - But also newcomers like Python/Julia
     - faster coding cycle and less error prone
     - testing, debugging, and prototyping much easier
@@ -197,8 +207,9 @@ GPAW
 # Modular code design: tools
 
 <div class=column>
-- avoid not invented here syndrome
-- leverage existing software and libraries
+    
+- Avoid not invented here syndrome
+- Leverage existing software and libraries
     - libraries
         - numerical (BLAS, solvers,...)
         - I/O
@@ -209,7 +220,8 @@ GPAW
 </div>
 
 <div class=column>
-- caveats:
+    
+- Caveats:
     - is the lib still supported/updated?
     - do you trust the source, is it widely used
     - is there documentation
@@ -244,9 +256,9 @@ GPAW
     - not just plain text files/binary files
     - platform-independent formats (HDF5, NetCDF, ...)
     - metadata together with the data?
-- log files
+- Log files
     - especially with HPC applications some kind of log file system is useful
-- standard formats
+- Standard formats
     - your field might have some data standards (e.g., PML for plasma codes)
 - Remember also that large simulations produce lots of data
     - storing "big data" is an issue
@@ -263,7 +275,7 @@ GPAW
 # Summary 
 
 - Software design is all about planning (agile development)
-- productivity
+- Productivity
     - modular design
     - use existing libraries
     - use & adopt design, community, and collaboration tools
