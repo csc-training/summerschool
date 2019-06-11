@@ -73,7 +73,7 @@ CC-BY-SA-4.0
 
 - License your code very early in the project
     - ideally develop publicly accessible open source code from day one
-- Open source is in the spirit of openess of science
+- Open source is in the spirit of openness of science
     - take an OSI-approved license: makes it easier to evaluate
     - do not use custom licenses for open source: compatibility not clear.
     - open sourcing makes sure you are not locked out of your own code
