@@ -9,7 +9,7 @@ lang:   en
 
 # Preprocessing directives
 
-- C preprocessor is a part of the compiler that does initial text
+- C preprocessor is a part of the compilation process that does initial text
 substitution, manipulation, inclusion and other activities before the
 actual translation is done
 
