@@ -50,8 +50,8 @@ lang:   en
     - execute the *same program code* and instructions
     - processes can reside in different nodes (or even in different computers)
 - The way to launch parallel program depends on the computing system
-    - mpiexec, mpirun, aprun, srun, ...
-    - aprun on sisu.csc.fi, srun on taito.csc.fi
+    - **`mpiexec`**, **`mpirun`**, **`aprun`**, **`srun`**, ...
+    - **`aprun`** on sisu.csc.fi, **`srun`** on taito.csc.fi
 
 # MPI ranks
 

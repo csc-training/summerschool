@@ -459,7 +459,8 @@ MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvb
 
 # All to all {.split-definition}
 
-- Sends a distinct message from each task to every task (compare: "All scatter")
+- Sends a distinct message from each task to every task
+    - Compare: "All scatter"
 
 MPI_Alltoall(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
   : `sendbuf`{.input}
