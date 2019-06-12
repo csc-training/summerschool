@@ -153,17 +153,14 @@ MPI_Init_thread(`argc`{.input}, `argv`{.input}, `required`{.input}, `provided`{.
   : `required`{.input}
     : Required thread safety level, integer that is one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
   : `provided`{.output}
-    : Supported thread safety level, pointer to integer that is one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
-  : `error`{.output}
-    : Error value; in C/C++ it's the return value of the function,
-      and in Fortran an additional output parameter
+    : Supported thread safety level, integer that is one of ` MPI_THREAD_SINGLE <  MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
 
 
 
 # Hybrid programming styles: fine/coarse grained
 
 - Fine-grained
-    - Use **omp parallel do/for** on the most intensive loops
+    - Thread with openmp the most intensive loops 
     - Possible to hybridize an existing MPI code with little effort and in
       parts
 
@@ -245,9 +242,12 @@ MPI_Init_thread(`argc`{.input}, `argv`{.input}, `required`{.input}, `provided`{.
 * A collection of _compiler directives_ and _library routines_ for
   **multi-threaded**, **shared-memory parallelization**
 * Fortran 77/9X/03 and C/C++ are supported
-* Latest version of the standard is 4.5 (November 2015)
-    - support for attached devices
-    - support for thread affinity
+* Latest version of the standard is 5.0 (November 2015)
+    - Full support for accelerators (GPUs)
+    - Support latest versions of C, C++ and Fortran
+    - Support for a fully descriptive loop construct
+    - and more
+* Here we still focus on 4.5 since 5.0 not yet widely supported in compilers
 
 
 # Why would you want to learn OpenMP?
@@ -282,6 +282,7 @@ MPI_Init_thread(`argc`{.input}, `argv`{.input}, `required`{.input}, `provided`{.
 * Sentinels precede each OpenMP directive
     - C/C++:     `#pragma omp`
     - Fortran:    `!$omp`
+
 * Conditional compilation with `_OPENMP` macro:
 ```c
 #ifdef _OPENMP

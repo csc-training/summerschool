@@ -221,13 +221,7 @@ I&#39;m thread 2 in process 0</code></pre>
 </dd>
 <dd><dl>
 <dt><code class="output">provided</code></dt>
-<dd>Supported thread safety level, pointer to integer that is one of <code>MPI_THREAD_SINGLE &lt;  MPI_THREAD_FUNNELED &lt; MPI_THREAD_SERIALIZED &lt; MPI_THREAD_MULTIPLE</code>
-</dd>
-</dl>
-</dd>
-<dd><dl>
-<dt><code class="output">error</code></dt>
-<dd>Error value; in C/C++ it's the return value of the function, and in Fortran an additional output parameter
+<dd>Supported thread safety level, integer that is one of <code>MPI_THREAD_SINGLE &lt;  MPI_THREAD_FUNNELED &lt; MPI_THREAD_SERIALIZED &lt; MPI_THREAD_MULTIPLE</code>
 </dd>
 </dl>
 </dd>
@@ -238,7 +232,7 @@ I&#39;m thread 2 in process 0</code></pre>
 <ul>
 <li>Fine-grained
 <ul>
-<li>Use <strong>omp parallel do/for</strong> on the most intensive loops</li>
+<li>Thread with openmp the most intensive loops</li>
 <li>Possible to hybridize an existing MPI code with little effort and in parts</li>
 </ul></li>
 <li>Coarse-grained
@@ -394,11 +388,14 @@ I&#39;m thread 2 in process 0</code></pre>
 <ul>
 <li>A collection of <em>compiler directives</em> and <em>library routines</em> for <strong>multi-threaded</strong>, <strong>shared-memory parallelization</strong></li>
 <li>Fortran 77/9X/03 and C/C++ are supported</li>
-<li>Latest version of the standard is 4.5 (November 2015)
+<li>Latest version of the standard is 5.0 (November 2015)
 <ul>
-<li>support for attached devices</li>
-<li>support for thread affinity</li>
+<li>Full support for accelerators (GPUs)</li>
+<li>Support latest versions of C, C++ and Fortran</li>
+<li>Support for a fully descriptive loop construct</li>
+<li>and more</li>
 </ul></li>
+<li>Here we still focus on 4.5 since 5.0 not yet widely supported in compilers</li>
 </ul>
 </section>
 <section id="why-would-you-want-to-learn-openmp" class="slide level1" data-background-size="contain">
@@ -452,22 +449,6 @@ I&#39;m thread 2 in process 0</code></pre>
 <ul>
 <li>Specify the number of threads, thread affinity etc.</li>
 </ul></li>
-</ul>
-</section>
-<section id="openmp-directives" class="slide level1" data-background-size="contain">
-<h1>OpenMP directives</h1>
-<ul>
-<li>Sentinels precede each OpenMP directive
-<ul>
-<li>C/C++: <code>#pragma omp</code></li>
-<li>Fortran: <code>!$omp</code></li>
-</ul></li>
-<li><p>Conditional compilation with <code>_OPENMP</code> macro:</p>
-<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#ifdef _OPENMP</span>
-OpenMP specific code
-<span class="pp">#else</span>
-Code without OpenMP
-<span class="pp">#endif</span></code></pre></div></li>
 </ul>
 </section>
 <section id="compiling-an-openmp-program" class="slide level1" data-background-size="contain">
