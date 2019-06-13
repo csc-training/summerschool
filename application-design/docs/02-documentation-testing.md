@@ -8,7 +8,7 @@ licensed under CC BY-SA 4.0
 # Why to document your code?
 
 - You will forget details
-    - Code that you wrote 6 months ago is often indistinguishable from code 
+    - code that you wrote 6 months ago is often indistinguishable from code 
       that someone else has written.
 - Writing documentation may improve the design of your code
 - Have other people to use (and cite!) your code
@@ -40,12 +40,12 @@ licensed under CC BY-SA 4.0
 
 - Documentation should be part of the code
 - Keep the documentation close to source
-    - Same versioning as for the code
-    - Guides in e.g. `docs` subdirectory
+    - same versioning as for the code
+    - guides in e.g. `docs` subdirectory
     - APIs in the source code, e.g. describe arguments of subroutine next to
       the defition
         - many tools can generate automatically API documention from comments
-    - Non-obvious implementation choices in comments in source code
+    - non-obvious implementation choices in comments in source code
 - Tools for documentation: RST and Markdown markup languages, wikis, Doxygen, 
   github pages and readthedocs for hosting
 
@@ -106,15 +106,15 @@ do not constitute science!**
     - ... if there are no tests at all?
 - Assume mistakes will happen and introduce guards agains them
 - Test drive development
-    - Tests are written before actually implementing the functionality
+    - tests are written before actually implementing the functionality
 
 # What should be tested in software ?
 
 - Validity of physical model
     - comparison to experimental results
 - Validity of numerical methods and implementation
-    - Comparison to analytic solutions of special cases
-    - Conservation laws and symmetries
+    - comparison to analytic solutions of special cases
+    - conservation laws and symmetries
 - Correct functioning of individual subroutines and modules
 - Performance
     - changes in software may lead into degragation in performance
@@ -140,7 +140,7 @@ do not constitute science!**
 # Challenges with HPC
 
 - Behavior can depend on the number of threads and MPI tasks
-    - Parallel components should be tested with multiple different 
+    - parallel components should be tested with multiple different 
       parallelization schemes
 - Large scale integration tests can be time consuming
 - Changes in program code may also lead to degradation in performance and 
@@ -155,7 +155,7 @@ do not constitute science!**
     - build test ensures that code is always in a "working state"
 - Unit and integration tests can be run automatically after build succeeds
 - Nightly / weekly tests
-    - Software is built and tested at specified times
+    - software is built and tested at specified times
 - Test at "commit"
     - test set is run when new code is pushed to main repository
 - Nightly and "commit" tests can exclude time consuming tests
@@ -185,7 +185,7 @@ do not constitute science!**
 GPAW
 
 - Wide test set
-    - Unit tests and integration tests
+    - unit tests and integration tests
 - Continuous integration with GitlabCI
 - Developers should run tests manually before pushing
 - Tests set should run after installation

@@ -24,7 +24,7 @@ lang:   en
 
 # GPAW
 <div class=column>
-- Density-functional theory -based electronic structure
+- Density-functional theory -based electronic structure code
 - Python + C + libraries (numpy, BLAS, LAPACK)
     - various parallelization levels with MPI
     - over 10k cores with some modes
@@ -89,18 +89,18 @@ lang:   en
     
 PlasmaBox
 
-- new code 
+- New code 
 - +1yr of development
-- allowed to start from scratch and use new technologies
+- Allowed to start from scratch and use new technologies
 </div>
 
 <div class=column>
     
 GPAW
 
-- existing code with basic features mostly working (95 %) in 2005
-- choice of physical model and  programming languages had been made
-- production ready in 2008-2009
+- Existing code with basic features mostly working (95 %) in 2005
+- Choice of physical model and  programming languages had been made
+- Production ready in 2008-2009
     - science done already earlier
 </div>
 
@@ -181,8 +181,8 @@ GPAW
 
 - Different languages can be interfaced together
     - best of both worlds
-- low level languages (C, C++, Fortran) for costly functions
-- high-level languages (Python, Julia, R) for main functions
+- Low level languages (C, C++, Fortran) for costly functions
+- High-level languages (Python, Julia, R) for main functions
 - Combinations/suggestions
     - Python & C++ (PyBind11) for object-oriented programming
     - Julia & Fortran (native) for functional programming

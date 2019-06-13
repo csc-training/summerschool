@@ -11,10 +11,10 @@ CC-BY-SA-4.0
 
 - Scientific software is seldom developed only by one person
 - Closed development within a limited group
-    - Local research group
-    - Group of collaborators
+    - local research group
+    - group of collaborators
 - Open development
-    - Anyone can contribute (within the terms given by main developers)
+    - anyone can contribute (within the terms given by main developers)
 
 # What is needed for collaboration?
 
@@ -65,7 +65,7 @@ CC-BY-SA-4.0
 - License: Terms given by the copyright owner for using and redistributing 
   the software
 - Owner of the copyright depends on the local legistlation, work contract etc.
-    - As an example, CSC holds the copyright to the work created by CSC 
+    - as an example, CSC holds the copyright to the work created by CSC 
       employees
 - Common open source licenses: MIT, Apache, BSD, GPL, Creative Commons
 
@@ -89,14 +89,14 @@ CC-BY-SA-4.0
 - Do you respond to issues and pull requests?
 - Openness and transparency
 - Document whether/how/where you want to be asked questions
-    - Chat or mailing list
+    - chat or mailing list
 - If the project grows, agree on a decision process for controversial changes
 
 # Releasing software
 
 - When software is ready for public releases?
-    - Never (there are always bugs or missing features)
-    - From day one (it will never be perfect in any case)
+    - never (there are always bugs or missing features)
+    - from day one (it will never be perfect in any case)
 - Maybe you want to publish some science before releasing software?
 - Having a citation for software is recommended
 - Documentation and support processes are beneficial
