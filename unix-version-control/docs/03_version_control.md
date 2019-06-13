@@ -143,7 +143,7 @@ $ git commit
 # Centralized vs. Distributed
 
 - Git is a distributed version control system
- 	- I.e every repository is self contained and _equally valid_ 
+ 	- I.e. every repository is self contained and _equally valid_ 
 
 ![](images/git_cent_dist.svg){.center width=50%}
 
@@ -161,10 +161,10 @@ $ git commit
 
 - **These are not the same as git**, they are services built on top of git
 
-- We will be using github, exercises and materials at  
+- We will be using GitHub, exercises and materials at  
 <https://github.com/csc-training/summerschool>
 
-# Social coding with git+Github
+# Social coding with git+GitHub
 
 - Interact with collaborators
 
@@ -175,20 +175,20 @@ $ git commit
 
 - Or have a direct influence on people who contribute by running a closed project
 
-# Social coding with git+Github
+# Social coding with git+GitHub
 
-- These days Github account also serves as your “code CV”  
+- These days GitHub account also serves as your “code CV”  
   
   
 ![](images/coding_cv_1.png){.center}   
 ![](images/coding_cv_2.png){.center}
 
-# Creating repositories on github
+# Creating repositories on GitHub
 
 <div class=column>
-1. Create a new repository in github
+1. Create a new repository in GitHub
 2. After this you can:
-	- push a local repository to github 
+	- push a local repository to GitHub 
 	<small>
 	```bash
 	$ git remote add origin https://github.com/User/repo.git
@@ -203,7 +203,7 @@ $ git commit
 	</small>
 
 
-3. The local repository is now functioning and synced with github
+3. The local repository is now functioning and synced with GitHub
 </div>
 <div class=column>
 
@@ -235,7 +235,7 @@ $ git commit
 
 ![](images/clone_fork.png){.center}
 
-# Git Workflow
+# Git workflow
 
 1. New file changes are **pull**ed from the remote repository: `git pull`
 

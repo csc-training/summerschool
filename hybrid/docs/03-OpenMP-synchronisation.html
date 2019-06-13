@@ -100,7 +100,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <figure>
 <img src="img/equation.png" class="center" style="width:70.0%" />
 </figure>
-<p>FIXME: missing figure?</p>
 <ul>
 <li>OpenMP provides support for common reductions within parallel regions and loops with the reduction clause</li>
 </ul>
@@ -132,7 +131,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>+b</code></td>
+<td><code>+</code></td>
 <td><code>0</code></td>
 </tr>
 <tr class="even">
@@ -433,22 +432,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>We have already used <code>OMP_NUM_THREADS</code></li>
 </ul>
 </section>
-<section id="runtime-functions" class="slide level1" data-background-size="contain">
-<h1>Runtime functions</h1>
-<ul>
-<li>Runtime functions can be used either to read the settings or to set (override) the values</li>
-<li>Function definitions are in
-<ul>
-<li>C/C++ header file <code>omp</code>.h</li>
-<li><code>omp_lib</code> Fortran module (<code>omp_lib</code>.h header in some implementations)</li>
-</ul></li>
-<li>Two useful routines for finding out threadid, and number of threads:
-<ul>
-<li><code>omp_get_num_threads()</code></li>
-<li><code>omp_get_thread_num()</code></li>
-</ul></li>
-</ul>
-</section>
 <section id="some-useful-environment-variables" class="slide level1" data-background-size="contain">
 <h1>Some useful environment variables</h1>
 <table>
@@ -489,6 +472,33 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </tr>
 </tbody>
 </table>
+</section>
+<section id="runtime-functions" class="slide level1" data-background-size="contain">
+<h1>Runtime functions</h1>
+<ul>
+<li>Runtime functions can be used either to read the settings or to set (override) the values</li>
+<li>Function definitions are in
+<ul>
+<li>C/C++ header file <code>omp</code>.h</li>
+<li><code>omp_lib</code> Fortran module (<code>omp_lib</code>.h header in some implementations)</li>
+</ul></li>
+<li>Two useful routines for finding out threadid, and number of threads:
+<ul>
+<li><code>omp_get_num_threads()</code></li>
+<li><code>omp_get_thread_num()</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="openmp-conditional-compilation" class="slide level1" data-background-size="contain">
+<h1>OpenMP conditional compilation</h1>
+<ul>
+<li>Conditional compilation with <code>_OPENMP</code> macro:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#ifdef _OPENMP</span>
+    OpenMP specific code with, e.g., library calls
+<span class="pp">#else</span>
+    Code without OpenMP
+<span class="pp">#endif</span></code></pre></div>
 <!--
 
 # List of environment variables (OpenMP 4.5)

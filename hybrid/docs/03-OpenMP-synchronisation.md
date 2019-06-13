@@ -35,8 +35,6 @@ asum = 0.0d0
 
 ![](img/equation.png){.center width=70%}
 
-FIXME: missing figure?
-
 - OpenMP provides support for common reductions within parallel regions and
   loops with the reduction clause
 
@@ -62,7 +60,7 @@ FIXME: missing figure?
 
 | Operator | Initial value |
 |----------|---------------|
-| `+b`     | `0`           |
+| `+`     | `0`           |
 | `-`      | `0`           |
 | `*`      | `1`           |
 | `&&`     | `1`           |
@@ -254,15 +252,6 @@ int total = 0;
     - Changing them during the execution has no effect
 * We have already used `OMP_NUM_THREADS`
 
-# Runtime functions
-
-* Runtime functions can be used either to read the settings or to set (override) the values
-* Function definitions are in
-    - C/C++ header file `omp`.h
-    - `omp_lib` Fortran module (`omp_lib`.h header in some implementations)
-* Two useful routines for finding out threadid, and number of threads:
-    - `omp_get_num_threads()`
-    - `omp_get_thread_num()`
 
 
 # Some useful environment variables
@@ -276,6 +265,33 @@ int total = 0;
 |OMP_DISPLAY_ENV   |Print the current OpenMP environment info on stderr           |
 |OMP_STACKSIZE       |Default size of thread stack                   |
 |OMP_THREAD_LIMIT  |Maximum number of threads to use                   |
+
+
+# Runtime functions
+
+* Runtime functions can be used either to read the settings or to set (override) the values
+* Function definitions are in
+    - C/C++ header file `omp`.h
+    - `omp_lib` Fortran module (`omp_lib`.h header in some implementations)
+* Two useful routines for finding out threadid, and number of threads:
+    - `omp_get_num_threads()`
+    - `omp_get_thread_num()`
+
+
+
+# OpenMP conditional compilation
+
+
+* Conditional compilation with `_OPENMP` macro:
+
+```c
+#ifdef _OPENMP
+    OpenMP specific code with, e.g., library calls
+#else
+    Code without OpenMP
+#endif
+```
+
 
 <!--
 
