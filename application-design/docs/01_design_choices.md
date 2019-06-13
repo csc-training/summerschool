@@ -11,10 +11,10 @@ lang:   en
 
 <div class=column>
 - Kinetic plasma simulation code
-    - particle-in-Cell with computational particles and electromagnetic fields are in grid
+    - Particle-in-Cell with computational particles and electromagnetic fields are in grid
 - Hybrid C++14/Python code 
-    - domain super-decomposition with MPI 
-    - massively parallel with runs on >10k cores
+    - Domain super-decomposition with MPI 
+    - Massively parallel with runs on >10k cores
 </div>
 <div class=column>
     
@@ -26,8 +26,8 @@ lang:   en
 <div class=column>
 - Density-functional theory -based electronic structure code
 - Python + C + libraries (numpy, BLAS, LAPACK)
-    - various parallelization levels with MPI
-    - over 10k cores with some modes
+    - Various parallelization levels with MPI
+    - Over 10k cores with some modes
     - ~20 developers all around world
 </div>
 <div class=column>
@@ -48,17 +48,17 @@ lang:   en
 <div class=column>
     
 - **Do science**
-    - scientific articles
-    - method-oriented articles presenting code and methods
+    - Scientific articles
+    - Method-oriented articles presenting code and methods
 </div>
 
 <div class=column>
     
 - **Code as a product**
-    - prestige and fame
-    - gateway into projects, collaborations
-    - citations, co-authorships
-    - work on the bleeding edge
+    - Prestige and fame
+    - Gateway into projects, collaborations
+    - Citations, co-authorships
+    - Work on the bleeding edge
 </div>
 
 
@@ -66,9 +66,9 @@ lang:   en
 
 <div class=column>
 - Kinetic plasma simulations are microscopical (<1cm)
-    - bigger simulation domains mean more realistic, larger systems
+    - Bigger simulation domains mean more realistic, larger systems
 - Recently simulated turbulent plasma with 10^10 particles 
-    - new physics starts to appear at larger scale
+    - New physics starts to appear at larger scale
 </div>
 
 <div class=column>
@@ -101,51 +101,51 @@ GPAW
 - Existing code with basic features mostly working (95 %) in 2005
 - Choice of physical model and  programming languages had been made
 - Production ready in 2008-2009
-    - science done already earlier
+    - Science done already earlier
 </div>
 
 
 # Design model
 
 - Development is not only about physics and numerics
-    - also about **how** you do it
+    - Also about **how** you do it
 - Instead of "Just code" it is advantageous to plan a little too!
 - So-called Agile Development
-    - umbrella term for different software development methods
-    - divide work into small tasks, define short working period, review, repeat
+    - Umbrella term for different software development methods
+    - Divide work into small tasks, define short working period, review, repeat
 
 # Agile development model
 
 <div class=column>
     
 - Focused on iterative and incremental development
-    - quick prototyping
-    - supports continuous publication
-    - analysis, coding, testing, etc. never end
+    - Quick prototyping
+    - Supports continuous publication
+    - Analysis, coding, testing, etc. never end
 
 </div>
 
 <div class=column>
     
 - Development cycle
-    - plan
-    - design
-    - develop
-    - test
-    - release
-    - feedback
+    - Plan
+    - Design
+    - Develop
+    - Test
+    - Release
+    - Feedback
 </div>
 
 
 # Parallelization strategies
 - Planning includes thinking what is the target platform
 - Target machines: laptops, small clusters, supercomputers
-    - openMP, MPI, MPI+OpenMP, GPUs
+    - OpenMP, MPI, MPI+OpenMP, GPUs
 - From shared memory to distributed memory machines
-    - keep in mind that most machines are distributed memory systems = MPI
+    - Keep in mind that most machines are distributed memory systems = MPI
 - Moving from <1000 cores to >10k cores
-    - parallellization strategies need to be considered
-    - non-blocking, avoiding global calls,...
+    - Parallellization strategies need to be considered
+    - Non-blocking, avoiding global calls,...
 - Accelerators
     - GPUs have their own tricks and quirks
 
@@ -153,12 +153,12 @@ GPAW
 
 <div class=column>
 - PlasmaBox has uses a new novel parallellization strategy
-    - relies on dividing work among small subregions of the grid
-    - computational grid (i.e., what rank owns which tiles) is constantly changing to balance the load
+    - Relies on dividing work among small subregions of the grid
+    - Computational grid (i.e., what rank owns which tiles) is constantly changing to balance the load
 - Moving beyond 1000 cores is non-trivial
-    - non-blocking communication
-    - removal of collectives
-    - re-design of IO
+    - Non-blocking communication
+    - Removal of collectives
+    - Re-design of IO
 </div>
 
 <div class=column>
@@ -169,18 +169,18 @@ GPAW
 # Programming languages
 
 - Selection of languages
-    - most common are C, C++, Fortran
-    - mostly matter of taste
+    - Most common are C, C++, Fortran
+    - Mostly matter of taste
 - C++ more object-oriented features and many more data structures (maps, lists, etc.); low-level memory management
 - Fortran is really good for number crunching, good array syntax
 - But also newcomers like Python/Julia
-    - faster coding cycle and less error prone
-    - testing, debugging, and prototyping much easier
+    - Faster coding cycle and less error prone
+    - Testing, debugging, and prototyping much easier
 
 # Hybrid codes 
 
 - Different languages can be interfaced together
-    - best of both worlds
+    - Best of both worlds
 - Low level languages (C, C++, Fortran) for costly functions
 - High-level languages (Python, Julia, R) for main functions
 - Combinations/suggestions
@@ -193,16 +193,16 @@ GPAW
 - Low-level "kernels" are in C++
 - High-level functionality is operated from Python scripts
 - So far it has been an excellent choice
-    - fast code
-    - ease of use
-    - rapid prototyping
+    - Fast code
+    - Ease of use
+    - Rapid prototyping
 
 # Modular code design: programming
 
 - Good code is modular
-    - encapsulation 
-    - self-contained functions
-    - no global variables, input what you need
+    - Encapsulation 
+    - Self-contained functions
+    - No global variables, input what you need
 - Modular code takes more time to design but is **lot** easier to extend and understand
 
 # Modular code design: tools
@@ -211,22 +211,22 @@ GPAW
     
 - Avoid not invented here syndrome
 - Leverage existing software and libraries
-    - libraries
-        - numerical (BLAS, solvers,...)
+    - Libraries
+        - Numerical (BLAS, solvers,...)
         - I/O
-        - parallelization
-    - frameworks?
-        - plug your model into an existing framework?
-        - Petsc, Trilinos, BoxLib++, Charm++, ArmReX, corgi,...
+        - Parallelization
+    - Frameworks?
+        - Plug your model into an existing framework?
+        - Petsc, Trilinos, BoxLib++, ARMReX, corgi,...
 </div>
 
 <div class=column>
     
 - Caveats:
-    - is the lib still supported/updated?
-    - do you trust the source, is it widely used
-    - is there documentation
-    - does it support all the features
+    - Is the lib still supported/updated?
+    - Do you trust the source, is it widely used
+    - Is there documentation
+    - Does it support all the features
 </div>
 
 # Modular code design: development tools
@@ -235,10 +235,10 @@ GPAW
 - Build systems automate compiling
     - Makefiles, CMake, Ninja, ...
 - Debuggers
-    - lots of tools for finding bugs
+    - Lots of tools for finding bugs
 - Compilers
-    - compilers are not the same, compiler bugs are real!
-    - test your code with different compilers (gnu, clang, intel, cray,...)
+    - Compilers are not the same, compiler bugs are real!
+    - Test your code with different compilers (gnu, clang, intel, cray,...)
 
 - **Questions**: Choices in your software and experiences about them?
 
@@ -254,22 +254,22 @@ GPAW
 
 - Data has to be "designed" too
 - Data formats
-    - not just plain text files/binary files
-    - platform-independent formats (HDF5, NetCDF, ...)
-    - metadata together with the data?
+    - Not just plain text files/binary files
+    - Platform-independent formats (HDF5, NetCDF, ...)
+    - Metadata together with the data?
 - Log files
-    - especially with HPC applications some kind of log file system is useful
+    - Especially with HPC applications some kind of log file system is useful
 - Standard formats
-    - your field might have some data standards (e.g., PML for plasma codes)
+    - Your field might have some data standards (e.g., PML for plasma codes)
 - Remember also that large simulations produce lots of data
-    - storing "big data" is an issue
+    - Storing "big data" is an issue
 
 
 # Case PlasmaBox: IO issues
 
 - PlasmaBox uses rank-independent multiple-file IO strategy
-    - excellent performance as there is no synching
-    - but, sometimes the burst performance is too good...
+    - Excellent performance as there is no synching
+    - But, sometimes the burst performance is too good...
         - 10k cores writing ~TBs of data in seconds is nice for the user but file system might not like it
 
 
@@ -277,9 +277,9 @@ GPAW
 
 - Software design is all about planning (agile development)
 - Productivity
-    - modular design
-    - use existing libraries
-    - use & adopt design, community, and collaboration tools
-    - programming language and design selection
+    - Modular design
+    - Use existing libraries
+    - Use & adopt design, community, and collaboration tools
+    - Programming language and design selection
 
 
