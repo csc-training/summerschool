@@ -78,7 +78,7 @@ icc -check uninit myprog.c
     - Compile with *-Gfast*
     - Requires support from both compiler and debugger
   
-# Debuggers
+# Debuggers {.section}
 
 # What are debuggers?
 - Debugger is a program that can be used to inspect other programs
