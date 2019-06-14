@@ -17,7 +17,7 @@
 - Although less often used nowadays, it can also be used with read to
   input data at fixed line positions and using predefined field
   lengths
-- Used through format statements, character variable or embedded in
+- Used through format statements, character variable or within 
   read/write fmt keyword
 
 # Output formatting
