@@ -2,7 +2,7 @@
 theme: 'csc-2016-portrait'
 ---
 
-# Parallel input {.section}/output
+# Parallel input/output {.section}
 
 Martti Louhivuori<br>
 Joonas Nättilä
