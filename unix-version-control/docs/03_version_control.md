@@ -155,21 +155,18 @@ $ git commit
 # Remote repositories: Web services
 
 - Git is usually paired up with web-based repository
-  - GitHub
-  - Bitbucket
-  - GitLab 
-
+    - GitHub
+    - Bitbucket
+    - GitLab
 - **These are not the same as git**, they are services built on top of git
-
 - We will be using GitHub, exercises and materials at  
 <https://github.com/csc-training/summerschool>
 
 # Social coding with git+GitHub
 
 - Interact with collaborators
-
-  - Scales from 1 to 1000+ contributors (may include your supervisor
-    too\!)
+    - Scales from 1 to 1000+ contributors (may include your supervisor
+      too\!)
 
 - Open projects enable other people to join too
 
@@ -229,9 +226,8 @@ $ git commit
 # Forking & cloning repositories
 
 - Let’s fork & clone our first repository
-
-  - Fork <https://github.com/csc-training/summerschool>
-  - `git clone https://github.com/user/summerschool`  
+    - Fork <https://github.com/csc-training/summerschool>
+    - `git clone https://github.com/user/summerschool`  
 
 ![](images/clone_fork.png){.center}
 
@@ -257,13 +253,12 @@ $ git commit
 # Git Workflow
 
 - At every point, you can check the current status of the local repository
-  - `git status`
-  - What is changed? What is staged for commit?
+    - `git status`
+    - What is changed? What is staged for commit?
 
 - Sometimes it is useful to drop local changes
-
-  - `git stash`
-  - Restores the local repository to the latest commit by stashing your changes (they can be retrieved later on)
+    - `git stash`
+    - Restores the local repository to the latest commit by stashing your changes (they can be retrieved later on)
 
 - These are super useful, hence, use them often\!
 
@@ -300,23 +295,20 @@ $ git commit
 # Advanced features - Pull requests
 
 - In bigger projects it is typical not to push directly but to send a
-“pull request” from your fork or branch
-
-  - Typically done in the www-interface of GitHub
-
+  “pull request” from your fork or branch
+    - Typically done in the www-interface of GitHub
 - Pull request is usually a fix or an improvement containing multiple
-commits
-
+  commits
 - Allows to review and modify changes
 
 # Summary
 
   - If you are not using git, start using it\!
   - Remember the standard workflow: 
-  	- pull -> modify -> add -> commit -> push
-  - Explore GitHub, there are many cool repositories\!
-   
-  - Experiment with git and try out different features, its better to make mistakes now than later.
+      - pull -> modify -> add -> commit -> push
+  - Explore GitHub, there are many cool repositories\!   
+  - Experiment with git and try out different features, its better to make 
+    mistakes now than later.
   
 
 # Version control git commands
