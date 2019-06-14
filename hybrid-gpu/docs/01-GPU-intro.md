@@ -150,7 +150,8 @@ lang:   en
   (SIMT)
     - Warps are further collected into thread blocks; each executed on one SM
     - In case of divergence (if...) computation is done one branch at a time 
-![](img/warps.png){ .center width=120% }
+
+![](img/warps.png){ .center width=60% }
 
 
 
