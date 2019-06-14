@@ -7,6 +7,7 @@ lang:   en
 
 
 # Functions {.section}
+
 # Functions
 
 - Functions are the only subroutine type in C
@@ -30,6 +31,7 @@ type func-name(param-list)
 
 - Every C program has a main function where the program execution starts
 
+<div class=column>
 int main(int `argc`{.input}, char `*argv[]`{.input})
   : `argc`{.input}
     : Number of arguments on command line
@@ -37,14 +39,16 @@ int main(int `argc`{.input}, char `*argv[]`{.input})
     : Array of strings with the arguments on command line. The first argument is always the name of the binary
   : `return value`{.input} 
     : Error code, zero means success, non-zero values are errors 
+</div>
 
+<div class=column>
 ```c
 int main(int argc, char *argv[])
 {
 /* body of function */
 }
 ```
-
+</div>
 
 # Function example
 
