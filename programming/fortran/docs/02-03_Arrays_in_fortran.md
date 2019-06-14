@@ -268,7 +268,7 @@ p(2) = 0   ! This would change the value of x(3) too
 
 p => y   ! Now p points to another array y (which needs to be allocated)
 
-nullify(p_x) ! Now p_x points to nothing
+nullify(p) ! Now p points to nothing
 ```
 
 # Pointers to arrays
