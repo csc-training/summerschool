@@ -70,7 +70,7 @@ lang:   en
 **Step 1.1**: Receive call in scatter
 
 <p>
-![](images/case_study_right-01.svg){.center width=50%}
+![](images/case_study_right-01.svg){.center width=45%}
 <p>
 P1 issues MPI_Recv to receive half of the array from P0
 </div>
@@ -85,7 +85,7 @@ P1 issues MPI_Recv to receive half of the array from P0
 **Step 1.2**: Send call in scatter
 
 <p>
-![](images/case_study_right-02.svg){.center width=50%}
+![](images/case_study_right-02.svg){.center width=45%}
 <p>
 P0 issues an MPI_Send to send the lower part of the array to P1
 </div>
@@ -99,7 +99,7 @@ P0 issues an MPI_Send to send the lower part of the array to P1
 **Step 2**: Compute the sum in parallel
 
 <p>
-![](images/case_study_right-03.svg){.center width=50%}
+![](images/case_study_right-03.svg){.center width=45%}
 <p>
 Both P0 & P1 compute their partial sums and store them locally
 </div>
@@ -113,7 +113,7 @@ Both P0 & P1 compute their partial sums and store them locally
 **Step 3.1**: Receive call in reduction
 
 <p>
-![](images/case_study_right-04.svg){.center width=50%}
+![](images/case_study_right-04.svg){.center width=45%}
 <p>
 P0 issues an MPI_Recv operation for receiving P1’s partial sum
 </div>
@@ -127,7 +127,7 @@ P0 issues an MPI_Recv operation for receiving P1’s partial sum
 **Step 3.2**: Send call in reduction
 
 <p>
-![](images/case_study_right-05.svg){.center width=50%}
+![](images/case_study_right-05.svg){.center width=45%}
 <p>
 P1 sends the partial sum to P0
 </div>
@@ -141,7 +141,7 @@ P1 sends the partial sum to P0
 **Step 3.3**: compute the final answer
 
 <p>
-![](images/case_study_right-06.svg){.center width=50%}
+![](images/case_study_right-06.svg){.center width=45%}
 <p>
 P0 computes the total sum
 </div>
