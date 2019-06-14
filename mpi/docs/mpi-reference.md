@@ -5,6 +5,7 @@ date:   2019-02
 lang:   en
 ---
 
+# C interfaces {.section}
 
 # C interfaces for the "first six" MPI operations
 
@@ -22,30 +23,6 @@ int MPI_Barrier(MPI_Comm comm)
 int MPI_Finalize()
 ```
 
-
-# Fortran interfaces for the "first six" MPI operations
-
-```fortran
-mpi_init(ierror)
-  integer :: ierror
-
-mpi_init_thread(required, provided, ierror)
-  integer :: required, provided, ierror
-  
-mpi_comm_size(comm, size, ierror)
-mpi_comm_rank(comm, rank, ierror)
-  type(mpi_comm) :: comm
-  integer :: size, rank, ierror
-
-mpi_barrier(comm, ierror)
-  type(mpi_comm) :: comm
-  integer :: ierror
-
-mpi_finalize(ierror)
-  integer :: ierror  
-```
-
-
 # C interfaces for the basic point-to-point operations
 
 ```c
@@ -62,33 +39,6 @@ int MPI_Sendrecv(void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, 
 int MPI_Get_count(MPI_Status *status, MPI_Datatype datatype, int *count)
 ```
 
-
-# Fortran interfaces for the basic point-to-point operations
-<small>
-```fortran
-mpi_send(buffer, count, datatype, dest, tag, comm, ierror)
-  <type> :: buf(*)
-  integer :: count, dest, tag, ierror
-  type(mpi_datatype) :: datatype
-  type(mpi_comm) :: comm
-
-mpi_recv(buf, count, datatype, source, tag, comm, status, ierror)
-  <type> :: buf(*)
-  integer :: count, source, tag, ierror
-  type(mpi_datatype) :: datatype
-  type(mpi_comm) :: comm
-  type(mpi_status) :: status
-
-mpi_sendrecv(sendbuf, sendcount, sendtype, dest, sendtag, recvbuf, recvcount, &
-             recvtype, source, recvtag, comm, status, ierror)
-  <type> :: sendbuf(*), recvbuf(*)
-  integer :: sendcount, dest, sendtag, recvcount, source, recvtag, ierror
-  type(mpi_datatype) :: sendtype, recvtype
-  type(mpi_comm) :: comm
-  type(mpi_status) :: status
-```
-</small>
-
 # MPI datatypes for C
 
 | MPI type     |  C type     |
@@ -100,21 +50,6 @@ mpi_sendrecv(sendbuf, sendcount, sendtype, dest, sendtag, recvbuf, recvcount, &
 |   MPI_FLOAT  | float       |
 |   MPI_DOUBLE | double      |
 |   MPI_BYTE   |             |
-
-
-# MPI datatypes for Fortran
-
-| MPI type             |  Fortran type    |
-| -------------------- | ---------------- |
-| MPI_CHARACTER        | character        |
-| MPI_INTEGER          | integer          |
-| MPI_REAL             | real32           |
-| MPI_DOUBLE_PRECISION | real64           |
-| MPI_COMPLEX          | complex          |
-| MPI_DOUBLE_COMPLEX   | double complex   |
-| MPI_LOGICAL          | logical          |
-| MPI_BYTE             |                  |
-
 
 # C interfaces for collective operations
 
@@ -158,6 +93,229 @@ int MPI_Alltoallv(void* sendbuf, int *sendcounts, int *sdispls, MPI_Datatype sen
                   void* recvbuf, int *recvcounts, int *rdispls, MPI_Datatype recvtype,
                   MPI_Comm comm)
 ```
+
+# Available reduction operations
+
+<div class=column>
+| Operation    | Meaning              |
+|--------------|----------------------|
+| `MPI_MAX`    | Max value            |
+| `MPI_MIN`    | Min value            |
+| `MPI_SUM`    | Sum                  |
+| `MPI_PROD`   | Product              |
+| `MPI_MAXLOC` | Max value + location |
+| `MPI_MINLOC` | Min value + location |
+</div>
+<div class=column>
+| Operation  | Meaning      |
+|------------|--------------|
+| `MPI_LAND` | Logical AND  |
+| `MPI_BAND` | Bytewise AND |
+| `MPI_LOR`  | Logical OR   |
+| `MPI_BOR`  | Bytewise OR  |
+| `MPI_LXOR` | Logical XOR  |
+| `MPI_BXOR` | Bytewise XOR |
+</div>
+
+
+# C interfaces for user-defined communicators
+
+```c
+int MPI_Comm_split (MPI_Comm comm, int color, int key, MPI_Comm newcomm)
+
+int MPI_Comm_compare (MPI_Comm comm1, MPI_Comm comm2, int result)
+
+int MPI_Comm_dup ( MPI_Comm comm, MPI_Comm newcomm )
+
+int MPI_Comm_free ( MPI_Comm comm )
+```
+
+# C interfaces for non-blocking operations
+
+```c
+int MPI_Isend(void *buf, int count, MPI_Datatype datatype, int dest, int tag, 
+              MPI_Comm comm, MPI_Request *request )
+
+int MPI_Irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag, 
+              MPI_Comm comm, MPI_Request *request )
+
+int MPI_Wait(MPI_Request *request, MPI_Status *status)
+
+int MPI_Waitall(int count, MPI_Request *array_of_requests, MPI_Status *array_of_statuses)
+```
+
+# C interfaces for Cartesian process topologies
+
+```c
+int MPI_Cart_create(MPI_Comm old_comm, int ndims, int *dims, int *periods, int reorder, 
+                    MPI_Comm *comm_cart)
+
+int MPI_Cart_coords(MPI_Comm comm, int rank, int maxdim, int *coords)
+
+int MPI_Cart_rank(MPI_Comm comm, int *coords, int rank)
+
+int MPI_Cart_shift( MPI_Comm comm, int direction, int displ, int *low, int *high )
+```
+
+# C interfaces for datatype routines
+
+```c
+int MPI_Type_commit(MPI_Datatype *type)
+
+int MPI_Type_free(MPI_Datatype *type)
+
+int MPI_Type_contiguous(int count, MPI_Datatype oldtype, MPI_Datatype *newtype)
+
+int MPI_Type_vector(int count, int block, int stride, MPI_Datatype oldtype, 
+                    MPI_Datatype *newtype)
+
+int MPI_Type_indexed(int count, int blocks[], int displs[], MPI_Datatype oldtype, 
+                     MPI_Datatype *newtype)
+
+int MPI_Type_create_subarray(int ndims, int array_of_sizes[], int array_of_subsizes[], 
+                             int array_of_starts[], int order, MPI_Datatype oldtype, 
+                             MPI_Datatype *newtype )
+
+int MPI_Type_create_struct(int count, const int array_of_blocklengths[], 
+                           const MPI_Aint array_of_displacements[], 
+                           const MPI_Datatype array_of_types[], MPI_Datatype *newtype)
+```
+
+
+# C interfaces for one-sided routines
+
+```c
+int MPI_Win_create(void *base, MPI_Aint size, int disp_unit, MPI_Info info, 
+                   MPI_Comm comm, MPI_Win *win)
+
+int MPI_Win_fence(int assert, MPI_Win win)
+
+int MPI_Put(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, 
+                  int target_rank, MPI_Aint target_disp, int target_count, 
+                  MPI_Datatype target_datatype, MPI_Win win)
+
+int MPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, 
+            MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win)
+
+int MPI_Accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, 
+                   int target_rank, MPI_Aint target_disp, int target_count, 
+                   MPI_Datatype target_datatype, MPI_Op op, MPI_Win win)
+```
+
+# C interfaces to MPI I/O routines
+
+```c
+int MPI_File_open(MPI_Comm comm, char *filename, int amode, MPI_Info info, MPI_File *fh)
+
+int MPI_File_close(MPI_File *fh)
+
+int MPI_File_seek(MPI_File fh, MPI_Offset offset, int whence)
+
+int MPI_File_read(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status)
+
+int MPI_File_read_at(MPI_File fh, MPI_Offset offset, void *buf, int count, 
+                     MPI_Datatype datatype, MPI_Status *status)
+
+int MPI_File_write(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status)
+
+int MPI_File_write_at(MPI_File fh, MPI_Offset offset, void *buf, int count, 
+                      MPI_Datatype datatype, MPI_Status *status)
+```
+
+
+# C interfaces to MPI I/O routines
+
+```c
+int MPI_File_set_view(MPI_File fh, MPI_Offset disp, MPI_Datatype etype, 
+                      MPI_Datatype filetype, char *datarep, MPI_Info info)
+
+int MPI_File_read_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype, 
+                      MPI_Status *status)
+
+int MPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, 
+                         MPI_Datatype datatype, MPI_Status *status)
+
+int MPI_File_write_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype, 
+                       MPI_Status *status)
+
+int MPI_File_write_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, 
+                          MPI_Datatype datatype, MPI_Status *status)
+```
+
+
+# Fortran interfaces {.section}
+
+# Fortran interfaces for the "first six" MPI operations
+
+```fortran
+mpi_init(ierror)
+  integer :: ierror
+
+mpi_init_thread(required, provided, ierror)
+  integer :: required, provided, ierror
+  
+mpi_comm_size(comm, size, ierror)
+mpi_comm_rank(comm, rank, ierror)
+  type(mpi_comm) :: comm
+  integer :: size, rank, ierror
+
+mpi_barrier(comm, ierror)
+  type(mpi_comm) :: comm
+  integer :: ierror
+
+mpi_finalize(ierror)
+  integer :: ierror  
+```
+
+# Fortran interfaces for the basic point-to-point operations
+
+```fortran
+mpi_send(buffer, count, datatype, dest, tag, comm, ierror)
+  <type> :: buf(*)
+  integer :: count, dest, tag, ierror
+  type(mpi_datatype) :: datatype
+  type(mpi_comm) :: comm
+
+mpi_recv(buf, count, datatype, source, tag, comm, status, ierror)
+  <type> :: buf(*)
+  integer :: count, source, tag, ierror
+  type(mpi_datatype) :: datatype
+  type(mpi_comm) :: comm
+  type(mpi_status) :: status
+```
+
+# Fortran interfaces for the basic point-to-point operations
+
+```fortran
+mpi_sendrecv(sendbuf, sendcount, sendtype, dest, sendtag, recvbuf, recvcount, &
+             recvtype, source, recvtag, comm, status, ierror)
+  <type> :: sendbuf(*), recvbuf(*)
+  integer :: sendcount, recvcount, dest, source, sendtag, recvtag, ierror
+  type(mpi_datatype) :: sendtype, recvtype
+  type(mpi_comm) :: comm
+  type(mpi_status) :: status
+
+mpi_get_count(status, datatype, count, ierror)
+  integer :: count, ierror
+  type(mpi_datatype) :: datatype
+  type(mpi_status) :: status  
+```
+
+
+# MPI datatypes for Fortran
+
+| MPI type             |  Fortran type    |
+| -------------------- | ---------------- |
+| MPI_CHARACTER        | character        |
+| MPI_INTEGER          | integer          |
+| MPI_REAL             | real32           |
+| MPI_DOUBLE_PRECISION | real64           |
+| MPI_COMPLEX          | complex          |
+| MPI_DOUBLE_COMPLEX   | double complex   |
+| MPI_LOGICAL          | logical          |
+| MPI_BYTE             |                  |
+
+
 
 
 # Fortran interfaces for collective operations
@@ -274,19 +432,6 @@ mpi_alltoallv(sendbuf,sendcounts, sdispls, sendtype, recvbuf, recvcounts, rdispl
 </div>
 
 
-# C interfaces for user-defined communicators
-
-```c
-int MPI_Comm_split (MPI_Comm comm, int color, int key, MPI_Comm newcomm)
-
-int MPI_Comm_compare (MPI_Comm comm1, MPI_Comm comm2, int result)
-
-int MPI_Comm_dup ( MPI_Comm comm, MPI_Comm newcomm )
-
-int MPI_Comm_free ( MPI_Comm comm )
-```
-
-
 # Fortran interfaces for user-defined communicators
 
 ```fortran
@@ -306,22 +451,6 @@ mpi_comm_free(comm, ierror)
   integer :: ierror
   type(mpi_comm) :: comm
 ```
-
-
-# C interfaces for non-blocking operations
-
-```c
-int MPI_Isend(void *buf, int count, MPI_Datatype datatype, int dest, int tag, 
-              MPI_Comm comm, MPI_Request *request )
-
-int MPI_Irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag, 
-              MPI_Comm comm, MPI_Request *request )
-
-int MPI_Wait(MPI_Request *request, MPI_Status *status)
-
-int MPI_Waitall(int count, MPI_Request *array_of_requests, MPI_Status *array_of_statuses)
-```
-
 
 # Fortran interfaces for non-blocking operations
 <small>
@@ -352,18 +481,6 @@ mpi_waitall(count, array_of_requests, array_of_statuses, ierror)
 ```
 </small>
 
-# C interfaces for Cartesian process topologies
-
-```c
-int MPI_Cart_create(MPI_Comm old_comm, int ndims, int *dims, int *periods, int reorder, 
-                    MPI_Comm *comm_cart)
-
-int MPI_Cart_coords(MPI_Comm comm, int rank, int maxdim, int *coords)
-
-int MPI_Cart_rank(MPI_Comm comm, int *coords, int rank)
-
-int MPI_Cart_shift( MPI_Comm comm, int direction, int displ, int *low, int *high )
-```
 
 
 # Fortran interfaces for Cartesian process topologies
@@ -385,31 +502,6 @@ mpi_cart_rank(comm, coords, rank, ierror)
 mpi_cart_shift(comm, direction, displ, low, high, ierror) 
   integer :: direction, displ, low, high, ierror
   type(mpi_comm) :: comm
-```
-
-
-# C interfaces for datatype routines
-
-```c
-int MPI_Type_commit(MPI_Datatype *type)
-
-int MPI_Type_free(MPI_Datatype *type)
-
-int MPI_Type_contiguous(int count, MPI_Datatype oldtype, MPI_Datatype *newtype)
-
-int MPI_Type_vector(int count, int block, int stride, MPI_Datatype oldtype, 
-                    MPI_Datatype *newtype)
-
-int MPI_Type_indexed(int count, int blocks[], int displs[], MPI_Datatype oldtype, 
-                     MPI_Datatype *newtype)
-
-int MPI_Type_create_subarray(int ndims, int array_of_sizes[], int array_of_subsizes[], 
-                             int array_of_starts[], int order, MPI_Datatype oldtype, 
-                             MPI_Datatype *newtype )
-
-int MPI_Type_create_struct(int count, const int array_of_blocklengths[], 
-                           const MPI_Aint array_of_displacements[], 
-                           const MPI_Datatype array_of_types[], MPI_Datatype *newtype)
 ```
 
 
@@ -451,27 +543,6 @@ mpi_type_create_struct(count, blocklengths, displacements, types, newtype, ierro
   integer :: count, blocklengths(count), ierror
   type(mpi_datatype) :: types(count), newtype
   integer(kind=mpi_address_kind) :: displacements(count)
-```
-
-
-# C interfaces for one-sided routines
-
-```c
-int MPI_Win_create(void *base, MPI_Aint size, int disp_unit, MPI_Info info, 
-                   MPI_Comm comm, MPI_Win *win)
-
-int MPI_Win_fence(int assert, MPI_Win win)
-
-int MPI_Put(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, 
-                  int target_rank, MPI_Aint target_disp, int target_count, 
-                  MPI_Datatype target_datatype, MPI_Win win)
-
-int MPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank, 
-            MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win)
-
-int MPI_Accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype, 
-                   int target_rank, MPI_Aint target_disp, int target_count, 
-                   MPI_Datatype target_datatype, MPI_Op op, MPI_Win win)
 ```
 
 
@@ -521,46 +592,6 @@ mpi_accumulate(origin_addr, origin_count, origin_datatype, target_rank, target_d
   type(mpi_win)  :: win
 ```
 
-
-# C interfaces to MPI I/O routines
-
-```c
-int MPI_File_open(MPI_Comm comm, char *filename, int amode, MPI_Info info, MPI_File *fh)
-
-int MPI_File_close(MPI_File *fh)
-
-int MPI_File_seek(MPI_File fh, MPI_Offset offset, int whence)
-
-int MPI_File_read(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status)
-
-int MPI_File_read_at(MPI_File fh, MPI_Offset offset, void *buf, int count, 
-                     MPI_Datatype datatype, MPI_Status *status)
-
-int MPI_File_write(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status)
-
-int MPI_File_write_at(MPI_File fh, MPI_Offset offset, void *buf, int count, 
-                      MPI_Datatype datatype, MPI_Status *status)
-```
-
-
-# C interfaces to MPI I/O routines
-
-```c
-int MPI_File_set_view(MPI_File fh, MPI_Offset disp, MPI_Datatype etype, 
-                      MPI_Datatype filetype, char *datarep, MPI_Info info)
-
-int MPI_File_read_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype, 
-                      MPI_Status *status)
-
-int MPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, 
-                         MPI_Datatype datatype, MPI_Status *status)
-
-int MPI_File_write_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype, 
-                       MPI_Status *status)
-
-int MPI_File_write_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count, 
-                          MPI_Datatype datatype, MPI_Status *status)
-```
 
 
 # Fortran interfaces for MPI I/O routines
