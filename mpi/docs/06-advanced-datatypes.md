@@ -24,7 +24,7 @@ lang:   en
     - Input is the typemap
 
 <p>
-![](images/type_struct.svg){.center width=70%}
+![](images/type-struct.svg){.center width=70%}
 
 # Datatype constructors: MPI_TYPE_CREATE_STRUCT {.split-definition}
 
@@ -48,7 +48,7 @@ MPI_Type_create_struct(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `
     : `-`{.ghost}
 
 <p>
-![](images/type_struct.svg){.center width=70%}
+![](images/type-struct.svg){.center width=70%}
 
 # Example: sending a C struct
 
