@@ -24,7 +24,7 @@ lang:   en
     - Input is the typemap
 
 <p>
-![](images/create_struct.svg){.center width=70%}
+![](images/type_struct.svg){.center width=70%}
 
 # Datatype constructors: MPI_TYPE_CREATE_STRUCT {.split-definition}
 
@@ -48,7 +48,7 @@ MPI_Type_create_struct(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `
     : `-`{.ghost}
 
 <p>
-![](images/create_struct.svg){.center width=70%}
+![](images/type_struct.svg){.center width=70%}
 
 # Example: sending a C struct
 
@@ -130,7 +130,7 @@ disp[0] = 0;
 
 # Multiple MPI_TYPE_VECTOR
 
-![](images/type_vector1.svg){.center width=100%}
+![](images/vector-extent.svg){.center width=80%}
 
 # Reading extent and lower bound
 
@@ -156,7 +156,7 @@ MPI_Type_create_resized(`type`{.input}, `lb`{.input}, `extent`{.input}, `newtype
 
 # Multiple MPI_TYPE_VECTOR
 
-![](images/type_vector2.svg){.center width=100%}
+![](images/vector-resize.svg){.center width=80%}
 
 # Example: sending an array of structs portably
 
