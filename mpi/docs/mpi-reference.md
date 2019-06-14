@@ -89,7 +89,7 @@ mpi_sendrecv(sendbuf, sendcount, sendtype, dest, sendtag, recvbuf, recvcount, &
 ```
 </small>
 
-# MPI datatypes
+# MPI datatypes for C
 
 | MPI type     |  C type     |
 | ------------ | ----------- |
@@ -102,7 +102,7 @@ mpi_sendrecv(sendbuf, sendcount, sendtype, dest, sendtag, recvbuf, recvcount, &
 |   MPI_BYTE   |             |
 
 
-# MPI datatypes
+# MPI datatypes for Fortran
 
 | MPI type             |  Fortran type    |
 | -------------------- | ---------------- |
@@ -252,17 +252,26 @@ mpi_alltoallv(sendbuf,sendcounts, sdispls, sendtype, recvbuf, recvcounts, rdispl
 
 # Available reduction operations
 
-|    mpi_op  |                      |
-| ---------- | -------------------- |
-| MPI_MAX    | Max value            |
-| MPI_MIN    | Min value            |
-| MPI_SUM    | Sum                  |
-| MPI_PROD   | Product              |
-| MPI_MAXLOC | Max value + location |
-| MPI_MINLOC | Min value + location |
-| MPI_LAND   | Logical AND          |
-| MPI_LOR    | Logical OR           |
-
+<div class=column>
+| Operation    | Meaning              |
+|--------------|----------------------|
+| `MPI_MAX`    | Max value            |
+| `MPI_MIN`    | Min value            |
+| `MPI_SUM`    | Sum                  |
+| `MPI_PROD`   | Product              |
+| `MPI_MAXLOC` | Max value + location |
+| `MPI_MINLOC` | Min value + location |
+</div>
+<div class=column>
+| Operation  | Meaning      |
+|------------|--------------|
+| `MPI_LAND` | Logical AND  |
+| `MPI_BAND` | Bytewise AND |
+| `MPI_LOR`  | Logical OR   |
+| `MPI_BOR`  | Bytewise OR  |
+| `MPI_LXOR` | Logical XOR  |
+| `MPI_BXOR` | Bytewise XOR |
+</div>
 
 
 # C interfaces for user-defined communicators
