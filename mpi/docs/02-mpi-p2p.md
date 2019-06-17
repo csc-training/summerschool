@@ -268,7 +268,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 | **`source`{.input}**  | `MPI_PROC_NULL`     | No sender=no operation takes place           |
 |                       | `MPI_ANY_SOURCE`    | Receive from any sender                      |
 | **`tag`{.input}**     | `MPI_ANY_TAG`       | Receive messages with any tag                |
-| **`source`{.output}** | `MPI_STATUS_IGNORE` | Do not store any status data                 |
+| **`status`{.output}** | `MPI_STATUS_IGNORE` | Do not store any status data                 |
 
 # Status parameter 
 
