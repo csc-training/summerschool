@@ -23,15 +23,15 @@ void init_field(field *f, int nx, int ny)
             f->data[i][j] = 0.0;
         }
 
-    // Initial conditions for top and bottom
+    // Initial conditions for left and right
     for (i = 0; i < f->nx + 2; i++) {
-        f->data[i][0] = 30.0;
-        f->data[i][f->ny + 1] = -10.0;
+        f->data[i][0] = 20.0;
+        f->data[i][f->ny + 1] = 70.0;
     }
-    // and left and right boundaries
+    // and top and bottom boundaries
     for (j = 0; j < f->ny + 2; j++) {
-        f->data[0][j] = 15.0;
-        f->data[f->nx + 1][j] = -25.0;
+        f->data[0][j] = 85.0;
+        f->data[f->nx + 1][j] = 5.0;
     }
 }
 
