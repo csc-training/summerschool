@@ -15,10 +15,21 @@ int main(void)
     double laplacian[NX][NY];
 
     // First initalize the inner values to zero
-    for (i = 1; i < NX - 2; i++) {
-        for (j = 1; j < NY - 2; j++) {
+    for (i = 1; i < NX - 1; i++) {
+        for (j = 1; j < NY - 1; j++) {
             array[i][j] = 0.0;
         }
+    }
+
+    // Initial conditions for left and right
+    for (i = 0; i < NX; i++) {
+        array[i][0] = 20.0;
+        array[i][NY - 1] = 70.0;
+    }
+    // and top and bottom boundaries
+    for (j = 0; j < NY; j++) {
+        array[0][j] = 85.0;
+        array[NX - 1][j] = 5.0;
     }
 
     // Zero out the outer boundary of laplacian
@@ -29,16 +40,6 @@ int main(void)
         laplacian[0][j] = laplacian[NX - 1][j] = 0.0;
     }
 
-    // Initial conditions for top and bottom
-    for (i = 0; i < NX; i++) {
-        array[i][0] = 30.0;
-        array[i][NY - 1] = -10.0;
-    }
-    // left and right
-    for (j = 0; j < NY; j++) {
-        array[0][j] = 15.0;
-        array[NX - 1][j] = -25.0;
-    }
 
     // Evaluate the Laplacian
     // *INDENT-OFF*
