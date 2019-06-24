@@ -2,7 +2,7 @@ ifeq ($(COMP),)
 COMP=cray
 endif
 
-COMMONDIR=../../../../heat/common
+COMMONDIR=../datastructures-functions-heat
 
 ifeq ($(COMP),cray)
 CC=cc
