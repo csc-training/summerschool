@@ -18,7 +18,7 @@ FC=mpifort
 CC=pgcc
 FCFLAGS=-g -acc -O3 -ta=tesla,cuda10.0,kepler+
 CCFLAGS=-g -acc -O3 -ta=tesla,cuda10.0,kepler+ -I$(COMMONDIR)
-LDFLAGS=
+LDFLAGS=-L/homeappl/appl_taito/opt/libpng/lib
 LIBS=-lpng
 endif
 

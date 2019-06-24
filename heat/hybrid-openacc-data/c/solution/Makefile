@@ -14,7 +14,7 @@ endif
 ifeq ($(COMP),pgi)
 CC=mpicc
 CCFLAGS=-g -acc -O3 -ta=tesla,cuda10.0,kepler+ -I$(COMMONDIR)
-LDFLAGS=
+LDFLAGS=-L/homeappl/appl_taito/opt/libpng/lib
 LIBS=-lpng
 endif
 
