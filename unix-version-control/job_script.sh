@@ -5,6 +5,6 @@
 #SBATCH -n 24
 #SBATCH -p small
 #SBATCH -t 5
-#SBATCH --reservation=summer_school
+#SBATCH --reservation=Summerschool
 
 

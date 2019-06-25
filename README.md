@@ -14,6 +14,7 @@ Versions from previous years can be found in tags.
 ## Exercises
 
  - [General instructions](exercise-instructions.md)
+ - [Using version control and unix](unix-version-control)
  - [Fortran programming](programming/fortran)
  - [C/C++ programming](programming/c)
  - [OpenMP](openmp)
