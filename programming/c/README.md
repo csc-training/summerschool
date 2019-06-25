@@ -9,7 +9,7 @@
 - [Functions](functions)
 
 ## Introduction to C III:
-- [Data structures](datastructures)
+- [Data structures: array of Fibonacci numbers](datastructures-fibonacci)
 - [Data structures and functions for heat](datastructures-functions-heat)
 - [Dynamic arrays](dynamic-arrays)
 
