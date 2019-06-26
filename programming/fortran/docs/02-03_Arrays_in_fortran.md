@@ -35,6 +35,8 @@ By default, indexing starts from 1
 # Array syntax
 
 - Arrays can be accessed element-by-element
+    - Normally, bounds are not checked so access outside declared bounds 
+      results in program crash or garbage results
 - Arrays can be treated also with *array syntax*
 
 ```fortran
