@@ -38,10 +38,10 @@ lang:   en
 
 * Partial differential equation that describes the variation of temperature in a given region over time
 
- ![](images/heat_eq.png){.center width=25%}	
-		
-* Temperature variation: u(x, y, z, t)
-* Thermal diffusivity constant: α
+$$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$$
+
+* Temperature variation: $u(x, y, z, t)$
+* Thermal diffusivity constant: $\alpha$
 
 </div>
 
@@ -57,11 +57,11 @@ lang:   en
 
 * Discretize: Finite difference Laplacian in two dimensions
 
- ![](images/fd.png){.center width=70%}
-
-
-
-Temperature field u(i,j)
+ <small>
+ $$\nabla^2 u \rightarrow \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2}
+  + \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2} $$
+</small>
+Temperature field $u(i,j)$
 
  ![](images/t_field.svg){.center width=45%}
 
@@ -72,13 +72,14 @@ Temperature field u(i,j)
 
 * Explicit time evolution with time step Δt
 
-![](images/time_p.png){.center width=70%}
+$$u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)$$
 
 * Note: algorithm is stable only when
 
- ![](images/stable.png){.center width=40%}
+$$\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2
+(\Delta y)^2}$$
 
-* Given the initial condition (u(t=0) = u0) one can follow the time evolution of the temperature field
+* Given the initial condition ($u(t=0) = u^0$) one can follow the time evolution of the temperature field
 
 # Solving heat equation in parallel
 
