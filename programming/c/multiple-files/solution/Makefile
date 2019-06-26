@@ -25,7 +25,7 @@ libpng.o: libpng.c
 .PHONY: $(EXE) clean
 
 $(EXE): $(OBJS) .ALWAYSEXEC
-	$(CC) $(FCFLAGS) $(OBJS) -o $@ $(LIBS)
+	$(CC) $(CCFLAGS) $(OBJS) -o $@ $(LIBS)
 
 %.o: %.c
 	$(CC) $(CCFLAGS) -c $< -o $@

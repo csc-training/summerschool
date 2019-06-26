@@ -10,7 +10,7 @@ contains
 
     implicit none
 
-    type(field), intent(out) :: previous, current
+    type(field), intent(inout) :: previous, current
     integer, intent(out) :: nsteps
     type(parallel_data), intent(out) :: parallel
 
@@ -62,7 +62,9 @@ contains
        call set_field_dimensions(current, rows, cols, parallel)
        !$OMP END SINGLE
        call generate_field(previous, parallel)
+       !$OMP SINGLE
        call copy_fields(previous, current)
+       !$OMP END SINGLE
     end if
 
   end subroutine initialize

@@ -78,10 +78,10 @@ The batch script is then submitted with the sbatch command as
 sbatch sisu_job.sh
 ```
 
-We have a special reservation `summer_school` for the summer school which 
+We have a special reservation `Summerschool` for the summer school which 
 can be utilized with the --reservation flag:
 ```
-sbatch --reservation=summer_school sisu_job.sh
+sbatch --reservation=Summerschool sisu_job.sh
 ```
 
 See the Sisu User’s Guide at http://research.csc.fi/sisu-user-guide for more

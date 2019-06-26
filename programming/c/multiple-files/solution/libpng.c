@@ -14,12 +14,12 @@ int main(void)
     // Initialize the zeros first
     memset(array, 0, NX * NY * sizeof(double));
 
-    // Initial conditions for top and bottom
+    // Initial conditions for left and right
     for (i = 0; i < NX; i++) {
         array[i][0] = 20.0;
         array[i][NY - 1] = 70.0;
     }
-    // left and right boundaries
+    // and top and bottom boundaries
     for (j = 0; j < NY; j++) {
         array[0][j] = 85.0;
         array[NX - 1][j] = 5.0;
