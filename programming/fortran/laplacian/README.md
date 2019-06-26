@@ -18,5 +18,6 @@ analytic solution for that function is
 \nabla^2 u(x,y)  = 4 
  --> 
 ![img](https://quicklatex.com/cache3/f2/ql_1133b1a8877ffd0acf814919818995f2_l3.png)
-check the correctness of your implementation.
+
+for checking the correctness of your implementation.
 
