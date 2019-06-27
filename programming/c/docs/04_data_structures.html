@@ -82,8 +82,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </li>
 <li><strong><code>float f[3]</code></strong> array of 3 floats<br />
 </li>
-<li><strong><code>char c[60]</code></strong> string of 60 letters<br />
-</li>
+<li><strong><code>char c[60]</code></strong> array of 60 chars</li>
 </ul></li>
 <li>elements indexed starting from zero
 <ul>
@@ -103,17 +102,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="dt">int</span> triplet[<span class="dv">3</span>];
 triplet[<span class="dv">0</span>] = <span class="dv">1</span>;
 triplet[<span class="dv">1</span>] = <span class="dv">2</span> * triplet[<span class="dv">0</span>];
-triplet[<span class="dv">2</span>] = triplet[<span class="dv">0</span>] + triplet[<span class="dv">1</span>];
-
-
-<span class="co">// string</span>
+triplet[<span class="dv">2</span>] = triplet[<span class="dv">0</span>] + triplet[<span class="dv">1</span>];</code></pre></div>
+<ul>
+<li>In C a string is a array of chars where the last char is a null character <code>\0</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// string</span>
 <span class="dt">char</span> word[] = <span class="st">&quot;hello!&quot;</span>;
-printf(word); <span class="co">// hello!</span>
-
-
-
-
-</code></pre></div>
+printf(word); <span class="co">// hello!</span></code></pre></div>
 </div>
 <div class="column">
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">// 2-dim matrix</span>
@@ -158,14 +153,18 @@ ptr--;              <span class="co">// *ptr -&gt; vector[3]</span></code></pre>
 <ul>
 <li>Pass a pointer to an array by specifying the array's name</li>
 </ul></li>
-<li>Return array from a function</li>
+<li>Return array from a function
+<ul>
+<li>Do not return local variables that go out of scope</li>
+<li>Can return dynamically allocated memory or static variables</li>
+</ul></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> myFunction(<span class="dt">int</span> *param) {
     ...
 }
 
 <span class="dt">int</span> * myFunction() {
-    <span class="dt">int</span> r[<span class="dv">10</span>];
+    <span class="dt">static</span> <span class="dt">int</span> r[<span class="dv">10</span>];
     ...
     <span class="cf">return</span> r;
 }</code></pre></div>
