@@ -12,7 +12,7 @@ lang:   en
 - Static arrays declared as **\<type\> name\[N\]** where **N** is the size of the array  
     - **`int i[10]`** array of 10 integers  
     - **`float f[3]`** array of 3 floats  
-    - **`char c[60]`** string of 60 letters  
+    - **`char c[60]`** array of 60 chars
 - elements indexed starting from zero  
     - **`i[3]`** 4th element of array i  
 - multi-dimensional arrays possible  
@@ -28,18 +28,17 @@ int triplet[3];
 triplet[0] = 1;
 triplet[1] = 2 * triplet[0];
 triplet[2] = triplet[0] + triplet[1];
+```
 
+- In C a string is a array of chars where the last char is a null character `\0`
 
+```c
 // string
 char word[] = "hello!";
 printf(word); // hello!
-
-
-
-
-
-
 ```
+
+
 </div>
 <div class=column>
 ```c
@@ -90,6 +89,8 @@ ptr--;              // *ptr -> vector[3]
     - Pass a pointer to an array by specifying the array's name
 
 - Return array from a function
+    - Do not return local variables that go out of scope
+    - Can return dynamically allocated memory or static variables
 
 ```c
 void myFunction(int *param) {
@@ -97,7 +98,7 @@ void myFunction(int *param) {
 }
 
 int * myFunction() {
-    int r[10];
+    static int r[10];
     ...
     return r;
 }

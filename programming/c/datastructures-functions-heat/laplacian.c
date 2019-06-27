@@ -36,7 +36,7 @@ int main(void)
     for (i = 0; i < NX; i++) {
         laplacian[i][0] = laplacian[i][NY - 1] = 0.0;
     }
-    for (j = 0; i < NY; j++) {
+    for (j = 0; j < NY; j++) {
         laplacian[0][j] = laplacian[NX - 1][j] = 0.0;
     }
 
