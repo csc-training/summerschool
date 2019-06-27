@@ -5,6 +5,44 @@ date:   2019
 lang:   en
 ---
 
+# Agenda {.table-grid}
+
+<small>
+
+<div class=column>
+
+| Friday         |                               | 
+| -------------: |------------------------------ | 
+|  9:00 - 10:00  | Introduction to MPI           |
+| 10:00 - 10:15  | Coffee break                  |
+| 10:15 - 11:00  | Point-to-point communication  |
+| 11:00 - 12:00  | Exercises                     |
+| 12:00 - 13:00  | Lunch                         |
+| 13:00 - 13:45  | Collective communication      |
+| 13:45 - 14:30  | Exercises                     |
+| 14:30 - 14:45  | Coffee break                  |
+| 14:45 - 15:00  | User defined communicators    |
+| 15:00 - 15:45  | Exercises                     | 
+
+</div>
+
+<div class=column>
+
+| Saturday       |                            | 
+| -------------: | -------------------------- | 
+|  9:00 - 10:00  | User defined datatypes 1   |
+| 10:00 - 10:15  | Coffee break               |
+| 10:15 - 11:00  | User defined datatypes 2   |
+| 11:00 - 12:00  | Exercises                  |
+| 12:00 - 13:00  | Lunch                      |
+| 13:00 - 13:30  | Non-blocking communication |
+| 13:30 - 14:30  | Exercises                  |
+| 14:30 - 14:45  | Coffee break               |
+
+</div>
+
+</small>
+
 # Basic concepts in MPI {.section}
 
 # Message-passing interface
