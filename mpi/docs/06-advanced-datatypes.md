@@ -5,6 +5,7 @@ date:   2019-06
 lang:   en
 ---
 
+# Typemaps & describing heterogeneous data  {.section}
 
 # Understanding datatypes: typemap
 

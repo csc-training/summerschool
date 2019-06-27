@@ -5,6 +5,8 @@ date:   2019-06
 lang:   en
 ---
 
+# Non-blocking communication {.section}
+
 # Non-blocking communication 
 
 - Non-blocking communication operations return immediately and perform sending/receiving in the background

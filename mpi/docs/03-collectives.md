@@ -5,6 +5,8 @@ date:   2019-06
 lang:   en
 ---
 
+# Collective communication {.section}
+
 # Introduction
 
 - Collective communication transmits data among all processes in a
