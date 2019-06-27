@@ -81,7 +81,7 @@ end program switch
 ```fortran
 interface operator(+)
   module procedure base_sum
-end interface operator
+end interface operator(+)
 
 function base_sum(x,y) result(z)
   type(base), intent(in) :: x,y
