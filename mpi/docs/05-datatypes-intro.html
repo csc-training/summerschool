@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>USER-DEFINED DATATYPES</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>USER-DEFINED DATATYPES</h1>
+  <p>CSC Summerschool, 2019-06</p>
+</section>
+
+<section id="mpi-datatypes" class="slide level1" data-background-size="contain">
+<h1>MPI datatypes</h1>
+<ul>
+<li>MPI datatypes are used for communication purposes
+<ul>
+<li>Datatype tells MPI where to take the data when sending or where to put data when receiving</li>
+</ul></li>
+<li>Elementary datatypes (<code>MPI_INT</code>, <code>MPI_REAL</code>, ...)
+<ul>
+<li>Different types in Fortran and C, correspond to languages basic types</li>
+<li>Enable communication using contiguous memory sequence of identical elements (e.g. vector or matrix)</li>
+</ul></li>
+</ul>
+</section>
+<section id="sending-a-matrix-row-fortran" class="slide level1" data-background-size="contain">
+<h1>Sending a matrix row (Fortran)</h1>
+<ul>
+<li>Row of a matrix is not contiguous in memory in Fortran</li>
+</ul>
+<p>
+<figure>
+<img src="images/layout.svg" class="center" style="width:50.0%" />
+</figure>
+<p>
+<ul>
+<li>Several options for sending a row:
+<ul>
+<li>Use several send commands for each element of a row</li>
+<li>Copy data to temporary buffer and send that with one send command</li>
+<li>Create a matching datatype and send all data with one send command</li>
+</ul></li>
+</ul>
+</section>
+<section id="user-defined-datatypes" class="slide level1" data-background-size="contain">
+<h1>User-defined datatypes</h1>
+<ul>
+<li>Use elementary datatypes as building blocks</li>
+<li>Enable communication of
+<ul>
+<li>Non-contiguous data with a single MPI call, e.g. rows or columns of a matrix</li>
+<li>Heterogeneous data (structs in C, types in Fortran)</li>
+<li>Larger messages, count is <code>int</code> (32 bits) in C</li>
+</ul></li>
+<li>Provide higher level of programming
+<ul>
+<li>Code is more compact and maintainable</li>
+</ul></li>
+<li>Needed for getting the most out of MPI I/O</li>
+</ul>
+</section>
+<section id="user-defined-datatypes-1" class="slide level1" data-background-size="contain">
+<h1>User-defined datatypes</h1>
+<ul>
+<li>User-defined datatypes can be used both in point-to-point communication and collective communication</li>
+<li>The datatype instructs where to take the data when sending or where to put data when receiving
+<ul>
+<li>Non-contiguous data in sending process can be received as contiguous or vice versa</li>
+</ul></li>
+</ul>
+</section>
+<section id="using-user-defined-datatypes" class="slide level1" data-background-size="contain">
+<h1>Using user-defined datatypes</h1>
+<ul>
+<li>A new datatype is created from existing ones with a datatype constructor
+<ul>
+<li>Several routines for different special cases</li>
+</ul></li>
+<li>A new datatype must be committed before using it
+<ul>
+<li><strong><code>MPI_Type_commit</code>(<code class="input">newtype</code>)</strong></li>
+</ul></li>
+<li>A type should be freed after it is no longer needed
+<ul>
+<li><strong><code>MPI_Type_free</code>(<code class="input">newtype</code>)</strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="datatype-constructors" class="slide level1" data-background-size="contain">
+<h1>Datatype constructors</h1>
+<table>
+<thead>
+<tr class="header">
+<th>Datatype</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>MPI_Type_contiguous</code></td>
+<td>contiguous datatypes</td>
+</tr>
+<tr class="even">
+<td><code>MPI_Type_vector</code></td>
+<td>regularly spaced datatype</td>
+</tr>
+<tr class="odd">
+<td><code>MPI_Type_indexed</code></td>
+<td>variably spaced datatype</td>
+</tr>
+<tr class="even">
+<td><code>MPI_Type_create_subarray</code></td>
+<td>subarray within a multi-dimensional array</td>
+</tr>
+<tr class="odd">
+<td><code>MPI_Type_create_hvector</code></td>
+<td>like vector, but uses bytes for spacings</td>
+</tr>
+<tr class="even">
+<td><code>MPI_Type_create_hindexed</code></td>
+<td>like index, but uses bytes for spacings</td>
+</tr>
+<tr class="odd">
+<td><code>MPI_Type_create_struct</code></td>
+<td>fully general datatype</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mpi_type_vector" class="slide level1" data-background-size="contain">
+<h1>MPI_TYPE_VECTOR</h1>
+<ul>
+<li>Creates a new type from equally spaced identical blocks</li>
+</ul>
+<div class="column">
+<dl>
+<dt>MPI_Type_vector(<code class="input">count</code>, <code class="input">blocklen</code>, <code class="input">stride</code>, <code class="input">oldtype</code>, <code class="output">newtype</code>)</dt>
+<dd><dl>
+<dt><code class="input">count</code></dt>
+<dd>number of blocks
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="input">blocklen</code></dt>
+<dd>number of elements in each block
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="input">stride</code></dt>
+<dd>displacement between the blocks
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class=column>
+<p>
+<img src="images/type_vector.svg" class="center" style="width:100.0%" />
+</div>
+</section>
+<section id="example-sending-rows-of-matrix-in-fortran" class="slide level1" data-background-size="contain">
+<h1>Example: sending rows of matrix in Fortran</h1>
+<div class="sourceCode"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span class="dt">integer</span>, <span class="dt">parameter</span> <span class="dt">::</span> n<span class="kw">=</span><span class="dv">2</span>, m<span class="kw">=</span><span class="dv">3</span>
+<span class="dt">real</span>, <span class="dt">dimension(n,m)</span> <span class="dt">::</span> a
+<span class="dt">type(mpi_datatype)</span> <span class="dt">::</span> rowtype
+<span class="co">! create a derived type</span>
+<span class="kw">call</span> mpi_type_vector(m, <span class="dv">1</span>, n, mpi_real, rowtype, ierr)
+<span class="kw">call</span> mpi_type_commit(rowtype, ierr)
+<span class="co">! send a row</span>
+<span class="kw">call</span> mpi_send(a, <span class="dv">1</span>, rowtype, dest, tag, comm, ierr)
+<span class="co">! free the type after it is not needed</span>
+<span class="kw">call</span> mpi_type_free(rowtype, ierr)</code></pre></div>
+<p>
+<figure>
+<img src="images/layout.svg" class="center" style="width:50.0%" />
+</figure>
+</section>
+<section id="mpi_type_indexed" class="slide level1 split-def-3" data-background-size="contain">
+<h1>MPI_TYPE_INDEXED</h1>
+<ul>
+<li>Creates a new type from blocks comprising identical elements
+<ul>
+<li>The size and displacements of the blocks may vary</li>
+</ul></li>
+</ul>
+<dl>
+<dt>MPI_Type_indexed(<code class="input">count</code>, <code class="input">blocklens</code>, <code class="input">displs</code>, <code class="input">oldtype</code>, <code class="output">newtype</code>)</dt>
+<dd><dl>
+<dt><code class="input">count</code></dt>
+<dd>number of blocks
+</dd>
+<dt><code class="input">blocklens</code></dt>
+<dd>lengths of the blocks (array)
+</dd>
+<dt><code class="input">displs</code></dt>
+<dd>displacements (array) in extent of oldtypes
+</dd>
+<dt><code class="input">oldtype</code></dt>
+<dd>original type
+</dd>
+<dt><code class="output">newtype</code></dt>
+<dd>new type
+</dd>
+<dt><code class="ghost">-</code></dt>
+<dd><code class="ghost">-</code>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>
+<figure>
+<img src="images/type_indexed.svg" class="center" style="width:100.0%" />
+</figure>
+</section>
+<section id="example-an-upper-triangular-matrix" class="slide level1" data-background-size="contain">
+<h1>Example: an upper triangular matrix</h1>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span class="kw">/*</span> Upper triangular matrix <span class="kw">*/</span>
+<span class="dt">double</span> a<span class="kw">[</span><span class="dv">100</span><span class="kw">][</span><span class="dv">100</span><span class="kw">]</span>;
+<span class="bu">int</span> disp<span class="kw">[</span><span class="dv">100</span><span class="kw">]</span>, blocklen<span class="kw">[</span><span class="dv">100</span><span class="kw">]</span>, <span class="bu">int</span> i;
+MPI_Datatype upper;
+<span class="kw">/*</span> compute start and <span class="fu">size</span> of rows <span class="kw">*/</span>
+<span class="kw">for</span> (i<span class="kw">=</span><span class="dv">0</span>; i<span class="op">&lt;</span><span class="dv">100</span>; i<span class="kw">++</span>) <span class="kw">{</span>
+    disp<span class="kw">[</span>i<span class="kw">]</span> <span class="kw">=</span> <span class="dv">100</span><span class="kw">*</span>i<span class="kw">+</span>i;
+    blocklen<span class="kw">[</span>i<span class="kw">]</span> <span class="kw">=</span> <span class="dv">100</span><span class="kw">-</span>­i;
+<span class="kw">}</span>
+<span class="kw">/*</span> create a datatype <span class="kw">for</span> upper tr matrix <span class="kw">*/</span> 
+MPI_Type_indexed(<span class="dv">100</span>,blocklen,disp,
+    MPI_DOUBLE,<span class="kw">&amp;</span>upper);
+MPI_Type_commit(<span class="kw">&amp;</span>upper);
+<span class="kw">/*</span> ... send it ... <span class="kw">*/</span>
+MPI_Send(a,<span class="dv">1</span>,upper,dest, tag, MPI_COMM_WORLD);
+MPI_Type_free(<span class="kw">&amp;</span>upper);</code></pre></div>
+</div>
+<div class="column">
+<figure>
+<img src="images/triangle.svg" class="center" style="width:65.0%" />
+</figure>
+</div>
+</section>
+<section id="from-non-contiguous-to-contiguous-data" class="slide level1" data-background-size="contain">
+<h1>From non-contiguous to contiguous data</h1>
+<div class="column">
+<figure>
+<img src="images/contiguous.svg" class="center" style="width:100.0%" />
+</figure>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (myid == <span class="dv">0</span>)
+  MPI_Type_vector(n, <span class="dv">1</span>, <span class="dv">2</span>, 
+                  MPI_FLOAT, &amp;newtype)
+  ...
+  MPI_Send(A, <span class="dv">1</span>, newtype, <span class="dv">1</span>, ...)
+<span class="cf">else</span>
+  MPI_Recv(B, n, MPI_FLOAT, <span class="dv">0</span>, ...)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (myid == <span class="dv">0</span>)
+  MPI_Send(A, n, MPI_FLOAT, <span class="dv">1</span>, ...)
+<span class="cf">else</span>
+  MPI_Type_vector(n, <span class="dv">1</span>, <span class="dv">2</span>, MPI_FLOAT, 
+                  &amp;newtype)
+  ...
+  MPI_Recv(B, <span class="dv">1</span>, newtype, <span class="dv">0</span>, ...)</code></pre></div>
+</div>
+</section>
+<section id="performance" class="slide level1" data-background-size="contain">
+<h1>Performance</h1>
+<ul>
+<li>Main motivation for using datatypes is rarely performance – manual packing is often faster</li>
+<li>Performance depends on the datatype - more general datatypes are often slower</li>
+<li>Overhead is potentially reduced by:
+<ul>
+<li>Sending one long message instead of many small messages</li>
+<li>Avoiding the need to pack data in temporary buffers</li>
+</ul></li>
+<li>Performance should be tested on target platforms</li>
+</ul>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>Derived types enable communication of non-contiguous or heterogeneous data with single MPI calls
+<ul>
+<li>Improves maintainability of program</li>
+<li>Allows optimizations by the system</li>
+<li>Performance is implementation dependent</li>
+</ul></li>
+<li>Life cycle of derived type: create, commit, free</li>
+<li>MPI provides constructors for several specific types</li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
