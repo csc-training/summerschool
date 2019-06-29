@@ -166,7 +166,7 @@ struct ParticleStruct particle[1000];
 MPI_Datatype particletype, oldtype;
 MPI_Aint lb, extent;
 ...
-/* Check that the extent is correct
+// Check that the extent is correct
 MPI_Type_get_extent(particletype, &lb, &extent);
 if ( extent != sizeof(particle[0] ) {
    oldtype = particletype;
