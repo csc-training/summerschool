@@ -352,6 +352,7 @@ MPI_Send(particle, <span class="dv">1000</span>*psize, MPI_BYTE, ...);</code></p
 <section id="example-subarray" class="slide level1" data-background-size="contain">
 <h1>Example: subarray</h1>
 <div class="column">
+<p><small></p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> a_size[<span class="dv">2</span>]    = {<span class="dv">5</span>,<span class="dv">5</span>};
 <span class="dt">int</span> sub_size[<span class="dv">2</span>]  = {<span class="dv">2</span>,<span class="dv">3</span>};
 <span class="dt">int</span> sub_start[<span class="dv">2</span>] = {<span class="dv">1</span>,<span class="dv">2</span>};
@@ -361,19 +362,25 @@ MPI_Datatype sub_type;
 <span class="cf">for</span>(i = <span class="dv">0</span>; i &lt; a_size[<span class="dv">0</span>]; i++)
   <span class="cf">for</span>(j = <span class="dv">0</span>; j &lt; a_size[<span class="dv">1</span>]; j++)
     array[i][j] = rank; 
+
 MPI_Type_create_subarray(<span class="dv">2</span>, a_size, sub_size,
-  sub_start, MPI_ORDER_C, MPI_DOUBLE, &amp;sub_type);
+       sub_start, MPI_ORDER_C, MPI_DOUBLE, &amp;sub_type);
+
 MPI_Type_commit(&amp;sub_type);
+
 <span class="cf">if</span> (rank==<span class="dv">0</span>)
   MPI_Recv(array[<span class="dv">0</span>], <span class="dv">1</span>, sub_type, <span class="dv">1</span>, <span class="dv">123</span>,
     MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 <span class="cf">if</span> (rank==<span class="dv">1</span>) 
   MPI_Send(array[<span class="dv">0</span>], <span class="dv">1</span>, sub_type, <span class="dv">0</span>, <span class="dv">123</span>,
-  MPI_COMM_WORLD);</code></pre></div>
+  MPI_COMM_WORLD);
+
+MPI_Type_free(&amp;sub_type);</code></pre></div>
+<p></small></p>
 </div>
 <div class="column">
 <figure>
-<img src="images/type_array.svg" class="center" style="width:100.0%" />
+<img src="images/type_array.svg" class="center" style="width:90.0%" />
 </figure>
 </div>
 </section>

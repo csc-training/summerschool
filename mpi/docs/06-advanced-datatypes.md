@@ -230,6 +230,7 @@ MPI_Type_create_subarray(`ndims`{.input}, `sizes`{.input}, `subsizes`{.input}, `
 # Example: subarray
 
 <div class=column>
+<small>
 ```c
 int a_size[2]    = {5,5};
 int sub_size[2]  = {2,3};
@@ -240,9 +241,12 @@ double array[5][5];
 for(i = 0; i < a_size[0]; i++)
   for(j = 0; j < a_size[1]; j++)
     array[i][j] = rank; 
+
 MPI_Type_create_subarray(2, a_size, sub_size,
-  sub_start, MPI_ORDER_C, MPI_DOUBLE, &sub_type);
+       sub_start, MPI_ORDER_C, MPI_DOUBLE, &sub_type);
+
 MPI_Type_commit(&sub_type);
+
 if (rank==0)
   MPI_Recv(array[0], 1, sub_type, 1, 123,
     MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -250,7 +254,10 @@ if (rank==1)
   MPI_Send(array[0], 1, sub_type, 0, 123,
   MPI_COMM_WORLD);
 
+MPI_Type_free(&sub_type);
+
 ```
+</small>
 </div>
 <div class=column>
 ![](images/type_array.svg){.center width=100%}
