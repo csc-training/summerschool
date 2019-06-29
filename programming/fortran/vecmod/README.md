@@ -10,4 +10,4 @@ Your task is to implement functions for calculating the following operations:
 - summation and subtraction between two vectors
 - dot product and vector (cross) product between two vectors
 
-Overload them to match with the syntax in vec.F90. Placeholders for these are in [vec_mod.F90](vec_mod.F90).
+Overload them to match with the syntax in vec.F90. Placeholders for these are in [vecmod.F90](vecmod.F90).
