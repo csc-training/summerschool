@@ -14,7 +14,11 @@ with single neighbor, and the inner ranks with the two neighbors.
 
 Implement this “halo exchange” operation into the routine `exchange` by
 inserting the suitable MPI routines into [core.F90](fortran/core.F90) /
-[core.c](c/core.c). You may use the provided ```Makefile``` for building the 
+[core.c](c/core.c). The module [heat_mod.F90](fortran/heat_mod.F90) / header [heat.h](c/heat.h)
+contain data structures that you can utilize. (The data structures are readily filled by the provided 
+`initialize` routine. You may want to investigate also `parallel_setup` routine)
+
+You may use the provided ```Makefile``` for building the 
 code (by typing ```make```). 
 
 Remember to update all ghost layers at every iteration.

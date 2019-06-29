@@ -1,3 +1,10 @@
+---
+title:  User-defined communicators
+author: CSC Summerschool
+date:   2019
+lang:   en
+---
+
 # User-defined communicators {.section}
 
 # Communicators

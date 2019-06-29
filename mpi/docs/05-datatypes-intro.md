@@ -1,9 +1,11 @@
 ---
-title:  USER-DEFINED DATATYPES 
+title:  User defined datatypes
 author: CSC Summerschool
 date:   2019-06
 lang:   en
 ---
+
+# User defined datatypes (part 1) {.section}
 
 # MPI datatypes
 
