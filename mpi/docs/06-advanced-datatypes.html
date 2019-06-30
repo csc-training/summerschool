@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <title>Typemaps &amp; describing heterogeneous data</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Typemaps &amp; describing heterogeneous data</h1>
+  <p>CSC Summerschool, 2019-06</p>
+</section>
+
+<section id="understanding-datatypes-typemap" class="slide level1" data-background-size="contain">
+<h1>Understanding datatypes: typemap</h1>
+<ul>
+<li>A datatype is defined by a <em>typemap</em>
+<ul>
+<li>Typemap consists of pairs with basic types and displacements (in bytes)</li>
+<li>E.g. MPI_INT={(int,0)}</li>
+</ul></li>
+</ul>
+<p>
+<figure>
+<img src="images/typemap.svg" class="center" style="width:100.0%" />
+</figure>
+</section>
+<section id="datatype-constructors-mpi_type_create_struct" class="slide level1" data-background-size="contain">
+<h1>Datatype constructors: MPI_TYPE_CREATE_STRUCT</h1>
+<ul>
+<li>The most general type constructor, creates a new type from heterogeneous blocks
+<ul>
+<li>E.g. Fortran types and C structures</li>
+<li>Input is the typemap</li>
+</ul></li>
+</ul>
+<p>
+<figure>
+<img src="images/type-struct.svg" class="center" style="width:70.0%" />
+</figure>
+</section>
+<section id="datatype-constructors-mpi_type_create_struct-1" class="slide level1 split-definition" data-background-size="contain">
+<h1>Datatype constructors: MPI_TYPE_CREATE_STRUCT</h1>
+<dl>
+<dt>MPI_Type_create_struct(<code class="input">count</code>, <code class="input">blocklens</code>, <code class="input">displs</code>, <code class="input">types</code>, <code class="output">newtype</code>)</dt>
+<dd><dl>
+<dt><code class="input">count</code></dt>
+<dd>number of blocks
+</dd>
+<dt><code class="input">blocklens</code></dt>
+<dd>lengths of blocks (array)
+</dd>
+<dt><code class="input">displs</code></dt>
+<dd>displacements of blocks in bytes (array)
+</dd>
+<dt><code class="input">types</code></dt>
+<dd>types of blocks (array)
+</dd>
+<dt><code class="output">newtype</code></dt>
+<dd>resulting new datatype
+</dd>
+<dt><code class="ghost">-</code></dt>
+<dd><code class="ghost">-</code>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>
+<figure>
+<img src="images/type-struct.svg" class="center" style="width:70.0%" />
+</figure>
+</section>
+<section id="example-sending-a-c-struct" class="slide level1" data-background-size="contain">
+<h1>Example: sending a C struct</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/* Structure for particles */</span>
+<span class="kw">struct</span> ParticleStruct {
+   <span class="dt">int</span> charge;         <span class="co">/* particle charge */</span> 
+   <span class="dt">double</span> coord[<span class="dv">3</span>];    <span class="co">/* particle coords */</span> 
+   <span class="dt">double</span> velocity[<span class="dv">3</span>]; <span class="co">/* particle velocity vector components */</span> };
+ 
+<span class="kw">struct</span> ParticleStruct particle[<span class="dv">1000</span>];
+MPI_Datatype Particletype;
+
+MPI_Datatype type[<span class="dv">3</span>] = {MPI_INT, MPI_DOUBLE, MPI_DOUBLE};
+<span class="dt">int</span> blocklen[<span class="dv">3</span>] = {<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>};
+MPI_Aint disp[<span class="dv">3</span>] = {<span class="dv">0</span>, <span class="kw">sizeof</span>(<span class="dt">double</span>), <span class="dv">4</span>*<span class="kw">sizeof</span>(<span class="dt">double</span>)};
+...
+MPI_Type_create_struct(<span class="dv">3</span>, blocklen, disp, type, &amp;Particletype);
+MPI_Type_commit(&amp;Particletype);
+
+MPI_Send(particle, <span class="dv">1000</span>, Particletype, dest, tag, MPI_COMM_WORLD);
+MPI_Type_free(&amp;Particletype);</code></pre></div>
+</section>
+<section id="determining-displacements" class="slide level1" data-background-size="contain">
+<h1>Determining displacements</h1>
+<ul>
+<li>The previous example defines and assumes a certain <em>alignment</em> for the data within the structure</li>
+<li>The displacements can (and should!) be determined by using the function <strong><code>MPI_Get_address</code>(<code class="input">pointer</code>, <code class="output">address</code>)</strong>
+<ul>
+<li>The address of the variable is returned, which can then be used for determining relative displacements</li>
+</ul></li>
+</ul>
+</section>
+<section id="determining-displacements-1" class="slide level1" data-background-size="contain">
+<h1>Determining displacements</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">/* Structure for particles */</span> 
+<span class="kw">struct</span> ParticleStruct { 
+   <span class="dt">int</span> charge;         <span class="co">/* particle charge */</span>
+   <span class="dt">double</span> coords[<span class="dv">3</span>];   <span class="co">/* particle coords */</span> 
+   <span class="dt">double</span> velocity[<span class="dv">3</span>]; <span class="co">/* particle velocity vector components */</span> };
+
+<span class="kw">struct</span> ParticleStruct particle[<span class="dv">1000</span>];
+...
+MPI_Aint disp[<span class="dv">3</span>]; <span class="co">/*Note the address type - MPI_Aint in C, integer(mpi_address_kind) in Fortran*/</span>
+MPI_Get_address(&amp;particle[<span class="dv">0</span>].charge, &amp;disp[<span class="dv">0</span>]);
+MPI_Get_address(&amp;particle[<span class="dv">0</span>].coords, &amp;disp[<span class="dv">1</span>]);
+MPI_Get_address(&amp;particle[<span class="dv">0</span>].velocity, &amp;disp[<span class="dv">2</span>]);
+<span class="co">/* Make displacements relative */</span>
+disp[<span class="dv">2</span>] -= disp[<span class="dv">0</span>];
+disp[<span class="dv">1</span>] -= disp[<span class="dv">0</span>];
+disp[<span class="dv">0</span>] = <span class="dv">0</span>;
+...</code></pre></div>
+</section>
+<section id="gaps-between-datatypes" class="slide level1" data-background-size="contain">
+<h1>Gaps between datatypes</h1>
+<ul>
+<li>Sending of an array of the <code>ParticleStruct</code> structures may have a portability issue: it assumes that array elements are packed in memory
+<ul>
+<li>Implicit assumption: the extent of the datatype was the same as the size of the C struct</li>
+<li>This is not necessarily the case</li>
+</ul></li>
+<li>If there are gaps in memory between the successive structures, sending does not work correctly</li>
+</ul>
+</section>
+<section id="type-extent" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>TYPE EXTENT</h1>
+</section>
+<section id="sending-multiple-elements-extent" class="slide level1" data-background-size="contain">
+<h1>Sending multiple elements: Extent</h1>
+<ul>
+<li>Sending multiple user-defined types at once may not behave as expected</li>
+<li>The <em>lower bound</em> describes where the datatype starts
+<ul>
+<li>LB: min(disp<sub>j</sub>)</li>
+</ul></li>
+<li>The <em>extent</em> describes the stride at which contiguous elements are read or written when sending multiple elements
+<ul>
+<li>Extent = max(disp<sub>j</sub> + size<sub>j</sub>) – LB + padding</li>
+</ul></li>
+</ul>
+</section>
+<section id="multiple-mpi_type_vector" class="slide level1" data-background-size="contain">
+<h1>Multiple MPI_TYPE_VECTOR</h1>
+<figure>
+<img src="images/vector-extent.svg" class="center" style="width:80.0%" />
+</figure>
+</section>
+<section id="reading-extent-and-lower-bound" class="slide level1" data-background-size="contain">
+<h1>Reading extent and lower bound</h1>
+<dl>
+<dt>MPI_Type_get_extent(<code class="input">type</code>, <code class="output">lb</code>, <code class="output">extent</code>)</dt>
+<dd><dl>
+<dt><code class="input">type</code></dt>
+<dd>Datatype
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="output">lb</code></dt>
+<dd>Lower bound of type (in bytes)
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="output">extent</code></dt>
+<dd>Extent of type (in bytes)
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="setting-new-extent-and-lower-bound" class="slide level1" data-background-size="contain">
+<h1>Setting new extent and lower bound</h1>
+<dl>
+<dt>MPI_Type_create_resized(<code class="input">type</code>, <code class="input">lb</code>, <code class="input">extent</code>, <code class="output">newtype</code>)</dt>
+<dd><dl>
+<dt><code class="input">type</code></dt>
+<dd>Old datatype
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="input">lb</code></dt>
+<dd>New lower bound (in bytes)
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="input">extent</code></dt>
+<dd>New extent (in bytes)
+</dd>
+</dl>
+</dd>
+<dd><dl>
+<dt><code class="output">newtype</code></dt>
+<dd>New datatype, commit before use
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="multiple-mpi_type_vector-1" class="slide level1" data-background-size="contain">
+<h1>Multiple MPI_TYPE_VECTOR</h1>
+<figure>
+<img src="images/vector-resize.svg" class="center" style="width:80.0%" />
+</figure>
+</section>
+<section id="example-sending-an-array-of-structs-portably" class="slide level1" data-background-size="contain">
+<h1>Example: sending an array of structs portably</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">struct</span> ParticleStruct particle[<span class="dv">1000</span>];
+MPI_Datatype particletype, oldtype;
+MPI_Aint lb, extent;
+...
+<span class="co">/* Check that the extent is correct*/</span>
+MPI_Type_get_extent(particletype, &amp;lb, &amp;extent);
+<span class="cf">if</span> ( extent != <span class="kw">sizeof</span>(particle[<span class="dv">0</span>] ) {
+   oldtype = particletype;
+   MPI_Type_create_resized(oldtype, <span class="dv">0</span>, <span class="kw">sizeof</span>(particle[<span class="dv">0</span>]),
+                           &amp;particletype);
+   MPI_Type_commit(&amp;particletype);
+   MPI_Type_free(&amp;oldtype);
+}
+...</code></pre></div>
+</section>
+<section id="other-ways-of-communicating-non-uniform-data" class="slide level1" data-background-size="contain">
+<h1>Other ways of communicating non-uniform data</h1>
+<ul>
+<li>Non-contiguous data by manual packing
+<ul>
+<li>Copy data into or out from temporary buffer</li>
+<li>Use MPI_Pack and MPI_Unpack functions</li>
+<li>Performance will likely be an issue</li>
+</ul></li>
+<li>Structures and types as continuous stream of bytes: Communicate everything using MPI_BYTE
+<ul>
+<li>Portability can be an issue - be careful</li>
+</ul></li>
+</ul>
+<p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">struct</span> ParticleStruct particle[<span class="dv">1000</span>];
+<span class="dt">int</span> psize;
+psize = <span class="kw">sizeof</span>(particle[<span class="dv">0</span>]);
+MPI_Send(particle, <span class="dv">1000</span>*psize, MPI_BYTE, ...);</code></pre></div>
+</section>
+<section id="subarray-type" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>SUBARRAY TYPE</h1>
+</section>
+<section id="mpi_type_create_subarray" class="slide level1 split-def-3" data-background-size="contain">
+<h1>MPI_TYPE_CREATE_SUBARRAY</h1>
+<!--- Creates a type describing an N-dimensional subarray within an N-dimensional array
+-->
+<dl>
+<dt>MPI_Type_create_subarray(<code class="input">ndims</code>, <code class="input">sizes</code>, <code class="input">subsizes</code>, <code class="input">offsets</code>, <code class="input">order</code>, <code class="input">oldtype</code>, <code class="output">newtype</code>)</dt>
+<dd><dl>
+<dt><code class="input">ndims</code></dt>
+<dd>number of array dimensions
+</dd>
+<dt><code class="input">sizes</code></dt>
+<dd>number of array elements in each dimension (array)
+</dd>
+<dt><code class="input">subsizes</code></dt>
+<dd>number of subarray elements in each dimension (array)
+</dd>
+<dt><code class="input">offsets</code></dt>
+<dd>starting point of subarray in each dimension (array)
+</dd>
+<dt><code class="input">order</code></dt>
+<dd>storage order of the array. Either <code>MPI_ORDER_C</code> or <code>MPI_ORDER_FORTRAN</code>
+</dd>
+<dt><code class="input">oldtype</code></dt>
+<dd>oldtype
+</dd>
+<dt><code class="output">newtype</code></dt>
+<dd>resulting type
+</dd>
+<dt><code class="ghost">-</code></dt>
+<dd><code class="ghost">-</code>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="example-subarray" class="slide level1" data-background-size="contain">
+<h1>Example: subarray</h1>
+<div class="column">
+<p><small></p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> a_size[<span class="dv">2</span>]    = {<span class="dv">5</span>,<span class="dv">5</span>};
+<span class="dt">int</span> sub_size[<span class="dv">2</span>]  = {<span class="dv">2</span>,<span class="dv">3</span>};
+<span class="dt">int</span> sub_start[<span class="dv">2</span>] = {<span class="dv">1</span>,<span class="dv">2</span>};
+MPI_Datatype sub_type;
+<span class="dt">double</span> array[<span class="dv">5</span>][<span class="dv">5</span>];
+    
+<span class="cf">for</span>(i = <span class="dv">0</span>; i &lt; a_size[<span class="dv">0</span>]; i++)
+  <span class="cf">for</span>(j = <span class="dv">0</span>; j &lt; a_size[<span class="dv">1</span>]; j++)
+    array[i][j] = rank; 
+
+MPI_Type_create_subarray(<span class="dv">2</span>, a_size, sub_size,
+       sub_start, MPI_ORDER_C, MPI_DOUBLE, &amp;sub_type);
+
+MPI_Type_commit(&amp;sub_type);
+
+<span class="cf">if</span> (rank==<span class="dv">0</span>)
+  MPI_Recv(array[<span class="dv">0</span>], <span class="dv">1</span>, sub_type, <span class="dv">1</span>, <span class="dv">123</span>,
+    MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+<span class="cf">if</span> (rank==<span class="dv">1</span>) 
+  MPI_Send(array[<span class="dv">0</span>], <span class="dv">1</span>, sub_type, <span class="dv">0</span>, <span class="dv">123</span>,
+  MPI_COMM_WORLD);
+
+MPI_Type_free(&amp;sub_type);</code></pre></div>
+<p></small></p>
+</div>
+<div class="column">
+<figure>
+<img src="images/type_array.svg" class="center" style="width:90.0%" />
+</figure>
+</div>
+</section>
+<section id="example-halo-exchange-with-user-defined-types" class="slide level1" data-background-size="contain">
+<h1>Example: halo exchange with user defined types</h1>
+<div class="column">
+<ul>
+<li>A solver requires a stencil of two cells in each direction to compute the next timestep</li>
+<li>The distributed 2D grid
+<ul>
+<li>Two-element ghost layers,each process has allocated a 8 x 8 grid patch</li>
+<li>Each process computes a 4 x 4 patch of total system</li>
+<li>Need to communicate 2x4 and 4x2 patches</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="images/halo_grid.svg" class="center" style="width:100.0%" />
+</figure>
+</div>
+</section>
+<section id="example-halo-exchange-with-user-defined-types-1" class="slide level1" data-background-size="contain">
+<h1>Example: halo exchange with user defined types</h1>
+<ul>
+<li>Create datatype for sending and receiving in x direction</li>
+</ul>
+<div class="column">
+<figure>
+<img src="images/halo_yellow.svg" class="center" style="width:70.0%" />
+</figure>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> array_size[<span class="dv">2</span>] = {<span class="dv">4</span> + <span class="dv">2</span> + <span class="dv">2</span>, <span class="dv">4</span> + <span class="dv">2</span> + <span class="dv">2</span>};
+<span class="dt">int</span> x_size[<span class="dv">2</span>] = {<span class="dv">4</span>,<span class="dv">2</span>};
+<span class="dt">int</span> offset[<span class="dv">2</span>] = {<span class="dv">0</span>,<span class="dv">0</span>};   
+MPI_Type_create_subarray(<span class="dv">2</span>, array_size, 
+    x_size, offset,
+    MPI_ORDER_C, MPI_DOUBLE, &amp;x_boundary);</code></pre></div>
+</div>
+</section>
+<section id="example-halo-exchange-with-user-defined-types-2" class="slide level1" data-background-size="contain">
+<h1>Example: halo exchange with user defined types</h1>
+<ul>
+<li>Create datatype for sending and receiving in y direction</li>
+</ul>
+<div class="column">
+<figure>
+<img src="images/halo_red.svg" class="center" style="width:70.0%" />
+</figure>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> array_size[<span class="dv">2</span>] = {<span class="dv">4</span> + <span class="dv">2</span> + <span class="dv">2</span>, <span class="dv">4</span> + <span class="dv">2</span> + <span class="dv">2</span>};
+<span class="dt">int</span> y_size[<span class="dv">2</span>] = {<span class="dv">2</span>,<span class="dv">4</span>};
+<span class="dt">int</span> offset[<span class="dv">2</span>] = {<span class="dv">0</span>,<span class="dv">0</span>};
+MPI_Type_create_subarray(<span class="dv">2</span>, array_size, 
+    y_size, offset,
+    MPI_ORDER_C, MPI_DOUBLE, &amp;y_boundary);</code></pre></div>
+</div>
+</section>
+<section id="example-halo-exchange-with-user-defined-types-3" class="slide level1" data-background-size="contain">
+<h1>Example: halo exchange with user defined types</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">//shift to the left</span>
+MPI_Sendrecv(&amp;array[<span class="dv">2</span>][<span class="dv">2</span>], <span class="dv">1</span>, x_boundary, left, tag_left,
+             &amp;array[<span class="dv">2</span>][<span class="dv">6</span>], <span class="dv">1</span>, x_boundary, right, tag_right, 
+             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+...</code></pre></div>
+<figure>
+<img src="images/halo_exchange1.svg" class="center" style="width:100.0%" />
+</figure>
+</section>
+<section id="example-halo-exchange-with-user-defined-types-4" class="slide level1" data-background-size="contain">
+<h1>Example: halo exchange with user defined types</h1>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="co">//shift to the right</span>
+MPI_Sendrecv(&amp;array[<span class="dv">2</span>][<span class="dv">4</span>], <span class="dv">1</span>, x_boundary, right, tag_right,
+             &amp;array[<span class="dv">2</span>][<span class="dv">0</span>], <span class="dv">1</span>, x_boundary, left, tag_left, 
+             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+...</code></pre></div>
+<figure>
+<img src="images/halo_exchange2.svg" class="center" style="width:100.0%" />
+</figure>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>User-defined types enable communication of non-contiguous or heterogeneous data with single MPI communication operations
+<ul>
+<li>Improves code readability &amp; portability</li>
+<li>Allows optimizations by the MPI runtime</li>
+</ul></li>
+<li>In the second part we
+<ul>
+<li>Introduced the concepts of extent and typemap</li>
+<li>Discussed describing structures/types</li>
+<li>Covered another advanced type constructor, <code>MPI_Type_create_subarray</code></li>
+</ul></li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
