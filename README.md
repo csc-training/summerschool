@@ -20,6 +20,7 @@ Versions from previous years can be found in tags.
  - [MPI](mpi)
  - [Parallel I/O](parallel-io)
  - [Hybrid MPI/OpenMP](hybrid)
+ - [Hybrid MPI/OpenACC](hybrid-gpu)
 
 ---
 ## Notes
