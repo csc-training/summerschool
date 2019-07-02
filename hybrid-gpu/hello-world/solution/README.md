@@ -9,6 +9,11 @@ Then compile with
 ```
 mpicc -acc hello.c
 ```
+or
+```
+mpif90 -acc hello.F90
+```
+
 
 ## Running
 You can execute your code in Taito (`taito-gpu`) with a command
