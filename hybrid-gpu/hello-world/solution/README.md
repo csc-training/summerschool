@@ -1,10 +1,22 @@
+## Compilation
+
+First load the modules
+```
+module load cuda/10.0 pgi/19.1 openmpi/3.1.4 libpng/1.6
+```
+
+Then compile with
+```
+mpicc -acc hello.c
+```
+
+## Running
 You can execute your code in Taito (`taito-gpu`) with a command
 
 ```
 srun -N1 -n1 -pgpu --gres=gpu:p100:1 --reservation=Summerschool ./a.out
 ```
 
-or by submitting this information in a jobscript.
-
+Alternatively you can submit this information in with a jobscript file `jobs-gpu.sh`.
 
 
