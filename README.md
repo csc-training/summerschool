@@ -17,8 +17,8 @@ Versions from previous years can be found in tags.
  - [Using version control and unix](unix-version-control)
  - [Fortran programming](programming/fortran)
  - [C/C++ programming](programming/c)
- - [OpenMP](openmp)
  - [MPI](mpi)
+ - [Parallel I/O](parallel-io)
  - [Hybrid MPI/OpenMP](hybrid)
 
 ---
