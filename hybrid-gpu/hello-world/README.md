@@ -5,7 +5,6 @@ Compile and run a simple OpenACC test program, provided as `hello(.c|.F90)`.
 In order to compile the program on taito-gpu, you'll need to first load the
 following modules:
 ```bash
-module purge
 module load cuda/10.0 pgi/19.1 openmpi/3.1.4 libpng/1.6
 ```
 
