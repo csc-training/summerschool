@@ -229,6 +229,7 @@ int total = 0;
     new = compute_something();
     sum += new;
   } while (new);
+#pragma omp barrier
 #pragma omp critical(addup)
   total += sum;
 #pragma omp master
