@@ -7,6 +7,12 @@
 #ignore default binary name
 a.out
 
+#ignore heat solver output PNGs
+heat_*.png
+
+#ignore default SLURM output files
+slurm-*.out
+
 #ignore specific exercise & solution binaries
 exercises/programming/fortran/hello/hello
 solutions/programming/fortran/hello/hello
