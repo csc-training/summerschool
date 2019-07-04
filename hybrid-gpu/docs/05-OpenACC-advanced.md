@@ -80,7 +80,7 @@ for (int i = 0; i < N;i++) {
     t1 = omp_get_wtime();
     for(q = 0; q < queues; q++) {
         qLength = N / queues;
-        qStart = q  qLength;
+        qStart = q * qLength;
         #pragma acc update device(a[qStart:qLength], b[qStart:qLength]) async(q)
         #pragma acc parallel loop async(q)
         for (int i = qStart; i < qStart + qLength; i++) {

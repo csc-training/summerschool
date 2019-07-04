@@ -171,7 +171,7 @@ void adder(float *x, float *y, float *res) {
   pointer is accessed so that it does not overlap with other accesses
 
 ```c
-void adder(float restrict x, float restrict y, float restrict res) {
+void adder(float restrict *x, float restrict *y, float restrict *res) {
     for (int i=0; i < VECSIZE; i++) {
         res[i] = x[i] + y[i];
     }

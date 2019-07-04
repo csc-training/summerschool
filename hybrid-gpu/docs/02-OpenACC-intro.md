@@ -194,7 +194,7 @@ void accdaxpy(int n, double a,
 {
     #pragma acc kernels
     for (int j=0; j<n; ++j)
-        y[j] += a  x[j];
+        y[j] += a * x[j];
 }
 
 /* An example call to accdaxpy */
