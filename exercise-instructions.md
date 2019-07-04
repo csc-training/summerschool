@@ -12,14 +12,14 @@ We will use CSC’s Cray XC40 supercomputer Sisu for the exercises. Log onto
 Sisu using the provided username and password, for example
 
 ```
-ssh –X user@sisu.csc.fi
+ssh -X user@sisu.csc.fi
 ```
 
 For editing program source files you can use e.g. Emacs editor with or without
-(the option –nw) X-Windows:
+(the option -nw) X-Windows:
 
 ```
-emacs –nw prog.f90
+emacs -nw prog.f90
 emacs prog.f90
 ```
 
@@ -32,11 +32,11 @@ that.
 Compilation of the source codes is performed with the `ftn` and `cc` wrapper
 commands:
 ```
-ftn –o my_mpi_exe test.f90
+ftn -o my_mpi_exe test.f90
 ```
 or
 ```
-cc –o my mpi_exe test.c
+cc -o my mpi_exe test.c
 ```
 
 The wrapper commands include automatically all the flags needed for building
@@ -47,7 +47,7 @@ other compilers (GNU and Intel) available on Sisu, which  can be changed via
 ```
 module swap PrgEnv-cray PrgEnv-gnu
 ```
-Use the commands `module list` and `module avail` to see the currently loaded 
+Use the commands `module list` and `module avail` to see the currently loaded
 and available modules, respectively.
 
 ### Batch jobs
@@ -55,9 +55,9 @@ and available modules, respectively.
 You can run small (short parallel or serial) jobs interactively using the
 `aprun` application placement utility:
 ```
-aprun –n 4 ./my_mpi_exe
+aprun -n 4 ./my_mpi_exe
 ```
-where –n specifies the number of MPI tasks.
+where -n specifies the number of MPI tasks.
 
 Larger and/or longer runs should be submitted via the batch system. An example
 batch job script (a text file, let’s call it sisu_job.sh) for a MPI job could
@@ -78,7 +78,7 @@ The batch script is then submitted with the sbatch command as
 sbatch sisu_job.sh
 ```
 
-We have a special reservation `Summerschool` for the summer school which 
+We have a special reservation `Summerschool` for the summer school which
 can be utilized with the --reservation flag:
 ```
 sbatch --reservation=Summerschool sisu_job.sh
