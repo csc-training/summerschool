@@ -1,16 +1,16 @@
 ---
 title: Introduction to supercomputing
 author: CSC Summerschool
-date:   2019-06
+date:   2022-06
 lang:   en
 ---
 
 # What is high-performance computing?
 
-* Utilising computer power that is much larger than available in typical desktop computer
-* Performance of HPC system (i.e. supercomputer) is often measured in floating point operations per second (flop/s)
+* Utilising computing power that is much larger than available in typical desktop computer
+* Performance of HPC systems (i.e. supercomputers) is often measured in floating point operations per second (flop/s)
 	- For software, other measures can be more meaningful
-* Currently, the most powerful system reaches ~100 x 10^15 flop/s (100 Pflop / s)
+* Currently, the most powerful system reaches >10^18 flop/s (1 Eflop / s)
 
 # What is high-performance computing?
 
@@ -39,33 +39,32 @@ lang:   en
 </div>
 # Life sciences
 <div class=column>
-* Next-generation sequencing techniques
+* Natural language processing
 * Identifying genomic variants associated with common complex diseases
-* Understanding the natural development of diseases
+* Spreading of aerosols in the air
 * Medical imaging and diagnostics
-* Simulated surgeries
 * Predicting protein folding
 </div>
 <div class=column>
 
- ![](images/life.png){.center width=80%}
+<!-- Source: Adobe Stock, CC BY-SA 3.0 -->
+ ![](images/DeepFin.jpg){.center width=90%}
 
 </div>
 
 # Earth sciences
 <div class=column>
 * Long term climate modeling
-	- Coupling atmospheric, ocean and land models
-	- Understanding and predicting the climate change
+	- Understanding and predicting climate change
 * High-resolution weather prediction
 	- Predicting extreme weather conditions
 	- District-scale forecasts
-	- Ensembles
 * Whole-Earth seismological models
+* Modelling space weather
 </div>
 <div class=column>
- 
- ![](images/earth.png){.center width=80%}
+
+ ![](images/elmer_gis.jpg){.center width=80%}
 
 </div>
 
@@ -94,31 +93,28 @@ lang:   en
 
 
 
-# CPU frequency development 
+# CPU frequency development
 * Power consumption of CPU: `~`f^3
 
- ![](images/freq.png){.center width=60%}
+ ![](images/moore.png){.center width=45%}
 
 # Parallel processing
 
 * Modern (super)computers rely on parallel processing
-* **Multiple** CPU cores
-	- `#`1 system has `~`10 000 000 cores
+* **Multiple** CPU cores & accelerators (GPUs)
+	- `#`1 system has `~`9 000 000 cores & `~`40 000 GPUs
 * Vectorization
-	- Single instruction can process multiple data (SIMD)
+	- A single instruction can process multiple data (SIMD)
 * Pipelining
-	- Core executes different parts of instructions in parallel 
-* Accelerators
-	- GPUs
+	- Core executes different parts of instructions in parallel
 
 
-
-# Anatomy of supercomputer
+# Anatomy of a supercomputer
 
 * Supercomputers consist of nodes connected with high-speed network
-	- Latency `~`1 µs, bandwidth `~`10 GB / s
+	- Latency `~`1 µs, bandwidth `~`20 GB / s
 * A node can contain several multicore CPUS
-* Additionally, node can contain one or more accelerators
+* Additionally, a node can contain one or more accelerators
 * Memory within the node is directly usable by all CPU cores
 
 
@@ -168,7 +164,7 @@ lang:   en
 # Computing in parallel
 * Parallel computing
 	- A problem is split into smaller subtasks
-	- Multiple subtasks are processed simultaneously using multiple cores<Paste>
+	- Multiple subtasks are processed simultaneously using multiple cores
 
  ![](images/compp.svg){.center width=40%}
 
@@ -233,12 +229,17 @@ lang:   en
 
 # What limits parallel scaling
 
+<div width=55% class=column>
 * Load imbalance
 	- Distribution of workload to different cores varies
 * Parallel overheads
 	- Additional operations which are not present in serial calculation
 	- Synchronization, redundant computations, communications
 * Amdahl’s law: the fraction of non-parallelizable parts establishes the limit on how many cores can be harnessed
+</div>
+<div width=40% class=column>
+  ![](images/AmdahlsLaw.svg){.right width=100%}
+</div>
 
 
 # Parallel programming {.section}
@@ -264,14 +265,13 @@ lang:   en
 	- OpenMP, pthreads
 
 
-
 # Parallel programming models
 
  ![](images/processes-threads.svg){.center width=80%}
 <div class=column>
-**MPI: Processes** 
+**MPI: Processes**
 
-* Independent execution units 
+* Independent execution units
 * MPI launches N processes at application startup
 * Works over multiple nodes
 </div>
@@ -285,20 +285,23 @@ lang:   en
 
 </div>
 
+# Parallel programming models
+
+![](images/anatomy.svg){.center width=100%}
+
 # Future of High-performance computing {.section}
 
 
 
-# Exascale challenge
+# Post-Exascale challenges
 
 * Performance of supercomputers has increased exponentially for a long time
-* However, there are unprecedented challenges in reaching exascale (1 x 10^18 flop/s)
-	- Power consumption: scaling current `#`1 energy efficient system would still require `~`60 MW
-	- Fault tolerance: with current technology exascale system experiences hardware failure every few hours
+* However, there are still challenges in continuing onwards from exascale supercomputers (> 1 x 10^18 flop/s)
+	- Power consumption: current `#`1 energy efficient system requires `~`20 MW for exascale performances
+	- Cost & Maintaining: Global chip shortage
 	- Application scalability: how to program for 100 000 000 cores?
 
 # Quantum computing
 * Quantum computers can solve certain types of problems exponentially faster than classical computers
 * General purpose quantum computer is still far away
 * For optimisation problems, D-Wave computer based on quantum annealing is already commercially available
-
