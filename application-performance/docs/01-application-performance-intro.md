@@ -1,7 +1,7 @@
 ---
 title:  Introduction to Application Performance
 author: CSC Summerschool
-date:   2019-06
+date:   2022-07
 lang:   en
 ---
 
@@ -13,6 +13,7 @@ lang:   en
 <small>
 I’m performing simulations with my Fortran code. It seems to perform much worse
 with MKL library in the new system than with IMSL library in the old system.
+<br>
 <br>
 <br>
 No
@@ -51,7 +52,7 @@ end do
 
 # Minding performance {.section}
 
-# Improving application performance
+# Why worry about application performance?
 
 - Obvious benefits
     - Better throughput => more science
@@ -65,83 +66,141 @@ end do
 
 - Modern supercomputers are very complex (with evermore increasing
   complexity)
-    - Multiple CPU cores within one socket
+    - Several multicore CPUs and GPUs within one node
     - Superscalar out-of-order instruction execution
     - Multilevel coherent caches
     - SIMD vector units
     - SMT capabilities for multithreading
+    - Separate memories for GPUs and CPUs
     - Complex communication topologies
 - To get most out of the hardware, performance engineering is needed
 
+# Factors affecting performance in HPC
+
+- Single node performance
+    - single core performance
+    - single GPU performance
+    - threading (and MPI within a node)
+- Communication between nodes
+- Input/output to disk
+
+# How to improve single node performance?
+
+<div class=column>
+- Choose good algorithm
+    - e.g. $O(N \mathrm{log} N)$ vs. $O(N^2)$
+    - remember prefactor!
+- Use high performance libraries
+    - linear algebra (BLAS/LAPACK), FFTs, ...
+- Experiment with compilers and compiler options
+    - There is no single best compiler and set of options for all use
+      cases
+- Experiment with threading options
+    - Thread pinning, loop scheduling, ...
+- Optimize the program code
+</div>
+<div class=column>
+```bash
+./fibonacci 20
+With loop, Fibonacci number i=20 is 6765
+Time elapsed 79 ums
+With recursion, Fibonacci number i=20 is 6765
+Time elapsed 343773 ums
+```
+<br>
+<!-- Copyright CSC -->
+![](img/optimal_performance.png){.center width=80%}
+
+</div>
+
+# How to improve parallel scalability?
+
+- Choose good algorithm
+    - Note that the best serial algorithm is not necessarily the best
+      parallel algorithm
+    - It can be beneficial to do more computations if less
+      communication is needed
+- Use high performance libraries
+    - linear algebra (ScaLAPACK, ELPA), FFTs, ...
+- Mind the load balance
+    - Load balancing algorithms might be complex and add overheads
+- Utilize advanced MPI features
+- Experiment with parameters of the MPI library
+    - Environment variables for short/long message threshold,
+      collective algorithms, ...
 
 # Performance engineering
 
-- Adapting the problem to the underlying hardware
-- Key factors to application performance
-    - Effective algorithms, doing things in a more clever way
-        * e.g. O(n log(n)) vs O(n^2)
-    - Efficient memory access
-    - High CPU cycle utilization
-    - Parallel scalability
-    - Efficient I/O
-
-# Performance engineering
-
+- First step should always be measuring the performance and finding
+  performance critical parts
+  - Typically small part of the code (`~`10 %) consumes most
+        (`~`90%) of the execution time 
+- Optimize only the parts of code that are relevant for the total
+  execution time!
+    - “Premature code optimization is the root of all evil”
 - Important to understand interactions
     - Algorithm `–` code `–` compiler `–` libraries `–` hardware
 - Performance is not portable
-- Optimize only the parts of code that are relevant for the total
-  execution time!
-    - Typically small part of the code (`~`10 %) consumes most
-        (`~`90%) of the execution time 
-
-# Compute bound vs. memory bound
-
-- CPU bound: performance is limited by floating point operations CPU
-  can execute
-    - No waiting for data
-    - Limit is theoretical peak performance
-- Memory bound: performance is limited by how fast CPU can fetch data
-  from memory
-    - CPU performance has been increasing more rapidly than memory
-      bandwidth
-    - Limit is memory bandwidth
-    - Optimized memory access is critical to performance
-
-
-# Memory hierarchy
-
-![](images/memory_hierarchy.svg){.center width=80%}
-
-# SIMD vectorization
+ 
+# How to assess application's performance?
 
 <div class=column>
-
-- SIMD instructions operate on multiple elements at one cycle
-- AVX/AVX2: 256 bits:
-    - 4 DP values
-    - 8 SP values
-    - AVX2 brings FMA
-- AVX512: 512 bits
-    - 8 DP values
-    - 16 SP values
+- Two fundamental limits for CPU
+- Peak floating point performance
+    - clock frequency
+    - number of instructions per clock cycle
+    - number of FLOPS per instruction
+    - number of cores
+    - no real application achieves peak in sustained operation
+- Main memory bandwidth
+    - How fast data can be fed to the CPU
 </div>
+
 <div class=column>
-```c
-double * A, * B, * C;
-int i, N;
-/* C loops */
-for (i=0; i<N; i++)
-   C[i]=B[i]+A[i];
-
-```
-<p>
-![](images/simd.svg){.center width=100%}
+<!-- Copyright CSC -->
+![](img/cpu-memory.png){.center width=50%}
 </div>
+
+# How to assess application's performance?
+
+- Example: maximum performance of **axpy** `x[i] = a x[i] + y[j]`
+    - Two FLOPS (multiply and add) per `i`
+    - Three memory references per `i`
+    - With double precision numbers arithmetic intensity <br>
+      $I=\frac{\mathrm{FLOPS}}{\mathrm{memory traffic}} =
+      \frac{2}{3*8}=0.08$ FLOPS/byte
+    - In Puhti, memory bandwidth is \~200 GB/s, so maximum performance
+      is \~16 GFLOPS/s
+    - Theoretical peak performance of Puhti node is \~2600 GFLOPS/s
+
+# How to assess application's performance?
+
+- Example: matrix-matrix multiplication `C[i,j] = C[i,j] + A[i,k] * B[k,j]`
+    - $2 N^3$ FLOPS
+    - $3 N^2$ memory references
+    - With double precision numbers arithmetic intensity
+      $I=\frac{2 N}{3}$ FLOPS/byte
+    - With large enough $N$ limited by peak performance
+
+# How to assess application's parallel performance?
+
+- First step should be always to optimize single core performance
+    - May affect computation / communication balance
+- Maximize single node performance
+    - Dynamic scaling of clock frequency, shared caches etc. make
+      scalability within node complex concept
+    - Example: independent computations in Mahti (no parallel
+      overheads)
+        - Single core: 1.99 s
+        - All the cores: 2.20 - 2.25 s per core
+<!-- Numbers from the affinity_test code --> 
+- Memory bound applications may benefit from undersubscribing the node 
+- Lower limit for acceptable scalability between nodes
+    - Speedup of 1.5 when doubling number of nodes
 
 # Code optimization cycle
 
-![](images/perf-analysis-mpi.svg){.center width=60%}
+![](img/perf-analysis-mpi.png){.center width=60%}
 
 # Selecting the test case
 
@@ -155,81 +214,63 @@ for (i=0; i<N; i++)
 </div>
 
 <div class=column>
-![](images/test_case.png){.center width=70%}
+![](img/test_case.png){.center width=70%}
 </div>
 
-# On compilers and performance {.section}
-
-# Optimal porting
+# Roofline model
 
 <div class=column>
-- ”Improving application performance without touching the source code”
-- Potential to get significant performance improvements with little effort
-- Should be revisited routinely
-    - Hardware, OS, compiler and library upgrades
-    - Can be automated
+- Simple visual concept for maximum achievable performance
+    - can be derived in terms of arithmetic intensity $I$, peak performance
+      $\pi$ and peak memory bandwidth $\beta$
+$$
+P = min \begin{cases}
+\pi \\
+\beta \times I
+\end{cases}
+$$
+
+- Machine balance = arithmetic intensity needed for peak performance
+    - Typical values 5-15 FLOPS/byte
+- Additional ceilings can be included (caches, vectorization,
+  threading, MPI)
+
+</div>
+
+<div class=column>
+<!-- Copyright CSC -->
+![](img/simple-roofline.png){.center width=90%}
+<br>
+<!-- https://crd.lbl.gov/departments/computer-science/par/research/roofline/introduction/ -->
+![](img/arithmetic-intensity.png){.center width=70%}
+
+</div>
+
+# Roofline model
+
+<div class=column>
+- Model does not tell if code can be optimized or not
+    - Application 1 may not be *fundamentally* memory bound, but only
+        implemented badly (not using caches efficiently)
+    - Application 2 may not have *fundamentally* prospects for higher
+        performance (performs only additions and not fused multiply adds)
+- However, can be useful for guiding the optimization work
 </div>
 <div class=column>
-
-![](images/optimal_performance.svg){.center width=80%}
-<small>
-
-- Compilers
-- Compiler flags
-- Numerical libraries
-- Intranode placement
-- Internode placement
-- Filesystem parameters
-
-</small>
+<!-- Copyright CSC -->
+![](img/ceilings-roofline.png){.center width=90%}
 </div>
 
-# Choosing a compiler
+# Roofline model
 
-- Many different options
-    - GNU, PGI, Intel, Cray, etc.
-- Compatibility
-    - Different proprietary intrinsics
-    - Different rounding rules
-- Performance
-    - There is no universally fastest compiler
-    - Depends on the application or even input
-
-# Compiler optimization techniques
-
-- Architecture-specific tuning
-    - Tunes all applicable parameters to the defined microarchitecture
-- Vectorization
-    - Exploiting the vector units of the CPU (AVX etc.)
-    - Improves performance in most cases
-- Loop transformations
-    - Fusing, splitting, interchanging, unrolling etc.
-    - Effectiveness varies
-
-
-# Compiler flag examples
-<small>
-
-| Feature                      | Cray              | Intel              | Gnu                     |
-|------------------------------|-------------------|--------------------|-------------------------|
-| Reporting                    | `-hlist=a`        | `-qopt-report=3`   | `-fopt-info-vec`        |
-| Balanced optimization        | `(default)`       | `-O2`              | `-O3`                   |
-| Agressive optimization       | `-O3,fp3`         | `-Ofast`           | `-Ofast –funroll-loops` |
-| Architecture specific tuning | `-h cpu=<target>` | `-x<target>`       | `-march=<target>`       |
-| Fast math                    | `-h fp3`          | `-fp-model fast=2` | `-ffast-math`           |
-
-</small>
-
-# Doesn't the compiler do everything?
-
-- You can make a big difference to code performance with how you
-  express things
-    - Helping the compiler spot optimisation opportunities
-    - Using the insight of your application
-    - Removing obscure (and obsolescent) “optimizations” in older code
-        - Simple code is the best, until otherwise proven
-- This is a dark art, mostly: optimize on case-by-case basis
-    - First, check what the compiler is already doing
+- How to obtain the machine parameters?
+    - CPU specs
+    - own microbenchmarks
+    - special tools (Intel tools, Empirical Roofline Tool)
+- How to obtain application's GFLOPS/s and arithmetic intensity?
+    - Pen and paper and timing measurements
+    - Performance analysis tools and hardware counters
+    - *True* number of memory references can be difficult to obtain
 
 # Take-home messages
 
@@ -240,17 +281,22 @@ for (i=0; i<N; i++)
     - “Premature code optimization is the root of all evil”
 - Quite often algorithmic or intrusive design changes are needed to
   improve parallel scalability
-- Serial optimization is mostly about helping the compiler to optimize
-  for the target CPU
+- Roofline model can work as a guide in optimization
 
 # How to start?
 - What limits the performance?
-    - Serial / OpenMP (single node performance)
+    - Serial / OpenMP / GPU (single node performance)
     - MPI (internode performance)
     - I/O
 - Intel Performance Snapshot can provide big picture for further
   analysis
     - Other possible tools: gprof, TAU, scalasca, CrayPAT
+    
+# Web resources
+
+- Roofline performance model and Empiral Roofline Tool
+    - <https://crd.lbl.gov/departments/computer-science/par/research/roofline/>
+
 
 
 

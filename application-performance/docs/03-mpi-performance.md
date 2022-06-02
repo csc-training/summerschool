@@ -1,8 +1,8 @@
 # MPI performance analysis  {.section}
 
-# Performance analysis
+# Performance analysis cycle
 
-![](images/perf-analysis-mpi.svg){.center width=60%}
+![](img/perf-analysis-mpi.png){.center width=60%}
 
 # Introduction
 
@@ -16,7 +16,7 @@
 # Potential scalability bottlenecks
 
 - Bad computation to communication ratio
-    - In 2D heat equation with one dimensional parallelization 
+    - In 2D heat equation with one dimensional parallelization <br>
       $\frac{T_{comp}}{T_{comm}} \sim \frac{N}{p}$
 
 - Load imbalance
@@ -25,11 +25,11 @@
 
 # Common inefficient communication patterns 
 
-![](images/ineff1.svg){.center width=80%}
+![](img/ineff1.png){.center width=80%}
 
 # Common inefficient communication patterns
 
-![](images/ineff2.svg){.center width=80%}
+![](img/ineff2.png){.center width=80%}
 
 # MPI performance analysis
 
