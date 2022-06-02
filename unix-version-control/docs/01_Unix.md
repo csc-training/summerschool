@@ -1,7 +1,7 @@
 ---
 title:  Introduction to Unix
-author: CSC Summerschool 
-date:   2019-07
+author: CSC Summerschool
+date:   2022-06
 lang:   en
 ---
 
@@ -25,7 +25,7 @@ lang:   en
 - Logging in to, and copying files from and to the supercomputer, i.e. a remote host: ssh and scp
 - Basic use of version control
 - Make
-- Setting up the environment to compile and run programs
+- Setting up an environment to compile and run programs
 	- Module system (before compiling)
 	- Batch queue system (for running)
 
@@ -40,10 +40,10 @@ lang:   en
 `$ scp user@host:source target # remote->local`  
 `$ scp source user@host:target # local->remote`
 
-# Hands-on: ssh and scp 
+# Hands-on: ssh and scp
 
 - Create a local text file, for example, "name.txt" with your first name as the contents
-- Copy your text file to Sisu using scp  
-	`$ scp local.txt trainingxxx@sisu.csc.fi:~/`
-- Login to Sisu using ssh, check that file is there, and modify it: for example, add your last name to it
+- Copy your text file to Puhti using scp  
+	`$ scp local.txt trainingxxx@puhti.csc.fi:~/`
+- Login to Puhti using ssh, check that file is there, and modify it: for example, add your last name to it
 - Copy the modified file back to your local computer, and check that the file has changed.

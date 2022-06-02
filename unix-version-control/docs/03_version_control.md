@@ -1,7 +1,7 @@
 ---
 title:  Version control
-author: CSC Summerschool 
-date:   2019-07
+author: CSC Summerschool
+date:   2022-06
 lang:   en
 ---
 
@@ -16,11 +16,11 @@ lang:   en
 
 # Why is this a problem for you ?
 
-- Keeping track of all of your changes requires a lot of work 
+- Keeping track of all of your changes requires a lot of work
 - Sharing code with colleagues and collaborating is slow and prone to errors
- 
-## You spend less time on things that actually matter! 
-Writing your code/scripts, running simulations and getting results 
+
+## You spend less time on things that actually matter!
+Writing your code/scripts, running simulations and getting results
 
 ## Good science is reproducible!
 What is the exact version/revision of your code used to produce some results?
@@ -58,10 +58,10 @@ the work is done for you by the version control system
 # Starting a git repository: git init
 
 - We need to tell git to start "monitoring" our project folder
-- Git won't do or save anything unless we tell it to 
+- Git won't do or save anything unless we tell it to
 - creates a `.git` folder. Don't touch this!
 	- contains all the info and data used by git, manual editing can/will break it
-- **Terminology:** A git _repository_ = A project folder were git is operating 
+- **Terminology:** A git _repository_ = A project folder were git is operating
 
 
 
@@ -77,8 +77,8 @@ $ git init
 - Selecting what changes we want to save
 	- Moving and deleting files is also a change
 	- Could be a folder, a couple of files, a single file or just part of a file
-	 
-- You don't have to add all your changes at once! 
+
+- You don't have to add all your changes at once!
 
 - Does not change our files or save anything yet
 
@@ -91,38 +91,38 @@ $ git add ingredients.txt
 
 
 
-# Creating a snapshot: git commit 
+# Creating a snapshot: git commit
  - A commit is a saved state of your project
  - All changes that were added using `git add` are now part of the commit  
  - A commit can (should) have an associated commit message
  	- The message should be clear and concise: "Fixed bug #1234"
  - Git allows us to compare, merge, and checkout commits
- 	- Checkout a commit -> Set our project state to a specific commit 
+ 	- Checkout a commit -> Set our project state to a specific commit
 
 ```bash
 $ git commit
 
 ```
 
-# Git file states: git status 
+# Git file states: git status
  A file in a git repository can be in one of the following states
 
  - **Untracked**: Untracked files are ignored by git
- - **Unmodified**: The file is tracked by git, but no changes have been made 
+ - **Unmodified**: The file is tracked by git, but no changes have been made
  - **Modified**: The file is tracked by git and has been modified
- - **Staged**:  The file has been added (`git add file1`) and is ready to be committed to your repository 
+ - **Staged**:  The file has been added (`git add file1`) and is ready to be committed to your repository
 
 `git status` shows the current state of your repository
 
 # Project history: git log
 
 - Each commit has a:
-	- Message 
+	- Message
 	- Author
 	- Unique id,  also called a commit hash
 	- Submission date
 
-- We use `git log` to inspect the history of our repository 
+- We use `git log` to inspect the history of our repository
 
 # Whats the difference: git diff
 
@@ -130,31 +130,31 @@ $ git commit
  - Or the difference between a commit and the current state of your project
  - The commit hash is used to refer to a specific commit
 
-# Remote repositories: Were things get really useful
+# Remote repositories: Where things get really useful
 
  - You can have multiple copies of the same project in different places
  	- A different folder, another computer, or a web-bases repository
 	- You have a copy, your coworker has a copy, and so on...  
- 
+
  - This is what enables collaboration and sharing changes
 
- - You can also just copy a git repository and after that never interact with any one
+ - You can also just copy a git repository and after that never interact with anyone
 
 # Centralized vs. Distributed
 
 - Git is a distributed version control system
- 	- I.e. every repository is self contained and _equally valid_ 
+ 	- I.e. every repository is self contained and _equally valid_
 
 ![](images/git_cent_dist.svg){.center width=50%}
 
 # Remote repositories: Basic commands
   - `git clone`, to copy a repository
   - `git pull`, to retrieve changes from a remote repository  
-  - `git push`, to send our changes to a remote repository 
+  - `git push`, to send our changes to a remote repository
 
 # Remote repositories: Web services
 
-- Git is usually paired up with web-based repository
+- Git is usually paired up with a web-based repository
     - GitHub
     - Bitbucket
     - GitLab
@@ -175,8 +175,8 @@ $ git commit
 # Social coding with git+GitHub
 
 - These days GitHub account also serves as your “code CV”  
-  
-  
+
+
 ![](images/coding_cv_1.png){.center}   
 ![](images/coding_cv_2.png){.center}
 
@@ -185,7 +185,7 @@ $ git commit
 <div class=column>
 1. Create a new repository in GitHub
 2. After this you can:
-	- push a local repository to GitHub 
+	- push a local repository to GitHub
 	<small>
 	```bash
 	$ git remote add origin https://github.com/User/repo.git
@@ -193,8 +193,8 @@ $ git commit
 	```
 	</small>
 	- clone the repository  
-	<small> 
-	```bash	
+	<small>
+	```bash
 	git clone https://github.com/User/repo.git
 	```
 	</small>
@@ -215,7 +215,7 @@ $ git commit
 # Forking repositories
 
   - Copying a repository on GitHub to your own GitHub
-	- So a GitHub feature, _not a part of git_ 
+	- So a GitHub feature, _not a part of git_
   - This is called “forking”
   - Forking a repository allows you to freely experiment with changes
     without affecting the original project.
@@ -237,8 +237,8 @@ $ git commit
 
 	- Files are now up-to-date (in respect to the remote repository)
 
-2. Something is modified 
-	- E.g. editing, adding or removing a file 
+2. Something is modified
+	- E.g. editing, adding or removing a file
 
 3. Modifications are **add**ed for commit: `git add file.c`
 	- Think of this as putting your file changes into a package
@@ -246,7 +246,7 @@ $ git commit
 4. Changes are **commit**ted to the local repository: `git commit`
 
 5. Commits are **push**ed to the remote repository: `git push`
- 
+
 
 
 
@@ -254,7 +254,7 @@ $ git commit
 
 - At every point, you can check the current status of the local repository
     - `git status`
-    - What is changed? What is staged for commit?
+    - What has changed? What is staged for a commit?
 
 - Sometimes it is useful to drop local changes
     - `git stash`
@@ -265,7 +265,7 @@ $ git commit
 # Branching
 
 - By default everything is happening at “master” branch
-- A branch is just a pointer to a commit 
+- A branch is just a pointer to a commit
 - You can freely create new branches
 
   - `git branch new_branch_name`
@@ -304,12 +304,12 @@ $ git commit
 # Summary
 
   - If you are not using git, start using it\!
-  - Remember the standard workflow: 
+  - Remember the standard workflow:
       - pull -> modify -> add -> commit -> push
   - Explore GitHub, there are many cool repositories\!   
-  - Experiment with git and try out different features, its better to make 
+  - Experiment with git and try out different features, its better to make
     mistakes now than later.
-  
+
 
 # Version control git commands
 
