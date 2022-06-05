@@ -1,7 +1,7 @@
 ---
-title:  Message-Passing Interface (MPI) 
-author: CSC Summerschool
-date:   2019-06
+title:  Point-to-point communication 
+author: CSC Training
+date:   2021
 lang:   en
 ---
 
@@ -22,7 +22,7 @@ lang:   en
 
 <div class="column">
 
-![](images/communication-schematic.svg){.center width=50%}
+![](img/communication-schematic.svg){.center width=50%}
 
 </div>
 
@@ -42,7 +42,7 @@ lang:   en
 # Case study: parallel sum 
 
 <div class=column>
-![](images/case_study_left-01.svg){.center width=45%}
+![](img/case_study_left-01.svg){.center width=45%}
 </div>
 
 <div class=column>
@@ -63,14 +63,14 @@ lang:   en
 # Case study: parallel sum 
 
 <div class=column>
-![](images/case_study_left-02.svg){.center width=45%}
+![](img/case_study_left-02.svg){.center width=45%}
 </div>
 <div class=coulumn>
 
 **Step 1.1**: Receive call in scatter
 
 <p>
-![](images/case_study_right-01.svg){.center width=45%}
+![](img/case_study_right-01.svg){.center width=45%}
 <p>
 P1 issues MPI_Recv to receive half of the array from P0
 </div>
@@ -79,13 +79,13 @@ P1 issues MPI_Recv to receive half of the array from P0
 # Case study: parallel sum 
 
 <div class=column>
-![](images/case_study_left-03.svg){.center width=45%}
+![](img/case_study_left-03.svg){.center width=45%}
 </div>
 <div class=coulumn>
 **Step 1.2**: Send call in scatter
 
 <p>
-![](images/case_study_right-02.svg){.center width=45%}
+![](img/case_study_right-02.svg){.center width=45%}
 <p>
 P0 issues an MPI_Send to send the lower part of the array to P1
 </div>
@@ -93,13 +93,13 @@ P0 issues an MPI_Send to send the lower part of the array to P1
 # Case study: parallel sum 
 
 <div class=column>
-![](images/case_study_left-04.svg){.center width=45%}
+![](img/case_study_left-04.svg){.center width=45%}
 </div>
 <div class=coulumn>
 **Step 2**: Compute the sum in parallel
 
 <p>
-![](images/case_study_right-03.svg){.center width=45%}
+![](img/case_study_right-03.svg){.center width=45%}
 <p>
 Both P0 & P1 compute their partial sums and store them locally
 </div>
@@ -107,13 +107,13 @@ Both P0 & P1 compute their partial sums and store them locally
 # Case study: parallel sum 
 
 <div class=column>
-![](images/case_study_left-05.svg){.center width=45%}
+![](img/case_study_left-05.svg){.center width=45%}
 </div>
 <div class=coulumn>
 **Step 3.1**: Receive call in reduction
 
 <p>
-![](images/case_study_right-04.svg){.center width=45%}
+![](img/case_study_right-04.svg){.center width=45%}
 <p>
 P0 issues an MPI_Recv operation for receiving P1’s partial sum
 </div>
@@ -121,13 +121,13 @@ P0 issues an MPI_Recv operation for receiving P1’s partial sum
 # Case study: parallel sum 
 
 <div class=column>
-![](images/case_study_left-06.svg){.center width=45%}
+![](img/case_study_left-06.svg){.center width=45%}
 </div>
 <div class=coulumn>
 **Step 3.2**: Send call in reduction
 
 <p>
-![](images/case_study_right-05.svg){.center width=45%}
+![](img/case_study_right-05.svg){.center width=45%}
 <p>
 P1 sends the partial sum to P0
 </div>
@@ -135,13 +135,13 @@ P1 sends the partial sum to P0
 # Case study: parallel sum 
 
 <div class=column>
-![](images/case_study_left-07.svg){.center width=45%}
+![](img/case_study_left-07.svg){.center width=45%}
 </div>
 <div class=coulumn>
 **Step 3.3**: compute the final answer
 
 <p>
-![](images/case_study_right-06.svg){.center width=45%}
+![](img/case_study_right-06.svg){.center width=45%}
 <p>
 P0 computes the total sum
 </div>
@@ -171,8 +171,8 @@ MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, 
     : Error value; in C/C++ it’s the return value of the function, and
       in Fortran an additional output parameter
 
-    `-`{.ghost}
-    : `-`{.ghost}
+<!--    `-`{.ghost}
+    : `-`{.ghost} -->
 
 # Receive operation {.split-definition}
 
@@ -202,19 +202,36 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
     `error`{.output}
     : As for send operation
 
-    `-`{.ghost}
-    : `-`{.ghost}
+<!--    `-`{.ghost}
+    : `-`{.ghost} -->
 
+# "Buffers" in MPI
+
+- The "buffer" arguments are memory addresses
+- MPI assumes contiguous chunk of memory
+    - `count` elements are send starting from the address
+	- received elements are stored starting from the address
+- In Fortran, arguments are passed by reference, *i.e.* variables can be
+  passed as such
+    - Note: be careful if passing non-contiguous array segmens such as `a(1, 1:N)`
+- In C/C++ "buffer" is pointer
+    - `data()` method of C++ `<array>` and `<vector>` containers can be used
+   
 # MPI datatypes
 
-- MPI has a number of predefined datatypes to represent data
-- Each C or Fortran datatype has a corresponding MPI datatype
+- On low level, MPI sends and receives stream of bytes
+- MPI datatypes specify how the bytes should be interpreted
+	- Allows data conversios in heterogenous environments (*e.g.*
+      little endian to big endian)
+- MPI has a number of predefined basic datatypes corresponding to C or
+  Fortran datatypes
     - C examples: `MPI_INT` for `int` and `MPI_DOUBLE` for
       `double`
-    - Fortran example: `MPI_INTEGER` for `integer`
-- One can also define custom datatypes
+    - Fortran examples: `MPI_INTEGER` for `integer`,
+      `MPI_DOUBLE_PRECISION` for `real64`
+- One can also define custom datatypes for communicating more complex
+  data
 
-# More features in point-to-point communication {.section}
 
 # Blocking routines & deadlocks
 
@@ -227,48 +244,6 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
     - For example, all processes are in `MPI_Recv`
     - If deadlocked, the program is stuck forever
 
-# Typical point-to-point communication patterns
-
-![](images/comm_patt.svg){.center width=100%}
-
-<br>
-
-- Incorrect ordering of sends/receives may give a rise to a deadlock
-  (or unnecessary idle time)
-
-# Combined send & receive 
-
-MPI_Sendrecv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `dest`{.input}, `sendtag`{.input}, `recvbuf`{.input}, `recvcount`{.input}, `recvtype`{.input}, `source`{.input}, `recvtag`{.input}, `comm`{.input}, `status`{.output})
-  : `-`{.ghost}
-    : `-`{.ghost}
-
-- Sends one message and receives another one, with a single command
-    - Reduces risk for deadlocks
-- Parameters as in `MPI_Send` and `MPI_Recv`
-- Destination rank and source rank can be same or different
-
-# Special parameter values 
-
-MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
-  : `-`{.ghost}
-    : `-`{.ghost}
-
-| Parameter          | Special value    | Implication                                  |
-| ----------         | ---------------- | -------------------------------------------- |
-| **`dest`{.input}** | `MPI_PROC_NULL`  | Null destination, no operation takes place   |
-
-# Special parameter values
-
-MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
-  : `-`{.ghost}
-    : `-`{.ghost}
-
-| Parameter             | Special value       | Implication                                  |
-| ----------            | ----------------    | -------------------------------------------- |
-| **`source`{.input}**  | `MPI_PROC_NULL`     | No sender=no operation takes place           |
-|                       | `MPI_ANY_SOURCE`    | Receive from any sender                      |
-| **`tag`{.input}**     | `MPI_ANY_TAG`       | Receive messages with any tag                |
-| **`status`{.output}** | `MPI_STATUS_IGNORE` | Do not store any status data                 |
 
 # Status parameter 
 
@@ -300,9 +275,6 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - Point-to-point operations enable any parallel communication pattern
   (in principle)
     - `MPI_Send` and `MPI_Recv`
-    - `MPI_Sendrecv`
-- Employing special argument values may simplify the implementations
-  of certain communication patterns
 - Status parameter of `MPI_Recv` contains information about the
   message after the receive is completed
 

@@ -1,47 +1,9 @@
 ---
 title:  Message-Passing Interface (MPI) 
-author: CSC Summerschool
-date:   2019
+author: CSC Training
+date:   2021
 lang:   en
 ---
-
-# Agenda {.table-grid}
-
-<small>
-
-<div class=column>
-
-| Friday         |                               | 
-| -------------: |------------------------------ | 
-|  9:00 - 10:00  | Introduction to MPI           |
-| 10:00 - 10:15  | Coffee break                  |
-| 10:15 - 11:00  | Point-to-point communication  |
-| 11:00 - 12:00  | Exercises                     |
-| 12:00 - 13:00  | Lunch                         |
-| 13:00 - 13:45  | Collective communication      |
-| 13:45 - 14:30  | Exercises                     |
-| 14:30 - 14:45  | Coffee break                  |
-| 14:45 - 15:00  | User defined communicators    |
-| 15:00 - 15:45  | Exercises                     | 
-
-</div>
-
-<div class=column>
-
-| Saturday       |                            | 
-| -------------: | -------------------------- | 
-|  9:00 - 10:00  | User defined datatypes 1   |
-| 10:00 - 10:15  | Coffee break               |
-| 10:15 - 11:00  | User defined datatypes 2   |
-| 11:00 - 12:00  | Exercises                  |
-| 12:00 - 13:00  | Lunch                      |
-| 13:00 - 13:30  | Non-blocking communication |
-| 13:30 - 14:30  | Exercises                  |
-| 14:30 - 14:45  | Coffee break               |
-
-</div>
-
-</small>
 
 # Basic concepts in MPI {.section}
 
@@ -55,10 +17,11 @@ lang:   en
 - MPI is flexible and comprehensive 
     - large (hundreds of procedures)
     - concise (only 10-20 procedures are typically needed)
+- First version of standard (1.0) published in 1994, latest (4.0) in June 2021
 
 # Processes and threads
 
-![](images/processes-threads-highlight-proc.svg){.center width=90%}
+![](img/processes-threads-highlight-proc.svg){.center width=90%}
 
 <div class="column">
 
@@ -83,13 +46,16 @@ lang:   en
 
 # Execution model in MPI
 
-- Parallel program is launched as set of *independent*, *identical
+- Normally, parallel program is launched as set of *independent*, *identical
   processes*
     - execute the *same program code* and instructions
     - processes can reside in different nodes (or even in different computers)
 - The way to launch parallel program depends on the computing system
-    - **`mpiexec`**, **`mpirun`**, **`aprun`**, **`srun`**, ...
-    - **`aprun`** on sisu.csc.fi, **`srun`** on taito.csc.fi
+    - **`mpiexec`**, **`mpirun`**, **`srun`**, **`aprun`**, ...
+    - **`srun`** on puhti.csc.fi and mahti.csc.fi
+- MPI supports also dynamic spawning of processes and launching *different* 
+  programs communicating with each other
+    - rarely used in HPC systems
 
 # MPI ranks
 
@@ -116,7 +82,7 @@ if (rank == 1) {
 - All variables and data structures are local to the process
 - Processes can exchange data by sending and receiving messages
 
-![](images/data-model.svg){.center width=100%}
+![](img/data-model.svg){.center width=100%}
 
 # The MPI library
 
@@ -128,6 +94,7 @@ if (rank == 1) {
     - sending and receiving messages between several processes
 - Synchronization between processes
 - Advanced features
+    - Communicator manipulation, user defined datatypes, one-sided communication, ...
 
 # MPI communicator
 
@@ -140,8 +107,10 @@ if (rank == 1) {
 
 # Programming MPI
 
-- The MPI standard defines interfaces to C and Fortran programming languages
-	- There are unofficial bindings to eg. Python, Perl and Java
+- The MPI standard defines interfaces to C and Fortran programming
+  languages
+    - No C++ bindings in the standard, C++ programs use the C interface
+	- There are unofficial bindings to eg. Python, Rust, R
 - C call convention (*case sensitive*)<br>
 `rc = MPI_Xxxx(parameter,...)`
     - some arguments have to be passed as pointers
@@ -165,6 +134,22 @@ use mpi_f08
 - Write the program
 - Call **MPI_Finalize** before exiting from the main program
 
+# Compiling an MPI program
+
+- MPI is a library (+ runtime system)
+- In principle, MPI programs can be build with standard compilers
+  (*i.e.* `gcc` / `g++` / `gfortran`) with the appropriate `-I` / `-L` / `-l`
+  options
+- Most MPI implementations provide convenience wrappers, typically
+  `mpicc` / `mpicxx` / `mpif90`, for easier building
+    - no need for MPI related options
+  
+```bash
+mpicc -o my_mpi_prog my_mpi_code.c
+mpicxx -o my_mpi_prog my_mpi_code.cpp
+mpif90 -o my_mpi_prog my_mpi_code.F90
+```
+
 # Presenting syntax
 
 - MPI calls are presented as pseudocode
@@ -176,12 +161,10 @@ MPI_Function(`arg1`{.input}, `arg2`{.output})
     : input arguments in red
   : `arg2`{.output}
     : output arguments in blue. Note that in C the output arguments are always
-      pointers to a variable
+      pointers
 
 
-# First five MPI commands
-
-- Initialization and finalization
+# First five MPI commands: Initialization and finalization
 
 MPI_Init
   : (in C `argc`{.input} and `argv`{.input} pointer arguments are needed)
@@ -189,9 +172,7 @@ MPI_Init
 MPI_Finalize
   : 
 
-# First five MPI commands
-
-- Information about the communicator
+# First five MPI commands: Information about the communicator
 
 MPI_Comm_size(`comm`{.input}, `size`{.output})
   : `comm`{.input}
@@ -205,10 +186,9 @@ MPI_Comm_rank(`comm`{.input}, `rank`{.output})
   : `rank`{.output}
     : rank of this process
 
-# First five MPI commands
+# First five MPI commands: Synchronization
 
-- Synchronization between processes
-    - wait until everybody within the communicator reaches the call 
+- Wait until everybody within the communicator reaches the call 
 
 MPI_Barrier(`comm`{.input})
   : `comm`{.input}
@@ -226,12 +206,20 @@ MPI_Barrier(`comm`{.input})
 
 # Web resources 
 
-- List of MPI functions with detailed descriptions  
-<http://mpi.deino.net/mpi_functions/index.htm>
-- Good online MPI tutorials   
-<https://computing.llnl.gov/tutorials/mpi>  
-<http://mpitutorial.com/tutorials/>
-- MPI 3.1 standard <http://www.mpi-forum.org/docs/>
-- MPI implementations   
-	* MPICH2 <http://www.mcs.anl.gov/research/projects/mpich2/>
-	* OpenMPI <http://www.open-mpi.org/>
+- List of MPI functions with detailed descriptions
+    - <http://mpi.deino.net/mpi_functions/>
+    - <https://www.rookiehpc.com/mpi/docs/>
+- Good online MPI tutorials
+    - <https://computing.llnl.gov/tutorials/mpi>
+    - <http://mpitutorial.com/tutorials/>
+    - <https://www.youtube.com/watch?v=BPSgXQ9aUXY>
+- MPI coding game in C <br>
+<https://www.codingame.com/playgrounds/47058/have-fun-with-mpi-in-c/lets-start-to-have-fun-with-mpi>
+
+# Web resources 
+
+- MPI 4.0 standard <http://www.mpi-forum.org/docs/>
+- MPI implementations
+    - OpenMPI <http://www.open-mpi.org/>
+    - MPICH <https://www.mpich.org/>
+    - Intel MPI <https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/mpi-library.html>
