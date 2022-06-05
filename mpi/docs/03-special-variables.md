@@ -157,14 +157,13 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 # Pairwise neighbour communication
 
-![](img/comm_patt2.svg){.center width=100%}
+![](img/comm_patt2.svg){.center width=90%}
 
 <br>
 
 - Incorrect ordering of sends/receives may give a rise to a deadlock
-  (or unnecessary idle time)
+  or unnecessary idle time
 - Can be generalized to multiple dimensions
-- When implemented with individual `Send`s and `Recv`s communication may serialize
 
 # Combined send & receive 
 
