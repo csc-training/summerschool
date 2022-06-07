@@ -141,6 +141,25 @@ Time elapsed 343773 ums
 - Important to understand interactions
     - Algorithm `–` code `–` compiler `–` libraries `–` hardware
 - Performance is not portable
+
+# Code optimization cycle
+
+![](img/perf-analysis-mpi.png){.center width=60%}
+
+# Selecting the test case
+
+<div class=column>
+- Test case should represent a real production run
+- Measurements should be carried out on the target platform
+    - "Toy" run on laptop is in most cases useless
+- Measurements should be done on both sides of scalability limit
+    - Rule of thumb: doubling number of CPUs increases performance
+      less than factor of 1.5
+</div>
+
+<div class=column>
+![](img/test_case.png){.center width=70%}
+</div>
  
 # How to assess application's performance?
 
@@ -198,24 +217,6 @@ Time elapsed 343773 ums
 - Lower limit for acceptable scalability between nodes
     - Speedup of 1.5 when doubling number of nodes
 
-# Code optimization cycle
-
-![](img/perf-analysis-mpi.png){.center width=60%}
-
-# Selecting the test case
-
-<div class=column>
-- Test case should represent a real production run
-- Measurements should be carried out on the target platform
-    - "Toy" run on laptop is in most cases useless
-- Measurements should be done on both sides of scalability limit
-    - Rule of thumb: doubling number of CPUs increases performance
-      less than factor of 1.5
-</div>
-
-<div class=column>
-![](img/test_case.png){.center width=70%}
-</div>
 
 # Roofline model
 
