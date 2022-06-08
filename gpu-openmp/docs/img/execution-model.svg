@@ -13,7 +13,7 @@
    xml:space="preserve"
    id="svg2"
    version="1.1"
-   sodipodi:docname="parallel-region.svg"
+   sodipodi:docname="execution-model.svg"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"><sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -32,7 +32,7 @@
      fit-margin-right="10"
      fit-margin-bottom="10"
      inkscape:zoom="1.7614974"
-     inkscape:cx="279.88748"
+     inkscape:cx="155.27759"
      inkscape:cy="157.25257"
      inkscape:window-x="398"
      inkscape:window-y="71"
@@ -45,7 +45,7 @@
        originy="10.000007" /></sodipodi:namedview><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        id="clipPath18"
        clipPathUnits="userSpaceOnUse"><path
@@ -312,34 +312,30 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.66666603px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans'">program</tspan></text>
 <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="559.71039"
-       y="309.27502"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:Inconsolata;-inkscape-font-specification:'Inconsolata, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="551.53564"
+       y="309.27341"
        id="text229"><tspan
          sodipodi:role="line"
-         id="tspan227"
-         x="559.71039"
-         y="309.27502"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:Inconsolata;-inkscape-font-specification:Inconsolata">!$acc parallel</tspan></text>
+         id="tspan889"
+         x="551.53564"
+         y="309.27341">!$omp target</tspan></text>
 <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="543.72083"
-       y="368.78287"
-       id="text229-7"><tspan
-         sodipodi:role="line"
-         id="tspan227-0"
-         x="543.72083"
-         y="368.78287"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:Inconsolata;-inkscape-font-specification:Inconsolata">!$acc end parallel</tspan></text>
-<text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.33333333px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-feature-settings:normal;"
        x="729.30847"
        y="400.67456"
        id="text106"><tspan
          sodipodi:role="line"
-         id="tspan104"
-         x="729.30847"
-         y="400.67456">parallel region</tspan></text>
+         id="tspan897">target region</tspan></text>
+<text
+       id="text893"
+       y="370.27341"
+       x="551.53564"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:Inconsolata;-inkscape-font-specification:'Inconsolata, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       xml:space="preserve"><tspan
+         sodipodi:role="line"
+         id="tspan895"
+         x="551.53564"
+         y="370.27341">!$omp end target</tspan></text>
 </g></svg>

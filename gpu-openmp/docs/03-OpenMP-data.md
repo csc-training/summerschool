@@ -1,10 +1,11 @@
 ---
-title:  OpenACC data management
+title:  OpenMP data movement
 author: CSC Summerschool
-date:   2019-07
+date:   2022-06
 lang:   en
 ---
 
+FIXME: OpenACC -> OpenMP
 
 # OpenACC data environment
 

@@ -32,7 +32,7 @@
      fit-margin-right="10"
      fit-margin-bottom="10"
      inkscape:zoom="1.3930555"
-     inkscape:cx="229.91112"
+     inkscape:cx="72.343816"
      inkscape:cy="179.35251"
      inkscape:window-x="529"
      inkscape:window-y="35"
@@ -40,7 +40,7 @@
      inkscape:current-layer="svg2" /><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        id="clipPath18"
        clipPathUnits="userSpaceOnUse"><path
@@ -651,26 +651,20 @@
        y="289.68668" /></text>
 <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333333px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-feature-settings:normal;"
      x="22.73266"
      y="129.1176"
      id="text753"><tspan
        sodipodi:role="line"
-       id="tspan751"
-       x="22.73266"
-       y="129.1176"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:Inconsolata;-inkscape-font-specification:Inconsolata">!$acc parallel</tspan></text>
+       id="tspan1038">!$omp target</tspan></text>
 <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333333px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-feature-settings:normal;"
      x="22.73266"
      y="189.44357"
      id="text753-7"><tspan
        sodipodi:role="line"
-       id="tspan751-6"
-       x="22.73266"
-       y="189.44357"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:Inconsolata;-inkscape-font-specification:Inconsolata">!$acc end parallel</tspan></text>
+       id="tspan1040">!$omp end target</tspan></text>
 <g
      id="g823"
      transform="translate(-0.92,-18.466822)"><text
@@ -767,12 +761,12 @@
        x="163.85683"
        y="150.41772"
        style="font-size:16px"><tspan
-   style="font-weight:bold"
-   id="tspan986">a </tspan> <tspan
-   style="font-style:italic"
-   id="tspan988">c</tspan>  <tspan
-   style="font-style:italic"
-   id="tspan953">d</tspan></tspan></text>
+         style="font-weight:bold"
+         id="tspan986">a </tspan><tspan
+         style="font-style:italic"
+         id="tspan988">c</tspan><tspan
+         style="font-style:italic"
+         id="tspan953">d</tspan></tspan></text>
 <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
@@ -807,7 +801,7 @@
        y="171.95312"
        style="font-size:16px"><tspan
    style="font-weight:bold"
-   id="tspan978">a </tspan> <tspan
+   id="tspan978">a </tspan><tspan
    style="font-weight:bold"
    id="tspan990">c </tspan> d</tspan></text>
 <text
