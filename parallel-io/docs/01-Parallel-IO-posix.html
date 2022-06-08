@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summer School">
+  <title>Introduction to parallel I/O</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Introduction to parallel I/O</h1>
+  <p>CSC Summer School, 2019-07</p>
+</section>
+
+<section id="parallel-io" class="slide level1" data-background-size="contain">
+<h1>Parallel I/O</h1>
+<ul>
+<li>How to convert internal data structures and domains to files that are essentially streams of bytes?</li>
+<li>How to get the data efficiently from thousands of nodes of a supercomputer to physical disks?</li>
+</ul>
+<figure>
+<img src="img/io-illustration.png" class="center" />
+</figure>
+</section>
+<section id="parallel-io-1" class="slide level1" data-background-size="contain">
+<h1>Parallel I/O</h1>
+<ul>
+<li>Good I/O is non-trivial</li>
+<li>Performance, scalability, reliability</li>
+<li>Ease of use of output (number of files, format)</li>
+<li>Portability</li>
+<li>One cannot achieve all of the above - one needs to prioritize</li>
+</ul>
+</section>
+<section id="parallel-io-2" class="slide level1" data-background-size="contain">
+<h1>Parallel I/O</h1>
+<ul>
+<li>Challenges
+<ul>
+<li>Number of tasks is rising rapidly</li>
+<li>Size of the data is also rapidly increasing</li>
+<li>Disparity of computing power vs. I/O performance is getting worse and worse</li>
+</ul></li>
+<li>The need for I/O tuning is algorithm &amp; problem specific</li>
+<li>Without parallelization, I/O will become scalability bottleneck for practically every application!</li>
+</ul>
+</section>
+<section id="io-layers" class="slide level1" data-background-size="contain">
+<h1>I/O layers</h1>
+<figure>
+<img src="img/io-layers.png" />
+</figure>
+</section>
+<section id="io-library-choice" class="slide level1" data-background-size="contain">
+<h1>I/O library choice</h1>
+<ul>
+<li>POSIX and MPI-IO libraries
+<ul>
+<li>Provides methods for writing raw data into files</li>
+<li>Do not provide a schema or methods for writing metadata</li>
+<li>The user has to develop a file format specification, or implement a given format</li>
+</ul></li>
+<li>Additionally there are also higher level libraries that
+<ul>
+<li>Gives tools for writing data + metadata, e.g. HDF5</li>
+<li>Or even provide a application or domain specific schema for what data + metadata to describe a particular kind of data</li>
+</ul></li>
+</ul>
+</section>
+<section id="parallel-file-systems" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Parallel File systems</h1>
+</section>
+<section id="file-systems" class="slide level1" data-background-size="contain">
+<h1>File systems</h1>
+<ul>
+<li>Practically all large parallel computer systems provide a parallel file system area
+<ul>
+<li>Files can be accessed from all tasks</li>
+<li>Large systems often have dedicated I/O nodes</li>
+</ul></li>
+<li>Some systems also provide a local disk area for temporary storage
+<ul>
+<li>Only visible to tasks on the same node</li>
+<li>Results have to be copied after simulation</li>
+</ul></li>
+</ul>
+</section>
+<section id="lustre" class="slide level1" data-background-size="contain">
+<h1>Lustre</h1>
+<ul>
+<li>Lustre is a popular parallel file system that is used in many large systems
+<ul>
+<li>Also at CSC (Sisu, Taito)</li>
+</ul></li>
+<li>Separated storage of data and metadata
+<ul>
+<li>Single metadata server</li>
+<li>Clustered data storage</li>
+<li>Supports e.g. striping of large datafiles for higher performance</li>
+</ul></li>
+</ul>
+</section>
+<section id="lustre-architecture" class="slide level1" data-background-size="contain">
+<h1>Lustre architecture</h1>
+<figure>
+<img src="img/lustre-architecture.png" />
+</figure>
+</section>
+<section id="lustre-file-striping" class="slide level1" data-background-size="contain">
+<h1>Lustre file striping</h1>
+<figure>
+<img src="img/lustre-striping.png" />
+</figure>
+</section>
+<section id="lustre-file-striping-1" class="slide level1" data-background-size="contain">
+<h1>Lustre file striping</h1>
+<ul>
+<li>Striping pattern of a file/directory can be queried or set with the <code>lfs</code> command</li>
+<li><code>lfs getstripe</code> &lt;<em>dir</em>|<em>file</em>&gt;</li>
+<li><code>lfs setstripe</code> -c <em>count</em> <em>dir</em>
+<ul>
+<li>Set the default stripe count for directory <em>dir</em> to <em>count</em></li>
+<li>All the new files within the directory will have the specified striping</li>
+<li>Also stripe size can be specified, see <em>man lfs</em> for details</li>
+</ul></li>
+<li>Proper striping can enhance I/O performance a lot</li>
+</ul>
+</section>
+<section id="performance-with-lustre-striping-on-sisu" class="slide level1" data-background-size="contain">
+<h1>Performance with Lustre striping on Sisu</h1>
+<figure>
+<img src="img/striping-performance.png" class="center" style="width:60.0%" />
+</figure>
+</section>
+<section id="parallel-io-with-posix" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Parallel I/O with posix</h1>
+</section>
+<section id="parallel-posix-io" class="slide level1" data-background-size="contain">
+<h1>Parallel POSIX I/O</h1>
+<div class="column">
+<ul>
+<li>Spokesman strategy
+<ul>
+<li>One process takes care of all I/O using normal (POSIX) routines</li>
+<li>Requires a lot of communication</li>
+<li>Writing/reading slow, single writer not able to fully utilize filesystem</li>
+<li>Does not scale, single writer is a bottleneck</li>
+<li>Can be good option when the amount of data is small (e.g. input files)</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/posix-spokesman.png" />
+</figure>
+</div>
+</section>
+<section id="example-spokesperson-strategy" class="slide level1" data-background-size="contain">
+<h1>Example: spokesperson strategy</h1>
+<div class="sourceCode"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span class="kw">if</span> (my_id <span class="op">==</span> <span class="dv">0</span>) <span class="kw">then</span>
+    <span class="kw">do</span> i <span class="kw">=</span> <span class="dv">1</span>, ntasks<span class="kw">-</span><span class="dv">1</span>
+        <span class="kw">call</span> mpi_recv(full_data(i<span class="kw">*</span>n), n, MPI_REAL, i, tag, <span class="kw">&amp;</span>
+                      MPI_COMM_WORLD, status, rc)
+    <span class="kw">end do</span>
+
+    <span class="fu">open(</span>funit, <span class="fu">file</span><span class="kw">=</span>fname, <span class="fu">access</span><span class="kw">=</span><span class="st">&quot;stream&quot;</span><span class="fu">)</span>
+    <span class="fu">write(</span>funit<span class="fu">)</span> full_data
+    <span class="fu">close(</span>funit<span class="fu">)</span>
+<span class="kw">else</span>
+    <span class="kw">call</span> mpi_send(data, n, MPI_REAL, <span class="dv">0</span>, tag, MPI_COMM_WORLD, rc)
+<span class="kw">end if</span></code></pre></div>
+</section>
+<section id="special-case-stdout-and-stderr" class="slide level1" data-background-size="contain">
+<h1>Special case: stdout and stderr</h1>
+<ul>
+<li>Standard Output and Error streams are effectively serial I/O and will be a severe bottleneck for application scaling</li>
+<li>Disable debugging messages when running in production mode
+<ul>
+<li>&quot;Hello, I'm task 32,000!&quot;</li>
+</ul></li>
+<li>Ensure only the very minimum is written to the stdout/err!
+<ul>
+<li>Interim results, timings,...</li>
+</ul></li>
+</ul>
+</section>
+<section id="parallel-posix-io-1" class="slide level1" data-background-size="contain">
+<h1>Parallel POSIX I/O</h1>
+<div class="column">
+<ul>
+<li>Every man for himself
+<ul>
+<li>Each process writes its local results to a separate file</li>
+<li>Good bandwidth</li>
+<li>Difficult to handle a huge number of files in later analysis</li>
+<li>Can overwhelm filesystem (for example Lustre metadata)</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/posix-everybody.png" />
+</figure>
+</div>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>Parallel file system is needed for efficient parallel I/O
+<ul>
+<li>Striping of files</li>
+</ul></li>
+<li>Primitive parallel I/O can be achieved using just normal Posix calls (+ MPI communication)
+<ul>
+<li>Spokesman strategy</li>
+<li>Every man for himself</li>
+<li>Subset of writers/readers</li>
+</ul></li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
