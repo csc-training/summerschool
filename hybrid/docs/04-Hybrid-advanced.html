@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Training">
+  <title>Advanced concepts for hybrid MPI+OpenMP</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML-full" type="text/javascript"></script>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>Advanced concepts for hybrid MPI+OpenMP</h1>
+  <p>CSC Training, 2019-07</p>
+</section>
+
+<section id="multiple-thread-communication" class="slide level1" data-background-size="contain">
+<h1>Multiple thread communication</h1>
+<ul>
+<li>Hybrid programming is relatively straightforward in cases where communication is by only single thread at time</li>
+<li>With the so called multiple mode all threads can make MPI calls independently</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> required=MPI_THREAD_MULTIPLE, provided;
+MPI_Init_thread(&amp;argc, &amp;argv, required, &amp;provided)</code></pre></div>
+<ul>
+<li>When multiple threads communicate, the sending and receiving threads normally need to match
+<ul>
+<li>Thread-specific tags</li>
+<li>Thread-specific communicators</li>
+</ul></li>
+</ul>
+</section>
+<section id="thread-specific-tags" class="slide level1" data-background-size="contain">
+<h1>Thread-specific tags</h1>
+<ul>
+<li>In point-to-point communication the thread ID can be used to generate a tag that guides the messages to the correct thread</li>
+</ul>
+<figure>
+<img src="img/multiple-thread-communication.png" />
+</figure>
+</section>
+<section id="thread-specific-tags-1" class="slide level1" data-background-size="contain">
+<h1>Thread-specific tags</h1>
+<ul>
+<li>In point-to-point communication the thread ID can be used to generate a tag that guides the messages to the correct thread</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span class="co">!$omp parallel private(tid, tidtag, ierr)</span>
+tid <span class="kw">=</span> omp_get_thread_num()
+tidtag <span class="kw">=</span> <span class="dv">2</span><span class="kw">**</span><span class="dv">10</span> <span class="kw">+</span> tid
+
+<span class="co">! mpi communication to the corresponding thread on another process</span>
+<span class="kw">call</span> mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, <span class="kw">&amp;</span>
+                  recvdata, n, mpi_real, pid, tidtag, <span class="kw">&amp;</span>
+                  mpi_comm_world, stat, ierr)
+
+<span class="co">!$omp end parallel</span></code></pre></div>
+</section>
+<section id="collective-operations-in-the-multiple-mode" class="slide level1" data-background-size="contain">
+<h1>Collective operations in the multiple mode</h1>
+<ul>
+<li>MPI standard allows multiple threads to call collectives simultaneously
+<ul>
+<li>Programmer must ensure that the same communicator is not being concurrently used by two different collective communication calls at the same process</li>
+</ul></li>
+<li>In most cases, even with <code>MPI_THREAD_MULTIPLE</code> it is beneficial to perform the collective communication from a single thread (usually the master thread)</li>
+<li>Note that MPI collective communication calls do not guarantee synchronisation of the thread order</li>
+</ul>
+</section>
+<section id="thread-specific-communicators" class="slide level1" data-background-size="contain">
+<h1>Thread-specific communicators</h1>
+<ul>
+<li>Collective calls do not have tag arguments</li>
+<li>Instead, we will generate thread-specific <em>communicators</em></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span class="co">! total number of openmp threads</span>
+nthr <span class="kw">=</span> omp_get_max_threads()
+<span class="kw">allocate</span>(tcomm(nthr))
+
+<span class="co">! split the communicator</span>
+<span class="kw">do</span> thrid<span class="kw">=</span><span class="dv">1</span>,nthr
+    col <span class="kw">=</span> thrid
+    <span class="kw">call</span> mpi_comm_split(mpi_comm_world, col, procid, tcomm(thrid), ierr)
+<span class="kw">end do</span>
+
+<span class="co">!$omp parallel private(tid, ierr)</span>
+tid <span class="kw">=</span> omp_get_thread_num() <span class="kw">+</span> <span class="dv">1</span>
+<span class="co">! ...collective operations in tcomm(tid)</span>
+<span class="co">!$omp end parallel</span></code></pre></div>
+</section>
+<section id="mpi-thread-support-levels" class="slide level1" data-background-size="contain">
+<h1>MPI thread support levels</h1>
+<ul>
+<li>Modern MPI libraries support all threading levels
+<ul>
+<li>Cray MPI: Set <code>MPICH_MAX_THREAD_SAFETY</code> environment variable to <code>single</code>, <code>funneled</code>, <code>serialized</code>, or <code>multiple</code> to select the threading level</li>
+<li>Intel MPI: When compiling with <code>-qopenmp</code> a thread safe version of the MPI library is automatically used</li>
+</ul></li>
+<li>Note that using <code>MPI_THREAD_MULTIPLE</code> requires the MPI library to internally lock some data structures to avoid race conditions
+<ul>
+<li>May result in additional overhead in MPI calls</li>
+</ul></li>
+</ul>
+</section>
+<section id="mpiopenmp-thread-affinity" class="slide level1" data-background-size="contain">
+<h1>MPI+OpenMP thread affinity</h1>
+<div class="column">
+<ul>
+<li>MPI library must be aware of the underlying OpenMP for correct allocation of resources
+<ul>
+<li>Oversubscription of CPU cores may cause significant performance penalty</li>
+</ul></li>
+<li>Additional complexity from batch job schedulers</li>
+<li>Heavily dependent on the platform used!</li>
+</ul>
+</div>
+<div class="column">
+<figure>
+<img src="img/affinity.png" />
+</figure>
+</div>
+</section>
+<section id="mpiopenmp-thread-affinity-cray" class="slide level1" data-background-size="contain">
+<h1>MPI+OpenMP thread affinity (Cray)</h1>
+<ul>
+<li>Some Cray MPI launcher (aprun) options related to thread affinity:</li>
+</ul>
+<dl>
+<dt><code>-d &lt;depth&gt;</code></dt>
+<dd><dl>
+<dt>reserve depth CPU cores for each MPI task</dt>
+<dd>Recommended to be set equal to <code>OMP_NUM_THREADS</code>
+</dd>
+</dl>
+</dd>
+<dt><code>-cc &lt;cpu|list|depth|numa_node|none&gt;</code></dt>
+<dd><dl>
+<dt>sets CPU affinity for threads within each MPI task</dt>
+<dd>Each thread can be pinned to a CPU core (cpu)
+</dd>
+<dd>The threads may be set to float within a NUMA node (<code>numa_node</code>) or the <code>-d</code> reservation (depth). With none the affinity control is disabled.
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="mpiopenmp-thread-affinity-intel" class="slide level1" data-background-size="contain">
+<h1>MPI+OpenMP thread affinity (Intel)</h1>
+<ul>
+<li>Intel MPI library allows affinity control of MPI domains via <code>I_MPI_PIN</code>, <code>I_MPI_PIN_DOMAIN</code> and <code>I_MPI_PIN_ORDER</code> environment variables</li>
+<li>Affinity control of the MPI library only applies to the placement of the MPI processes
+<ul>
+<li><code>OMP_PLACES</code> (or <code>KMP_AFFINITY</code>) environment variables must be used to pin threads to cores within MPI domains</li>
+</ul></li>
+</ul>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>Multiple threads may make MPI calls simultaneously</li>
+<li>Thread specific tags and/or communicators</li>
+<li>For collectives it is often better to use a single thread for communication</li>
+<li>Thread affinity matters
+<ul>
+<li>See manuals and user guides of the system if performance is not as expected</li>
+</ul></li>
+</ul>
+</section>
+<section id="task-parallelisation" class="slide level1 section-slide" data-background-size="contain" data-background="theme/default/img/section.png">
+<h1>Task parallelisation</h1>
+</section>
+<section id="limitations-of-work-sharing-so-far" class="slide level1" data-background-size="contain">
+<h1>Limitations of work sharing so far</h1>
+<ul>
+<li>Number of iterations in a loop must be constant
+<ul>
+<li>No while loops or early exits in for/do loops</li>
+</ul></li>
+<li>All the threads have to participate in workshare</li>
+<li>OpenMP provides also dynamic tasking in addition to static sections</li>
+<li>Irregular and dynamical parallel patterns via tasking
+<ul>
+<li>While loops</li>
+<li>Recursion</li>
+</ul></li>
+</ul>
+</section>
+<section id="what-is-a-task-in-openmp" class="slide level1" data-background-size="contain">
+<h1>What is a task in OpenMP?</h1>
+<ul>
+<li>A task has
+<ul>
+<li>Code to execute</li>
+<li>Data environment</li>
+<li>Internal control variables</li>
+</ul></li>
+<li>Tasks are added to a task queue, and executed then by single thread
+<ul>
+<li>Can be same or different thread that created the task</li>
+<li>OpenMP runtime takes care of distributing tasks to threads</li>
+</ul></li>
+</ul>
+</section>
+<section id="openmp-task-construct" class="slide level1" data-background-size="contain">
+<h1>OpenMP task construct</h1>
+<ul>
+<li>Create a new task and add it to task queue
+<ul>
+<li>Memorise data and code to be executed</li>
+<li>Task constructs can arbitrarily nested</li>
+</ul></li>
+<li><p>Syntax (C/C++)</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#pragma omp task [clause[[,] clause],...]</span>
+{
+    ...
+}</code></pre></div></li>
+<li><p>Syntax (Fortran)</p>
+<div class="sourceCode"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span class="co">!$omp task[clause[[,] clause],...]</span>
+...
+<span class="co">!$omp end task</span></code></pre></div></li>
+</ul>
+</section>
+<section id="openmp-task-construct-1" class="slide level1" data-background-size="contain">
+<h1>OpenMP task construct</h1>
+<ul>
+<li>All threads that encounter the construct create a task</li>
+<li>Typical usage pattern is thus that single thread creates the tasks</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#pragma omp parallel</span>
+<span class="pp">#pragma omp single</span>
+{
+    <span class="dt">int</span> i=<span class="dv">0</span>;
+    <span class="cf">while</span> (i &lt; <span class="dv">12</span>) {
+        <span class="pp">#pragma omp task</span>
+        {
+            printf(<span class="st">&quot;Task %d by thread %d</span><span class="sc">\n</span><span class="st">&quot;</span>, i, omp_get_thread_num());
+        }
+        i++;
+    }
+}</code></pre></div>
+</section>
+<section id="openmp-task-construct-2" class="slide level1" data-background-size="contain">
+<h1>OpenMP task construct</h1>
+<p>How many tasks does the following code create when executed with 4 threads? <code>a) 6  b) 4  c) 24</code></p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#pragma omp parallel</span>
+{
+    <span class="dt">int</span> i=<span class="dv">0</span>;
+    <span class="cf">while</span> (i &lt; <span class="dv">6</span>) {
+        <span class="pp">#pragma omp task</span>
+        {
+            do_some_heavy_work();
+        }
+        i++;
+    }
+}</code></pre></div>
+</section>
+<section id="task-execution-model" class="slide level1" data-background-size="contain">
+<h1>Task execution model</h1>
+<ul>
+<li>Tasks are executed by an arbitrary thread
+<ul>
+<li>Can be same or different thread that created the task</li>
+<li>By default, tasks are executed in arbitrary order</li>
+<li>Each task is executed only once</li>
+</ul></li>
+<li>Synchronisation points
+<ul>
+<li>Implicit or explicit barriers</li>
+<li><code>#pragma omp taskwait / !$omp taskwait</code>
+<ul>
+<li>Encountering task suspends until child tasks complete</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="data-environment-of-a-task" class="slide level1" data-background-size="contain">
+<h1>Data environment of a task</h1>
+<ul>
+<li>Tasks are created at one time, and executed at another
+<ul>
+<li>What data does the task see when executing?</li>
+</ul></li>
+<li>Variables that are <code>shared</code> in the enclosing construct contain the data at the time of execution</li>
+<li>Variables that are <code>private</code> in the enclosing construct are made <code>firstprivate</code> and contain the data at the time of creation</li>
+<li>Data scoping clauses (<code>shared</code>, <code>private</code>, <code>firstprivate</code>, <code>default</code>) can change the default behaviour</li>
+</ul>
+</section>
+<section id="data-environment-of-a-task-1" class="slide level1" data-background-size="contain">
+<h1>Data environment of a task</h1>
+<p>What is the value of i that is printed out? <code>a) 0  b) 6  c) 100</code></p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#pragma omp parallel</span>
+{
+    <span class="dt">int</span> i=<span class="dv">0</span>;
+    <span class="pp">#pragma omp master</span>
+    {
+        <span class="cf">while</span> (i &lt; <span class="dv">6</span>) {
+            <span class="pp">#pragma omp task</span>
+            <span class="cf">if</span> (omp_get_thread_num() != <span class="dv">0</span>)
+                i=<span class="dv">100</span>;
+            i++;
+        }
+    }
+    <span class="pp">#pragma omp barrier</span>
+    <span class="cf">if</span> (omp_get_thread_num() == <span class="dv">0</span>)
+        printf(<span class="st">&quot;i is %d</span><span class="sc">\n</span><span class="st">&quot;</span>, i);
+}</code></pre></div>
+</section>
+<section id="data-environment-of-a-task-2" class="slide level1" data-background-size="contain">
+<h1>Data environment of a task</h1>
+<p>What is the value of i that is printed out? <code>a) 0  b) 6  c) &gt;= 100</code></p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#pragma omp parallel</span>
+{
+    <span class="dt">int</span> i=<span class="dv">0</span>;
+    <span class="pp">#pragma omp master</span>
+    {
+        <span class="cf">while</span> (i &lt; <span class="dv">6</span>) {
+            <span class="pp">#pragma omp task shared(i)</span>
+            <span class="cf">if</span> (omp_get_thread_num() == <span class="dv">1</span>)
+                i=<span class="dv">100</span>;
+            i++;
+        }
+    }
+    <span class="pp">#pragma omp barrier</span>
+    <span class="cf">if</span> (omp_get_thread_num() == <span class="dv">0</span>)
+        printf(<span class="st">&quot;i is %d</span><span class="sc">\n</span><span class="st">&quot;</span>, i);
+}</code></pre></div>
+</section>
+<section id="recursive-algorithms-with-tasks" class="slide level1" data-background-size="contain">
+<h1>Recursive algorithms with tasks</h1>
+<ul>
+<li>A task can itself generate new tasks
+<ul>
+<li>Useful when parallelising recursive algorithms</li>
+</ul></li>
+<li>Recursive algorithm for Fibonacci numbers: <span class="math inline">\(F_0=0, \quad F_1=1, \quad F_n = F_{n-1} + F_{n-2}\)</span></li>
+</ul>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#pragma omp parallel</span>
+{
+    fibonacci(<span class="dv">10</span>);
+}</code></pre></div>
+</div>
+<div class="column">
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> fibonacci(<span class="dt">int</span> n) {
+    <span class="dt">int</span> fn, fnm;
+    <span class="cf">if</span> (n &lt; <span class="dv">2</span>)
+        <span class="cf">return</span> n;
+    <span class="pp">#pragma omp task shared(fn)</span>
+    fn = fibonacci(n<span class="dv">-1</span>);
+    <span class="pp">#pragma omp task shared(fnm)</span>
+    fnm = fibonacci(n<span class="dv">-2</span>);
+    <span class="pp">#pragma omp taskwait</span>
+    <span class="cf">return</span> fn+fnm;
+}</code></pre></div>
+</div>
+</section>
+<section id="openmp-programming-best-practices" class="slide level1" data-background-size="contain">
+<h1>OpenMP programming best practices</h1>
+<ul>
+<li>Maximise parallel regions
+<ul>
+<li>Reduce fork-join overhead, e.g. combine multiple parallel loops into one large parallel region</li>
+<li>Potential for better cache re-usage</li>
+</ul></li>
+<li>Parallelise outermost loops if possible
+<ul>
+<li>Move PARALLEL DO construct outside of inner loops</li>
+</ul></li>
+<li>Reduce access to shared data
+<ul>
+<li>Possibly make small arrays private</li>
+</ul></li>
+<li>Use more tasks than threads
+<ul>
+<li>Too large number of tasks leads to performance loss</li>
+</ul></li>
+</ul>
+</section>
+<section id="openmp-summary" class="slide level1" data-background-size="contain">
+<h1>OpenMP summary</h1>
+<ul>
+<li>OpenMP is an API for thread-based parallelisation
+<ul>
+<li>Compiler directives, runtime API, environment variables</li>
+<li>Relatively easy to get started but specially efficient and/or real-world parallelisation non-trivial</li>
+</ul></li>
+<li>Features touched in this intro
+<ul>
+<li>Parallel regions, data-sharing attributes</li>
+<li>Work-sharing and scheduling directives</li>
+<li>Task based parallelisation</li>
+</ul></li>
+</ul>
+</section>
+<section id="openmp-summary-1" class="slide level1" data-background-size="contain">
+<h1>OpenMP summary</h1>
+<figure>
+<img src="img/omp-summary.png" />
+</figure>
+</section>
+<section id="things-that-we-did-not-cover" class="slide level1" data-background-size="contain">
+<h1>Things that we did not cover</h1>
+<ul>
+<li>Other work-sharing clauses:
+<ul>
+<li><code>workshare</code>, <code>sections</code>, <code>simd</code></li>
+<li><code>teams</code>, <code>distribute</code></li>
+</ul></li>
+<li>More advanced ways to reduce synchronisation overhead with <code>nowait</code> and <code>flush</code></li>
+<li><code>threadprivate</code>, <code>copyin</code>, <code>cancel</code></li>
+<li>A user can define dependencies between tasks with the <code>depend</code> clause</li>
+<li>Support for attached devices with <code>target</code></li>
+</ul>
+</section>
+<section id="web-resources" class="slide level1" data-background-size="contain">
+<h1>Web resources</h1>
+<ul>
+<li>OpenMP homepage: <a href="http://openmp.org/" class="uri">http://openmp.org/</a></li>
+<li>Good online tutorial: <a href="https://computing.llnl.gov/tutorials/openMP/" class="uri">https://computing.llnl.gov/tutorials/openMP/</a></li>
+<li>More online tutorials: <a href="http://openmp.org/wp/resources/#Tutorials" class="uri">http://openmp.org/wp/resources/#Tutorials</a></li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

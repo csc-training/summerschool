@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summer School">
+  <title>MPI-IO</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'theme/csc-2016/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title-slide" data-background-size="contain" data-background="theme/csc-2016/img/title-en.png">
+  <h1>MPI-IO</h1>
+  <p>CSC Summer School</p>
+</section>
+
+<section class="slide level6">
+
+<div class="reveal">
+<div class="slides">
+<h1 id="mpi-io" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">MPI-IO</h1>
+<h1 id="mpi-io-1" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">MPI-IO</h1>
+<h1 id="basic-concepts-in-mpi-io" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Basic concepts in MPI-IO</h1>
+<h1 id="basic-concepts-in-mpi-io-1" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Basic concepts in MPI-IO</h1>
+<h1 id="opening-closing-files" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Opening &amp; Closing files</h1>
+<h1 id="file-writing-at-explicit-location" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File writing at explicit location</h1>
+<h1 id="example-parallel-write" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Example: parallel write</h1>
+<h1 id="example-parallel-write-1" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Example: parallel write</h1>
+<h1 id="file-reading-at-explicit-location" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File reading at explicit location</h1>
+<h1 id="setting-file-pointer" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Setting file pointer</h1>
+<h1 id="file-writing-at-file-pointer" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File writing at file pointer</h1>
+<h1 id="file-reading-at-file-pointer" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File reading at file pointer</h1>
+<h1 id="collective-operations" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Collective operations</h1>
+<h1 id="collective-operations-1" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Collective operations</h1>
+<h1 id="non-blocking-mpi-io" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Non-blocking MPI-IO</h1>
+<h1 id="non-contiguous-data-access-with-mpi-io" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Non-contiguous data access with MPI-IO</h1>
+<h1 id="file-view" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File view</h1>
+<h1 id="file-view-1" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File view</h1>
+<h1 id="file-view-2" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File view</h1>
+<h1 id="file-view-for-non-contiguous-data" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File view for non-contiguous data</h1>
+<h1 id="file-view-for-non-contiguous-data-1" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">File view for non-contiguous data</h1>
+<h1 id="common-mistakes-with-mpi-io" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Common mistakes with MPI-IO</h1>
+<h1 id="performance-dos-and-donts" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Performance do's and don'ts</h1>
+<h1 id="summary" class="section-slide" data-background-size="contain" data-background="theme/default/img/section.png">Summary</h1>
+</div>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
