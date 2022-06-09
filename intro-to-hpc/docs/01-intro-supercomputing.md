@@ -85,7 +85,7 @@ lang:   en
 
 # Utilizing HPC in scientific research
 
- ![](images/sci.svg){.center width=40%}
+ ![](images/sci.png){.center width=40%}
 
 * **Goal for this school: everyone is able to write and modify HPC applications!**
 
@@ -120,14 +120,14 @@ lang:   en
 
  ![](images/anatomy.svg){.center width=60%}
 
-# Supercomputer autopsy – Sisu.csc.fi
+# Supercomputer autopsy – Lumi
 
- ![](images/sisu.svg){.center width=80%}
+ ![](images/lumi.png){.center width=50%}
 
 # From laptop to Tier-0
 <div class=column>
 
- ![](images/tier.svg){.center width=80%}
+ ![](images/tier.png){.center width=80%}
 
 </div>
 <div class=column>
