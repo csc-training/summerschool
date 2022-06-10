@@ -99,7 +99,7 @@ A call to `MPI_Test` is non-blocking. It allows one to schedule alternative acti
 **`compute`(<font color="purple">border_data</font>)**  
 </div>
 <div class=column>
-![](img/usage_pattern.svg){.center width=100%}
+![](img/usage_pattern.png){.center width=100%}
 </div>
 
 # Additional completion operations
@@ -198,10 +198,10 @@ Allows incoming messages to be checked, without actually receiving them.
 
 # Non-blocking collectives
 
-![](img/non_blocking_large.svg){.center width=100%}
+![](img/non_blocking_large.png){.center width=100%}
 
-![](img/blue_arrow.svg){width=1%} (Computation) work 1  
-![](img/green_arrow.svg){width=1%} (Computation) work 2, not
+![](img/blue_arrow.png){width=1%} (Computation) work 1  
+![](img/green_arrow.png){width=1%} (Computation) work 2, not
 involving data in the ``Allreduce`` operation
 
 # Example: Non-blocking broadcasting {.split-definition}

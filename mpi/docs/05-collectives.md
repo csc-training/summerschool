@@ -60,7 +60,7 @@ the task 0 to all other tasks
 
 - Replicate data from one process to all others
 
-![](img/bcast_comment.svg){.center width=80%}
+![](img/bcast_comment.png){.center width=80%}
 
 # Broadcasting {.split-definition}
 
@@ -89,7 +89,7 @@ MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `roo
 
 - Send equal amount of data from one process to others
 
-![](img/scatter.svg){.center width=80%}
+![](img/scatter.png){.center width=80%}
 
 <p>
 - Segments A, B, … may contain multiple elements
@@ -231,7 +231,7 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
 
 - Collect data from all the process to one process
 
-![](img/gather.svg){.center width=80%}
+![](img/gather.png){.center width=80%}
 
 - Segments A, B, ... may contain multiple elements
 
@@ -304,7 +304,7 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 
 - Applies an operation over set of processes and places result in single process  
 
-![](img/reduce.svg){.center width=80%}
+![](img/reduce.png){.center width=80%}
 
 # Available reduction operations
 
@@ -423,7 +423,7 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL,&
 	- Compare: `MPI_Gather` + `MPI_Bcast`
     
 <p>
-![](img/allgather.svg){.center width=50%}
+![](img/allgather.png){.center width=50%}
 
 
 # All gather {.split-definition}
@@ -452,7 +452,7 @@ MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvb
 - Send a distinct message from each task to every task
 
 <p>
-![](img/alltoall.svg){.center width=80%}
+![](img/alltoall.png){.center width=80%}
 
 <p>
 - "Transpose" like operation
@@ -537,5 +537,5 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 
 # Summary
 
-![](img/collective-patterns.svg){.center width=100%}
+![](img/collective-patterns.png){.center width=100%}
 

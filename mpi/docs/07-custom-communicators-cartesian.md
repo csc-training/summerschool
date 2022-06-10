@@ -15,7 +15,7 @@ lang:   en
     - Unique rank in each communicator
 </div>
 <div class="column">
-![](img/communicator.svg){.center width=80%}
+![](img/communicator.png){.center width=80%}
 </div>
 
 # Process topologies
