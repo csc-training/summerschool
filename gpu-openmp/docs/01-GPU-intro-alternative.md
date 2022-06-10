@@ -6,10 +6,50 @@ lang:   en
 ---
 
 
-
 # Motivation {.section}
 
-# Why use GPU?
+# High-performance computing
+
+<div class="column">
+
+- High performance computing is fueled by ever increasing performance
+- Increasing performance allows  breakthroughs in many major challenges that
+  humankind faces today
+- Not only hardware performance, algorithmic improvements have also added ordered of magnitude of real performance
+
+</div>
+
+<div class="column">
+![](img/top500-perf-dev.png)
+</div>
+
+# HPC through the ages
+
+<div class="column">
+- Achieving performance has been based on various strategies throughout the years
+    - Frequency, vectorization, multinode, multicore ...
+    - Now performance is mostly limited by power consumption 
+- Accelerators provide compute resources based on a very high level of parallelism to reach
+  high performance at low relative power consumption
+</div>
+
+<div class="column">
+![](img/microprocessor-trend-data.png)
+</div>
+
+
+# Accelerators
+
+- Specialized parallel hardware for floating point operations
+    - Co-processors for traditional CPUs
+    - Based on highly parallel architectures
+    - Graphics processing units (GPU) have been the most common
+      accelerators during the last few years
+- Promises
+    - Very high performance per node
+- Usually major rewrites of programs required
+
+# Why use them?
 
 ![https://www.karlrupp.net/blog/ https://github.com/karlrupp/cpu-gpu-mic-comparison](img/comparison.png)
 
@@ -21,6 +61,7 @@ lang:   en
 # Different design philosophies
 
 <div class="column">
+   
 ## CPU
 
 - General purpose
@@ -45,12 +86,38 @@ lang:   en
 
 </div>
 
+
+# Accelerator performance growth
+![](img/peak-flop-development.png){.center}
+
+# Lumi - Pre-exascale system in Finland
+<div class="column">
+![](img/lumi1.png){}
+</div>
+<div class="column">
+![](img/lumi2.png){width=65%}
+</div>
+
+
 # GPU Programming Model {.section}
 
 # Heterogeneous CPU-GPU System
 
-![](img/HardwareReview.png)
-selkie.macalester.edu/csinparallel/modules/GPUProgramming/build/html/Introduction/Introduction.html
+<div class="column">
+- Connected to CPUs via PCIe
+- Local memory
+    - Smaller than main memory (32 GB in Puhti)
+    - Very high bandwidth (up to 900 GB/s)
+    - Latency high compared to compute performance
+- Data must be copied over the PCIe bus 
+
+</div>
+<div class="column">
+![](img/gpuConnect.png){}
+![](img/gpu-bws.png){width=100%}
+</div>
+
+
 
 # Heterogeneous Programming
 
@@ -71,6 +138,51 @@ selkie.macalester.edu/csinparallel/modules/GPUProgramming/build/html/Introductio
 ![](img/heteprogra.jpeg){width=59%}
 
 </div>
+
+# GPU Autopsy. Nvidia Volta
+
+<div class="column">
+- 80 streaming multi processor units (SM), each comprising many smaller Cuda cores
+    - 5120 single precision cores
+    - 2560 double precision cores
+    - 640 tensor cores
+- Common L2 cache (6144 KB) for all multi processors
+- HBM2 memory, typically 16 GB or 32 GB 
+</div>
+
+<div class="column">
+![](img/volta-architecture.png){ width=100% }
+</div>
+
+
+# GPU architecture: Nvidia Volta
+
+
+![](img/volta-architecture.png){ .center width=77% }
+
+
+
+
+# GPU Autopsy. Nvidia Volta  SM
+
+<div class="column">
+
+- 64 single precision cores
+- 32 double precision cores
+- 64 integer cores
+- 8 Tensore cores
+- 128 KB memory block for L1 and shared memory 
+    - 0 - 96 KB can be set to user managed shared memory
+    - The rest is L1
+- 65536 registers - enables the GPU to run a very large number of threads
+</div>
+<div class="column">
+
+![](img/volta-sm-architecture.png){ .center width=70% }
+
+</div>
+
+
 
 # Thread Hierarchy. SIMT
 
@@ -216,3 +328,89 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 - Operations in different streams may run concurrently or interleaved
 
 ![](img/C2050Timeline.png){width=99%}
+
+
+# Challenges in using Accelerators
+
+**Applicability**: Is your algorithm suitable for GPU?
+
+**Programmability**: Is the programming effort acceptable?
+
+**Portability**: Rapidly evolving ecosystem and incompatibilities between vendors.
+
+**Availability**: Can you access a (large scale) system with GPUs?
+
+**Scalability**: Can you scale the GPU software efficiently to several nodes?
+
+
+# Using GPUs
+
+
+<div class="column">
+1. Use existing GPU applications
+2. Use accelerated libraries
+3. Directive based methods
+    - OpenMP 
+    - **OpenACC**
+4. Use lower level language
+    - CUDA
+    - HIP
+    - OpenCL
+</div>
+<div class="column">
+
+Easier, but more limited
+
+![](img/arrow.png){ width=15% }
+
+More difficult, but more opportunities
+
+</div>
+
+
+
+
+# Directive-based accelerator languages
+
+- Annotating code to pinpoint accelerator-offloadable regions
+- OpenACC standard created in Nov 2011
+    - Focus on optimizing productivity (reasonably good performance with
+      minimal effort)
+    - Current standard is 2.7 (November 2018)
+    - Mostly Nvidia only
+- OpenMP
+    - Earlier only threading for CPUs
+    - 4.5 also includes for the first time some support for accelerators
+    - 5.0 standard vastly improved
+    - Dominant directive approach in the future?
+
+
+
+
+# GPUs at CSC - Puhti-AI
+
+- In total 80 nodes with a total peak performance of 2.7 Petaflops
+- Each node has
+    - Two latest generation Intel Xeon processors, code name Cascade Lake, with 20 cores each running at 2.1 GHz (Xeon Gold 6230)
+    - Four Nvidia Volta V100 GPUs with 32 GB of memory each
+    - 384 GB of main memory
+    - 3.2 TB of fast local storage
+    - Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth
+
+# GPUs at CSC - Mahti-AI
+
+- In total 24 nodes with a total peak performance of 2.0 Petaflops
+- Each node has
+    - Two latest generation AMD processors, code name Epyc Rome with 64 cores each running at 2.6 GHz (Xeon Gold 6230)
+    - Four Nvidia Volta A100 GPUs with 40 GB of memory each
+    - 512 GB of main memory
+    - 3.8 TB of fast local storage
+    - Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth
+
+
+# Summary
+
+- HPC throughout the ages -- performance through parellelism
+- Programming GPUs
+    - CUDA, HIP
+    - Directive based methods
