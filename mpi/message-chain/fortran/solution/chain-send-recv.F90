@@ -20,27 +20,32 @@ program basic
 
   message = myid
 
-  ! TODO: set source and destination ranks 
-  ! Treat boundaries with MPI_PROC_NULL
-
-     destination = 
-  
-     source = 
-
-  ! end TODO
+  ! Set source and destination ranks
+  if (myid < ntasks-1) then
+     destination = myid + 1
+  else
+     destination = MPI_PROC_NULL
+  end if
+  if (myid > 0) then
+     source = myid - 1
+  else
+     source = MPI_PROC_NULL
+  end if
 
   ! Start measuring the time spent in communication
   call mpi_barrier(mpi_comm_world, rc)
   t0 = mpi_wtime()
 
-  ! TODO: Send messages
-
+  ! Send messages
+  call mpi_send(message, size, MPI_INTEGER, destination, &
+          myid+1, MPI_COMM_WORLD, rc)
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
           ' Sent elements: ',size, &
           '. Tag: ', myid+1, '. Receiver: ', destination
 
-  ! TODO: Receive messages
-
+  ! Receive messages
+  call mpi_recv(receiveBuffer, size, MPI_INTEGER, source,  &
+          myid, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
   write(*,'(A10,I3,A,I3)') 'Receiver: ', myid, &
           ' First element: ', receiveBuffer(1)
 

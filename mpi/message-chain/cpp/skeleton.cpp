@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <vector>
 #include <mpi.h>
 
 void print_ordered(double t);
@@ -7,9 +7,9 @@ void print_ordered(double t);
 int main(int argc, char *argv[])
 {
     int i, myid, ntasks;
-    int msgsize = 10000000;
-    int *message;
-    int *receiveBuffer;
+    constexpr int size = 10000000;
+    std::vector<int> message(size);
+    std::vector<int> receiveBuffer(size);
     MPI_Status status;
 
     double t0, t1;
@@ -20,25 +20,21 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
-    /* Allocate message buffers */
-    message = (int *)malloc(sizeof(int) * msgsize);
-    receiveBuffer = (int *)malloc(sizeof(int) * msgsize);
-    /* Initialize message */
-    for (i = 0; i < msgsize; i++) {
+    // Initialize message
+    for (i = 0; i < size; i++) {
         message[i] = myid;
     }
 
     // TODO: set source and destination ranks 
     // Treat boundaries with MPI_PROC_NULL
 
-    destination = 
+        destination = 
 
-    source = 
+        source = 
 
     // end TODO
 
-
-    /* Start measuring the time spent in communication */
+    // Start measuring the time spent in communication
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
@@ -59,8 +55,6 @@ int main(int argc, char *argv[])
 
     print_ordered(t1 - t0);
 
-    free(message);
-    free(receiveBuffer);
     MPI_Finalize();
     return 0;
 }
