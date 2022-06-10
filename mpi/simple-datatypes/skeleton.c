@@ -37,14 +37,13 @@ int main(int argc, char **argv)
         }
     }
 
-    //TODO: Create datatype that describes one column. Use MPI_Type_vector.
+    //TODO: Create datatype 
 
-    //TODO: Send first column of matrix form rank 0 to rank 1
+    //TODO: Send data
 
-    //TODO: free datatype
+    //TODO: Free datatype
 
     // Print out the result on rank 1
-    // The application is correct if the first column has the values of rank 0
     if (rank == 1) {
         printf("Received data\n");
         for (i = 0; i < 8; i++) {

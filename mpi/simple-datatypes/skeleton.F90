@@ -29,9 +29,11 @@ program datatype1
   end if
 
 
-  !TODO: create datatype describing one row, use mpi_type_vector
+  !TODO: create datatype 
 
-  !TODO: send first row of matrix from rank 0 to 1
+  !TODO: communicate with datatype
+
+  !TODO: free datatype
 
   ! Print out the result
   if (rank == 1) then
@@ -41,7 +43,6 @@ program datatype1
      end do
   end if
 
-  !TODO free datatype
 
   call mpi_finalize(ierr)
 
