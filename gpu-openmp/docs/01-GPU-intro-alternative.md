@@ -6,7 +6,6 @@ lang:   en
 ---
 
 
-# Motivation {.section}
 
 # High-performance computing
 
@@ -87,9 +86,6 @@ lang:   en
 </div>
 
 
-# Accelerator performance growth
-![](img/peak-flop-development.png){.center}
-
 # Lumi - Pre-exascale system in Finland
 <div class="column">
 ![](img/lumi1.png){}
@@ -99,7 +95,6 @@ lang:   en
 </div>
 
 
-# GPU Programming Model {.section}
 
 # Heterogeneous CPU-GPU System
 
@@ -163,7 +158,7 @@ lang:   en
 
 
 
-# GPU Autopsy. Nvidia Volta  SM
+# GPU Autopsy. Nvidia Volta Streaming Multiprocessor
 
 <div class="column">
 
@@ -222,8 +217,7 @@ lang:   en
 
 </div>
 
-# CUDA C /HIP code example
-
+# CUDA C /HIP C code example
 
 <div class="column">
 ## CUDA C
@@ -330,6 +324,7 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 ![](img/C2050Timeline.png){width=99%}
 
 
+
 # Challenges in using Accelerators
 
 **Applicability**: Is your algorithm suitable for GPU?
@@ -349,13 +344,17 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 <div class="column">
 1. Use existing GPU applications
 2. Use accelerated libraries
+3. Use frameworks
+    - Kokkos
+    - AMReX
 3. Directive based methods
-    - OpenMP 
-    - **OpenACC**
-4. Use lower level language
+    - ** OpenMP **
+    - OpenACC
+4. Use native GPU language
     - CUDA
     - HIP
     - OpenCL
+    - SYCL
 </div>
 <div class="column">
 
@@ -401,11 +400,21 @@ More difficult, but more opportunities
 
 - In total 24 nodes with a total peak performance of 2.0 Petaflops
 - Each node has
-    - Two latest generation AMD processors, code name Epyc Rome with 64 cores each running at 2.6 GHz (Xeon Gold 6230)
+    - Two latest generation AMD processors, code name EPYC with 64 cores each running at 2.6 GHz (Rome)
     - Four Nvidia Volta A100 GPUs with 40 GB of memory each
     - 512 GB of main memory
     - 3.8 TB of fast local storage
     - Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth
+
+# GPUs at CSC - LUMI-G
+
+- In total 2560 nodes with a total peak performance of 550 Petaflops
+- Each node has
+    - One latest generation AMD processor, code name Trento with 64 cores each running at 2.6 GHz (Trento)
+    - Four AMD MI250X GPUs with 128 GB of memory each
+    - 512 GB of main memory (???)
+    - 2x3 TB of fast local storage (???)
+    - Four interconnect network connectivity providing 800Gbps aggregate bandwidth
 
 
 # Summary
