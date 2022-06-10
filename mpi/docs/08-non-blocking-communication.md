@@ -311,5 +311,23 @@ MPI_Request_free (&recv_req); MPI_Request_free (&send_req);
     - Start sending with `MPI_Isend`
     - Possibly do something else while the communication takes place
     - Complete the communication with `MPI_Wait` or a variant
-- MPI-3 contains also non-blocking collectives
+- Collective operations can also be done in non-blocking mode
 
+# Summary
+
+- In persistent communication the communication pattern remains constant
+- All the parameters for the communication are set up in the initialization phase
+    - Communication is started and finalized in separate steps
+- Neighborhood collectives enable communication between neighbors in process topology 
+  with a single MPI call
+- Persistent and neighborhood communication provide optimization opportunities for MPI
+  library
+
+# Further MPI topics
+
+- One-sided communication
+- MPI shared memory programming
+- MPI error handling
+- Intercommunicators
+- Point-to-point communication modes
+- Dynamic process creation
