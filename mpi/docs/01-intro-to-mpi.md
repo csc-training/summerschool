@@ -210,7 +210,7 @@ MPI_Barrier(`comm`{.input})
     - <http://mpi.deino.net/mpi_functions/>
     - <https://www.rookiehpc.com/mpi/docs/>
 - Good online MPI tutorials
-    - <https://computing.llnl.gov/tutorials/mpi>
+    - <https://hpc-tutorials.llnl.gov/mpi/>
     - <http://mpitutorial.com/tutorials/>
     - <https://www.youtube.com/watch?v=BPSgXQ9aUXY>
 - MPI coding game in C <br>
