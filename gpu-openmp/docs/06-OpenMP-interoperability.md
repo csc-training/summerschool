@@ -78,7 +78,7 @@ double *x, *y;
 - For linking, `-lcudart -L$CUDA_HOME/lib64` is needed
 
 
-# Calling CUDA-kernel from OpenMP-program
+# Calling CUDA/HIP-kernel from C OpenMP-program
 
 <small>
 <div class="column">
@@ -133,6 +133,7 @@ extern "C" void daxpy(int n, double a,
 </div>
 </small>
 
+# Calling CUDA/HIP-kernel from  Fortran OpenMP-program
 
 # Summary
 
