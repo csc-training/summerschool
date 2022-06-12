@@ -1,7 +1,7 @@
 ---
 title:  "OpenMP offload: introduction"
 author: CSC - IT Center for Science
-date:   2021
+date:   2022-06
 lang:   en
 ---
 
