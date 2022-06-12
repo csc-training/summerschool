@@ -1,7 +1,7 @@
 ---
 title:  Introduction to GPUs in HPC
 author: CSC Summerschool
-date:   2022-07
+date:   2022-06
 lang:   en
 ---
 
