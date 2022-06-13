@@ -44,7 +44,7 @@ lang:   en
       of a matrix
 	- Heterogeneous data (structs in C, types in Fortran)
 	- Larger messages, count is `int` (32 bits) in C
-- Provide higher level of programming
+- Provide higher level of programming 
 	- Code is more compact and maintainable
 - Needed for getting the most out of MPI I/O
 
