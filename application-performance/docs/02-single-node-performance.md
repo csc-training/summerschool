@@ -45,7 +45,7 @@
     - Operate on multiple elements of data with single instructions
 - AVX2 256 bits = 4 double precision numbers
 - AVX512 512 bits = 8 double precision numbers
-    - single AVX512 fused multiply add instruction can perform 16 FLOPS
+    - single AVX512 fused multiply add instruction can perform 16 op's / cycle
 
 <br>
 <!-- Image copyright CSC, see LICENSE -->
