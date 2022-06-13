@@ -5,9 +5,6 @@ date:   2022-06
 lang:   en
 ---
 
-    - Discussed describing structures/types
-    - Covered another advanced type constructor, `MPI_Type_create_subarray`
-
 # User defined datatypes (part 2) {.section}
 
 
