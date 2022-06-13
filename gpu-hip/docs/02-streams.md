@@ -1,7 +1,7 @@
 ---
 title:    Synchronisation and streams
-author:   CSC Training
-date:     2022-06
+author:   CSC Summer School
+date:     2022-07
 lang:     en
 ---
 

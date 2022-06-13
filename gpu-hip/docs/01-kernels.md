@@ -1,8 +1,8 @@
 ---
 title:    HIP and GPU kernels
 subtitle: GPU programming with HIP
-author:   CSC Training
-date:     2021-11
+author:   CSC Summer School
+date:     2022-07
 lang:     en
 ---
 
