@@ -10,7 +10,7 @@ lang:   en
 * Utilising computing power that is much larger than available in typical desktop computer
 * Performance of HPC systems (i.e. supercomputers) is often measured in floating point operations per second (flop/s)
 	- For software, other measures can be more meaningful
-* Currently, the most powerful system reaches >10^18 flop/s (1 Eflop / s)
+* Currently, the most powerful system reaches > $10^{18}$ flop/s (1 Eflop / s)
 
 # What is high-performance computing?
 
@@ -94,7 +94,7 @@ lang:   en
 
 
 # CPU frequency development
-* Power consumption of CPU: `~`f^3
+* Power consumption of CPU: $~f^3$
 
  ![](images/moore.png){.center width=45%}
 
@@ -296,7 +296,7 @@ lang:   en
 # Post-Exascale challenges
 
 * Performance of supercomputers has increased exponentially for a long time
-* However, there are still challenges in continuing onwards from exascale supercomputers (> 1 x 10^18 flop/s)
+* However, there are still challenges in continuing onwards from exascale supercomputers ($> 1 \times 10^{18}$ flop/s)
 	- Power consumption: current `#`1 energy efficient system requires `~`20 MW for exascale performances
 	- Cost & Maintaining: Global chip shortage
 	- Application scalability: how to program for 100 000 000 cores?
