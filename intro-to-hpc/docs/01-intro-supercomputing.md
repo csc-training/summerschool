@@ -10,7 +10,7 @@ lang:   en
 * Utilising computing power that is much larger than available in typical desktop computer
 * Performance of HPC systems (i.e. supercomputers) is often measured in floating point operations per second (flop/s)
 	- For software, other measures can be more meaningful
-* Currently, the most powerful system reaches >10^18 flop/s (1 Eflop / s)
+* Currently, the most powerful system reaches > $10^{18}$ flop/s (1 Eflop / s)
 
 # What is high-performance computing?
 
@@ -94,7 +94,7 @@ lang:   en
 
 
 # CPU frequency development
-* Power consumption of CPU: `~`f^3
+* Power consumption of CPU: $~f^3$
 
  ![](images/moore.png){.center width=45%}
 
@@ -202,15 +202,6 @@ lang:   en
 * Master sends tasks to workers and receives results
 * There are normally more tasks than workers, and tasks are assigned dynamically
 
-# Exposing parallelism
-
-* MapReduce is special task farm like approach suitable especially for large scale data analysis
-* Two types of workers
-	- Map: given an input data, emit list of (key, value) pairs
-	- Reduce: combine the values for a key
-* User works only with serial code for Map and Reduce operations
-* MapReduce framework takes care of parallelization and data distribution
-
 # Parallel scaling
 <div class=column>
 * Strong parallel scaling
@@ -244,15 +235,18 @@ lang:   en
 
 # Parallel programming {.section}
 
-
-
 # Programming languages
-* The de facto standard programming languages in HPC are (still!) C/C++ and Fortran
-* Higher level languages like Python and Julia are gaining popularity
-	- Often computationally intensive parts are still written in C/C++ or Fortran
-* For some applications there are high-level frameworks with interfaces to multiple languages
-	- TensorFlow for deep learning
-	- Spark for MapReduce
+
+- The de-facto standard programming languages in HPC are (still!)
+  C/C++ and Fortran 
+- Higher level languages like Python and Julia are gaining popularity
+    - Often computationally intensive parts are still written in C/C++
+      or Fortran 
+- For some applications there are high-level frameworks with
+  interfaces to multiple languages
+    - SYCL, Kokkos, Petsc, Trilinos
+    - TensorFlow, PyTorch for deep learning
+    - Spark for MapReduce
 
 
 # Parallel programming models
@@ -296,7 +290,7 @@ lang:   en
 # Post-Exascale challenges
 
 * Performance of supercomputers has increased exponentially for a long time
-* However, there are still challenges in continuing onwards from exascale supercomputers (> 1 x 10^18 flop/s)
+* However, there are still challenges in continuing onwards from exascale supercomputers ($> 1 \times 10^{18}$ flop/s)
 	- Power consumption: current `#`1 energy efficient system requires `~`20 MW for exascale performances
 	- Cost & Maintaining: Global chip shortage
 	- Application scalability: how to program for 100 000 000 cores?
