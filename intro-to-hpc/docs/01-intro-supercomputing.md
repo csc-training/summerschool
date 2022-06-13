@@ -202,15 +202,6 @@ lang:   en
 * Master sends tasks to workers and receives results
 * There are normally more tasks than workers, and tasks are assigned dynamically
 
-# Exposing parallelism
-
-* MapReduce is special task farm like approach suitable especially for large scale data analysis
-* Two types of workers
-	- Map: given an input data, emit list of (key, value) pairs
-	- Reduce: combine the values for a key
-* User works only with serial code for Map and Reduce operations
-* MapReduce framework takes care of parallelization and data distribution
-
 # Parallel scaling
 <div class=column>
 * Strong parallel scaling
@@ -244,15 +235,18 @@ lang:   en
 
 # Parallel programming {.section}
 
-
-
 # Programming languages
-* The de facto standard programming languages in HPC are (still!) C/C++ and Fortran
-* Higher level languages like Python and Julia are gaining popularity
-	- Often computationally intensive parts are still written in C/C++ or Fortran
-* For some applications there are high-level frameworks with interfaces to multiple languages
-	- TensorFlow for deep learning
-	- Spark for MapReduce
+
+- The de-facto standard programming languages in HPC are (still!)
+  C/C++ and Fortran 
+- Higher level languages like Python and Julia are gaining popularity
+    - Often computationally intensive parts are still written in C/C++
+      or Fortran 
+- For some applications there are high-level frameworks with
+  interfaces to multiple languages
+    - SYCL, Kokkos, Petsc, Trilinos
+    - TensorFlow, PyTorch for deep learning
+    - Spark for MapReduce
 
 
 # Parallel programming models
