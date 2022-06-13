@@ -14,8 +14,8 @@ lang:   en
 - Performance of HPC system (i.e. supercomputer) is often measured in
   floating point operations per second (flop/s)
     - For software, other measures can be more meaningful
-- Currently, the most powerful system reaches ~500 x 10<sup>15</sup> flop/s
-  (500 Pflop / s)
+- Currently, the most powerful system reaches ~1 x 10<sup>18</sup> flop/s
+  (1 Eflop / s)
 
 # Exponential growth of performance
 
@@ -28,7 +28,7 @@ lang:   en
 
  - Reading initial conditions or datasets for processing
  - Storing numerical output from simulations for later analysis
- - Checkpointing to filesfor restarting in case of system failure
+ - Checkpointing to files for restarting in case of system failure
  - 'out-of-core' techniques when the  data is larger than one can fit in system memory
 
 # Heat Equation example
