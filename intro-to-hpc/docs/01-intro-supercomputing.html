@@ -41,7 +41,7 @@
 <ul>
 <li>For software, other measures can be more meaningful</li>
 </ul></li>
-<li>Currently, the most powerful system reaches &gt;10^18 flop/s (1 Eflop / s)</li>
+<li>Currently, the most powerful system reaches &gt; <span class="math inline">\(10^{18}\)</span> flop/s (1 Eflop / s)</li>
 </ul>
 </section>
 <section id="what-is-high-performance-computing-1" class="slide level1" data-background-size="contain">
@@ -50,84 +50,112 @@
 </section>
 <section id="top-500-list" class="slide level1" data-background-size="contain">
 <h1>Top 500 list</h1>
+<!-- Source: top500.org, Copyright 1993-2022 TOP500.org (c) -->
 <p><img data-src="images/top_500.png" class="center" style="width:50.0%" /></p>
 </section>
 <section id="what-are-supercomputers-used-for" class="slide level1 section-slide" data-background-size="contain" data-background="/home/leopeksa/Courses/summerschool2/summerschool/intro-to-hpc/docs/theme/csc-2016/img/section.png">
 <h1>What are supercomputers used for?</h1>
 </section>
-<section id="materials-science" class="slide level1" data-background-size="contain">
-<h1>Materials science</h1>
+<section id="general-use-cases" class="slide level1" data-background-size="contain">
+<h1>General use cases</h1>
+<ul>
+<li>Simulations of very different scales
+<ul>
+<li>From subatomic particles to cosmic scales</li>
+</ul></li>
+<li>Problems with very large datasets</li>
+<li>Complex computational problems</li>
+<li>Problems that are hard to experiment on
+<ul>
+<li>Simulations with decade-long timescales</li>
+</ul></li>
+<li>Very time consuming or even impossible to <br> solve on a standard computer</li>
+</ul>
+</section>
+<section id="application-areas" class="slide level1" data-background-size="contain">
+<h1>Application areas</h1>
+<ul>
+<li>Fundamental sciences such as particle physics and cosmology</li>
+<li>Climate, weather and earth sciences</li>
+<li>Life sciences and medicine</li>
+<li>Chemistry and material science</li>
+<li>Energy, e.g oil and gas exploration and fusion research</li>
+<li>Engineering, e.g. infrastructure and manufacturing</li>
+<li>etc.</li>
+</ul>
+</section>
+<section id="climate-change" class="slide level1" data-background-size="contain">
+<h1>Climate change</h1>
 <div class="column">
 <ul>
-<li>New materials
-<ul>
-<li>Design of meta-materials</li>
-<li>Hydrogen storage</li>
-</ul></li>
-<li>New methods for catalysis
-<ul>
-<li>Industrial processes</li>
-<li>Air and water purification</li>
-</ul></li>
-<li>Design of devices from first principles</li>
+<li>Simulating ice sheets, air pollutants, sea-level rise etc.</li>
+<li>Building short and long-term simulations</li>
+<li>Analyzing with different parameters for future predictions and possible solutions</li>
+<li>Modeling space weather</li>
 </ul>
 </div>
 <div class="column">
-<p><img data-src="images/mat.png" class="center" style="width:80.0%" /></p>
+<p><img data-src="images/climate_greenland.png" class="center" style="width:90.0%" /></p>
 </div>
 </section>
-<section id="life-sciences" class="slide level1" data-background-size="contain">
-<h1>Life sciences</h1>
+<section id="covid-19-fast-track-with-puhti" class="slide level1" data-background-size="contain">
+<h1>Covid-19 fast track with Puhti</h1>
 <div class="column">
 <ul>
-<li>Natural language processing</li>
-<li>Identifying genomic variants associated with common complex diseases</li>
-<li>Spreading of aerosols in the air</li>
-<li>Medical imaging and diagnostics</li>
-<li>Predicting protein folding</li>
+<li>Modeling particles in airflows</li>
+<li>A large part of the calculations used for solving turbulence</li>
+<li>A third of Puhti was reserved for running the simulations</li>
+<li>The results have had an impact on e.g. ventilation instructions and the use of masks</li>
+</ul>
+</div>
+<div class="column">
+<p><img data-src="images/covid.png" class="center" style="width:100.0%" /></p>
+</div>
+</section>
+<section id="gravitational-waves" class="slide level1" data-background-size="contain">
+<h1>Gravitational waves</h1>
+<div class="column">
+<ul>
+<li>Computational modeling of sources of gravitational waves</li>
+<li>Identifying a phase transition of the Higgs boson “turning on” (10 picoseconds after Big Bang)</li>
+<li>Large simulations with over ten thousand CPU cores</li>
+<li>Experimental data from ESA’s LISA satellite (Launch date 2037)</li>
+</ul>
+</div>
+<div class="column">
+<p><img data-src="images/grav.png" class="center" style="width:90.0%" /></p>
+</div>
+</section>
+<section id="topological-superconductors" class="slide level1" data-background-size="contain">
+<h1>Topological superconductors</h1>
+<div class="column">
+<ul>
+<li>Topological superconductors are possible building blocks for qubits</li>
+<li>Based on an elusive quantum state of electrons in thin layers</li>
+<li>Electronic properties simulated with the density-functional theory
+<ul>
+<li>These confirm that experimentally measured signals are due to this special quantum state</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<p><img data-src="images/majorana.png" class="center" style="width:100.0%" /></p>
+</div>
+</section>
+<section id="deep-language-model-of-finnish" class="slide level1" data-background-size="contain">
+<h1>Deep language model of Finnish</h1>
+<div class="column">
+<ul>
+<li>Web-scale Finnish language data together with very deep neural networks utilizing GPUs</li>
+<li>New model for Finnish
+<ul>
+<li>Comparable in coverage and quality to the best language models available today for any language</li>
+</ul></li>
 </ul>
 </div>
 <div class="column">
 <!-- Source: Adobe Stock, CC BY-SA 3.0 -->
-<p><img data-src="images/DeepFin.jpg" class="center" style="width:90.0%" /></p>
-</div>
-</section>
-<section id="earth-sciences" class="slide level1" data-background-size="contain">
-<h1>Earth sciences</h1>
-<div class="column">
-<ul>
-<li>Long term climate modeling
-<ul>
-<li>Understanding and predicting climate change</li>
-</ul></li>
-<li>High-resolution weather prediction
-<ul>
-<li>Predicting extreme weather conditions</li>
-<li>District-scale forecasts</li>
-</ul></li>
-<li>Whole-Earth seismological models</li>
-<li>Modelling space weather</li>
-</ul>
-</div>
-<div class="column">
-<p><img data-src="images/elmer_gis.jpg" class="center" style="width:80.0%" /></p>
-</div>
-</section>
-<section id="artificial-intelligence" class="slide level1" data-background-size="contain">
-<h1>Artificial intelligence</h1>
-<div class="column">
-<ul>
-<li>Machine learning
-<ul>
-<li>deep neural networks</li>
-</ul></li>
-<li>Large scale data analysis</li>
-<li>Interpreting experimental data</li>
-<li>Prediction of material properties</li>
-</ul>
-</div>
-<div class="column">
-<p><img data-src="images/ai.png" class="center" style="width:80.0%" /></p>
+<p><img data-src="images/DeepFin.jpg" class="center" style="width:100.0%" /></p>
 </div>
 </section>
 <section id="utilizing-hpc-in-scientific-research" class="slide level1" data-background-size="contain">
@@ -143,7 +171,7 @@
 <section id="cpu-frequency-development" class="slide level1" data-background-size="contain">
 <h1>CPU frequency development</h1>
 <ul>
-<li>Power consumption of CPU: <code>~</code>f^3</li>
+<li>Power consumption of CPU: <span class="math inline">\(~f^3\)</span></li>
 </ul>
 <p><img data-src="images/moore.png" class="center" style="width:45.0%" /></p>
 </section>
@@ -153,7 +181,7 @@
 <li>Modern (super)computers rely on parallel processing</li>
 <li><strong>Multiple</strong> CPU cores &amp; accelerators (GPUs)
 <ul>
-<li><code>#</code>1 system has <code>~</code>9 000 000 cores &amp; <code>~</code>40 000 GPUs</li>
+<li><code>#</code>1 system has <code>~</code>9 000 000 cores and <code>~</code>40 000 GPUs</li>
 </ul></li>
 <li>Vectorization
 <ul>
@@ -286,19 +314,6 @@
 <li>There are normally more tasks than workers, and tasks are assigned dynamically</li>
 </ul>
 </section>
-<section id="exposing-parallelism-2" class="slide level1" data-background-size="contain">
-<h1>Exposing parallelism</h1>
-<ul>
-<li>MapReduce is special task farm like approach suitable especially for large scale data analysis</li>
-<li>Two types of workers
-<ul>
-<li>Map: given an input data, emit list of (key, value) pairs</li>
-<li>Reduce: combine the values for a key</li>
-</ul></li>
-<li>User works only with serial code for Map and Reduce operations</li>
-<li>MapReduce framework takes care of parallelization and data distribution</li>
-</ul>
-</section>
 <section id="parallel-scaling" class="slide level1" data-background-size="contain">
 <h1>Parallel scaling</h1>
 <div class="column">
@@ -345,14 +360,15 @@
 <section id="programming-languages" class="slide level1" data-background-size="contain">
 <h1>Programming languages</h1>
 <ul>
-<li>The de facto standard programming languages in HPC are (still!) C/C++ and Fortran</li>
+<li>The de-facto standard programming languages in HPC are (still!) C/C++ and Fortran</li>
 <li>Higher level languages like Python and Julia are gaining popularity
 <ul>
 <li>Often computationally intensive parts are still written in C/C++ or Fortran</li>
 </ul></li>
 <li>For some applications there are high-level frameworks with interfaces to multiple languages
 <ul>
-<li>TensorFlow for deep learning</li>
+<li>SYCL, Kokkos, Petsc, Trilinos</li>
+<li>TensorFlow, PyTorch for deep learning</li>
 <li>Spark for MapReduce</li>
 </ul></li>
 </ul>
@@ -404,7 +420,7 @@
 <h1>Post-Exascale challenges</h1>
 <ul>
 <li>Performance of supercomputers has increased exponentially for a long time</li>
-<li>However, there are still challenges in continuing onwards from exascale supercomputers (&gt; 1 x 10^18 flop/s)
+<li>However, there are still challenges in continuing onwards from exascale supercomputers (<span class="math inline">\(&gt; 1 \times 10^{18}\)</span> flop/s)
 <ul>
 <li>Power consumption: current <code>#</code>1 energy efficient system requires <code>~</code>20 MW for exascale performances</li>
 <li>Cost &amp; Maintaining: Global chip shortage</li>
@@ -414,11 +430,17 @@
 </section>
 <section id="quantum-computing" class="slide level1" data-background-size="contain">
 <h1>Quantum computing</h1>
+<div class="column">
 <ul>
 <li>Quantum computers can solve certain types of problems exponentially faster than classical computers</li>
 <li>General purpose quantum computer is still far away</li>
-<li>For optimisation problems, D-Wave computer based on quantum annealing is already commercially available</li>
+<li>Use cases still largely experimental and hypothetical</li>
+<li>Hybrid approaches</li>
 </ul>
+</div>
+<div class="column">
+<p><img data-src="images/quantum.png" class="center" style="width:50.0%" /></p>
+</div>
 </section>
     </div>
   </div>
