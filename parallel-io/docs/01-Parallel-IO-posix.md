@@ -169,6 +169,15 @@ else
 end if
 ```
 
+# Performance considerations
+
+- Files are often Round robined over multiple OSTs
+- You can overwhelm an OST,OSS or MDS
+- Per node limits on bandwith
+- Testing can be super noisy, perfromance depends on the load
+- Very large cache effects
+- More stripes does not automatically improve performance
+
 # Parallel POSIX I/O
 
 <div class="column">
