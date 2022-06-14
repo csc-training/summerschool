@@ -1,9 +1,10 @@
 ---
 title:  User defined datatypes
 author: CSC Summerschool
-date:   2019-06
+date:   2022-06
 lang:   en
 ---
+
 
 # User defined datatypes (part 1) {.section}
 
@@ -24,7 +25,7 @@ lang:   en
 
 <p>
 
-![](images/layout.svg){.center width=50%}
+![](img/fortran-array-layout.svg){.center width=50%}
 
 <p>
 
@@ -43,7 +44,7 @@ lang:   en
       of a matrix
 	- Heterogeneous data (structs in C, types in Fortran)
 	- Larger messages, count is `int` (32 bits) in C
-- Provide higher level of programming
+- Provide higher level of programming 
 	- Code is more compact and maintainable
 - Needed for getting the most out of MPI I/O
 
@@ -60,7 +61,7 @@ lang:   en
 
 - A new datatype is created from existing ones with a datatype constructor 	
 	- Several routines for different special cases
-- A new datatype must be committed before using it
+- A new datatype must be committed before using it in communication
     - **`MPI_Type_commit`(`newtype`{.input})**
 - A type should be freed after it is no longer needed
     - **`MPI_Type_free`(`newtype`{.input})**
@@ -77,6 +78,35 @@ lang:   en
 | `MPI_Type_create_hindexed` | like index, but uses bytes for spacings   |
 | `MPI_Type_create_struct`   | fully general datatype                    |
 
+# MPI_TYPE_CONTIGUOUS
+
+MPI_Type_contiguous(`count`{.input}, `oldtype`{.input}, `newtype`{.output})
+  : `count`{.input}
+    : number of oldtypes
+  : `oldtype`{.input} 
+    : old type
+  : `newtype`{.output} 
+    : new datatype
+
+- Usage mainly for programming convenience
+    - derived types in all communication calls
+
+<div class=column>
+```fortran
+! Using derived type
+call mpi_send(buf, 1, conttype, ...)
+call mpi_send(buf, 1, non_conttype, ...)
+```
+</div>
+<div class=column>
+```fortran
+! Equivalent call with count and basic type
+call mpi_send(buf, count, MPI_REAL, ...)
+call mpi_send(buf, 1, non_conttype, ...)
+```
+</div>
+
+
 # MPI_TYPE_VECTOR
 
 - Creates a new type from equally spaced identical blocks
@@ -92,7 +122,7 @@ MPI_Type_vector(`count`{.input}, `blocklen`{.input}, `stride`{.input}, `oldtype`
 </div>
 <div class=column>
 <p>
-![](images/type_vector.svg){.center width=100%}
+![](img/type_vector.svg){.center width=100%}
 </div>
 
 # Example: sending rows of matrix in Fortran
@@ -111,7 +141,7 @@ call mpi_type_free(rowtype, ierr)
 ```
 
 <p>
-![](images/layout.svg){.center width=50%}
+![](img/fortran-array-layout.svg){.center width=50%}
 
 # MPI_TYPE_INDEXED {.split-def-3}
 
@@ -138,7 +168,7 @@ MPI_Type_indexed(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `oldtyp
     : `-`{.ghost}
 
 <p>
-![](images/type_indexed.svg){.center width=100%}
+![](img/type_indexed.svg){.center width=100%}
 
 # Example: an upper triangular matrix
 
@@ -164,13 +194,94 @@ MPI_Type_free(&upper);
 </div>
 
 <div class="column">
-![](images/triangle.svg){.center width=65%}
+![](img/triangle.svg){.center width=65%}
 </div>
+
+# Subarray
+
+<div class=column>
+- Subarray datatype describes a N-dimensional subarray within a
+N-dimensional array
+- Array can have either C (row major) or Fortran (column major)
+ordering in memory
+</div>
+
+<div class="column">
+![](img/subarray.svg){.center width=60%}
+</div>
+
+
+# MPI_TYPE_CREATE_SUBARRAY {.split-def-3}
+
+<!--- Creates a type describing an N-dimensional subarray within an N-dimensional array
+-->
+MPI_Type_create_subarray(`ndims`{.input}, `sizes`{.input}, `subsizes`{.input}, `offsets`{.input}, `order`{.input}, `oldtype`{.input}, `newtype`{.output})
+  : `ndims`{.input}
+    : number of array dimensions
+    
+    `sizes`{.input}
+    : number of array elements in each dimension (array)
+  
+    `subsizes`{.input}
+    : number of subarray elements in each dimension (array)
+
+    `offsets`{.input}
+    : starting point of subarray in each dimension (array)
+
+    `order`{.input}
+    : storage order of the array. Either `MPI_ORDER_C` or
+      `MPI_ORDER_FORTRAN`
+  
+    `oldtype`{.input}
+    : oldtype
+    
+    `newtype`{.output}
+    : resulting type
+
+    `-`{.ghost}
+    : `-`{.ghost}
+
+# Example: subarray
+
+<div class=column>
+<small>
+```c
+int a_size[2]    = {5,5};
+int sub_size[2]  = {2,3};
+int sub_start[2] = {1,2};
+MPI_Datatype sub_type;
+double array[5][5];
+    
+for(i = 0; i < a_size[0]; i++)
+  for(j = 0; j < a_size[1]; j++)
+    array[i][j] = rank; 
+
+MPI_Type_create_subarray(2, a_size, sub_size,
+       sub_start, MPI_ORDER_C, MPI_DOUBLE, &sub_type);
+
+MPI_Type_commit(&sub_type);
+
+if (rank==0)
+  MPI_Recv(array[0], 1, sub_type, 1, 123,
+    MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+if (rank==1) 
+  MPI_Send(array[0], 1, sub_type, 0, 123,
+  MPI_COMM_WORLD);
+
+MPI_Type_free(&sub_type);
+
+```
+</small>
+</div>
+<div class=column>
+![](img/type_array.svg){.center width=100%}
+</div>
+
 
 # From non-contiguous to contiguous data
 
 <div class=column>
-![](images/contiguous.svg){.center width=100%}
+![](img/contiguous.svg){.center width=100%}
 </div>
 <div class=column>
 ```c
@@ -198,8 +309,8 @@ else
 
 # Performance
 
-- Main motivation for using datatypes is rarely performance – manual
-  packing is often faster
+- Main motivation for using datatypes is not necessarily performance – manual
+  packing can be faster
 - Performance depends on the datatype - more general datatypes are
   often slower
 - Overhead is potentially reduced by:
@@ -216,3 +327,4 @@ else
 	- Performance is implementation dependent
 - Life cycle of derived type: create, commit, free
 - MPI provides constructors for several specific types
+
