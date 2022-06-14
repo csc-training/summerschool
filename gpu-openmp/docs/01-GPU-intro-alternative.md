@@ -290,7 +290,7 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 
 <div class="column">
 
-![TO BE CHANGED](img/memsch.png){width=90%}
+![Memory hierarchy](img/memsch.png){width=90%}
 
 </div>
 
