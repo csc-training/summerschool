@@ -24,8 +24,7 @@ lang:   en
 
 - Pre-defined integer constants:
   ```
-  MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED
-  < MPI_THREAD_MULTIPLE
+  MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE
   ```
 
 
@@ -101,29 +100,6 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
   synchronization of the thread order
 
 
-# Thread-specific communicators
-
-- Collective calls do not have tag arguments
-- Instead, one can generate thread-specific *communicators*
-
-```fortran
-! total number of openmp threads
-nthr = omp_get_max_threads()
-allocate(tcomm(nthr))
-
-! split the communicator
-do thrid=1,nthr
-    col = thrid
-    call mpi_comm_split(mpi_comm_world, col, procid, tcomm(thrid), ierr)
-end do
-
-!$omp parallel private(tid, ierr)
-tid = omp_get_thread_num() + 1
-call mpi_bcast(..., tcomm(tid))
-!$omp end parallel
-```
-
-
 # MPI thread support levels
 
 - Modern MPI libraries support all threading levels
@@ -192,75 +168,6 @@ Thread 001 affinity 1,5
 Thread 002 affinity 2,6
 Thread 003 affinity 3,7
 ```
-
-# Non-uniform memory access
-
-<div class=column>
-- A node can have multiple sockets with memory attached to each socket
-- Non Uniform Memory Access (NUMA)
-    - All memory within a node is accessible, but latencies and bandwidths vary
-- Hardware needs to maintain cahce coherency also between different NUMA nodes (ccNUMA)
-</div>
-
-<div class=column>
-<!-- Image copyright CSC, see LICENSE -->
-![](img/numa-schematic.png){.center width=70%}
-</div>
-
-# First touch policy
-
-- Modern operating systems use virtual memory
-- The OS typically optimizes memory allocations
-    - `malloc()` does not allocate the memory directly
-    - Memory management only “knows” about the allocation, but no memory
-      pages are made available
-    - At first memory access (write), the OS physically allocates the 
-     corresponding page (First touch policy)
-- On NUMA systems this might lead to performance issues in threaded 
-  or multi-process applications
-
-# NUMA aware initialization
-
-<div class=column>
-- No NUMA awareness
-
-```c
-// Initialize data
-for (int i=0; i < N; i++) 
-   data[i] = ...
-...
-// Perform work
-#pragma omp parallel for
-for (int i=0; i < N; i++) 
-   process(data[i])
-```
-</div>
-<div class=column>
-<!-- Image copyright Intel -->
-![](img/init-nonuma.png){.center width=80%}
-</div>
-
-# NUMA aware initialization
-
-<div class=column>
-- With NUMA awareness
-
-```c
-// Initialize data
-#pragma omp parallel for
-for (int i=0; i < N; i++) 
-   data[i] = ...
-...
-// Perform work
-#pragma omp parallel for
-for (int i=0; i < N; i++) 
-   process(data[i])
-```
-</div>
-<div class=column>
-<!-- Image copyright Intel -->
-![](img/init-numa.png){.center width=80%}
-</div>
 
 # MPI+OpenMP thread affinity
 
