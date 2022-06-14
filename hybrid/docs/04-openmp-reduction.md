@@ -153,18 +153,19 @@ for(i=0; i < n; i++) {
   : `-`{.ghost}
 
 - Specifies a region that should be executed only by the master thread
-- Note that there is no implicit barrier at end
+
+- Other threads do not wait, *i.e.* no implicit barrier at the end
+
 - Deprecated in OpenMP 5.1 and replaced with `masked`
 
-<br>
 
 `single`
   : `-`{.ghost}
 
-- Specifies that a regions should be executed only by a single (arbitrary)
+- Specifies that a region should be executed only by a single (arbitrary)
   thread
-- Other threads wait (implicit barrier) unless a `nowait` clause is specified
 
+- Other threads wait (implicit barrier) unless a `nowait` clause is specified
 
 # Summary
 
