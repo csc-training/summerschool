@@ -33,7 +33,7 @@ lang:   en
 
 # Heat Equation example
 - parallel heat equation
-- check the scaling for different saving interval
+- check the scaling for different saving intervals
 
 # Parallel I/O
 - Mapping problem: how to convert internal structures and domains to
