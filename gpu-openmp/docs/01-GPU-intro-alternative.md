@@ -412,8 +412,8 @@ More difficult, but more opportunities
 - Each node has
     - One latest generation AMD processor, code name Trento with 64 cores each running at 2.6 GHz (Trento)
     - Four AMD MI250X GPUs with 128 GB of memory each
-    - 512 GB of main memory (???)
-    - 2x3 TB of fast local storage (???)
+    - 512 GB of main memory
+    - 2x3 TB of fast local storage
     - Four interconnect network connectivity providing 800Gbps aggregate bandwidth
 
 
