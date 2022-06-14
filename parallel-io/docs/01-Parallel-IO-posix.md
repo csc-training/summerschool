@@ -68,7 +68,7 @@ lang:   en
 
 - Lustre is a popular parallel file system that is used in many large
   systems
-    - Also at CSC (Sisu, Taito)
+    - Also at CSC (Mahti, Puhti, Lumi)
 - Separated storage of data and metadata
     - Single metadata server
     - Clustered data storage
@@ -100,6 +100,15 @@ lang:   en
 
 ![](img/striping-performance.png){.center width=60%}
 
+
+# Additional notes
+
+- Files are often Round robined over multiple OSTs
+- You can overwhelm an OST,OSS or MDS
+- Per node limits on bandwith
+- Testing can be super noisy
+- Very large cache effects
+- More stripes does not automatically improve performance
 
 # Parallel I/O with posix {.section}
 
