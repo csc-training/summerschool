@@ -45,7 +45,7 @@ lang:   en
 # Multiple thread communication
 
 - Hybrid programming is relatively straightforward in cases where
-  communication is by only single thread at time
+  communication is done by only a single thread at a time
 - With the so called multiple mode all threads can make MPI calls
   independently
 
@@ -129,7 +129,7 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 
 - Normally, operating system can run threads and processes in any
   logical core
-- Operating system may even move running task from one core to another
+- Operating system may even move the running task from one core to another
     - Can be beneficial for load balancing
 	- For HPC workloads often detrimental as private caches get
       invalidated and NUMA locality is lost
@@ -139,7 +139,7 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 # Controlling affinity
 
 - Affinity for a *process* can be set with a `numactl` command
-    - Limit the process to logical cores 0,3,7: 
+    - Limit the process to logical cores 0,3,7:
       <br>
       `numactl --physcpubind=0,3,7 ./my_exe`
 	- Threads "inherit" the affinity of their parent process
@@ -189,7 +189,7 @@ Thread 003 affinity 3,7
 - Within a node, `--tasks-per-node` MPI tasks are spread
   `--cpus-per-task` apart
 - Threads within a MPI tasks have the affinity mask for the
-  corresponging 
+  corresponging
   <br>
   `--cpus-per-task` cores
 ```
@@ -204,11 +204,10 @@ Process 250546 thread 000 affinity 4-7
 
 - Slurm configurations in other HPC centers can be very different
     - Always experiment before production calculations!
-  
+
 # Summary
 
 - Performance of HPC applications is often improved when processes and
 threads are pinned to CPU cores
 - MPI and batch system configurations may affect the affinity
     - very system dependent, try to always investigate
-

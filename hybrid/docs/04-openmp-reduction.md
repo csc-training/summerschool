@@ -125,8 +125,8 @@ for(i=0; i < n; i++) {
 
 # Execution controls
 
-- Sometimes a part of parallel region should be executed only by the
-  master thread or by a single thread at time
+- Sometimes a part of a parallel region should be executed only by the
+  master thread or by a single thread at a time
     - IO, initializations, updating global values, etc.
     - Remember the synchronization!
 - OpenMP provides clauses for controlling the execution of code blocks
@@ -142,13 +142,14 @@ for(i=0; i < n; i++) {
     - Each barrier must be encountered by all threads in a team, or none at
       all
     - The sequence of work-sharing regions and barrier regions encountered
-      must be same for all threads in team
-- Implicit barrier at the end of: `do`, `parallel`, `single`, `workshare` 
+      must be same for all threads in a team
+- Implicit barrier at the end of: `do`, `parallel`, `single`, `workshare`
   unless a `nowait` clause is specified
 
 
 # Execution control constructs
 
+<div class=column>
 `master`
   : `-`{.ghost}
 
@@ -157,8 +158,8 @@ for(i=0; i < n; i++) {
 - Other threads do not wait, *i.e.* no implicit barrier at the end
 
 - Deprecated in OpenMP 5.1 and replaced with `masked`
-
-
+</div>
+<div class=column>
 `single`
   : `-`{.ghost}
 
@@ -166,6 +167,7 @@ for(i=0; i < n; i++) {
   thread
 
 - Other threads wait (implicit barrier) unless a `nowait` clause is specified
+</div>
 
 # Summary
 

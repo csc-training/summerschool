@@ -40,7 +40,7 @@ lang:   en
     - Expresses shared memory parallelization
     - Preceded by sentinel, can compile serial version
 
-- Runtime library routines 
+- Runtime library routines
     - Small number of library functions
     - Can be discarded in serial version via conditional compiling
 
@@ -66,16 +66,15 @@ lang:   en
 
 # Compiling an OpenMP program
 
-- Compilers that support OpenMP usually require an option (flag) that
-  enables the feature
-    - Most compilers (GNU, Intel, Cray) support nowadays `-fopenmp`
+- Compilers that support OpenMP usually require an option (flag) for enabling it
+    - Most compilers (GNU, Intel, Cray) nowadays support `-fopenmp`
     - Intel legacy foption: `-qopenmp`
     - NVIDIA: `-mp`
 
 
 # Parallel construct
 
-<div class="column">
+<div class="column" width=60%>
 
 - Defines a *parallel region*
     - C/C++:
@@ -94,10 +93,10 @@ lang:   en
 - Barrier at the end of the block
 
 </div>
-<div class="column">
+<div class="column" width=35%>
 
 - SPMD: Single Program Multiple Data
-![](img/omp-parallel.png){.center width=50%}
+![](img/omp-parallel.png){.center width=70%}
 
 </div>
 
@@ -131,8 +130,7 @@ end program omp_hello
 ```c
 #include <stdio.h>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
   printf("Hello world! -main\n");
 #pragma omp parallel
   {
@@ -231,4 +229,4 @@ real :: a(n,n), b(n,n), c(n,n) d(n,n)
 - OpenMP can be used with compiler directives
     - Ignored when code is build without OpenMP
 - Threads are launched within **parallel** regions
-- Simple loops can be parallelized easily with `for`/`do` construct
+- Simple loops can be parallelized easily with a `for`/`do` construct

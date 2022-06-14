@@ -63,7 +63,7 @@ lang:   en
 # Example: Hello world with OpenMP
 
 <!-- Presentation suggestion: live coding, first without #ifdef
-     (compilation without -fopenmp fails) and then with #ifdef 
+     (compilation without -fopenmp fails) and then with #ifdef
 -->
 
 <div class=column>

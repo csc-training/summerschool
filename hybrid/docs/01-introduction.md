@@ -12,7 +12,7 @@ lang:   en
 - Supercomputers consist of nodes connected with high-speed network
     - Latency `~`1 µs, bandwidth `~`200 Gb / s
 - A node can contain several multicore CPUS
-- Additionally, node can contain one or more accelerators
+- Additionally, nodes can contain one or more accelerators
 - Memory within the node is directly usable by all CPU cores
 
 <br>
@@ -21,13 +21,13 @@ lang:   en
 # Parallel programming models
 
 - Parallel execution is based on threads or processes (or both) which
-  run at the same time on different CPU cores 
+  run at the same time on different CPU cores
 - Processes
     - Interaction is based on exchanging messages between processes
     - MPI (Message passing interface)
 - Threads
     - Interaction is based on shared memory, i.e. each thread can
-      access directly other threads data 
+      access directly other threads data
     - OpenMP
 
 
@@ -38,7 +38,7 @@ lang:   en
  ![](img/processes-threads.png){.center width=80%}
 <br>
 <div class=column>
-**MPI: Processes** 
+**MPI: Processes**
 
 - Independent execution units
 - Have their **own** memory space
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 <div class="column">
 ```shell
 $ mpicc -fopenmp hybrid-hello.c -o hybrid-hello
-$ srun  --ntasks=2 --cpus-per-task=4 
+$ srun  --ntasks=2 --cpus-per-task=4
   ./hybrid-hello
 
 I'm thread 0 in process 0
@@ -119,8 +119,8 @@ I'm thread 2 in process 0
     - Decreased memory consumption if an implementation uses replicated
       data
 - Additional parallelization levels may be available
-- Possibility for dedicating threads for different tasks
-    - e.g. dedicated communication thread or parallel I/O
+- Possibility for dedicating threads to different tasks
+    - e.g. a thread dedicated to communication or parallel I/O
 - Dynamic parallelization patterns often easier to implement with OpenMP
 
 
@@ -128,7 +128,7 @@ I'm thread 2 in process 0
 
 - Increased overhead from thread creation/destruction
 - More complicated programming
-    - Code readability and maitainability issues
+    - Code readability and maintainability issues
 - Thread support in MPI and other libraries needs to be considered
 
 # Alternatives to OpenMP within a node

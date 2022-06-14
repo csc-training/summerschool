@@ -14,7 +14,7 @@ lang:   en
 - Number of iterations in a loop must be constant
     - No while loops or early exits in for/do loops
 - All the threads have to participate in workshare
-- OpenMP tasks enable parallelization of irrregular and dynamical patterns
+- OpenMP tasks enable parallelization of irregular and dynamical patterns
     - While loops
     - Recursion
 
@@ -25,7 +25,7 @@ lang:   en
     - Code to execute
     - Data environment
     - Internal control variables
-- Tasks are added to a task queue, and executed then by single thread
+- Tasks are added to a task queue, and executed then by a single thread
     - Can be same or different thread that created the task
     - OpenMP runtime takes care of distributing tasks to threads
 
@@ -100,7 +100,7 @@ How many tasks does the following code create when executed with 4 threads?
 
 - Tasks are executed by an arbitrary thread
     - Can be same or different thread that created the task
-    - By default, tasks are executed in arbitrary order
+    - By default, tasks are executed in an arbitrary order
     - Each task is executed only once
 - Synchronisation points
     - Implicit or explicit barriers
