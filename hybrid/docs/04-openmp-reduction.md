@@ -174,23 +174,10 @@ for(i=0; i < n; i++) {
     - Barrier
     - Single and Master
 
-# OpenMP programming best practices
-
-- Maximise parallel regions
-    - Reduce fork-join overhead, e.g. combine multiple parallel loops into one
-      large parallel region
-    - Potential for better cache re-usage
-- Parallelise outermost loops if possible
-    - Move PARALLEL DO construct outside of inner loops
-- Reduce access to shared data
-    - Possibly make small arrays private
-- Use more tasks than threads
-    - Too large number of tasks leads to performance loss
 
 
 
 # Web resources
 
 - OpenMP homepage: <http://openmp.org/>
-- Good online tutorial: <https://computing.llnl.gov/tutorials/openMP/>
-- More online tutorials: <http://openmp.org/wp/resources/#Tutorials>
+- Online tutorials: <https://www.openmp.org/resources/tutorials-articles/>

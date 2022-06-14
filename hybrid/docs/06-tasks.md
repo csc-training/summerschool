@@ -248,7 +248,14 @@ int fib(int n) {
 
 # Things that we did not cover
 
-- TODO: fix
+- sections construct
+- critical and atomic constructs
+- scheduling clauses of `for`/`do` constructs
+- task dependencies
+- taskgroup and taskloop constructs
+- simd construct
+- ...
+
 
 # Web resources
 
