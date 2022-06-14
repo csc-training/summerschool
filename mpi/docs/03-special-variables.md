@@ -149,7 +149,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 # Main - worker 
 
-![](img/comm_patt1.svg){.center width=100%}
+![](img/comm_patt1.png){.center width=100%}
 
 <br>
 
@@ -157,7 +157,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 # Pairwise neighbour communication
 
-![](img/comm_patt2.svg){.center width=90%}
+![](img/comm_patt2.png){.center width=90%}
 
 <br>
 

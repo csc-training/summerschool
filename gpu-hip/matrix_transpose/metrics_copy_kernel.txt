@@ -1,4 +1,0 @@
-pmc: GPUBusy, Wavefronts, VALUInsts, SALUInsts, SFetchInsts, MemUnitStalled, VALUUtilization, VALUBusy, SALUBusy, L2CacheHit, WriteUnitStalled, LDSBankConflict
-range: 0:1
-gpu: 0 
-kernel: copy_kernel

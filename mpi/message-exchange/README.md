@@ -1,12 +1,16 @@
-## Simple message exchange
+## Message exchange
 
-a) Write a simple program where two processes send and receive a
-message to/from each other using `MPI_Send` and `MPI_Recv`. The
-message content is an integer array, where each element is initialized
-to the rank of the process. After receiving a message, each process
-should print out its own rank and the first element in the received
-array. You may start from scratch or use the skeleton code found in
-[message-exchange.c](message-exchange.c) or
-[message-exchange.F90](message-exchange.F90) as a starting point
+Write a program where two processes send and receive a message to/from
+each other using `MPI_Send` and `MPI_Recv`.
 
-b) Increase the message size to 100000, recompile and run.
+The message content should be an integer array, where each element is
+initialised to the rank of the process. After receiving a message, each
+process should print out its own rank, number of elements it received, 
+and the first element in the received array.
+
+You may start from scratch or use [skeleton.cpp](skeleton.cpp) (or
+[skeleton.F90](skeleton.F90) for Fortran) as a starting point.
+
+Try increasing the message size (e.g. to 100000), recompile and run. What
+happens? What if you reorder the send and receive calls in one of the
+processes?

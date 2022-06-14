@@ -1,7 +1,7 @@
 ---
 title:  "OpenMP offload: introduction"
 author: CSC - IT Center for Science
-date:   2021
+date:   2022-06
 lang:   en
 ---
 
@@ -431,6 +431,26 @@ evolve:
      69, Intensity = 19.00
 ```
 
+# Cray compiler ???
+
+- Diagnostics is controlled by compiler flag `-Minfo[=option]`
+- Useful options:
+    - `mp` -- operations related to the OpenMP
+    - `all` -- print all compiler output
+    - `intensity` -- print loop computational intensity info
+
+
+# Example: `-Minfo` ??????
+
+```bash
+nvc++ -O3 -mp=gpu -gpu=cc80 -c -Minfo=mp,intensity core.cpp
+evolve:
+     63, #omp target teams distribute parallel for
+         63, Generating Tesla and Multicore code
+             Generating "nvkernel_evolve_F1L63_1" GPU kernel
+         68, Loop parallelized across teams and threads, schedule(static)
+     69, Intensity = 19.00
+```
 
 # Summary
 
@@ -450,3 +470,5 @@ evolve:
 
 - NVIDIA HPC SDK Documentation <br>
   <https://docs.nvidia.com/hpc-sdk/compilers/hpc-compilers-user-guide/>
+- Cray Compilers Documentation <br>
+  <https://dcray/hpc-compilers-user-guide/> ???

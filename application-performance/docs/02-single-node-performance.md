@@ -45,7 +45,7 @@
     - Operate on multiple elements of data with single instructions
 - AVX2 256 bits = 4 double precision numbers
 - AVX512 512 bits = 8 double precision numbers
-    - single AVX512 fused multiply add instruction can perform 16 FLOPS
+    - single AVX512 fused multiply add instruction can perform 16 op's / cycle
 
 <br>
 <!-- Image copyright CSC, see LICENSE -->
@@ -102,7 +102,7 @@
 
 # Performance analysis cycle
 
-![](img/perf-analysis-single-core.png){.center width=60%}
+![](img/perf-analysis-single-core.svg){.center width=60%}
 
 # Measuring performance
 - Don’t speculate about performance – measure it!
@@ -124,16 +124,22 @@
 - Start with an overview!
     - Call tree information, what routines are most expensive?
 
-# Sampling vs. tracing
+# <ins>Sampling</ins> vs. Tracing
 
 - When application is profiled using sampling, the execution is stopped at 
   predetermined intervals and the state of the application is examined
     - Lightweight, but may give skewed results
-- Tracing records every event, e.g. function call
+
+![](img/sampling.png){.left width=60%}
+
+# Sampling vs. <ins>Tracing</ins>
+- Tracing records events, e.g., every function call
     - Usually requires modification to the executable
         - These modifications are called instrumentation
     - More accurate, but may affect program behavior
-    - Generates lots of data
+    - Often generates lots of data
+
+![](img/tracing.png){.left width=60%}
 
 # Hardware performance counters
 

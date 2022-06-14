@@ -21,7 +21,7 @@ lang:   en
 
 # Processes and threads
 
-![](img/processes-threads-highlight-proc.svg){.center width=90%}
+![](img/processes-threads-highlight-proc.png){.center width=90%}
 
 <div class="column">
 
@@ -82,7 +82,7 @@ if (rank == 1) {
 - All variables and data structures are local to the process
 - Processes can exchange data by sending and receiving messages
 
-![](img/data-model.svg){.center width=100%}
+![](img/data-model.png){.center width=100%}
 
 # The MPI library
 
@@ -210,7 +210,7 @@ MPI_Barrier(`comm`{.input})
     - <http://mpi.deino.net/mpi_functions/>
     - <https://www.rookiehpc.com/mpi/docs/>
 - Good online MPI tutorials
-    - <https://computing.llnl.gov/tutorials/mpi>
+    - <https://hpc-tutorials.llnl.gov/mpi/>
     - <http://mpitutorial.com/tutorials/>
     - <https://www.youtube.com/watch?v=BPSgXQ9aUXY>
 - MPI coding game in C <br>

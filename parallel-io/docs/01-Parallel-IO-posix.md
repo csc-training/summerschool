@@ -1,20 +1,50 @@
 ---
 title:  Introduction to parallel I/O
 author: CSC Summer School
-date:   2019-07
+date:   2022-06
 lang:   en
 ---
 
 
-# Parallel I/O
+# What is high-performance computing?
 
-- How to convert internal data structures and domains to files that
-  are essentially streams of bytes?
-- How to get the data efficiently from thousands of nodes of a
-  supercomputer to physical disks?
+- Utilizing computer power that is much larger than available in
+  typical desktop computer
+      - would take too long, explore many different parameters, not enough memory, not enough disk space
+- Performance of HPC system (i.e. supercomputer) is often measured in
+  floating point operations per second (flop/s)
+    - For software, other measures can be more meaningful
+- Currently, the most powerful system reaches ~1 x 10<sup>18</sup> flop/s
+  (1 Eflop / s)
+
+# Exponential growth of performance
+
+ ![](img/cray_top500.png){.center width=60%}
+
+ - frequency growth stopped around 2005
+ - modern (super)computers rely on parallel processing
+
+# HPC and I/O data
+
+ - Reading initial conditions or datasets for processing
+ - Storing numerical output from simulations for later analysis
+ - Checkpointing to files for restarting in case of system failure
+ - 'out-of-core' techniques when the  data is larger than one can fit in system memory
+
+# Heat Equation example
+- parallel heat equation
+- check the scaling for different saving interval
+
+# Parallel I/O
+- Mapping problem: how to convert internal structures and domains to
+files which are a streams of bytes
+- Transport problem: how to get the data efficiently from hundreds to
+thousands of nodes on the supercomputer to physical disks
 
 ![](img/io-illustration.png){.center}
 
+
+- ***Users need to understand the I/O infrastructure!***
 
 # Parallel I/O
 
@@ -32,17 +62,18 @@ lang:   en
     - Disparity of computing power vs. I/O performance is getting worse
     and worse
 - The need for I/O tuning is algorithm & problem specific
-- Without parallelization, I/O will become scalability bottleneck for
-  practically every application!
+- ***Without parallelization, I/O will become scalability bottleneck for
+    practically every application!***
 
 # I/O layers
+
 
 ![](img/io-layers.png)
 
 
 # I/O library choice
 
-- POSIX and MPI-IO libraries
+- POSIX and MPI-I/O libraries
     - Provides methods for writing raw data into files
     - Do not provide a schema or methods for writing metadata
     - The user has to develop a file format specification, or implement a
@@ -54,9 +85,12 @@ lang:   en
 
 # Parallel File systems {.section}
 
+# Anatomy of supercomputer
+ ![](img/cluster_diagram.jpeg){.center width=80%}
+
 # File systems
 
-- Practically all large parallel computer systems provide a parallel file
+- All large parallel computer systems provide a parallel file
   system area
     - Files can be accessed from all tasks
     - Large systems often have dedicated I/O nodes
@@ -68,7 +102,7 @@ lang:   en
 
 - Lustre is a popular parallel file system that is used in many large
   systems
-    - Also at CSC (Mahti, Puhti, Lumi)
+    - Also at CSC (Puhti, Mahti, Lumi)
 - Separated storage of data and metadata
     - Single metadata server
     - Clustered data storage
@@ -96,7 +130,7 @@ lang:   en
 - Proper striping can enhance I/O performance a lot
 
 
-# Performance with Lustre striping on Sisu
+# Performance with Lustre striping
 
 ![](img/striping-performance.png){.center width=60%}
 
@@ -145,17 +179,6 @@ else
 end if
 ```
 
-
-# Special case: stdout and stderr
-
-- Standard Output and Error streams are effectively serial I/O and will be
-  a severe bottleneck for application scaling
-- Disable debugging messages when running in production mode
-    - "Hello, I'm task 32,000!"
-- Ensure only the very minimum is written to the stdout/err!
-    - Interim results, timings,...
-
-
 # Parallel POSIX I/O
 
 <div class="column">
@@ -169,6 +192,15 @@ end if
 <div class="column">
 ![](img/posix-everybody.png)
 </div>
+
+# Special case: stdout and stderr
+
+- Standard Output and Error streams are effectively serial I/O and will be
+  a severe bottleneck for application scaling
+- Disable debugging messages when running in production mode
+    - "Hello, I'm task 32,000!"
+- Ensure only the very minimum is written to the stdout/err!
+    - Interim results, timings,...
 
 # Summary
 

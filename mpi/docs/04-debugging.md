@@ -1,7 +1,7 @@
 ---
 title:  Parallel debugging
 author: CSC Training
-date:   2021
+date:   2022
 lang:   en
 ---
 
@@ -15,6 +15,16 @@ lang:   en
 
 # Finding bugs
 
+- Building code with Sanitizer
+    - Detects out-of-bounds memory access and OpenMP race conditions
+    - `-fsanitize=address` (GCC / Clang)
+    - `-fsanitize=thread` (GCC / Clang)
+- Using MPI correctness checkers
+    - MUST
+    - Intel Trace Analyzer
+
+# Finding bugs
+
 - Print statements in the code
     - Typically cumbersome, especially with compiled languages
 	- Might result in lots of clutter in parallel programs
@@ -24,7 +34,7 @@ lang:   en
     - Debuggers within IDEs, e.g. VS Code
     - No proper support for parallel debugging
 - Parallel debuggers
-    - **Allinea DDT**, Totalview (commercial products)
+    - **Allinea DDT**, Totalview, gdb4hpc (commercial products)
 	
 # Common features in debuggers
 
@@ -39,6 +49,7 @@ lang:   en
 # Web resources
 
 - Defensive programming and debugging online course <https://www.futurelearn.com/courses/defensive-programming-and-debugging>
+- MUST <https://www.i12.rwth-aachen.de/go/id/nrbe>
 - Using `gdb` for parallel debugging <https://www.open-mpi.org/faq/?category=debugging>
 - Memory debugging with Valgrind <https://valgrind.org/docs/manual/mc-manual.html#mc-manual.mpiwrap>
 
@@ -59,5 +70,5 @@ export SLURM_OVERLAP=1
 salloc --nodes=1 --ntasks-per-node=2 --account=project_xxx -p small
 ddt srun ./buggy
 ```
-- NoMachine remote desktop is recommended for smoother GUI performance
+- VNC remote desktop is recommended for smoother GUI performance
 
