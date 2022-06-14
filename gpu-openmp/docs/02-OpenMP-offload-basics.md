@@ -103,6 +103,7 @@ lang:   en
 #pragma omp parallel
 {
   // calculate in parallel
+    printf("Hello world!\n");
 }
 ```
 </div>
@@ -113,6 +114,7 @@ lang:   en
 ```fortran
 !$omp parallel
   ! calculate in parallel
+    write(*,*) "Hello world!"
 !$omp end parallel
 ```
 </div>
@@ -471,4 +473,4 @@ evolve:
 - NVIDIA HPC SDK Documentation <br>
   <https://docs.nvidia.com/hpc-sdk/compilers/hpc-compilers-user-guide/>
 - Cray Compilers Documentation <br>
-  <https://dcray/hpc-compilers-user-guide/> ???
+  <[https://dcray/hpc-compilers-user-guide/](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=index.html)> 
