@@ -6,7 +6,9 @@ HTML = $(patsubst %.md,%.html,$(SRC))
 PDF  = $(patsubst %.md,%.pdf,$(SRC))
 DOCS = $(wildcard ../*/docs)
 
-.PHONY: all html pdf clean $(DOCS)
+HANDOUT=lecture-slides.pdf
+
+.PHONY: all html pdf jam clean $(DOCS)
 
 all: $(DOCS) $(PDF)
 
@@ -14,8 +16,11 @@ html: $(HTML)
 
 pdf: $(PDF)
 
+jam:
+	./jam-it.sh
+
 clean:
-	-rm -f $(HTML) $(PDF)
+	-rm -f $(HTML) $(PDF) $(HANDOUT)
 
 $(DOCS):
 	@cd $@ && echo $@ && $(MAKE) --no-print-directory pdf
