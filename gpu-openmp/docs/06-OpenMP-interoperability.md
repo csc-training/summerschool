@@ -70,10 +70,10 @@ double *x, *y;
   and this driver uses OpenMP directives
     - CUDA-kernels must be called with help of OpenMP `use_device_ptr`
 - Interface function in CUDA-file must have `extern "C" void func(...)`
-- The CUDA-codes are compiled with NVIDIA `nvcc` compiler, e.g.
-  `nvcc -c -O3 --restrict daxpy_cuda.cu`
-- The OpenMP-codes are compiled with NVIDIA `nvc` or `nvc++` compiler e.g.
-  `nvc -c -mp=gpu -O3 call_cuda_from_openmp.c`
+- The CUDA-codes are compiled with NVIDIA `nvcc` compiler e.g.:
+    - `nvcc -c -O3 --restrict daxpy_cuda.cu`
+- The OpenMP-codes are compiled with NVIDIA `nvc` or `nvc++` compiler e.g.:
+    - `nvc -c -mp=gpu -O3 call_cuda_from_openmp.c`
 - For linking, `-lcudart -L$CUDA_HOME/lib64` is needed
 
 

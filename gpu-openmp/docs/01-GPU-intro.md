@@ -12,7 +12,7 @@ lang:   en
 - High performance computing is fueled by ever increasing performance
 - Increasing performance allows  breakthroughs in many major challenges that
   humankind faces today
-- Not only hardware performance, algorithmic improvements have also added ordered of magnitude of real performance
+- Not only hardware performance, algorithmic improvements have also added orders of magnitude of real performance
 
 </div>
 
@@ -24,7 +24,7 @@ lang:   en
 
 <div class="column">
 - Achieving performance has been based on various strategies throughout the years
-    - Frequency, vectorization, multinode, multicore ...
+    - Frequency, vectorization, multi-node, multi-core ...
     - Now performance is mostly limited by power consumption
 - Accelerators provide compute resources based on a very high level of parallelism to reach
   high performance at low relative power consumption
@@ -147,15 +147,6 @@ lang:   en
 ![](img/volta-architecture.png){ width=100% }
 </div>
 
-
-# GPU architecture: Nvidia Volta
-
-
-![](img/volta-architecture.png){ .center width=77% }
-
-
-
-
 # GPU Autopsy. Nvidia Volta Streaming Multiprocessor
 
 <div class="column">
@@ -163,7 +154,7 @@ lang:   en
 - 64 single precision cores
 - 32 double precision cores
 - 64 integer cores
-- 8 Tensore cores
+- 8 Tensor cores
 - 128 KB memory block for L1 and shared memory
     - 0 - 96 KB can be set to user managed shared memory
     - The rest is L1
@@ -281,8 +272,8 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 # Memory model
 <div class="column">
 - *Registers*: The fastest form of memory. Accessible only by the thread
-- *Shared Memory*: Almost as fast as a registers. Visible by any thread within blocks
-- **Global Memory**: 150x slower then registers/shared memory. Accessible from any thread or from the host
+- *Shared Memory*: Almost as fast as registers. Visible by any thread within blocks
+- **Global Memory**: 150x slower than registers/shared memory. Accessible from any thread or from the host
 - Memory with special access pattern. Heavily cached on chip.
 </div>
 
@@ -338,7 +329,6 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 
 # Using GPUs
 
-
 <div class="column">
 1. Use existing GPU applications
 2. Use accelerated libraries
@@ -374,7 +364,7 @@ More difficult, but more opportunities
     - Focus on optimizing productivity (reasonably good performance with
       minimal effort)
     - Current standard is 2.7 (November 2018)
-    - Mostly Nvidia only
+    - Mostly Nvidia
 - OpenMP
     - Earlier only threading for CPUs
     - 4.5 also includes for the first time some support for accelerators
@@ -408,7 +398,7 @@ More difficult, but more opportunities
 
 - In total 2560 nodes with a total peak performance of 550 Petaflops
 - Each node has
-    - One latest generation AMD processor, code name Trento with 64 cores each running at 2.6 GHz (Trento)
+    - One latest generation AMD processor, code name EPYC with 64 cores each running at 2.6 GHz (Trento)
     - Four AMD MI250X GPUs with 128 GB of memory each
     - 512 GB of main memory
     - 2x3 TB of fast local storage
@@ -417,7 +407,7 @@ More difficult, but more opportunities
 
 # Summary
 
-- HPC throughout the ages -- performance through parellelism
+- HPC throughout the ages -- performance through parallelism
 - Programming GPUs
     - CUDA, HIP
     - Directive based methods

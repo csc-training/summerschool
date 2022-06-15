@@ -53,7 +53,7 @@ subroutine foo(v, i, n)
   integer :: i, n
 
   do j=1,n
-     v(i,j) = 1.0/(i*j)
+     v(i,j,n) = 1.0/(i*j)
   enddo
 end subroutine
 
