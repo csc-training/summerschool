@@ -32,12 +32,14 @@ lang:   en
  - 'out-of-core' techniques when the  data is larger than one can fit in system memory
 
 # Heat Equation example
-- parallel heat equation
-- check the scaling for different saving intervals
+- Parallel heat equation
+
+
+- Check the scaling for different saving intervals
 
 # Parallel I/O
 - Mapping problem: how to convert internal structures and domains to
-files which are a streams of bytes
+files which are streams of bytes
 - Transport problem: how to get the data efficiently from hundreds to
 thousands of nodes on the supercomputer to physical disks
 
@@ -171,10 +173,10 @@ end if
 
 # Performance considerations
 
-- Files are often Round robined over multiple OSTs
-- You can overwhelm an OST,OSS or MDS
-- Per node limits on bandwith
-- Testing can be super noisy, perfromance depends on the load
+- Files are often assigned in a round robin fashion over multiple OSTs
+- You can overwhelm an OST, OSS or MDS
+- Per node limits on bandwidth
+- Testing can be super noisy, performance depends on the load
 - Very large cache effects
 - More stripes does not automatically improve performance
 
@@ -185,7 +187,7 @@ end if
     - Each process writes its local results to a separate file
     - Good bandwidth
     - Difficult to handle a huge number of files in later analysis
-    - Can overwhelm filesystem (for example Lustre metadata)
+    - Can overwhelm the filesystem (for example Lustre metadata)
 </div>
 
 <div class="column">
@@ -198,7 +200,7 @@ end if
   a severe bottleneck for application scaling
 - Disable debugging messages when running in production mode
     - "Hello, I'm task 32,000!"
-- Ensure only the very minimum is written to the stdout/err!
+- Ensure only the very minimum is written to stdout/err!
     - Interim results, timings,...
 
 # Summary
