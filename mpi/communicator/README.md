@@ -14,9 +14,7 @@ operation so that the receive buffers will have the following values:
 
 ![](img/comm-split-reduce.svg)
 
-You can start from scratch or use the skeleton code of
-[Collectives exercise](../collectives) found in
-[collective.c](../collectives/c/collective.c) or
-[collective.F90](../collectives/fortran/collective.F90).
-
+You can start from scratch or use the skeleton code
+[skeleton.cpp](skeleton.cpp), [skeleton.c](skeleton.c) or
+[skeleton.F90](skeleton.F90).
 
