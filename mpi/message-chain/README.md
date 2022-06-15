@@ -4,6 +4,8 @@ Write a program where every MPI task sends data to the next one.
 Let `ntasks` be the number of the tasks, and `myid` the rank of the
 current task. Your program should work as follows:
 
+![](img/chain.svg)
+
 - Every task with a rank less than `ntasks-1` sends a message to task
   `myid+1`. For example, task 0 sends a message to task 1.
 - The message content is an integer array where each element is initialised to
