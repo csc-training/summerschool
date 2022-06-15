@@ -44,9 +44,11 @@
 ### Non-blocking communication
 
   - [Non-blocking message chain](message-chain/README-nonblocking.md)
-  - [Message chain with persistent communication](message-chain/READ-persistent.md)
+  - [Message chain with persistent communication](message-chain/README-persistent.md)
 
 ### Heat equation
 
-  - [2D-decomposed heat equation](heat-equation/README_2d.md)
+  - [Heat equation with cartesian communicator](heat-equation/README-cartesian.md)
+  - [2D-decomposed heat equation](heat-equation/README-2d.md)
+  - [Non-blocking communication in heat equation](heat-equation/README-nonblocking.md)
 

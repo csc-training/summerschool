@@ -1,8 +1,5 @@
 ## Heat equation decomposed in two dimensions
 
-Note: this is very advanced exercise. It is meant more for illustration what can be done
-with derived datatypes, and as something one might want to study after the course, rather than
-completing during the course.
 
 If you are not familiar with the two dimensional heat equation, please have a look
 for [basic description](https://github.com/csc-training/mpi-introduction/tree/main/heat-equation)
@@ -11,7 +8,8 @@ in "Parallel programming with MPI" exercise material.
 Here, starting point is a working code parallelized over columns (in Fortran) or rows (in C/C++).
 
 Before starting with this exercise, it is recommended that you have
-the [usage of Cartesian communicator](README_cartesian.md) implemented.
+the [usage of Cartesian communicator](README-cartesian.md) implemented. 
+You can also use its model solution as starting point.
 
 1. Modify the creation of Cartesian communicator so that the
    decomposition is done in two dimensions, and determine all four
