@@ -1,7 +1,7 @@
 ---
 title: Introduction to hybrid programming
 author: CSC Training
-date:   2021
+date:   2022
 lang:   en
 ---
 

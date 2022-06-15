@@ -1,7 +1,7 @@
 ---
 title:  Using MPI with multithreading
 author: CSC Training
-date:   2021
+date:   2022
 lang:   en
 ---
 
