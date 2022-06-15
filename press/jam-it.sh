@@ -63,7 +63,7 @@ do
         fi
         # include the entire A4 PDF as it is
         out=$tmp-$(basename $name)
-        pdfjam --fitpaper true --rotateoversize true $name $pages_normal --outfile $out
+        pdfjam --fitpaper true --rotateoversize true $name --outfile $out
         add_to_manifest $out
     else
         # select correct page range and add the file to the TODO list
