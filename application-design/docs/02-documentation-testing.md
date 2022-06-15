@@ -7,20 +7,21 @@ lang:   en
 # Documenting and testing {.section}
 
 <small>
-Material is partly based on work by Software Carpentry and Code Refinery
+Material is partly based on work by Software Carpentry and Code Refinery 
 licensed under CC BY-SA 4.0
 </small>
 
 # Why to document your code?
 
 - You will forget details
-    - Code that you wrote 6 months ago is often indistinguishable from code
+    - Code that you wrote 6 months ago is often indistinguishable from code 
       that someone else has written.
 - Writing documentation may improve the design of your code
 - Have other people to use (and cite!) your code
-    - If the documentation is not good enough, people will not use it
+    - If the documentation is not good enough, people will not use it    
 - Allow other people to contribute to development
     - Practically impossible without documentation
+- Even within a group, people move in and out 
 
 # What to document?
 
@@ -52,14 +53,15 @@ licensed under CC BY-SA 4.0
       the defition
         - many tools can generate automatically API documention from comments
     - Non-obvious implementation choices in comments in source code
-- Tools for documentation: RST and Markdown markup languages, wikis, Doxygen,
+- Tools for documentation: RST and Markdown markup languages, wikis, Doxygen, 
   github pages and readthedocs for hosting
+- Good documentation does not save bad code!
 
 # How is your code documented?
 
 **Discuss** within your table!
 
-# Documentation in GPAW & PlasmaBox
+# Documentation in GPAW & Runko
 
 <div class=column>
 GPAW
@@ -71,13 +73,13 @@ GPAW
 </div>
 
 <div class=column>
-PlasmaBox
+Runko
 
-- Main structure described in a publication
+- Main structure described in a publication 
 - GitHub Readmes + www-site with sphinx
 - API automatically documented with doxygen+breathe
-- <https://github.com/natj/plasmabox>
-- <https://plasmabox.readthedocs.io>
+- <https://github.com/natj/runko>
+- <https://runko.readthedocs.io>
 </div>
 
 # Testing
@@ -87,9 +89,9 @@ do not constitute science!**
 
 <p>
 
-- Experimental scientist would never conduct an experiment with uncalibrated
+- Experimental scientist would never conduct an experiment with uncalibrated 
   detectors
-- Computational scientist should never conduct simulations with untested
+- Computational scientist should never conduct simulations with untested 
   software
 
 
@@ -98,8 +100,7 @@ do not constitute science!**
 - Ensure expected functionality
 - Ensure expected functionality is preserved
     - Software is fragile, bugs lurk in easily
-    - In large projects innocent looking changes can have surprising side
-      effects
+    - In large projects innocent looking changes can have surprising side effects
 - Testing helps detecting errors early
 - Testing is essential for reproducibility of results
 - Tests make is easier to verify whether software is correctly installed
@@ -124,6 +125,9 @@ do not constitute science!**
 - Correct functioning of individual subroutines and modules
 - Performance
     - Changes in software may lead into degradation in performance
+- Dependency variants. 
+    - At least compiler and mpi implementation.
+
 
 # Unit testing
 
@@ -146,14 +150,19 @@ do not constitute science!**
 # Challenges with HPC
 
 - Behavior can depend on the number of threads and MPI tasks
-    - Parallel components should be tested with multiple different
-      parallelization schemes
+    - Parallel components should be tested with multiple different parallelization schemes
 - Large scale integration tests can be time consuming
-- Changes in program code may also lead to degradation in performance and
+- Changes in program code may also lead to degradation in performance and 
   scalability
     - Tests should track also the performance
+
+# Challenges with HPC
+
 - Performance is often system/architecture specific
     - Preferably test on multiple architectures
+- Complicated dependency chains makes testing even harder
+    - Impossible to test exhaustively 
+- Systems are very noisy, especially on the filesystem and network level.  
 
 # Continuous integration
 
@@ -173,9 +182,10 @@ do not constitute science!**
     - Mailing list, IRC, Flowdock, …
 - Test status can be shown also in www-page
 - Tools for continuous integration:
-    - TravisCI: widely used, nice integration to Github
-    - Jenkins: support for complex automation tasks
+    - TravisCI
+    - Jenkins
     - GitlabCI
+    - GitHub Actions
 </div>
 <div class=column>
 ![](images/ci-flowchart.svg){.center width=90%}
@@ -185,7 +195,7 @@ do not constitute science!**
 
 **Discuss** within your table!
 
-# Testing in GPAW & PlasmaBox
+# Testing in GPAW & Runko
 
 <div class=column>
 GPAW
@@ -199,7 +209,7 @@ GPAW
 </div>
 
 <div class=column>
-PlasmaBox
+Runko
 
 - Each module covered with unit tests (pytest)
 - Physics tested with bigger integration tests

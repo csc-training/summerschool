@@ -6,17 +6,17 @@ lang:   en
 
 # Design choices {.section}
 
-# PlasmaBox
+# Runko
 
 <div class=column>
 - Kinetic plasma simulation code
     - Particle-in-Cell with computational particles and electromagnetic fields are in grid
-- Hybrid C++14/Python code
-    - Domain super-decomposition with MPI
+- Hybrid C++14/Python code 
+    - Domain super-decomposition with MPI 
     - Massively parallel with runs on >10k cores
 </div>
 <div class=column>
-
+    
 ![](images/plasma.png){.center width=100%}
 
 </div>
@@ -30,14 +30,14 @@ lang:   en
     - ~20 developers all around world
 </div>
 <div class=column>
-
+    
 ![](images/gpaw-logo.svg){.center width=50%}
 
 ![](images/gpaw.jpg){.center width=50%}
 </div>
 
 
-# Why develop software?
+# Why develop software? 
 
 - To do science
 - To create a product
@@ -45,14 +45,14 @@ lang:   en
 - Supercomputing platforms enable investigating bigger and more complex problems
 
 <div class=column>
-
+    
 - **Do science**
     - Scientific articles
     - Method-oriented articles presenting code and methods
 </div>
 
 <div class=column>
-
+    
 - **Code as a product**
     - Prestige and fame
     - Gateway into projects, collaborations
@@ -61,17 +61,17 @@ lang:   en
 </div>
 
 
-# Case PlasmaBox: Going big...
+# Case Runko: Going big...
 
 <div class=column>
 - Kinetic plasma simulations are microscopical (<1cm)
     - Bigger simulation domains mean more realistic, larger systems
-- Recently simulated turbulent plasma with 10^10 particles
+- Recently simulated turbulent plasma with 10^10 particles 
     - New physics starts to appear at larger scale
 </div>
 
 <div class=column>
-
+    
 ![](images/current.png){.center width=80%}
 
 </div>
@@ -82,19 +82,19 @@ lang:   en
 
 - **Questions**: your software project?
 
-# Cases PlasmaBox & GPAW
+# Cases Runko & GPAW
 
 <div class=column>
+    
+Runko
 
-PlasmaBox
-
-- New code
+- New code 
 - +1yr of development
 - Allowed to start from scratch and use new technologies
 </div>
 
 <div class=column>
-
+    
 GPAW
 
 - Existing code with basic features mostly working (95 %) in 2005
@@ -116,7 +116,7 @@ GPAW
 # Agile development model
 
 <div class=column>
-
+    
 - Focused on iterative and incremental development
     - Quick prototyping
     - Supports continuous publication
@@ -125,7 +125,7 @@ GPAW
 </div>
 
 <div class=column>
-
+    
 - Development cycle
     - Plan
     - Design
@@ -137,6 +137,7 @@ GPAW
 
 
 # Parallelization strategies
+
 - Planning includes thinking what is the target platform
 - Target machines: laptops, small clusters, supercomputers
     - OpenMP, MPI, MPI+OpenMP, GPUs
@@ -148,10 +149,16 @@ GPAW
 - Accelerators
     - GPUs have their own tricks and quirks
 
-# Case PlasmaBox: Parallellization
+# Parallelization strategies 
+
+- Going **BIG** -> GPUs are mandatory
+- But not all HPC needs to be exascale
+    - Size is not a goal in itself
+
+# Case Runko: Parallellization
 
 <div class=column>
-- PlasmaBox has uses a new novel parallellization strategy
+- Runko has uses a new novel parallellization strategy
     - Relies on dividing work among small subregions of the grid
     - Computational grid (i.e., what rank owns which tiles) is constantly changing to balance the load
 - Moving beyond 1000 cores is non-trivial
@@ -176,7 +183,7 @@ GPAW
     - Faster coding cycle and less error prone
     - Testing, debugging, and prototyping much easier
 
-# Hybrid codes
+# Hybrid codes 
 
 - Different languages can be interfaced together
     - Best of both worlds
@@ -186,9 +193,9 @@ GPAW
     - Python & C++ (PyBind11) for object-oriented programming
     - Julia & Fortran (native) for functional programming
 
-# Case PlasmaBox: C++14/Python3 code
+# Case Runko: C++14/Python3 code
 
-- PlasmaBox is an example of a hybrid code
+- Runko is an example of a hybrid code
 - Low-level "kernels" are in C++
 - High-level functionality is operated from Python scripts
 - So far it has been an excellent choice
@@ -199,7 +206,7 @@ GPAW
 # Modular code design: programming
 
 - Good code is modular
-    - Encapsulation
+    - Encapsulation 
     - Self-contained functions
     - No global variables, input what you need
 - Modular code takes more time to design but is **lot** easier to extend and understand
@@ -207,7 +214,7 @@ GPAW
 # Modular code design: tools
 
 <div class=column>
-
+    
 - Avoid not invented here syndrome
 - Leverage existing software and libraries
     - Libraries
@@ -220,7 +227,7 @@ GPAW
 </div>
 
 <div class=column>
-
+    
 - Caveats:
     - Is the lib still supported/updated?
     - Do you trust the source, is it widely used
@@ -234,7 +241,6 @@ GPAW
 - Build systems automate compiling
     - Makefiles, CMake, Ninja, ...
 - Debuggers
-    - Lots of tools for finding bugs
 - Compilers
     - Compilers are not the same, compiler bugs are real!
     - Test your code with different compilers (gnu, clang, intel, cray,...)
@@ -256,23 +262,22 @@ GPAW
     - Not just plain text files/binary files
     - Platform-independent formats (HDF5, NetCDF, ...)
     - Metadata together with the data?
-- Log files
-    - Especially with HPC applications some kind of log file system is useful
+- Log files. Especially useful with HPC applications
 - Standard formats
     - Your field might have some data standards (e.g., PML for plasma codes)
 - Remember also that large simulations produce lots of data
     - Storing "big data" is an issue
 
 
-# Case PlasmaBox: IO issues
+# Case Runko: IO issues
 
-- PlasmaBox uses rank-independent multiple-file IO strategy
+- Runko uses rank-independent multiple-file IO strategy
     - Excellent performance as there is no synching
     - But, sometimes the burst performance is too good...
         - 10k cores writing ~TBs of data in seconds is nice for the user but file system might not like it
 
 
-# Summary
+# Summary 
 
 - Software design is all about planning (agile development)
 - Productivity
@@ -280,3 +285,5 @@ GPAW
     - Use existing libraries
     - Use & adopt design, community, and collaboration tools
     - Programming language and design selection
+
+
