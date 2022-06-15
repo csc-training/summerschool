@@ -10,12 +10,17 @@ lang:   en
 **CSC customer**
 <br>
 <small>
+```
 I’m performing simulations with my Fortran code. It seems to perform much worse
 with MKL library in the new system than with IMSL library in the old system.
+```
 <br>
 <br>
 <br>
+<br>
+```
 No
+```
 </small>
 </div>
 
@@ -24,10 +29,10 @@ No
 <br>
 <br>
 <br>
-<br>
-<br>
 <small>
+```
 Have you profiled your code?
+```
 </small>
 </div>
 
