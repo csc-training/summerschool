@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CSC Summerschool">
+  <meta name="dcterms.date" content="2022-01-01">
+  <title>Application design</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="/home/hnortamo/Projects/SummerSchool22/summerschool/application-design/docs/theme/csc-2016/csc.css" id="theme">
+  <link rel="stylesheet" href="/home/hnortamo/Projects/SummerSchool22/summerschool/application-design/docs/theme/csc-2016/fonts.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/pdf.css' : 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="slide level1 title" data-background-size="contain" data-background-image="/home/hnortamo/Projects/SummerSchool22/summerschool/application-design/docs/theme/csc-2016/img/title-en.png">
+  <h1>Application design</h1>
+  <p>2022</p>
+  <p>CSC Summerschool</p>
+</section>
+
+<section id="design-choices" class="slide level1 section" data-background-size="contain" data-background-image="/home/hnortamo/Projects/SummerSchool22/summerschool/application-design/docs/theme/csc-2016/img/section.png">
+<h1>Design choices</h1>
+</section>
+<section id="runko" class="slide level1" data-background-size="contain">
+<h1>Runko</h1>
+<div class="column">
+<ul>
+<li>Kinetic plasma simulation code
+<ul>
+<li>Particle-in-Cell with computational particles and electromagnetic fields are in grid</li>
+</ul></li>
+<li>Hybrid C++14/Python code
+<ul>
+<li>Domain super-decomposition with MPI</li>
+<li>Massively parallel with runs on &gt;10k cores</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<p><img data-src="images/plasma.png" class="center" style="width:100.0%" /></p>
+</div>
+</section>
+<section id="gpaw" class="slide level1" data-background-size="contain">
+<h1>GPAW</h1>
+<div class="column">
+<ul>
+<li>Density-functional theory -based electronic structure code</li>
+<li>Python + C + libraries (numpy, BLAS, LAPACK)
+<ul>
+<li>Various parallelization levels with MPI</li>
+<li>Over 10k cores with some modes</li>
+<li>~20 developers all around world</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<p><img data-src="images/gpaw-logo.svg" class="center" style="width:50.0%" /></p>
+<p><img data-src="images/gpaw.jpg" class="center" style="width:50.0%" /></p>
+</div>
+</section>
+<section id="why-develop-software" class="slide level1" data-background-size="contain">
+<h1>Why develop software?</h1>
+<ul>
+<li>To do science</li>
+<li><p>To create a product</p></li>
+<li><p>Supercomputing platforms enable investigating bigger and more complex problems</p></li>
+</ul>
+<div class="column">
+<ul>
+<li><strong>Do science</strong>
+<ul>
+<li>Scientific articles</li>
+<li>Method-oriented articles presenting code and methods</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<ul>
+<li><strong>Code as a product</strong>
+<ul>
+<li>Prestige and fame</li>
+<li>Gateway into projects, collaborations</li>
+<li>Citations, co-authorships</li>
+<li>Work on the bleeding edge</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="case-runko-going-big" class="slide level1" data-background-size="contain">
+<h1>Case Runko: Going big…</h1>
+<div class="column">
+<ul>
+<li>Kinetic plasma simulations are microscopical (&lt;1cm)
+<ul>
+<li>Bigger simulation domains mean more realistic, larger systems</li>
+</ul></li>
+<li>Recently simulated turbulent plasma with 10^10 particles
+<ul>
+<li>New physics starts to appear at larger scale</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<p><img data-src="images/current.png" class="center" style="width:80.0%" /></p>
+</div>
+</section>
+<section id="starting-position" class="slide level1" data-background-size="contain">
+<h1>Starting position</h1>
+<ul>
+<li><p>New code or existing project / rewrite of old code?</p></li>
+<li><p><strong>Questions</strong>: your software project?</p></li>
+</ul>
+</section>
+<section id="cases-runko-gpaw" class="slide level1" data-background-size="contain">
+<h1>Cases Runko &amp; GPAW</h1>
+<div class="column">
+<p>Runko</p>
+<ul>
+<li>New code</li>
+<li>+1yr of development</li>
+<li>Allowed to start from scratch and use new technologies</li>
+</ul>
+</div>
+<div class="column">
+<p>GPAW</p>
+<ul>
+<li>Existing code with basic features mostly working (95 %) in 2005</li>
+<li>Choice of physical model and programming languages had been made</li>
+<li>Production ready in 2008-2009
+<ul>
+<li>Science done already earlier</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="design-model" class="slide level1" data-background-size="contain">
+<h1>Design model</h1>
+<ul>
+<li>Development is not only about physics and numerics
+<ul>
+<li>Also about <strong>how</strong> you do it</li>
+</ul></li>
+<li>Instead of “Just code” it is advantageous to plan a little too!</li>
+<li>So-called Agile Development
+<ul>
+<li>Umbrella term for different software development methods</li>
+<li>Divide work into small tasks, define short working period, review, repeat</li>
+</ul></li>
+</ul>
+</section>
+<section id="agile-development-model" class="slide level1" data-background-size="contain">
+<h1>Agile development model</h1>
+<div class="column">
+<ul>
+<li>Focused on iterative and incremental development
+<ul>
+<li>Quick prototyping</li>
+<li>Supports continuous publication</li>
+<li>Analysis, coding, testing, etc. never end</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<ul>
+<li>Development cycle
+<ul>
+<li>Plan</li>
+<li>Design</li>
+<li>Develop</li>
+<li>Test</li>
+<li>Release</li>
+<li>Feedback</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="parallelization-strategies" class="slide level1" data-background-size="contain">
+<h1>Parallelization strategies</h1>
+<ul>
+<li>Planning includes thinking what is the target platform</li>
+<li>Target machines: laptops, small clusters, supercomputers
+<ul>
+<li>OpenMP, MPI, MPI+OpenMP, GPUs</li>
+</ul></li>
+<li>From shared memory to distributed memory machines
+<ul>
+<li>Keep in mind that most machines are distributed memory systems = MPI</li>
+</ul></li>
+<li>Moving from &lt;1000 cores to &gt;10k cores
+<ul>
+<li>Parallellization strategies need to be considered</li>
+<li>Non-blocking, avoiding global calls,…</li>
+</ul></li>
+<li>Accelerators
+<ul>
+<li>GPUs have their own tricks and quirks</li>
+</ul></li>
+</ul>
+</section>
+<section id="parallelization-strategies-1" class="slide level1" data-background-size="contain">
+<h1>Parallelization strategies</h1>
+<ul>
+<li>Going <strong>BIG</strong> -&gt; GPUs are mandatory</li>
+<li>But not all HPC needs to be exascale
+<ul>
+<li>Size is not a goal in itself</li>
+</ul></li>
+</ul>
+</section>
+<section id="case-runko-parallellization" class="slide level1" data-background-size="contain">
+<h1>Case Runko: Parallellization</h1>
+<div class="column">
+<ul>
+<li>Runko has uses a new novel parallellization strategy
+<ul>
+<li>Relies on dividing work among small subregions of the grid</li>
+<li>Computational grid (i.e., what rank owns which tiles) is constantly changing to balance the load</li>
+</ul></li>
+<li>Moving beyond 1000 cores is non-trivial
+<ul>
+<li>Non-blocking communication</li>
+<li>Removal of collectives</li>
+<li>Re-design of IO</li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<p><img data-src="images/corgi.gif" class="center" style="width:80.0%" /></p>
+</div>
+</section>
+<section id="programming-languages" class="slide level1" data-background-size="contain">
+<h1>Programming languages</h1>
+<ul>
+<li>Selection of languages
+<ul>
+<li>Most common are C, C++, Fortran</li>
+<li>Mostly matter of taste</li>
+</ul></li>
+<li>C++ more object-oriented features and many more data structures (maps, lists, etc.); low-level memory management</li>
+<li>Fortran is really good for number crunching, good array syntax</li>
+<li>But also newcomers like Python/Julia
+<ul>
+<li>Faster coding cycle and less error prone</li>
+<li>Testing, debugging, and prototyping much easier</li>
+</ul></li>
+</ul>
+</section>
+<section id="hybrid-codes" class="slide level1" data-background-size="contain">
+<h1>Hybrid codes</h1>
+<ul>
+<li>Different languages can be interfaced together
+<ul>
+<li>Best of both worlds</li>
+</ul></li>
+<li>Low level languages (C, C++, Fortran) for costly functions</li>
+<li>High-level languages (Python, Julia, R) for main functions</li>
+<li>Combinations/suggestions
+<ul>
+<li>Python &amp; C++ (PyBind11) for object-oriented programming</li>
+<li>Julia &amp; Fortran (native) for functional programming</li>
+</ul></li>
+</ul>
+</section>
+<section id="case-runko-c14python3-code" class="slide level1" data-background-size="contain">
+<h1>Case Runko: C++14/Python3 code</h1>
+<ul>
+<li>Runko is an example of a hybrid code</li>
+<li>Low-level “kernels” are in C++</li>
+<li>High-level functionality is operated from Python scripts</li>
+<li>So far it has been an excellent choice
+<ul>
+<li>Fast code</li>
+<li>Ease of use</li>
+<li>Rapid prototyping</li>
+</ul></li>
+</ul>
+</section>
+<section id="modular-code-design-programming" class="slide level1" data-background-size="contain">
+<h1>Modular code design: programming</h1>
+<ul>
+<li>Good code is modular
+<ul>
+<li>Encapsulation</li>
+<li>Self-contained functions</li>
+<li>No global variables, input what you need</li>
+</ul></li>
+<li>Modular code takes more time to design but is <strong>lot</strong> easier to extend and understand</li>
+</ul>
+</section>
+<section id="modular-code-design-tools" class="slide level1" data-background-size="contain">
+<h1>Modular code design: tools</h1>
+<div class="column">
+<ul>
+<li>Avoid not invented here syndrome</li>
+<li>Leverage existing software and libraries
+<ul>
+<li>Libraries
+<ul>
+<li>Numerical (BLAS, solvers,…)</li>
+<li>I/O</li>
+<li>Parallelization</li>
+</ul></li>
+<li>Frameworks?
+<ul>
+<li>Plug your model into an existing framework?</li>
+<li>Petsc, Trilinos, BoxLib++, ARMReX, corgi,…</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div class="column">
+<ul>
+<li>Caveats:
+<ul>
+<li>Is the lib still supported/updated?</li>
+<li>Do you trust the source, is it widely used</li>
+<li>Is there documentation</li>
+<li>Does it support all the features</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="modular-code-design-development-tools" class="slide level1" data-background-size="contain">
+<h1>Modular code design: development tools</h1>
+<ul>
+<li>Software development is time consuming, many tools exists to help you in the process</li>
+<li>Build systems automate compiling
+<ul>
+<li>Makefiles, CMake, Ninja, …</li>
+</ul></li>
+<li>Debuggers</li>
+<li>Compilers
+<ul>
+<li>Compilers are not the same, compiler bugs are real!</li>
+<li>Test your code with different compilers (gnu, clang, intel, cray,…)</li>
+</ul></li>
+<li><strong>Questions</strong>: Choices in your software and experiences about them?</li>
+</ul>
+</section>
+<section id="case-gpaw-modular-design" class="slide level1" data-background-size="contain">
+<h1>Case GPAW: Modular design</h1>
+<ul>
+<li>Object oriented features and Python modules heavily utilized</li>
+<li>Main numerical kernels well separated from high level algorithms</li>
+<li>New features can be developed independently <img data-src="images/gpaw-codebase.png" style="width:40.0%" /></li>
+</ul>
+</section>
+<section id="data-formats" class="slide level1" data-background-size="contain">
+<h1>Data formats</h1>
+<ul>
+<li>Data has to be “designed” too</li>
+<li>Data formats
+<ul>
+<li>Not just plain text files/binary files</li>
+<li>Platform-independent formats (HDF5, NetCDF, …)</li>
+<li>Metadata together with the data?</li>
+</ul></li>
+<li>Log files. Especially useful with HPC applications</li>
+<li>Standard formats
+<ul>
+<li>Your field might have some data standards (e.g., PML for plasma codes)</li>
+</ul></li>
+<li>Remember also that large simulations produce lots of data
+<ul>
+<li>Storing “big data” is an issue</li>
+</ul></li>
+</ul>
+</section>
+<section id="case-runko-io-issues" class="slide level1" data-background-size="contain">
+<h1>Case Runko: IO issues</h1>
+<ul>
+<li>Runko uses rank-independent multiple-file IO strategy
+<ul>
+<li>Excellent performance as there is no synching</li>
+<li>But, sometimes the burst performance is too good…
+<ul>
+<li>10k cores writing ~TBs of data in seconds is nice for the user but file system might not like it</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="summary" class="slide level1" data-background-size="contain">
+<h1>Summary</h1>
+<ul>
+<li>Software design is all about planning (agile development)</li>
+<li>Productivity
+<ul>
+<li>Modular design</li>
+<li>Use existing libraries</li>
+<li>Use &amp; adopt design, community, and collaboration tools</li>
+<li>Programming language and design selection</li>
+</ul></li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/head.min.js"></script>
+  <script src="https://mlouhivu.github.io/static-engine/reveal/3.5.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+        height: 1080,
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/math/math.js', async: true },
+          { src: 'https://mlouhivu.github.io/static-engine/reveal/3.5.0/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

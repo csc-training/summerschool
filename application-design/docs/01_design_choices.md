@@ -1,13 +1,13 @@
 ---
 title:  Application design
 author: CSC Summerschool
-date:   2019
+date:   2022
 lang:   en
 ---
 
 # Design choices {.section}
 
-# PlasmaBox
+# Runko
 
 <div class=column>
 - Kinetic plasma simulation code
@@ -62,7 +62,7 @@ lang:   en
 </div>
 
 
-# Case PlasmaBox: Going big...
+# Case Runko: Going big...
 
 <div class=column>
 - Kinetic plasma simulations are microscopical (<1cm)
@@ -83,11 +83,11 @@ lang:   en
 
 - **Questions**: your software project?
 
-# Cases PlasmaBox & GPAW
+# Cases Runko & GPAW
 
 <div class=column>
     
-PlasmaBox
+Runko
 
 - New code 
 - +1yr of development
@@ -138,6 +138,7 @@ GPAW
 
 
 # Parallelization strategies
+
 - Planning includes thinking what is the target platform
 - Target machines: laptops, small clusters, supercomputers
     - OpenMP, MPI, MPI+OpenMP, GPUs
@@ -149,10 +150,16 @@ GPAW
 - Accelerators
     - GPUs have their own tricks and quirks
 
-# Case PlasmaBox: Parallellization
+# Parallelization strategies 
+
+- Going **BIG** -> GPUs are mandatory
+- But not all HPC needs to be exascale
+    - Size is not a goal in itself
+
+# Case Runko: Parallellization
 
 <div class=column>
-- PlasmaBox has uses a new novel parallellization strategy
+- Runko has uses a new novel parallellization strategy
     - Relies on dividing work among small subregions of the grid
     - Computational grid (i.e., what rank owns which tiles) is constantly changing to balance the load
 - Moving beyond 1000 cores is non-trivial
@@ -187,9 +194,9 @@ GPAW
     - Python & C++ (PyBind11) for object-oriented programming
     - Julia & Fortran (native) for functional programming
 
-# Case PlasmaBox: C++14/Python3 code
+# Case Runko: C++14/Python3 code
 
-- PlasmaBox is an example of a hybrid code
+- Runko is an example of a hybrid code
 - Low-level "kernels" are in C++
 - High-level functionality is operated from Python scripts
 - So far it has been an excellent choice
@@ -235,7 +242,6 @@ GPAW
 - Build systems automate compiling
     - Makefiles, CMake, Ninja, ...
 - Debuggers
-    - Lots of tools for finding bugs
 - Compilers
     - Compilers are not the same, compiler bugs are real!
     - Test your code with different compilers (gnu, clang, intel, cray,...)
@@ -265,9 +271,9 @@ GPAW
     - Storing "big data" is an issue
 
 
-# Case PlasmaBox: IO issues
+# Case Runko: IO issues
 
-- PlasmaBox uses rank-independent multiple-file IO strategy
+- Runko uses rank-independent multiple-file IO strategy
     - Excellent performance as there is no synching
     - But, sometimes the burst performance is too good...
         - 10k cores writing ~TBs of data in seconds is nice for the user but file system might not like it

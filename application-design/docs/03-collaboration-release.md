@@ -32,11 +32,12 @@ CC-BY-SA-4.0
 
 - Easier to find and reproduce (scientific reproducibility)
 - More trustworthy: others can verify correctness and find and report bugs
-- Enables others to build on top of your code (provided the license allows it)
+- Enables others to build on top of your code (if the license allows it)
 - Others can submit features/improvements and fix bugs
 - Many tools and apps are free for open source (GitHub, Travis CI, Appveyor, 
   Read the Docs)
 - Good for your CV: you can show what you have built
+- Starting to become a requirement in a lot of projects
 
 
 # Why do some researchers prefer not to share?
@@ -104,9 +105,11 @@ CC-BY-SA-4.0
 - Generally, it is better to release often
     - Make clear release notes about changes
 
+**Discuss:** Do you do software releases / versioning?
+
 # Case GPAW
 <div class=column>
-- Licensed under GPL from the beginning, copyright scattered over all developers
+- GPL from the beginning, copyright scattered over all developers
 - Gitlab, mailing list, issue tracker, face-to-face workshops
 - First method paper in 2005, major review article in 2010
     - Together over 1600 citations
