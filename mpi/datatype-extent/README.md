@@ -8,7 +8,7 @@ datatype for sending a column (C) or row (Fortran) of a matrix.
 
 1. Verify that the datatype works by communicating a single column/row.
 
-2. Try to send to columns / rows. What happens? Can you explain why?
+2. Try to send multiple columns / rows. What happens? Can you explain why?
 
 3. Create a new datatype with resized extent, so that communicating multiple columns / rows
    succeeds.
