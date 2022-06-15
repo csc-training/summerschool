@@ -2,74 +2,68 @@
 #  an index file for jam-it.sh (https://github.com/mlouhivu/jam-it)
 
 @title-supercomputing.md
-../intro-to-hpc/docs/01-intro-supercomputing.md
-../intro-to-hpc/docs/02-heat-equation.md
-../intro-to-hpc/docs/images/AmdahlsLaw.svg
+../intro-to-hpc/docs/01-intro-supercomputing.pdf
+../intro-to-hpc/docs/02-heat-equation.pdf
 
 @title-unix.md
-../unix-version-control/docs/01_Unix.md
-../unix-version-control/docs/02_Make_modules_and_batch_jobs.md
-../unix-version-control/docs/03_version_control.md
+../unix-version-control/docs/01_Unix.pdf
+../unix-version-control/docs/02_Make_modules_and_batch_jobs.pdf
+../unix-version-control/docs/03_version_control.pdf
 
 @title-debugging.md
-../debugging/docs/01-debugging.md
+../debugging/docs/01-debugging.pdf
 
 @title-mpi.md
-../mpi/docs/01-intro-to-mpi.md
-../mpi/docs/02-mpi-p2p.md
-../mpi/docs/03-special-variables.md
-../mpi/docs/04-debugging.md
-../mpi/docs/05-collectives.md
-../mpi/docs/06-custom-communicators-split.md
-../mpi/docs/07-datatypes-intro.md
-../mpi/docs/08-advanced-datatypes.md
-../mpi/docs/09-custom-communicators-cartesian.md
-../mpi/docs/10-non-blocking-communication.md
-../mpi/docs/mpi-reference.md
+../mpi/docs/01-intro-to-mpi.pdf
+../mpi/docs/02-mpi-p2p.pdf
+../mpi/docs/03-special-variables.pdf
+../mpi/docs/04-debugging.pdf
+../mpi/docs/05-collectives.pdf
+../mpi/docs/06-custom-communicators-split.pdf
+../mpi/docs/07-datatypes-intro.pdf
+../mpi/docs/08-advanced-datatypes.pdf
+../mpi/docs/09-custom-communicators-cartesian.pdf
+../mpi/docs/10-non-blocking-communication.pdf
+../mpi/docs/mpi-reference.pdf
 
 @title-io.md
-../parallel-io/docs/01-Parallel-IO-posix.md
-../parallel-io/docs/02-MPI-IO.md
-../parallel-io/docs/03-HighLevel.md
-../parallel-io/docs/03-Parallel-IO-HDF5-previous-slides.md
+../parallel-io/docs/01-Parallel-IO-posix.pdf
+../parallel-io/docs/02-MPI-IO.pdf
+../parallel-io/docs/03-HighLevel.pdf
+../parallel-io/docs/03-Parallel-IO-HDF5-previous-slides.pdf
 
 @title-hybrid.md
-../hybrid/docs/01-introduction.md
-../hybrid/docs/02-openmp-intro.md
-../hybrid/docs/03-openmp-datasharing.md
-../hybrid/docs/04-openmp-reduction.md
-../hybrid/docs/05-mpi-threads.md
-../hybrid/docs/06-tasks.md
+../hybrid/docs/01-introduction.pdf
+../hybrid/docs/02-openmp-intro.pdf
+../hybrid/docs/03-openmp-datasharing.pdf
+../hybrid/docs/04-openmp-reduction.pdf
+../hybrid/docs/05-mpi-threads.pdf
+../hybrid/docs/06-tasks.pdf
 
 @title-performance.md
-../application-performance/docs/01-application-performance-intro.md
-../application-performance/docs/02-single-node-performance.md
-../application-performance/docs/03-mpi-performance.md
-../application-performance/docs/img/simd.png
-../application-performance/docs/img/simd.svg
+../application-performance/docs/01-application-performance-intro.pdf
+../application-performance/docs/02-single-node-performance.pdf
+../application-performance/docs/03-mpi-performance.pdf
 
 @title-gpu-openmp.md
-../gpu-openmp/docs/01-GPU-intro.md
-../gpu-openmp/docs/01-GPU-intro-previous-slides.md
-../gpu-openmp/docs/01-Introduction-GPU-Programming.md
-../gpu-openmp/docs/02-OpenMP-offload-basics.md
-../gpu-openmp/docs/03-OpenMP-data.md
-../gpu-openmp/docs/04-OpenMP-unstructured-data.md
-../gpu-openmp/docs/05-OpenMP-declare-gpu-functions.md
-../gpu-openmp/docs/06-OpenMP-interoperability.md
-../gpu-openmp/docs/07-OpenMP-async-operations.md
-../gpu-openmp/docs/08-OpenMP-multiple-GPUs.md
-../gpu-openmp/docs/mun-03-OpenMP-data.md
+../gpu-openmp/docs/01-GPU-intro.pdf
+../gpu-openmp/docs/02-OpenMP-offload-basics.pdf
+../gpu-openmp/docs/03-OpenMP-data.pdf
+../gpu-openmp/docs/04-OpenMP-unstructured-data.pdf
+../gpu-openmp/docs/05-OpenMP-declare-gpu-functions.pdf
+../gpu-openmp/docs/06-OpenMP-interoperability.pdf
+../gpu-openmp/docs/07-OpenMP-async-operations.pdf
+../gpu-openmp/docs/08-OpenMP-multiple-GPUs.pdf
 
 @title-gpu-hip.md
-../gpu-hip/docs/01-kernels.md
-../gpu-hip/docs/02-streams.md
-../gpu-hip/docs/03-memory.md
-../gpu-hip/docs/04-fortran.md
-../gpu-hip/docs/05-multi-gpu.md
+../gpu-hip/docs/01-kernels.pdf
+../gpu-hip/docs/02-streams.pdf
+../gpu-hip/docs/03-memory.pdf
+../gpu-hip/docs/04-fortran.pdf
+../gpu-hip/docs/05-multi-gpu.pdf
 
 @title-design.md
-../application-design/docs/01_design_choices.md
-../application-design/docs/02-documentation-testing.md
-../application-design/docs/03-collaboration-release.md
-
+../application-design/docs/01_design_choices.pdf
+../application-design/docs/02-documentation-testing.pdf
+../application-design/docs/03-collaboration-release.pdf
+../application-design/docs/Parflow_GPU_slides_CSC_Summer_School_2022.pdf
