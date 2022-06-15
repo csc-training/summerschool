@@ -91,20 +91,17 @@ lang:     en
 
 # Important memory operations
 
-Allocate pinned device memory
 ```cpp
+// Allocate pinned device memory
 hipError_t hipMalloc(void **devPtr, size_t size)
-```
-Allocate Unified Memory; The data is moved automatically between host/device
-```cpp
+
+// Allocate Unified Memory; The data is moved automatically between host/device
 hipError_t hipMallocManaged(void **devPtr, size_t size)
-```
-Deallocate pinned device memory and Unified Memory
-```cpp
+
+// Deallocate pinned device memory and Unified Memory
 hipError_t hipFree(void *devPtr)
-```
-Copy data (host-host, host-device, device-host, device-device)
-```cpp
+
+// Copy data (host-host, host-device, device-host, device-device)
 hipError_t hipMemcpy(void *dst, const void *src, size_t count, enum hipMemcpyKind kind)
 ```
 

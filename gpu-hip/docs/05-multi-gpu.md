@@ -42,20 +42,17 @@ lang:     en
 
 # Device management
 
-Return the number of hip capable devices in `*count`
 ```cpp
+// Return the number of hip capable devices in `count`
 hipError_t hipGetDeviceCount(int *count)
-```
-Set device as the current device for the calling host thread
-```cpp
+
+// Set device as the current device for the calling host thread
 hipError_t hipSetDevice(int device)
-```
-Return the current device for the calling host thread in `*device`
-```cpp
+
+// Return the current device for the calling host thread in `device`
 hipError_t hipGetDevice(int *device)
-```
-Reset and explicitly destroy all resources associated with the current device
-```cpp
+
+// Reset and explicitly destroy all resources associated with the current device
 hipError_t hipDeviceReset(void)
 ```
 
@@ -69,7 +66,7 @@ hipError_t hipDeviceReset(void)
       virtual addressing, etc.
     * Useful for code portability
 
-Return the properties of a HIP capable device in `*prop`
+Return the properties of a HIP capable device in `prop`
 ```
 hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
 ```
@@ -156,16 +153,15 @@ for(unsigned int i = 0; i < deviceCount; i++)
     * Pass a pointer to data on GPU 1 to a kernel running on GPU 0
     * Transfer data between GPUs without going through host memory
     * Lower latency, higher bandwidth
-* Check peer accessibility
+
 ```cpp
+// Check peer accessibility
 hipError_t hipDeviceCanAccessPeer(int* canAccessPeer, int device, int peerDevice)
-```
-* Enable peer access
-```cpp
+
+// Enable peer access
 hipError_t hipDeviceEnablePeerAccess(int peerDevice, unsigned int flags)
-```
-* Disable peer access
-```cpp
+
+// Disable peer access
 hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 ```
 
@@ -174,12 +170,12 @@ hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 
 * Devices have separate memories
 * With devices supporting unified virtual addressing, `hipMemCpy()` with
-  `kind=hipMemcpyDefault`, works:
+  `kind=hipMemcpyDefault`, otherwise, `hipMemcpyPeer()`:
 ```cpp
+// First option with unified virtual addressing
 hipError_t hipMemcpy(void* dst, void* src, size_t count, hipMemcpyKind kind)
-```
-* Other option which does not require unified virtual addressing
-```cpp
+
+// Other option which does not require unified virtual addressing
 hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t count)
 ```
 
