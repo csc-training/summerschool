@@ -1,7 +1,7 @@
 ---
 title:  Introduction to OpenMP
 author: CSC Training
-date:   2021
+date:   2022
 lang:   en
 ---
 
@@ -74,7 +74,7 @@ lang:   en
 
 # Parallel construct
 
-<div class="column" width=60%>
+<div class="column">
 
 - Defines a *parallel region*
     - C/C++:
@@ -89,14 +89,14 @@ lang:   en
     !$omp end parallel
     ```
 - Prior to it only one thread (main)
-- Creates a team of threads: main + workers
+- Creates a team of threads
 - Barrier at the end of the block
 
 </div>
-<div class="column" width=35%>
+<div class="column">
 
 - SPMD: Single Program Multiple Data
-![](img/omp-parallel.png){.center width=70%}
+![](img/omp-parallel.png){.center width=60%}
 
 </div>
 
