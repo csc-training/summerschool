@@ -32,12 +32,14 @@ lang:   en
  - 'out-of-core' techniques when the  data is larger than one can fit in system memory
 
 # Heat Equation example
-- parallel heat equation
-- check the scaling for different saving intervals
+- Parallel heat equation
+
+
+- Check the scaling for different saving intervals
 
 # Parallel I/O
 - Mapping problem: how to convert internal structures and domains to
-files which are a streams of bytes
+files which are streams of bytes
 - Transport problem: how to get the data efficiently from hundreds to
 thousands of nodes on the supercomputer to physical disks
 
