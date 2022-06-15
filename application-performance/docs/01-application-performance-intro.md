@@ -93,8 +93,6 @@ end do
 - Use high performance libraries
     - linear algebra (BLAS/LAPACK), FFTs, ...
 - Experiment with compilers and compiler options
-    - There is no single best compiler and set of options for all use
-      cases
 - Experiment with threading options
     - Thread pinning, loop scheduling, ...
 - Optimize the program code
