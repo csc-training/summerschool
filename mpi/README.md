@@ -25,7 +25,8 @@
 
 ### Heat equation
 
-  - [Parallel Heat equation solver](heat-equation/README-mpi-p2p.md)
+  - [Parallel Heat equation solver](heat-equation/README.md)
+  - [Heat equation solver with sendrecv](heat-equation/README-sendrecv.md)
   - [Collective communication in Heat equation solver](heat-equation/README-collective.md)
 
 ### Simple derived types
