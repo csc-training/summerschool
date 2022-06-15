@@ -1,3 +1,9 @@
+---
+title:  Collaboration and release
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
+---
+
 # Collaboration and release{.section}
 
 <small>

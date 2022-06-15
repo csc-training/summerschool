@@ -1,3 +1,9 @@
+---
+title:  Documenting and testing
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
+---
+
 # Documenting and testing {.section}
 
 <small>
