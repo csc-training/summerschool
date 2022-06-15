@@ -27,7 +27,7 @@ lang:   en
 <div class="column">
 - Achieving performance has been based on various strategies throughout the years
     - Frequency, vectorization, multinode, multicore ...
-    - Now performance is mostly limited by power consumption 
+    - Now performance is mostly limited by power consumption
 - Accelerators provide compute resources based on a very high level of parallelism to reach
   high performance at low relative power consumption
 </div>
@@ -50,7 +50,7 @@ lang:   en
 
 # Why use them?
 
-![https://www.karlrupp.net/blog/ https://github.com/karlrupp/cpu-gpu-mic-comparison](img/comparison.png)
+![CPU vs Accelerator <span style=" font-size:0.5em;">https://github.com/karlrupp/cpu-gpu-mic-comparison</span> ](img/comparison.png)
 
 
 # What's different?
@@ -60,7 +60,7 @@ lang:   en
 # Different design philosophies
 
 <div class="column">
-   
+
 ## CPU
 
 - General purpose
@@ -104,7 +104,7 @@ lang:   en
     - Smaller than main memory (32 GB in Puhti)
     - Very high bandwidth (up to 900 GB/s)
     - Latency high compared to compute performance
-- Data must be copied over the PCIe bus 
+- Data must be copied over the PCIe bus
 
 </div>
 <div class="column">
@@ -142,7 +142,7 @@ lang:   en
     - 2560 double precision cores
     - 640 tensor cores
 - Common L2 cache (6144 KB) for all multi processors
-- HBM2 memory, typically 16 GB or 32 GB 
+- HBM2 memory, typically 16 GB or 32 GB
 </div>
 
 <div class="column">
@@ -166,7 +166,7 @@ lang:   en
 - 32 double precision cores
 - 64 integer cores
 - 8 Tensore cores
-- 128 KB memory block for L1 and shared memory 
+- 128 KB memory block for L1 and shared memory
     - 0 - 96 KB can be set to user managed shared memory
     - The rest is L1
 - 65536 registers - enables the GPU to run a very large number of threads
