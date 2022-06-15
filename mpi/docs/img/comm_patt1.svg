@@ -14,7 +14,10 @@
    id="svg2"
    version="1.1"
    sodipodi:docname="comm_patt1.svg"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"><sodipodi:namedview
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   inkscape:export-filename="/home/silvonen/courses/summerschool/mpi/docs/img/comm_patt1.png"
+   inkscape:export-xdpi="102.63"
+   inkscape:export-ydpi="102.63"><sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1"
@@ -23,24 +26,24 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1055"
+     inkscape:window-width="2560"
+     inkscape:window-height="1376"
      id="namedview217"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="0.58942061"
-     inkscape:cx="783.97568"
-     inkscape:cy="61.771498"
-     inkscape:window-x="3840"
-     inkscape:window-y="0"
+     inkscape:zoom="1.6671332"
+     inkscape:cx="478.43907"
+     inkscape:cy="114.90784"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="g14" /><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        id="clipPath18"
        clipPathUnits="userSpaceOnUse"><path
@@ -226,7 +229,7 @@
                transform="matrix(1,0,0,-1,232.4,290.2)"><tspan
                  id="tspan1093"
                  y="0"
-                 x="0 9.2880001 15.282 24.768 32.273998 41.256001 48.330002 55.403999 59.490002">Process 1</tspan></text>
+                 x="0 9.2880001 15.282 24.768 32.273998 41.256001 48.330002 55.403999">Process 2</tspan></text>
 </g></g><g
            id="g1117"
            transform="translate(63.303694,15.587341)"><path
@@ -248,9 +251,9 @@
                transform="matrix(1,0,0,-1,232.4,290.2)"
                style="font-variant:normal;font-weight:normal;font-size:18px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text1113"><tspan
-                 x="0 9.2880001 15.282 24.768 32.273998 41.256001 48.330002 55.403999 59.490002"
+                 x="0 9.2880001 15.282 24.768 32.273998 41.256001 48.330002 55.403999"
                  y="0"
-                 id="tspan1111">Process 1</tspan></text>
+                 id="tspan1111">Process 3</tspan></text>
 </g></g><g
            transform="matrix(2.9945437e-4,0.54877284,-0.76103191,0.05909537,397.1353,194.72055)"
            id="g1151"><g
@@ -411,9 +414,9 @@
                transform="matrix(1,0,0,-1,232.4,290.2)"
                style="font-variant:normal;font-weight:normal;font-size:18px;font-family:Carlito;-inkscape-font-specification:Carlito;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                id="text1275"><tspan
-                 x="0 9.2880001 15.282 24.768 32.273998 41.256001 48.330002 55.403999 59.490002"
+                 x="0 9.2880001 15.282 24.768 32.273998 41.256001 48.330002 55.403999"
                  y="0"
-                 id="tspan1273">Process 1</tspan></text>
+                 id="tspan1273">Process 2</tspan></text>
 </g></g><g
            transform="translate(466.0297,15.587341)"
            id="g1297"><path
@@ -437,7 +440,7 @@
                transform="matrix(1,0,0,-1,232.4,290.2)"><tspan
                  id="tspan1291"
                  y="0"
-                 x="0 9.2880001 15.282 24.768 32.273998 41.256001 48.330002 55.403999 59.490002">Process 1</tspan></text>
+                 x="0 9.2880001 15.282 24.768 32.273998 41.256001 48.330002 55.403999">Process 3</tspan></text>
 </g></g><g
            id="g1341"
            transform="matrix(0.62900493,-0.28093727,-0.24982754,-0.7219448,586.47506,601.881)"><g

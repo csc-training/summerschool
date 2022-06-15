@@ -1,7 +1,6 @@
 ---
 title:  IO libraries
-author: CSC Summer School
-date:   2022-07
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -41,6 +40,7 @@ lang:   en
     - Understanding the underlying system
 - Future scalability
     - Dream big, but don't overengineer. 
+
 - File format and data format are different things.
 
 # HDF5
@@ -59,15 +59,18 @@ lang:   en
 
 ![](img/hdf5.png) 
 
+
 # HDF5 hierarchy
 
 ![](img/hdf5_structure.jpg)
+
 
 # Exercise   
 
 _Discuss within the group_
 
 - Are there any very common data formats in your field 
+
 - What does your process for the data look like?
     - Keeping track of what is what
     - Is the format hurting or helping your data-analysis

@@ -1,7 +1,6 @@
 ---
 title:  Introduction to GPUs in HPC
-author: CSC Summerschool
-date:   2019-07
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -26,7 +25,7 @@ lang:   en
 <div class="column">
 - Achieving performance has been based on various strategies throughout the years
     - Frequency, vectorization, multinode, multicore ...
-    - Now performance is mostly limited by power consumption 
+    - Now performance is mostly limited by power consumption
 - Accelerators provide compute resources based on a very high level of parallelism to reach
   high performance at low relative power consumption
 </div>
@@ -47,21 +46,42 @@ lang:   en
     - Very high performance per node
 - Usually major rewrites of programs required
 
+# Why use them?
 
-# Accelerator performance growth
-![](img/peak-flop-development.png){.center}
+![CPU vs Accelerator <span style=" font-size:0.5em;">https://github.com/karlrupp/cpu-gpu-mic-comparison</span> ](img/comparison.png)
 
-# Accelerators share of 500 fastest systems (Top500)
 
-![](img/accelerator-share.png){.center width=75%}
+# What's different?
 
-# US roadmap to Exascale
+![](img/gpu-devotes-more-transistors-to-data-processing.png)
 
-![](img/DoE-Exascale-Roadmap.png){.center width=75%}
+# Different design philosophies
 
-# EU roadmap to Exascale
+<div class="column">
 
-![](img/eurohpc.jpg){.center width=75%}
+## CPU
+
+- General purpose
+- Good for serial processing
+- Great for task parallelism
+- Low latency per thread
+- Large area dedicated cache and control
+
+
+</div>
+
+<div class="column">
+
+## GPU
+
+- Highly specialized for parallelism
+- Good for parallel processing
+- Great for data parallelism
+- High-throughput
+- Hundreds of floating-point execution units
+
+
+</div>
 
 
 # Lumi - Pre-exascale system in Finland
@@ -72,14 +92,17 @@ lang:   en
 ![](img/lumi2.png){width=65%}
 </div>
 
-# Accelerator model today
+
+
+# Heterogeneous CPU-GPU System
+
 <div class="column">
 - Connected to CPUs via PCIe
 - Local memory
     - Smaller than main memory (32 GB in Puhti)
     - Very high bandwidth (up to 900 GB/s)
     - Latency high compared to compute performance
-- Data must be copied over the PCIe bus 
+- Data must be copied over the PCIe bus
 
 </div>
 <div class="column">
@@ -89,17 +112,27 @@ lang:   en
 
 
 
+# Heterogeneous Programming
 
-# GPU architecture 
+<div class="column">
 
-- Designed for running tens of thousands of threads simultaneously on
-  thousands of cores
-- Very small penalty for switching threads
-- Running large amounts of threads hides memory access penalties
-- Very expensive to synchronize all threads
-- Now Nvidia GPUs have close to monopoly in HPC - will change in next few years
+- CPU (host) and GPU (device) codes are mixed
+- all calls are made from host
+- separate address spaces
+- host allocates the memory
+- host handles the memory transfers between CPU and GPU
+- control is return to the host after a kernel calls
+- kernels are executed sequentially
 
-# GPU architecture: Nvidia Volta
+</div>
+
+<div class="column">
+
+![](img/heteprogra.jpeg){width=59%}
+
+</div>
+
+# GPU Autopsy. Nvidia Volta
 
 <div class="column">
 - 80 streaming multi processor units (SM), each comprising many smaller Cuda cores
@@ -107,7 +140,7 @@ lang:   en
     - 2560 double precision cores
     - 640 tensor cores
 - Common L2 cache (6144 KB) for all multi processors
-- HBM2 memory, typically 16 GB or 32 GB 
+- HBM2 memory, typically 16 GB or 32 GB
 </div>
 
 <div class="column">
@@ -123,7 +156,7 @@ lang:   en
 
 
 
-# GPU architecture: Nvidia Volta  SM
+# GPU Autopsy. Nvidia Volta Streaming Multiprocessor
 
 <div class="column">
 
@@ -131,7 +164,7 @@ lang:   en
 - 32 double precision cores
 - 64 integer cores
 - 8 Tensore cores
-- 128 KB memory block for L1 and shared memory 
+- 128 KB memory block for L1 and shared memory
     - 0 - 96 KB can be set to user managed shared memory
     - The rest is L1
 - 65536 registers - enables the GPU to run a very large number of threads
@@ -144,15 +177,149 @@ lang:   en
 
 
 
-# GPU architecture: warps
-- All execution is done in terms of 32 threads, a warp
-- In a warp 32 threads compute the same instruction on different data
-  (SIMT)
-    - Warps are further collected into thread blocks; each executed on one SM
-    - In case of divergence (if...) computation is done one branch at a time 
+# Thread Hierarchy. SIMT
 
-![](img/warps.png){ .center width=60% }
+<div class="column">
 
+![](img/ThreadExecution.jpg){width=105%}
+
+</div>
+
+<div class="column">
+
+- Threads are executed on scalar processors
+- Blocks are executed on multiprocessors
+- Several blocks can reside on one multiprocessor (limited by the local resources)
+- Kernel is executed as a grid of threads block
+- Only one kernel is executed on a device at one time
+
+</div>
+
+
+# Thread Scheduling
+
+
+<div class="column">
+
+- Warps (waves) of 32 (64) parallel threads
+- Consecutive, increasing thread IDs
+- All executing one common instruction at a time
+- Conditional  branches are executed serially
+- Memory accesses are per warp (wave)
+
+</div>
+
+<div class="column">
+
+![](img/Loom.jpeg){width=110%}
+
+</div>
+
+# CUDA C /HIP C code example
+
+<div class="column">
+## CUDA C
+
+```c
+   ...
+
+   int *a_d,*b_d,*c_d;
+   cudaMalloc((void **)&a_d,Nbytes);
+   cudaMalloc((void **)&b_d,Nbytes);
+   cudaMalloc((void **)&c_d,Nbytes);
+
+   cudaMemcpy(a_d,a,nBytes,cudaMemcpyHostToDevice);
+   cudaMemcpy(b_d,b,nBytes,cudaMemcpyHostToDevice);
+
+   vecAdd<<<gridSize,blockSize>>>(a_d,b_d,c_d,N);
+
+
+   cudaDeviceSynchronize();
+
+```
+
+</div>
+
+<div class="column">
+## HIP
+
+```c
+   ...
+
+   int *a_d,*b_d,*c_d;
+   hipMalloc((void **)&a_d,Nbytes);
+   hipMalloc((void **)&b_d,Nbytes);
+   hipMalloc((void **)&c_d,Nbytes);
+
+   hipMemcpy(a_d,a,Nbytes,hipMemcpyHostToDevice));
+   hipMemcpy(b_d,b,Nbytes,hipMemcpyHostToDevice));
+
+   hipLaunchKernelGGL(vecAdd,
+       dim3(gridSize), dim3(blockSize),
+       0, 0,
+       a_d,b_d,c_d,N);
+   hipDeviceSynchronize();
+
+```
+
+</div>
+
+# CUDA C /HIP code example continued
+
+```c
+__global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
+{
+  int i = blockIdx.x * blockDim.x + threadIdx.x;
+
+  if(i<N)
+  {
+    c_d[i] = a_d[i] + b_d[i];
+  }
+}
+```
+
+# Memory model
+<div class="column">
+- *Registers*: The fastest form of memory. Accessible only by the thread
+- *Shared Memory*: Almost as fast as a registers. Visible by any thread within blocks
+- **Global Memory**: 150x slower then registers/shared memory. Accessible from any thread or from the host
+- Memory with special access pattern. Heavily cached on chip.
+</div>
+
+<div class="column">
+
+![Memory hierarchy](img/memsch.png){width=90%}
+
+</div>
+
+# Global memory access
+
+- Memory transactions are done in continuous blocks of 32B, 64B, or 128B
+- Address of the first element is aligned to 16x the size of the first element
+
+![](img/coalesced.png){width=190%}
+
+# Shared Memory access
+- Shared memory is divided into banks (allowing only one access per cycle)
+- Parallel access: multiple addresses accessed over multiple banks
+- Serial access: multiple addresses in the same bank
+- Broadcast access: a single address read in a single bank (by the whole warp)
+
+![](img/shared_mem.png){width=100%}
+
+# Unified Memory
+
+- Data movement appears more transparent to the application
+- Creates a pool of managed memory
+- Each allocation is accessible on both the CPU and GPU with the same pointer
+- System automatically migrates data between the host and device, as needed
+
+# Streams
+- A sequence of asynchronous GPU operations that execute on a device in the order issued by the host code.
+- Operations within a stream are guaranteed to execute in the prescribed order
+- Operations in different streams may run concurrently or interleaved
+
+![](img/C2050Timeline.png){width=99%}
 
 
 
@@ -175,13 +342,17 @@ lang:   en
 <div class="column">
 1. Use existing GPU applications
 2. Use accelerated libraries
+3. Use frameworks
+    - Kokkos
+    - AMReX
 3. Directive based methods
-    - OpenMP 
-    - **OpenACC**
-4. Use lower level language
+    - ** OpenMP **
+    - OpenACC
+4. Use native GPU language
     - CUDA
     - HIP
     - OpenCL
+    - SYCL
 </div>
 <div class="column">
 
@@ -211,13 +382,7 @@ More difficult, but more opportunities
     - Dominant directive approach in the future?
 
 
-# GPUs at CSC - Taito-GPU
 
-- 12 nodes with
-    - 2 x K80 (Kepler), in total 4 GPUs each
-    - 2 x Haswell CPU, 24 cores in total
-- 26 nodes with
-    - 4 x P100 (Pascal)
 
 # GPUs at CSC - Puhti-AI
 
@@ -229,6 +394,26 @@ More difficult, but more opportunities
     - 3.2 TB of fast local storage
     - Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth
 
+# GPUs at CSC - Mahti-AI
+
+- In total 24 nodes with a total peak performance of 2.0 Petaflops
+- Each node has
+    - Two latest generation AMD processors, code name EPYC with 64 cores each running at 2.6 GHz (Rome)
+    - Four Nvidia Volta A100 GPUs with 40 GB of memory each
+    - 512 GB of main memory
+    - 3.8 TB of fast local storage
+    - Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth
+
+# GPUs at CSC - LUMI-G
+
+- In total 2560 nodes with a total peak performance of 550 Petaflops
+- Each node has
+    - One latest generation AMD processor, code name Trento with 64 cores each running at 2.6 GHz (Trento)
+    - Four AMD MI250X GPUs with 128 GB of memory each
+    - 512 GB of main memory
+    - 2x3 TB of fast local storage
+    - Four interconnect network connectivity providing 800Gbps aggregate bandwidth
+
 
 # Summary
 
@@ -236,4 +421,3 @@ More difficult, but more opportunities
 - Programming GPUs
     - CUDA, HIP
     - Directive based methods
-

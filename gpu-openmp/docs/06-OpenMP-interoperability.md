@@ -1,7 +1,6 @@
 ---
-title:  "OpenMP interoperability with libraries"
-author: CSC - IT Center for Science
-date:   2022-06
+title:  OpenMP interoperability with libraries
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -78,7 +77,7 @@ double *x, *y;
 - For linking, `-lcudart -L$CUDA_HOME/lib64` is needed
 
 
-# Calling CUDA-kernel from OpenMP-program
+# Calling CUDA/HIP-kernel from C OpenMP-program
 
 <small>
 <div class="column">
@@ -129,6 +128,70 @@ extern "C" void daxpy(int n, double a,
     dim3 griddim = dim3(65536, 1, 1);
     daxpy_kernel<<<griddim, blockdim>>>(n, a, x, y);
 }
+```
+</div>
+</small>
+
+
+
+# Calling CUDA/HIP-kernel from  Fortran OpenMP-program
+<small>
+<div class="column">
+```c
+// call_cuda/hip_from_openmp.f90
+MODULE CUDA_INTERFACES
+    INTERFACE
+      subroutine f_daxpy(n, a, x, y) bind(C,name=daxpy)
+      use iso_c_binding
+      integer(c_int), value :: n
+      double(c_double), value :: a
+      real :: x(*), y(*)
+    END INTERFACE
+END MODULE CUDA_INTERFACES
+
+...
+
+// in the main programs
+ use iso_c_binding
+ ...
+ integer(c_int) :: n
+ double(c_double) :: a
+ ...
+
+# omp target data use_device_ptr(x, y)
+
+  call f_daxpy(n,a,x,y)
+
+```
+
+</div>
+
+<div class="column">
+```c
+// call_cuda/hip_from_openmp.f90
+MODULE CUDA_INTERFACES
+    INTERFACE
+      subroutine f_daxpy(n, a, x, y) bind(C,name=daxpy)
+      use iso_c_binding
+      integer(c_int), value :: n
+      double(c_double), value :: a
+      type(c_ptr), value :: x, y
+    END INTERFACE
+END MODULE CUDA_INTERFACES
+
+...
+
+// in the main programs
+ use iso_c_binding
+ ...
+ integer(c_int) :: n
+ double(c_double) :: a
+ ...
+
+# omp target data use_device_ptr(x, y)
+
+  call f_daxpy(n,a,c_loc(x),c_loc(y))
+
 ```
 </div>
 </small>

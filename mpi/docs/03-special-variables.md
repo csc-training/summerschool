@@ -1,7 +1,6 @@
 ---
 title:  Special MPI parameters
-author: CSC Training
-date:   2021
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -15,7 +14,7 @@ lang:   en
 - This produces typically code which is difficult to read and to
   generalize to arbitrary number of processes
 - Store source and destination in variables and place MPI calls
-  outside **if**s when possible. 
+  outside **if**s when possible.
 
 <small>
 <div class=column>
@@ -44,7 +43,7 @@ lang:   en
   call mpi_recv(receiveBuffer, arraysize, MPI_INTEGER, src,  &
           1, MPI_COMM_WORLD, status, rc)
 
-``` 
+```
 </div>
 </small>
 
@@ -52,7 +51,7 @@ lang:   en
 
 - As rank 0 is always present even in the serial case, it is normally
   chosen as the special task in scatter and gather type operations
-  
+
 ```c++
 if (0 == myid) {
   for (int i=1; i < ntasks; i++) {
@@ -70,7 +69,7 @@ if (0 == myid) {
 - A special constant `MPI_PROC_NULL` can be used for turning
   `MPI_Send` / `MPI_Recv` into a dummy call
     - No matching `receive` / `send` is needed
-	
+
 ```fortran
 if (myid == 0) then
     src = MPI_PROC_NULL
@@ -98,21 +97,21 @@ call mpi_recv(message, msgsize, MPI_INTEGER, src, ...
 if (0 == myid) {
   for (int i=1; i < ntasks; i++) {
      MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, 22, MPI_COMM_WORLD);
-	 process(data)
+     process(data)
   }
 } else {
      MPI_Send(&data, 1, MPI_INT, 0, 22, MPI_COMM_WORLD, &status);
 }
 ```
 </small>
-</div> 
+</div>
 
 <div class=column>
 - There needs to be still `receive` for each `send`
 - `MPI_ANY_SOURCE` and `MPI_ANY_TAG` introduce often performance
   overhead
 - Use them only when there is clear benefit *e.g.* in load balancing
-</div> 
+</div>
 
 # Ignoring **status**
 
@@ -147,9 +146,9 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 # Common communication patterns {.section}
 
-# Main - worker 
+# Main - worker
 
-![](img/comm_patt1.svg){.center width=100%}
+![](img/comm_patt1.png){.center width=100%}
 
 <br>
 
@@ -157,7 +156,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 # Pairwise neighbour communication
 
-![](img/comm_patt2.svg){.center width=90%}
+![](img/comm_patt2.png){.center width=90%}
 
 <br>
 
@@ -165,7 +164,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
   or unnecessary idle time
 - Can be generalized to multiple dimensions
 
-# Combined send & receive 
+# Combined send & receive
 
 MPI_Sendrecv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `dest`{.input}, `sendtag`{.input}, `recvbuf`{.input}, `recvcount`{.input}, `recvtype`{.input}, `source`{.input}, `recvtag`{.input}, `comm`{.input}, `status`{.output})
   : `-`{.ghost}
@@ -178,7 +177,7 @@ MPI_Sendrecv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `dest`{
 - `MPI_PROC_NULL` can be used for coping with the boundaries
 
 
-# Summary 
+# Summary
 
 - Generally, it is advisable to make MPI programs to work with
   arbitrary number of processes
@@ -188,4 +187,3 @@ MPI_Sendrecv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `dest`{
 - Individual `MPI_Send` and `MPI_Recv` are suitable for irregular communication
 - When there is always both sending and receiving, `MPI_Sendrecv` can prevent deadlocks
   and serialization of communication
-

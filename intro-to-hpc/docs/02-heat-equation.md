@@ -1,7 +1,6 @@
 ---
-title: Group work`:` how to parallelize a problem?
-author: CSC Summerschool
-date:   2019-06
+title:  "Group work: how to parallelize a problem?"
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -12,8 +11,8 @@ lang:   en
 <div class=column>
 * Particles are hard spheres
 * They interact with neighbours inside some effective range
-	- This way the particles appear “viscous”
-* See live demo 
+    - This way the particles appear “viscous”
+* See live demo
 
 </div>
 <div class=column>
@@ -26,8 +25,8 @@ lang:   en
 
 * Within your table group, discuss the Smoothed Particle Hydrodynamic (SPH) problem
 * Make back-of-an-envelope sketches, etc, on how would you parallelize the selected problem
-	- Which parts of the work can be carried out independently and in parallel?
-	- What kind of coordination between the parallel threads will be needed?
+    - Which parts of the work can be carried out independently and in parallel?
+    - What kind of coordination between the parallel threads will be needed?
 * If you come up with several approaches, discuss their pros and cons
 
 # Case study: heat equation {.section}
@@ -87,7 +86,7 @@ $$\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2
 * Domain decomposition
 
  ![](images/domain.svg){.center width=60%}
- 
+
 * Straightforward in shared memory computer
 
 # Solving heat equation in parallel

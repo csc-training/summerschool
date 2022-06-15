@@ -1,7 +1,6 @@
 ---
-title:  Message-Passing Interface (MPI) 
-author: CSC Training
-date:   2021
+title:  Message-Passing Interface (MPI)
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -9,19 +8,19 @@ lang:   en
 
 # Message-passing interface
 
-- MPI is an application programming interface (API) for distributed parallel 
+- MPI is an application programming interface (API) for distributed parallel
   computing
 - MPI programs are portable and scalable
-    - the same program can run on different types of computers, from 
+    - the same program can run on different types of computers, from
       laptops to supercomputers
-- MPI is flexible and comprehensive 
+- MPI is flexible and comprehensive
     - large (hundreds of procedures)
     - concise (only 10-20 procedures are typically needed)
 - First version of standard (1.0) published in 1994, latest (4.0) in June 2021
 
 # Processes and threads
 
-![](img/processes-threads-highlight-proc.svg){.center width=90%}
+![](img/processes-threads-highlight-proc.png){.center width=90%}
 
 <div class="column">
 
@@ -53,7 +52,7 @@ lang:   en
 - The way to launch parallel program depends on the computing system
     - **`mpiexec`**, **`mpirun`**, **`srun`**, **`aprun`**, ...
     - **`srun`** on puhti.csc.fi and mahti.csc.fi
-- MPI supports also dynamic spawning of processes and launching *different* 
+- MPI supports also dynamic spawning of processes and launching *different*
   programs communicating with each other
     - rarely used in HPC systems
 
@@ -63,7 +62,7 @@ lang:   en
 - MPI runtime assigns each process a unique rank
     - identification of the processes
     - ranks start from 0 and extend to N-1
-- Processes can perform different tasks and handle different data based 
+- Processes can perform different tasks and handle different data based
   on their rank
 </div>
 <div class="column">
@@ -82,7 +81,7 @@ if (rank == 1) {
 - All variables and data structures are local to the process
 - Processes can exchange data by sending and receiving messages
 
-![](img/data-model.svg){.center width=100%}
+![](img/data-model.png){.center width=100%}
 
 # The MPI library
 
@@ -110,7 +109,7 @@ if (rank == 1) {
 - The MPI standard defines interfaces to C and Fortran programming
   languages
     - No C++ bindings in the standard, C++ programs use the C interface
-	- There are unofficial bindings to eg. Python, Rust, R
+    - There are unofficial bindings to eg. Python, Rust, R
 - C call convention (*case sensitive*)<br>
 `rc = MPI_Xxxx(parameter,...)`
     - some arguments have to be passed as pointers
@@ -143,7 +142,7 @@ use mpi_f08
 - Most MPI implementations provide convenience wrappers, typically
   `mpicc` / `mpicxx` / `mpif90`, for easier building
     - no need for MPI related options
-  
+
 ```bash
 mpicc -o my_mpi_prog my_mpi_code.c
 mpicxx -o my_mpi_prog my_mpi_code.cpp
@@ -170,7 +169,7 @@ MPI_Init
   : (in C `argc`{.input} and `argv`{.input} pointer arguments are needed)
 
 MPI_Finalize
-  : 
+  :
 
 # First five MPI commands: Information about the communicator
 
@@ -188,14 +187,14 @@ MPI_Comm_rank(`comm`{.input}, `rank`{.output})
 
 # First five MPI commands: Synchronization
 
-- Wait until everybody within the communicator reaches the call 
+- Wait until everybody within the communicator reaches the call
 
 MPI_Barrier(`comm`{.input})
   : `comm`{.input}
     : communicator
 
 
-# Summary 
+# Summary
 
 - In parallel programming with MPI, the key concept is a set of
   independent processes
@@ -204,19 +203,19 @@ MPI_Barrier(`comm`{.input})
 - The MPI library contains functions for communication and
   synchronization between processes
 
-# Web resources 
+# Web resources
 
 - List of MPI functions with detailed descriptions
     - <http://mpi.deino.net/mpi_functions/>
     - <https://www.rookiehpc.com/mpi/docs/>
 - Good online MPI tutorials
-    - <https://computing.llnl.gov/tutorials/mpi>
+    - <https://hpc-tutorials.llnl.gov/mpi/>
     - <http://mpitutorial.com/tutorials/>
     - <https://www.youtube.com/watch?v=BPSgXQ9aUXY>
 - MPI coding game in C <br>
 <https://www.codingame.com/playgrounds/47058/have-fun-with-mpi-in-c/lets-start-to-have-fun-with-mpi>
 
-# Web resources 
+# Web resources
 
 - MPI 4.0 standard <http://www.mpi-forum.org/docs/>
 - MPI implementations

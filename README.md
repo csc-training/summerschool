@@ -15,12 +15,11 @@ Versions from previous years can be found in tags.
 
  - [General instructions](exercise-instructions.md)
  - [Using version control and unix](unix-version-control)
- - [Fortran programming](programming/fortran)
- - [C/C++ programming](programming/c)
  - [MPI](mpi)
  - [Parallel I/O](parallel-io)
  - [Hybrid MPI/OpenMP](hybrid)
- - [Hybrid MPI/OpenACC](hybrid-gpu)
+ - [GPU programming with OpenMP](gpu-openmp)
+ - [GPU programming with HIP](gpu-hip)
 
 ---
 ## Notes

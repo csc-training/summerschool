@@ -4,5 +4,5 @@ theme: 'csc-2016-portrait'
 
 # Parallel input/output {.section}
 
-Martti Louhivuori<br>
-Joonas Nättilä
+Cristian-Vasile Achim<br>
+Henrik Nortamo

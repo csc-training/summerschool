@@ -1,28 +1,111 @@
 ---
 title:  OpenMP data movement
-author: CSC Summerschool
-date:   2022-06
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
-FIXME: OpenACC -> OpenMP
-
 # OpenACC data environment
 
-- OpenACC supports devices which either share memory with or have a
-  separate memory from the host
-- Constructs and clauses for
-    - defining the variables on the device
-    - transferring data to/from the device
-- All variables used inside the `parallel` or `kernels` region will be
-  treated as *implicit* variables if they are not present in any data
-  clauses, i.e., copying to and from to the device is automatically
-  performed
+- GPU device has a separate memory space from the host CPU
+    - unified memory is accessible from both sides
+    - OpenMP supports both unified and separate memory
+- OpenMP includes constructs and clauses to
+  ***allocate variables on the device*** and to define
+  ***data transfers to/from the device***
+- Data needs to be mapped to the device to be accessible inside the offloaded
+  target region
+    - host is not allowed to touch the mapped data during the target region
+    - variables are implicitly mapped to a target region unless explicitly
+      defined in a data clause
+        - scalars as *firstprivate*, static arrays copied to/from device
+
+
+# Example: implicit mapping
+
+```c
+int N=1000;
+double a=3.14;
+double x[N], y[N];
+// some code to initialise x and y
+
+#pragma omp target
+#pragma omp parallel for
+for (int i=0; i < N; i++) {
+    y[i] += a * x[i];
+}
+```
+
+- Implicit copy of **a**, **x** and **y** to the target device when the target
+  region is opened and back when it is closed
+
+
+# Explicit mapping
+
+`#pragma omp target map(type:list)`
+  : `-`{.ghost}
+
+- Explicit mapping can be defined with the `map` clause of the `target`
+  construct
+    - *list* is a comma-separated list of variables
+    - *type* is one of:
+
+<small>
+<div class=column style="width:45%; margin-left:8%">
+`to`
+  : copy data to device on entry
+
+`from`
+  : copy data from device on exit
+</div>
+<div class=column style="width:45%">
+`tofrom`
+  : copy data to device on entry and back on exit
+
+`alloc`
+  : allocate on the device (uninitialised)
+</div>
+</small>
+
+
+# Example: explicit mapping
+
+```c
+int N=1000;
+double a=3.14;
+double x[N], y[N];
+// some code to initialise x and y
+
+#pragma omp target map(to:x) map(tofrom:y)
+#pragma omp parallel for
+for (int i=0; i < N; i++) {
+    y[i] += a * x[i];
+}
+```
+
+- Both **x** and **y** are copied the device, but only **y** is copied back to
+  the host
+- Implicit copy of **a** to the device
+
+
+# Dynamically allocated arrays
+
+- With dynamically allocated arrays, one needs to specify the number of
+  elements to be copied
+
+```c++
+int N=1000;
+double *data = (double *) malloc(N * sizeof(double));
+
+#pragma omp target map(tofrom:data[0:N])
+// do something ..
+```
 
 
 # Motivation for optimizing data movement
 
-- When dealing with an accelerator GPU device attached to a PCIe bus,  **optimizing data movement** is often **essential** to achieving  good performance
+- When dealing with an accelerator GPU device attached to a PCIe bus,
+  **optimizing data movement** is often **essential** to achieving good
+  performance
 - The four key steps in porting to high performance accelerated code
     1. Identify parallelism
     2. Express parallelism
@@ -31,175 +114,136 @@ FIXME: OpenACC -> OpenMP
     5. Go to 1!
 
 
+# Data region
 
-# Data lifetimes
-
-- Typically data on the device has the same lifetime as the OpenACC
-  construct (`parallel`, `kernels`, `data`) it is declared in
-- It is possible to declare and refer to data residing statically on
-  the device until deallocation takes place
-- If the accelerator has a separate memory from the host, any
-  modifications to the data on the host are not visible to the device
-  before an explicit update has been made and vice versa
-
-
-# Data constructs: data
-
-- Define a region with data declared in the device memory
-    - C/C++: `#pragma acc data [clauses]`
-    - Fortran: `!$acc data [clauses]`
+- Define data mapping for a structured block that may contain multiple target
+  regions
+    - C/C++: `#pragma omp target data map(type:list)`
+    - Fortran: `!omp target data map(type:list)`
+    - only maps data, one still needs to define a target region to execute
+      code on the device
 - Data transfers take place
     - from **the host** to **the device** upon entry to the region
     - from **the device** to **the host** upon exit from the region
-- Functionality defined by *data clauses*
-- *Data clauses* can also be used in `kernels` and `parallel` constructs
 
 
-# Data construct: example
+# Example: data mapping over multiple target regions
 
-<div class="column">
-## C/C++
+```c++
+int N=1000; double a=3.14, b=2.1;
+double x[N], y[N], z[N];
+// some code to initialise x, y, and z
 
-```c
-float a[100];
-int iter;
-int maxit=100;
-
-#pragma acc data create(a)
+#pragma omp target data map(to:x)
 {
-    /* Initialize data on device */
-    init(a);
-    for (iter=0; iter < maxit; iter++) {
-        /* Computations on device */
-        acc_compute(a);
-    }
+    #pragma omp target map(tofrom:y)
+    #pragma omp parallel for
+    for (int i=0; i < N; i++)
+        y[i] += a * x[i];
+
+    #pragma omp target map(tofrom:z)
+    #pragma omp parallel for
+    for (int i=0; i < N; i++)
+        z[i] += b * x[i];
 }
 ```
-</div>
 
-<div class="column">
-## Fortran
 
-```fortran
-real :: a(100)
-integer :: iter
-integer, parameter :: maxit = 100
+# Update
 
-!$acc data create(a)
-! Initialize data on device
-call init(a)
-do iter=1,maxit
-  ! Computations on device
-  call acc_compute(a)
-end do
-!$acc end data
+- Update a variable within a data region with the `update` directive
+    - C/C++: `#pragma omp target update type(list)`
+    - Fortran: `!omp target update type(list)`
+    - a single line executable directive
+- Direction of data transfer is determined by the *type*, which can be either
+  `to` (= copy to device) or `from` (= copy from device)
+
+
+# Why update?
+
+- Useful for producing snapshots of the device variables on the host or
+  for updating variables on the device
+    - pass variables to host for visualization
+    - communication with other devices on other computing nodes
+- Often used in conjunction with
+    - asynchronous execution of OpenMP constructs
+    - unstructured data regions
+
+
+# Example: update within a data region
+
+```c++
+int N=1000; double a=3.14, b=2.1;
+double x[N], y[N], z[N];
+// some code to initialise x, y, and z
+
+#pragma omp target data map(to:x)
+{
+    #pragma omp target map(tofrom:y)
+    #pragma omp parallel for
+    for (int i=0; i < N; i++)
+        y[i] += a * x[i];
+
+    // ... some host code that modifies x ...
+    #pragma omp target update to(x)
+    #pragma omp target map(tofrom:z)
+    #pragma omp parallel for
+    for (int i=0; i < N; i++)
+        z[i] += b * x[i];
+}
 ```
-</div>
 
 
-# Data constructs: data clauses
+# Reduction
 
-<div class="column">
-`present(var-list)`
+`reduction(operation:list)`
   : `-`{.ghost}
 
-- **on entry/exit:** assume that memory is allocated and that data  is present on the device
-</div>
-<div class="column">
-`create(var-list)`
-  : `-`{.ghost}
-
-- **on entry:** allocate memory on the device, unless it was already
-    present
-- **on exit:** deallocate memory on the device, if it was allocated
-    on entry
-- In depth: *structured* reference count decremented, and deallocation happens if it goes to zero
-
-</div>
-
-# Data constructs: data clauses
-
-`copy(var-list)`
-  : `-`{.ghost}
-
-- **on entry:** If data is present on the device on entry, behave as
-    with the `present` clause, otherwise allocate memory on the device
-    and copy data from the host to the device.
-- **on exit:** copy data from the device to the host and deallocate
-    memory on the device if it was allocated on entry
-
-
-# Data constructs: data clauses
-
-<div class="column">
-
-`copyin(var-list)`
-  : `-`{.ghost}
-
-- **on entry:** same as `copy` on entry
-- **on exit:** deallocate memory on the device of it was allocated
-    on entry
-</div>
-<div class="column">
-
-`copyout(var-list)`
-  : `-`{.ghost}
-
-- **on entry:** If data is present on the device on entry, behave as
-    with the `present` clause, otherwise allocate memory on the device
-- **on exit:** same as `copy` on exit
-</div>
-
-
-
-# Data constructs: data clauses
-
-`reduction(operator:var-list)`
-  : `-`{.ghost}
-
-- Performs reduction on the (scalar) variables in list
-- Private reduction variable is created for each gangs partial result
-- Private reduction variable is initialized to operators initial value
-- After parallel region the reduction operation is applied to private
-- variables and result is aggregated to the shared variable *and* the
-- aggregated result combined with the original value of the variable
+- Applies the *operation* on the variables in *list* to reduce them to a
+  single value
+    - local private copies of the variables are created for each thread
+    - initialisation depends on the *operation*
+- Variables need to be shared in the enclosing parallel region
+    - at the end, all local copies are reduced and combined with the original
+      shared variable
+- Directives that support reduction: `parallel`, `teams`, `scope`,
+  `sections`, `for`, `simd`, `loop`, `taskloop`
 
 
 # Reduction operators in C/C++ and Fortran
 
-
 | Arithmetic Operator | Initial value |
-|----------|---------------|
-| `+`      | `0`           |
-| `-`      | `0`           |
-| `*`      | `1`           |
-| `max`    | least         |
-| `min`    | largest       |
+| ------------------- | ------------- |
+| `+`                 | `0`           |
+| `-`                 | `0`           |
+| `*`                 | `1`           |
+| `max`               | least         |
+| `min`               | largest       |
+
 
 # Reduction operators in C/C++ only
+
 <div class="column">
-
 | Logical Operator | Initial value |
-|----------|---------------|
-| `&&`     | `1`           |
-| `||`     | `0`           |
-
-
+| ---------------- | ------------- |
+| `&&`             | `1`           |
+| `||`             | `0`           |
 </div>
 
 <div class="column">
 | Bitwise Operator | Initial value |
-|----------|---------------|
-| `&`      | `~0`          |
-| `|`      | `0`           |
-| `^`      | `0`           |
+| ---------------- | ------------- |
+| `&`              | `~0`          |
+| `|`              | `0`           |
+| `^`              | `0`           |
 </div>
 
-# Reduction operators in Fortran
+
+# Reduction operators in Fortran only
 
 <div class="column">
 | Logical Operator | Initial value |
-|------------------|---------------|
+| ---------------- | ------------- |
 | `.and.`          | `.true.`      |
 | `.or.`           | `.false.`     |
 | `.eqv.`          | `.true.`      |
@@ -208,295 +252,24 @@ end do
 
 <div class="column">
 | Bitwise Operator | Initial value |
-|------------------|---------------|
+| ---------------- | ------------- |
 | `iand`           | all bits on   |
 | `ior`            | `0`           |
 | `ieor`           | `0`           |
 </div>
 
 
-# Data specification
+# Example: reduction
 
-- Data clauses specify functionality for different variables
-- Overlapping data specifications are not allowed
-- For array data, *array ranges* can be specified
-    - C/C++: `arr[start_index:length]`, for instance `vec[0:n]`
-    - Fortran: `arr(start_index:end_index)`, for instance `vec(1:n)`
-- Note: array data **must** be *contiguous* in memory (vectors,
-      multidimensional arrays etc.)
+```c++
+int N=1000;
+double sum=0.0;
+double x[N], y[N];
+// some code to initialise x and y
 
-
-# Default data environment in compute constructs
-
-- All variables used inside the `parallel` or `kernels` region will be
-  treated as *implicit* variables if they are not present in any data
-  clauses, i.e., copying to and from to the device is automatically
-  performed
-- Implicit *array* variables are treated as having the `copy` clause in
-  both cases
-- Implicit *scalar* variables are treated as having the
-    - `copy` clause in `kernels`
-    - `firstprivate` clause in `parallel`
-
-
-# `data` construct: example
-
-<div class="column">
-## C/C++
-
-```c
-int a[100], d[3][3], i, j;
-
-#pragma acc data copy(a[0:100])
-{
-    #pragma acc parallel loop present(a)
-    for (int i=0; i<100; i++)
-        a[i] = a[i] + 1;
-    #pragma acc parallel loop \
-          collapse(2) copyout(d)
-    for (int i=0; i<3; ++i)
-        for (int j=0; j<3; ++j)
-            d[i][j] = i*3 + j + 1;
+#pragma omp target
+#pragma omp parallel for reduction(+:sum)
+for (int i=0; i < N; i++) {
+    sum += y[i] * x[i];
 }
 ```
-</div>
-
-<div class="column">
-## Fortran
-```fortran
-integer a(0:99), d(3,3), i, j
-
-!$acc data copy(a(0:99))
-  !$acc parallel loop present(a)
-  do i=0,99
-     a(i) = a(i) + 1
-  end do
-  !$acc end parallel loop
-  !$acc parallel loop collapse(2) copyout(d)
-  do j=1,3
-     do i=1,3
-        d(i,j) = i*3 + j + 1
-     end do
-  end do
-  !$acc end parallel loop
-!$acc end data
-```
-</div>
-
-
-# Unstructured data regions
-
-- Unstructured data regions enable one to handle cases where allocation
-  and freeing is done in a different scope
-- Useful for, e.g., C++ classes, Fortran modules
-- `enter data` defines the start of an unstructured data region
-    - C/C++: `#pragma acc enter data [clauses]`
-    - Fortran: `!$acc enter data [clauses]`
-- `exit data` defines the end of an unstructured data region
-    - C/C++: `#pragma acc exit data [clauses]`
-    - Fortran: `!$acc exit data [clauses]`
-
-
-# Unstructured data
-
-```c
-class Vector {
-    Vector(int n) : len(n) {
-        v = new double[len];
-        #pragma acc enter data create(v[0:len])
-    }
-    ~Vector() {
-        #pragma acc exit data delete(v[0:len])
-        delete[] v;
-    }
-    double v;
-    int len;
-};
-```
-
-# Enter data clauses
-
-
-<div class=column>
-`if(condition)`
-  : `-`{.ghost}
-
-- Do nothing if condition is false
-
-<br>
-
-`create(var-list)`
-  : `-`{.ghost}
-
-- Allocate memory on the device
-
-</div>
-<div class=column>
-`copyin(var-list)`
-  : `-`{.ghost}
-
-- Allocate memory on the device and copy data from the host to the
-    device
-</div>
-
-# Exit data clauses
-<div class=column>
-`if(condition)`
-  : `-`{.ghost}
-  
-- Do nothing if condition is false
-
-<br>
-
-`delete(var-list)`
-  : `-`{.ghost}
- 
-- Deallocate memory on the device
-- In depth: *dynamic* reference count decremented, and deallocation
-  happens if it goes to zero
-
-</div>
-<div class=column>
-
-
-`copyout(var-list)`
-  : `-`{.ghost}
-
-- Deallocate memory on the device and copy data from the device to the
-    host
-- In depth: *dynamic* reference count decremented, and deallocation
-  happens if it goes to zero
-
-</div>
-
-
-
-
-# Data directive: update
-
-- Define variables to be updated within a data region between host and
-  device memory
-    - C/C++: `#pragma acc update [clauses]`
-    - Fortran: `!$acc update [clauses]`
-- Data transfer direction controlled by `host(var-list)` or
-  `device(var-list)` clauses
-    - `self` (`host`) clause updates variables from device to host
-    - `device` clause updates variables from host to device
-- At least one data direction clause must be present
-
-
-# Data directive: update
-
-- `update` is a single line executable directive
-- Useful for producing snapshots of the device variables on the host or
-  for updating variables on the device
-    - Pass variables to host for visualization
-    - Communication with other devices on other computing nodes
-- Often used in conjunction with
-    - Asynchronous execution of OpenACC constructs
-    - Unstructured data regions
-
-
-# `update` directive: example
-
-<div class="column">
-## C/C++
-```c
-float a[100];
-int iter;
-int maxit=100;
-
-#pragma acc data create(a) {
-    /* Initialize data on device */
-    init(a);
-    for (iter=0; iter < maxit; iter++) {
-        /* Computations on device */
-        acc_compute(a);
-        #pragma acc update self(a) \
-	            if(iter % 10 == 0)
-    }
-}
-```
-</div>
-
-<div class="column">
-## Fortran
-```fortran
-real :: a(100)
-integer :: iter
-integer, parameter :: maxit = 100
-
-!$acc data create(a)
-    ! Initialize data on device
-    call init(a)
-    do iter=1,maxit
-        ! Computations on device
-        call acc_compute(a)
-        !$acc update self(a) 
-        !$acc& if(mod(iter,10)==0)
-    end do
-!$acc end data
-```
-</div>
-
-
-# Data directive: declare
-
-- Makes a variable resident in accelerator memory
-- Added at the declaration of a variable
-- Data life-time on device is the implicit life-time of the variable
-    - C/C++: `#pragma acc declare [clauses]`
-    - Fortran: `!$acc declare [clauses]`
-- Supports usual data clauses, and additionally
-    - `device_resident`
-    - `link`
-
-
-# Porting and managed memory
-
-<div class="column">
-- Porting a code with complicated data structures can be challenging
-  because every field in type has to be copied explicitly
-- Recent GPUs have *Unified Memory* and support for page faults
-</div>
-
-<div class="column">
-```c
-typedef struct points {
-    double x, y;
-    int n;
-}
-
-void init_point() {
-    points p;
-
-    #pragma acc data create(p)
-    {
-        p.size = n;
-        p.x = (double)malloc(...
-        p.y = (double)malloc(...
-        #pragma acc update device(p)
-        #pragma acc copyin (p.x[0:n]...
-```
-</div>
-
-
-# Managed memory
-
-- Managed memory copies can be enabled on PGI compilers
-    - Pascal (P100): `--ta=tesla,cc60,managed`
-    - Volta (V100): `--ta=tesla,cc70,managed`
-- For full benefits Pascal or Volta generation GPU is needed
-- Performance depends on the memory access patterns
-    - For some cases performance is comparable with explicitly tuned
-      versions
-
-# Summary
-
-- Data directive
-    - Structured data region
-    - Clauses: `copy`, `present`, `copyin`, `copyout`, `create`
-- Enter data & exit data
-    - Unstructured data region
-- Update directive
-- Declare directive

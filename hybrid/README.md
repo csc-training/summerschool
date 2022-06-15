@@ -1,17 +1,42 @@
-# Hybrid programming exercises
+## Hybrid programming exercises
 
-## Day 1
-- [Hello world](hello-world)
-- [Parallel region and data sharing](data-sharing)
-- [Work sharing for a simple loop](work-sharing)
-- [Heat equation solver hybridized with MPI+OpenMP](../heat/hybrid-fine)
+### Getting started with OpenMP
 
-## Day 2
-- [Vector sum and race condition](race-condition)
-- [Reduction and critical](reduction)
-- [Multiple thread communication](multiple)
+- [Hello world](omp-hello/)
+- [Work sharing and vector addition](work-sharing/)
+
+### Library functions
+
+- [OpenMP library functions](lib-funcs/)
+
+### Data sharing
+
+- [Data sharing and parallel regions](data-sharing/)
+- [Race condition in parallel sum](race-condition/)
+
+### Reductions and execution controls
+
+- [Reduction](reduction/)
+
+### Heat equation
+
+- [Fine grain parallelization]()
+- [Coarse grain parallelization]()
+
+### Hybrid MPI+OpenMP programming
+
+- [Hybrid Hello World](hybrid-hello/)
+- [Multiple thread communication](multiple-thread-communication/)
+- [Simple thread affinity](thread-affinity)
+
+### OpenMP tasks
+
+- [Simple tasking](simple-tasks/)
+- [Parallelizing Mandelbrot with tasks](mandelbrot/)
+- [Parallel Fibonacci](fibonacci/)
+
+### Heat equation
+
+- [Hybrid heat equation]()
 
 
-## Bonus
-- [Bonus: Hybrid heat equation solver revisited](../heat/hybrid-coarse)
-- [Bonus: Using OpenMP tasks for dynamic parallelization](tasks)

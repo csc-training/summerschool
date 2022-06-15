@@ -1,7 +1,6 @@
 ---
 title:  Introduction to Unix
-author: CSC Summerschool
-date:   2022-06
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 

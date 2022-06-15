@@ -1,18 +1,24 @@
+---
+title:  Documenting and testing
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
+---
+
 # Documenting and testing {.section}
 
 <small>
-Material is partly based on work by Software Carpentry and Code Refinery 
+Material is partly based on work by Software Carpentry and Code Refinery
 licensed under CC BY-SA 4.0
 </small>
 
 # Why to document your code?
 
 - You will forget details
-    - Code that you wrote 6 months ago is often indistinguishable from code 
+    - Code that you wrote 6 months ago is often indistinguishable from code
       that someone else has written.
 - Writing documentation may improve the design of your code
 - Have other people to use (and cite!) your code
-    - If the documentation is not good enough, people will not use it    
+    - If the documentation is not good enough, people will not use it
 - Allow other people to contribute to development
     - Practically impossible without documentation
 - Even within a group, people move in and out 
@@ -47,7 +53,7 @@ licensed under CC BY-SA 4.0
       the defition
         - many tools can generate automatically API documention from comments
     - Non-obvious implementation choices in comments in source code
-- Tools for documentation: RST and Markdown markup languages, wikis, Doxygen, 
+- Tools for documentation: RST and Markdown markup languages, wikis, Doxygen,
   github pages and readthedocs for hosting
 - Good documentation does not save bad code!
 
@@ -69,7 +75,7 @@ GPAW
 <div class=column>
 Runko
 
-- Main structure described in a publication 
+- Main structure described in a publication
 - GitHub Readmes + www-site with sphinx
 - API automatically documented with doxygen+breathe
 - <https://github.com/natj/runko>
@@ -83,9 +89,9 @@ do not constitute science!**
 
 <p>
 
-- Experimental scientist would never conduct an experiment with uncalibrated 
+- Experimental scientist would never conduct an experiment with uncalibrated
   detectors
-- Computational scientist should never conduct simulations with untested 
+- Computational scientist should never conduct simulations with untested
   software
 
 
@@ -146,7 +152,7 @@ do not constitute science!**
 - Behavior can depend on the number of threads and MPI tasks
     - Parallel components should be tested with multiple different parallelization schemes
 - Large scale integration tests can be time consuming
-- Changes in program code may also lead to degradation in performance and 
+- Changes in program code may also lead to degradation in performance and
   scalability
     - Tests should track also the performance
 

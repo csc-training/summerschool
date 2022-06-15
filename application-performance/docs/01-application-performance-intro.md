@@ -1,7 +1,6 @@
 ---
 title:  Introduction to Application Performance
-author: CSC Summerschool
-date:   2022-07
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -11,12 +10,17 @@ lang:   en
 **CSC customer**
 <br>
 <small>
+```
 I’m performing simulations with my Fortran code. It seems to perform much worse
 with MKL library in the new system than with IMSL library in the old system.
+```
 <br>
 <br>
 <br>
+<br>
+```
 No
+```
 </small>
 </div>
 
@@ -25,10 +29,10 @@ No
 <br>
 <br>
 <br>
-<br>
-<br>
 <small>
-Have you profiled your code?  
+```
+Have you profiled your code?
+```
 </small>
 </div>
 
@@ -37,7 +41,7 @@ Have you profiled your code?
 - Profiled the code: 99.9% of the execution time was being spent on these lines:
 
 ```fortran
-do i=1,n          ! Removing these unnecessary loop iterations reduced the 
+do i=1,n          ! Removing these unnecessary loop iterations reduced the
  do j=1,m         ! wall-time of one simulation run from 17 hours to 3 seconds…
     do k=1,fact(x)
       do o=1,nchoosek(x)
@@ -56,7 +60,7 @@ end do
 
 - Obvious benefits
     - Better throughput => more science
-    - Cheaper than new hardware 
+    - Cheaper than new hardware
     - Save energy, compute quota etc.
 - ...and some non-obvious ones
     - Potential cross-disciplinary research with computer science
@@ -93,8 +97,6 @@ end do
 - Use high performance libraries
     - linear algebra (BLAS/LAPACK), FFTs, ...
 - Experiment with compilers and compiler options
-    - There is no single best compiler and set of options for all use
-      cases
 - Experiment with threading options
     - Thread pinning, loop scheduling, ...
 - Optimize the program code
@@ -134,7 +136,7 @@ Time elapsed 343773 ums
 - First step should always be measuring the performance and finding
   performance critical parts
   - Typically small part of the code (`~`10 %) consumes most
-        (`~`90%) of the execution time 
+        (`~`90%) of the execution time
 - Optimize only the parts of code that are relevant for the total
   execution time!
     - “Premature code optimization is the root of all evil”
@@ -160,7 +162,7 @@ Time elapsed 343773 ums
 <div class=column>
 ![](img/test_case.png){.center width=70%}
 </div>
- 
+
 # How to assess application's performance?
 
 <div class=column>
@@ -212,8 +214,8 @@ Time elapsed 343773 ums
       overheads)
         - Single core: 1.99 s
         - All the cores: 2.20 - 2.25 s per core
-<!-- Numbers from the affinity_test code --> 
-- Memory bound applications may benefit from undersubscribing the node 
+<!-- Numbers from the affinity_test code -->
+- Memory bound applications may benefit from undersubscribing the node
 - Lower limit for acceptable scalability between nodes
     - Speedup of 1.5 when doubling number of nodes
 
@@ -292,13 +294,8 @@ $$
 - Intel Performance Snapshot can provide big picture for further
   analysis
     - Other possible tools: gprof, TAU, scalasca, CrayPAT
-    
+
 # Web resources
 
 - Roofline performance model and Empiral Roofline Tool
     - <https://crd.lbl.gov/departments/computer-science/par/research/roofline/>
-
-
-
-
-

@@ -1,7 +1,6 @@
 ---
-title:  "OpenMP declare GPU functions"
-author: CSC - IT Center for Science
-date:   2022-06
+title:  OpenMP declare GPU functions
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -19,7 +18,7 @@ lang:   en
 # Directive: `declare target`
 
 - Define a function to be compiled for an accelerator as well as the host
-- In C/C++ the one puts `declare target` and `end declare target`
+- In C/C++  one puts `declare target` and `end declare target`
   around function declarations
 - In Fortran one uses `!$declare target (name)` form
 - The functions will now be compiled both for host and device execution
