@@ -19,7 +19,7 @@ jam() {
     local args="$@"
     joined=$tmp-joined.pdf
 
-    pdfjoin --outfile $joined -- $args
+    pdfjam --fitpaper true --rotateoversize true --outfile $joined -- $args
     pdfjam --nup 2x4 --a4paper --delta '0.05cm 1.5cm' --scale 0.95 \
         --frame true --outfile $output -- $joined 1-
 }
@@ -63,7 +63,7 @@ do
         fi
         # include the entire A4 PDF as it is
         out=$tmp-$(basename $name)
-        pdfjoin $name $pages_normal --outfile $out
+        pdfjam --fitpaper true --rotateoversize true $name $pages_normal --outfile $out
         add_to_manifest $out
     else
         # select correct page range and add the file to the TODO list
