@@ -1,7 +1,6 @@
 ---
 title:  IO libraries
-author: CSC Summer School
-date:   2022-07
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -22,9 +21,9 @@ lang:   en
 
 - I/O libraries can produce files with standardized format
     - Portable files that can be manipulated with external software
-    - Visualisation much easier for complicated cases 
+    - Visualisation much easier for complicated cases
 - Typically, I/O libraries support also metadata
-    - Self-describing files, pays off in the long run 
+    - Self-describing files, pays off in the long run
 - Parallel I/O is typically build on top of MPI-IO
 - Generic
     - **HDF5**, **NetCDF**, ADIOS, SIONlib
@@ -35,12 +34,12 @@ lang:   en
 
 - Consider the full data cycle
     - Raw IO performance is important but not the sole thing to focus on
-- Standards and common formats in your field    
+- Standards and common formats in your field
     - Weather, PIC, AMR
 - Lots of tuning still required, read the documentation!
     - Understanding the underlying system
 - Future scalability
-    - Dream big, but don't overengineer. 
+    - Dream big, but don't overengineer.
 - File format and data format are different things.
 
 # HDF5
@@ -55,19 +54,19 @@ lang:   en
     - Many tools can work with HDF5 files (Paraview, Matlab, ...)
 - The HDF5 data model and library are complex
 
-# HDF5 example dataset 
+# HDF5 example dataset
 
-![](img/hdf5.png) 
+![](img/hdf5.png)
 
 # HDF5 hierarchy
 
 ![](img/hdf5_structure.jpg)
 
-# Exercise   
+# Exercise
 
 _Discuss within the group_
 
-- Are there any very common data formats in your field 
+- Are there any very common data formats in your field
 - What does your process for the data look like?
     - Keeping track of what is what
     - Is the format hurting or helping your data-analysis

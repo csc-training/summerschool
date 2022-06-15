@@ -1,7 +1,6 @@
 ---
 title:  HDF5
-author: CSC Summer School
-date:   2022-06
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 

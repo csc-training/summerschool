@@ -1,9 +1,7 @@
 ---
-title:    Memory allocations, access, and unified memory
-subtitle: GPU programming with HIP
-author:   CSC Summer School
-date:     2022-07
-lang:     en
+title:  Memory allocations, access, and unified memory
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
 ---
 
 

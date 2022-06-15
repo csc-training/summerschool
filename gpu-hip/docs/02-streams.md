@@ -1,8 +1,7 @@
 ---
-title:    Synchronisation and streams
-author:   CSC Summer School
-date:     2022-07
-lang:     en
+title:  Synchronisation and streams
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
 ---
 
 # Streams

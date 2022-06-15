@@ -1,7 +1,6 @@
 ---
 title:  OpenMP tasks
-author: CSC Training
-date:   2022
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 

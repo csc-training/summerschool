@@ -1,7 +1,6 @@
 ---
-title: Introduction to hybrid programming
-author: CSC Training
-date:   2022
+title:  Introduction to hybrid programming
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -47,7 +46,7 @@ lang:   en
 </div>
 <div class=column>
 
-**OpenMP: Threads**  
+**OpenMP: Threads**
 
 - Threads **share** memory space
 - Threads are created and destroyed (parallel regions)

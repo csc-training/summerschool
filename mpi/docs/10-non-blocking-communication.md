@@ -1,13 +1,12 @@
 ---
 title:  Further communication modes
-author: CSC Training
-date:   2022
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
 # Non-blocking communication {.section}
 
-# Non-blocking communication 
+# Non-blocking communication
 
 - Non-blocking communication operations return immediately and perform sending/receiving in the background
     - `MPI_Isend` & `MPI_Irecv`
@@ -37,7 +36,7 @@ MPI_Irecv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.inpu
   : `buffer`{.output}
     : receive buffer guaranteed to contain the data only after one has
       checked that the operation is over
-  : `request`{.output} 
+  : `request`{.output}
     : a handle that is used when checking if the operation has
       finished
 
@@ -80,7 +79,7 @@ A call to `MPI_Waitall` returns when all operations identified by the array of r
 MPI_Test(`request`{.input}, `flag`{.output}, `status`{.output})
   : `request`{.input}
     : request
-  : `flag`{.output} 
+  : `flag`{.output}
     : True if the operation has completed
   : `status`{.output}
     : status for the completed operation
@@ -92,11 +91,11 @@ A call to `MPI_Test` is non-blocking. It allows one to schedule alternative acti
 # Typical usage pattern
 
 <div class=column>
-**`MPI_Irecv`(<font color="green">ghost_data</font>)**  
-**`MPI_Isend`(<font color="purple">border_data</font>)**    
-**`compute`(<font color="DeepSkyBlue">ghost_independent_data</font>)**   
-**`MPI_Waitall`**  
-**`compute`(<font color="purple">border_data</font>)**  
+**`MPI_Irecv`(<font color="green">ghost_data</font>)**
+**`MPI_Isend`(<font color="purple">border_data</font>)**
+**`compute`(<font color="DeepSkyBlue">ghost_independent_data</font>)**
+**`MPI_Waitall`**
+**`compute`(<font color="purple">border_data</font>)**
 </div>
 <div class=column>
 ![](img/usage_pattern.png){.center width=100%}
@@ -117,10 +116,10 @@ A call to `MPI_Test` is non-blocking. It allows one to schedule alternative acti
 # Wait for non-blocking operations {.split-definition}
 
 **`MPI_Waitany`(`count`{.input}, `requests`{.input}, `index`{.output}, `status`{.output})**
-  : `count`{.input} 
+  : `count`{.input}
     : number of requests
 
-    `requests`{.input} 
+    `requests`{.input}
     : array of requests
 
     `index`{.output}
@@ -135,7 +134,7 @@ A call to `MPI_Waitany` returns when one operation identified by the array of re
 # Wait for non-blocking operations {.split-definition}
 
 MPI_Waitsome(`count`{.input}, `requests`{.input}, `done`{.output}, `index`{.output}, `status`{.output})
-  : `count`{.input} 
+  : `count`{.input}
     : number of requests
 
     `requests`{.input}
@@ -185,7 +184,7 @@ Allows incoming messages to be checked, without actually receiving them.
 
 - Non-blocking collectives (“``I``-collectives”) enable the overlapping of communication and computation together with the benefits of collective communication.
 
-- Same syntax as for blocking collectives, besides 
+- Same syntax as for blocking collectives, besides
     - “``I``” at the front of the name (`MPI_Alltoall` -> `MPI_Ialltoall`)
     - Request parameter at the end of the list of arguments
     - Completion needs to be waited
@@ -200,16 +199,16 @@ Allows incoming messages to be checked, without actually receiving them.
 
 ![](img/non_blocking_large.png){.center width=100%}
 
-![](img/blue_arrow.png){width=1%} (Computation) work 1  
+![](img/blue_arrow.png){width=1%} (Computation) work 1
 ![](img/green_arrow.png){width=1%} (Computation) work 2, not
 involving data in the ``Allreduce`` operation
 
 # Example: Non-blocking broadcasting {.split-definition}
- 
+
 MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `root`{.input}, `comm`{.input}, `request`{.output})
-  : `buf`{.input}`fer`{.output} 
+  : `buf`{.input}`fer`{.output}
     : data to be distributed
-  
+
     `count`{.input}
     : number of entries in buffer
 
@@ -254,7 +253,7 @@ for (int i=1; i<BIGNUM; i++){
 // Start communication described by recv_obj and send_obj
     MPI_Start(&recv_req);
     MPI_Start(&send_req);
-    // Do work, e.g. update the interior domains 
+    // Do work, e.g. update the interior domains
     ...
     // Wait for send and receive to complete
     MPI_Wait(&send_req, MPI_STATUS_IGNORE);
@@ -304,7 +303,7 @@ MPI_Request_free (&recv_req); MPI_Request_free (&send_req);
 
 # Summary
 
-- Non-blocking communication is often useful way to do point-to-point 
+- Non-blocking communication is often useful way to do point-to-point
   communication in MPI.
 - Non-blocking communication core features
     - Open receives with `MPI_Irecv`
@@ -318,7 +317,7 @@ MPI_Request_free (&recv_req); MPI_Request_free (&send_req);
 - In persistent communication the communication pattern remains constant
 - All the parameters for the communication are set up in the initialization phase
     - Communication is started and finalized in separate steps
-- Neighborhood collectives enable communication between neighbors in process topology 
+- Neighborhood collectives enable communication between neighbors in process topology
   with a single MPI call
 - Persistent and neighborhood communication provide optimization opportunities for MPI
   library

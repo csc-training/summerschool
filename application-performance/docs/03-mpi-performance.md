@@ -1,3 +1,9 @@
+---
+title:  MPI performance analysis
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
+---
+
 # MPI performance analysis  {.section}
 
 # Performance analysis cycle
@@ -8,7 +14,7 @@
 
 - Finding out the scalability bottlenecks of parallel application is non-trivial
 - Bottlenecks can be very different with few CPUs than with thousands of CPUs
-- Performance analysis needs to be carried in scalability limit with 
+- Performance analysis needs to be carried in scalability limit with
   large enough test case
 - Efficient tools are needed for the analysis of massively parallel applications
 
@@ -23,7 +29,7 @@
 - Synchronization overhead
 - Non-optimal communication patterns
 
-# Common inefficient communication patterns 
+# Common inefficient communication patterns
 
 ![](img/ineff1.png){.center width=80%}
 
@@ -33,7 +39,7 @@
 
 # MPI performance analysis
 
-- Many tools can automatically identify common problematic communication 
+- Many tools can automatically identify common problematic communication
    patterns
 - Flat profile
     - Time spent in MPI calls during the whole program execution
@@ -47,8 +53,8 @@
 
 - Many tools can provide information about MPI performance problems
     - Manual investigation impossible in massively parallel scale
-- Problems often caused by load imbalance or by badly designed communication 
-  pattern 
+- Problems often caused by load imbalance or by badly designed communication
+  pattern
 
 # Optimization overview
 

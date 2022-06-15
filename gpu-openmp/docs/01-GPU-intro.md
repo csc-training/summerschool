@@ -1,10 +1,8 @@
 ---
 title:  Introduction to GPUs in HPC
-author: CSC Summerschool
-date:   2022-06
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
-
 
 
 # High-performance computing
@@ -277,7 +275,7 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
   {
     c_d[i] = a_d[i] + b_d[i];
   }
-}   
+}
 ```
 
 # Memory model

@@ -1,7 +1,6 @@
 ---
 title:  Parallel debugging
-author: CSC Training
-date:   2022
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -27,15 +26,15 @@ lang:   en
 
 - Print statements in the code
     - Typically cumbersome, especially with compiled languages
-	- Might result in lots of clutter in parallel programs
-	- Order of printouts from different processes is arbitrary
+    - Might result in lots of clutter in parallel programs
+    - Order of printouts from different processes is arbitrary
 - "Standard" debuggers
     - `gdb`: common command line debugger
     - Debuggers within IDEs, e.g. VS Code
     - No proper support for parallel debugging
 - Parallel debuggers
     - **Allinea DDT**, Totalview, gdb4hpc (commercial products)
-	
+
 # Common features in debuggers
 
 - Setting breakpoints and watchpoints
@@ -71,4 +70,3 @@ salloc --nodes=1 --ntasks-per-node=2 --account=project_xxx -p small
 ddt srun ./buggy
 ```
 - VNC remote desktop is recommended for smoother GUI performance
-

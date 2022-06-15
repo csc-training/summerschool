@@ -1,7 +1,6 @@
 ---
 title:  Application design
-author: CSC Summerschool
-date:   2019
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -12,12 +11,12 @@ lang:   en
 <div class=column>
 - Kinetic plasma simulation code
     - Particle-in-Cell with computational particles and electromagnetic fields are in grid
-- Hybrid C++14/Python code 
-    - Domain super-decomposition with MPI 
+- Hybrid C++14/Python code
+    - Domain super-decomposition with MPI
     - Massively parallel with runs on >10k cores
 </div>
 <div class=column>
-    
+
 ![](images/plasma.png){.center width=100%}
 
 </div>
@@ -31,14 +30,14 @@ lang:   en
     - ~20 developers all around world
 </div>
 <div class=column>
-    
+
 ![](images/gpaw-logo.svg){.center width=50%}
 
 ![](images/gpaw.jpg){.center width=50%}
 </div>
 
 
-# Why develop software? 
+# Why develop software?
 
 - To do science
 - To create a product
@@ -46,14 +45,14 @@ lang:   en
 - Supercomputing platforms enable investigating bigger and more complex problems
 
 <div class=column>
-    
+
 - **Do science**
     - Scientific articles
     - Method-oriented articles presenting code and methods
 </div>
 
 <div class=column>
-    
+
 - **Code as a product**
     - Prestige and fame
     - Gateway into projects, collaborations
@@ -67,12 +66,12 @@ lang:   en
 <div class=column>
 - Kinetic plasma simulations are microscopical (<1cm)
     - Bigger simulation domains mean more realistic, larger systems
-- Recently simulated turbulent plasma with 10^10 particles 
+- Recently simulated turbulent plasma with 10^10 particles
     - New physics starts to appear at larger scale
 </div>
 
 <div class=column>
-    
+
 ![](images/current.png){.center width=80%}
 
 </div>
@@ -86,16 +85,16 @@ lang:   en
 # Cases PlasmaBox & GPAW
 
 <div class=column>
-    
+
 PlasmaBox
 
-- New code 
+- New code
 - +1yr of development
 - Allowed to start from scratch and use new technologies
 </div>
 
 <div class=column>
-    
+
 GPAW
 
 - Existing code with basic features mostly working (95 %) in 2005
@@ -117,7 +116,7 @@ GPAW
 # Agile development model
 
 <div class=column>
-    
+
 - Focused on iterative and incremental development
     - Quick prototyping
     - Supports continuous publication
@@ -126,7 +125,7 @@ GPAW
 </div>
 
 <div class=column>
-    
+
 - Development cycle
     - Plan
     - Design
@@ -177,7 +176,7 @@ GPAW
     - Faster coding cycle and less error prone
     - Testing, debugging, and prototyping much easier
 
-# Hybrid codes 
+# Hybrid codes
 
 - Different languages can be interfaced together
     - Best of both worlds
@@ -200,7 +199,7 @@ GPAW
 # Modular code design: programming
 
 - Good code is modular
-    - Encapsulation 
+    - Encapsulation
     - Self-contained functions
     - No global variables, input what you need
 - Modular code takes more time to design but is **lot** easier to extend and understand
@@ -208,7 +207,7 @@ GPAW
 # Modular code design: tools
 
 <div class=column>
-    
+
 - Avoid not invented here syndrome
 - Leverage existing software and libraries
     - Libraries
@@ -221,7 +220,7 @@ GPAW
 </div>
 
 <div class=column>
-    
+
 - Caveats:
     - Is the lib still supported/updated?
     - Do you trust the source, is it widely used
@@ -273,7 +272,7 @@ GPAW
         - 10k cores writing ~TBs of data in seconds is nice for the user but file system might not like it
 
 
-# Summary 
+# Summary
 
 - Software design is all about planning (agile development)
 - Productivity
@@ -281,5 +280,3 @@ GPAW
     - Use existing libraries
     - Use & adopt design, community, and collaboration tools
     - Programming language and design selection
-
-

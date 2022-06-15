@@ -1,7 +1,6 @@
 ---
 title:  Using MPI with multithreading
-author: CSC Training
-date:   2022
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -131,7 +130,7 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
   logical core
 - Operating system may even move the running task from one core to another
     - Can be beneficial for load balancing
-	- For HPC workloads often detrimental as private caches get
+    - For HPC workloads often detrimental as private caches get
       invalidated and NUMA locality is lost
 - User can control where tasks are run via affinity masks
     - Task can be *pinned* to a specific logical core or set of logical cores
@@ -142,10 +141,10 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
     - Limit the process to logical cores 0,3,7:
       <br>
       `numactl --physcpubind=0,3,7 ./my_exe`
-	- Threads "inherit" the affinity of their parent process
+    - Threads "inherit" the affinity of their parent process
 - Affinity of a thread can be set with OpenMP environment variables
     - `OMP_PLACES=[threads,cores,sockets]`
-	- `OMP_PROC_BIND=[true, close, spread, master]`
+    - `OMP_PROC_BIND=[true, close, spread, master]`
 - OpenMP runtime prints the affinity with `OMP_DISPLAY_AFFINITY=true`
 
 # Controlling affinity

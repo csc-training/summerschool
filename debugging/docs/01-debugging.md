@@ -1,6 +1,7 @@
 ---
-title: "Debugging"
-lang: en
+title:  Debugging
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
 ---
 
 # What is debugging?
@@ -77,7 +78,7 @@ icc -check uninit myprog.c
   fully optimized code
     - Compile with *-Gfast*
     - Requires support from both compiler and debugger
-  
+
 # Debuggers {.section}
 
 # What are debuggers?

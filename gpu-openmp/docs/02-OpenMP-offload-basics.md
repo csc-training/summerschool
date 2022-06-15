@@ -1,7 +1,6 @@
 ---
 title:  "OpenMP offload: introduction"
-author: CSC - IT Center for Science
-date:   2022-06
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -473,4 +472,4 @@ evolve:
 - NVIDIA HPC SDK Documentation <br>
   <https://docs.nvidia.com/hpc-sdk/compilers/hpc-compilers-user-guide/>
 - Cray Compilers Documentation <br>
-  <[https://dcray/hpc-compilers-user-guide/](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=index.html)> 
+  <[https://dcray/hpc-compilers-user-guide/](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=index.html)>

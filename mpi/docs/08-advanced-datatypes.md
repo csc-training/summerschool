@@ -1,7 +1,6 @@
 ---
-title:  Typemaps & describing heterogeneous data 
-author: CSC Summerschool
-date:   2022-06
+title:  "Typemaps & describing heterogeneous data"
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 

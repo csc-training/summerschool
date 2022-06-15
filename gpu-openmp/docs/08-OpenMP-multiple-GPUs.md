@@ -1,7 +1,6 @@
 ---
 title:  "OpenMP: multi-GPU programming"
-author: CSC - IT Center for Science
-date:   2021
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 

@@ -1,7 +1,6 @@
 ---
 title:  OpenMP data movement
-author: CSC Summerschool
-date:   2022-06
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -343,14 +342,14 @@ class Vector {
 <div class=column>
 `if(condition)`
   : `-`{.ghost}
-  
+
 - Do nothing if condition is false
 
 <br>
 
 `delete(var-list)`
   : `-`{.ghost}
- 
+
 - Deallocate memory on the device
 - In depth: *dynamic* reference count decremented, and deallocation
   happens if it goes to zero
@@ -413,7 +412,7 @@ int maxit=100;
         /* Computations on device */
         acc_compute(a);
         #pragma acc update self(a) \
-	            if(iter % 10 == 0)
+                if(iter % 10 == 0)
     }
 }
 ```
@@ -432,7 +431,7 @@ integer, parameter :: maxit = 100
     do iter=1,maxit
         ! Computations on device
         call acc_compute(a)
-        !$acc update self(a) 
+        !$acc update self(a)
         !$acc& if(mod(iter,10)==0)
     end do
 !$acc end data

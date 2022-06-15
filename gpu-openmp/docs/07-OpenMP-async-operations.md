@@ -1,7 +1,6 @@
 ---
-title:  "OpenMP asynchronous operations"
-author: CSC - IT Center for Science
-date:   2022-06
+title:  OpenMP asynchronous operations
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 

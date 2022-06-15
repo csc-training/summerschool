@@ -1,7 +1,6 @@
 ---
-title:  "OpenMP interoperability with libraries"
-author: CSC - IT Center for Science
-date:   2022-06
+title:  OpenMP interoperability with libraries
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 

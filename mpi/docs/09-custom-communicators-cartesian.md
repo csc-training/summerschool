@@ -1,7 +1,6 @@
 ---
 title:  Process topologies
-author: CSC Training
-date:   2022
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -28,14 +27,14 @@ lang:   en
     - In most implementations main advantage is, however, better programmability
 - Topologies are defined by creating special user defined
   communicators
-  
+
 # Virtual topologies
 
 - MPI topologies are virtual, *i.e.* they have necessarily no relation
   to the physical structure of the computer
     - The assignment of processes to physical CPU cores happens
       typically outside MPI (and before MPI is initialized)
-	- The physical structure can in principle be taken account when
+    - The physical structure can in principle be taken account when
       creating topologies, however, MPI implementations may not
       implement that in practice
 - A communication pattern can be represented by a graph: nodes present
@@ -156,10 +155,10 @@ call mpi_cart_coords(comm2d, my_id, 2, coords, rc)
 - `source` and `dest` are defined as for a shift like operation:
   receive from source, send to destination
     $$
-	 \text{displ = 1}  \Longrightarrow 
-	 \begin{cases}
-	   \text{source = mycoord - 1} \\
-	   \text{dest = mycoord + 1}
+     \text{displ = 1}  \Longrightarrow
+     \begin{cases}
+       \text{source = mycoord - 1} \\
+       \text{dest = mycoord + 1}
      \end{cases}
     $$
 - With a non-periodic grid, source or dest can land outside of the grid

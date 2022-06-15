@@ -1,7 +1,6 @@
 ---
 title:  Introduction to GPUs in HPC
-author: CSC Summerschool
-date:   2019-07
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -26,7 +25,7 @@ lang:   en
 <div class="column">
 - Achieving performance has been based on various strategies throughout the years
     - Frequency, vectorization, multinode, multicore ...
-    - Now performance is mostly limited by power consumption 
+    - Now performance is mostly limited by power consumption
 - Accelerators provide compute resources based on a very high level of parallelism to reach
   high performance at low relative power consumption
 </div>
@@ -79,7 +78,7 @@ lang:   en
     - Smaller than main memory (32 GB in Puhti)
     - Very high bandwidth (up to 900 GB/s)
     - Latency high compared to compute performance
-- Data must be copied over the PCIe bus 
+- Data must be copied over the PCIe bus
 
 </div>
 <div class="column">
@@ -90,7 +89,7 @@ lang:   en
 
 
 
-# GPU architecture 
+# GPU architecture
 
 - Designed for running tens of thousands of threads simultaneously on
   thousands of cores
@@ -107,7 +106,7 @@ lang:   en
     - 2560 double precision cores
     - 640 tensor cores
 - Common L2 cache (6144 KB) for all multi processors
-- HBM2 memory, typically 16 GB or 32 GB 
+- HBM2 memory, typically 16 GB or 32 GB
 </div>
 
 <div class="column">
@@ -131,7 +130,7 @@ lang:   en
 - 32 double precision cores
 - 64 integer cores
 - 8 Tensore cores
-- 128 KB memory block for L1 and shared memory 
+- 128 KB memory block for L1 and shared memory
     - 0 - 96 KB can be set to user managed shared memory
     - The rest is L1
 - 65536 registers - enables the GPU to run a very large number of threads
@@ -149,7 +148,7 @@ lang:   en
 - In a warp 32 threads compute the same instruction on different data
   (SIMT)
     - Warps are further collected into thread blocks; each executed on one SM
-    - In case of divergence (if...) computation is done one branch at a time 
+    - In case of divergence (if...) computation is done one branch at a time
 
 ![](img/warps.png){ .center width=60% }
 
@@ -176,7 +175,7 @@ lang:   en
 1. Use existing GPU applications
 2. Use accelerated libraries
 3. Directive based methods
-    - OpenMP 
+    - OpenMP
     - **OpenACC**
 4. Use lower level language
     - CUDA
@@ -236,4 +235,3 @@ More difficult, but more opportunities
 - Programming GPUs
     - CUDA, HIP
     - Directive based methods
-

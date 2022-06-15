@@ -1,7 +1,6 @@
 ---
-title:  Point-to-point communication 
-author: CSC Training
-date:   2021
+title:  Point-to-point communication
+event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
@@ -39,7 +38,7 @@ lang:   en
     - An identification number for the message (*tag*)
     - The ranks of the *source* and *destination* process
 
-# Case study: parallel sum 
+# Case study: parallel sum
 
 <div class=column>
 ![](img/case_study_left-01.png){.center width=45%}
@@ -48,19 +47,19 @@ lang:   en
 <div class=column>
 - Array initially on process #0 (P0)
 - Parallel algorithm
-    * **Scatter**  
+    * **Scatter**
     Half of the array is sent to process 1
 
-    * **Compute**  
+    * **Compute**
     P0 & P1 sum independently their segments
 
-    * **Reduction**  
+    * **Reduction**
     Partial sum on P1 sent to P0
     P0 sums the partial sums
 
 </div>
 
-# Case study: parallel sum 
+# Case study: parallel sum
 
 <div class=column>
 ![](img/case_study_left-02.png){.center width=45%}
@@ -76,7 +75,7 @@ P1 issues MPI_Recv to receive half of the array from P0
 </div>
 
 
-# Case study: parallel sum 
+# Case study: parallel sum
 
 <div class=column>
 ![](img/case_study_left-03.png){.center width=45%}
@@ -90,7 +89,7 @@ P1 issues MPI_Recv to receive half of the array from P0
 P0 issues an MPI_Send to send the lower part of the array to P1
 </div>
 
-# Case study: parallel sum 
+# Case study: parallel sum
 
 <div class=column>
 ![](img/case_study_left-04.png){.center width=45%}
@@ -104,7 +103,7 @@ P0 issues an MPI_Send to send the lower part of the array to P1
 Both P0 & P1 compute their partial sums and store them locally
 </div>
 
-# Case study: parallel sum 
+# Case study: parallel sum
 
 <div class=column>
 ![](img/case_study_left-05.png){.center width=45%}
@@ -118,7 +117,7 @@ Both P0 & P1 compute their partial sums and store them locally
 P0 issues an MPI_Recv operation for receiving P1’s partial sum
 </div>
 
-# Case study: parallel sum 
+# Case study: parallel sum
 
 <div class=column>
 ![](img/case_study_left-06.png){.center width=45%}
@@ -132,7 +131,7 @@ P0 issues an MPI_Recv operation for receiving P1’s partial sum
 P1 sends the partial sum to P0
 </div>
 
-# Case study: parallel sum 
+# Case study: parallel sum
 
 <div class=column>
 ![](img/case_study_left-07.png){.center width=45%}
@@ -151,7 +150,7 @@ P0 computes the total sum
 MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
   : `buffer`{.input}
     : The data to be sent
-    
+
     `count`{.input}
     : Number of elements in buffer
 
@@ -179,17 +178,17 @@ MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, 
 MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
   : `buffer`{.output}
     : Buffer for storing received data
-    
+
     `count`{.input}
     : Number of elements in buffer, not the number of element that are
       actually received
 
-    `datatype`{.input} 
+    `datatype`{.input}
     : Type of each element in buffer
-    
+
     `source`{.input}
     : Sender of the message
-    
+
     `tag`{.input}
     : Number identifying the message
 
@@ -210,18 +209,18 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - The "buffer" arguments are memory addresses
 - MPI assumes contiguous chunk of memory
     - `count` elements are send starting from the address
-	- received elements are stored starting from the address
+    - received elements are stored starting from the address
 - In Fortran, arguments are passed by reference, *i.e.* variables can be
   passed as such
     - Note: be careful if passing non-contiguous array segmens such as `a(1, 1:N)`
 - In C/C++ "buffer" is pointer
     - `data()` method of C++ `<array>` and `<vector>` containers can be used
-   
+
 # MPI datatypes
 
 - On low level, MPI sends and receives stream of bytes
 - MPI datatypes specify how the bytes should be interpreted
-	- Allows data conversios in heterogenous environments (*e.g.*
+    - Allows data conversios in heterogenous environments (*e.g.*
       little endian to big endian)
 - MPI has a number of predefined basic datatypes corresponding to C or
   Fortran datatypes
@@ -245,7 +244,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
     - If deadlocked, the program is stuck forever
 
 
-# Status parameter 
+# Status parameter
 
 - The status parameter in `MPI_Recv` contains information about the
   received data after the call has completed, e.g.
@@ -258,17 +257,17 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 # Status parameter
 
-- Received elements  
-&emsp;Use the function  
+- Received elements
+&emsp;Use the function
 &emsp;**`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
-- Tag of the received message  
-&emsp;C: `status.MPI_TAG`  
+- Tag of the received message
+&emsp;C: `status.MPI_TAG`
 &emsp;Fortran: `status%mpi_tag` (old version `status(MPI_TAG)`)
-- Rank of the sender  
-&emsp;C: `status.MPI_SOURCE`  
+- Rank of the sender
+&emsp;C: `status.MPI_SOURCE`
 &emsp;Fortran: `status%mpi_source` (old version `status(MPI_SOURCE)`)
 
-# Summary 
+# Summary
 
 - Point-to-point communication = messages are sent between two MPI
   processes
@@ -277,4 +276,3 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
     - `MPI_Send` and `MPI_Recv`
 - Status parameter of `MPI_Recv` contains information about the
   message after the receive is completed
-

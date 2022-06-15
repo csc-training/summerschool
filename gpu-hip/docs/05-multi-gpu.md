@@ -1,9 +1,7 @@
 ---
-title:    Multi-GPU programming and HIP+MPI
-subtitle: GPU programming with HIP
-author:   CSC Summer School
-date:     2022-07
-lang:     en
+title:  Multi-GPU programming and HIP+MPI
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
 ---
 
 # Outline

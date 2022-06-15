@@ -1,9 +1,7 @@
 ---
-title:    Fortran and HIP
-subtitle: GPU programming with HIP
-author:   CSC Summer School
-date:     2022-07
-lang:     en
+title:  Fortran and HIP
+event:  CSC Summer School in High-Performance Computing 2022
+lang:   en
 ---
 
 # Fortran
