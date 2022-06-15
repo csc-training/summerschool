@@ -1,21 +1,21 @@
-SOURCES=$(wildcard *.md)
-TARGETS=$(patsubst %.md,%.html,$(SOURCES))
-PDFS=$(patsubst %.md,%.pdf,$(SOURCES))
+FACTORY=slidefactory.sif
+OPTIONS=
 
-SINGULARITY=singularity
-SARGS=run
-SIMAGE=../../slidefactory.simg
+SRC=$(wildcard *.md)
+HTML=$(patsubst %.md,%.html,$(SRC))
+PDF=$(patsubst %.md,%.pdf,$(SRC))
 
-all: $(TARGETS)
+.PHONY: html pdf clean
 
-pdfs: $(PDFS)
+html: $(HTML)
+
+pdf: $(PDF)
+
+clean:
+	-rm -f $(HTML) $(PDF)
 
 %.html: %.md
-	$(SINGULARITY) $(SARGS) $(SIMAGE) $<
+	$(FACTORY) $(OPTIONS) $<
 
-%.pdf: %.html
-	chromium-browser --headless --print-to-pdf=$@ file://`pwd`/$(<)?print-pdf
-
-.PHONY: clean
-clean:
-	-/bin/rm -f *.html *~
+%.pdf: %.md
+	$(FACTORY) $(OPTIONS) --pdf $<
