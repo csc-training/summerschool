@@ -15,18 +15,18 @@ contains
     integer :: ierr
 
     ! Send to left, receive from right
-    call mpi_send(field0%data(:, 1), field0%nx + 2, MPI_DOUBLE_PRECISION, &
-         & parallel%nleft, 11, MPI_COMM_WORLD, ierr)
-
-    call mpi_recv(field0%data(:, field0%ny + 1), field0%nx + 2, MPI_DOUBLE_PRECISION, &
-         & parallel%nright, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierr)
+    call mpi_sendrecv(field0%data(:, 1), field0%nx + 2, MPI_DOUBLE_PRECISION, &
+         & parallel%nleft, 11, &
+         & field0%data(:, field0%ny + 1), field0%nx + 2, MPI_DOUBLE_PRECISION, &
+         & parallel%nright, 11, &
+         & MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierr)
 
     ! Send to right, receive from left
-    call mpi_send(field0%data(:, field0%ny), field0%nx + 2, MPI_DOUBLE_PRECISION, &
-         & parallel%nright, 12, MPI_COMM_WORLD, ierr)
-
-    call mpi_recv(field0%data(:, 0), field0%nx + 2, MPI_DOUBLE_PRECISION,&
-         & parallel%nleft, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierr)
+    call mpi_sendrecv(field0%data(:, field0%ny), field0%nx + 2, MPI_DOUBLE_PRECISION, &
+         & parallel%nright, 12, &
+         & field0%data(:, 0), field0%nx + 2, MPI_DOUBLE_PRECISION,&
+         & parallel%nleft, 12, &
+         & MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierr)
 
   end subroutine exchange
 

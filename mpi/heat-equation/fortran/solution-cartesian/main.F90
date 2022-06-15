@@ -50,10 +50,8 @@ program heat_solve
   start =  mpi_wtime()
 
   do iter = 1, nsteps
-     call exchange_init(previous, parallelization)
-     call evolve_interior(current, previous, a, dt)
-     call exchange_finalize(parallelization)
-     call evolve_edges(current,previous, a, dt)
+     call exchange(previous, parallelization)
+     call evolve(current, previous, a, dt)
      if (mod(iter, image_interval) == 0) then
         call write_field(current, iter, parallelization)
      end if

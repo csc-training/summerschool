@@ -2,6 +2,7 @@
 module heat
   use mpi_f08
   use iso_fortran_env, only : REAL64
+
   implicit none
 
   integer, parameter :: dp = REAL64
@@ -21,7 +22,6 @@ module heat
      integer :: size
      integer :: rank
      integer :: nleft, nright  ! Ranks of neighbouring MPI tasks
-     type(mpi_request) :: requests(4)  ! Non-blocking communication handles
   end type parallel_data
 
 contains
@@ -51,7 +51,7 @@ contains
   end subroutine set_field_dimensions
 
   subroutine parallel_setup(parallel, nx, ny)
-    use mpi_f08
+    use mpi
 
     implicit none
 

@@ -24,14 +24,14 @@ contains
 
     if (parallel%rank == 0) then
        allocate(full_data(curr%nx_full, curr%ny_full))
-       ! Copy rank #0 data to the global array
+       ! Copy rand #0 data to the global array
        full_data(1:curr%nx, 1:curr%ny) = curr%data(1:curr%nx, 1:curr%ny)
 
        ! Receive data from other ranks
        do p = 1, parallel%size - 1
           call mpi_recv(full_data(1:curr%nx, p*curr%ny + 1:(p + 1) * curr%ny), &
                & curr%nx * curr%ny, MPI_DOUBLE_PRECISION, p, 22, &
-               & MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierr)
+               & parallel%comm, MPI_STATUS_IGNORE, ierr)
        end do
        write(filename,'(A5,I4.4,A4,A)')  'heat_', iter, '.png'
        stat = save_png(full_data, curr%nx_full, curr%ny_full, filename)
@@ -39,7 +39,7 @@ contains
     else
        ! Send data
        call mpi_send(curr%data(1:curr%nx, 1:curr%ny), curr%nx * curr%ny, MPI_DOUBLE_PRECISION, 0, 22, &
-            & MPI_COMM_WORLD, ierr)
+            & parallel%comm, ierr)
     end if
 
   end subroutine write_field
@@ -58,7 +58,7 @@ contains
     character(len=85), intent(in) :: filename
     type(parallel_data), intent(out) :: parallel
 
-    integer :: nx, ny, i, p, ierr
+    integer :: nx, ny, i, ierr
     character(len=2) :: dummy
 
     real(dp), dimension(:,:), allocatable :: full_data, inner_data
@@ -81,22 +81,10 @@ contains
        do i = 1, nx
           read(10, *) full_data(i, 1:ny)
        end do
-
-       inner_data = full_data(1:field0%nx, 1:field0%ny)
-
-       ! Send data to other ranks
-       do p = 1, parallel%size - 1
-          call mpi_send(full_data(1:field0%nx, p*field0%ny + 1:(p + 1) * field0%ny), &
-               & field0%nx * field0%ny, MPI_DOUBLE_PRECISION, p, 22, &
-               & MPI_COMM_WORLD, ierr)
-       end do
-    else
-       ! Receive data
-       call mpi_recv(inner_data, field0%nx * field0%ny, & 
-               & MPI_DOUBLE_PRECISION, 0, 22, MPI_COMM_WORLD, &
-               & MPI_STATUS_IGNORE, ierr)
     end if
 
+    call mpi_scatter(full_data, nx * field0%ny, MPI_DOUBLE_PRECISION, inner_data, &
+         & nx * field0%ny, MPI_DOUBLE_PRECISION, 0, parallel%comm, ierr)
     ! Copy to full array containing also boundaries
     field0%data(1:field0%nx, 1:field0%ny) = inner_data(:,:)
 
