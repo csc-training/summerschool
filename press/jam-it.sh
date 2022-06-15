@@ -1,6 +1,6 @@
 #!/bin/bash
 # file containing a list of input files (@ marks A4 PDFs == include as-is)
-index=index
+index=index.jam
 # output file name
 output=lecture-slides.pdf
 
