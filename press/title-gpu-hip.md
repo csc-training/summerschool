@@ -2,7 +2,7 @@
 theme: 'csc-2016-portrait'
 ---
 
-# Application design {.section}
+# GPU Programming: HIP {.section}
 
 Jaro Hokkanen<br>
-Henrik Nortamo
+Martti Louhivuori

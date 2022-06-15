@@ -2,7 +2,7 @@
 theme: 'csc-2016-portrait'
 ---
 
-# Parallel input/output {.section}
+# GPU Programming: OpenMP offload {.section}
 
 Cristian-Vasile Achim<br>
-Henrik Nortamo
+Martti Louhivuori
