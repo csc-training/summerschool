@@ -1,7 +1,7 @@
 ---
 title:  MPI reference
 author: CSC Training
-date:   2019-02
+date:   2021
 lang:   en
 ---
 
@@ -150,12 +150,53 @@ int MPI_Waitall(int count, MPI_Request *array_of_requests, MPI_Status *array_of_
 int MPI_Cart_create(MPI_Comm old_comm, int ndims, int *dims, int *periods, int reorder, 
                     MPI_Comm *comm_cart)
 
+int MPI_Dims_create(int ntasks, int ndims, int *dims);
+
 int MPI_Cart_coords(MPI_Comm comm, int rank, int maxdim, int *coords)
 
 int MPI_Cart_rank(MPI_Comm comm, int *coords, int rank)
 
 int MPI_Cart_shift( MPI_Comm comm, int direction, int displ, int *low, int *high )
 ```
+
+# C interfaces for persistent communication
+
+```c
+int MPI_Send_init(void *buf, int count, MPI_Datatype datatype, int dest, int tag, 
+              MPI_Comm comm, MPI_Request *request )
+
+int MPI_Recv_init(void *buf, int count, MPI_Datatype datatype, int source, int tag, 
+              MPI_Comm comm, MPI_Request *request )
+
+int MPI_Start(MPI_Request *request)
+
+int MPI_Startall(int count, MPI_Request *array_of_requests);
+```
+
+# C interfaces for neighborhood collectives
+
+```c
+int MPI_Neighbor_allgather(void* sendbuf, int sendcount, MPI_Datatype sendtype, 
+                           void* recvbuf, int recvcount, MPI_datatype recvtype, MPI_Comm comm);
+
+int MPI_Neighbor_allgatherv(void* sendbuf, int sendcount, MPI_Datatype sendtype, 
+                            void* recvbuf, int* recvcounts, int* displs, MPI_datatype recvtype,
+                            MPI_Comm comm);
+
+int MPI_Neighbor_alltoall(void* sendbuf, int sendcount, MPI_Datatype sendtype, 
+                          void* recvbuf, int recvcount, MPI_datatype recvtype,
+                          MPI_Comm comm);
+
+int MPI_Neighbor_alltoallv(void* sendbuf, int* sendcounts, int* senddispls, MPI_Datatype sendtype, 
+                           void* recvbuf, int* recvcounts, int* recvdispls, MPI_datatype recvtype,
+                           MPI_Comm comm);
+
+int MPI_Neighbor_alltoallw(void* sendbuf, int* sendcounts, int* senddispls, MPI_Datatype* sendtypes,
+                           void* recvbuf, int* recvcounts, int* recvdispls, MPI_datatype* recvtypes,
+                           MPI_Comm comm);
+
+```
+
 
 # C interfaces for datatype routines
 
@@ -242,6 +283,11 @@ int MPI_File_write_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count,
                           MPI_Datatype datatype, MPI_Status *status)
 ```
 
+# C interfaces for environmental inquiries
+
+```c
+int MPI_Get_processor_name(char *name, int *resultlen)
+```
 
 # Fortran interfaces {.section}
 
@@ -491,6 +537,9 @@ mpi_cart_create(old_comm, ndims, dims, periods, reorder, comm_cart, ierror)
   type(mpi_comm) :: old_comm, comm_cart
   logical :: reorder, periods(:)
 
+mpi_dims_create(ntasks, ndims, dims, ierror)
+  integer :: ntasks, ndims, dims(:), ierror
+
 mpi_cart_coords(comm, rank, maxdim, coords, ierror) 
   integer :: rank, maxdim, coords(:), ierror
   type(mpi_comm) :: comm
@@ -502,6 +551,77 @@ mpi_cart_rank(comm, coords, rank, ierror)
 mpi_cart_shift(comm, direction, displ, low, high, ierror) 
   integer :: direction, displ, low, high, ierror
   type(mpi_comm) :: comm
+```
+
+# Fortran interfaces for persistent communication
+
+<small>
+```fortran
+mpi_send_init(buf, count, datatype, dest, tag, comm, request,ierror)
+  <type> :: buf(*)
+  integer :: count, dest, tag, ierror
+  type(mpi_datatype) :: datatype
+  type(mpi_request) :: request
+  type(mpi_comm) :: comm
+
+mpi_recv_init(buf, count, datatype, source, tag, comm, request,ierror)
+  <type> :: buf(*)
+  integer :: count, source, tag, ierror
+  type(mpi_datatype) :: datatype
+  type(mpi_request) :: request
+  type(mpi_comm) :: comm
+
+mpi_start(request, ierror)
+  integer :: ierror
+  type(mpi_request) :: request
+
+mpi_startall(count, array_of_requests, ierror)
+  integer :: count, ierror
+  type(mpi_request) :: array_of_requests(:)
+```
+</small>
+
+# Fortran interfaces for neighborhood collectives
+
+```fortran
+mpi_neighbor_allgather(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, comm, ierror) 
+  <type> :: sendbuf(*), recvbuf(*)
+  integer :: sendcount, recvcount, ierror
+  type(mpi_datatype) :: sendtype, recvtype
+  type(mpi_comm) :: comm
+
+mpi_neighbor_allgatherv(sendbuf, sendcount, sendtype, recvbuf, recvcounts, displs, recvtype, &
+                        comm, ierror) 
+  <type> :: sendbuf(*), recvbuf(*)
+  integer :: sendcount, recvcounts(:), displs(:), ierror
+  type(mpi_datatype) :: sendtype, recvtype
+  type(mpi_comm) :: comm
+
+mpi_neighbor_alltoall(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, comm, ierror) 
+  <type> :: sendbuf(*), recvbuf(*)
+  integer :: sendcount, recvcount, ierror
+  type(mpi_datatype) :: sendtype, recvtype
+  type(mpi_comm) :: comm
+
+```
+
+# Fortran interfaces for neighborhood collectives
+
+```fortran
+mpi_neighbor_alltoallv(sendbuf, sendcounts, sendtype, senddispls, &
+                       recvbuf, recvcounts, recvdispls, recvtype, comm, ierror) 
+  <type> :: sendbuf(*), recvbuf(*)
+  integer :: sendcounts(:), recvcounts(:), senddispls(:), recvdispls(:), ierror
+  type(mpi_datatype) :: sendtype, recvtype
+  type(mpi_comm) :: comm
+
+mpi_neighbor_alltoallw(sendbuf, sendcounts, sendtypes, senddispls, &
+                       recvbuf, recvcounts, recvdispls, recvtypes, comm, ierror) 
+  <type> :: sendbuf(*), recvbuf(*)
+  integer :: sendcounts(:), recvcounts(:), senddispls(:), recvdispls(:), ierror
+  type(mpi_datatype) :: sendtypes(:), recvtypes(:)
+  type(mpi_comm) :: comm
+
 ```
 
 
@@ -668,4 +788,11 @@ mpi_file_write_at_all(fh, offset, buf, count, datatype, status, ierror)
   type(mpi_file) :: fh
   type(mpi_datatype) :: datatype
   type(mpi_status) :: status
+```
+# Fortra interfaces for environmental inquiries
+
+```fortran
+mpi_get_processor_name(name, resultlen, ierror)
+  character(len=MPI_MAX_PROCESSOR_NAME) :: name
+  integer :: resultlen, ierror
 ```
