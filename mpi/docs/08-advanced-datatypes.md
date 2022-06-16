@@ -134,7 +134,6 @@ struct ParticleStruct {
 
 struct ParticleStruct particle[1000];
 ...
-
 MPI_Aint disp[3];
 MPI_Get_address(&particle[0].charge, &disp[0]);
 MPI_Get_address(&particle[0].coords, &disp[1]);
