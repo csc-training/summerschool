@@ -6,7 +6,7 @@ lang:   en
 
 # What is high-performance computing?
 
-* Utilising computing power that is much larger than available in typical desktop computer
+* Utilising computing power that is much larger than available in a typical desktop computer
 * Performance of HPC systems (i.e. supercomputers) is often measured in floating point operations per second (flop/s)
     - For software, other measures can be more meaningful
 * Currently, the most powerful system reaches > $10^{18}$ flop/s (1 Eflop / s)
@@ -37,7 +37,7 @@ lang:   en
 # Application areas
 
 * Fundamental sciences such as particle physics and cosmology
-* Climate, weather and earth sciences
+* Climate, weather and Earth sciences
 * Life sciences and medicine
 * Chemistry and material science
 * Energy, e.g oil and gas exploration and fusion research
@@ -60,7 +60,7 @@ lang:   en
 
 <div class=column>
 * Modeling particles in airflows
-* A large part of the calculations used for solving turbulence
+* A large part of the calculations used for solving turbulent flow
 * A third of Puhti was reserved for running the simulations
 * The results have had an impact on e.g. ventilation instructions and the use of masks
 </div>
@@ -136,9 +136,9 @@ lang:   en
 
 # Anatomy of a supercomputer
 
-* Supercomputers consist of nodes connected with high-speed network
+* Supercomputers consist of nodes connected by a high-speed network
     - Latency `~`1 µs, bandwidth `~`20 GB / s
-* A node can contain several multicore CPUS
+* A node can contain several multicore CPU's
 * Additionally, a node can contain one or more accelerators
 * Memory within the node is directly usable by all CPU cores
 
@@ -174,10 +174,10 @@ lang:   en
 # Cloud computing and HPC
 
 * Suitability of cloud computing for HPC depends heavily on application
-    - Single node performance is often ok
+    - Single node performance is often sufficient
 * Virtualization adds overhead especially for the networking
-    - Some providers offer high-speed interconnects with a higher price
-* Moving data out from the cloud can be expensive
+    - Some providers offer high-speed interconnects at a higher price
+* Moving data out from the cloud can be time-consuming
 * Currently, cloud computing is not very cost-effective solution for most large scale HPC simulations
 
 
@@ -247,7 +247,7 @@ lang:   en
 
 <div width=55% class=column>
 * Load imbalance
-    - Distribution of workload to different cores varies
+    - Variation in workload over different cores
 * Parallel overheads
     - Additional operations which are not present in serial calculation
     - Synchronization, redundant computations, communications
@@ -269,7 +269,7 @@ lang:   en
       or Fortran
 - For some applications there are high-level frameworks with
   interfaces to multiple languages
-    - SYCL, Kokkos, Petsc, Trilinos
+    - SYCL, Kokkos, PETSc, Trilinos
     - TensorFlow, PyTorch for deep learning
     - Spark for MapReduce
 

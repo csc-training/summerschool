@@ -13,7 +13,7 @@ lang:   en
 - Number of iterations in a loop must be constant
     - No while loops or early exits in for/do loops
 - All the threads have to participate in workshare
-- OpenMP tasks enable parallelization of irregular and dynamical patterns
+- OpenMP tasks enable parallelisation of irregular and dynamical patterns
     - While loops
     - Recursion
 
