@@ -120,7 +120,7 @@ CPU vs Accelerator
 # Advance feature & Performance considerations
 
 - Memory accesses:
-   - data resides in the GPU memory; maximum performance is achieved when reading/writing is done in continuous manner
+   - data resides in the GPU memory; maximum performance is achieved when reading/writing is done in continuous blocks
    - very fast on-chip memory can be used as a user programmable cache
 - *Unified Virtual Addressing* provides unified view for all memory
 - Asynchronous calls can be used to overlap transfers and computations.
