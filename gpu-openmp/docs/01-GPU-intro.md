@@ -52,10 +52,6 @@ CPU vs Accelerator
 ![ <span style=" font-size:0.5em;">https://github.com/karlrupp/cpu-gpu-mic-comparison</span> ](img/comparison.png)
 
 
-# What's different?
-
-![](img/gpu-devotes-more-transistors-to-data-processing.png)
-
 # Different design philosophies
 
 <div class="column">
@@ -90,16 +86,11 @@ CPU vs Accelerator
 
 
 # Lumi - Pre-exascale system in Finland
-<div class="column">
-![](img/lumi1.png){.center width=65%}
-</div>
-<div class="column">
-![](img/lumi2.png){.center width=65%}
-</div>
+
+ ![](img/lumi.png){.center width=55%}
 
 
-
-# Heterogeneous CPU-GPU System
+# Accelerator model today
 
 <div class="column">
 - Connected to CPUs via PCIe
@@ -115,216 +106,24 @@ CPU vs Accelerator
 ![](img/gpu-bws.png){width=100%}
 </div>
 
+#  Heterogeneous Programming Model
 
+- GPUs are co-processors to the CPU
+- The CPU controls the work flow:
+  - makes all the calls
+  - allocates and deallocates the memory on GPUs
+  - handles the data transfers between CPU and GPUs
+  - delegates the highly-parallel work to the GPU
+- The GPU code is executed by doing calls to functions (kernels) using thousands of threads running on thousands of cores
+- The kernel calls are asynchronous
 
-# Heterogeneous Programming
+# Advance feature & Performance considerations
 
-<div class="column" width=65%>
-
-- CPU (host) and GPU (device) codes are mixed
-- all calls are made from host
-- separate address spaces
-- host allocates the memory
-- host handles the memory transfers between CPU and GPU
-- control is return to the host after a kernel calls
-- kernels are executed sequentially
-
-</div>
-
-<div class="column" width=33%>
-
-![](img/heteprogra.jpeg){.center width=85%}
-
-</div>
-
-# GPU Autopsy. Nvidia Volta
-
-<div class="column">
-- 80 streaming multi processor units (SM), each comprising many smaller Cuda cores
-    - 5120 single precision cores
-    - 2560 double precision cores
-    - 640 tensor cores
-- Common L2 cache (6144 KB) for all multi processors
-- HBM2 memory, typically 16 GB or 32 GB
-</div>
-
-<div class="column">
-![](img/volta-architecture.png){ width=100% }
-</div>
-
-# GPU Autopsy. Nvidia Volta Streaming Multiprocessor
-
-<div class="column" width=70%>
-
-- 64 single precision cores
-- 32 double precision cores
-- 64 integer cores
-- 8 Tensor cores
-- 128 KB memory block for L1 and shared memory
-    - 0 - 96 KB can be set to user managed shared memory
-    - The rest is L1
-- 65536 registers - enables the GPU to run a very large number of threads
-</div>
-<div class="column" width=28%>
-
-![](img/volta-sm-architecture.png){ .center width=150% }
-
-</div>
-
-
-
-# Thread Hierarchy. SIMT
-
-<div class="column" width=55%>
-
-- Threads are executed on scalar processors
-- Blocks are executed on multiprocessors
-- Several blocks can reside on one multiprocessor (limited by the local resources)
-- Kernel is executed as a grid of threads block
-- Only one kernel is executed on a device at one time
-
-
-</div>
-
-<div class="column" width=43%>
-
-![](img/ThreadExecution.jpg){.center width=100%}
-</div>
-
-
-# Thread Scheduling
-
-
-<div class="column">
-
-- Warps (waves) of 32 (64) parallel threads
-- Consecutive, increasing thread IDs
-- All executing one common instruction at a time
-- Conditional  branches are executed serially
-- Memory accesses are per warp (wave)
-
-</div>
-
-<div class="column">
-
-![](img/Loom.jpeg){width=110%}
-
-</div>
-
-# CUDA C /HIP C code example
-
-<div class="column">
-**CUDA C**
-\
-\
-<small>
-```c
-   ...
-
-   int *a_d,*b_d,*c_d;
-   int *a, *b, *c;
-   //initialize *a, *b, *c on host *a, *b, *c
-   ...
-   cudaMalloc((void **)&a_d,Nbytes);
-   cudaMalloc((void **)&b_d,Nbytes);
-   cudaMalloc((void **)&c_d,Nbytes);
-
-   cudaMemcpy(a_d,a,nBytes,cudaMemcpyHostToDevice);
-   cudaMemcpy(b_d,b,nBytes,cudaMemcpyHostToDevice);
-
-   vecAdd<<<gridSize,blockSize>>>(a_d,b_d,c_d,N);
-
-
-   cudaDeviceSynchronize();
-```
-</small>
-</div>
-
-<div class="column">
-**HIP**
-\
-\
-<small>
-```c
-   ...
-
-   int *a_d,*b_d,*c_d;
-   int *a, *b, *c;
-   //initialize *a, *b, *c  on host
-   ...  
-   hipMalloc((void **)&a_d,Nbytes);
-   hipMalloc((void **)&b_d,Nbytes);
-   hipMalloc((void **)&c_d,Nbytes);
-
-   hipMemcpy(a_d,a,Nbytes,hipMemcpyHostToDevice));
-   hipMemcpy(b_d,b,Nbytes,hipMemcpyHostToDevice));
-
-   hipLaunchKernelGGL(vecAdd, dim3(gridSize), dim3(blockSize),0, 0,
-                    a_d, b_d, c_d, N);
-
-   hipDeviceSynchronize();
-```
-</small>
-</div>
-
-# CUDA C /HIP code example continued
-
-```c
-__global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
-{
-  int i = blockIdx.x * blockDim.x + threadIdx.x;
-
-  if(i<N)
-  {
-    c_d[i] = a_d[i] + b_d[i];
-  }
-}
-```
-
-# Memory model
-<div class="column" width=55%>
-- *Registers*: The fastest form of memory. Accessible only by the thread
-- *Shared Memory*: Almost as fast as registers. Visible by any thread within blocks
-- **Global Memory**: 150x slower than registers/shared memory. Accessible from any thread or from the host
-- Memory with special access pattern. Heavily cached on chip.
-</div>
-
-<div class="column" width=43%>
-
-![Memory hierarchy](img/memsch.png){width=90%}
-
-</div>
-
-# Global memory access
-
-- Memory transactions are done in continuous blocks of 32B, 64B, or 128B
-- Address of the first element is aligned to 16x the size of the first element
-
-![](img/coalesced.png){width=190%}
-
-# Shared Memory access
-- Shared memory is divided into banks (allowing only one access per cycle)
-- Parallel access: multiple addresses accessed over multiple banks
-- Serial access: multiple addresses in the same bank
-- Broadcast access: a single address read by the whole warp
-
-![](img/shared_mem.png){width=100%}
-
-# Unified Memory
-
-- Data movement appears more transparent to the application
-- Creates a pool of managed memory
-- Each allocation is accessible on both the CPU and GPU with the same pointer
-- System automatically migrates data between the host and device, as needed
-
-# Streams
-- A sequence of asynchronous GPU operations that execute on a device in the order issued by the host code.
-- Operations within a stream are guaranteed to execute in the prescribed order
-- Operations in different streams may run concurrently or interleaved
-
-# Streams Example
-![](img/StreamsTimeline.png){width=99%}
-
+- Memory accesses:
+   - data resides in the GPU memory; maximum performance is achieved when reading/writing is done in continuous manner
+   - very fast on-chip memory can be used as a user programmable cache
+- *Unified Virtual Addressing* provides unified view for all memory
+- Asynchronous calls can be used to overlap transfers and computations.
 
 
 # Challenges in using Accelerators
@@ -345,13 +144,10 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 <div class="column">
 1. Use existing GPU applications
 2. Use accelerated libraries
-3. Use frameworks
-    - Kokkos
-    - AMReX
 3. Directive based methods
     - **OpenMP**, OpenACC
 4. Use native GPU language
-    - CUDA, HIP, OpenCL, SYCL
+    - CUDA, HIP, SYCL, Kokkos,...
 </div>
 <div class="column" width=40%>
 
@@ -369,50 +165,41 @@ More difficult, but more opportunities
 # Directive-based accelerator languages
 
 - Annotating code to pinpoint accelerator-offloadable regions
-- OpenACC standard created in Nov 2011
-    - Focus on optimizing productivity (reasonably good performance with
-      minimal effort)
-    - Current standard is 2.7 (November 2018)
+- OpenACC
+    - created in 2011, latest version is 3.1 (November 2020)
     - Mostly Nvidia
 - OpenMP
     - Earlier only threading for CPUs
-    - 4.5 also includes for the first time some support for accelerators
-    - 5.0 standard vastly improved
-    - Dominant directive approach in the future?
+    - initial support for accelerators in 4.0 (2013), significant improvements & extensions in 4.5 (2015), 5.0 (2018), 5.1 (2020 and 5.2 (2021)
+
+- Focus on optimizing productivity
+- Reasonable performance with quite limited effort, but not guaranteed
 
 
 
+# Native GPU code: HIP / CUDA
 
-# GPUs at CSC - Puhti-AI
+- CUDA
+    - has been the *de facto* standard for native GPU code for years
+    - extensive set of optimised libraries available
+    - custom syntax (extension of C++) supported only by CUDA compilers
+    - support only for NVIDIA devices
+- HIP
+    - AMD effort to offer a common programming interface that works on
+      both CUDA and ROCm devices
+    - standard C++ syntax, uses nvcc/hcc compiler in the background
+    - almost a one-on-one clone of CUDA from the user perspective
+    - ecosystem is new and developing fast
 
-- In total 80 nodes with a total peak performance of 2.7 Petaflops
-- Each node has
-    - Two latest generation Intel Xeon processors, code name Cascade Lake, with 20 cores each running at 2.1 GHz (Xeon Gold 6230)
-    - Four Nvidia Volta V100 GPUs with 32 GB of memory each
-    - 384 GB of main memory
-    - 3.2 TB of fast local storage
-    - Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth
 
-# GPUs at CSC - Mahti-AI
+# GPUs @ CSC
 
-- In total 24 nodes with a total peak performance of 2.0 Petaflops
-- Each node has
-    - Two latest generation AMD processors, code name EPYC with 64 cores each running at 2.6 GHz (Rome)
-    - Four Nvidia Volta A100 GPUs with 40 GB of memory each
-    - 512 GB of main memory
-    - 3.8 TB of fast local storage
-    - Dual rail HDR100 interconnect network connectivity providing 200Gbps aggregate bandwidth
-
-# GPUs at CSC - LUMI-G
-
-- In total 2560 nodes with a total peak performance of 500 Petaflops
-- Each node has
-    - One latest generation AMD processor, code name EPYC with 64 cores each running at 2.6 GHz (Trento)
-    - Four AMD MI250X GPUs with 128 GB of memory each
-    - 512 GB of main memory
-    - 2x3 TB of fast local storage
-    - Four interconnect network connectivity providing 800Gbps aggregate bandwidth
-
+- **Puhti-AI**: 80 nodes, total peak performance of 2.7 Petaflops
+    - Four Nvidia V100 GPUs, two 20 cores Intel Xeon processors, 3.2 TB fast local storage, network connectivity of  200Gbps aggregate bandwidth  
+- **Mahti-AI**: 24 nodes, total peak performance of 2. Petaflops
+    - Four Nvidia A100 GPUs, two 64 cores AMD Epyc processors, 3.8 TB fast local storage,  network connectivity of  200Gbps aggregate bandwidth   
+- **LUMI-G**: 2560 nodes, total peak performance of 500 Petaflops
+    - Four AMD MI250X GPUs, one 64 cores AMD Epyc processors, 2x3 TB fast local storage, network connectivity of  800Gbps aggregate bandwidth
 
 # Summary
 
