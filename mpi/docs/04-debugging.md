@@ -63,10 +63,13 @@ lang:   en
     - Sometimes bugs show up only with optimizations
 - In CSC environment DDT is available via `module load ddt`
 - Debugger needs to be started in an interactive session
-```bash
-module load ddt
-export SLURM_OVERLAP=1
-salloc --nodes=1 --ntasks-per-node=2 --account=project_xxx -p small
-ddt srun ./buggy
-```
+  <small>
+  ```bash
+  module load ddt
+  export SLURM_OVERLAP=1
+  salloc --nodes=1 --ntasks-per-node=2 --account=project_xxx -p small
+  ddt srun ./buggy
+  ```
+  </small>
+
 - VNC remote desktop is recommended for smoother GUI performance
