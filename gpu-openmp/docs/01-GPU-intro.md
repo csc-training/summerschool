@@ -22,7 +22,7 @@ lang:   en
 
 # HPC through the ages
 
-<div class="column">
+<div class="column" width=55%>
 - Achieving performance has been based on various strategies throughout the years
     - Frequency, vectorization, multi-node, multi-core ...
     - Now performance is mostly limited by power consumption
@@ -30,7 +30,7 @@ lang:   en
   high performance at low relative power consumption
 </div>
 
-<div class="column">
+<div class="column" width=43%>
 ![](img/microprocessor-trend-data.png)
 </div>
 
@@ -47,8 +47,9 @@ lang:   en
 - Usually major rewrites of programs required
 
 # Why use them?
+CPU vs Accelerator
 
-![CPU vs Accelerator <span style=" font-size:0.5em;">https://github.com/karlrupp/cpu-gpu-mic-comparison</span> ](img/comparison.png)
+![ <span style=" font-size:0.5em;">https://github.com/karlrupp/cpu-gpu-mic-comparison</span> ](img/comparison.png)
 
 
 # What's different?
@@ -59,7 +60,9 @@ lang:   en
 
 <div class="column">
 
-## CPU
+**CPU**
+\
+\
 
 - General purpose
 - Good for serial processing
@@ -72,7 +75,9 @@ lang:   en
 
 <div class="column">
 
-## GPU
+**GPU**
+\
+\
 
 - Highly specialized for parallelism
 - Good for parallel processing
@@ -114,7 +119,7 @@ lang:   en
 
 # Heterogeneous Programming
 
-<div class="column">
+<div class="column" width=65%>
 
 - CPU (host) and GPU (device) codes are mixed
 - all calls are made from host
@@ -126,9 +131,9 @@ lang:   en
 
 </div>
 
-<div class="column">
+<div class="column" width=33%>
 
-![](img/heteprogra.jpeg){width=59%}
+![](img/heteprogra.jpeg){.center width=85%}
 
 </div>
 
@@ -149,7 +154,7 @@ lang:   en
 
 # GPU Autopsy. Nvidia Volta Streaming Multiprocessor
 
-<div class="column">
+<div class="column" width=70%>
 
 - 64 single precision cores
 - 32 double precision cores
@@ -160,9 +165,9 @@ lang:   en
     - The rest is L1
 - 65536 registers - enables the GPU to run a very large number of threads
 </div>
-<div class="column">
+<div class="column" width=28%>
 
-![](img/volta-sm-architecture.png){ .center width=70% }
+![](img/volta-sm-architecture.png){ .center width=150% }
 
 </div>
 
@@ -170,13 +175,7 @@ lang:   en
 
 # Thread Hierarchy. SIMT
 
-<div class="column">
-
-![](img/ThreadExecution.jpg){width=105%}
-
-</div>
-
-<div class="column">
+<div class="column" width=55%>
 
 - Threads are executed on scalar processors
 - Blocks are executed on multiprocessors
@@ -184,6 +183,12 @@ lang:   en
 - Kernel is executed as a grid of threads block
 - Only one kernel is executed on a device at one time
 
+
+</div>
+
+<div class="column" width=43%>
+
+![](img/ThreadExecution.jpg){.center width=100%}
 </div>
 
 
@@ -209,12 +214,17 @@ lang:   en
 # CUDA C /HIP C code example
 
 <div class="column">
-## CUDA C
-
+**CUDA C**
+\
+\
+<small>
 ```c
    ...
 
    int *a_d,*b_d,*c_d;
+   int *a, *b, *c;
+   //initialize *a, *b, *c on host *a, *b, *c
+   ...
    cudaMalloc((void **)&a_d,Nbytes);
    cudaMalloc((void **)&b_d,Nbytes);
    cudaMalloc((void **)&c_d,Nbytes);
@@ -226,18 +236,22 @@ lang:   en
 
 
    cudaDeviceSynchronize();
-
 ```
-
+</small>
 </div>
 
 <div class="column">
-## HIP
-
+**HIP**
+\
+\
+<small>
 ```c
    ...
 
    int *a_d,*b_d,*c_d;
+   int *a, *b, *c;
+   //initialize *a, *b, *c  on host
+   ...  
    hipMalloc((void **)&a_d,Nbytes);
    hipMalloc((void **)&b_d,Nbytes);
    hipMalloc((void **)&c_d,Nbytes);
@@ -245,14 +259,12 @@ lang:   en
    hipMemcpy(a_d,a,Nbytes,hipMemcpyHostToDevice));
    hipMemcpy(b_d,b,Nbytes,hipMemcpyHostToDevice));
 
-   hipLaunchKernelGGL(vecAdd,
-       dim3(gridSize), dim3(blockSize),
-       0, 0,
-       a_d,b_d,c_d,N);
+   hipLaunchKernelGGL(vecAdd, dim3(gridSize), dim3(blockSize),0, 0,
+                    a_d, b_d, c_d, N);
+
    hipDeviceSynchronize();
-
 ```
-
+</small>
 </div>
 
 # CUDA C /HIP code example continued
@@ -270,14 +282,14 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 ```
 
 # Memory model
-<div class="column">
+<div class="column" width=55%>
 - *Registers*: The fastest form of memory. Accessible only by the thread
 - *Shared Memory*: Almost as fast as registers. Visible by any thread within blocks
 - **Global Memory**: 150x slower than registers/shared memory. Accessible from any thread or from the host
 - Memory with special access pattern. Heavily cached on chip.
 </div>
 
-<div class="column">
+<div class="column" width=43%>
 
 ![Memory hierarchy](img/memsch.png){width=90%}
 
@@ -294,7 +306,7 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 - Shared memory is divided into banks (allowing only one access per cycle)
 - Parallel access: multiple addresses accessed over multiple banks
 - Serial access: multiple addresses in the same bank
-- Broadcast access: a single address read in a single bank (by the whole warp)
+- Broadcast access: a single address read by the whole warp
 
 ![](img/shared_mem.png){width=100%}
 
@@ -310,7 +322,8 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
 - Operations within a stream are guaranteed to execute in the prescribed order
 - Operations in different streams may run concurrently or interleaved
 
-![](img/C2050Timeline.png){width=99%}
+# Streams Example
+![](img/StreamsTimeline.png){width=99%}
 
 
 
@@ -336,19 +349,15 @@ __global__ void vecAdd(int *a_d,int *b_d,int *c_d,int N)
     - Kokkos
     - AMReX
 3. Directive based methods
-    - ** OpenMP **
-    - OpenACC
+    - **OpenMP**, OpenACC
 4. Use native GPU language
-    - CUDA
-    - HIP
-    - OpenCL
-    - SYCL
+    - CUDA, HIP, OpenCL, SYCL
 </div>
-<div class="column">
+<div class="column" width=40%>
 
 Easier, but more limited
 
-![](img/arrow.png){ width=15% }
+![](img/arrow.png){.center width=20% }
 
 More difficult, but more opportunities
 
