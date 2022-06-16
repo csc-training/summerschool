@@ -89,6 +89,7 @@ process_in_host();
 # Task dependencies
 
 <div class=column>
+<small>
 ```c
 #pragma omp task depend(out: A)
  {Code A}
@@ -107,6 +108,7 @@ process_in_host();
   {Code F}
 ```
 </div>
+</small>
 
 <div class=column>
 ![](img/target-dependencies.png){.center width=80%}
