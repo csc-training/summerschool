@@ -34,7 +34,7 @@ S = \sum_{j=1}^{N} A_j = \sum_{j=1}^{\frac{N}{2}} A_j +
 $$
 
 - OpenMP provides support for common reductions within parallel regions and
-  loops with the reduction clause
+  loops
 
 
 # Reduction clause
@@ -142,7 +142,7 @@ for(i=0; i < n; i++) {
       all
     - The sequence of work-sharing regions and barrier regions encountered
       must be same for all threads in a team
-- Implicit barrier at the end of: `do`, `parallel`, `single`, `workshare`
+- Implicit barrier at the end of: `for`/`do`, `parallel`, `single`, `workshare`
   unless a `nowait` clause is specified
 
 
@@ -168,15 +168,32 @@ for(i=0; i < n; i++) {
 - Other threads wait (implicit barrier) unless a `nowait` clause is specified
 </div>
 
+# Execution control constructs
+
+<div class=column>
+`critical`
+  : `-`{.ghost}
+
+- A section that is executed by only one thread at a time
+- No implicit barrier at the end
+</div>
+<div class=column>
+`atomic`
+  : `-`{.ghost}
+
+- Strictly limited construct to update a single value, can not be applied to
+  code blocks
+- Only guarantees atomic update, does not protect function calls
+- Can be faster on hardware platforms that support atomic updates
+</div>
+
 # Summary
 
 - Several parallel reduction operators available via `reduction` clause
-- OpenMP has many synchronization pragmas
-    - Barrier
-    - Single and Master
-
-
-
+- OpenMP has many synchronization constructs
+    - `barrier`
+    - `single` and `master/masked`
+    - `critical` and `atomic`
 
 # Web resources
 

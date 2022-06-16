@@ -125,6 +125,7 @@ int main(int argc, char argv[]) {
 #include <stdio.h>
 #include <omp.h>
 #include <unistd.h>
+
 int main(int argc, char argv[]) {
   int omp_rank;
 #pragma omp parallel
@@ -154,7 +155,6 @@ int main(int argc, char argv[]) {
 
 - **shared(list)**
     - All threads can write to, and read from a shared variable
-    - Variables are shared by default
 - **default(private/shared/none)**
     - Sets default for variables to be shared, private or not defined
     - In C/C++ default(private) is not allowed
@@ -171,6 +171,7 @@ int main(int argc, char argv[]) {
 - Private by default:
     - Local variables of functions called from parallel region
     - Variables declared within a block (C/C++)
+    - Outermost loop variables
 - Good programming practice: declare all variables either shared or private
 
 # Hello world without a race condition
@@ -179,6 +180,7 @@ int main(int argc, char argv[]) {
 #include <stdio.h>
 #include <omp.h>
 #include <unistd.h>
+
 int main(int argc, char argv[]) {
   int omp_rank;
 #pragma omp parallel private(omp_rank)
