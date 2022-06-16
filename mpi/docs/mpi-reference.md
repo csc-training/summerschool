@@ -72,6 +72,7 @@ int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype,
 
 # C interfaces for collective operations
 
+<small>
 ```c
 int MPI_Reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
                MPI_Op op, int root, MPI_Comm comm)
@@ -92,6 +93,7 @@ int MPI_Alltoallv(void* sendbuf, int *sendcounts, int *sdispls, MPI_Datatype sen
                   void* recvbuf, int *recvcounts, int *rdispls, MPI_Datatype recvtype,
                   MPI_Comm comm)
 ```
+</small>
 
 # Available reduction operations
 
@@ -174,6 +176,7 @@ int MPI_Startall(int count, MPI_Request *array_of_requests);
 
 # C interfaces for neighborhood collectives
 
+<small>
 ```c
 int MPI_Neighbor_allgather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
                            void* recvbuf, int recvcount, MPI_datatype recvtype, MPI_Comm comm);
@@ -195,10 +198,12 @@ int MPI_Neighbor_alltoallw(void* sendbuf, int* sendcounts, int* senddispls, MPI_
                            MPI_Comm comm);
 
 ```
+</small>
 
 
 # C interfaces for datatype routines
 
+<small>
 ```c
 int MPI_Type_commit(MPI_Datatype *type)
 
@@ -220,7 +225,7 @@ int MPI_Type_create_struct(int count, const int array_of_blocklengths[],
                            const MPI_Aint array_of_displacements[],
                            const MPI_Datatype array_of_types[], MPI_Datatype *newtype)
 ```
-
+</small>
 
 # C interfaces for one-sided routines
 
@@ -530,6 +535,7 @@ mpi_waitall(count, array_of_requests, array_of_statuses, ierror)
 
 # Fortran interfaces for Cartesian process topologies
 
+<small>
 ```fortran
 mpi_cart_create(old_comm, ndims, dims, periods, reorder, comm_cart, ierror)
   integer :: ndims, dims(:), ierror
@@ -551,6 +557,7 @@ mpi_cart_shift(comm, direction, displ, low, high, ierror)
   integer :: direction, displ, low, high, ierror
   type(mpi_comm) :: comm
 ```
+</small>
 
 # Fortran interfaces for persistent communication
 
@@ -667,6 +674,7 @@ mpi_type_create_struct(count, blocklengths, displacements, types, newtype, ierro
 
 # Fortran interfaces for one-sided routines
 
+<small>
 ```fortran
 mpi_win_create(base, size, disp_unit, info, comm, win, ierror)
   <type> :: base(*)
@@ -688,6 +696,7 @@ mpi_put(origin_addr, origin_count, origin_datatype, target_rank, target_disp, ta
   type(mpi_datatype) :: origin_datatype, target_datatype
   type(mpi_win)  :: win
 ```
+</small>
 
 
 # Fortran interfaces for one-sided routines
