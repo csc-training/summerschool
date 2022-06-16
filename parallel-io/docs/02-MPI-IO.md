@@ -299,20 +299,19 @@ MPI_File_set_view(`fhandle`{.input}, `disp`{.input}, `etype`{.input}, `filetype`
 # File view for non-contiguous data
 
 ![](img/io-subarray.png)
-
+<small>
 ```fortran
 integer, dimension(2,2) :: array
 ...
-call mpi_type_create_subarray(2, sizes, subsizes, starts, mpi_integer, &
-                              mpi_order_c, filetype, err)
+call mpi_type_create_subarray(2, sizes, subsizes, starts, mpi_integer, mpi_order_c, filetype, err)
 call mpi_type_commit(filetype)
 
 disp = 0
-call mpi_file_set_view(file, disp, mpi_integer, filetype, 'native', &
-                       mpi_info_null, err)
+call mpi_file_set_view(file, disp, mpi_integer, filetype, 'native', mpi_info_null, err)
 
 call mpi_file_write_all(file, buffer, count, mpi_integer, status, err)
 ```
+</small>
 
 # Common mistakes with MPI-IO
 

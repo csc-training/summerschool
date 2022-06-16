@@ -60,7 +60,7 @@ lang:   en
 
 # HDF5 hierarchy
 
-![](img/hdf5_structure.jpg)
+![](img/hdf5_structure.png){.center width=70%}
 
 # Exercise
 
