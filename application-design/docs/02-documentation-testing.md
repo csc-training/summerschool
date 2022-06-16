@@ -15,7 +15,7 @@ licensed under CC BY-SA 4.0
 
 - You will forget details
     - Code that you wrote 6 months ago is often indistinguishable from code 
-      that someone else has written.
+      that someone else has written
 - Writing documentation may improve the design of your code
 - Have other people to use (and cite!) your code
     - If the documentation is not good enough, people will not use it    
@@ -36,7 +36,7 @@ licensed under CC BY-SA 4.0
 # What to document?
 
 - How to develop the code
-    - Equations implemented by the code when appropriate
+    - Equations implemented in the code when appropriate
         - Mapping of physical symbols to variables in code
     - Coding style
     - Instructions for contributing
@@ -50,7 +50,7 @@ licensed under CC BY-SA 4.0
     - Same versioning as for the code
     - Guides in e.g. `docs` subdirectory
     - APIs in the source code, e.g. describe arguments of subroutine next to
-      the defition
+      the definition
         - many tools can generate automatically API documention from comments
     - Non-obvious implementation choices in comments in source code
 - Tools for documentation: RST and Markdown markup languages, wikis, Doxygen, 
@@ -103,7 +103,7 @@ do not constitute science!**
     - In large projects innocent looking changes can have surprising side effects
 - Testing helps detecting errors early
 - Testing is essential for reproducibility of results
-- Tests make is easier to verify whether software is correctly installed
+- Tests make it easier to verify whether software is correctly installed
 
 # Defensive programming
 
@@ -111,13 +111,13 @@ do not constitute science!**
     - ... when its tests do not pass?
     - ... if the tests are never run?
     - ... if there are no tests at all?
-- Assume mistakes will happen and introduce guards agains them
+- Assume mistakes will happen and introduce guards against them
 - Test drive development
     - Tests are written before actually implementing the functionality
 
 # What should be tested in software ?
 
-- Validity of physical model
+- Validity of the physical model
     - Comparison to experimental results
 - Validity of numerical methods and implementation
     - Comparison to analytic solutions of special cases
@@ -125,8 +125,8 @@ do not constitute science!**
 - Correct functioning of individual subroutines and modules
 - Performance
     - Changes in software may lead into degradation in performance
-- Dependency variants. 
-    - At least compiler and mpi implementation.
+- Dependency variants 
+    - At least compiler and mpi implementation
 
 
 # Unit testing
@@ -204,7 +204,7 @@ GPAW
     - Unit tests and integration tests
 - Continuous integration with GitlabCI
 - Developers should run tests manually before pushing
-- Tests set should run after installation
+- Test set should run after installation
 
 </div>
 

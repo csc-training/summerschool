@@ -71,7 +71,7 @@ CC-BY-SA-4.0
 - Copyright: intellectual property granted to the creator of software
 - License: Terms given by the copyright owner for using and redistributing 
   the software
-- Owner of the copyright depends on the local legistlation, work contract etc.
+- Owner of the copyright depends on the local legislation, work contract etc.
     - As an example, CSC holds the copyright to the work created by CSC 
       employees
 - Common open source licenses: MIT, Apache, BSD, GPL, Creative Commons
