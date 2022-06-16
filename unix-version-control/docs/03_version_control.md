@@ -93,7 +93,7 @@ $ git add ingredients.txt
 # Creating a snapshot: git commit
  - A commit is a saved state of your project
  - All changes that were added using `git add` are now part of the commit
- - A commit can (should) have an associated commit message
+ - A commit needs to have an associated commit message
      - The message should be clear and concise: "Fixed bug #1234"
  - Git allows us to compare, merge, and checkout commits
      - Checkout a commit -> Set our project state to a specific commit
@@ -132,12 +132,12 @@ $ git commit
 # Remote repositories: Where things get really useful
 
  - You can have multiple copies of the same project in different places
-     - A different folder, another computer, or a web-bases repository
+     - A different folder, another computer, or a web-based repository
     - You have a copy, your coworker has a copy, and so on...
 
  - This is what enables collaboration and sharing changes
 
- - You can also just copy a git repository and after that never interact with anyone
+ - You can also just clone a git repository and after that never interact with anyone
 
 # Centralized vs. Distributed
 
@@ -234,7 +234,7 @@ $ git commit
 
 1. New file changes are **pull**ed from the remote repository: `git pull`
 
-    - Files are now up-to-date (in respect to the remote repository)
+    - Files are now up-to-date (with respect to the remote repository)
 
 2. Something is modified
     - E.g. editing, adding or removing a file
@@ -263,7 +263,7 @@ $ git commit
 
 # Branching
 
-- By default everything is happening at “master” branch
+- By default everything is happening at “main” branch
 - A branch is just a pointer to a commit
 - You can freely create new branches
 
@@ -308,11 +308,12 @@ $ git commit
   - Explore GitHub, there are many cool repositories\!
   - Experiment with git and try out different features, its better to make
     mistakes now than later.
+  - Errors can be easily corrected
 
 
 # Version control git commands
 
-  - Download repository: `git clone https://…`
+  - Download repository: `git clone …`
   - Update changes from remote repo: `git pull`
   - Check the status of repository: `git status`
   - Add new file for staging: `git add file1`
