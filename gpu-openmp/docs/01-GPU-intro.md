@@ -405,7 +405,7 @@ More difficult, but more opportunities
 
 # GPUs at CSC - LUMI-G
 
-- In total 2560 nodes with a total peak performance of 550 Petaflops
+- In total 2560 nodes with a total peak performance of 500 Petaflops
 - Each node has
     - One latest generation AMD processor, code name EPYC with 64 cores each running at 2.6 GHz (Trento)
     - Four AMD MI250X GPUs with 128 GB of memory each
