@@ -9,7 +9,7 @@ lang:   en
 # MPI programming practices
 
 - For the sake of illustration, we have so far hard-coded the `source`
-  and `destination` arguments in the MPI calls, and placed the MPI
+  and `destination` arguments, and placed the MPI
   calls within `if` constructs
 - This produces typically code which is difficult to read and to
   generalize to arbitrary number of processes
@@ -19,29 +19,29 @@ lang:   en
 <small>
 <div class=column>
 ```fortran
-  if ( myid == 0 ) then
-     call mpi_send(message, msgsize, MPI_INTEGER, 1, &
-          1, MPI_COMM_WORLD, rc)
-     call mpi_recv(receiveBuffer, arraysize, MPI_INTEGER, 1,  &
-          1, MPI_COMM_WORLD, status, rc)
-  else if (myid == 1) then
-     call mpi_send(message, msgsize, MPI_INTEGER, 0, &
-          1, MPI_COMM_WORLD, rc)
-     call mpi_recv(receiveBuffer, arraysize, MPI_INTEGER, 0,  &
-          1, MPI_COMM_WORLD, status, rc)
+if (myid == 0) then
+   call mpi_send(message, msgsize, MPI_INTEGER, 1, &
+        1, MPI_COMM_WORLD, rc)
+   call mpi_recv(recvBuf, arraysize, MPI_INTEGER, 1, &
+        1, MPI_COMM_WORLD, status, rc)
+else if (myid == 1) then
+   call mpi_send(message, msgsize, MPI_INTEGER, 0, &
+        1, MPI_COMM_WORLD, rc)
+   call mpi_recv(recvBuf, arraysize, MPI_INTEGER, 0, &
+        1, MPI_COMM_WORLD, status, rc)
 ```
 </div>
 
 <div class=column>
 ```fortran
-  ! Modulo operation can be used for wrapping around
-  dst = mod(myid + 1, ntasks)
-  src = mod(myid - 1 + ntasks, ntasks)
+! Modulo operation can be used for wrapping around
+dst = mod(myid + 1, ntasks)
+src = mod(myid - 1 + ntasks, ntasks)
 
-  call mpi_send(message, msgsize, MPI_INTEGER, dst, &
-          1, MPI_COMM_WORLD, rc)
-  call mpi_recv(receiveBuffer, arraysize, MPI_INTEGER, src,  &
-          1, MPI_COMM_WORLD, status, rc)
+call mpi_send(message, msgsize, MPI_INTEGER, dst, &
+              1, MPI_COMM_WORLD, rc)
+call mpi_recv(recvBuf, arraysize, MPI_INTEGER, src, &
+              1, MPI_COMM_WORLD, status, rc)
 
 ```
 </div>
@@ -92,26 +92,28 @@ call mpi_recv(message, msgsize, MPI_INTEGER, src, ...
       needed
 
 <div class=column>
+- There needs to be still `receive` for each `send`
+- `MPI_ANY_SOURCE` may introduce performance overhead
+- Use only when there is clear benefit *e.g.* in load balancing
+</div>
+
+<div class=column>
+<br>
 <small>
 ```c++
 if (0 == myid) {
   for (int i=1; i < ntasks; i++) {
-     MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, 22, MPI_COMM_WORLD);
+     MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, 22, 
+              MPI_COMM_WORLD, &status);
      process(data)
   }
 } else {
-     MPI_Send(&data, 1, MPI_INT, 0, 22, MPI_COMM_WORLD, &status);
+     MPI_Send(&data, 1, MPI_INT, 0, 22, MPI_COMM_WORLD);
 }
 ```
 </small>
 </div>
 
-<div class=column>
-- There needs to be still `receive` for each `send`
-- `MPI_ANY_SOURCE` and `MPI_ANY_TAG` introduce often performance
-  overhead
-- Use them only when there is clear benefit *e.g.* in load balancing
-</div>
 
 # Ignoring **status**
 
