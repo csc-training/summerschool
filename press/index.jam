@@ -1,6 +1,8 @@
 # List of PDFs to jam together
 #  an index file for jam-it.sh (https://github.com/mlouhivu/jam-it)
 
+@title-course.pdf
+
 @title-supercomputing.pdf
 ../intro-to-hpc/docs/01-intro-supercomputing.pdf
 ../intro-to-hpc/docs/02-heat-equation.pdf
@@ -9,9 +11,6 @@
 ../unix-version-control/docs/01_Unix.pdf
 ../unix-version-control/docs/02_Make_modules_and_batch_jobs.pdf
 ../unix-version-control/docs/03_version_control.pdf
-
-@title-debugging.pdf
-../debugging/docs/01-debugging.pdf
 
 @title-mpi.pdf
 ../mpi/docs/01-intro-to-mpi.pdf
@@ -24,13 +23,11 @@
 ../mpi/docs/08-advanced-datatypes.pdf
 ../mpi/docs/09-custom-communicators-cartesian.pdf
 ../mpi/docs/10-non-blocking-communication.pdf
-../mpi/docs/mpi-reference.pdf
 
 @title-io.pdf
 ../parallel-io/docs/01-Parallel-IO-posix.pdf
 ../parallel-io/docs/02-MPI-IO.pdf
 ../parallel-io/docs/03-HighLevel.pdf
-../parallel-io/docs/03-Parallel-IO-HDF5-previous-slides.pdf
 
 @title-hybrid.pdf
 ../hybrid/docs/01-introduction.pdf
@@ -50,10 +47,9 @@
 ../gpu-openmp/docs/02-OpenMP-offload-basics.pdf
 ../gpu-openmp/docs/03-OpenMP-data.pdf
 ../gpu-openmp/docs/04-OpenMP-unstructured-data.pdf
-../gpu-openmp/docs/05-OpenMP-declare-gpu-functions.pdf
-../gpu-openmp/docs/06-OpenMP-interoperability.pdf
-../gpu-openmp/docs/07-OpenMP-async-operations.pdf
-../gpu-openmp/docs/08-OpenMP-multiple-GPUs.pdf
+../gpu-openmp/docs/05-OpenMP-interoperability.pdf
+../gpu-openmp/docs/06-OpenMP-async-operations.pdf
+../gpu-openmp/docs/07-OpenMP-multiple-GPUs.pdf
 
 @title-gpu-hip.pdf
 ../gpu-hip/docs/01-kernels.pdf
@@ -66,4 +62,6 @@
 ../application-design/docs/01_design_choices.pdf
 ../application-design/docs/02-documentation-testing.pdf
 ../application-design/docs/03-collaboration-release.pdf
-../application-design/docs/Parflow_GPU_slides_CSC_Summer_School_2022.pdf
+
+@title-mpi.pdf
+../mpi/docs/mpi-reference.pdf
