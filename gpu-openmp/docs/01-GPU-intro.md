@@ -91,10 +91,10 @@ CPU vs Accelerator
 
 # Lumi - Pre-exascale system in Finland
 <div class="column">
-![](img/lumi1.png){}
+![](img/lumi1.png){.center width=65%}
 </div>
 <div class="column">
-![](img/lumi2.png){width=65%}
+![](img/lumi2.png){.center width=65%}
 </div>
 
 
