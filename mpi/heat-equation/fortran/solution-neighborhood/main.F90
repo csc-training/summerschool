@@ -36,7 +36,8 @@ program heat_solve
   if (parallelization % rank == 0) then
      write(*,'(A, I5, A, I5, A, I5)') 'Simulation grid: ', current%nx_full, ' x ', & 
           & current%ny_full, ' time steps: ', nsteps
-     write(*,'(A, I5)') 'MPI processes: ', parallelization%size
+     write(*,'(A, I5, A, I3, A, I3, A)') 'MPI processes: ', parallelization%size, &
+          & ' ( ', parallelization%dims(1), ' x ', parallelization%dims(2), ' )'
      write(*,'(A,F9.6)') 'Average temperature at start: ', average_temp
   end if
 
@@ -50,11 +51,9 @@ program heat_solve
   start =  mpi_wtime()
 
   do iter = 1, nsteps
-     call exchange_init(previous, parallelization)
-     call evolve_interior(current, previous, a, dt)
-     call exchange_finalize(parallelization)
-     call evolve_edges(current,previous, a, dt)
-     if (mod(iter, image_interval) == 0) then
+     call exchange(previous, parallelization)
+     call evolve(current, previous, a, dt)
+     if (mod(iter, image_interval) == 0 .or. iter == nsteps) then
         call write_field(current, iter, parallelization)
      end if
      call swap_fields(current, previous)

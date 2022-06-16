@@ -28,7 +28,9 @@ int main(int argc, char **argv)
         std::cout << "Simulation parameters: " 
                   << "rows: " << current.nx_full << " columns: " << current.ny_full
                   << " time steps: " << nsteps << std::endl;
-        std::cout << "Number of MPI tasks: " << parallelization.size << std::endl;
+        std::cout << "Number of MPI tasks: " << parallelization.size 
+                  << " (" << parallelization.dims[0] << " x " << parallelization.dims[1] << ")"
+                  << std::endl;
         std::cout << std::fixed << std::setprecision(6);
         std::cout << "Average temperature at start: " << average_temp << std::endl;
     }
@@ -45,10 +47,8 @@ int main(int argc, char **argv)
 
     // Time evolve
     for (int iter = 1; iter <= nsteps; iter++) {
-        exchange_init(previous, parallelization);
-        evolve_interior(current, previous, a, dt);
-        exchange_finalize(parallelization);
-        evolve_edges(current, previous, a, dt);
+        exchange(previous, parallelization);
+        evolve(current, previous, a, dt);
         if (iter % image_interval == 0) {
             write_field(current, iter, parallelization);
         }

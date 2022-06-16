@@ -36,7 +36,7 @@ lang:   en
 - In order to alleviate the memory bandwidth bottleneck, CPUs have multiple levels of cache memory
     - when data is accessed, it will be first fetched into cache
     - when data is reused, subsequent access is much faster
-- L1 cache is closest to the CPU core and is fastest but has smallest capacity
+- L1 is closest to the CPU core and is fastest but has smallest capacity
 - Each successive level has higher capacity but slower access
 </div>
 

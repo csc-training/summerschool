@@ -28,7 +28,9 @@ int main(int argc, char **argv)
         std::cout << "Simulation parameters: " 
                   << "rows: " << current.nx_full << " columns: " << current.ny_full
                   << " time steps: " << nsteps << std::endl;
-        std::cout << "Number of MPI tasks: " << parallelization.size << std::endl;
+        std::cout << "Number of MPI tasks: " << parallelization.size 
+                  << " (" << parallelization.dims[0] << " x " << parallelization.dims[1] << ")"
+                  << std::endl;
         std::cout << std::fixed << std::setprecision(6);
         std::cout << "Average temperature at start: " << average_temp << std::endl;
     }

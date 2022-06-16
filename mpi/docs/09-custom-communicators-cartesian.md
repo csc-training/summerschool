@@ -30,13 +30,16 @@ lang:   en
 
 # Virtual topologies
 
-- MPI topologies are virtual, *i.e.* they have necessarily no relation
-  to the physical structure of the computer
-    - The assignment of processes to physical CPU cores happens
-      typically outside MPI (and before MPI is initialized)
-    - The physical structure can in principle be taken account when
-      creating topologies, however, MPI implementations may not
-      implement that in practice
+- MPI topologies are virtual, *i.e.* they do not have have necessarily relation
+  to the physical structure of the supercomputer
+- The assignment of processes to physical CPU cores happens
+  typically outside MPI (and before MPI is initialized)
+- The physical structure can in principle be taken account when
+  creating topologies, however, MPI implementations may not
+  implement that in practice
+
+# Virtual topologies
+
 - A communication pattern can be represented by a graph: nodes present
   processes and edges connect processes that communicate with each other
 - We discuss here only Cartesian topology which represents a regular
@@ -171,6 +174,7 @@ call mpi_cart_coords(comm2d, my_id, 2, coords, rc)
 
 # Halo exchange
 
+<small>
 ```fortran
 call mpi_cart_shift(comm2d, 0, 1, nbr_up, nbr_down, rc)
 call mpi_cart_shift(comm2d, 1, 1, nbr_left, nbr_right, rc)
@@ -191,6 +195,7 @@ call mpi_sendrecv(buf(1,1), 1, rowtype, nbr_up, tag_up, &
 ! bottom boundaries: send to below, receive from above
 ...
 ```
+</small>
 
 # Summary
 
@@ -198,9 +203,8 @@ call mpi_sendrecv(buf(1,1), 1, rowtype, nbr_up, tag_up, &
   decompositions
 - Usage pattern
     - Define a process grid with `MPI_Cart_create`
-    - Use the obtained new communicator as the comm argument in communication
+    - Use the obtained new communicator as the `comm` argument in communication
       routines
-        - For getting the ranks of the neighboring processes, use
-          `MPI_Cart_shift` or wrangle with `MPI_Cart_coords` and
-          `MPI_Cart_rank`
+    - For getting the ranks of the neighboring processes, use `MPI_Cart_shift` 
+      or wrangle with `MPI_Cart_coords` and `MPI_Cart_rank`
 - MPI provides also more general graph topologies

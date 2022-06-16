@@ -20,14 +20,8 @@ module heat
   type :: parallel_data
      integer :: size
      integer :: rank
-     integer :: nup, ndown, nleft, nright  ! Ranks of neighbouring MPI tasks
-     integer :: dims(2) = [0, 0]
-     type(mpi_comm) :: comm
-     type(mpi_request) :: requests(8)
-     type(mpi_datatype) :: rowtype         ! MPI Datatype for communication of rows
-     type(mpi_datatype) :: columntype                 ! MPI Datatype for communication of columns
-     type(mpi_datatype) :: subarraytype               ! MPI Datatype for communication of inner region 
-
+     integer :: nleft, nright  ! Ranks of neighbouring MPI tasks
+     type(mpi_request) :: requests(4)  ! Non-blocking communication handles
   end type parallel_data
 
 contains
@@ -44,8 +38,8 @@ contains
 
     integer :: nx_local, ny_local
 
-    nx_local = nx / parallel%dims(1)
-    ny_local = ny / parallel%dims(2)
+    nx_local = nx
+    ny_local = ny / parallel%size
 
     field0%dx = DX
     field0%dy = DY
@@ -57,72 +51,38 @@ contains
   end subroutine set_field_dimensions
 
   subroutine parallel_setup(parallel, nx, ny)
-    
+    use mpi_f08
+
     implicit none
-    
+
     type(parallel_data), intent(out) :: parallel
     integer, intent(in), optional :: nx, ny
 
-    integer :: nx_local, ny_local
-    integer :: world_size
-    logical :: periods(2) = [.false., .false.]
-    integer, dimension(2) :: sizes, subsizes, offsets
-
+    integer :: ny_local
     integer :: ierr
 
-    call mpi_comm_size(MPI_COMM_WORLD, world_size, ierr)
+    call mpi_comm_size(MPI_COMM_WORLD, parallel%size, ierr)
 
-    ! Set grid dimensions
-    call mpi_dims_create(world_size, 2, parallel%dims)
-    nx_local = nx / parallel%dims(1)
-    ny_local = ny / parallel%dims(2)
-
-    ! Ensure that the grid is divisible to the MPI tasks
-    if (nx_local * parallel%dims(1) /= nx) then
-       write(*,*) 'Cannot divide grid evenly to processors in x-direction', &
-                   nx_local, parallel%dims(1), nx
-       call mpi_abort(MPI_COMM_WORLD, -2, ierr)
-    end if
-    if (ny_local * parallel%dims(2) /= ny) then
-       write(*,*) 'Cannot divide grid evenly to processors in y-direction', &
-                   ny_local, parallel%dims(2), ny
-       call mpi_abort(MPI_COMM_WORLD, -2, ierr)
+    if (present(ny)) then
+       ny_local = ny / parallel%size
+       if (ny_local * parallel%size /= ny) then
+          write(*,*) 'Cannot divide grid evenly to processors'
+          call mpi_abort(MPI_COMM_WORLD, -2, ierr)
+       end if
     end if
 
-    ! Create cartesian communicator
-    call mpi_cart_create(MPI_COMM_WORLD, 2, parallel%dims, periods, .true., parallel%comm, ierr)
-    call mpi_cart_shift(parallel%comm, 0, 1, parallel%nup, parallel%ndown, ierr)
-    call mpi_cart_shift(parallel%comm, 1, 1, parallel%nleft, &
-                        parallel%nright, ierr)
+    call mpi_comm_rank(MPI_COMM_WORLD, parallel%rank, ierr)
 
-    call mpi_comm_size(parallel%comm, parallel%size, ierr)
-    call mpi_comm_rank(parallel%comm, parallel%rank, ierr)
+    parallel%nleft = parallel%rank - 1
+    parallel%nright = parallel%rank + 1
 
-    ! Create datatypes for halo exchange
-    call mpi_type_vector(ny_local + 2, 1, nx_local + 2, MPI_DOUBLE_PRECISION, &
-                         parallel%rowtype, ierr)
-    call mpi_type_contiguous(nx_local + 2, MPI_DOUBLE_PRECISION, parallel%columntype, ierr)
-    call mpi_type_commit(parallel%rowtype, ierr)
-    call mpi_type_commit(parallel%columntype, ierr)
-
-    ! Create datatype for subblock needed in I/O
-    !   Rank 0 uses datatype for receiving data into full array while
-    !   other ranks use datatype for sending the inner part of array
-    subsizes(1) = nx_local
-    subsizes(2) = ny_local
-    offsets(1) = 0
-    offsets(2) = 0
-    if (parallel%rank == 0) then
-       sizes(1) = nx
-       sizes(2) = ny
-    else
-       sizes(1) = nx_local + 2
-       sizes(2) = ny_local + 2
+    if (parallel%nleft < 0) then
+       parallel%nleft = MPI_PROC_NULL
     end if
-    call mpi_type_create_subarray(2, sizes, subsizes, offsets, MPI_ORDER_C, &
-                             MPI_DOUBLE_PRECISION, parallel%subarraytype, ierr)
-    call mpi_type_commit(parallel%subarraytype, ierr)
-    
+    if (parallel%nright > parallel%size - 1) then
+       parallel%nright = MPI_PROC_NULL
+    end if
+
   end subroutine parallel_setup
 
 end module heat

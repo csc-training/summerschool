@@ -65,12 +65,11 @@ contains
     type(parallel_data), intent(in) :: parallelization
 
     real(dp) :: local_average
-    integer :: i
     integer :: rc
 
     local_average = sum(field0%data(1:field0%nx, 1:field0%ny))
     call mpi_allreduce(local_average, average, 1, MPI_DOUBLE_PRECISION, & 
-         & MPI_SUM, MPI_COMM_WORLD, rc)
+         & MPI_SUM, parallelization%comm, rc)
     average = average / (field0%nx_full * field0%ny_full)
 
   end function average

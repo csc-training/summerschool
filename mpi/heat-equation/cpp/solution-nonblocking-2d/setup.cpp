@@ -5,7 +5,7 @@
 
 
 void initialize(int argc, char *argv[], Field& current,
-                Field& previous, int& nsteps, ParallelData parallel)
+                Field& previous, int& nsteps, ParallelData &parallel)
 {
     /*
      * Following combinations of command line arguments are possible:

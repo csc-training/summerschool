@@ -65,7 +65,6 @@ contains
     type(parallel_data), intent(in) :: parallelization
 
     real(dp) :: local_average
-    integer :: i
     integer :: rc
 
     local_average = sum(field0%data(1:field0%nx, 1:field0%ny))
