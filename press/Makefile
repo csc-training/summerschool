@@ -16,7 +16,7 @@ html: $(HTML)
 
 pdf: $(PDF)
 
-jam:
+handout:
 	./jam-it.sh
 
 clean:
