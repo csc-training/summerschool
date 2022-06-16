@@ -49,6 +49,6 @@
 ### Heat equation
 
   - [Heat equation with cartesian communicator](heat-equation/README-cartesian.md)
-  - [2D-decomposed heat equation](heat-equation/README-2d.md)
   - [Non-blocking communication in heat equation](heat-equation/README-nonblocking.md)
+  - [2D-decomposed heat equation](heat-equation/README-2d.md)
 
