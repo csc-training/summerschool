@@ -24,7 +24,7 @@ lang:   en
 
 <div class="column">
 
-## Process
+**Process**
 
 - Independent execution units
 - Have their own state information and *own memory* address space
@@ -33,7 +33,7 @@ lang:   en
 
 <div class="column">
 
-## Thread
+**Thread**
 
 - A single process may contain multiple threads
 - Have their own state information, but *share* the *same memory*
