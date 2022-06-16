@@ -4,7 +4,7 @@ event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
-# OpenACC data environment
+# OpenMP data environment
 
 - GPU device has a separate memory space from the host CPU
     - unified memory is accessible from both sides
