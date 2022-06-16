@@ -69,7 +69,7 @@ lang:   en
 # Example: Hybrid hello
 
 <!-- Presentation suggestion: live coding for hybrid hello -->
-
+<small>
 <div class="column">
 ```c
 #include <mpi.h>
@@ -109,6 +109,7 @@ I'm thread 1 in process 0
 I'm thread 2 in process 0
 ```
 </div>
+</small>
 
 # Potential advantages of the hybrid approach
 
