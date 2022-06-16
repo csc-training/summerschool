@@ -117,7 +117,7 @@ CPU vs Accelerator
 - The GPU code is executed by doing calls to functions (kernels) using thousands of threads running on thousands of cores
 - The kernel calls are asynchronous
 
-# Advance feature & Performance considerations
+# Advance features & Performance considerations
 
 - Memory accesses:
    - data resides in the GPU memory; maximum performance is achieved when reading/writing is done in continuous blocks
