@@ -166,6 +166,7 @@ __global__ void axpy_(int n, double a, double *x, double *y)
 
 - Kernels are launched with the function call `hipLaunchKernelGGL`
     - grid dimensions need to be defined (two vectors of type `dim3`)
+    - execution is asynchronous
 
 ```cpp
 dim3 blocks(32);

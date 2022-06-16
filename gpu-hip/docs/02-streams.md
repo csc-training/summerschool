@@ -175,7 +175,7 @@ hipLaunchKernelGGL(kernel, gridsize, blocksize, shared_mem_size, stream,
 # Synchronization in the kernel
 
 `__syncthreads()`
-  : synchronize threads inside a kernel
+  : synchronize threads within a block inside a kernel
 
 <br>
 
