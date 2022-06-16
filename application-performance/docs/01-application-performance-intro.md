@@ -90,18 +90,19 @@ end do
 
 # How to improve single node performance?
 
-<div class=column>
+<div class=column width=60%>
 - Choose good algorithm
     - e.g. $O(N \mathrm{log} N)$ vs. $O(N^2)$
     - remember prefactor!
 - Use high performance libraries
-    - linear algebra (BLAS/LAPACK), FFTs, ...
-- Experiment with compilers and compiler options
+    - linear algebra (BLAS/LAPCK), FFTs, ...
+- Experiment with compilers and options
 - Experiment with threading options
     - Thread pinning, loop scheduling, ...
 - Optimize the program code
 </div>
-<div class=column>
+<div class=column width=38%>
+<small>
 ```bash
 ./fibonacci 20
 With loop, Fibonacci number i=20 is 6765
@@ -109,6 +110,7 @@ Time elapsed 79 ums
 With recursion, Fibonacci number i=20 is 6765
 Time elapsed 343773 ums
 ```
+</small>
 <br>
 <!-- Copyright CSC -->
 ![](img/optimal_performance.png){.center width=80%}
@@ -118,9 +120,9 @@ Time elapsed 343773 ums
 # How to improve parallel scalability?
 
 - Choose good algorithm
-    - Note that the best serial algorithm is not necessarily the best
+    - Note: the best serial algorithm is not always the best
       parallel algorithm
-    - It can be beneficial to do more computations if less
+    - Computating more can be beneficial if less
       communication is needed
 - Use high performance libraries
     - linear algebra (ScaLAPACK, ELPA), FFTs, ...
@@ -128,8 +130,7 @@ Time elapsed 343773 ums
     - Load balancing algorithms might be complex and add overheads
 - Utilize advanced MPI features
 - Experiment with parameters of the MPI library
-    - Environment variables for short/long message threshold,
-      collective algorithms, ...
+    - Short/long message threshold, collective algorithms, ...
 
 # Performance engineering
 
@@ -165,7 +166,7 @@ Time elapsed 343773 ums
 
 # How to assess application's performance?
 
-<div class=column>
+<div class=column width=58%>
 - Two fundamental limits for CPU
 - Peak floating point performance
     - clock frequency
@@ -177,14 +178,17 @@ Time elapsed 343773 ums
     - How fast data can be fed to the CPU
 </div>
 
-<div class=column>
+<div class=column width=40%>
 <!-- Copyright CSC -->
 ![](img/cpu-memory.png){.center width=50%}
 </div>
 
 # How to assess application's performance?
 
-- Example: maximum performance of **axpy** `x[i] = a x[i] + y[j]`
+- Example: maximum performance of **axpy** 
+  ```
+   x[i] = a x[i] + y[j]
+  ```
     - Two FLOPS (multiply and add) per `i`
     - Three memory references per `i`
     - With double precision numbers arithmetic intensity <br>
@@ -196,7 +200,10 @@ Time elapsed 343773 ums
 
 # How to assess application's performance?
 
-- Example: matrix-matrix multiplication `C[i,j] = C[i,j] + A[i,k] * B[k,j]`
+- Example: matrix-matrix multiplication 
+  ```
+  C[i,j] = C[i,j] + A[i,k] * B[k,j]
+  ```
     - $2 N^3$ FLOPS
     - $3 N^2$ memory references
     - With double precision numbers arithmetic intensity
@@ -210,19 +217,19 @@ Time elapsed 343773 ums
 - Maximize single node performance
     - Dynamic scaling of clock frequency, shared caches etc. make
       scalability within node complex concept
-    - Example: independent computations in Mahti (no parallel
-      overheads)
-        - Single core: 1.99 s
+    - Example: in Mahti independent computations (no parallel
+      overheads) run 10 % faster with only one core per node than with full node
+<!--        - Single core: 1.99 s
         - All the cores: 2.20 - 2.25 s per core
-<!-- Numbers from the affinity_test code -->
-- Memory bound applications may benefit from undersubscribing the node
+      Numbers from the affinity_test code -->
+    - Memory bound applications may benefit from undersubscribing the node
 - Lower limit for acceptable scalability between nodes
     - Speedup of 1.5 when doubling number of nodes
 
 
 # Roofline model
 
-<div class=column>
+<div class=column width=55%>
 - Simple visual concept for maximum achievable performance
     - can be derived in terms of arithmetic intensity $I$, peak performance
       $\pi$ and peak memory bandwidth $\beta$
@@ -235,12 +242,12 @@ $$
 
 - Machine balance = arithmetic intensity needed for peak performance
     - Typical values 5-15 FLOPS/byte
-- Additional ceilings can be included (caches, vectorization,
-  threading, MPI)
+<!--- Additional ceilings can be included (caches, vectorization,
+  threading, MPI) -->
 
 </div>
 
-<div class=column>
+<div class=column width=43%>
 <!-- Copyright CSC -->
 ![](img/simple-roofline.png){.center width=90%}
 <br>
@@ -251,7 +258,7 @@ $$
 
 # Roofline model
 
-<div class=column>
+<div class=column width=55%>
 - Model does not tell if code can be optimized or not
     - Application 1 may not be *fundamentally* memory bound, but only
         implemented badly (not using caches efficiently)
@@ -259,7 +266,7 @@ $$
         performance (performs only additions and not fused multiply adds)
 - However, can be useful for guiding the optimization work
 </div>
-<div class=column>
+<div class=column width=43%>
 <!-- Copyright CSC -->
 ![](img/ceilings-roofline.png){.center width=90%}
 </div>

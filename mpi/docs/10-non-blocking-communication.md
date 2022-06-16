@@ -232,14 +232,24 @@ MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `ro
 - Often a communication with same argument list is repeatedly executed
 - It may be possible to optimize such pattern by persistent communication requests
     - Can be thought as a ”communication port”
-- Usage:
-    - Create requests: `MPI_Send_init` & `MPI_Recv_init`
-        - Initiation and starting of communication separated in addition to communication and completion
-    - Start communication: `MPI_Start` / `MPI_Startall`
-    - Complete communication: `MPI_Wait` / `MPI_Waitall`
-- Recently published (June 2021) MPI 4.0 includes also persistent
-  collectives
+- Three separate phases:
+    1. Inititation of communication
+    2. Starting of communication
+    3. Completing communication
+- Recently published MPI 4.0 includes also persistent collectives
     - Not supported by all implementations yet
+
+# Persistent communication
+
+- Inititiate communication by creating requests
+    - `MPI_Send_init` and `MPI_Recv_init`
+    - Same arguments as in `MPI_Isend` and `MPI_Irecv`
+- Start communication
+    - `MPI_Start` / `MPI_Startall`
+    - Request or array of requests as argument
+- Complete communication
+    - `MPI_Wait` / `MPI_Waitall`
+    - Same as in standard non-blocking communication
 
 # Persistent point-to-point communication
 
