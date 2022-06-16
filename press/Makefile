@@ -1,5 +1,5 @@
 FACTORY=slidefactory.sif
-OPTIONS=
+OPTIONS=--config width=905 --config height=1280 -t csc-2018-portrait
 
 SRC  = $(wildcard *.md)
 HTML = $(patsubst %.md,%.html,$(SRC))
