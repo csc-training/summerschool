@@ -10,7 +10,7 @@ lang:   en
 
 <div class=column>
 - Kinetic plasma simulation code
-    - Particle-in-Cell with computational particles and electromagnetic fields are in grid
+    - Particle-in-Cell with computational particles and electromagnetic fields on a grid
 - Hybrid C++14/Python code 
     - Domain super-decomposition with MPI 
     - Massively parallel with runs on >10k cores
@@ -27,7 +27,7 @@ lang:   en
 - Python + C + libraries (numpy, BLAS, LAPACK)
     - Various parallelization levels with MPI
     - Over 10k cores with some modes
-    - ~20 developers all around world
+    - ~20 developers all around the world
 </div>
 <div class=column>
     
@@ -187,7 +187,7 @@ GPAW
 
 - Different languages can be interfaced together
     - Best of both worlds
-- Low level languages (C, C++, Fortran) for costly functions
+- Low-level languages (C, C++, Fortran) for costly functions
 - High-level languages (Python, Julia, R) for main functions
 - Combinations/suggestions
     - Python & C++ (PyBind11) for object-oriented programming
@@ -209,13 +209,13 @@ GPAW
     - Encapsulation 
     - Self-contained functions
     - No global variables, input what you need
-- Modular code takes more time to design but is **lot** easier to extend and understand
+- Modular code takes more time to design but is **a lot** easier to extend and understand
 
 # Modular code design: tools
 
 <div class=column>
     
-- Avoid not invented here syndrome
+- Avoid **not invented here** syndrome
 - Leverage existing software and libraries
     - Libraries
         - Numerical (BLAS, solvers,...)
@@ -223,7 +223,7 @@ GPAW
         - Parallelization
     - Frameworks?
         - Plug your model into an existing framework?
-        - Petsc, Trilinos, BoxLib++, ARMReX, corgi,...
+        - PETSc, Trilinos, BoxLib++, AMReX, corgi,...
 </div>
 
 <div class=column>
@@ -237,7 +237,7 @@ GPAW
 
 # Modular code design: development tools
 
-- Software development is time consuming, many tools exists to help you in the process
+- Software development is time consuming, many tools exist to help you in the process
 - Build systems automate compiling
     - Makefiles, CMake, Ninja, ...
 - Debuggers
