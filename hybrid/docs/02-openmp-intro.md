@@ -95,13 +95,14 @@ lang:   en
 <div class="column">
 
 - SPMD: Single Program Multiple Data
-![](img/omp-parallel.png){.center width=60%}
+![](img/omp-parallel.png){.center width=50%}
 
 </div>
 
 
 # Example: "Hello world" with OpenMP
 
+<small>
 <div class="column">
 ```fortran
 program omp_hello
@@ -115,8 +116,8 @@ program omp_hello
 end program omp_hello
 ```
 ```bash
-> gfortran -fopenmp omp_hello.F90 -o omp
-> OMP_NUM_THREADS=3 ./omp
+$ gfortran -fopenmp omp_hello.F90 -o omp
+$ OMP_NUM_THREADS=3 ./omp
  Hello world! -main
  .. worker reporting for duty.
  .. worker reporting for duty.
@@ -139,8 +140,8 @@ int main(int argc, char* argv[]) {
 }
 ```
 ```bash
-> gcc -fopenmp omp_hello.c -o omp
-> OMP_NUM_THREADS=3 ./omp
+$ gcc -fopenmp omp_hello.c -o omp
+$ OMP_NUM_THREADS=3 ./omp
 Hello world! -main
 .. worker reporting for duty.
 .. worker reporting for duty.
@@ -148,17 +149,21 @@ Hello world! -main
 Over and out! -main
 ```
 </div>
+</small>
 
 
 # How to distribute work?
 
 - Each thread executes the same code within the parallel region
 - OpenMP provides several constructs for controlling work distribution
-    - for/do construct
-    - single/master/masked construct
-    - sections construct
-    - task construct
-    - workshare construct (Fortran only)
+    - `for`/`do` construct
+    - `workshare` construct (Fortran only)
+    - `single`/`master`/`masked` construct
+    - `task` construct
+    - `distribute` construct (for GPUs)
+    - `loop` construct
+    - `sections` construct
+    
 - Thread ID can be queried and used for distributing work manually
   (similar to MPI rank)
 

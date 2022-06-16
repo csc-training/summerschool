@@ -27,6 +27,10 @@ lang:   en
 - Tasks are added to a task queue, and executed then by a single thread
     - Can be same or different thread that created the task
     - OpenMP runtime takes care of distributing tasks to threads
+- Execution may be deferred or started immediately after tasks is created
+- Tasks are created by
+    - Standard worksharing constructs (implicit tasks)
+    - `task` construct (explicit tasks)
 
 
 # OpenMP task construct
@@ -111,10 +115,10 @@ How many tasks does the following code create when executed with 4 threads?
 
 - Tasks are created at one time, and executed at another
     - What data does the task see when executing?
-- Variables that are `shared` in the enclosing construct contain the data at
-  the time of execution
 - Variables that are `private` in the enclosing construct are made
   `firstprivate` and contain the data at the time of creation
+- Variables that are `shared` in the enclosing construct contain the data at
+  the time of execution
 - Data scoping clauses (`shared`, `private`, `firstprivate`, `default`) can
   change the default behaviour
 
@@ -248,7 +252,6 @@ int fib(int n) {
 # Things that we did not cover
 
 - sections construct
-- critical and atomic constructs
 - scheduling clauses of `for`/`do` constructs
 - task dependencies
 - taskgroup and taskloop constructs

@@ -22,9 +22,11 @@ lang:   en
       and in Fortran an additional output parameter
 
 - Pre-defined integer constants:
+  <small>
   ```
   MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE
   ```
+  </small>
 
 
 # Hybrid programming styles: fine/coarse grained
@@ -45,19 +47,17 @@ lang:   en
 
 - Hybrid programming is relatively straightforward in cases where
   communication is done by only a single thread at a time
-- With the so called multiple mode all threads can make MPI calls
+- With the "multiple" mode all threads can make MPI calls
   independently
-
-```c
-int required=MPI_THREAD_MULTIPLE, provided;
-MPI_Init_thread(&argc, &argv, required, &provided)
-```
+  ```c
+  int required=MPI_THREAD_MULTIPLE, provided;
+  MPI_Init_thread(&argc, &argv, required, &provided)
+  ```
 
 - When multiple threads communicate, the sending and receiving threads
   normally need to match
     - Thread-specific tags
     - Thread-specific communicators
-
 
 # Thread-specific tags
 
@@ -128,7 +128,7 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 
 - Normally, operating system can run threads and processes in any
   logical core
-- Operating system may even move the running task from one core to another
+- Operating system may even move the running process/thread from one core to another
     - Can be beneficial for load balancing
     - For HPC workloads often detrimental as private caches get
       invalidated and NUMA locality is lost
