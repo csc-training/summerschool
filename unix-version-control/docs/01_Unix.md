@@ -38,7 +38,7 @@ lang:   en
 
 # Skills needed to work with supercomputers
 
-- Logging in to, and copying files from/to a supercomputer (ssh, scp)
+- Logging into, and copying files from/to a supercomputer (ssh, scp)
 - Setting up an environment to compile and run programs
     - Module system (before compiling)
     - Batch queue system (for running)
@@ -55,7 +55,7 @@ lang:   en
   ```bash
   ssh user@host
   ```
-    - Additionaly, ssh can also be used to run a command on the host:<br>
+    - Additionally, ssh can also be used to run a command on the host:<br>
       `ssh user@host command`
 
 - The `scp` command is used to copy files and directories between different

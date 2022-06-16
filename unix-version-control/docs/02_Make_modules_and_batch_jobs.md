@@ -119,7 +119,7 @@ CCFLAGS=-O3
     * They basically just change where things are "pointing". So when you run
       `gcc` the loaded module decides whether you are using version 4.9 or 5.3
       or 6.0 and so on
-    * Most programs requires loading a module to be accessible
+    * Most programs require loading a module to be accessible
 
 
 # Common module commands
@@ -165,7 +165,7 @@ CCFLAGS=-O3
 - This is done with a batch job script
 
 
-# Example batch job script
+# Example SLURM batch job script
 
 ```bash
 #!/bin/bash
@@ -184,7 +184,7 @@ srun myprog
     - https://docs.csc.fi/computing/running/example-job-scripts-mahti/
 
 
-# Running batch jobs
+# Running batch jobs under SLURM
 
 - Submit your batch job script to the queue using `sbatch`
   ```bash
@@ -199,7 +199,7 @@ srun myprog
   scancel jobid
   ```
   (here the jobid is the numeric ID of the job)
-- Show job resource usage with `sacct`:
+- Show job resource usage (for completed jobs) with `sacct`:
   ```bash
   sacct jobid
   ```
