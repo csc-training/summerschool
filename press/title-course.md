@@ -1,6 +1,6 @@
 ---
 title:  CSC Summer School in High-Performance Computing 2022
-date:   June 6 - July 5, 2022
+date:   June 26 - July 5, 2022
 author: CSC - IT Center for Science, Finland
 lang:   en
 ---
