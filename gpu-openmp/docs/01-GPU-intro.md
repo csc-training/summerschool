@@ -87,18 +87,18 @@ CPU vs Accelerator
 
 # Lumi - Pre-exascale system in Finland
 
- ![](img/lumi.png){.center width=55%}
+ ![](img/lumi.png){.center width=50%}
 
 
 # Accelerator model today
 
 <div class="column">
-- Connected to CPUs via PCIe
-- Local memory
+- GPU is connected to CPUs via PCIe
+- Local memory in GPU
     - Smaller than main memory (32 GB in Puhti)
-    - Very high bandwidth (up to 900 GB/s)
+    - Very high bandwidth (up to 3200 GB/s in LUMI)
     - Latency high compared to compute performance
-- Data must be copied over the PCIe bus
+- Data must be copied from CPU to GPU over the PCIe bus
 
 </div>
 <div class="column">
@@ -109,13 +109,28 @@ CPU vs Accelerator
 #  Heterogeneous Programming Model
 
 - GPUs are co-processors to the CPU
-- The CPU controls the work flow:
-  - makes all the calls
+- CPU controls the work flow:
+  - *offloads* computations to GPU by launching *kernels*
   - allocates and deallocates the memory on GPUs
   - handles the data transfers between CPU and GPUs
-  - delegates the highly-parallel work to the GPU
-- The GPU code is executed by doing calls to functions (kernels) using thousands of threads running on thousands of cores
-- The kernel calls are asynchronous
+- CPU and GPU can work concurrently
+   - kernel launches are normally asynchronous
+
+# GPU architecture
+
+<div class="column">
+- Designed for running tens of thousands of threads simultaneously on
+  thousands of cores
+- Very small penalty for switching threads
+- Running large amounts of threads hides memory access penalties
+- Very expensive to synchronize all threads
+</div>
+
+<div class="column">
+![](img/mi100-architecture.png)
+<small>AMD Instinct MI100 architecture (source: AMD)</small>
+</div>
+
 
 # Advance features & Performance considerations
 
@@ -203,7 +218,10 @@ More difficult, but more opportunities
 
 # Summary
 
-- HPC throughout the ages -- performance through parallelism
+- GPUs provide significant speed ups for certain applications
+- GPUs are co-processors to CPUs
+   - CPU offloads computations and manages memory
+- High amount of parallelism required for efficient utilization of GPUs
 - Programming GPUs
-    - CUDA, HIP
     - Directive based methods
+    - CUDA, HIP
