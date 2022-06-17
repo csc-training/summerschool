@@ -298,7 +298,7 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 #pragma omp target
 #pragma omp teams
 #pragma omp distribute
-for (int i = i; i < N; i++)
+for (int i = 0; i < N; i++)
   #pragma omp parallel
   #pragma omp for
   for (int j = 0; j < M; j++) {
@@ -357,7 +357,7 @@ end do
 ```c++
 #pragma omp target teams
 #pragma omp distribute parallel for
-for (int i = i; i < N; i++) {
+for (int i = 0; i < N; i++) {
   p[i] = v1[i] * v2[i]
 }
 ```
@@ -388,7 +388,7 @@ end do
 ```c++
 #pragma omp target
 #pragma omp loop
-for (int i = i; i < N; i++) {
+for (int i = 0; i < N; i++) {
   p[i] = v1[i] * v2[i]
 }
 ```
