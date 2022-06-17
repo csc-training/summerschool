@@ -25,8 +25,19 @@ lang:   en
 - Why OpenMP and not OpenACC?
     - OpenMP is going to have a more extensive platform and compiler
       support
-    - Currently, OpenACC support in AMD GPUs is still developing
+    - Currently, OpenACC support in AMD GPUs is limited
     - Currently, OpenACC can provide better performance in NVIDIA GPUs
+
+# OpenACC support for AMD GPUs
+
+- OpenACC support for AMD GPUs in GNU compilers under development
+- OpenACC support in general for Clang/Flang is under development
+- Cray compilers
+    - Fortran compiler supports OpenACC v2.7, support for latest OpenACC coming in 2022
+    - C/C++ compiler does not support OpenACC
+- In LUMI, only Fortran will be supported with OpenACC
+- For now, OpenACC is not a recommended approach for new codes targeting AMD GPUs
+    - If a Fortran code already uses OpenACC, it may be possible to use it
 
 
 # OpenMP vs. CUDA/HIP
@@ -450,3 +461,5 @@ evolve:
 
 - NVIDIA HPC SDK Documentation <br>
   <https://docs.nvidia.com/hpc-sdk/compilers/hpc-compilers-user-guide/>
+- Cray Compilers Documentation <br>
+  <[https://dcray/hpc-compilers-user-guide/](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=index.html)>

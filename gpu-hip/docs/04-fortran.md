@@ -192,13 +192,3 @@ extern "C"
 
 ![](img/gpufort2.png){width=1600px}
 
-
-# Fortran and OpenACC
-
-- Cray Fortran compiler supports OpenACC v2.7
-    - support for latest OpenACC coming in 2022
-- LUMI has Cray software environment, including Cray compilers
-    - only Fortran will be supported with OpenACC
-- For now, OpenACC is not a recommended approach for new codes
-    - if a Fortran code already uses OpenACC, it may be possible to use it on
-      LUMI
