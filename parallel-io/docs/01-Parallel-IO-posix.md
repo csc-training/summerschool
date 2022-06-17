@@ -180,14 +180,6 @@ else
 end if
 ```
 
-# Performance considerations
-
-- Files are often assigned in a round robin fashion over multiple OSTs
-- You can overwhelm an OST, OSS or MDS
-- Per node limits on bandwidth
-- Testing can be super noisy, performance depends on the load
-- Very large cache effects
-- More stripes does not automatically improve performance
 
 # Parallel POSIX I/O
 
