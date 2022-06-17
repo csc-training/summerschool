@@ -28,3 +28,6 @@ the parallelization as follows (marked with TODOs in the source code):
 
 To build the code, please use the provided `Makefile` (by typing `make`). By default, Intel 
 compiler is used, in order to use gcc type `make COMP=gnu`.
+
+There is also working serial code under [cpp/serial](cpp/serial) / [fortran/serial](fortran/serial)
+which you can use as reference. 
