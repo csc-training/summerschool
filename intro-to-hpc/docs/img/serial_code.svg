@@ -7,8 +7,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 903.99965 526.03454"
-   height="526.03455"
+   viewBox="0 0 903.99965 538.03454"
+   height="538.03455"
    width="903.99969"
    xml:space="preserve"
    id="svg2"
@@ -24,19 +24,19 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="981"
+     inkscape:window-height="1125"
      id="namedview4430"
      showgrid="false"
      inkscape:zoom="1.189916"
-     inkscape:cx="475.57483"
-     inkscape:cy="226.29119"
-     inkscape:window-x="1920"
-     inkscape:window-y="28"
+     inkscape:cx="437.82444"
+     inkscape:cy="222.92966"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1244" /><metadata
+     inkscape:current-layer="g14" /><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        id="clipPath18"
        clipPathUnits="userSpaceOnUse"><path
@@ -199,7 +199,7 @@
          id="path5472"
          d="M 461,16.1 H 662.1 V 52.8 H 461 Z"
          inkscape:connector-curvature="0" /></clipPath></defs><g
-     transform="matrix(1.3333333,0,0,-1.3333333,-45.339799,547.62837)"
+     transform="matrix(1.3333333,0,0,-1.3333333,-45.339799,559.62837)"
      id="g10"><g
        id="g12"><g
          clip-path="url(#clipPath18)"
@@ -250,7 +250,8 @@
              style="fill:none;stroke:#525e66;stroke-width:3.99029994;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              d="M 357.5,43.9 Z"
              inkscape:connector-curvature="0" /></g><g
-           id="g66"><text
+           id="g66"
+           transform="translate(0,6)"><text
              id="text70"
              style="font-variant:normal;font-weight:normal;font-size:22px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,170.4,377.7)"><tspan
@@ -2344,7 +2345,8 @@
                y="0"
                x="0 10.8 21.6 32.400002 43.200001 54">evolve</tspan></text>
 </g><g
-           id="g1806"><text
+           id="g1806"
+           transform="translate(0,9)"><text
              id="text1810"
              style="font-variant:normal;font-weight:normal;font-size:22px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,531.2,398.4)"><tspan
@@ -3616,7 +3618,8 @@
              style="fill:none;stroke:#525e66;stroke-width:2.00929999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              d="m 411.8,303.3 v 2.9"
              inkscape:connector-curvature="0" /></g><g
-           id="g2828"><text
+           id="g2828"
+           transform="translate(0,6)"><text
              id="text2832"
              style="font-variant:normal;font-weight:normal;font-size:22px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,524.6,324.3)"><tspan
@@ -4543,16 +4546,19 @@
              id="path3594"
              style="fill:none;stroke:#371a5a;stroke-width:2.00929999;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              d="M 468.4,67.8 H 410.8 V 96.6 H 525.9 V 67.8 Z"
-             inkscape:connector-curvature="0" /></g><g
-           id="g3596"><text
-             id="text3600"
-             style="font-variant:normal;font-weight:normal;font-size:18px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
-             transform="matrix(1,0,0,-1,414.4,75)"><tspan
-               id="tspan3598"
-               y="0"
-               x="0 10.8 21.6 32.400002 43.200001 54 64.800003 75.599998 86.400002 97.199997">copy_field</tspan></text>
-</g><g
-           id="g3602"><text
+             inkscape:connector-curvature="0" /></g><text
+           transform="scale(1,-1)"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="text3600"
+           x="430.63028"
+           y="-77.643356"><tspan
+             sodipodi:role="line"
+             id="tspan3772"
+             x="430.63028"
+             y="-77.643356">average</tspan></text>
+<g
+           id="g3602"
+           transform="translate(0,4.5)"><text
              id="text3606"
              style="font-variant:normal;font-weight:normal;font-size:22px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,408.2,141.2)"><tspan
@@ -4595,10 +4601,12 @@
            id="g3638"><text
              id="text3642"
              style="font-variant:normal;font-weight:normal;font-size:18px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
-             transform="matrix(1,0,0,-1,413.5,111.1)"><tspan
+             transform="scale(1,-1)"
+             x="413.38486"
+             y="-113.53633"><tspan
                id="tspan3640"
-               y="0"
-               x="0 10.8 21.6 32.400002 43.200001 54 64.800003 75.599998 86.400002 97.199997">swap_field</tspan></text>
+               y="-113.53633"
+               x="413.38486 424.18488 434.98486 445.78485 456.58487 467.38486 478.18488 488.98486 499.78485 510.58487">swap_field</tspan></text>
 </g><g
            id="g3644"><g
              id="g3646" /><g
@@ -5064,7 +5072,8 @@
              style="fill:none;stroke:#525e66;stroke-width:2.00929999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
              d="m 555.9,95.3 v 4"
              inkscape:connector-curvature="0" /></g><g
-           id="g4020"><text
+           id="g4020"
+           transform="translate(0,6)"><text
              id="text4024"
              style="font-variant:normal;font-weight:normal;font-size:22px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,570.6,122.2)"><tspan
@@ -5966,7 +5975,8 @@
                y="0"
                x="0 10.8 21.6 32.400002 43.200001 54 64.800003 75.599998 86.400002 97.199997 108">write_field</tspan></text>
 </g><g
-           id="g4754"><text
+           id="g4754"
+           transform="translate(0,6)"><text
              id="text4758"
              style="font-variant:normal;font-weight:normal;font-size:22px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,545.4,216.7)"><tspan
