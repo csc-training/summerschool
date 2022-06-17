@@ -135,6 +135,16 @@ thousands of nodes on the supercomputer to physical disks
 
 ![](img/striping-performance.png){.center width=60%}
 
+
+# Performance considerations
+
+- Files are often assigned in a round robin fashion over multiple OSTs
+- You can overwhelm an OST, OSS or MDS
+- Per node limits on bandwidth
+- Testing can be super noisy, performance depends on the load
+- Very large cache effects
+- More stripes does not automatically improve performance
+
 # Parallel I/O with posix {.section}
 
 # Parallel POSIX I/O
