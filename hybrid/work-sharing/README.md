@@ -1,6 +1,9 @@
-## Work sharing for a simple loop ##
+## Work sharing for vector addition
 
-In [sum.c](sum.c) (or [sum.F90](sum.F90) for Fortran) is a skeleton
-implementation for a simple summation of two vectors, C=A+B. Add the
-computation loop and add the parallel region with work sharing
-directives so that the vector addition is executed in parallel.
+Implement vector addition, i.e. C = A + B, in parallel using OpenMP work
+sharing.
+
+Starting from a skeleton code ([skeleton.c](skeleton.c) or
+[skeleton.F90](skeleton.F90)), add the missing computational loop for the
+vector addition, enclose it in a parallel region and use work sharing
+directives to execute the loop in parallel.

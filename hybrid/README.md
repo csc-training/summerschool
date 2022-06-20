@@ -17,6 +17,7 @@
 ### Reductions and execution controls
 
 - [Reduction](reduction/)
+- [Master and single](master-single)
 
 ### Heat equation
 
@@ -37,6 +38,6 @@
 
 ### Heat equation
 
-- [Hybrid heat equation]()
+- [Hybrid heat equation](heat-hybrid)
 
 
