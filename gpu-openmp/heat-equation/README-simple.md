@@ -1,8 +1,8 @@
 ## Heat equation solver in parallel with OpenMP
 
 Parallelise our implementation of a two-dimensional heat equation solver
-using OpenMP offloading. See [Code description](code-description.md) for some
-theory and more details about the code.
+using OpenMP offloading. See [Code description](heat-cpu/code-description.md)
+for some theory and more details about the code.
 
 Starting point is a working serial code, which you should parallelize
 by inserting appropriate OpenMP directives and routines.
