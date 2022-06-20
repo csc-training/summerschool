@@ -1,35 +1,21 @@
 #include <stdio.h>
-#include <stdlib.h>
-#ifdef _OPENACC
-#include <openacc.h>
-#endif
-#include<mpi.h>
 
-int main(int argc, char *argv[])
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
+int main() 
 {
-    int i, myid, ntasks;
-#ifdef _OPENACC
-    acc_device_t devtype;
-#endif
+  int num_devices = omp_get_num_devices();
+  printf("Number of available devices %d\n", num_devices);
 
-    MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-
-    if (myid == 0) {
-        printf("Number of MPI tasks: %d\n", ntasks);
+#pragma omp target 
+  {
+    if (omp_is_initial_device()) {
+      printf("Running on host\n");    
+    } else {
+      printf("Running on device\n");
     }
+  }
 
-    printf("[%d] Hello world!\n", myid);
-#ifdef _OPENACC
-    devtype = acc_get_device_type();
-    printf("[%d] Number of available OpenACC devices: %d\n",
-            myid, acc_get_num_devices(devtype));
-    printf("[%d] Type of available OpenACC devices: %d\n", myid, devtype);
-#else
-    printf("[%d] Code compiled without OpenACC\n", myid);
-#endif
-
-    MPI_Finalize();
-    return 0;
 }

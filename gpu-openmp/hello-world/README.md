@@ -1,12 +1,22 @@
-# Hello world with OpenACC
+# Hello world with OpenMP offloading
 
-Compile and run a simple OpenACC test program, provided as `hello(.c|.F90)`.
+Compile and run a simple OpenMP test program, provided as `hello(.c|.F90)`.
 
-In order to compile the program on taito-gpu, you'll need to first load the
-following modules:
-```bash
-module load cuda/10.0 pgi/19.1 openmpi/3.1.4 libpng/1.6
+1. Compile the program first without offloading support (with only `-mp` option), and try
+to run the code in a GPU node.
+
+2. Next, compile the code with offloading support (with `-mp=gpu -gpu=cc80`). Try to run both
+   in a GPU node and in a CPU node. For CPU only run remove `--gres` and `--reservation` from 
+   batch job script and use the `test` partition, *e.g.*
+
 ```
+#!/bin/bash
+#SBATCH --job-name=hello
+#SBATCH --account=project_2000745
+#SBATCH --partition=test
+#SBATCH --time=00:05:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
 
-After this, you can compile the program using the normal compiler wrapper
-`mpicc`. Just remember to turn on support for OpenACC (`-acc` flag with PGI).
+srun hello
+```

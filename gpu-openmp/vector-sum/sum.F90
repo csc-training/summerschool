@@ -1,7 +1,4 @@
 program vectorsum
-#ifdef _OPENACC
-  use openacc
-#endif
   implicit none
   integer, parameter :: rk = selected_real_kind(12)
   integer, parameter :: ik = selected_int_kind(9)
@@ -17,9 +14,13 @@ program vectorsum
      vecB(i) = vecA(i)**2
   end do
 
-  ! TODO
-  ! Implement vector addition on device with OpenACC
-  ! vecC = vecA + vecB
+  ! TODO start:
+  ! Implement vector addition vecC = vecA + vecB and use OpenMP
+  ! for computing it in the device
+
+
+  ! TODO end
+
 
   ! Compute the check value
   write(*,*) 'Reduction sum: ', sum(vecC)
