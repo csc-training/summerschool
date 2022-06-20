@@ -21,8 +21,9 @@ Alternatevely run all these commands in non-interactive way by using the submiss
 ```
 #!/bin/bash
 #SBATCH --job-name=hello
-#SBATCH --account=project_2000745
-#SBATCH --partition=test
+#SBATCH --account=<training_project>
+#SBATCH --reservation=<rezervation name>
+#SBATCH --partition=gpu
 #SBATCH --time=00:05:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
