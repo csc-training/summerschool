@@ -8,7 +8,7 @@ DOCS = $(wildcard ../*/docs)
 
 HANDOUT=lecture-slides.pdf
 
-.PHONY: all html pdf jam clean $(DOCS)
+.PHONY: all html pdf jam clean purge $(DOCS)
 
 all: $(DOCS) $(PDF)
 
@@ -21,6 +21,13 @@ handout:
 
 clean:
 	-rm -f $(HTML) $(PDF) $(HANDOUT)
+
+purge:
+	@for doc in $(DOCS); do \
+		cd $$doc; \
+		$(MAKE) clean; \
+		cd - > /dev/null; \
+	done
 
 $(DOCS):
 	@cd $@ && echo $@ && $(MAKE) --no-print-directory pdf
