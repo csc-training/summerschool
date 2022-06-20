@@ -12,3 +12,5 @@ Log in on the running node `ssh rxxgxx`.
 2. Run the command `$CUDA_INSTALL_ROOT/extras/demo_suite/deviceQuery`. Comment on the output
 
 B) Start an interactive session with 2 or more GPUs and repeat the tasks above. 
+
+C) With 1 or more GPUs, check more examples from `$CUDA_INSTALL_ROOT/extras/demo_suite/`. 
