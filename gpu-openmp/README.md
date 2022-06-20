@@ -1,5 +1,8 @@
 # GPU programming I-III: exercises
 
+## Intro to GPUs in HPC
+- [Device query](intro/)
+
 ## Basics of OpenMP offloading
 
 - [Hello world](hello-world/)
