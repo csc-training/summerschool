@@ -10,11 +10,9 @@ Log in on the running node `ssh rxxgxx`.
 
 1. Load the hip module, then run the command `nvidia-smi`. Investigate the output
 2. Run the command `$CUDA_INSTALL_ROOT/extras/demo_suite/deviceQuery`. Comment on the output
+3. Check more examples from `$CUDA_INSTALL_ROOT/extras/demo_suite/`.
 
-B) Start an interactive session with 2 or more GPUs and repeat the tasks above. 
-
-C) With 1 or more GPUs, check more examples from `$CUDA_INSTALL_ROOT/extras/demo_suite/`. 
-
+B) Repeat the tasks above with 2 or more GPUs.
 
 Alternatevely run all these commands in non-interactive way by using the submission script:
 
