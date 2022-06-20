@@ -18,7 +18,7 @@ Alternatevely run all these commands in non-interactive way by using the submiss
 
 ```
 #!/bin/bash
-#SBATCH --job-name=hello
+#SBATCH --job-name=d_query
 #SBATCH --account=<training_project>
 #SBATCH --reservation=<rezervation name>
 #SBATCH --partition=gpu
