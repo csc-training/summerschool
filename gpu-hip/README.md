@@ -1,6 +1,6 @@
 # GPU programming IV-VI: exercises
 
-## Basics
+## Basics of HIP programming
 
 - [Hello world](hello-world)
 - [Kernel: saxpy](kernel-saxpy)
