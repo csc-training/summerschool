@@ -13,12 +13,12 @@ lang:   en
 
 # What is high-performance computing?
 
- ![](images/cray.png){.center width=30%}
+ ![](img/cray.png){.center width=30%}
 
 # Top 500 list
 
 <!-- Source: top500.org, Copyright 1993-2022 TOP500.org (c) -->
- ![](images/top_500.png){.center width=50%}
+ ![](img/top_500.png){.center width=50%}
 
 # What are supercomputers used for? {.section}
 
@@ -53,7 +53,7 @@ lang:   en
 * Modeling space weather
 </div>
 <div class=column>
-![](images/climate_greenland.png){.center width=90%}
+![](img/climate_greenland.png){.center width=90%}
 </div>
 
 # Covid-19 fast track with Puhti
@@ -65,7 +65,7 @@ lang:   en
 * The results have had an impact on e.g. ventilation instructions and the use of masks
 </div>
 <div class=column>
-![](images/covid.png){.center width=100%}
+![](img/covid.png){.center width=100%}
 </div>
 
 # Gravitational waves
@@ -77,7 +77,7 @@ lang:   en
 * Experimental data from ESA's LISA satellite (Launch date 2037)
 </div>
 <div class=column>
-![](images/grav.png){.center width=90%}
+![](img/grav.png){.center width=90%}
 </div>
 
 #  Topological superconductors
@@ -89,7 +89,7 @@ lang:   en
     - These confirm that experimentally measured signals are due to this special quantum state
 </div>
 <div class=column>
-![](images/majorana.png){.center width=100%}
+![](img/majorana.png){.center width=100%}
 </div>
 
 
@@ -102,14 +102,14 @@ lang:   en
 <div class=column>
 
 <!-- Source: Adobe Stock, CC BY-SA 3.0 -->
- ![](images/DeepFin.jpg){.center width=100%}
+ ![](img/DeepFin.jpg){.center width=100%}
 
 </div>
 
 
 # Utilizing HPC in scientific research
 
- ![](images/sci.png){.center width=40%}
+ ![](img/sci.png){.center width=40%}
 
 * **Goal for this school: everyone is able to write and modify HPC applications!**
 
@@ -121,7 +121,7 @@ lang:   en
 # CPU frequency development
 * Power consumption of CPU: $~f^3$
 
- ![](images/moore.png){.center width=45%}
+ ![](img/moore.png){.center width=45%}
 
 # Parallel processing
 
@@ -143,16 +143,16 @@ lang:   en
 * Memory within the node is directly usable by all CPU cores
 
 
- ![](images/anatomy.svg){.center width=60%}
+ ![](img/anatomy.svg){.center width=60%}
 
 # Supercomputer autopsy – Lumi
 
- ![](images/lumi.png){.center width=50%}
+ ![](img/lumi.png){.center width=50%}
 
 # From laptop to Tier-0
 <div class=column>
 
- ![](images/tier.png){.center width=80%}
+ ![](img/tier.png){.center width=80%}
 
 </div>
 <div class=column>
@@ -191,7 +191,7 @@ lang:   en
     - A problem is split into smaller subtasks
     - Multiple subtasks are processed simultaneously using multiple cores
 
- ![](images/compp.svg){.center width=40%}
+ ![](img/compp.svg){.center width=40%}
 
 # Types of parallel problems
 * Tightly coupled
@@ -215,14 +215,14 @@ lang:   en
 </div>
 <div class=column>
 
- ![](images/eparallel.svg){.center width=80%}
+ ![](img/eparallel.svg){.center width=80%}
 
 </div>
 
 # Exposing parallelism
 * Task farm (master / worker)
 
- ![](images/farm.svg){.center width=60%}
+ ![](img/farm.svg){.center width=60%}
 
 * Master sends tasks to workers and receives results
 * There are normally more tasks than workers, and tasks are assigned dynamically
@@ -239,7 +239,7 @@ lang:   en
 </div>
 <div class=column>
 
- ![](images/scaling.png){.center width=80%}
+ ![](img/scaling.png){.center width=80%}
 
 </div>
 
@@ -254,7 +254,7 @@ lang:   en
 * Amdahl’s law: the fraction of non-parallelizable parts establishes the limit on how many cores can be harnessed
 </div>
 <div width=40% class=column>
-  ![](images/AmdahlsLaw.svg){.right width=100%}
+  ![](img/AmdahlsLaw.svg){.right width=100%}
 </div>
 
 
@@ -286,7 +286,7 @@ lang:   en
 
 # Parallel programming models
 
- ![](images/processes-threads.svg){.center width=80%}
+ ![](img/processes-threads.svg){.center width=80%}
 <div class=column>
 **MPI: Processes**
 
@@ -306,7 +306,7 @@ lang:   en
 
 # Parallel programming models
 
-![](images/anatomy.svg){.center width=100%}
+![](img/anatomy.svg){.center width=100%}
 
 # Future of High-performance computing {.section}
 
@@ -328,5 +328,5 @@ lang:   en
 * Hybrid approaches
 </div>
 <div class=column>
-![](images/quantum.png){.center width=50%}
+![](img/quantum.png){.center width=50%}
 </div>
