@@ -3,7 +3,7 @@
 A) Start an interactive session with 1 GPU:
 
 ```
-salloc --job-name=d_query --account=<training_project> --partition=gpu --rezervation=<rezervation name> --time=00:03:00 --ntasks=1  --cpus-per-task=10 --mem-per-cpu=8000 --gres=gpu:v100:1
+salloc --job-name=d_query --account=<training_project> --partition=gpu --reservation=<rezervation name> --time=00:03:00 --ntasks=1  --cpus-per-task=10 --mem-per-cpu=8000 --gres=gpu:v100:1
 ``` 
 
 Log in on the running node `ssh rxxgxx`.
