@@ -1,6 +1,6 @@
 program datatype1
   use mpi_f08
-  implicit none
+  implicit none  
 
   integer, dimension(8,8) :: array
   integer :: rank, ierr
