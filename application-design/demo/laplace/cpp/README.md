@@ -1,6 +1,6 @@
 # Laplace multi-architecture example
 
-This example uses MPI to create up to 4 competing processes, which execute the computational loop of a laplace example in different ways and prints out the timings. The loop is executed on the CPU or on the device (typically GPU) with either a more or a less optimal nested loop order. 
+This example uses MPI to create up to 4 competing processes, which execute the computational loop of the [laplace](../../../../application-performance/demos/Laplace/README.md) example in different ways and prints out the timings. The loop is executed on the CPU or on the device (typically GPU) with either a more or a less optimal nested loop order. 
 
 The cases 'cpu_slow' and 'cpu_fast' in [laplace_multiarch.cpp](src/laplace_multiarch.cpp) use normal C style for loops. The cases 'gpu_slow' and 'gpu_fast' use a special 'parallel_for' construct for the loops. In the C example, this is based on a preprocessor macro, whereas the C++ example is based on a lambda function, an approach similar to some accelerator frameworks such SYCL, Kokkos, RAJA, etc. Either option allows conditional compilation of the loops for multiple architectures while keeping the source code clean and readable.
 
