@@ -37,4 +37,8 @@ The executable can be run with 4 MPI processes using a sbatch script:
 #SBATCH --time=00:15:00
 
 srun laplace 4
+
+### Or analyzed using NVIDIA Nsight Systems by creating the profile and launcing the GUI by
+# srun nsys profile -o nsys_prof --stats=false --trace=cuda --force-overwrite=true ./laplace
+# nsys-ui
 ```
