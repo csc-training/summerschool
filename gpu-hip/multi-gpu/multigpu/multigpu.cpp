@@ -5,19 +5,21 @@
 /* HIP error handling macro */
 #define HIP_ERRCHK(err) (hip_errchk(err, __FILE__, __LINE__ ))
 static inline void hip_errchk(hipError_t err, const char *file, int line) {
-	if (err != hipSuccess) {
-		printf("\n\n%s in %s at line %d\n", hipGetErrorString(err), file, line);
-		exit(EXIT_FAILURE);
-	}
+    if (err != hipSuccess) {
+        printf("\n\n%s in %s at line %d\n", hipGetErrorString(err), file, line);
+        exit(EXIT_FAILURE);
+    }
 }
 
-/* Information of the decomposition */
+
+// Data structure for storing decomposition information
 struct Decomp {
-    int len; // the lenght of the array for the current device
-    int start; // the start index for the array on the current device
+    int len;    // length of the array for the current device
+    int start;  // start index for the array on the current device
 };
 
-/* Kernel for vector summation */
+
+/* HIP kernel for the addition of two vectors, i.e. C = A + B */
 __global__ void vector_add(double *C, const double *A, const double *B, int N)
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -27,6 +29,7 @@ __global__ void vector_add(double *C, const double *A, const double *B, int N)
         C[idx] = A[idx] + B[idx];
     }
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -39,74 +42,79 @@ int main(int argc, char *argv[])
     hipStream_t strm[2];
     Decomp dec[2];
 
-    #error Check that we have two HIP devices available     
+    // TODO: Check that we have two HIP devices available
 
     // Create timing events
     HIP_ERRCHK( hipSetDevice(0) );
     HIP_ERRCHK( hipEventCreate(&start) );
     HIP_ERRCHK( hipEventCreate(&stop) );
 
-    #error Allocate pinned host memory for hA, hB, and hC (sizeof(double) * N)
-    
-    
-    // Here we initialize the host memory values    
+    // Allocate host memory
+    // TODO: Allocate enough pinned host memory for hA, hB, and hC
+    //       to store N doubles each
+
+    // Initialize host memory
     for(int i = 0; i < N; ++i) {
         hA[i] = 1.0;
         hB[i] = 2.0;
     }
 
-    /* The decomposition */
+    // Decomposition of data for each stream
     dec[0].len   = N / 2;
     dec[0].start = 0;
     dec[1].len   = N - N / 2;
     dec[1].start = dec[0].len;
 
-    /* Allocate memory for the devices and per device streams */
+    // Allocate memory for the devices and per device streams
     for (int i = 0; i < 2; ++i) {
-        #error Allocate device memory for dA, dB, dC, (sizeof(double) * dec[i].len) and create streams for each device
+        // TODO: Allocate enough device memory for dA, dB, dC
+        //       to store dec[i].len doubles
+        // TODO: Create streams for each device
     }
 
-    /* Start timer */
+    // Start timing
     HIP_ERRCHK( hipSetDevice(0) );
     HIP_ERRCHK( hipEventRecord(start) );
 
-    /* Copy the parts of the vectors on host to the devices and
-       execute a kernel for each part. Note that we use asynchronous
-       copies and streams. Without this the execution is serialized
-       because the memory copies block the host process execution. */
+    /* Copy each decomposed part of the vectors from host to device memory
+       and execute a kernel for each part.
+       Note: one needs to use streams and asynchronous calls! Without this
+       the execution is serialized because the memory copies block the
+       execution of the host process. */
     for (int i = 0; i < 2; ++i) {
-        // Start by selecting the active device!
-        #error Add here the memcpy-kernel-memcpy parts
+        // TODO: Set active device
+        // TODO: Copy data from host to device (hA -> dA, hB -> dB)
+        // TODO: Launch kernel to calculate dC = dA + dB
+        // TODO: Copy data from device to host (dC -> hC)
     }
 
-    //// Add here the stream synchronization calls. After both
-    // streams have finished, we know that we stop the timing.
+    // Synchronize and destroy the streams
     for (int i = 0; i < 2; ++i) {
-        #error Add here the synchronization calls and destroy streams
+        // TODO: Add synchronization calls and destroy streams
     }
 
-    // Add here the timing event stop calls
-    #error Add here timing calls
+    // Stop timing
+    // TODO: Add here the timing event stop calls
 
-    /* Free device memories */
+    // Free device memory
     for (int i = 0; i < 2; ++i) {
-        #error Add here HIP deallocations
+        // TODO: Deallocate device memory
     }
 
+    // Check results
     int errorsum = 0;
-
     for (int i = 0; i < N; i++) {
         errorsum += hC[i] - 3.0;
     }
-
     printf("Error sum = %i\n", errorsum);
 
-    // Compute the elapsed time and release host memory
+    // Calculate the elapsed time
     float gputime;
     HIP_ERRCHK( hipSetDevice(0) );
     HIP_ERRCHK( hipEventElapsedTime(&gputime, start, stop) );
     printf("Time elapsed: %f\n", gputime / 1000.);
 
+    // Deallocate host memory
     HIP_ERRCHK( hipHostFree((void*)hA) );
     HIP_ERRCHK( hipHostFree((void*)hB) );
     HIP_ERRCHK( hipHostFree((void*)hC) );

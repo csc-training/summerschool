@@ -1,3 +1,10 @@
-# Multi-GPU exercise without MPI
+# Vector sum on two GPUs without MPI
 
-The purpose of this exercise is to perform a vector summation by decomposing the problem for two GPUs. The program prints the error sum and time. The task is to fill the blanks indicated by #error.
+Calculate the vector sum of two vectors (C = A + B) using two GPUs.
+
+Decompose the vectors into equal halves, copy data from host to device memory
+and launch a GPU kernel on each part asynchronously using streams. Copy the
+results back to the host to check for correctness. Add timing events to
+measure the time of execution.
+
+A skeleton code is provided in [multigpu.cpp](multigpu.cpp).
