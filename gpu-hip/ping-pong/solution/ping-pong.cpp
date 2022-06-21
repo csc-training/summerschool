@@ -54,13 +54,11 @@ void CPUtoCPU(int rank, double *data, int N, double &timer)
     if (rank == 0) {
         MPI_Send(data, N, MPI_DOUBLE, 1, 11, MPI_COMM_WORLD);
         MPI_Recv(data, N, MPI_DOUBLE, 1, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    } else {
+    } else if (rank == 1) {
         MPI_Recv(data, N, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-        /* Add one*/
+        // Increment by one on the CPU
         for (int i = 0; i < N; ++i)
             data[i] += 1.0;
-
         MPI_Send(data, N, MPI_DOUBLE, 0, 12, MPI_COMM_WORLD);
     }
 
@@ -86,7 +84,7 @@ void GPUtoGPUviaHost(int rank, double *hA, double *dA, int N, double &timer)
         MPI_Recv(hA, N, MPI_DOUBLE, 1, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N,
                                hipMemcpyHostToDevice) );
-    } else {
+    } else if (rank == 1) {
         // Receive vector from rank 0 and copy it to the device
         MPI_Recv(hA, N, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N,
@@ -119,8 +117,7 @@ void GPUtoGPUdirect(int rank, double *dA, int N, double &timer)
         MPI_Send(dA, N, MPI_DOUBLE, 1, 11, MPI_COMM_WORLD);
         // Receive vector from rank 1
         MPI_Recv(dA, N, MPI_DOUBLE, 1, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-    } else {
+    } else if (rank == 1) {
         int blocksize = 128;
         int gridsize = (N + blocksize - 1) / blocksize;
 
@@ -150,23 +147,16 @@ int main(int argc, char *argv[])
 
     getNodeInfo(&noderank, &nodenprocs, &devcount);
 
-    /* Due to the test, we need exactly two processes with one GPU for
-       each */
-    if (nprocs != 2) {
-        printf("Need exactly two processes!\n");
+    // Check that we have enough MPI tasks and GPUs
+    if (nprocs < 2) {
+        printf("Not enough MPI tasks! Need at least 2.\n");
         exit(EXIT_FAILURE);
-    }
-    if (devcount == 0) {
-        printf("Could now find any HIP devices.\n");
+    } else if (devcount == 0) {
+        printf("Could now find any GPU devices.\n");
         exit(EXIT_FAILURE);
-    }
-    if (nodenprocs > devcount) {
-        printf("Not enough GPUs for all processes in the node.\n");
-        exit(EXIT_FAILURE);
-    }
-    else{
-        printf("MPI rank %d: Found %d GPU devices, using GPUs 0 and 1!\n\n",
-               rank, devcount);
+    } else {
+        printf("MPI rank %d: Found %d GPU devices, using GPU %d\n",
+               rank, devcount, noderank % devcount);
     }
 
     // Select the device according to the node rank
