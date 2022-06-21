@@ -75,28 +75,30 @@ void GPUtoGPUviaHost(int rank, double *hA, double *dA, int N, double &timer)
     double start, stop;
     start = MPI_Wtime();
 
-    // Implement a transfer here that uses manual memcopies from device to host
-    // (and back to device). Host pointers are passed for the MPI.
-    // Remember to add one as in CPU code (using the existing GPU kernel).
-    if (rank == 0) { //Sender process
-        HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double)*N,
+    // GPU-to-GPU ping-pong that communicates via the host, but uses the GPU
+    // to increment the vector elements.
+    if (rank == 0) {
+        // Copy vector to host and send it to rank 1
+        HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double) * N,
                                hipMemcpyDeviceToHost) );
-        /* Send data to rank 1 for addition */
         MPI_Send(hA, N, MPI_DOUBLE, 1, 11, MPI_COMM_WORLD);
-        /* Receive the added data back */
+        // Receive vector from rank 1 and copy it to the device
         MPI_Recv(hA, N, MPI_DOUBLE, 1, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double)*N,
+        HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N,
                                hipMemcpyHostToDevice) );
-    } else { // Adder process
-       MPI_Recv(hA, N, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-       HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double)*N,
-                              hipMemcpyHostToDevice) );
-       int blocksize = 128;
-       int gridsize = (N + blocksize - 1) / blocksize;
-       add_kernel<<<blocksize, gridsize>>> (dA, N);
-       HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double)*N,
-                              hipMemcpyDeviceToHost) );
-       MPI_Send(hA, N, MPI_DOUBLE, 0, 12, MPI_COMM_WORLD);
+    } else {
+        // Receive vector from rank 0 and copy it to the device
+        MPI_Recv(hA, N, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N,
+                    hipMemcpyHostToDevice) );
+        // Launch kernel to increment values on the GPU
+        int blocksize = 128;
+        int gridsize = (N + blocksize - 1) / blocksize;
+        add_kernel<<<blocksize, gridsize>>> (dA, N);
+        HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double) * N,
+                    hipMemcpyDeviceToHost) );
+        // Copy vector to host and send it to rank 0
+        MPI_Send(hA, N, MPI_DOUBLE, 0, 12, MPI_COMM_WORLD);
     }
 
     stop = MPI_Wtime();
@@ -109,22 +111,24 @@ void GPUtoGPUdirect(int rank, double *dA, int N, double &timer)
 {
     double start, stop;
     start = MPI_Wtime();
-    // Implement a transfer here that uses HIP-aware MPI to transfer the data
-    // directly by passing a device pointer to MPI.
-    // Remember to add one as in CPU code (using the existing GPU kernel).
 
-    if (rank == 0) { //Sender process
-        /* Send data to rank 1 for addition */
+    // GPU-to-GPU ping-pong that communicates directly from GPU memory
+    // using HIP-aware MPI.
+    if (rank == 0) {
+        // Send vector to rank 1
         MPI_Send(dA, N, MPI_DOUBLE, 1, 11, MPI_COMM_WORLD);
-        /* Receive the added data back */
+        // Receive vector from rank 1
         MPI_Recv(dA, N, MPI_DOUBLE, 1, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-    } else { // Adder process
+    } else {
         int blocksize = 128;
         int gridsize = (N + blocksize - 1) / blocksize;
 
+        // Receive vector from rank 0
         MPI_Recv(dA, N, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        // Launch kernel to increment values on the GPU
         add_kernel<<<blocksize, gridsize>>> (dA, N);
+        // Send vector to rank 0
         MPI_Send(dA, N, MPI_DOUBLE, 0, 12, MPI_COMM_WORLD);
     }
 
@@ -170,13 +174,13 @@ int main(int argc, char *argv[])
 
     // Allocate enough pinned host and device memory for hA and dA
     // to store N doubles
-    HIP_ERRCHK( hipHostMalloc((void **)&hA, sizeof(double) * N) );
-    HIP_ERRCHK( hipMalloc((void **)&dA, sizeof(double) * N) );
+    HIP_ERRCHK( hipHostMalloc((void **) &hA, sizeof(double) * N) );
+    HIP_ERRCHK( hipMalloc((void **) &dA, sizeof(double) * N) );
 
     // Initialize the vectors
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
-    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double)*N, hipMemcpyHostToDevice) );
+    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N, hipMemcpyHostToDevice) );
 
     // CPU-to-CPU test
     CPUtoCPU(rank, hA, N, CPUtime);
@@ -190,11 +194,11 @@ int main(int argc, char *argv[])
     // Re-initialize the vectors
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
-    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double)*N, hipMemcpyHostToDevice) );
+    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N, hipMemcpyHostToDevice) );
 
     // GPU-to-GPU test, direct communication with HIP-aware MPI
     GPUtoGPUdirect(rank, dA, N, GPUtime);
-    HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double)*N, hipMemcpyDeviceToHost) );
+    HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double) * N, hipMemcpyDeviceToHost) );
     if (rank == 0) {
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
@@ -205,11 +209,11 @@ int main(int argc, char *argv[])
     // Re-initialize the vectors
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
-    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double)*N, hipMemcpyHostToDevice) );
+    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N, hipMemcpyHostToDevice) );
 
     // GPU-to-GPU test, communication via host
     GPUtoGPUviaHost(rank, hA, dA, N, GPUtime);
-    HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double)*N, hipMemcpyDeviceToHost) );
+    HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double) * N, hipMemcpyDeviceToHost) );
     if (rank == 0) {
         double errorsum = 0;
         for (int i = 0; i < N; ++i)

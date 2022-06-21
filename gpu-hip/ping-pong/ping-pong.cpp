@@ -153,13 +153,13 @@ int main(int argc, char *argv[])
 
     // Allocate enough pinned host and device memory for hA and dA
     // to store N doubles
-    HIP_ERRCHK( hipHostMalloc((void **)&hA, sizeof(double) * N) );
-    HIP_ERRCHK( hipMalloc((void **)&dA, sizeof(double) * N) );
+    HIP_ERRCHK( hipHostMalloc((void **) &hA, sizeof(double) * N) );
+    HIP_ERRCHK( hipMalloc((void **) &dA, sizeof(double) * N) );
 
     // Initialize the vectors
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
-    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double)*N, hipMemcpyHostToDevice) );
+    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N, hipMemcpyHostToDevice) );
 
     // CPU-to-CPU test
     CPUtoCPU(rank, hA, N, CPUtime);
@@ -173,11 +173,11 @@ int main(int argc, char *argv[])
     // Re-initialize the vectors
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
-    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double)*N, hipMemcpyHostToDevice) );
+    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N, hipMemcpyHostToDevice) );
 
     // GPU-to-GPU test, direct communication with HIP-aware MPI
     GPUtoGPUdirect(rank, dA, N, GPUtime);
-    HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double)*N, hipMemcpyDeviceToHost) );
+    HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double) * N, hipMemcpyDeviceToHost) );
     if (rank == 0) {
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
@@ -188,11 +188,11 @@ int main(int argc, char *argv[])
     // Re-initialize the vectors
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
-    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double)*N, hipMemcpyHostToDevice) );
+    HIP_ERRCHK( hipMemcpy(dA, hA, sizeof(double) * N, hipMemcpyHostToDevice) );
 
     // GPU-to-GPU test, communication via host
     GPUtoGPUviaHost(rank, hA, dA, N, GPUtime);
-    HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double)*N, hipMemcpyDeviceToHost) );
+    HIP_ERRCHK( hipMemcpy(hA, dA, sizeof(double) * N, hipMemcpyDeviceToHost) );
     if (rank == 0) {
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
