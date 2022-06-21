@@ -105,7 +105,7 @@ void GPUtoGPUviaHost(int rank, double *hA, double *dA, int N, double &timer)
 
 
 /* Ping-pong test for direct GPU-to-GPU communication using HIP-aware MPI */
-void GPUtoGPUtestHipAware(int rank, double *dA, int N, double &timer)
+void GPUtoGPUdirect(int rank, double *dA, int N, double &timer)
 {
     double start, stop;
     start = MPI_Wtime();
