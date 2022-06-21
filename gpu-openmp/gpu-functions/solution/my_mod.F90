@@ -9,7 +9,6 @@ module my_module
     real(rk) function my_sum(a, b)
       implicit none
       real(rk) :: a, b
-      
 
       my_sum = a + b
     end function

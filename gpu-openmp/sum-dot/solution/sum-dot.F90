@@ -30,10 +30,10 @@ program vectorsum
   end do
   !$omp end target teams distribute parallel do
 
-  !$omp end target data 
+  !$omp end target data
 
   ! Compute the check value
   write(*,*) 'Reduction sum: ', sum(vecC)
   write(*,*) 'Dot product: ', res
-  
+
 end program vectorsum

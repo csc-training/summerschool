@@ -21,7 +21,7 @@ program jacobi
       u(i, j) = (i - nx / 2)**2 / nx + (i - ny / 2)**2 / ny
     end do
   end do
-                      
+
   t0 = omp_get_wtime()
   ! Iterate
   do iter = 1, niter

@@ -6,7 +6,7 @@ int main(void)
 {
     double vecA[NX], vecB[NX];
 
-    // Initialization of the vectors 
+    // Initialization of the vectors
     for (int i = 0; i < NX; i++) {
         vecA[i] = 1.0 / ((double) (NX - i));
         vecB[i] = vecA[i] * vecA[i];

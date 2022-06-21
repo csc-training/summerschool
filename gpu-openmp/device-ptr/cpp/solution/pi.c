@@ -8,7 +8,7 @@ float cpu_pi(int n)
 {
     int inside, i;
     float *x, *y;
-    
+
     x = (float *)malloc(n * sizeof(float));
     y = (float *)malloc(n * sizeof(float));
 
@@ -37,9 +37,9 @@ float gpu_pi(size_t n)
     int istat;
     int inside;
     float *x, *y, pi;
-    
+
     pi = 0;
-    
+
     x = (float *)malloc(n * sizeof(float));
     y = (float *)malloc(n * sizeof(float));
 
@@ -49,12 +49,12 @@ float gpu_pi(size_t n)
 
     istat = curandCreateGenerator(&g, CURAND_RNG_PSEUDO_DEFAULT);
 
-    #pragma omp target data use_device_ptr(x, y) 
+    #pragma omp target data use_device_ptr(x, y)
     {
         istat = curandGenerateUniform(g, x, n);
         if (istat != CURAND_STATUS_SUCCESS) printf("Error in curandGenerate: %d\n", istat);
         istat = curandGenerateUniform(g, y, n);
-        if (istat != CURAND_STATUS_SUCCESS) printf("Error in curandGenerate: %d\n", istat);      
+        if (istat != CURAND_STATUS_SUCCESS) printf("Error in curandGenerate: %d\n", istat);
     }
 
     #pragma omp target loop reduction(+:inside)
@@ -93,6 +93,6 @@ int main(int argc, char *argv[])
 
     printf("Pi equals to %9.6f\n", cpu_pi(nsamples));
     printf("Pi equals to %9.6f\n", gpu_pi(nsamples));
-    
+
     return 0;
 }

@@ -27,7 +27,6 @@ int main(void)
 
     // TODO end
 
-
     double sum = 0.0;
     /* Compute the check value */
     for (int i = 0; i < NX; i++) {

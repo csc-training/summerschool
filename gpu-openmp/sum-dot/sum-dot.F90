@@ -32,5 +32,5 @@ program vectorsum
   ! Compute the check value
   write(*,*) 'Reduction sum: ', sum(vecC)
   write(*,*) 'Dot product: ', res
-  
+
 end program vectorsum

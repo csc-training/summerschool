@@ -25,5 +25,5 @@ program dot_product
 
   ! Compute the check value
   write(*,*) 'Dot product: ', res
-  
+
 end program dot_product

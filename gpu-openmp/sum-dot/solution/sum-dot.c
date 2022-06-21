@@ -14,13 +14,12 @@ int main(void)
 
     double res = 0.0;
 
-#pragma omp target data map(to:vecA, vecB) map(from:vecC, res) 
+#pragma omp target data map(to:vecA, vecB) map(from:vecC, res)
   {
-#pragma omp target teams distribute parallel for 
+#pragma omp target teams distribute parallel for
     for (int i = 0; i < NX; i++) {
         vecC[i] = vecA[i] + vecB[i];
     }
-
 
 #pragma omp target teams distribute parallel for reduction(+:res)
     for (int i = 0; i < NX; i++) {

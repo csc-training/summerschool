@@ -15,9 +15,9 @@ program pi_test
   call get_command_argument(1, arg)
   read(arg, *) nsamples
 
-  pi1 = cpu_pi(nsamples) 
+  pi1 = cpu_pi(nsamples)
   write(*,*) 'Pi calculated with CPU', pi1
-  pi2 = gpu_pi(nsamples) 
+  pi2 = gpu_pi(nsamples)
   write(*,*) 'Pi calculated with GPU', pi2
 
 contains

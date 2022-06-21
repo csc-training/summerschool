@@ -12,12 +12,8 @@ int main(void)
         vecB[i] = vecA[i] * vecA[i];
     }
 
-    // TODO start:
-    // Implement vector addition vecC = vecA + vecB and use OpenMP
-    // for computing it in the device
-
-
-    // TODO end
+    // TODO: Implement vector addition vecC = vecA + vecB and use OpenMP
+    //       for computing it in the device
 
     double sum = 0.0;
     /* Compute the check value */

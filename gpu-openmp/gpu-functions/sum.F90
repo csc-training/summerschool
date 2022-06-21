@@ -22,5 +22,5 @@ program vectorsum
 
   ! Compute the check value
   write(*,*) 'Reduction sum: ', sum(vecC)
-  
+
 end program vectorsum

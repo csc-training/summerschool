@@ -17,6 +17,6 @@ pi: $(OBJS)
 	$(FC) $(FCFLAGS) -c $< -o $@
 
 %.mod: %.F90
-	$(FC) $(FCFLAGS) -c $< 
+	$(FC) $(FCFLAGS) -c $<
 clean:
 	rm -f pi *.o *.mod

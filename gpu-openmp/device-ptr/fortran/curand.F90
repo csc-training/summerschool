@@ -6,7 +6,7 @@ module curand
 
   interface
 
-    function curandCreateGenerator(gen, gentype)  bind(C, name='curandCreateGenerator') result(stat)
+    function curandCreateGenerator(gen, gentype) bind(C, name='curandCreateGenerator') result(stat)
        use, intrinsic :: iso_c_binding
        integer(c_size_t) :: gen
        integer(c_int), value :: gentype
@@ -17,7 +17,7 @@ module curand
     function curandGenerateUniform(gen, x, n) bind(C, name='curandGenerateUniform') result(stat)
       use, intrinsic :: iso_c_binding
       integer(c_size_t), value :: gen
-      real :: x(*) 
+      real :: x(*)
       integer(c_size_t), value :: n
       integer(c_size_t) :: stat
 

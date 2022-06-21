@@ -7,5 +7,3 @@ which is common operation in numerical methods.
 
 Try the offload the stencil updates with appropriate OpenMP constructs.
 Compare the performance when code is run on GPU nodes vs. CPU nodes.
-
-

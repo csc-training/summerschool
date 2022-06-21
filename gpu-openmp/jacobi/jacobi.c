@@ -16,11 +16,11 @@ int main()
   for (int i = 0; i < nx; i++) {
     for (int j = 0; j < ny; j++) {
       int ind = i * ny + j;
-      u[ind] = ((i - nx / 2) * (i - nx / 2)) / nx + 
+      u[ind] = ((i - nx / 2) * (i - nx / 2)) / nx +
                ((j - ny / 2) * (j - ny / 2)) / ny;
     }
   }
-                      
+
   double t0 = omp_get_wtime();
   // Iterate
   for (int n = 0; n < niter; n++) {
@@ -61,6 +61,4 @@ int main()
   // Check final result
   printf("u[0,0] = %f\n", u[0]);
   printf("Time spent: %6.3f s\n", t1 - t0);
-
-
 }

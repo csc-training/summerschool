@@ -14,13 +14,8 @@ program vectorsum
      vecB(i) = vecA(i)**2
   end do
 
-  ! TODO start:
-  ! Implement vector addition vecC = vecA + vecB and use OpenMP
-  ! for computing it in the device
-
-
-  ! TODO end
-
+  ! TODO: Implement vector addition vecC = vecA + vecB and use OpenMP
+  !       for computing it in the device
 
   ! Compute the check value
   write(*,*) 'Reduction sum: ', sum(vecC)

@@ -15,9 +15,9 @@ program pi_test
   call get_command_argument(1, arg)
   read(arg, *) nsamples
 
-  pi1 = cpu_pi(nsamples) 
+  pi1 = cpu_pi(nsamples)
   write(*,*) 'Pi calculated with CPU', pi1
-  pi2 = gpu_pi(nsamples) 
+  pi2 = gpu_pi(nsamples)
   write(*,*) 'Pi calculated with GPU', pi2
 
 contains
@@ -62,7 +62,7 @@ contains
 
     inside = 0
 
-!$omp target enter data map(alloc:x, y) 
+!$omp target enter data map(alloc:x, y)
 
     stat = curandCreateGenerator(gen, CURAND_RNG_PSEUDO_DEFAULT)
 
@@ -80,7 +80,7 @@ contains
 !$omp end target loop
 
 
-!$omp target exit data map(delete:x, y) 
+!$omp target exit data map(delete:x, y)
 
     gpu_pi = 4.0 * real(inside) / real(n)
 
