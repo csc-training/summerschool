@@ -1,12 +1,21 @@
-# Multi-GPU exercise with MPI
+# Ping-pong with multiple GPUs and MPI
 
-The purpose of this exercise is to demonstrate the use of MPI for GPU-GPU communication. The program performs an MPI transfer between two processes using host data and device data. The device data transfer is demonstrated by two methods; by using a manual host staging, and directly passing device pointers to MPI. Fill the blanks indicated by #error.
+Implement a simple ping-pong test for GPU-to-GPU communication using:
+a) indirect communication via the host, and b) direct communication with
+HIP-aware MPI.
 
-At AAC cloud, compile with
+The ping-pong test constists of the following steps:
+  1. Send a vector from one GPU to another
+  2. The receiving GPU should increment all elements of the vector by one
+  3. Send the vector back to the original GPU
+
+For reference, there is also a CPU-to-CPU implementation in the skeleton
+code ([ping-pong.cpp](ping-pong.cpp)). Timing of all tests is also included to
+compare the execution times.
+
+To run, one should use two GPUs and two MPI tasks. On Puhti, HIP-aware MPI is
+available with:
 ```
-srun --reservation=Lumi --time=00:01:00 -p MI100 --nodes 1 make
-```
-Run with
-```
-srun --reservation=Lumi --time=00:01:00 -p MI100 --nodes 1 -n 2  mpirun -np 2 ./mpiexample
+module load hip
+module load openmpi
 ```
