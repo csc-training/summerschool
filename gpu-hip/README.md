@@ -12,8 +12,8 @@
 
 ## Memory management
 
-- [Memory management strategies](memory/prefetch)
-- [Unified memory and structs](memory/struct)
+- [Memory management strategies](memory-prefetch)
+- [Unified memory and structs](memory-struct)
 
 ## Fortran and HIP
 
@@ -21,7 +21,7 @@
 
 ## Multi-GPU programming
 
-- [Multi-GPU exercise without MPI](multi-gpu/multigpu)
-- [Multi-GPU exercise with MPI](multi-gpu/mpi)
-- [Peer to peer device access](multi-gpu/p2pcopy)
+- [Vector sum on two GPUs without MPI](vector-sum)
+- [Ping-pong with multiple GPUs and MPI](ping-pong)
+- [Peer to peer device access](p2pcopy)
 - [Bonus: Heat equation with HIP](heat-equation)

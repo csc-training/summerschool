@@ -7,4 +7,4 @@ and launch a GPU kernel on each part asynchronously using streams. Copy the
 results back to the host to check for correctness. Add timing events to
 measure the time of execution.
 
-A skeleton code is provided in [multigpu.cpp](multigpu.cpp).
+A skeleton code is provided in [vector-sum.cpp](vector-sum.cpp).
