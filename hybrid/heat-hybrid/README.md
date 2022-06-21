@@ -1,10 +1,8 @@
 ## Heat equation solver with hybrid MPI + OpenMP
 
-If you are not familiar with the two dimensional heat equation, please have a look
-for [basic description](https://github.com/csc-training/mpi-introduction/tree/main/heat-equation)
-in "Parallel programming with MPI" exercise material.
-
-Here, starting point is a working MPI code parallelized over columns (in Fortran) or rows (in C/C++).
+In this exercise, you should parallelize the two dimensional heat equation with hybrid
+MPI + OpenMP parallelization. Starting point is a working MPI code parallelized over columns (in Fortran) or rows (in C/C++). See [Code description](code-description.md) for some theory and more
+details about the code.
 
 ### Fine-grained OpenMP parallelization
 
