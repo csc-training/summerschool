@@ -1,6 +1,6 @@
 program multiple
   use omp_lib
-  use mpi_f08
+  use mpi
   implicit none
   integer :: provided, my_id, ntask, tid, nthreads, msg, i, rc, thr_tag
 
@@ -18,7 +18,7 @@ program multiple
      call MPI_Abort(MPI_COMM_WORLD, 5, rc)
   end if
 
-  !$omp parallel default(shared) private(msg, tid, thr_tag, i)
+!$omp parallel default(shared) private(msg, tid, thr_tag, i)
   nthreads = omp_get_num_threads()
   tid = omp_get_thread_num()
   thr_tag = 1024 + tid
@@ -36,7 +36,7 @@ program multiple
      write(*,'(A,I3,A,I3,A,I3)') 'Rank=', my_id, ' thread=', tid, &
           & ' received ', msg
   end if
-  !$omp end parallel
+!$omp end parallel
 
   call MPI_Finalize(rc)
 
