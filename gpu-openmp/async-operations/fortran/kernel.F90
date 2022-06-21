@@ -14,7 +14,7 @@ contains
     y0 = ymin + yi * dy
     x = 0.0
     y = 0.0
-    
+
     i = 0
     do while ((i < max_iters) .and. (x**2 + y**2 < 4.0))
       z = x**2 - y**2 + x0

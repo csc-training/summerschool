@@ -14,4 +14,4 @@ each step.
      - After each block, copy the data to the host
 3. Do the offloading and copying to host asynchronously
 
-Code can be built with the provided [Makefile](makefile). 
+Code can be built with the provided [Makefile](makefile).

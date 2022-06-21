@@ -21,14 +21,14 @@ program mandelbrot
     y_end = y_start + (height / num_blocks)
     do y = y_start, y_end - 1
       do x = 0, width - 1
-        image(x, y) = kernel(x, y) 
+        image(x, y) = kernel(x, y)
       end do
     end do
   end do
 
   t1 = omp_get_wtime()
 
-   stat = save_png(image, height, width, 'mandelbrot.png') 
+  stat = save_png(image, height, width, 'mandelbrot.png')
 
   write(*,*) 'Time spent', t1 - t0
 
