@@ -35,7 +35,7 @@ void copyP2P(int p2p, int gpu0, int gpu1, int* dA_0, int* dA_1, int size) {
 
     // Calcute time and bandwith
     double time_s = (double) (tStop - tStart) / CLOCKS_PER_SEC;
-    double bandwidth = (double) size * (double) copies / (double) 1e9 / time_s;
+    double bandwidth = (double) size * (double) N / (double) 1e9 / time_s;
 
     // Disable peer access for GPUs?
     if (p2p) {
