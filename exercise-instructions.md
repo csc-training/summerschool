@@ -148,9 +148,7 @@ hipcc -x cu -o hello hello.cpp
 ```
 where `-x cu` is required when compiling for CUDA architectures.
 
-## Running parallel programs
-
-### Running in Puhti
+## Running in Puhti
 
 ### Pure MPI
 
@@ -221,7 +219,7 @@ single GPU with single MPI task and a single thread use:
 srun my_gpu_exe
 ```
 
-### Running in Mahti
+## Running in Mahti
 
 Batch job system in Mahti is very similar to Puhti, and batch scripts written for Puhti
 work in Mahti with only minor modifications. The most important difference is that one should use
@@ -243,7 +241,7 @@ needs to use `a100` instead of `v100` *i.e.*:
 ...
 ```
 
-### Running in local workstation
+## Running in local workstation
 
 In most MPI implementations parallel program can be started with the `mpiexec` launcher:
 ```
