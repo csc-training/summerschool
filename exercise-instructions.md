@@ -175,8 +175,8 @@ is accessible only with the training user accounts.
 ### Hybrid MPI+OpenMP
 
 For hybrid MPI+OpenMP programs it is recommended to specify explicitly number of nodes, number of
-MPI tasks per node (pure OpenMP programs as special case with one task per node), and number of 
-cores reserved for threading. The number of nodes is specified with `--nodes` 
+MPI tasks per node (pure OpenMP programs as special case with one node and one task per node), 
+and number of cores reserved for threading. The number of nodes is specified with `--nodes` 
 (for most of the exercises you should use only a single node), number of MPI tasks **per node** 
 with `--ntasks-per-node`, and number of cores reserved for threading with `--cpus-per-task`. 
 The actual number of threads is specified with `OMP_NUM_THREADS` environment variable. 
