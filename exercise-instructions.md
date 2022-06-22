@@ -92,8 +92,9 @@ module load gcc/9.1.0 cuda/11.1.0 hip/4.0.0 openmpi/4.1.1-cuda
 ```
 Then you can compile with hipcc, eg,
 ```
-hipcc -o hello hello.cpp
+hipcc -x cu -o hello hello.cpp
 ```
+where `-x cu` is required when compiling for CUDA architectures.
 
 ### HDF5
 
