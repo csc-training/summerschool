@@ -1,25 +1,19 @@
-
+# Puhti
+export ROCM=${ROCM_PATH}
+export HIPFORT_ARCHGPU=nvptx-sm_70
 export HIPFORT_HOME=${ROCM_PATH}/hipfort/
 include ${HIPFORT_HOME}/bin/Makefile.hipfort
+CXX = $(HIPCC_ENV) $(HIP_PATH)/bin/hipcc -x cu $(HIPCC_OPTS)
 
-OUTPUT_DIR ?= $(PWD)
-APP         = $(OUTPUT_DIR)/saxpy
+saxpy: main.o hipsaxpy.o
+	$(FC) $^ $(LINKOPTS) -o $@
 
-.DEFAULT_GOAL := all
+%.o: %.f03
+	$(FC) -c -o $@ $<
 
-all: $(APP)
+%.o: %.cpp
+	$(CXX) -c -o $@ $<
 
-$(APP): $(OUTPUT_DIR)/main.o $(OUTPUT_DIR)/hipsaxpy.o
-	$(FC) $^ $(LINKOPTS) -o $(APP)
-
-$(OUTPUT_DIR)/main.o: main.f03
-	$(FC)  -c $^ -o $(OUTPUT_DIR)/main.o
-
-$(OUTPUT_DIR)/hipsaxpy.o: hipsaxpy.cpp
-	$(CXX) -c $^ -o $(OUTPUT_DIR)/hipsaxpy.o
-
-run: $(APP)
-	HIP_TRACE_API=1 $(APP)
-
+.PHONY: clean
 clean:
-	rm -f $(APP) *.o *.mod *~
+	rm -f *.o saxpy

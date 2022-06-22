@@ -18,11 +18,11 @@ program testSaxpy
   type(c_ptr) :: dy = c_null_ptr
   integer, parameter :: N = 40000
   integer, parameter :: bytes_per_element = 4
-  integer(c_size_t), parameter :: Nbytes = N*bytes_per_element
+  integer(c_size_t), parameter :: Nbytes = N * bytes_per_element
   real, allocatable,target,dimension(:) :: x, y
 
 
-  real, parameter ::  a=2.0
+  real, parameter :: a=2.0
   real :: x_d(N), y_d(N)
 
   call hipCheck(hipMalloc(dx,Nbytes))
@@ -31,7 +31,8 @@ program testSaxpy
   allocate(x(N))
   allocate(y(N))
 
-  x = 1.0;y = 2.0
+  x = 1.0
+  y = 2.0
 
   call hipCheck(hipMemcpy(dx, c_loc(x), Nbytes, hipMemcpyHostToDevice))
   call hipCheck(hipMemcpy(dy, c_loc(y), Nbytes, hipMemcpyHostToDevice))
