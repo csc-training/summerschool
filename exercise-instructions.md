@@ -107,8 +107,8 @@ In Puhti, programs need to be executed via the batch job system. Simple job runn
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=project_2000745
-#SBATCH --partition=small
-#SBATCH --reservation=advance-mpi
+#SBATCH --partition=large
+#SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=4
 
