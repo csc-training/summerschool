@@ -33,7 +33,7 @@ In the exercise, the following HIP functions are needed:
 ### Case 3
 
 1) Copy the case 2 here
-2) Instead of doing the asynchornous memcopies and the kernel in the same loop, create a separate loop for each (3 in total)
+2) Instead of doing the asynchronous memcopies and the kernel in the same loop, create a separate loop for each (3 in total)
 
 ## Additional considerations
 
