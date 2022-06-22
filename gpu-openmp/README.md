@@ -15,14 +15,20 @@
 - [Sum and dot product](sum-dot/)
 - [Offloading the heat equation](heat-equation/README-simple.md)
 
-## Unstructured data and device functions
+## Unstructured data 
 
-- [Device functions](gpu-functions/)
 - [Unstructured data in heat equation](heat-equation/README-unstructured.md)
 
-## Interoperability with libraries and asynchronous operations
+## Device functions
+
+- [Device functions](gpu-functions/)
+
+## Interoperability with libraries
 
 - [Using CUDA library](device-ptr)
+
+## Asynchronous operations
+
 - [Asynchronous operations](async-operations)
 
 ## Using multiple GPUS

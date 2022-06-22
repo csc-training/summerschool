@@ -29,8 +29,7 @@ non-interactive way by adding the commands to the submission script below.
 #SBATCH --reservation=<reservation name>
 #SBATCH --partition=gpu
 #SBATCH --time=00:05:00
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=1
 #SBATCH --cpus-per-task=10
 #SBATCH --mem-per-cpu=8000
 #SBATCH --gres=gpu:v100:1

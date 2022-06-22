@@ -138,7 +138,15 @@ TODO
 
 ### HIP
 
-TODO
+In order to use HIP on Puhti, you need to load the following modules:
+```
+module load gcc/9.1.0 cuda/11.1.0 hip/4.0.0 openmpi/4.1.1-cuda
+```
+Then you can compile with hipcc, eg,
+```
+hipcc -x cu -o hello hello.cpp
+```
+where `-x cu` is required when compiling for CUDA architectures.
 
 ## Running parallel programs
 
@@ -194,7 +202,24 @@ srun my_exe
 
 ### GPU programs
 
-TODO
+When running GPU programs, few changes need to made to the batch job
+script. The `partition` and `reservation` are now different, and one
+must also request explicitly given number of GPUs with the
+`--gres=gpu:v100:ngpus` option. As an example, in order to use a
+single GPU with single MPI task and a single thread use:
+```
+#!/bin/bash
+#SBATCH --job-name=example
+#SBATCH --account=project_2000745
+#SBATCH --partition=gpu
+#SBATCH --reservation=summerschool-gpu
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --gres=gpu:v100:1
+#SBATCH --time=00:05:00
+
+srun my_gpu_exe
+```
 
 ### Running in Mahti
 
@@ -209,6 +234,14 @@ the `medium` partition instead of `large` partition, *i.e.* batch job script sho
 #SBATCH --reservation=summerschool
 ...
 ``` 
+
+For GPU programs, the `--gres` option is also a bit different, as one
+needs to use `a100` instead of `v100` *i.e.*:
+```
+...
+#SBATCH --gres=gpu:a100:1
+...
+```
 
 ### Running in local workstation
 
