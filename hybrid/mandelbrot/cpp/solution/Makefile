@@ -1,8 +1,16 @@
 ifeq ($(COMP),)
-COMP=gnu
+COMP=intel
 endif
 
 COMMONDIR=../../../heat/common
+
+ifeq ($(COMP),intel)
+CXX=icpc
+CC=icc
+CCFLAGS=-g -qopenmp -O3 -xHost -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+endif
 
 ifeq ($(COMP),gnu)
 FC=gfortran
@@ -31,6 +39,9 @@ $(EXE): $(OBJS) $(OBJS_PNG)
 
 %.o: %.F90
 	$(FC) $(FCFLAGS) -c $< -o $@
+
+%.o: %.cpp
+	$(CXX) $(CCFLAGS) -c $< -o $@
 
 %.o: %.c
 	$(CC) $(CCFLAGS) -c $< -o $@
