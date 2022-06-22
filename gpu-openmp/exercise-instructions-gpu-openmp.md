@@ -18,7 +18,7 @@ module load nvhpc/21.2 ....
 ```
 The compiler commands (without MPI) for C, C++ and Fortran are `nvc`,
 `nvc++`, and `nvfortran`, and OpenMP offload support is enabled with
-`-mp=gpu -gpu=cc80` options, *i.e.*
+`-mp=gpu -gpu=cc70` options, *i.e.*
 
 ```
 nvc -o my_exe test.c -mp=gpu -gpu=cc70
@@ -46,13 +46,14 @@ program uses OpenMP with CPUs
 number of cores reserved for threading is set with `--cpus-per-task`. The
 actual number of threads is specified with `OMP_NUM_THREADS`
 environment variable. Simple job running with single GPU can be
-submitted with the following batch job script: ```
+submitted with the following batch job script: 
+
+```
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=<project>
 #SBATCH --reservation=<reservation>
-
-#SBATCH --partition=gpus
+#SBATCH --partition=gpu
 #SBATCH --reservation=openmp_offload
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=1
