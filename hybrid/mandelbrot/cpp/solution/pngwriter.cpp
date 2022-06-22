@@ -1,7 +1,7 @@
 #include <png.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstdint>
 #include <limits.h>
 #include "pngwriter.h"
 

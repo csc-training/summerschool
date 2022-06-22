@@ -1,6 +1,6 @@
-#include <stdio.h>
-
-int main(int argc, char *argv[])
+#include <cstdio>
+#include <omp.h>
+int main()
 {
     printf("Hello world!\n");
 #pragma omp parallel

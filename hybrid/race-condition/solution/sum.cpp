@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 
 #define NX 102400
 

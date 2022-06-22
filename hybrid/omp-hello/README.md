@@ -3,7 +3,7 @@
 Test that you are able to compile and run a program that uses OpenMP for
 threading.
 
-First, take a look at either the [C version](hello.c) or the [Fortran
+First, take a look at either the [C++ version](hello.cpp) or the [Fortran
 version](hello.F90) of a simple example program that has been parallelised
 using OpenMP threading. The program will print out a hello message (in serial)
 followed by each thread printing out an "X" character (in parallel).
