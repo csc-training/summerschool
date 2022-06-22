@@ -23,9 +23,12 @@
 
 - [Device functions](gpu-functions/)
 
-## Interoperability with libraries and asynchronous operations
+## Interoperability with libraries
 
 - [Using CUDA library](device-ptr)
+
+## Asynchronous operations
+
 - [Asynchronous operations](async-operations)
 
 ## Using multiple GPUS
