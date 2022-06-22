@@ -1,5 +1,5 @@
 HIPCC = hipcc
-HIPFLAGS=--offload-arch=gfx908
+HIPFLAGS= -x cu
 SRC1 = async_case1.cpp
 EXE1 = async_case1
 SRC2 = async_case2.cpp
@@ -33,4 +33,4 @@ $(EXE3): $(SRC3)
 .PHONY: clean
 
 clean:
-	rm -f  $(EXE1) $(EXE2) 
+	rm -f  $(EXE1) $(EXE2) $(EXE3)
