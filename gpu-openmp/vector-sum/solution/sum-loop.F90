@@ -14,7 +14,7 @@ program vectorsum
      vecB(i) = vecA(i)**2
   end do
 
-  !$omp target loop
+  !$omp target teams loop
   do i = 1, nx
      vecC(i) = vecA(i) + vecB(i)
   end do
