@@ -21,7 +21,7 @@ CORRECT_OBJS_PNG=$(COMMONDIR)/pngwriter.o
 all: $(EXE)
 
 $(COMMONDIR)/pngwriter.o: $(COMMONDIR)/pngwriter.c $(COMMONDIR)/pngwriter.h
-mandelbrot.o: mandelbrot.c
+mandelbrot.o: mandelbrot.cpp
 
 pngwriter.o: pngwriter.c pngwriter.h
 	$(CC) $(CCFLAGS) -c -o $@ $<

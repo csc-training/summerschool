@@ -5,11 +5,13 @@
  */
 
 #include <omp.h>
-#include <complex.h>
+#include <complex>
 #include <cstdio>
 #include <cstdlib>
 
 #include "pngwriter.h"
+
+using namespace std;
 
 // Maximum number of iterations
 const int MAX_ITER_COUNT = 512;
@@ -24,22 +26,24 @@ const int SUBDIV = 4;
 
 
 // |z|^2 of a complex number z
-float abs2(complex v)
+float abs2(complex<double> v)
 {
-    return creal(v) * creal(v) + cimag(v) * cimag(v);
+    return v.real() * v.real() + v.imag() * v.imag();
 }
 
 // The kernel to count per-pixel values of the portion of the Mandelbrot set
 // Does not need to be edited
-int kernel(int w, int h, complex cmin, complex cmax,
+int kernel(int w, int h, complex<double> cmin, complex<double> cmax,
            int x, int y)
 {
-    complex dc = cmax - cmin;
+    complex<double> dc = cmax - cmin;
     float fx = (float)x / w;
     float fy = (float)y / h;
-    complex c = cmin + fx * creal(dc) + fy * cimag(dc) * I;
+    double real = cmin.real() + fx * dc.real();
+    double imag = cmin.imag() + fy *dc.imag();
+    complex<double> c(real, imag);
     int iteration = 0;
-    complex z = c;
+    complex<double> z = c;
     while (iteration < MAX_ITER_COUNT && abs2(z) < 2 * 2) {
         z = z * z + c;
         iteration++;
@@ -64,8 +68,8 @@ int kernel(int w, int h, complex cmin, complex cmax,
  * |             |           -----       -----
  * ---------------
  */
-void mandelbrot_block(int *iter_counts, int w, int h, complex cmin,
-                      complex cmax, int x0, int y0, int d, int depth)
+void mandelbrot_block(int *iter_counts, int w, int h, complex<double> cmin,
+                      complex<double> cmax, int x0, int y0, int d, int depth)
 {
 
 // TODO Parallelize the recursive function call
@@ -100,13 +104,11 @@ int main(int argc, char **argv)
     const int h = w;
     int *iter_counts;
 
-    complex cmin, cmax;
-
     int pic_bytes = w * h * sizeof(int);
     iter_counts = (int *)malloc(pic_bytes);
 
-    cmin = -1.5 + -1.0 * I;
-    cmax = 0.5 + 1.0 * I;
+    complex<double> cmin(-1.5, -1.0);
+    complex<double> cmax(0.5, 1.0);
 
     double t1 = omp_get_wtime();
 
@@ -131,4 +133,3 @@ int main(int argc, char **argv)
     free(iter_counts);
     return 0;
 }
-
