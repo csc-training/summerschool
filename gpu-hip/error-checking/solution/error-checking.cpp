@@ -15,7 +15,7 @@ int main(void)
     int count, device;
 
     HIP_ERRCHK( hipGetDeviceCount(&count) );
-    HIP_ERRCHK( hipSetDevice(count - 0) );
+    HIP_ERRCHK( hipSetDevice(count - 1) );
     HIP_ERRCHK( hipGetDevice(&device) );
 
     printf("Hello! I'm GPU %d out of %d GPUs in total.\n", device, count);
