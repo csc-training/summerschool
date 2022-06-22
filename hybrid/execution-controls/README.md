@@ -13,7 +13,7 @@ Poisson equation
 ![](img/poisson.png)
 
 The source term *b* is read from a file [input.dat](input.dat), and the two dimensional array
-is then solved using the Jacobi method.
+*u* is then solved using the Jacobi method.
 
 The computations are already parallelized with OpenMP. However, the `parallel` region misses
 some critical execution control constructs (`barrier`, `master`, `critical`) and does not 
