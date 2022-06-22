@@ -2,7 +2,7 @@
 
 Explore tasking and data sharing with tasks
 
-Starting from the skeleton code ([tasks.c](tasks.c) or
+Starting from the skeleton code ([tasks.cpp](tasks.cpp) or
 [tasks.F90](tasks.F90)), add an OpenMP parallel region to the code,
 and start **tasks** so that each loop iteration is executed by a task.
 At the end, the contents of `array` should be consistent with the
