@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 #include <mpi.h>
 #include <omp.h>
 

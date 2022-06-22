@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <mpi.h>
 #include <omp.h>
 
@@ -31,8 +31,9 @@ int main(int argc, char *argv[])
         {
             printf("%i threads in master rank\n", nthreads);
         }
-        for (i = 1; i < ntasks; i++)
+        for (i = 1; i < ntasks; i++) {
             MPI_Send(&tid, 1, MPI_INTEGER, i, tid, MPI_COMM_WORLD);
+        }
     } else {
         MPI_Recv(&msg, 1, MPI_INTEGER, 0, tid, MPI_COMM_WORLD,
                 MPI_STATUS_IGNORE);

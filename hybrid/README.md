@@ -17,7 +17,6 @@
 ### Reductions and execution controls
 
 - [Reduction](reduction/)
-- [Master and single](master-single)
 
 ### Heat equation
 
@@ -28,7 +27,6 @@
 
 - [Hybrid Hello World](hybrid-hello/)
 - [Multiple thread communication](multiple-thread-communication/)
-- [Simple thread affinity](thread-affinity)
 
 ### OpenMP tasks
 

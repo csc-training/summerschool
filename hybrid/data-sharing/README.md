@@ -2,7 +2,7 @@
 
 Explore data sharing between OpenMP threads.
 
-Starting from the skeleton code ([variables.c](variables.c) or
+Starting from the skeleton code ([variables.cpp](variables.cpp) or
 [variables.F90](variables.F90)), add an OpenMP parallel region around the
 block where the variables `Var1` and `Var2` are printed and manipulated.
 
