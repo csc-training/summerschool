@@ -17,6 +17,7 @@
 ### Reductions and execution controls
 
 - [Reduction](reduction/)
+- [Execution controls](execution-controls/)
 
 ### Heat equation
 
