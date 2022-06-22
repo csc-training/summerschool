@@ -2,16 +2,6 @@
 #include <cmath>
 #include <hip/hip_runtime.h>
 
-/* HIP error handling macro */
-#define HIP_ERRCHK(err) (hip_errchk(err, __FILE__, __LINE__ ))
-static inline void hip_errchk(hipError_t err, const char *file, int line) {
-    if (err != hipSuccess) {
-        printf("\n\n%s in %s at line %d\n", hipGetErrorString(err), file, line);
-        exit(EXIT_FAILURE);
-    }
-}
-
-
 // Data structure for storing decomposition information
 struct Decomp {
     int len;    // length of the array for the current device
@@ -43,7 +33,7 @@ int main(int argc, char *argv[])
     Decomp dec[2];
 
     // Check that we have two HIP devices available
-    HIP_ERRCHK( hipGetDeviceCount(&devicecount) );
+    hipGetDeviceCount(&devicecount);
     switch (devicecount) {
     case 0:
         printf("Could not find any HIP devices!\n");
@@ -56,14 +46,14 @@ int main(int argc, char *argv[])
     }
 
     // Create timing events
-    HIP_ERRCHK( hipSetDevice(0) );
-    HIP_ERRCHK( hipEventCreate(&start) );
-    HIP_ERRCHK( hipEventCreate(&stop) );
+    hipSetDevice(0);
+    hipEventCreate(&start);
+    hipEventCreate(&stop);
 
     // Allocate host memory
-    HIP_ERRCHK( hipHostMalloc((void**)&hA, sizeof(double) * N) );
-    HIP_ERRCHK( hipHostMalloc((void**)&hB, sizeof(double) * N) );
-    HIP_ERRCHK( hipHostMalloc((void**)&hC, sizeof(double) * N) );
+    hipHostMalloc((void**)&hA, sizeof(double) * N);
+    hipHostMalloc((void**)&hB, sizeof(double) * N);
+    hipHostMalloc((void**)&hC, sizeof(double) * N);
 
     // Initialize host memory
     for(int i = 0; i < N; ++i) {
@@ -79,16 +69,16 @@ int main(int argc, char *argv[])
 
     // Allocate memory for the devices and per device streams
     for (int i = 0; i < 2; ++i) {
-        HIP_ERRCHK( hipSetDevice(i) );
-        HIP_ERRCHK( hipMalloc((void**)&dA[i], sizeof(double) * dec[i].len) );
-        HIP_ERRCHK( hipMalloc((void**)&dB[i], sizeof(double) * dec[i].len) );
-        HIP_ERRCHK( hipMalloc((void**)&dC[i], sizeof(double) * dec[i].len) );
-        HIP_ERRCHK( hipStreamCreate(&(strm[i])) );
+        hipSetDevice(i);
+        hipMalloc((void**)&dA[i], sizeof(double) * dec[i].len);
+        hipMalloc((void**)&dB[i], sizeof(double) * dec[i].len);
+        hipMalloc((void**)&dC[i], sizeof(double) * dec[i].len);
+        hipStreamCreate(&(strm[i]));
     }
 
     // Start timing
-    HIP_ERRCHK( hipSetDevice(0) );
-    HIP_ERRCHK( hipEventRecord(start) );
+    hipSetDevice(0);
+    hipEventRecord(start);
 
     /* Copy each decomposed part of the vectors from host to device memory
        and execute a kernel for each part.
@@ -97,16 +87,16 @@ int main(int argc, char *argv[])
        execution of the host process. */
     for (int i = 0; i < 2; ++i) {
         // Set active device
-        HIP_ERRCHK( hipSetDevice(i) );
+        hipSetDevice(i);
 
         // Copy data from host to device (hA -> dA, hB -> dB)
-        HIP_ERRCHK( hipMemcpyAsync(dA[i], (void *)&(hA[dec[i].start]),
+        hipMemcpyAsync(dA[i], (void *)&(hA[dec[i].start]),
                                     sizeof(double) * dec[i].len,
-                                    hipMemcpyHostToDevice, strm[i]) );
+                                    hipMemcpyHostToDevice, strm[i]);
 
-        HIP_ERRCHK( hipMemcpyAsync(dB[i], (void *)&(hB[dec[i].start]),
+        hipMemcpyAsync(dB[i], (void *)&(hB[dec[i].start]),
                                     sizeof(double) * dec[i].len,
-                                    hipMemcpyHostToDevice, strm[i]) );
+                                    hipMemcpyHostToDevice, strm[i]);
 
         // Launch kernel to calculate dC = dA + dB
         dim3 grid, threads;
@@ -117,28 +107,28 @@ int main(int argc, char *argv[])
                                                   dec[i].len);
 
         // Copy data from device to host (dC -> hC)
-        HIP_ERRCHK( hipMemcpyAsync((void *)&(hC[dec[i].start]), dC[i],
+        hipMemcpyAsync((void *)&(hC[dec[i].start]), dC[i],
                                     sizeof(double) * dec[i].len,
-                                    hipMemcpyDeviceToHost, strm[i]) );
+                                    hipMemcpyDeviceToHost, strm[i]);
     }
 
     // Synchronize and destroy the streams
     for (int i = 0; i < 2; ++i) {
-        HIP_ERRCHK( hipSetDevice(i) );
-        HIP_ERRCHK( hipStreamSynchronize(strm[i]) );
-        HIP_ERRCHK( hipStreamDestroy(strm[i]) );
+        hipSetDevice(i);
+        hipStreamSynchronize(strm[i]);
+        hipStreamDestroy(strm[i]);
     }
 
     // Stop timing
-    HIP_ERRCHK( hipSetDevice(0) );
-    HIP_ERRCHK( hipEventRecord(stop) );
+    hipSetDevice(0);
+    hipEventRecord(stop);
 
     // Free device memory
     for (int i = 0; i < 2; ++i) {
-        HIP_ERRCHK( hipSetDevice(i) );
-        HIP_ERRCHK( hipFree((void*)dA[i]) );
-        HIP_ERRCHK( hipFree((void*)dB[i]) );
-        HIP_ERRCHK( hipFree((void*)dC[i]) );
+        hipSetDevice(i);
+        hipFree((void*)dA[i]);
+        hipFree((void*)dB[i]);
+        hipFree((void*)dC[i]);
     }
 
     // Check results
@@ -150,14 +140,14 @@ int main(int argc, char *argv[])
 
     // Calculate the elapsed time
     float gputime;
-    HIP_ERRCHK( hipSetDevice(0) );
-    HIP_ERRCHK( hipEventElapsedTime(&gputime, start, stop) );
+    hipSetDevice(0);
+    hipEventElapsedTime(&gputime, start, stop);
     printf("Time elapsed: %f\n", gputime / 1000.);
 
     // Deallocate host memory
-    HIP_ERRCHK( hipHostFree((void*)hA) );
-    HIP_ERRCHK( hipHostFree((void*)hB) );
-    HIP_ERRCHK( hipHostFree((void*)hC) );
+    hipHostFree((void*)hA);
+    hipHostFree((void*)hB);
+    hipHostFree((void*)hC);
 
     return 0;
 }

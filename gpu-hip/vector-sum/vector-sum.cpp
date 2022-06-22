@@ -2,16 +2,6 @@
 #include <cmath>
 #include <hip/hip_runtime.h>
 
-/* HIP error handling macro */
-#define HIP_ERRCHK(err) (hip_errchk(err, __FILE__, __LINE__ ))
-static inline void hip_errchk(hipError_t err, const char *file, int line) {
-    if (err != hipSuccess) {
-        printf("\n\n%s in %s at line %d\n", hipGetErrorString(err), file, line);
-        exit(EXIT_FAILURE);
-    }
-}
-
-
 // Data structure for storing decomposition information
 struct Decomp {
     int len;    // length of the array for the current device
@@ -45,9 +35,9 @@ int main(int argc, char *argv[])
     // TODO: Check that we have two HIP devices available
 
     // Create timing events
-    HIP_ERRCHK( hipSetDevice(0) );
-    HIP_ERRCHK( hipEventCreate(&start) );
-    HIP_ERRCHK( hipEventCreate(&stop) );
+    hipSetDevice(0);
+    hipEventCreate(&start);
+    hipEventCreate(&stop);
 
     // Allocate host memory
     // TODO: Allocate enough pinned host memory for hA, hB, and hC
@@ -73,8 +63,8 @@ int main(int argc, char *argv[])
     }
 
     // Start timing
-    HIP_ERRCHK( hipSetDevice(0) );
-    HIP_ERRCHK( hipEventRecord(start) );
+    hipSetDevice(0);
+    hipEventRecord(start);
 
     /* Copy each decomposed part of the vectors from host to device memory
        and execute a kernel for each part.
@@ -110,14 +100,14 @@ int main(int argc, char *argv[])
 
     // Calculate the elapsed time
     float gputime;
-    HIP_ERRCHK( hipSetDevice(0) );
-    HIP_ERRCHK( hipEventElapsedTime(&gputime, start, stop) );
+    hipSetDevice(0);
+    hipEventElapsedTime(&gputime, start, stop);
     printf("Time elapsed: %f\n", gputime / 1000.);
 
     // Deallocate host memory
-    HIP_ERRCHK( hipHostFree((void*)hA) );
-    HIP_ERRCHK( hipHostFree((void*)hB) );
-    HIP_ERRCHK( hipHostFree((void*)hC) );
+    hipHostFree((void*)hA);
+    hipHostFree((void*)hB);
+    hipHostFree((void*)hC);
 
     return 0;
 }
