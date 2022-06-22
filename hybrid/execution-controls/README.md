@@ -7,6 +7,9 @@ numerical solution of partial differential equations.
 The code [jacobi.cpp](jacobi.cpp) / [jacobi.F90](jacobi.F90) solves two dimensional
 Poisson equation
 
+<!-- Equation
+\nabla^2 u = b
+-->
 ![](img/poisson.png)
 
 The source term *b* is read from a file [input.dat](input.dat), and the two dimensional array
