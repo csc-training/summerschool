@@ -35,7 +35,7 @@ nvfortran -o my_exe test.f90 -mp=gpu -gpu=cc70
 
 For MPI codes, use the wrapper commands `mpicc`, `mpic++`, or `mpif90`
 
-## Running in Mahti
+## Running in Puhti
 
 In Mahti, programs need to be executed via the batch job system. The
 number of nodes is specified with `--nodes` (for most of the exercises
