@@ -8,10 +8,6 @@ We can observe in the code that we record the startEvent on stream 0, copy the d
 
 `make async_serial`
 
-## Execute:
-
-`sbatch async_serial.sh`
-
 ## Results
 
 Check the SLURM output file
@@ -39,11 +35,10 @@ Copy the async_serial.cpp file to async_case1.cpp and edit after the sequential 
 4) For the number of streams, do:
 	4.1) Execute the kernels in different stream with the appropriate workload per stream
 
-#### Compile and execute
+#### Compile
 
 ```
 make async_case1
-sbatch async_case1.sh
 ```
 
 ### Results
@@ -63,11 +58,10 @@ Copy the async_case1.cpp file to async_case2.cpp and edit after the code fo the 
 	3.4) Synchronize the events (hipEventSynchronize)
 	3.5) Record a stop event and calculate the new Elapsed time.
 
-#### Compile and execute
+#### Compile
 
 ```
 make async_case2
-sbatch async_case2.sh
 ```
 
 ### Results
@@ -81,15 +75,14 @@ Is your code faster? Why?
 Copy the async_case2.cpp to async_case3.cpp and edit below the previous code (before the deallocation of the memory)
 
 1) Now, make a loop and send the data from host to device through streams
-2) Similar for the kernsl
+2) Similar for the kernels
 3) Also for the data copy from device to host.
 4) The difference in this exercise is that we have a loop per each of the previous steps and not all the steps inside a loop
 
-#### Compile and execute
+#### Compile
 
 ```
 make async_case3
-sbatch async_case3.sh
 ```
 
 ### Results

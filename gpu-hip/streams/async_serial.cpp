@@ -1,17 +1,6 @@
 #include "hip/hip_runtime.h"
 #include <stdio.h>
 
-inline hipError_t hipCheck(hipError_t result)
-{
-#if defined(DEBUG) || defined(_DEBUG)
-  if (result != hipSuccess) {
-    fprintf(stderr, "HIP Runtime Error: %s\n", hipGetErrorString(result));
-    assert(result == hipSuccess);
-  }
-#endif
-  return result;
-}
-
 __global__ void kernel(float *a, int offset)
 {
   int i = offset + threadIdx.x + blockIdx.x*blockDim.x;
@@ -42,32 +31,32 @@ int main(int argc, char **argv)
   if (argc > 1) devId = atoi(argv[1]);
 
   hipDeviceProp_t prop;
-  hipCheck( hipGetDeviceProperties(&prop, devId));
+  hipGetDeviceProperties(&prop, devId);
   printf("Device : %s\n", prop.name);
-  hipCheck( hipSetDevice(devId) );
+  hipSetDevice(devId);
   
   // Allocate pinned host memory and device memory
   float *a, *d_a;
  // a=(float *)malloc(n * sizeof(float));
-  hipCheck( hipHostMalloc((void**)&a, bytes) );      // host pinned
-  hipCheck( hipMalloc((void**)&d_a, bytes) ); // device
+  hipHostMalloc((void**)&a, bytes);      // host pinned
+  hipMalloc((void**)&d_a, bytes); // device
 
   float duration; 
   
   // Create events 
   hipEvent_t startEvent, stopEvent;
-  hipCheck( hipEventCreate(&startEvent) );
-  hipCheck( hipEventCreate(&stopEvent) );
+  hipEventCreate(&startEvent);
+  hipEventCreate(&stopEvent);
   
   // Sequential transfer and execute
   memset(a, 0, bytes);
-  hipCheck( hipEventRecord(startEvent,0) );
-  hipCheck( hipMemcpy(d_a, a, bytes, hipMemcpyHostToDevice) );
+  hipEventRecord(startEvent,0);
+  hipMemcpy(d_a, a, bytes, hipMemcpyHostToDevice);
   hipLaunchKernelGGL(kernel, n/blockSize, blockSize, 0, 0, d_a, 0);
-  hipCheck( hipMemcpy(a, d_a, bytes, hipMemcpyDeviceToHost) );
-  hipCheck( hipEventRecord(stopEvent, 0) );
-  hipCheck( hipEventSynchronize(stopEvent) );
-  hipCheck( hipEventElapsedTime(&duration, startEvent, stopEvent) );
+  hipMemcpy(a, d_a, bytes, hipMemcpyDeviceToHost);
+  hipEventRecord(stopEvent, 0);
+  hipEventSynchronize(stopEvent);
+  hipEventElapsedTime(&duration, startEvent, stopEvent);
   printf("Duration for sequential transfer and execute (ms): %f\n", duration);
   printf("  max error: %e\n", maxError(a, n));
 
@@ -78,8 +67,8 @@ int main(int argc, char **argv)
 // Add code for case 3 here
 
   // Clean memory
-  hipCheck( hipEventDestroy(startEvent) );
-  hipCheck( hipEventDestroy(stopEvent) );
+  hipEventDestroy(startEvent);
+  hipEventDestroy(stopEvent);
   hipFree(d_a);
   hipHostFree(a);
 
