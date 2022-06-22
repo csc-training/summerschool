@@ -1,4 +1,4 @@
-## General exercise instructions
+# General exercise instructions
 
 For most of the exercises, skeleton codes are provided both for
 Fortran and C/C++ in the corresponding subdirectory. Some exercise
@@ -18,14 +18,18 @@ However, we recommend that you use your GitHub account (and create a one if not 
 **Fork** this repository and clone then your fork. This way you can keep also your own work
 under version control.
 
-### Computing servers
+## Using local workstation
 
-Exercises can be carried out using the CSC's Puhti supercomputer. See [CSC User Documentation](https://docs.csc.fi/support/tutorials/puhti_quick/) 
-for general instructions on using Puhti.
+In case you have working parallel program development environment in your laptop 
+(Fortran or C/C++ compiler, MPI development library, etc.) you may use that for 
+exercises. Note, however, that no support for installing MPI environment can be 
+provided during the course. Otherwise, you can use CSC supercomputers for 
+carrying out the exercises.
 
-In case you have working parallel program development environment in your
-laptop (Fortran or C compiler, MPI development library, etc.) you may also use
-that. Note, however, that no support for installing MPI environment can be provided during the course.
+## Using CSC supercomputers
+
+Exercises can be carried out using the CSC's Puhti and Mahti supercomputers. In this course, 
+we'll use by default Puhti. See CSC User Documentation for quick start guide for [Puhti](https://docs.csc.fi/support/tutorials/puhti_quick/) or for [Mahti](https://docs.csc.fi/support/tutorials/mahti_quick/)
 
 Puhti and Mahti can be accessed via ssh using the
 provided username (`trainingxxx`) and password:
@@ -37,7 +41,7 @@ or
 ssh -Y training000@mahti.csc.fi
 ```
 
-For easier connecting we recommend that you set uo *ssh keys* along the instructions in 
+For easier connecting we recommend that you set up *ssh keys* along the instructions in 
 [CSC Docs](https://docs.csc.fi/computing/connecting/#setting-up-ssh-keys)
 
 
@@ -63,7 +67,7 @@ cd $USER
 ```
 
 
-## Compilation and running
+## Compilation
 
 ### MPI
 
@@ -84,12 +88,38 @@ mpicc -o my_mpi_exe test.c
 The wrapper commands include automatically all the flags needed for building
 MPI programs.
 
+### OpenMP (threading with CPUs)
+
+Pure OpenMP (as well as serial) programs can also be compiled with the `mpif90`, 
+`mpicxx`, and `mpicc` wrapper commands. OpenMP is enabled with the 
+`-fopenmp` flag:
+```
+mpif90 -o my_exe test.f90 -fopenmp
+```
+or
+```
+mpicxx -o my_exe test.cpp -fopenmp
+```
+or
+```
+mpicc -o my_exe test.c -fopenmp
+```
+
+When code uses also MPI, the wrapper commands include automatically all the flags needed for 
+building MPI programs. 
+
 ### HDF5
 
-In order to use HDF5 in Puhti, you need the load the HDF5 module with MPI I/O support:
+In order to use HDF5 in CSC supercomputers, you need the load the HDF5 module with MPI I/O support.
+The appropriate module in Puhti is
 ```
 module load hdf5/1.10.4-mpi
 ```
+and in Mahti
+```
+module load hdf5/1.10.7-mpi
+```
+
 When building programs, `-lhdf5` (C/C++) or `-lhdf5_fortran` (Fortran) needs to be added to linker flags, e.g.
 ```
 mpicxx -o my_hdf5_exe test.cpp -lhdf5
@@ -100,7 +130,21 @@ or setting `LDFLAGS` *etc.* in a Makefile:
 LDFLAGS=... -lhdf5
 ```
 
-#### Running in Puhti
+Usage in local workstation may vary.
+
+### OpenMP offloading
+
+TODO
+
+### HIP
+
+TODO
+
+## Running parallel programs
+
+### Running in Puhti
+
+### Pure MPI
 
 In Puhti, programs need to be executed via the batch job system. Simple job running with 4 MPI tasks can be submitted with the following batch job script:
 ```
@@ -119,14 +163,69 @@ Save the script *e.g.* as `job.sh` and submit it with `sbatch job.sh`.
 The output of job will be in file `slurm-xxxxx.out`. You can check the status of your jobs with `squeue -u $USER` and kill possible hanging applications with
 `scancel JOBID`.
 
-The reservation `mpi_intro` is available during the course days and it
+The reservation `summerschool` is available during the course days and it
 is accessible only with the training user accounts.
 
-#### Running in local workstation
+### Hybrid MPI+OpenMP
+
+For hybrid MPI+OpenMP programs it is recommended to specify explicitly number of nodes, number of
+MPI tasks per node (pure OpenMP programs as special case with one task per node), and number of 
+cores reserved for threading. The number of nodes is specified with `--nodes` 
+(for most of the exercises you should use only a single node), number of MPI tasks **per node** 
+with `--ntasks-per-node`, and number of cores reserved for threading with `--cpus-per-task`. 
+The actual number of threads is specified with `OMP_NUM_THREADS` environment variable. 
+Simple job running with 4 MPI tasks and 4 OpenMP threads per MPI task can be submitted with 
+the following batch job script:
+```
+#!/bin/bash
+#SBATCH --job-name=example
+#SBATCH --account=project_2000745
+#SBATCH --partition=large
+#SBATCH --reservation=summerschool
+#SBATCH --time=00:05:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=4
+
+# Set the number of threads based on --cpus-per-task
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+srun my_exe
+```
+
+### GPU programs
+
+TODO
+
+### Running in Mahti
+
+Batch job system in Mahti is very similar to Puhti, and batch scripts written for Puhti
+work in Mahti with only minor modifications. The most important difference is that one should use
+the `medium` partition instead of `large` partition, *i.e.* batch job script should start as:
+```
+#!/bin/bash
+#SBATCH --job-name=example
+#SBATCH --account=project_2000745
+#SBATCH --partition=medium
+#SBATCH --reservation=summerschool
+...
+``` 
+
+### Running in local workstation
 
 In most MPI implementations parallel program can be started with the `mpiexec` launcher:
 ```
 mpiexec -n 4 ./my_mpi_exe
+```
+
+In most workstations, programs build with OpenMP use as many threads as there are CPU cores 
+(note that this might include also "logical" cores with simultaneous multithreading). A pure OpenMP
+program can be normally started with specific number of threads with
+```bash
+OMP_NUM_THREADS=4 ./my_exe
+```
+and a hybrid MPI+OpenMP program e.g. with
+```
+OMP_NUM_THREADS=4 mpiexec -n 2 ./my_exe
 ```
 
 ### Debugging
@@ -152,9 +251,10 @@ salloc --nodes=1 --ntasks-per-node=2 --account=project_2000745 --partition=small
 ddt srun ./buggy
 ```
 
-For smoother GUI performance, we recommend using [NoMachine remote
-desktop](https://docs.csc.fi/support/tutorials/nomachine-usage/) to
-connect to Puhti.
+For GUI applications we recommend to use the 
+[Desktop app](https://docs.csc.fi/computing/webinterface/desktop/) in the Puhti web interface.
+For smoother GUI performance one may use VNC client such as RealVNC or TigerVNC in the local
+workstation.
 
 ### Performance analysis with ScoreP / Scalasca
 
@@ -223,9 +323,12 @@ traceanalyzer &
 ```
 
 Next, choose the "Open" dialog and select the `trace.otf2` file within
-the experiment directory (e.g. `scorep_my_mpi_app_8_trace`). For smoother GUI
-performance, we recommend using [NoMachine remote desktop](https://docs.csc.fi/support/tutorials/nomachine-usage/) 
-to connect to Puhti.
+the experiment directory (e.g. `scorep_my_mpi_app_8_trace`). 
+For GUI applications we recommend to use the 
+[Desktop app](https://docs.csc.fi/computing/webinterface/desktop/) in the Puhti web interface.
+For smoother GUI performance one may use VNC client such as RealVNC or TigerVNC in the local
+workstation.
+
 
 More information about Scalasca can be found in [CSC User Documentation](https://docs.csc.fi/apps/scalasca/)
 
