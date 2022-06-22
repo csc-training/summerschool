@@ -259,7 +259,7 @@ and a hybrid MPI+OpenMP program e.g. with
 OMP_NUM_THREADS=4 mpiexec -n 2 ./my_exe
 ```
 
-### Debugging
+## Debugging in CSC supercomputers
 
 The [Allinea DDT parallel debugger](https://docs.csc.fi/apps/ddt/) is available in CSC 
 supercomputers. In order to use the debugger, build your code first with the `-g` flag. The DDT is
@@ -287,7 +287,7 @@ For GUI applications we recommend to use the
 For smoother GUI performance one may use VNC client such as RealVNC or TigerVNC in the local
 workstation.
 
-### Performance analysis with ScoreP / Scalasca
+## Performance analysis with ScoreP / Scalasca
 
 Start by loading `scorep` and `scalasca` modules:
 
