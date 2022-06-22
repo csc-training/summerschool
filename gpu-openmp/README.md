@@ -15,10 +15,13 @@
 - [Sum and dot product](sum-dot/)
 - [Offloading the heat equation](heat-equation/README-simple.md)
 
-## Unstructured data and device functions
+## Unstructured data 
+
+- [Unstructured data in heat equation](heat-equation/README-unstructured.md)
+
+## Device functions
 
 - [Device functions](gpu-functions/)
-- [Unstructured data in heat equation](heat-equation/README-unstructured.md)
 
 ## Interoperability with libraries and asynchronous operations
 
