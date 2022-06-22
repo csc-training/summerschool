@@ -67,9 +67,9 @@ int main(int argc, char *argv[])
 
     // Allocate memory for the devices and per device streams
     for (int i = 0; i < 2; ++i) {
-        // TODO: Allocate enough device memory for dA, dB, dC
+        // TODO: Allocate enough device memory for dA[i], dB[i], dC[i]
         //       to store dec[i].len doubles
-        // TODO: Create streams for each device
+        // TODO: Create a stream for each device
     }
 
     // Start timing
@@ -83,9 +83,9 @@ int main(int argc, char *argv[])
        execution of the host process. */
     for (int i = 0; i < 2; ++i) {
         // TODO: Set active device
-        // TODO: Copy data from host to device (hA -> dA, hB -> dB)
-        // TODO: Launch kernel to calculate dC = dA + dB
-        // TODO: Copy data from device to host (dC -> hC)
+        // TODO: Copy data from host to device asynchronously (hA[dec[i].start] -> dA[i], hB[dec[i].start] -> dB[i])
+        // TODO: Launch 'vector_add()' kernel to calculate dC = dA + dB
+        // TODO: Copy data from device to host (dC[i] -> hC[dec[0].start])
     }
 
     // Synchronize and destroy the streams
