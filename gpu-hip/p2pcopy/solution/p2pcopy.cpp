@@ -3,37 +3,28 @@
 #include <time.h>
 #include <hip/hip_runtime.h>
 
-/* HIP error handling macro */
-#define HIP_ERRCHK(err) (hip_errchk(err, __FILE__, __LINE__ ))
-static inline void hip_errchk(hipError_t err, const char *file, int line) {
-    if (err != hipSuccess) {
-        printf("\n\n%s in %s at line %d\n", hipGetErrorString(err), file, line);
-        exit(EXIT_FAILURE);
-    }
-}
-
 
 void copyP2P(int p2p, int gpu0, int gpu1, int* dA_0, int* dA_1, int size) {
 
     // Enable peer access for GPUs?
     if (p2p)
     {
-        HIP_ERRCHK( hipSetDevice(gpu0) );
-        HIP_ERRCHK( hipDeviceEnablePeerAccess(gpu1, 0) );
-        HIP_ERRCHK( hipSetDevice(gpu1) );
-        HIP_ERRCHK( hipDeviceEnablePeerAccess(gpu0, 0) );
+        hipSetDevice(gpu0);
+        hipDeviceEnablePeerAccess(gpu1, 0);
+        hipSetDevice(gpu1);
+        hipDeviceEnablePeerAccess(gpu0, 0);
     }
 
     // Do a dummy copy without timing to remove the impact of the first one
-    HIP_ERRCHK( hipMemcpy(dA_0, dA_1, size, hipMemcpyDefault) );
+    hipMemcpy(dA_0, dA_1, size, hipMemcpyDefault);
 
     // Do a series of timed P2P memory copies
     int N = 10;
     clock_t tStart = clock();
     for (int i = 0; i < N; ++i) {
-        HIP_ERRCHK( hipMemcpy(dA_0, dA_1, size, hipMemcpyDefault) );
+        hipMemcpy(dA_0, dA_1, size, hipMemcpyDefault);
     }
-    HIP_ERRCHK( hipStreamSynchronize(0) );
+    hipStreamSynchronize(0);
     clock_t tStop = clock();
 
     // Calcute time and bandwith
@@ -42,10 +33,10 @@ void copyP2P(int p2p, int gpu0, int gpu1, int* dA_0, int* dA_1, int size) {
 
     // Disable peer access for GPUs?
     if (p2p) {
-        HIP_ERRCHK( hipSetDevice(gpu0) );
-        HIP_ERRCHK( hipDeviceDisablePeerAccess(gpu1) );
-        HIP_ERRCHK( hipSetDevice(gpu1) );
-        HIP_ERRCHK( hipDeviceDisablePeerAccess(gpu0) );
+        hipSetDevice(gpu0);
+        hipDeviceDisablePeerAccess(gpu1);
+        hipSetDevice(gpu1);
+        hipDeviceDisablePeerAccess(gpu0);
         printf("P2P enabled - Bandwith: %.3f (GB/s), Time: %.3f s\n",
                 bandwidth, time_s);
     } else {
@@ -59,7 +50,7 @@ int main(int argc, char *argv[])
 {
     // Check that we have at least two GPUs
     int devcount;
-    HIP_ERRCHK( hipGetDeviceCount(&devcount) );
+    hipGetDeviceCount(&devcount);
     if(devcount < 2) {
         printf("Need at least two GPUs!\n");
         exit(EXIT_FAILURE);
@@ -71,16 +62,16 @@ int main(int argc, char *argv[])
     int size = pow(2, 28);
     int gpu0 = 0, gpu1 = 1;
     int *dA_0, *dA_1;
-    HIP_ERRCHK( hipSetDevice(gpu0) );
-    HIP_ERRCHK( hipMalloc((void**) &dA_0, size) );
-    HIP_ERRCHK( hipSetDevice(gpu1) );
-    HIP_ERRCHK( hipMalloc((void**) &dA_1, size) );
+    hipSetDevice(gpu0);
+    hipMalloc((void**) &dA_0, size);
+    hipSetDevice(gpu1);
+    hipMalloc((void**) &dA_1, size);
 
     // Check peer accessibility between GPUs 0 and 1
     int peerAccess01;
     int peerAccess10;
-    HIP_ERRCHK( hipDeviceCanAccessPeer(&peerAccess01, gpu0, gpu1) );
-    HIP_ERRCHK( hipDeviceCanAccessPeer(&peerAccess10, gpu1, gpu0) );
+    hipDeviceCanAccessPeer(&peerAccess01, gpu0, gpu1);
+    hipDeviceCanAccessPeer(&peerAccess10, gpu1, gpu0);
     printf("hipDeviceCanAccessPeer: %d (GPU %d to GPU %d)\n",
             peerAccess01, gpu0, gpu1);
     printf("hipDeviceCanAccessPeer: %d (GPU %d to GPU %d)\n",
@@ -94,6 +85,6 @@ int main(int argc, char *argv[])
     copyP2P(0, gpu0, gpu1, dA_0, dA_1, size);
 
     // Deallocate device memory
-    HIP_ERRCHK( hipFree(dA_0) );
-    HIP_ERRCHK( hipFree(dA_1) );
+    hipFree(dA_0);
+    hipFree(dA_1);
 }
