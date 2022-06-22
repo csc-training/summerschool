@@ -17,7 +17,7 @@
 
 ## Fortran and HIP
 
-- [hipfort](hipfort)
+- [Hipfort: saxpy](hipfort)
 
 ## Multi-GPU programming
 
