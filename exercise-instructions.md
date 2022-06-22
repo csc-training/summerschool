@@ -84,6 +84,17 @@ mpicc -o my_mpi_exe test.c
 The wrapper commands include automatically all the flags needed for building
 MPI programs.
 
+### HIP
+
+In order to use HIP on Puhti, you need to load the following modules:
+```
+module load gcc/9.1.0 cuda/11.1.0 hip/4.0.0 openmpi/4.1.1-cuda
+```
+Then you can compile with hipcc, eg,
+```
+hipcc -o hello hello.cpp
+```
+
 ### HDF5
 
 In order to use HDF5 in Puhti, you need the load the HDF5 module with MPI I/O support:
@@ -100,7 +111,7 @@ or setting `LDFLAGS` *etc.* in a Makefile:
 LDFLAGS=... -lhdf5
 ```
 
-#### Running in Puhti
+#### Running on a Puhti CPU partition
 
 In Puhti, programs need to be executed via the batch job system. Simple job running with 4 MPI tasks can be submitted with the following batch job script:
 ```
@@ -122,7 +133,25 @@ The output of job will be in file `slurm-xxxxx.out`. You can check the status of
 The reservation `mpi_intro` is available during the course days and it
 is accessible only with the training user accounts.
 
-#### Running in local workstation
+#### Running on a Puhti GPU partition
+When running GPU programs, the sbatch script must be different from the above, ie,
+
+```
+#!/bin/bash
+#SBATCH --job-name=example
+#SBATCH --account=project_2000745
+#SBATCH --reservation=summerschool-gpu
+#SBATCH --partition=gpu
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --gres=gpu:v100:1
+#SBATCH --time=00:01:00
+
+srun my_gpu_exe
+```
+
+
+#### Running on local workstation
 
 In most MPI implementations parallel program can be started with the `mpiexec` launcher:
 ```
