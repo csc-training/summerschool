@@ -3,7 +3,7 @@
 For most of the exercises, skeleton codes are provided both for
 Fortran and C/C++ in the corresponding subdirectory. Some exercise
 skeletons have sections marked with “TODO” for completing the
-exercises. In addition, all of the 
+exercises. In addition, all of the
 exercises have exemplary full codes (that can be compiled and run) in the
 `solutions` folder. Note that these are seldom the only or even the best way to
 solve the problem.
@@ -20,15 +20,15 @@ under version control.
 
 ## Using local workstation
 
-In case you have working parallel program development environment in your laptop 
-(Fortran or C/C++ compiler, MPI development library, etc.) you may use that for 
-exercises. Note, however, that no support for installing MPI environment can be 
-provided during the course. Otherwise, you can use CSC supercomputers for 
+In case you have working parallel program development environment in your laptop
+(Fortran or C/C++ compiler, MPI development library, etc.) you may use that for
+exercises. Note, however, that no support for installing MPI environment can be
+provided during the course. Otherwise, you can use CSC supercomputers for
 carrying out the exercises.
 
 ## Using CSC supercomputers
 
-Exercises can be carried out using the CSC's Puhti and Mahti supercomputers. In this course, 
+Exercises can be carried out using the CSC's Puhti and Mahti supercomputers. In this course,
 we'll use by default Puhti. See CSC User Documentation for quick start guide for [Puhti](https://docs.csc.fi/support/tutorials/puhti_quick/) or for [Mahti](https://docs.csc.fi/support/tutorials/mahti_quick/)
 
 Puhti and Mahti can be accessed via ssh using the
@@ -41,11 +41,11 @@ or
 ssh -Y training000@mahti.csc.fi
 ```
 
-For easier connecting we recommend that you set up *ssh keys* along the instructions in 
+For easier connecting we recommend that you set up *ssh keys* along the instructions in
 [CSC Docs](https://docs.csc.fi/computing/connecting/#setting-up-ssh-keys)
 
 
-For editing program source files you can use e.g. *nano* editor: 
+For editing program source files you can use e.g. *nano* editor:
 
 ```
 nano prog.f90 &
@@ -90,8 +90,8 @@ MPI programs.
 
 ### OpenMP (threading with CPUs)
 
-Pure OpenMP (as well as serial) programs can also be compiled with the `mpif90`, 
-`mpicxx`, and `mpicc` wrapper commands. OpenMP is enabled with the 
+Pure OpenMP (as well as serial) programs can also be compiled with the `mpif90`,
+`mpicxx`, and `mpicc` wrapper commands. OpenMP is enabled with the
 `-fopenmp` flag:
 ```
 mpif90 -o my_exe test.f90 -fopenmp
@@ -105,8 +105,8 @@ or
 mpicc -o my_exe test.c -fopenmp
 ```
 
-When code uses also MPI, the wrapper commands include automatically all the flags needed for 
-building MPI programs. 
+When code uses also MPI, the wrapper commands include automatically all the flags needed for
+building MPI programs.
 
 ### HDF5
 
@@ -134,7 +134,28 @@ Usage in local workstation may vary.
 
 ### OpenMP offloading
 
-TODO
+In order to use programs with OpenMP offloading to GPUs, you need to load the following modules:
+```bash
+module nvhpc/21.9  nvhpc-mpi/openmpi-4.0.5
+```
+
+The compiler commands (without MPI) for C, C++ and Fortran are `nvc`,
+`nvc++`, and `nvfortran`, and OpenMP offload support is enabled with
+`-mp=gpu -gpu=cc70` options, *i.e.*
+
+```
+nvc -o my_exe test.c -mp=gpu -gpu=cc70
+```
+or
+```
+nvc++ -o my_exe test.cpp -mp=gpu -gpu=cc70
+```
+or
+```
+nvfortran -o my_exe test.f90 -mp=gpu -gpu=cc70
+```
+
+For MPI codes, use the wrapper commands `mpicc`, `mpic++`, or `mpif90`
 
 ### HIP
 
@@ -165,7 +186,7 @@ In Puhti, programs need to be executed via the batch job system. Simple job runn
 srun my_mpi_exe
 ```
 
-Save the script *e.g.* as `job.sh` and submit it with `sbatch job.sh`. 
+Save the script *e.g.* as `job.sh` and submit it with `sbatch job.sh`.
 The output of job will be in file `slurm-xxxxx.out`. You can check the status of your jobs with `squeue -u $USER` and kill possible hanging applications with
 `scancel JOBID`.
 
@@ -175,12 +196,12 @@ is accessible only with the training user accounts.
 ### Hybrid MPI+OpenMP
 
 For hybrid MPI+OpenMP programs it is recommended to specify explicitly number of nodes, number of
-MPI tasks per node (pure OpenMP programs as special case with one node and one task per node), 
-and number of cores reserved for threading. The number of nodes is specified with `--nodes` 
-(for most of the exercises you should use only a single node), number of MPI tasks **per node** 
-with `--ntasks-per-node`, and number of cores reserved for threading with `--cpus-per-task`. 
-The actual number of threads is specified with `OMP_NUM_THREADS` environment variable. 
-Simple job running with 4 MPI tasks and 4 OpenMP threads per MPI task can be submitted with 
+MPI tasks per node (pure OpenMP programs as special case with one node and one task per node),
+and number of cores reserved for threading. The number of nodes is specified with `--nodes`
+(for most of the exercises you should use only a single node), number of MPI tasks **per node**
+with `--ntasks-per-node`, and number of cores reserved for threading with `--cpus-per-task`.
+The actual number of threads is specified with `OMP_NUM_THREADS` environment variable.
+Simple job running with 4 MPI tasks and 4 OpenMP threads per MPI task can be submitted with
 the following batch job script:
 ```
 #!/bin/bash
@@ -231,7 +252,7 @@ the `medium` partition instead of `large` partition, *i.e.* batch job script sho
 #SBATCH --partition=medium
 #SBATCH --reservation=summerschool
 ...
-``` 
+```
 
 For GPU programs, the `--gres` option is also a bit different, as one
 needs to use `a100` instead of `v100` *i.e.*:
@@ -248,7 +269,7 @@ In most MPI implementations parallel program can be started with the `mpiexec` l
 mpiexec -n 4 ./my_mpi_exe
 ```
 
-In most workstations, programs build with OpenMP use as many threads as there are CPU cores 
+In most workstations, programs build with OpenMP use as many threads as there are CPU cores
 (note that this might include also "logical" cores with simultaneous multithreading). A pure OpenMP
 program can be normally started with specific number of threads with
 ```bash
@@ -261,7 +282,7 @@ OMP_NUM_THREADS=4 mpiexec -n 2 ./my_exe
 
 ## Debugging in CSC supercomputers
 
-The [Allinea DDT parallel debugger](https://docs.csc.fi/apps/ddt/) is available in CSC 
+The [Allinea DDT parallel debugger](https://docs.csc.fi/apps/ddt/) is available in CSC
 supercomputers. In order to use the debugger, build your code first with the `-g` flag. The DDT is
 then enabled via the module system:
 
@@ -282,7 +303,7 @@ salloc --nodes=1 --ntasks-per-node=2 --account=project_2000745 --partition=small
 ddt srun ./buggy
 ```
 
-For GUI applications we recommend to use the 
+For GUI applications we recommend to use the
 [Desktop app](https://docs.csc.fi/computing/webinterface/desktop/) in the Puhti web interface.
 For smoother GUI performance one may use VNC client such as RealVNC or TigerVNC in the local
 workstation.
@@ -354,12 +375,11 @@ traceanalyzer &
 ```
 
 Next, choose the "Open" dialog and select the `trace.otf2` file within
-the experiment directory (e.g. `scorep_my_mpi_app_8_trace`). 
-For GUI applications we recommend to use the 
+the experiment directory (e.g. `scorep_my_mpi_app_8_trace`).
+For GUI applications we recommend to use the
 [Desktop app](https://docs.csc.fi/computing/webinterface/desktop/) in the Puhti web interface.
 For smoother GUI performance one may use VNC client such as RealVNC or TigerVNC in the local
 workstation.
 
 
 More information about Scalasca can be found in [CSC User Documentation](https://docs.csc.fi/apps/scalasca/)
-
