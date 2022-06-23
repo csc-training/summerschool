@@ -8,11 +8,11 @@ COMMONDIR=../../common
 ifeq ($(COMP),nvhpc)
 FC=mpif90
 CC=nvc
-MINFO=
+MINFO=all
 # MINFO=-Minfo=mp
 # GPU_MPI=-DGPU_MPI
 GPU_MPI=
-FCFLAGS=-O3 -mp=gpu -gpu=cc80 $(GPU_MPI)
+FCFLAGS=-O3 -mp=gpu -gpu=cc70 $(GPU_MPI)
 CCFLAGS=-O3 -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng

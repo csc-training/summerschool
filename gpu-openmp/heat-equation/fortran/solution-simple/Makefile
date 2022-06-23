@@ -10,7 +10,7 @@ FC=nvfortran
 CC=nvc
 MINFO=
 # MINFO=-Minfo=mp
-FCFLAGS=-O3 -mp=gpu -gpu=cc80 $(MINFO)
+FCFLAGS=-O3 -mp=gpu -gpu=cc70 $(MINFO)
 CCFLAGS=-O3 -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng

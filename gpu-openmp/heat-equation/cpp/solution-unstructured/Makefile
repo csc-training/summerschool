@@ -18,7 +18,7 @@ CXX=nvc++
 CC=nvc
 MINFO=
 # MINFO=-Minfo=mp
-CCFLAGS=-O3 -mp=gpu -gpu=cc80  -I$(COMMONDIR) $(MINFO)
+CCFLAGS=-O3 -mp=gpu -gpu=cc70  -I$(COMMONDIR) $(MINFO)
 LDFLAGS=
 LIBS=-lpng
 endif
