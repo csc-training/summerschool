@@ -157,6 +157,9 @@ MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, 
     `datatype`{.input}
     : Type of elements in buffer (see later slides)
 
+    `-`{.ghost}
+    : `-`{.ghost}
+
     `dest`{.input}
     : The rank of the receiver
 
@@ -185,6 +188,9 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
     `datatype`{.input}
     : Type of each element in buffer
+
+    `-`{.ghost}
+    : `-`{.ghost}
 
     `source`{.input}
     : Sender of the message
@@ -257,14 +263,14 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 # Status parameter
 
-- Received elements
-&emsp;Use the function
+- Received elements  
+&emsp;Use the function  
 &emsp;**`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
-- Tag of the received message
-&emsp;C: `status.MPI_TAG`
+- Tag of the received message  
+&emsp;C: `status.MPI_TAG`  
 &emsp;Fortran: `status%mpi_tag` (old version `status(MPI_TAG)`)
-- Rank of the sender
-&emsp;C: `status.MPI_SOURCE`
+- Rank of the sender  
+&emsp;C: `status.MPI_SOURCE`  
 &emsp;Fortran: `status%mpi_source` (old version `status(MPI_SOURCE)`)
 
 # Summary

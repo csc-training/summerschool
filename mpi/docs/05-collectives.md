@@ -138,8 +138,8 @@ call mpi_bcast(a, 16, MPI_INTEGER, 0, &
 if (my_id==3) print *, a(:)
 ```
 <small>
- **A)** `1 2 3 4`
- **B)** `13 14 15 16`
+ **A)** `1 2 3 4`  
+ **B)** `13 14 15 16`  
  **C)** `1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16`
 </small>
 
@@ -156,8 +156,8 @@ call mpi_scatter(a, 4, MPI_INTEGER, aloc, 4 &
 if (my_id==3) print *, aloc(:)
 ```
 <small>
- **A)** `1 2 3 4`
- **B)** `13 14 15 16`
+ **A)** `1 2 3 4`  
+ **B)** `13 14 15 16`  
  **C)** `1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16`
 </small>
 </div>
@@ -221,8 +221,8 @@ Assume 4 MPI tasks. What are the values in aloc in the last task (#3)?
 
 <br>
 
-**A)** `1 2 3`
-**B)** `7 8 9 10`
+**A)** `1 2 3`  
+**B)** `7 8 9 10`  
 **C)** `1 2 3 4 5 6 7 8 9 10`
 </div>
 
@@ -252,7 +252,7 @@ MPI_Gather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`
     : receive buffer
 
     `recvcount`{.input}
-       : number of elements in any single receive
+    : number of elements in any single receive
 
     `recvtype`{.input}
     : data type of receive buffer elements
@@ -275,12 +275,15 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
     `sendtype`{.input}
     : data type of send buffer elements
 
+    `-`{.ghost}
+    : `-`{.ghost}
+
     `recvbuf`{.output}
     : receive buffer
 
     `recvcounts`{.input}
-     : array (of length ntasks). Entry _i_ specifies how many to
-       receive from that process
+    : array (of length ntasks). Entry _i_ specifies how many to
+      receive from that process
 
     `displs`{.input}
     : array (of length ntasks). Entry _i_ specifies the displacement
@@ -506,8 +509,8 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 </div>
 
 <div class=column>
-**A)** `1, 2, 3, 4`
-**B)** `1, ..., 16`
+**A)** `1, 2, 3, 4`  
+**B)** `1, ..., 16`  
 **C)** `1, 2, 3, 4, 1, 2, 3, 4,`
 `1, 2, 3, 4, 1, 2, 3, 4`
 </div>
