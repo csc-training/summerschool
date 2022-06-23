@@ -14,7 +14,7 @@ Programs with OpenMP offloading can be build in Mahti with [NVIDIA HPC
 Toolkit](https://docs.nvidia.com/hpc-sdk/index.html). The compiler
 environment is enabled via module system:
 ```bash
-module load nvhpc/21.2 ....
+module nvhpc/21.9  nvhpc-mpi/openmpi-4.0.5
 ```
 The compiler commands (without MPI) for C, C++ and Fortran are `nvc`,
 `nvc++`, and `nvfortran`, and OpenMP offload support is enabled with
@@ -41,7 +41,7 @@ In Mahti, programs need to be executed via the batch job system. The
 number of nodes is specified with `--nodes` (for most of the exercises
 you should use only a single node), number of MPI tasks **per node**
 with `--ntasks-per-node` (for exercises with single GPU this should be
-one), and the number of GPUs per node with `--gres=gpu:a100:n`. If
+one), and the number of GPUs per node with `--gres=gpu:v100:n`. If
 program uses OpenMP with CPUs
 number of cores reserved for threading is set with `--cpus-per-task`. The
 actual number of threads is specified with `OMP_NUM_THREADS`
@@ -54,7 +54,6 @@ submitted with the following batch job script:
 #SBATCH --account=<project>
 #SBATCH --reservation=<reservation>
 #SBATCH --partition=gpu
-#SBATCH --reservation=openmp_offload
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:v100:1
