@@ -1,6 +1,6 @@
 
-prog: prog.c
-	cc -o $@ $^
+prog: prog.cpp
+	mpicxx -o $@ $^
 
 
 

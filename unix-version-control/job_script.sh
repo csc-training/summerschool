@@ -1,10 +1,8 @@
 #!/bin/bash
-#SBATCH -J my_job_name
-#SBATCH -o %J.out
-#SBATCH -e %J.err
-#SBATCH -n 24
-#SBATCH -p small
-#SBATCH -t 5
-#SBATCH --reservation=Summerschool
-
-
+#SBATCH --job-name=example
+#SBATCH --account=<project>
+#SBATCH --partition=test
+#SBATCH --time=00:05:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=24
+#SBATCH --reservation=
