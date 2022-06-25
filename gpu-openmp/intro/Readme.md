@@ -12,7 +12,7 @@ Log in on the running node `ssh rxxgxx`.
 
 1. Load the hip module, then run the command `nvidia-smi`. Investigate the
    output
-2. Run the command `$CUDA_INSTALL_ROOT/extras/demo_suite/deviceQuery`. Comment
+2. Load the `hip`module with `module load hip` and then run the command `$CUDA_INSTALL_ROOT/extras/demo_suite/deviceQuery`. Comment
    on the output
 3. Check more examples from `$CUDA_INSTALL_ROOT/extras/demo_suite/`.
 
