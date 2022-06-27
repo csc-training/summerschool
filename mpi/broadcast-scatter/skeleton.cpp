@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
    
    
     /* Initialize message buffers */
-    init_buffers(sendbuf.data(), recvbuf(), size);
+    init_buffers(sendbuf.data(), recvbuf.data(), size);
 
     /* Print data that will be sent */
     print_buffers(printbuf.data(), sendbuf.data(), size);
