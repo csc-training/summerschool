@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
     // Initialize message
     for (i = 0; i < size; i++) {
         message[i] = myid;
+        receiveBuffer[i] = -1;
     }
 
     // Set source and destination ranks

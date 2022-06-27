@@ -19,6 +19,7 @@ program basic
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
   message = myid
+  receiveBuffer = -1
 
   ! TODO: set source and destination ranks 
   ! Treat boundaries with MPI_PROC_NULL

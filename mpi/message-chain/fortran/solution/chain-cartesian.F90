@@ -23,6 +23,7 @@ program basic
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
   message = myid
+  receiveBuffer = -1
 
   ndims = 1
   dims(1) = ntasks

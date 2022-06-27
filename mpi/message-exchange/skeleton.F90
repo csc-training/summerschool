@@ -12,6 +12,7 @@ program exchange
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
   message = myid
+  receiveBuffer = -1
 
   ! TODO: Implement sending and receiving as defined in the assignment
   ! Send msgsize elements from the array "message", and receive into 

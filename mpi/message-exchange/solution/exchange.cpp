@@ -15,9 +15,10 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
-    // Initialize message
+    // Initialize message and receive buffer
     for (int i = 0; i < arraysize; i++) {
         message[i] = myid;
+        receiveBuffer[i] = -1;
     }
 
     // Send and receive messages as defined in exercise 

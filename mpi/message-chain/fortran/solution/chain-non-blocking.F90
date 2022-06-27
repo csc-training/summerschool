@@ -20,6 +20,7 @@ program chain
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
   message = myid
+  receiveBuffer = -1
 
   ! Set source and destination ranks
   if (myid < ntasks-1) then

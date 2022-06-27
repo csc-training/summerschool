@@ -12,6 +12,7 @@ program exchange
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
   message = myid
+  receiveBuffer = -1
 
   ! Send and receive as defined in the assignment
   if ( myid == 0 ) then

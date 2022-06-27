@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
     // Initialize message
     std::vector<int> message(size, myid);
-    std::vector<int> receiveBuffer(size);
+    std::vector<int> receiveBuffer(size, -1);
 
     // TODO: create a cartesian communicator
     // and determine the source and destination ranks 
