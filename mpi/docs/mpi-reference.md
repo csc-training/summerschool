@@ -31,8 +31,10 @@ int MPI_Send(void *buffer, int count, MPI_Datatype datatype,
 int MPI_Recv(void *buf, int count, MPI_Datatype datatype,
              int source, int tag, MPI_Comm comm, MPI_Status *status)
 
-int MPI_Sendrecv(void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, int sendtag,
-                 void *recvbuf, int recvcount, MPI_Datatype recvtype, int source, int recvtag,
+int MPI_Sendrecv(void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, 
+                 int sendtag,
+                 void *recvbuf, int recvcount, MPI_Datatype recvtype, int source, 
+                 int recvtag,
                  MPI_Comm comm, MPI_Status *status)
 
 int MPI_Get_count(MPI_Status *status, MPI_Datatype datatype, int *count)
@@ -52,6 +54,7 @@ int MPI_Get_count(MPI_Status *status, MPI_Datatype datatype, int *count)
 
 # C interfaces for collective operations
 
+<small>
 ```c
 int MPI_Bcast(void* buffer, int count, MPI_datatype datatype, int root, MPI_Comm comm)
 
@@ -68,6 +71,7 @@ int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype,
                 void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype,
                 int root, MPI_Comm comm)
 ```
+</small>
 
 
 # C interfaces for collective operations
