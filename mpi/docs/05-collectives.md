@@ -406,7 +406,7 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL,&
 </div>
 <div class=column>
 ```
-> aprun -n 8 ./mpi_pdot
+> srun -n 8 ./mpi_pdot
  id= 6 local= 39.68326  global= 338.8004
  id= 7 local= 39.34439  global= 338.8004
  id= 1 local= 42.86630  global= 338.8004
