@@ -64,12 +64,14 @@ MPI_Comm_split(MPI_COMM_WORLD, color,
 MPI_Comm_rank(subcomm, &mysubid);
 
 printf ("I am rank %d in MPI_COMM_WORLD, but"
-    "%d in Comm %d.\n", myid, mysubid, color);
+    "%d in Comm %d.\n", myid, mysubid, 
+    color);
 ```
 
 </div>
 
 <div class=column>
+<small>
 ```
 I am rank 2 in MPI_COMM_WORLD, but 1 in Comm 1.
 I am rank 7 in MPI_COMM_WORLD, but 3 in Comm 2.
@@ -80,6 +82,7 @@ I am rank 3 in MPI_COMM_WORLD, but 1 in Comm 2.
 I am rank 5 in MPI_COMM_WORLD, but 2 in Comm 2.
 I am rank 1 in MPI_COMM_WORLD, but 0 in Comm 2.
 ```
+</small>
 
 ![](img/communicator.png){.center width=50%}
 
@@ -98,7 +101,8 @@ if (myid%2 == 0) {
 MPI_Comm_split(MPI_COMM_WORLD, color,
                myid, &subcomm);
 MPI_Comm_rank(subcomm, &mysubid);
-MPI_Bcast(sendbuf, 8, MPI_INT, 0, subcomm);
+MPI_Bcast(sendbuf, 8, MPI_INT, 0, 
+          subcomm);
 ```
 </div>
 <div class=column>
