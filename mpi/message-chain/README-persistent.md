@@ -17,7 +17,7 @@ current task. Your program should work as follows:
 1. Implement the program described above using persistent communication, *i.e.* 
    `MPI_Send_init`, `MPI_Recv_init`, `MPI_Start` and `MPI_Wait`. 
    You may start from scratch or use the skeleton code
-   ([skeleton.cpp](skeleton.cpp) or [skeleton.F90](skeleton.F90)) 
+   ([skeleton.cpp](cpp/skeleton.cpp) or [skeleton.F90](fortran/skeleton.F90)) 
    as a starting point. 
 
 2. Write a version that uses `MPI_Startall` and `MPI_Waitall` instead of `MPI_Start`s and `MPI_Wait`s.
