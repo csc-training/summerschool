@@ -23,16 +23,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="640"
-     inkscape:window-height="480"
+     inkscape:window-width="1920"
+     inkscape:window-height="1005"
      id="namedview10629"
      showgrid="false"
-     inkscape:zoom="0.297479"
-     inkscape:cx="191.06658"
+     inkscape:zoom="1.6827953"
+     inkscape:cx="197.78974"
      inkscape:cy="181.33322"
      inkscape:window-x="0"
-     inkscape:window-y="28"
-     inkscape:window-maximized="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
      inkscape:current-layer="g14" /><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
@@ -61,7 +61,8 @@
              style="fill:none;stroke:#939fa8;stroke-width:2.99979997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:7.66129017;stroke-dasharray:none;stroke-opacity:1"
              d="M 255.2,408.9 Z"
              inkscape:connector-curvature="0" /></g><g
-           id="g34"><path
+           id="g34"
+           transform="translate(0,-7.5)"><path
              id="path36"
              style="fill:none;stroke:#939fa8;stroke-width:2.99979997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:7.66129017;stroke-dasharray:none;stroke-opacity:1"
              d="M 547.2,163 Z"
@@ -119,7 +120,8 @@
                y="0"
                x="0 9.6000004 19.200001 28.799999 57.599998 67.199997 76.800003 86.400002 115.2 124.8 134.39999 144 172.8 182.39999 192 201.60001 230.39999 240 249.60001 259.20001">0.0 0.0 0.0 0.0 0.0 </tspan></text>
 </g><g
-           id="g84"><text
+           id="g84"
+           transform="translate(0,-7.5)"><text
              id="text88"
              style="font-variant:normal;font-weight:normal;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,260.3,279.6)"><tspan
@@ -128,7 +130,8 @@
                x="0 9.6000004 19.200001 28.799999 38.400002 48 57.599998 67.199997 76.800003 86.400002 96 105.6 115.2 124.8 134.39999 144 153.60001 163.2 172.8 182.39999 192 201.60001 211.2 220.8 230.39999 240 249.60001">Rank 0: array after receive</tspan></text>
 </g><g
            id="g90" /><g
-           id="g92"><text
+           id="g92"
+           transform="translate(0,-7.5)"><text
              id="text96"
              style="font-variant:normal;font-weight:normal;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,279.5,260.4)"><tspan
@@ -137,7 +140,8 @@
                x="0 9.6000004 19.200001 28.799999 57.599998 67.199997 76.800003 86.400002 115.2 124.8 134.39999 144 172.8 182.39999 192 201.60001 230.39999 240 249.60001 259.20001">0.0 0.0 0.0 0.0 0.0 </tspan></text>
 </g><g
            id="g98" /><g
-           id="g100"><text
+           id="g100"
+           transform="translate(0,-7.1245995)"><text
              id="text104"
              style="font-variant:normal;font-weight:normal;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,279.5,241.2)"><tspan
@@ -145,7 +149,8 @@
                y="0"
                x="0 9.6000004 19.200001 28.799999 57.599998 67.199997 76.800003 86.400002">0.0 0.0 </tspan></text>
 </g><g
-           id="g106"><text
+           id="g106"
+           transform="translate(0,-7.5)"><text
              id="text110"
              style="font-variant:normal;font-weight:bold;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,394.7,241.2)"><tspan
@@ -155,7 +160,8 @@
 </g><g
            id="g112" /><g
            id="g114" /><g
-           id="g116"><text
+           id="g116"
+           transform="translate(0,-6.8492032)"><text
              id="text120"
              style="font-variant:normal;font-weight:normal;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,279.5,222.1)"><tspan
@@ -163,7 +169,8 @@
                y="0"
                x="0 9.6000004 19.200001 28.799999 57.599998 67.199997 76.800003 86.400002">0.0 0.0 </tspan></text>
 </g><g
-           id="g122"><text
+           id="g122"
+           transform="translate(0,-7.5)"><text
              id="text126"
              style="font-variant:normal;font-weight:bold;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono-Bold;writing-mode:lr-tb;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,394.7,222.1)"><tspan
@@ -173,7 +180,8 @@
 </g><g
            id="g128" /><g
            id="g130" /><g
-           id="g132"><text
+           id="g132"
+           transform="translate(-0.89137401,12.7262)"><text
              id="text136"
              style="font-variant:normal;font-weight:normal;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,279.5,183.7)"><tspan
@@ -182,7 +190,8 @@
                x="0 9.6000004 19.200001 28.799999 57.599998 67.199997 76.800003 86.400002 115.2 124.8 134.39999 144 172.8 182.39999 192 201.60001 230.39999 240 249.60001 259.20001">0.0 0.0 0.0 0.0 0.0 </tspan></text>
 </g><g
            id="g138" /><g
-           id="g140"><text
+           id="g140"
+           transform="translate(-0.89137401,13.001602)"><text
              id="text144"
              style="font-variant:normal;font-weight:normal;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:DejaVuSansMono;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="matrix(1,0,0,-1,279.5,164.6)"><tspan

@@ -24,7 +24,7 @@ lang:   en
 
 <p>
 
-![](img/fortran-array-layout.svg){.center width=50%}
+![](img/fortran-array-layout.png){.center width=50%}
 
 <p>
 
@@ -90,6 +90,7 @@ MPI_Type_contiguous(`count`{.input}, `oldtype`{.input}, `newtype`{.output})
 - Usage mainly for programming convenience
     - derived types in all communication calls
 
+<small>
 <div class=column>
 ```fortran
 ! Using derived type
@@ -104,6 +105,7 @@ call mpi_send(buf, count, MPI_REAL, ...)
 call mpi_send(buf, 1, non_conttype, ...)
 ```
 </div>
+</small>
 
 
 # MPI_TYPE_VECTOR
@@ -121,7 +123,7 @@ MPI_Type_vector(`count`{.input}, `blocklen`{.input}, `stride`{.input}, `oldtype`
 </div>
 <div class=column>
 <p>
-![](img/type_vector.svg){.center width=100%}
+![](img/type_vector.png){.center width=100%}
 </div>
 
 # Example: sending rows of matrix in Fortran
@@ -140,7 +142,7 @@ call mpi_type_free(rowtype, ierr)
 ```
 
 <p>
-![](img/fortran-array-layout.svg){.center width=50%}
+![](img/fortran-array-layout.png){.center width=50%}
 
 # MPI_TYPE_INDEXED {.split-def-3}
 
@@ -167,7 +169,7 @@ MPI_Type_indexed(`count`{.input}, `blocklens`{.input}, `displs`{.input}, `oldtyp
     : `-`{.ghost}
 
 <p>
-![](img/type_indexed.svg){.center width=100%}
+![](img/type_indexed.png){.center width=100%}
 
 # Example: an upper triangular matrix
 
@@ -193,7 +195,7 @@ MPI_Type_free(&upper);
 </div>
 
 <div class="column">
-![](img/triangle.svg){.center width=65%}
+![](img/triangle.png){.center width=65%}
 </div>
 
 # Subarray
@@ -206,7 +208,7 @@ ordering in memory
 </div>
 
 <div class="column">
-![](img/subarray.svg){.center width=60%}
+![](img/subarray.png){.center width=60%}
 </div>
 
 
@@ -273,14 +275,14 @@ MPI_Type_free(&sub_type);
 </small>
 </div>
 <div class=column>
-![](img/type_array.svg){.center width=100%}
+![](img/type_array.png){.center width=100%}
 </div>
 
 
 # From non-contiguous to contiguous data
 
 <div class=column>
-![](img/contiguous.svg){.center width=100%}
+![](img/contiguous.png){.center width=100%}
 </div>
 <div class=column>
 ```c
