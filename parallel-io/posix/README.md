@@ -11,5 +11,5 @@ c) Implement the above write so that all the MPI tasks write in to
 separate files.  Skeleton codes are found in
 [spokesman.c](c/spokesman.c) and
 [spokesman_reader.c](c/spokesman_reader.c), or in
-[spokesman.F90](fortran/spokesman.F90) and
-[spokesman_reader.F90](fortran/spokesman_reader.F90)
+[spokesman.F90](fortran/spokesman.f90) and
+[spokesman_reader.F90](fortran/spokesman_reader.f90)
