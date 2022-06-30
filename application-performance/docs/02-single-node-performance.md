@@ -55,7 +55,7 @@ lang:   en
 
 <br>
 <!-- Image copyright CSC, see LICENSE -->
-![](img/simd.svg){.center width=70%}
+![](img/simd.png){.center width=70%}
 
 
 
