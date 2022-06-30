@@ -193,6 +193,23 @@ The output of job will be in file `slurm-xxxxx.out`. You can check the status of
 The reservation `summerschool` is available during the course days and it
 is accessible only with the training user accounts.
 
+### Pure OpenMP
+
+For pure OpenMP programs one should use only single tasks and specify the number of cores reserved
+for threading with `--cpus-per-task`. Furthermore, one should use the `small` partition:
+```
+#!/bin/bash
+#SBATCH --job-name=example
+#SBATCH --account=project_2000745
+#SBATCH --partition=small
+#SBATCH --reservation=summerschool
+#SBATCH --time=00:05:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+
+srun my_omp_exe
+```
+
 ### Hybrid MPI+OpenMP
 
 For hybrid MPI+OpenMP programs it is recommended to specify explicitly number of nodes, number of
@@ -210,13 +227,21 @@ the following batch job script:
 #SBATCH --partition=large
 #SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=4
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=10
 #SBATCH --cpus-per-task=4
 
 # Set the number of threads based on --cpus-per-task
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun my_exe
+```
+
+When using only single node, one should use the `small` partition, *i.e.*
+```
+...
+#SBATCH --partition=small
+SBATCH --nodes=1
+...
 ```
 
 ### GPU programs
