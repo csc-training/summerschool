@@ -8,9 +8,9 @@ a sum of two vectors using a function `my_sum` which is defined externally in
 Add appropriate `declare target` constructs to the code. You can build the
 whole program as
 ```bash
-nvc -o sum sum.c my_sum.c -mp=gpu -gpu=cc80
+nvc -o sum sum.c my_sum.c -mp=gpu -gpu=cc70
 ```
 or
 ```bash
-nvfortran -o sum my_mod.F90 sum.F90 -mp=gpu -gpu=cc80
+nvfortran -o sum my_mod.F90 sum.F90 -mp=gpu -gpu=cc70
 ```
