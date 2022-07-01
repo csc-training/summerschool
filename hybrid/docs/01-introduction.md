@@ -116,7 +116,7 @@ I'm thread 2 in process 0
 - Fewer MPI processes for a given amount of cores
     - Improved load balance
     - All-to-all communication bottlenecks alleviated
-    - Decreased memory consumption if an implementation uses replicated
+    - Decreased memory consumption if implementation uses replicated
       data
 - Additional parallelization levels may be available
 - Possibility for dedicating threads to different tasks

@@ -119,7 +119,11 @@ int main(int argc, char argv[]) {
 
 # Race condition in Hello world
 
-<!-- Presentation suggestion: live coding, multiple runs with different outcome -->
+<!-- Presentation suggestion: live coding, multiple runs with different outcome
+     Note! Intel classic compiler optimizes somehow the race condition away with -O2
+           or higher, GNU and Clang-based compilers (including Intel OneAPI) show
+           the race condition.
+ -->
 
 ```c
 #include <stdio.h>
