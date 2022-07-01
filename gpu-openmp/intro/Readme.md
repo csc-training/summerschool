@@ -38,3 +38,5 @@ srun nvidia-smi
 ```
 
 ## 2) Repeat the tasks above with 2 or more GPUs.
+
+## 3) Compare Puhti GPUs with Mahti GPUs.
