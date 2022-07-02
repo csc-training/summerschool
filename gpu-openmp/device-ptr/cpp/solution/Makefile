@@ -1,5 +1,5 @@
-CURAND_DIR=/appl/spack/v016/install-tree/gcc-4.8.5/nvhpc-21.2-l6xyb4/Linux_x86_64/21.2/math_libs/
-CFLAGS=-mp=gpu -gpu=cc70 -cuda
+CURAND_DIR=/appl/spack/v016/install-tree/gcc-4.8.5/nvhpc-21.9-qnwrcx/Linux_x86_64/21.9/math_libs/
+CFLAGS=-mp=gpu -gpu=cc70 
 CC=nvc
 
 pi: pi.c
