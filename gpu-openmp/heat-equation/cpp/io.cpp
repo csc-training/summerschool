@@ -1,10 +1,9 @@
 /* I/O related functions for heat equation solver */
 
 #include <string>
-#include <iomanip> 
+#include <iomanip>
 #include <fstream>
 #include <sstream>
-#include <mpi.h>
 
 #include "heat.hpp"
 #include "pngwriter.h"
@@ -26,7 +25,7 @@ void write_field(const Field& field, const int iter)
         std::copy(field.temperature.begin() + start, field.temperature.begin() + end,
                   full_data.begin() + dest);
     }
-          
+
     /* Write out the data to a png file */
     std::ostringstream filename_stream;
     filename_stream << "heat_" << std::setw(4) << std::setfill('0') << iter << ".png";

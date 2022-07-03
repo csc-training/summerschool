@@ -1,4 +1,4 @@
-CCFLAGS=-mp=gpu -gpu=cc80
+CCFLAGS=-mp=gpu -gpu=cc70
 CXX=nvc++
 CC=nvc
 # CCFLAGS=-fopenmp

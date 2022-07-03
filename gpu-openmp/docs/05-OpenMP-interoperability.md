@@ -158,7 +158,7 @@ END MODULE CUDA_INTERFACES
  double(c_double) :: a
  ...
 
-# omp target data use_device_ptr(x, y)
+!$omp target data use_device_ptr(x, y)
 
   call f_daxpy(n,a,x,y)
 
@@ -188,7 +188,7 @@ END MODULE CUDA_INTERFACES
  double(c_double) :: a
  ...
 
-# omp target data use_device_ptr(x, y)
+!$omp target data use_device_ptr(x, y)
 
   call f_daxpy(n,a,c_loc(x),c_loc(y))
 

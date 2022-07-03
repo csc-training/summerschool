@@ -18,7 +18,7 @@ CXX=nvc++
 CC=nvc
 MINFO=
 # MINFO=-Minfo=mp
-CCFLAGS=-O3 -mp -I$(COMMONDIR) $(MINFO)
+CCFLAGS=-O3 -mp=gpu -gpu=cc70  -I$(COMMONDIR) $(MINFO)
 LDFLAGS=
 LIBS=-lpng
 endif
@@ -31,7 +31,7 @@ LDFLAGS=
 LIBS=-lpng
 endif
 
-EXE=heat_serial
+EXE=heat_offload
 OBJS=main.o heat.o core.o setup.o utilities.o io.o
 OBJS_PNG=$(COMMONDIR)/pngwriter.o
 

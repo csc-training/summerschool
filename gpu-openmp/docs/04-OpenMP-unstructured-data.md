@@ -67,14 +67,14 @@ class Vector {
 
 # Porting and unified memory
 
-<div class="column">
+<div class="column" style="width:43%">
 - Porting a code with complicated data structures can be challenging
   because every field in type has to be copied explicitly
 - Recent GPUs have *Unified Memory* and support for automatic data transfers
   with page faults
 </div>
 
-<div class="column">
+<div class="column" style="width:52%">
 ```c
 typedef struct points {
   double *x, *y;

@@ -1,4 +1,4 @@
-FCFLAGS=-mp=gpu -gpu=cc80
+FCFLAGS=-mp=gpu -gpu=cc70
 FC=nvfortran
 CC=nvc
 #FCFLAGS=-g -fopenmp -O0

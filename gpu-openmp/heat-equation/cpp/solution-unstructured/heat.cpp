@@ -1,13 +1,12 @@
 #include "heat.hpp"
 #include <iostream>
-#include <mpi.h>
 
-void Field::setup(int nx_in, int ny_in) 
+void Field::setup(int nx_in, int ny_in)
 {
     nx_full = nx_in;
     ny_full = ny_in;
 
-    nx = nx_full; 
+    nx = nx_full;
     ny = ny_full;
 
    // size includes ghost layers
@@ -19,11 +18,11 @@ void Field::setup(int nx_in, int ny_in)
 
 void Field::generate() {
 
-    // Radius of the source disc 
+    // Radius of the source disc
     auto radius = nx_full / 6.0;
     for (int i = 0; i < nx + 2; i++) {
         for (int j = 0; j < ny + 2; j++) {
-            // Distance of point i, j from the origin 
+            // Distance of point i, j from the origin
             int ind = i * (ny + 2) + j;
             auto dx = i - nx_full / 2 + 1;
             auto dy = j - ny / 2 + 1;
@@ -47,7 +46,7 @@ void Field::generate() {
     // Top
     for (int j = 0; j < ny + 2; j++) {
         int ind = j;
-        temperature[ind] = 85.0;            
+        temperature[ind] = 85.0;
     }
     // Bottom
     for (int j = 0; j < ny + 2; j++) {
