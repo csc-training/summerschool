@@ -35,6 +35,7 @@ applied to get a slightly modified version of the script that works also on
 Puhti. You can try it out with:
 ```
 patch -o hipfc $ROCM_PATH/hipfort/bin/hipfc hipfc-puhti.patch
+chmod u+x hipfc
 ./hipfc hipsaxpy.cpp main.f03 -o saxpy
 ```
 
