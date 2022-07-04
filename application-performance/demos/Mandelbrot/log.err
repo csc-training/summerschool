@@ -1,7 +1,0 @@
-+ scan srun mandelbrot 4
-S=C=A=N: Scalasca 2.5 runtime summarization
-S=C=A=N: ./scorep_mandelbrot_4_sum experiment archive
-S=C=A=N: Thu Jun 30 18:15:36 2022: Collect start
-/usr/bin/srun mandelbrot 4
-S=C=A=N: Thu Jun 30 18:15:37 2022: Collect done (status=0) 1s
-S=C=A=N: ./scorep_mandelbrot_4_sum complete.

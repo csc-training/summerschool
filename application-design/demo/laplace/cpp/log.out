@@ -1,7 +1,0 @@
-==PROF== Connected to process 79071 (/projappl/project_2002078/jarohokk/summerschool/application-design/demo/laplace/cpp/laplace)
-==PROF== Profiling "hipKernel": 0%....50%....100% - 73 passes
-Rank 0 on device (fast): 2018[ms]
-Rank 0, numerical/analytical solution: 3.9980/ 4.0000
-Rank 0, HIP finalized.
-==PROF== Disconnected from process 79071
-==PROF== Report: /projappl/project_2002078/jarohokk/summerschool/application-design/demo/laplace/cpp/ncu_prof.ncu-rep

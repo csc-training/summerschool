@@ -1,4 +1,0 @@
-S=C=A=N: Thu Jun 30 18:15:36 2022: Collect start
-/usr/bin/srun mandelbrot 4
-Mandelbrot set computed in 0.569 s, at 0.115 Mpix/s
-S=C=A=N: Thu Jun 30 18:15:37 2022: Collect done (status=0) 1s
