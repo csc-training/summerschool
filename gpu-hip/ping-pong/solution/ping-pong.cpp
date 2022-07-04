@@ -116,6 +116,7 @@ void GPUtoGPUdirect(int rank, double *dA, int N, double &timer)
         MPI_Recv(dA, N, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         // Launch kernel to increment values on the GPU
         add_kernel<<<blocksize, gridsize>>> (dA, N);
+        hipStreamSynchronize(0);
         // Send vector to rank 0
         MPI_Send(dA, N, MPI_DOUBLE, 0, 12, MPI_COMM_WORLD);
     }
@@ -158,6 +159,9 @@ int main(int argc, char *argv[])
     hipHostMalloc((void **) &hA, sizeof(double) * N);
     hipMalloc((void **) &dA, sizeof(double) * N);
 
+    // Dummy transfer to remove the overhead of the first communication
+    CPUtoCPU(rank, hA, N, CPUtime);
+    
     // Initialize the vectors
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
@@ -172,7 +176,11 @@ int main(int argc, char *argv[])
         printf("CPU-CPU: time %f, errorsum %f\n", CPUtime, errorsum);
     }
 
+    // Dummy transfer to remove the overhead of the first communication
+    GPUtoGPUdirect(rank, dA, N, GPUtime);
+
     // Re-initialize the vectors
+
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
     hipMemcpy(dA, hA, sizeof(double) * N, hipMemcpyHostToDevice);
@@ -187,6 +195,9 @@ int main(int argc, char *argv[])
         printf("GPU-GPU direct: time %f, errorsum %f\n", GPUtime, errorsum);
     }
 
+    // Dummy transfer to remove the overhead of the first communication
+    GPUtoGPUviaHost(rank, hA, dA, N, GPUtime);
+    
     // Re-initialize the vectors
     for (int i = 0; i < N; ++i)
        hA[i] = 1.0;
