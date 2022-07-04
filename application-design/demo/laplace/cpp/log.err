@@ -1,0 +1,1 @@
++ srun ncu -o ncu_prof --force-overwrite --set full --kernel-regex hipKernel --launch-skip 0 --launch-count 1 ./laplace

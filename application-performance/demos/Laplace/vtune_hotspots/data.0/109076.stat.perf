@@ -1,0 +1,68 @@
+# AMPLXE_PERF_STAT
+# hostname : r01c12.bullx
+# os release : 3.10.0-1160.59.1.el7.x86_64
+# arch : x86_64
+# cpuid : GenuineIntel,6,85,7
+# cpudesc : Intel(R) Xeon(R) Gold 6230 CPU @ 2.10GHz
+# total memory : 394328952 kB
+# nrcpus online : 40
+# nrcpus avail : 40
+# sibling cores : 0-19
+# sibling cores : 20-39
+# sibling threads : 0
+# sibling threads : 1
+# sibling threads : 2
+# sibling threads : 3
+# sibling threads : 4
+# sibling threads : 5
+# sibling threads : 6
+# sibling threads : 7
+# sibling threads : 8
+# sibling threads : 9
+# sibling threads : 10
+# sibling threads : 11
+# sibling threads : 12
+# sibling threads : 13
+# sibling threads : 14
+# sibling threads : 15
+# sibling threads : 16
+# sibling threads : 17
+# sibling threads : 18
+# sibling threads : 19
+# sibling threads : 20
+# sibling threads : 21
+# sibling threads : 22
+# sibling threads : 23
+# sibling threads : 24
+# sibling threads : 25
+# sibling threads : 26
+# sibling threads : 27
+# sibling threads : 28
+# sibling threads : 29
+# sibling threads : 30
+# sibling threads : 31
+# sibling threads : 32
+# sibling threads : 33
+# sibling threads : 34
+# sibling threads : 35
+# sibling threads : 36
+# sibling threads : 37
+# sibling threads : 38
+# sibling threads : 39
+# process id : 109076
+;;76106511666;0
+;;41032773348;1
+;;14055442140;2
+;;488505078;3
+;;488457610;4
+;;0;5
+;;0;6
+;;0;7
+;;6773204533;8
+;;0;9
+;;0;10
+;;57324;11
+;;6610280111;12
+;;14220909092;13
+;;0;14
+;;0;15
