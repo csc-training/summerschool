@@ -25,3 +25,7 @@
 - [Ping-pong with multiple GPUs and MPI](ping-pong)
 - [Peer to peer device access](p2pcopy)
 - [Bonus: Heat equation with HIP](heat-equation)
+
+## HIP Error Checking
+
+- [Wrapping HIP calls into an error checking macro](error-checking)
