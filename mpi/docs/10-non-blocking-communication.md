@@ -1,6 +1,6 @@
 ---
 title:  Further communication modes
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
