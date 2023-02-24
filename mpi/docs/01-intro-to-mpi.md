@@ -17,6 +17,7 @@ lang:   en
     - large (hundreds of procedures)
     - concise (only 10-20 procedures are typically needed)
 - First version of standard (1.0) published in 1994, latest (4.0) in June 2021
+    - <https://www.mpi-forum.org/docs/>
 
 # Processes and threads
 
