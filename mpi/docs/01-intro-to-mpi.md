@@ -52,7 +52,7 @@ lang:   en
     - processes can reside in different nodes (or even in different computers)
 - The way to launch parallel program depends on the computing system
     - **`mpiexec`**, **`mpirun`**, **`srun`**, **`aprun`**, ...
-    - **`srun`** on puhti.csc.fi and mahti.csc.fi
+    - **`srun`** on LUMI, Mahti, and Puhti
 - MPI supports also dynamic spawning of processes and launching *different*
   programs communicating with each other
     - rarely used in HPC systems
