@@ -60,7 +60,7 @@ lang:   en
 # MPI ranks
 
 <div class="column">
-- MPI runtime assigns each process a unique rank
+- MPI runtime assigns each process a unique rank (index)
     - identification of the processes
     - ranks start from 0 and extend to N-1
 - Processes can perform different tasks and handle different data based
