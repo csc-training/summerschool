@@ -70,10 +70,11 @@ lang:   en
 ```c
 if (rank == 0) {
    ...
-   }
-if (rank == 1) {
+}
+else if (rank == 1) {
    ...
-   }
+}
+...
 ```
 </div>
 
