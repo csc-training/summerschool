@@ -1,7 +1,7 @@
 #include<tuple>
 
-#include <mem_wrapper.hpp>
-#include <mem_utils.hpp>
+#include "mem_wrapper.hpp"
+#include "mem_utils.hpp"
 
 struct example{
 
@@ -11,7 +11,13 @@ struct example{
   example() = delete;
   example(int size): content{mem_wrapper<int>(size), mem_wrapper<float>(size)}
   {
-    content.memset_dev(0,5);
+    //initialize device with zeros
+    std::apply([&](auto&... values)
+    {
+      (
+        values.memset_dev(),...
+      );
+    },content);
   }
   example(const example&)=delete;
   example(example&&)=default;
@@ -54,16 +60,21 @@ struct example{
     content_devside content;
   };
   
+  //here we only make the cpy2dev as example, all the other "utility functions" can be wrapped in the same mode
   void copy_2_dev(){
-    std::apply([&](auto&... values){values.cpy_to_dev();},content);
+    std::apply([&](auto&... values){(values.cpy_to_dev(),...);},content);
   }
 
-  inline auto get_devside()
+
+  //this is actually the most important part of the 2 layer wrapping:
+  //we create a temporary struct (the dev_side one) that will contain all the secondary structs
+  //(one for each tuple) that contain the device pointers and sizes of the data
+  inline auto get_device_representation()
   {
     //tuple 2 struct here
     auto tup = std::apply([&](auto&... values){return std::make_tuple(values.get_device_representation()...); },content);
     return dev_side{
-      make_struct< content_devside > (tup)
+      make_struct< content_devside > (tup) //one struct per tuple
     };
   }
 
