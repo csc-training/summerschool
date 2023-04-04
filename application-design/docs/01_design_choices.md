@@ -4,39 +4,6 @@ event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
 
-# Design choices {.section}
-
-# Runko
-
-<div class=column>
-- Kinetic plasma simulation code
-    - Particle-in-Cell with computational particles and electromagnetic fields on a grid
-- Hybrid C++14/Python code 
-    - Domain super-decomposition with MPI 
-    - Massively parallel with runs on >10k cores
-</div>
-<div class=column>
-    
-![](images/plasma.png){.center width=100%}
-
-</div>
-
-# GPAW
-<div class=column>
-- Density-functional theory -based electronic structure code
-- Python + C + libraries (numpy, BLAS, LAPACK)
-    - Various parallelization levels with MPI
-    - Over 10k cores with some modes
-    - ~20 developers all around the world
-</div>
-<div class=column>
-    
-![](images/gpaw-logo.svg){.center width=50%}
-
-![](images/gpaw.jpg){.center width=50%}
-</div>
-
-
 # Why develop software? 
 
 - To do science
@@ -49,6 +16,7 @@ lang:   en
 - **Do science**
     - Scientific articles
     - Method-oriented articles presenting code and methods
+    - Speedup other standard scientific procedures, reducing also their costs
 </div>
 
 <div class=column>
@@ -58,49 +26,65 @@ lang:   en
     - Gateway into projects, collaborations
     - Citations, co-authorships
     - Work on the bleeding edge
-</div>
-
-
-# Case Runko: Going big...
-
-<div class=column>
-- Kinetic plasma simulations are microscopical (<1cm)
-    - Bigger simulation domains mean more realistic, larger systems
-- Recently simulated turbulent plasma with 10^10 particles 
-    - New physics starts to appear at larger scale
-</div>
-
-<div class=column>
-    
-![](images/current.png){.center width=80%}
 
 </div>
+
 
 # Starting position
 
 - New code or existing project / rewrite of old code?
+    - How much effort do you have at your disposal?
 
 - **Questions**: your software project?
 
-# Cases Runko & GPAW
+# ICON
+
+<div class=column>
+- 
+- 
+  
+</div>
+<div class=column>
+    
+![](images/plasma.png){.center width=100%}
+
+</div>
+
+# LiGen
+<div class=column>
+- High Throughput virtual screening Application
+- C++ + GPU (CUDA/SYCL)
+    - MPI + std::thread + offloading
+    - Property of Dompe' Farmaceutici
+    - Found a compound active against COVID (paucisymptomatic)
+</div>
+<div class=column>
+    
+![](images/ligen.svg){.center width=50%}
+
+</div>
+
+
+# Starting position: Cases ICON & LiGen
 
 <div class=column>
     
-Runko
+ICON
 
-- New code 
-- +1yr of development
-- Allowed to start from scratch and use new technologies
+- 
+- 
+- 
 </div>
 
 <div class=column>
     
-GPAW
+LiGen
 
-- Existing code with basic features mostly working (95 %) in 2005
-- Choice of physical model and  programming languages had been made
-- Production ready in 2008-2009
-    - Science done already earlier
+- Existing code with basic features mostly working
+- Bad scaling paradigm
+- Complete rewrite of the application to use advanced c++ features
+    - Data flow design
+    - GPU acceleration added
 </div>
 
 
@@ -109,31 +93,7 @@ GPAW
 - Development is not only about physics and numerics
     - Also about **how** you do it
 - Instead of "Just code" it is advantageous to plan a little too!
-- So-called Agile Development
-    - Umbrella term for different software development methods
-    - Divide work into small tasks, define short working period, review, repeat
-
-# Agile development model
-
-<div class=column>
-    
-- Focused on iterative and incremental development
-    - Quick prototyping
-    - Supports continuous publication
-    - Analysis, coding, testing, etc. never end
-
-</div>
-
-<div class=column>
-    
-- Development cycle
-    - Plan
-    - Design
-    - Develop
-    - Test
-    - Release
-    - Feedback
-</div>
+    - Also think about future possible extensions!
 
 
 # Parallelization strategies
@@ -155,53 +115,92 @@ GPAW
 - But not all HPC needs to be exascale
     - Size is not a goal in itself
 
-# Case Runko: Parallellization
+# Case LiGen: Parallellization
 
 <div class=column>
-- Runko has uses a new novel parallellization strategy
-    - Relies on dividing work among small subregions of the grid
-    - Computational grid (i.e., what rank owns which tiles) is constantly changing to balance the load
-- Moving beyond 1000 cores is non-trivial
-    - Non-blocking communication
-    - Removal of collectives
-    - Re-design of IO
+    
+- Embarassingly parallel (or data parallel)
+- One process per node
+- Internal pipeline
+    - Thread balancing is a variable to explore!
+        - Find the bottleneck, increase workers, repeat
+
+- No need to communicate between nodes
+    - MPI used only for IO operations
+
 </div>
 
 <div class=column>
-![](images/corgi.gif){.center width=80%}
+<br />
+<br />
+<br />
+![](images/docker-ht-pipeline.jpg){.justify width=90%}
 </div>
 
+# Case LiGen: GPU parallelization
+
+<div class=column>
+- Traditional approach: distribute computation
+    - Latency oriented: process a single data as fast as possible
+
+- New solution: batch of data
+    - Throughput oriented: kernel is slower, but can handle much more data
+    - If enough data are available, throughput is increased
+    - Possible only if amount of memory per data required is small
+</div>
+
+
+<div class=column>
+![](images/latency.jpg){.justify width=90%}
+<br />
+<br />
+![](images/batch.jpg){.justify width=90%}
+
+</div>
 
 # Programming languages
 
 - Selection of languages
-    - Most common are C, C++, Fortran
-    - Mostly matter of taste
-- C++ more object-oriented features and many more data structures (maps, lists, etc.); low-level memory management
-- Fortran is really good for number crunching, good array syntax
-- But also newcomers like Python/Julia
+    - Performance oriented languages (low level)
+    - Programmability oriented languages (high level)
+    - Mix
+        - Best of both worlds
+        - Low-level languages for costly functions
+        - High-level languages for main functions
+
+# Low level languages
+
+- Direct control over memory
+- Most common are C, C++, Fortran
+- GPU has better support for C/C++, Fortran for kernels is not supported at all in HIP.
+
+<div class=column>
+
+- C++
+    - std library for data structures
+    - low level memory management (concept of data ownership, move semantics,...)
+    - metaprogramming
+
+</div>
+
+<div class=column>
+
+- Fortran
+    - Good for number crunching
+    - Good array syntax
+
+</div>
+
+# High level languages
+
+- Python/Julia
     - Faster coding cycle and less error prone
     - Testing, debugging, and prototyping much easier
+    - Built on top of high performance libraries (numpy, tensorflow,...)
 
-# Hybrid codes 
-
-- Different languages can be interfaced together
-    - Best of both worlds
-- Low-level languages (C, C++, Fortran) for costly functions
-- High-level languages (Python, Julia, R) for main functions
 - Combinations/suggestions
     - Python & C++ (PyBind11) for object-oriented programming
     - Julia & Fortran (native) for functional programming
-
-# Case Runko: C++14/Python3 code
-
-- Runko is an example of a hybrid code
-- Low-level "kernels" are in C++
-- High-level functionality is operated from Python scripts
-- So far it has been an excellent choice
-    - Fast code
-    - Ease of use
-    - Rapid prototyping
 
 # Modular code design: programming
 
@@ -211,7 +210,7 @@ GPAW
     - No global variables, input what you need
 - Modular code takes more time to design but is **a lot** easier to extend and understand
 
-# Modular code design: tools
+# Code design: tools
 
 <div class=column>
     
@@ -221,9 +220,6 @@ GPAW
         - Numerical (BLAS, solvers,...)
         - I/O
         - Parallelization
-    - Frameworks?
-        - Plug your model into an existing framework?
-        - PETSc, Trilinos, BoxLib++, AMReX, corgi,...
 </div>
 
 <div class=column>
@@ -235,11 +231,17 @@ GPAW
     - Does it support all the features
 </div>
 
-# Modular code design: development tools
+# Code design: development tools
 
 - Software development is time consuming, many tools exist to help you in the process
-- Build systems automate compiling
-    - Makefiles, CMake, Ninja, ...
+- Build systems automate configuring and compiling
+    - CMake
+    - Make, Ninja
+- The bigger your project is, the better is to rely on these automatic tools.
+    - Setup can be painful
+    
+# Code design: development tools
+
 - Debuggers
 - Compilers
     - Compilers are not the same, compiler bugs are real!
@@ -247,39 +249,61 @@ GPAW
 
 - **Questions**: Choices in your software and experiences about them?
 
-# Case GPAW: Modular design
+# Case LiGen: Modular design
 
-- Object oriented features and Python modules heavily utilized
-- Main numerical kernels well separated from high level algorithms
-- New features can be developed independently
-![](images/gpaw-codebase.png){width=40%}
+- Pipeline of stages with a common structure (input/output queues)
+    - Easy to create new stages to support new functionalities
+- Single interface for compute intensive backends
+    - High level program structure separated by time consuming accelerated code
+    - Different implementation for the accelerated code.
+    - Backend characteristics (e.g data movement) are hidden from the rest of the application.
 
 
-# Data formats
+# Data design
 
-- Data has to be "designed" too
+- Data has to be "designed" too:
+    - Use structures!
+    - Think about the flow
+    - How to distribute across the processes
+    - GPU introduce more data related problems and opportunities:
+        - Move between Host and Device
+        - Preallocation
+        - Overlapping computation with copy
+
+# Case LiGen: Data design
+
+- Relies a lot on c++ data ownership semantics (usage of move, refs, ...)
+    - Avoid costly copies!
+
+- GPU: 
+    - Wrapper for memory to enable c++ RAII paradigm: we can forget about mallocs!
+    - Preallocate for worst case: one malloc to process them all!
+    - Double buffering
+
+# IO Data formats
+
 - Data formats
     - Not just plain text files/binary files
     - Platform-independent formats (HDF5, NetCDF, ...)
     - Metadata together with the data?
 - Log files. Especially useful with HPC applications
 - Standard formats
-    - Your field might have some data standards (e.g., PML for plasma codes)
+    - Your field might have some data standards 
 - Remember also that large simulations produce lots of data
     - Storing "big data" is an issue
 
+# Coding style
 
-# Case Runko: IO issues
-
-- Runko uses rank-independent multiple-file IO strategy
-    - Excellent performance as there is no synching
-    - But, sometimes the burst performance is too good...
-        - 10k cores writing ~TBs of data in seconds is nice for the user but file system might not like it
+- Code readability comes first
+- Consistency helps readability 
+    - Indentation, how/when to have instructions longer than one line,...
+    - Many editor have tools to help
+    - There are exceptions!
 
 
 # Summary 
 
-- Software design is all about planning (agile development)
+- Software design is all about planning 
 - Productivity
     - Modular design
     - Use existing libraries
