@@ -46,41 +46,75 @@ lang:   en
     - Very high performance per node
 - Usually major rewrites of programs required
 
-# Why use them?
-CPU vs Accelerator
+# Flynn's taxonomy
 
-![ <span style=" font-size:0.5em;">https://github.com/karlrupp/cpu-gpu-mic-comparison</span> ](img/comparison.png)
+- Proposed in 1966 to classify compute units
 
+<center>
+| | |
+| ----------- | ----------- |
+| ![](img/sisd.png){height=30%}    | ![](img/misd.png){height=30%}|
+| SISD   | MISD        |
+| ![](img/simd.png){height=30%}    | ![](img/mimd.png){height=30%}|
+| SIMD   | MIMD        |
+| | |
+</center>
 
-# Different design philosophies
+# Flynn's taxonomy
+
+- Proposed in 1966 to classify compute units
+
+<center>
+| | |
+| ----------- | ----------- |
+| ![](img/sisd.png){height=30%}    | ![](img/misd.png){height=30%}|
+| CPU - 1 core   | Not Really used        |
+| ![](img/simd.png){height=30%}    | ![](img/mimd.png){height=30%}|
+| GPU   | CPU - manycores        |
+| | |
+</center>
+
+# Different design philosophies: CPU
 
 <div class="column">
 
 **CPU**
-\
-\
 
 - General purpose
-- Good for serial processing
-- Great for task parallelism
 - Low latency per thread
-- Large area dedicated cache and control
+- Large area dedicated to caches and control
+    - Good for control-flow
+    - Great for task parallelism (MIMD)
+- Less silicon dedicated at ALUs
+    - Bad with parallel execution
 
 
 </div>
 
 <div class="column">
+![ <span style=" font-size:0.5em;">image credits: Nemez @GPUsAreMagic https://nemez.net/die/RocketLake</span> ](img/core_die_shot.jpg){width=57%}
+
+</div>
+
+
+# Different design philosophies: GPU
+<div class="column">
 
 **GPU**
-\
-\
 
-- Highly specialized for parallelism
-- Good for parallel processing
+- Most of the silicon dedicated to ALUs
+    - Hundreds of floating-point execution units
+    - Highly specialized for parallelism
 - Great for data parallelism
 - High-throughput
-- Hundreds of floating-point execution units
+- Bad at control-flow processing
 
+
+</div>
+
+
+<div class="column">
+![ <span style=" font-size:0.5em;">image credits: Nemez @GPUsAreMagic https://nemez.net/die/Ampere</span> ](img/gpu_die_shot.jpg){width=70%}
 
 </div>
 
@@ -156,26 +190,12 @@ CPU vs Accelerator
 
 # Using GPUs
 
-<div class="column">
 1. Use existing GPU applications
 2. Use accelerated libraries
 3. Directive based methods
     - **OpenMP**, OpenACC
 4. Use native GPU language
-    - CUDA, HIP, SYCL, Kokkos,...
-</div>
-<div class="column" width=40%>
-
-Easier, but more limited
-
-![](img/arrow.png){.center width=20% }
-
-More difficult, but more opportunities
-
-</div>
-
-
-
+    - CUDA, HIP,
 
 # Directive-based accelerator languages
 
@@ -205,6 +225,21 @@ More difficult, but more opportunities
     - standard C++ syntax, uses nvcc/hcc compiler in the background
     - almost a one-on-one clone of CUDA from the user perspective
     - ecosystem is new and developing fast
+
+# Using GPUs
+
+![](img/gpu_approaches.png){.center width=70%}
+
+# Directive languages and performances
+
+- "Write once, run everywhere"
+    - It is true that you get portability
+    - It is *not* true that you get *performance* portability
+
+- It is possible to optimize code for performance on GPU!
+    - it will however be probably slower on the CPU
+
+
 
 
 # GPUs @ CSC
