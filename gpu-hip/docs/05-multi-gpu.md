@@ -1,5 +1,5 @@
 ---
-title:  Multi-GPU programming and HIP+MPI
+title:  Multi-GPU programming and HIP/OpenMP + MPI
 event:  CSC Summer School in High-Performance Computing 2022
 lang:   en
 ---
@@ -9,8 +9,8 @@ lang:   en
 * GPU context
 * Device management
 * Programming models
-* Peer access (GPU-GPU)
-* MPI+HIP
+* GPU-GPU Peer access (HIP)
+* HIP/OpenMP + MPI
 
 
 # Introduction
@@ -24,50 +24,59 @@ lang:   en
 
 # GPU Context
 
-* Context is established when the first HIP function requiring an active
-  context is called (eg. `hipMalloc()`)
+* Context is established implicitly on the current device when the first task requiring an active is evaluated (HIP and OpenMP)
 * Several processes can create contexts for a single device
-* Resources are allocated per context
+* The device resources are allocated per context
 * By default, one context per device per process (since CUDA 4.0)
     * Threads of the same process share the primary context (for each device)
+* HIP supports explicit context management 
+* OpenMP does not support explicit context management
 
 
 # Selecting device
 
-* Driver associates a number for each HIP-capable GPU starting from 0
-* The function `hipSetDevice()` is used for selecting the desired device
+* Driver associates a number for each available GPU device starting from 0
+* The functions `hipSetDevice()` and `omp_set_default_device()` are used for selecting the desired device for HIP and OpenMP, respectively
 
 
 # Device management
 
 ```cpp
-// Return the number of hip capable devices in `count`
-hipError_t hipGetDeviceCount(int *count)
+// Return the number of available devices
+
+int omp_get_num_devices(void); // OpenMP, returns the result
+hipError_t hipGetDeviceCount(int *count) // HIP, stores the result in `count`
 
 // Set device as the current device for the calling host thread
-hipError_t hipSetDevice(int device)
 
-// Return the current device for the calling host thread in `device`
-hipError_t hipGetDevice(int *device)
+void omp_set_default_device(int device) // OpenMP
+hipError_t hipSetDevice(int device) // HIP
 
-// Reset and explicitly destroy all resources associated with the current device
-hipError_t hipDeviceReset(void)
+// Return the current device for the calling host thread
+
+int omp_get_device_num(void) // OpenMP, returns the result
+hipError_t hipGetDevice(int *device) // HIP, stores the result in `device`
 ```
 
 
-# Querying device properties
+# Querying or verifying device properties
 
-* One can query the properties of different devices in the system using
+* In HIP, one can query the properties of different devices in the system using
   `hipGetDeviceProperties()` function
     * No context needed
     * Provides e.g. name, amount of memory, warp size, support for unified
       virtual addressing, etc.
     * Useful for code portability
 
-Return the properties of a HIP capable device in `prop`
+In HIP, the function returns the device properties in struct `prop`
 ```
 hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
 ```
+In OpenMP, `require` clause can be used to verify the device properties, eg,
+```
+#pragma omp requires unified_shared_memory
+```
+
 
 
 # Multi-GPU programming models
@@ -246,8 +255,13 @@ int deviceCount, nodeRank;
 MPI_Comm commNode;
 MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, 0, MPI_INFO_NULL, &commNode);
 MPI_Comm_rank(commNode, &nodeRank);
-hipGetDeviceCount(&deviceCount);
-hipSetDevice(nodeRank % deviceCount);
+#ifdef _OPENMP
+  deviceCount = omp_get_num_device();
+  omp_set_default_device(nodeRank % deviceCount)
+#elif __HIP__
+  hipGetDeviceCount(&deviceCount);
+  hipSetDevice(nodeRank % deviceCount);
+#endif
 ```
 
 
