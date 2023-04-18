@@ -24,10 +24,10 @@ lang:   en
 
 # GPU Context
 
-* Context is established implicitly on the current device when the first task requiring an active is evaluated (HIP and OpenMP)
+* Context is established implicitly on the current device when the first task requiring an active context is evaluated (HIP and OpenMP)
 * Several processes can create contexts for a single device
 * The device resources are allocated per context
-* By default, one context per device per process (since CUDA 4.0)
+* By default, one context per device per process in HIP (since CUDA 4.0)
     * Threads of the same process share the primary context (for each device)
 * HIP supports explicit context management 
 * OpenMP does not support explicit context management
@@ -54,7 +54,7 @@ hipError_t hipSetDevice(int device) // HIP
 
 // Return the current device for the calling host thread
 
-int omp_get_device_num(void) // OpenMP, returns the result
+int omp_get_default_device(void) // OpenMP, returns the result
 hipError_t hipGetDevice(int *device) // HIP, stores the result in `device`
 ```
 
@@ -72,7 +72,7 @@ In HIP, the function returns the device properties in struct `prop`
 ```
 hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
 ```
-In OpenMP, `require` clause can be used to verify the device properties, eg,
+In OpenMP, `requires` clause can be used to verify the device properties, eg,
 ```
 #pragma omp requires unified_shared_memory
 ```
@@ -110,51 +110,26 @@ In OpenMP, `require` clause can be used to verify the device properties, eg,
 
 # Multi-GPU, many GPUs per process
 
-* Process switches the active GPU using `hipSetDevice()` function
-* After setting the device, HIP-calls such as the following are effective only
+* Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions
+* After setting the device, operations such as the following are effective only
   on the selected GPU:
-    * Memory allocations and copies
-    * Streams and events
-    * Kernel calls
-* Asynchronous calls are required to overlap work across all devices
-
-
-# Many GPUs per process, code example
-
-```cpp
-for(unsigned int i = 0; i < deviceCount; i++)
-{
-  hipSetDevice(i);
-  kernel<<<blocks[i],threads[i]>>>(arg1[i], arg2[i]);
-}
-```
-
+    * Memory operations
+    * Kernel execution
+    * Streams and events (HIP)
+* Asynchronous function calls calls (HIP) or `nowait` clause (OpenMP) are required to overlap work 
 
 # Multi-GPU, one GPU per thread
 
 * One GPU per CPU thread
-    * I.e one OpenMP thread per GPU being used
+    * I.e one OpenMP CPU thread per GPU being used
 * HIP API is threadsafe
     * Multiple threads can call the functions at the same time
 * Each thread can create its own context on a different GPU
-    * `hipSetDevice()` sets the device and creates a context per thread
+    * `hipSetDevice()` or `omp_set_default_device()` set the device and create a context per thread
     * Easy device management with no changing of device
 * Communication between threads becomes a bit more tricky
 
-
-# One GPU per thread, code example
-
-```cpp
-#pragma omp parallel for
-for(unsigned int i = 0; i < deviceCount; i++)
-{
-  hipSetDevice(i);
-  kernel<<<blocks[i],threads[i]>>>(arg1[i], arg2[i]);
-}
-```
-
-
-# Peer access
+# Peer access (HIP)
 
 * Access peer GPU memory directly from another GPU
     * Pass a pointer to data on GPU 1 to a kernel running on GPU 0
@@ -171,9 +146,10 @@ hipError_t hipDeviceEnablePeerAccess(int peerDevice, unsigned int flags)
 // Disable peer access
 hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 ```
+* Between AMD GPUs, the peer access is always enabled
 
 
-# Peer to peer communication
+# Peer to peer communication (HIP)
 
 * Devices have separate memories
 * With devices supporting unified virtual addressing, `hipMemCpy()` with
@@ -216,15 +192,18 @@ hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t c
 
 # MPI and HIP
 
-* Trying to compile code with any HIP calls with other than the `hipcc`
-  compiler can result in errors
-* Either set MPI compiler to use `hipcc`, eg for OpenMPI:
-```cpp
+* Compiling HIP/OpenMP and MPI calls in the same compilation unit may not always be trivial
+* One can set MPI compiler to use `hipcc` or the desirable OpenMP compiler like `nvc`, eg for OpenMPI:
+```bash
 OMPI_CXXFLAGS='' OMPI_CXX='hipcc'
 ```
-* or separate HIP and MPI code in different compilation units compiled with
-  `mpicxx` and `hipcc`
-    * Link object files in a separate step using `mpicxx` or `hipcc`
+or 
+```bash
+OMPI_CXXFLAGS='' OMPI_CXX='nvc -mp=gpu -gpu=cc80'
+```
+
+* Alternatively, one could separate HIP/OpenMP and MPI code in different compilation units compiled with `mpicxx` and `hipcc` or `nvc`
+    * Link object files in a separate step using `mpicxx` or `hipcc`/`nvc`
 
 
 # MPI+HIP strategies
@@ -280,7 +259,7 @@ MPI_Comm_rank(commNode, &nodeRank);
 # Summary
 
 - There are many options to write a multi-GPU program
-- Use `hipSetDevice()` to select the device, and the subsequent HIP calls
+- Use `hipSetDevice()` or `omp_set_default_device()` to select the device, and the subsequent tasks
   operate on that device
 * If you have an MPI program, it is often best to use one GPU per process, and
   let MPI handle data transfers between GPUs
