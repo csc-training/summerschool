@@ -60,7 +60,7 @@ lang:   en
 </div>
 <div class=column>
     
-![](images/ligen.svg){.center width=50%}
+![<span style=" font-size:0.5em;">image credits: https://exscalate.com/our-approach/exscalate-platform </span>](images/ligen.svg){.center width=50%}
 
 </div>
 
@@ -134,7 +134,10 @@ LiGen
 <br />
 <br />
 <br />
-![](images/docker-ht-pipeline.jpg){.justify width=90%}
+
+![ <span style=" font-size:0.5em;">   image credits: https://arxiv.org/pdf/2110.11644.pdf </span> ](images/docker-ht-pipeline.jpg){.center width=100%}
+
+
 </div>
 
 # Case LiGen: GPU parallelization
@@ -151,10 +154,12 @@ LiGen
 
 
 <div class=column>
+
 ![](images/latency.jpg){.justify width=90%}
+
 <br />
-<br />
-![](images/batch.jpg){.justify width=90%}
+
+![ <span style=" font-size:0.5em;">images credits: https://arxiv.org/pdf/2209.05069.pdf </span> ](images/batch.jpg){.justify width=90%}
 
 </div>
 
