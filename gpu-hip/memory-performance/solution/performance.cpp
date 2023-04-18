@@ -39,14 +39,16 @@ __global__ void hipKernel_uncoalesced(int* const A, const int size)
 }*/
 
 template< bool coalesced >
-__global__ void hipKernel(int* const A, const int size)
+__global__ void hipKernel(const int* const A, const int size, const int* const B, int* const C)
 {
   const int idx = blockIdx.x * blockDim.x + threadIdx.x;
   const int num_workers = blockDim.x * gridDim.x;
   if constexpr (coalesced)
   {
     for (int i=idx; i < size; i+=num_workers)
-    A[i] = A[i] + i;
+//    if((i/64)%2 == 0) A[i] = A[i] + i;
+//    else A[i] = A[i] +1;
+    C[i] = A[i] +B[i];
   }
   else
   {
@@ -55,7 +57,9 @@ __global__ void hipKernel(int* const A, const int size)
     const int my_start = idx < num_thread_with_extra_point ? idx * (num_points_per_thread + 1) : num_thread_with_extra_point * (num_points_per_thread+1) + (idx-num_thread_with_extra_point) *num_points_per_thread;
     const int my_end = idx < num_thread_with_extra_point ? my_start + num_points_per_thread + 1 : my_start + num_points_per_thread;
     for(int i=my_start; i<my_end; ++i)
-      A[i] = A[i] + i;
+//    if((i/64)%2 == 0) A[i] = A[i] + i;
+    C[i] = A[i] +B[i];
+  //  A[i] = A[i] + i;
   }
 }
 
@@ -73,20 +77,26 @@ void ignoreTiming(int nSteps, int size)
   const int gridsize = (size - 1 + blocksize) / blocksize;
 
   int *d_A;
+    int *d_B;
+    int *d_C;
   // Allocate pinned device memory
   HIP_ERR(hipMalloc((void**)&d_A, sizeof(int) * size));
+  HIP_ERR(hipMalloc((void**)&d_B, sizeof(int) * size));
+  HIP_ERR(hipMalloc((void**)&d_C, sizeof(int) * size));
 
   // Start timer and begin stepping loop
   clock_t tStart = clock();
   for(unsigned int i = 0; i < nSteps; i++)
   {    
     // Launch GPU kernel
-    hipKernel<true><<<gridsize, blocksize, 0, 0>>>(d_A, size);
+    hipKernel<true><<<gridsize, blocksize, 0, 0>>>(d_A, size, d_B, d_C);
     // Synchronization
     HIP_ERR(hipStreamSynchronize(0));
   }
   // Free allocation
   HIP_ERR(hipFree(d_A));
+  HIP_ERR(hipFree(d_B));
+  HIP_ERR(hipFree(d_C));
 }
 
 /* Run without recurring allocation */
@@ -95,24 +105,30 @@ void noRecurringAlloc(int nSteps, int size)
 {
   // Determine grid and block size
   const int blocksize = BLOCKSIZE;
-  const int gridsize = (size - 1 + blocksize) / blocksize;
+  const int gridsize =64;// (size - 1 + blocksize) / blocksize;
 
-  int *d_A;
+    int *d_A;
+    int *d_B;
+    int *d_C;
   // Start timer, allocate and do things
   clock_t tStart = clock();
   
   // Allocate pinned device memory
   HIP_ERR(hipMalloc((void**)&d_A, sizeof(int) * size));
+  HIP_ERR(hipMalloc((void**)&d_B, sizeof(int) * size));
+  HIP_ERR(hipMalloc((void**)&d_C, sizeof(int) * size));
   for(unsigned int i = 0; i < nSteps; i++)
   {    
     // Launch GPU kernel
-    hipKernel<coalesced><<<gridsize, blocksize, 0, 0>>>(d_A, size);
+    hipKernel<coalesced><<<gridsize, blocksize, 0, 0>>>(d_A, size, d_B, d_C);
   }
   // Synchronization
   HIP_ERR(hipStreamSynchronize(0));
   // Check results and print timings
   // Free allocation
   HIP_ERR(hipFree(d_A));
+  HIP_ERR(hipFree(d_B));
+  HIP_ERR(hipFree(d_C));
   checkTiming("noRecurringAlloc", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 }
 
@@ -124,17 +140,23 @@ void recurringAllocNoMemPools(int nSteps, int size)
   
   // Determine grid and block size
   const int blocksize = BLOCKSIZE;
-  const int gridsize = (size - 1 + blocksize) / blocksize;
+  const int gridsize =64;// (size - 1 + blocksize) / blocksize;
 
   for(unsigned int i = 0; i < nSteps; i++)
   {
     int *d_A;
+    int *d_B;
+    int *d_C;
     // Allocate pinned device memory
     HIP_ERR(hipMalloc((void**)&d_A, sizeof(int) * size));
+    HIP_ERR(hipMalloc((void**)&d_B, sizeof(int) * size));
+    HIP_ERR(hipMalloc((void**)&d_C, sizeof(int) * size));
     // Launch GPU kernel
-    hipKernel<coalesced><<<gridsize, blocksize, 0, 0>>>(d_A, size);
+    hipKernel<coalesced><<<gridsize, blocksize, 0, 0>>>(d_A, size, d_B, d_C);
     // Free allocation
     HIP_ERR(hipFree(d_A));
+    HIP_ERR(hipFree(d_B));
+    HIP_ERR(hipFree(d_C));
   }
   // Synchronization
   HIP_ERR(hipStreamSynchronize(0));
@@ -153,17 +175,23 @@ void recurringAllocMallocAsync(int nSteps, int size)
 
   // Determine grid and block size
   const int blocksize = BLOCKSIZE;
-  const int gridsize = (size - 1 + blocksize) / blocksize;
+  const int gridsize = 64;//(size - 1 + blocksize) / blocksize;
 
   for(unsigned int i = 0; i < nSteps; i++)
   {
     int *d_A;
+    int *d_B;
+    int *d_C;
     // Allocate pinned device memory
-    cudaMallocAsync((void**)&d_A, sizeof(int) * size, stream);
+    hipMallocAsync((void**)&d_A, sizeof(int) * size, stream);
+    hipMallocAsync((void**)&d_B, sizeof(int) * size, stream);
+    hipMallocAsync((void**)&d_C, sizeof(int) * size, stream);
     // Launch GPU kernel
-    hipKernel<coalesced><<<gridsize, blocksize, 0, stream>>>(d_A, size);
+    hipKernel<coalesced><<<gridsize, blocksize, 0, stream>>>(d_A, size, d_B, d_C);
     // Free allocation
-    cudaFreeAsync(d_A, stream);
+    hipFreeAsync(d_A, stream);
+    hipFreeAsync(d_B, stream);
+    hipFreeAsync(d_C, stream);
   }
   // Synchronization
   HIP_ERR(hipStreamSynchronize(stream));
