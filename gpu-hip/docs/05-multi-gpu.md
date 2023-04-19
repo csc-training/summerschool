@@ -149,22 +149,26 @@ hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 * Between AMD GPUs, the peer access is always enabled
 
 
-# Peer to peer communication (HIP)
+# Peer to peer communication
 
 * Devices have separate memories
-* With devices supporting unified virtual addressing, `hipMemCpy()` with
-  `kind=hipMemcpyDefault`, otherwise, `hipMemcpyPeer()`:
-```cpp
-// First option with unified virtual addressing
-hipError_t hipMemcpy(void* dst, void* src, size_t count, hipMemcpyKind kind)
+* Memcopies between different devices can be done as follows:
 
-// Other option which does not require unified virtual addressing
-hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t count)
+```cpp
+// HIP: First option that requires unified virtual addressing
+hipError_t hipMemcpy(void* dst, void* src, size_t size, 
+hipMemcpyKind kind=hipMemcpyDefault)
+
+// HIP: Second option does not require unified virtual addressing
+hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t size)
+
+// OpenMP
+int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
+                      size_t srcOffset, int dstDev, int dstDev);
 ```
 
 * If peer to peer access is not available, the functions result in a normal
   copy through host memory
-
 
 # Message Passing Interface (MPI)
 
