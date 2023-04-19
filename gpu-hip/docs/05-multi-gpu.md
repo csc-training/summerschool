@@ -167,7 +167,7 @@ int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
                       size_t srcOffset, int dstDev, int dstDev);
 ```
 
-* If peer to peer access is not available, the functions result in a normal
+* If peer to peer access is not available, the functions should result in a normal
   copy through host memory
 
 # Message Passing Interface (MPI)
