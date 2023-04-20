@@ -1,6 +1,6 @@
 ---
 title:  Multi-GPU programming and HIP/OpenMP + MPI
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -9,7 +9,7 @@ lang:   en
 * GPU context
 * Device management
 * Programming models
-* GPU-GPU Peer access (HIP)
+* Peer to peer (GPU-GPU) access
 * HIP/OpenMP + MPI
 
 
@@ -116,20 +116,20 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
     * Memory operations
     * Kernel execution
     * Streams and events (HIP)
-* Asynchronous function calls calls (HIP) or `nowait` clause (OpenMP) are required to overlap work 
+* Asynchronous function calls (HIP) or `nowait` clause (OpenMP) are required to overlap work 
 
 # Multi-GPU, one GPU per thread
 
 * One GPU per CPU thread
-    * I.e one OpenMP CPU thread per GPU being used
-* HIP API is threadsafe
+    * Eg, one OpenMP CPU thread per GPU being used
+* HIP and OpenMP APIs are threadsafe
     * Multiple threads can call the functions at the same time
 * Each thread can create its own context on a different GPU
     * `hipSetDevice()` or `omp_set_default_device()` set the device and create a context per thread
-    * Easy device management with no changing of device
-* Communication between threads becomes a bit more tricky
+* From the point of view of a single thread, the implementation closer to a single-GPU case
+* Communication between threads still not trivial
 
-# Peer access (HIP)
+# Direct peer to peer access (HIP)
 
 * Access peer GPU memory directly from another GPU
     * Pass a pointer to data on GPU 1 to a kernel running on GPU 0
@@ -164,11 +164,10 @@ hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t s
 
 // OpenMP
 int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
-                      size_t srcOffset, int dstDev, int dstDev);
+                      size_t srcOffset, int dstDev, int dstDev)
 ```
 
-* If peer to peer access is not available, the functions should result in a normal
-  copy through host memory
+* If direct peer to peer access is not available or implemented, the functions should result in a normal copy through host memory
 
 # Message Passing Interface (MPI)
 
@@ -250,14 +249,33 @@ MPI_Comm_rank(commNode, &nodeRank);
 
 # GPU-GPU communication through MPI
 
-* CUDA/ROCm aware MPI libraries support direct GPU-GPU transfers
+* GPU-aware (CUDA/ROCm aware) MPI libraries support direct GPU-GPU transfers
     * Can take a pointer to device buffer (avoids host/device data copies)
 * Unfortunately, currently no GPU support for custom MPI datatypes (must use a
   datatype representing a contiguous block of memory)
     * Data packing/unpacking must be implemented application-side on GPU
-* ROCm aware MPI libraries are under development and there may be problems
+* ROCm aware MPI libraries are still new and there may be problems
     * It is a good idea to have a fallback option to use pinned host staging
       buffers
+
+# MPI communication with GPU-aware MPI
+
+* With HIP+MPI, one can simply pass a device pointer to GPU-aware MPI, in OpenMP this can be achieved using `use_device_ptr` clause as follows:
+
+```cpp
+/* MPI_Send with GPU-aware MPI */
+#pragma omp target data use_device_ptr(data)
+{
+    MPI_Send(data, N, MPI_DOUBLE, to, MPI_ANY_TAG, MPI_COMM_WORLD);
+}
+
+/* MPI_Recv with GPU-aware MPI */
+#pragma omp target data use_device_ptr(data)
+{
+    MPI_Recv(data, N, MPI_DOUBLE, from, MPI_ANY_TAG, MPI_COMM_WORLD,
+             MPI_STATUS_IGNORE);
+}
+```
 
 
 # Summary
@@ -268,6 +286,6 @@ MPI_Comm_rank(commNode, &nodeRank);
 * If you have an MPI program, it is often best to use one GPU per process, and
   let MPI handle data transfers between GPUs
 * There is still little experience from ROCm aware MPIs, there may be issues
-    * Note that a CUDA/ROCm aware MPI is only required when passing device
+    * Note that a GPU-aware MPI is only required when passing device
       pointers to the MPI, passing only host pointers does not require any
-      CUDA/ROCm awareness
+      GPU awareness
