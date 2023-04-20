@@ -3,7 +3,7 @@
 Benchmark memory copies with and without peer to peer device access with HIP using two GPUs, and try doing the same with OpenMP.
 
 ## Part 1 - HIP
-Skeleton code [hip-p2pcopy.cpp](hip-p2pcopy.cpp) tests peer to peer device access between two GPUs by doing a series of memory copies. The test is evaluated after calling `hipDeviceEnablePeerAccess()` and `hipDeviceEnablePeerAccess()`. The program prints calculated bandwith and time for both cases. On a CUDA platform, there should be a difference in results, whereas on an AMD platform there is none. In order to make the code work, you need to fix the missing parts marked with
+Skeleton code [hip-p2pcopy.cpp](hip-p2pcopy.cpp) tests peer to peer device access between two GPUs by doing a series of memory copies. The test is evaluated after calling `hipDeviceEnablePeerAccess()` and `hipDeviceDisablePeerAccess()`. The program prints calculated bandwith and time for both cases. On a CUDA platform, there should be a difference in results, whereas on an AMD platform there is none. In order to make the code work, you need to fix the missing parts marked with
 TODOs.
 
 ## Part 2 - OpenMP
