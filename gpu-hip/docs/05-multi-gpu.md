@@ -37,6 +37,7 @@ lang:   en
 
 * Driver associates a number for each available GPU device starting from 0
 * The functions `hipSetDevice()` and `omp_set_default_device()` are used for selecting the desired device for HIP and OpenMP, respectively
+  * Furthermore, in OpenMP, the `device()`-directive can be used to offload targets to specific devices without changing the default device
 
 
 # Device management
@@ -110,7 +111,7 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
 
 # Multi-GPU, many GPUs per process
 
-* Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions
+* Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions (or uses `device()`-directive to offload work to a specific device (OpenMP))
 * After setting the device, operations such as the following are effective only
   on the selected GPU:
     * Memory operations
@@ -125,7 +126,7 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
 * HIP and OpenMP APIs are threadsafe
     * Multiple threads can call the functions at the same time
 * Each thread can create its own context on a different GPU
-    * `hipSetDevice()` or `omp_set_default_device()` set the device and create a context per thread
+    * `hipSetDevice()` (HIP) or `device()`-directive (OpenMP) determine the device and create a context per thread
 * From the point of view of a single thread, the implementation closer to a single-GPU case
 * Communication between threads still not trivial
 
