@@ -83,11 +83,11 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
 # Multi-GPU programming models
 
 <div class="column">
-* One GPU per process
+* One GPU per process (I)
     * Syncing is handled through message passing (eg. MPI)
-* Many GPUs per process
+* Many GPUs per process (II)
     * Process manages all context switching and syncing explicitly
-* One GPU per thread
+* One GPU per thread (III)
     * Syncing is handled through thread synchronization requirements
 </div>
 
@@ -98,7 +98,7 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
 </div>
 
 
-# Multi-GPU, one GPU per process
+# One GPU per process (I)
 
 * Recommended for multi-process applications using a message passing library
 * Message passing library takes care of all GPU-GPU communication
@@ -109,7 +109,7 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
 * **Multi-GPU implementation using MPI is discussed at the end!**
 
 
-# Multi-GPU, many GPUs per process
+# Many GPUs per process (II)
 
 * Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions 
    * OpenMP has also `device()`-directive to offload work to a specific device
@@ -121,7 +121,7 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
 * Asynchronous function calls (HIP) or `nowait` clause (OpenMP) are required to overlap work 
 
 
-# Many GPUs per process, code example
+# Many GPUs per process (II), code example
 
 <small>
 
@@ -152,7 +152,7 @@ for(int n = 0; n < num_devices; n++) {
 </small>
 
 
-# Multi-GPU, one GPU per thread
+# One GPU per thread (III)
 
 * One GPU per CPU thread
     * Eg, one OpenMP CPU thread per GPU being used
@@ -164,7 +164,7 @@ for(int n = 0; n < num_devices; n++) {
 * Communication between threads still not trivial
 
 
-# One GPU per thread, code example
+# One GPU per thread (III), code example
 
 <small>
 
