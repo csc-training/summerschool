@@ -61,25 +61,21 @@ licensed under CC BY-SA 4.0
 
 **Discuss** within your table!
 
-# Documentation in GPAW & Runko
+# Documentation in LiGen & ICON
 
 <div class=column>
-GPAW
+LiGen
 
-- User developer guides, tutorials etc. written in RST
-- www-site generated with Sphinx
-- APIs in Python docstrings
-- <https://wiki.fysik.dtu.dk/gpaw>
+- User guide and developer guide written in LaTex
+    - Explain how to use (user guide)
+    - Explain not obvious design choices and data structures (developer guide)
+- Lot of comments in the codebase
 </div>
 
 <div class=column>
-Runko
+ICON
 
-- Main structure described in a publication 
-- GitHub Readmes + www-site with sphinx
-- API automatically documented with doxygen+breathe
-- <https://github.com/natj/runko>
-- <https://runko.readthedocs.io>
+- 
 </div>
 
 # Testing
@@ -151,6 +147,8 @@ do not constitute science!**
 
 - Behavior can depend on the number of threads and MPI tasks
     - Parallel components should be tested with multiple different parallelization schemes
+    - Results can change with different MPI geometries
+    - GPU have different aritmethic units: perfectly reproducible results may not be available.
 - Large scale integration tests can be time consuming
 - Changes in program code may also lead to degradation in performance and 
   scalability
@@ -163,6 +161,7 @@ do not constitute science!**
 - Complicated dependency chains makes testing even harder
     - Impossible to test exhaustively 
 - Systems are very noisy, especially on the filesystem and network level.  
+
 
 # Continuous integration
 
@@ -195,25 +194,24 @@ do not constitute science!**
 
 **Discuss** within your table!
 
-# Testing in GPAW & Runko
+# Testing in LiGen & ICON
 
 <div class=column>
-GPAW
+LiGen
 
-- Wide test set
-    - Unit tests and integration tests
-- Continuous integration with GitlabCI
-- Developers should run tests manually before pushing
-- Test set should run after installation
+- Large set of end-to-end tests
+- Smaller set of unit tests
+- Developers have to test before pushing changes
+- Comparison of results obtained by the different backends (CPU/CUDA/SYCL) helps in finding bugs
 
 </div>
 
 <div class=column>
-Runko
+ICON
 
-- Each module covered with unit tests (pytest)
-- Physics tested with bigger integration tests
-- Continuous integration with TravisCI
+- 
+- 
+- 
 
 </div>
 

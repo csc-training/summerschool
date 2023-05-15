@@ -35,6 +35,8 @@ lang:   en
       on the device
 * Not copying data back and forth between CPU and GPU every step or iteration
   can have a large performance impact!
+* When working with different data (so moving is mandatory) consider use a single 
+  malloc for worst case and reuse the same area: malloc is way slower than memcpy
 
 
 # Device memory hierarchy
@@ -62,6 +64,7 @@ lang:   en
     - Used automatically if all registers are reserved
     - Local memory resides in global memory
     - Very slow access
+    - Cached (but very small if compared to cpu cache!)
 </div>
 
 <div class="column">
@@ -85,6 +88,7 @@ lang:   en
 - Complicates implementation
 - Should be considered only when a very high level of optimization is
   desirable
+- Match particular compute patterns
 
 
 # Important memory operations
@@ -157,6 +161,7 @@ int main() {
     - Through hints
 - Must still obey concurrency & coherency rules, not foolproof
 - The performance on the AMD cards is an open question
+- Easier to overlook optimization possibilities
 
 
 # Unified Memory workflow for GPU offloading
@@ -228,6 +233,21 @@ int main() {
     - Such functions have Async suffix, eg. `hipMemcpyAsync()`
 - User has to synchronize the program execution
 - Requires page-locked memory
+
+# Asynchronous Malloc
+
+- `hipMallocAsync()` and `hipFreeAsync()` allows to treat memory allocation and
+free as asynchronous operations
+- Allows to use memory pool (i.e. subsequent alloc/frees are less expensive)
+
+# Virtual Memory Management
+
+- Experimental feature
+- Allows to "realloc", i.e. change the size of the allocated memory without paying
+free and allocation cost
+
+
+https://docs.amd.com/bundle/HIP-API-Guide-v5.2/page/group___virtual.html
 
 # Global memory access in device code
 
