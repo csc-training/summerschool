@@ -1,5 +1,5 @@
 ---
-title:  Synchronization, streams, and asynchrononous operations
+title:  Synchronization, streams, and asynchronous operations
 event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
