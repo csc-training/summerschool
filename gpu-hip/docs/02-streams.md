@@ -51,7 +51,7 @@ process_in_host();
  call process_in_device();
  !$omp end target
 
- process_in_host();
+ call process_in_host();
  !$omp taskwait
 ```
 </div>
@@ -118,7 +118,7 @@ process_in_host();
 
 # Task dependencies
 
-- Dependencies may be specifief also for a part of an array
+- Dependencies may be specified also for a part of an array
 
 ```c
 // Preocessing array in blocks
@@ -257,7 +257,7 @@ for (int i = 0; i < 3; ++i){
     hipMemcpyHostToDevice, stream[i]);
 
   // Each streams runs a kernel
-  hipkernel<<<grid, block, 0, strm[i]>>>(d_data[i]);
+  hipkernel<<<grid, block, 0, stream[i]>>>(d_data[i]);
 
   // Each streams copies data from device to host
   hipMemcpyAsync(h_data[i], d_data[i],  bytes, 
