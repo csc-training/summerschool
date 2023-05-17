@@ -5,16 +5,6 @@ lang:   en
 ---
 
 
-# What is high-performance computing?
-
-- Utilizing computer power that is much larger than available in
-  typical desktop computer
-      - would take too long, explore many different parameters, not enough memory, not enough disk space
-- Performance of HPC system (i.e. supercomputer) is often measured in
-  floating point operations per second (flop/s)
-    - For software, other measures can be more meaningful
-- Currently, the most powerful system reaches ~1 x 10<sup>18</sup> flop/s
-  (1 Eflop / s)
 
 # Exponential growth of performance
 
