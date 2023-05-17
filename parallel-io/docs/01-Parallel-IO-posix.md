@@ -6,7 +6,7 @@ lang:   en
 
 
 
-# Exponential growth of performance
+# HPC
 
  ![](img/cray_top500.png){.center width=60%}
 
