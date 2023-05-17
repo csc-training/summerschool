@@ -30,12 +30,6 @@ lang:   en
  - Checkpointing to files for restarting in case of system failure
  - 'out-of-core' techniques when the  data is larger than one can fit in system memory
 
-# Heat Equation example
-- Parallel heat equation
-
-
-- Check the scaling for different saving intervals
-
 # Parallel I/O
 - Mapping problem: how to convert internal structures and domains to
 files which are streams of bytes
