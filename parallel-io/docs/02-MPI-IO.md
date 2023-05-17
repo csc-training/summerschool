@@ -23,18 +23,10 @@ lang:   en
 - Collective I/O: Enables a group of processes to perform I/O operations as a single unit, improving performance by reducing communication overhead.
 - Independent I/O: Allows each process to perform I/O operations independently, suitable for irregular or non-contiguous data access patterns.
 - File Views: Supports defining non-contiguous regions of data in a file and performing I/O operations on those regions.
-
-# Key Features of MPI-IO (cont.)
-
 - Data Types: Supports complex data types, allowing efficient I/O operations on structured data.
 - Shared File Pointers: Enables multiple processes to share a common file pointer, ensuring coordinated access to the file.
 - Error Handling: Provides error reporting and handling mechanisms to facilitate robust I/O operations.
 
-# Key Features of MPI-IO (cont.)
-
-- Data Types: Supports complex data types, allowing efficient I/O operations on structured data.
-- Shared File Pointers: Enables multiple processes to share a common file pointer, ensuring coordinated access to the file.
-- Error Handling: Provides error reporting and handling mechanisms to facilitate robust I/O operations.
 
 
 # Benefits of MPI-IO
@@ -44,7 +36,6 @@ lang:   en
 - Scalability: MPI-IO can efficiently scale to large numbers of processes and handle large datasets.
 - Portability: It is a portable standard supported by different MPI implementations.
 
-# Connection to Higher-Level Libraries
 
 # Connection to Higher-Level Libraries
 
