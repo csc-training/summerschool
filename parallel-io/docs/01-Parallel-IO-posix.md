@@ -148,23 +148,6 @@ thousands of nodes on the supercomputer to physical disks
 ![](img/posix-spokesman.png)
 </div>
 
-# Example: spokesperson strategy
-
-```fortran
-if (my_id == 0) then
-    do i = 1, ntasks-1
-        call mpi_recv(full_data(i*n), n, MPI_REAL, i, tag, &
-                      MPI_COMM_WORLD, status, rc)
-    end do
-
-    open(funit, file=fname, access="stream")
-    write(funit) full_data
-    close(funit)
-else
-    call mpi_send(data, n, MPI_REAL, 0, tag, MPI_COMM_WORLD, rc)
-end if
-```
-
 # Parallel POSIX I/O
 
 <div class="column">
@@ -179,15 +162,6 @@ end if
 ![](img/posix-everybody.png)
 </div>
 
-# Special case: stdout and stderr
-
-- Standard Output and Error streams are effectively serial I/O and will be
-  a severe bottleneck for application scaling
-- Disable debugging messages when running in production mode
-    - "Hello, I'm task 32,000!"
-- Ensure only the very minimum is written to stdout/err!
-    - Interim results, timings,...
-
 # Summary
 
 - Parallel file system is needed for efficient parallel I/O
@@ -197,3 +171,4 @@ end if
     - Spokesman strategy
     - Every man for himself
     - Subset of writers/readers
+    - **Standard Output and Error streams are effectively serial I/O!***
