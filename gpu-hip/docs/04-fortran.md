@@ -182,6 +182,7 @@ extern "C"
     
 1. Fortran+OpenACC and CUDA Fortran -> Fortran + OpenMP 4.5+
 2. Fortran+OpenACC and CUDA Fortran -> Fortran + [GCC/AOMP OpenACC/MP runtime calls] + HIP C++
+    
 ![](img/gpufort.png){width=1000px}
 
 
