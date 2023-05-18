@@ -171,4 +171,4 @@ thousands of nodes on the supercomputer to physical disks
     - Spokesman strategy
     - Every man for himself
     - Subset of writers/readers
-    - **Standard Output and Error streams are effectively serial I/O!***
+    - ***Standard Output and Error streams are effectively serial I/O!***
