@@ -102,7 +102,7 @@ program testSaxpy
      subroutine launch(y,x,b,N) bind(c)
        use iso_c_binding
        implicit none
-       type(c_ptr) :: y,x
+       type(c_ptr),value :: y,x
        integer, value :: N
        real, value :: b
      end subroutine
@@ -167,7 +167,7 @@ __global__ void saxpy(float *y, float *x, float a, int n)
 
 extern "C"
 {
-  void launch(float **dout, float **da, float db, int N)
+  void launch(float *dout, float *da, float db, int N)
   {
     dim3 tBlock(256,1,1);
     dim3 grid(ceil((float)N/tBlock.x),1,1);
@@ -184,14 +184,3 @@ extern "C"
 2. Fortran+OpenACC and CUDA Fortran -> Fortran + [GCC/AOMP OpenACC/MP runtime calls] + HIP C++
     
 ![](img/gpufort.png){width=1000px}
-
-
-# GPUFort (II)
-
-![](img/gpufort1.png){width=1600px}
-
-
-# GPUFort (III)
-
-![](img/gpufort2.png){width=1600px}
-
