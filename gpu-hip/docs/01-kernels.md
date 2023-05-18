@@ -1,6 +1,6 @@
 ---
 title:  HIP and GPU kernels
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -274,4 +274,4 @@ int main(void)
 - Kernels are launched by multiple threads in a grid
     - in wavefronts of 64 threads
 - Kernels need to be declared `void` and `__global__` and are launched with
-  `hipLaunchKernelGGL()`
+  `hipLaunchKernelGGL()` or chevron <<< >>>`
