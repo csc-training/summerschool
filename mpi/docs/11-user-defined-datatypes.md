@@ -266,16 +266,13 @@ MPI_Send(particle, 1000, Particletype, dest, tag, MPI_COMM_WORLD);
         - `integer(mpi_address_kind)` (Fortran)
 
 
-# Gaps between structs: extent
+# Gaps between structs: Extent
 
-- Sending of an array of the `ParticleStruct` structures may have a
-  portability issue: it assumes that array elements are packed in memory
-    - Implicit assumption: the **extent** of the datatype was the same as the
+- When sending an array of the structures, the extent needs to be checked as for other user-defined datatypes
+    - It's implicit assumed that the **extent** of the datatype would be the same as the
       size of the C struct
-    - This is not necessarily the case
-- If there are gaps in memory between the successive structures, sending
-  does not work correctly
-
+    - This is not necessarily the case, and if there are gaps in memory between the successive structures, sending
+      does not work correctly with the default extent
 
 
 # Example: sending an array of structs
@@ -301,7 +298,6 @@ int blocklen[3] = {1, 3, 3};
 
 ```c
 ...
-
 /* Determine displacements */
 MPI_Aint disp[3];
 MPI_Get_address(&particle[0].charge, &disp[0]);
@@ -324,7 +320,6 @@ MPI_Type_commit(&Particletype);
 
 ```c
 ...
-
 /* Check extent */
 MPI_Datatype oldtype;
 MPI_Aint lb, extent;
@@ -348,7 +343,7 @@ MPI_Type_free(&Particletype);
 
 - Structures and types as continuous stream of bytes: Communicate
   everything using `MPI_BYTE`
-    - Portability can be an issue - be careful
+    - Portability can be an issue - be careful (*cf.* extent)
 
 ```c
 struct ParticleStruct particle[1000];
@@ -386,10 +381,11 @@ MPI_Send(particle, 1000*sizeof(particle[0]), MPI_BYTE, ...);
     - Improves code readability & portability
     - Allows optimizations by the MPI runtime
 - Life cycle of derived type: create, commit, free
+- Ensuring the correct extent of the derived data type is important
 - MPI provides constructors for several specific types
 
 
-# Reference {.section}
+# Other datatype constructors {.section}
 
 # MPI_TYPE_CONTIGUOUS
 
@@ -418,23 +414,6 @@ call mpi_send(buf, count, MPI_REAL, ...)
 ```
 </div>
 </small>
-
-
-# MPI_TYPE_VECTOR
-
-- Creates a new type from equally spaced identical blocks
-
-MPI_Type_vector(`count`{.input}, `blocklen`{.input}, `stride`{.input}, `oldtype`{.input}, `newtype`{.output})
-  : `count`{.input}
-    : number of blocks
-  : `blocklen`{.input}
-    : number of elements in each block
-  : `stride`{.input}
-    : displacement between the blocks
-
-<p>
-![](img/type_vector.png){.center width=20%}
-
 
 
 # MPI_TYPE_INDEXED {.split-def-3}
