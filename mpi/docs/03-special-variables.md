@@ -71,9 +71,6 @@ if (0 == myid) {
     - No matching `receive` / `send` is needed
 
 ```fortran
-dst = mod(myid + 1, ntasks)
-src = mod(myid - 1 + ntasks, ntasks)
-
 if (myid == 0) then
     src = MPI_PROC_NULL
 end if
