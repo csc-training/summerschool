@@ -14,7 +14,7 @@ lang:   en
 - This produces typically code which is difficult to read and to
   generalize to arbitrary number of processes
 - Store source and destination in variables and place MPI calls
-  outside **if**s when possible.
+  outside **`if`**s when possible.
 
 <small>
 <div class=column>
@@ -71,6 +71,9 @@ if (0 == myid) {
     - No matching `receive` / `send` is needed
 
 ```fortran
+dst = mod(myid + 1, ntasks)
+src = mod(myid - 1 + ntasks, ntasks)
+
 if (myid == 0) then
     src = MPI_PROC_NULL
 end if
@@ -88,13 +91,13 @@ call mpi_recv(message, msgsize, MPI_INTEGER, src, ...
 - In some communication patterns one might want to receive from
   arbitrary sender or a message with arbitrary tag
 - `MPI_ANY_SOURCE` and `MPI_ANY_TAG`
-    - The actual sender and tag can be queried from **status** if
+    - The actual sender and tag can be queried from **`status`** if
       needed
 
 <div class=column>
 - There needs to be still `receive` for each `send`
 - `MPI_ANY_SOURCE` may introduce performance overhead
-- Use only when there is clear benefit *e.g.* in load balancing
+    - Use only when there is clear benefit *e.g.* in load balancing
 </div>
 
 <div class=column>
@@ -115,9 +118,9 @@ if (0 == myid) {
 </div>
 
 
-# Ignoring **status**
+# Ignoring status
 
-- When `source`, `tag`, and number of received elements are known,
+- When `source`, `tag`, and the number of received elements are known,
   there is no need to examine `status`
 - A special constant `MPI_STATUS_IGNORE` can be used for the `status`
   parameter
@@ -131,7 +134,7 @@ MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, 
 
 | Parameter          | Special value    | Implication                                  |
 | ----------         | ---------------- | -------------------------------------------- |
-| **`dest`{.input}** | `MPI_PROC_NULL`  | Null destination, no operation takes place   |
+| **`dest`{.input}** | `MPI_PROC_NULL`  | No operation takes place                     |
 
 # Special parameter values in receiving
 
@@ -141,7 +144,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 | Parameter             | Special value       | Implication                                  |
 | ----------            | ----------------    | -------------------------------------------- |
-| **`source`{.input}**  | `MPI_PROC_NULL`     | No sender=no operation takes place           |
+| **`source`{.input}**  | `MPI_PROC_NULL`     | No operation takes place                     |
 |                       | `MPI_ANY_SOURCE`    | Receive from any sender                      |
 | **`tag`{.input}**     | `MPI_ANY_TAG`       | Receive messages with any tag                |
 | **`status`{.output}** | `MPI_STATUS_IGNORE` | Do not store any status data                 |
