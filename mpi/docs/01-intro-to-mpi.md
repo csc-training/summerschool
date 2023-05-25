@@ -62,7 +62,7 @@ lang:   en
 <div class="column">
 - MPI runtime assigns each process a unique rank (index)
     - identification of the processes
-    - ranks start from 0 and extend to N-1
+    - ranks range from 0 to N-1
 - Processes can perform different tasks and handle different data based
   on their rank
 </div>
@@ -131,7 +131,7 @@ else if (rank == 1) {
 ```fortran
 use mpi_f08
 ```
-    - (older Fortran codes might have `use mpi` or `include 'mpif.h'`)
+&emsp;(older Fortran codes might have `use mpi` or `include 'mpif.h'`)
 
 - Start by calling the routine **`MPI_Init`**
 - Write the program
@@ -169,11 +169,12 @@ MPI_Function(`arg1`{.input}, `arg2`{.output})
 
 # First five MPI commands: Initialization and finalization
 
-MPI_Init
+MPI_Init()
+  : Call at the start
   : (in C `argc`{.input} and `argv`{.input} pointer arguments are needed)
 
-MPI_Finalize
-  :
+MPI_Finalize()
+  : Call before exiting from the main program
 
 # First five MPI commands: Information about the communicator
 
@@ -191,7 +192,7 @@ MPI_Comm_rank(`comm`{.input}, `rank`{.output})
 
 # First five MPI commands: Synchronization
 
-- Wait until everybody within the communicator reaches the call
+- Wait until all ranks within the communicator reaches the call
 
 MPI_Barrier(`comm`{.input})
   : `comm`{.input}
