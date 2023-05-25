@@ -172,7 +172,7 @@ MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtyp
     : Array (of length `ntasks`) specifying the number of elements to send to each process
 
     `displs`{.input}
-    : Array (of length `ntasks`) specifying the starting indices (relative to `sendbuf`) of the data to send to each process
+    : Array (of length `ntasks`) specifying the starting indices (relative to `sendbuf`)
 
     `sendtype`{.input}
     : Type of elements in send buffer
@@ -276,6 +276,7 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 
     `-`{.ghost}
     : `-`{.ghost}
+    : `-`{.ghost}
 
     `recvbuf`{.output}
     : Buffer for receiving data
@@ -284,10 +285,8 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
     : Array (of length `ntasks`) specifying the number of elements to receive from each process
 
     `displs`{.input}
-    : Array (of length `ntasks`) specifying the starting indices (relative to `recvbuf`) of the data to receive from each process
+    : Array (of length `ntasks`) specifying the starting indices (relative to `recvbuf`)
 
-    `-`{.ghost}
-    : `-`{.ghost}
 
     `recvtype`{.input}
     : Type of elements to receive
@@ -297,6 +296,12 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 
     `comm`{.input}
     : Communicator
+
+    `-`{.ghost}
+    : `-`{.ghost}
+    : `-`{.ghost}
+    : `-`{.ghost}
+
 
 
 # All gather
@@ -332,6 +337,8 @@ MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvb
     `comm`{.input}
     : Communicator
 
+    `-`{.ghost}
+    : `-`{.ghost}
 
 # All to all
 
@@ -391,8 +398,8 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 </div>
 
 <div class=column>
-**A)** `1, 2, 3, 4`
-**B)** `1, ..., 16`
+**A)** `1, 2, 3, 4`</br>
+**B)** `1, ..., 16`</br>
 **C)** `1, 2, 3, 4, 1, 2, 3, 4,`
 `1, 2, 3, 4, 1, 2, 3, 4`
 </div>
