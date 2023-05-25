@@ -39,8 +39,8 @@ end if
 <div class=column>
 ```fortran
 call mpi_bcast(a, 1048576, &
-          MPI_REAL, 0, &
-          MPI_COMM_WORLD, rc)
+               MPI_REAL, 0, &
+               MPI_COMM_WORLD, rc)
 
 ```
 Communicating a vector **a** consisting of 1M float elements from
