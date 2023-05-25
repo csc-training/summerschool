@@ -9,9 +9,9 @@ lang:   en
 # Communicators
 
 - The communicator determines the "communication universe"
-    - The source and destination of a message is identified by process rank
+    - The source and destination of a message are identified by the process ranks
       *within* the communicator
-- So far: `MPI_COMM_WORLD`
+- So far: `MPI_COMM_WORLD` (all processes)
 - Processes can be divided into subcommunicators
     - Task level parallelism with process groups performing separate tasks
     - Collective communication within a group of processes
@@ -31,22 +31,22 @@ lang:   en
 
 # Creating new communicator {.split-definition}
 
-* **`MPI_Comm_split`** creates new communicators based on 'colors' and 'keys'
+* **`MPI_Comm_split`** creates new communicators based on "colors" and "keys"
 
 MPI_Comm_split(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})
   : `comm`{.input}
-    : communicator
+    : Communicator
 
     `color`{.input}
-    : processes with the same "color" belong to the same new communicator
+    : Processes with the same "color" belong to the same new communicator
 
     `key`{.input}
-    : control of rank assignment
+    : Control of rank assignment
 
     `newcomm`{.output}
-    : new communicator handle
+    : New communicator handle
 
-If color = `MPI_UNDEFINED`, a process does not belong to any of the
+If color is `MPI_UNDEFINED`, a process does not belong to any of the
 new communicators
 
 # Creating new communicator
@@ -114,15 +114,15 @@ After broadcast:
 
 # Communicator manipulation
 
-- **MPI_Comm_size**
+- **`MPI_Comm_size`**
     - Returns number of processes in communicator's group
-- **MPI_Comm_rank**
+- **`MPI_Comm_rank`**
     - Returns rank of calling process in communicator's group
-- **MPI_Comm_compare**
+- **`MPI_Comm_compare`**
     - Compares two communicators
-- **MPI_Comm_dup**
+- **`MPI_Comm_dup`**
     - Duplicates a communicator
-- **MPI_Comm_free**
+- **`MPI_Comm_free`**
     - Marks a communicator for deallocation
 
 # Summary
