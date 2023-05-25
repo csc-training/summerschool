@@ -34,7 +34,7 @@ lang:   en
     - Debuggers within IDEs, *e.g.* VS Code
     - No proper support for parallel debugging
 - Parallel debuggers
-    - **Arm DDT** (formerly Allinea DDT), Totalview, gdb4hpc (commercial products)
+    - Arm DDT (formerly Allinea DDT), Totalview, gdb4hpc (commercial products)
 
 # Common features in debuggers
 
@@ -52,25 +52,3 @@ lang:   en
 - MUST <https://www.i12.rwth-aachen.de/go/id/nrbe>
 - Using `gdb` for parallel debugging <https://www.open-mpi.org/faq/?category=debugging>
 - Memory debugging with Valgrind <https://valgrind.org/docs/manual/mc-manual.html#mc-manual.mpiwrap>
-
-# Demo: using Arm DDT {.section}
-
-# Using Arm DDT
-
-- Code needs to be compiled with debugging option `-g`
-- Compiler optimizations might complicate debugging (dead code
-  elimination, loop transformations, *etc.*), recommended to
-  compile without optimizations with `-O0`
-    - Sometimes bugs show up only with optimizations
-- In CSC environment DDT is available via `module load ddt`
-- Debugger needs to be started in an interactive session
-  <small>
-  ```bash
-  module load ddt
-  export SLURM_OVERLAP=1
-  salloc --nodes=1 --ntasks-per-node=2 --account=project_xxx -p small
-  ddt srun ./buggy
-  ```
-  </small>
-
-- VNC remote desktop is recommended for smoother GUI performance
