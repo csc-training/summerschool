@@ -21,14 +21,14 @@ lang:   en
 ```fortran
 if (myid == 0) then
    call mpi_send(message, msgsize, MPI_INTEGER, 1, &
-        1, MPI_COMM_WORLD, rc)
+                 1, MPI_COMM_WORLD, rc)
    call mpi_recv(recvBuf, arraysize, MPI_INTEGER, 1, &
-        1, MPI_COMM_WORLD, status, rc)
+                 1, MPI_COMM_WORLD, status, rc)
 else if (myid == 1) then
    call mpi_send(message, msgsize, MPI_INTEGER, 0, &
-        1, MPI_COMM_WORLD, rc)
+                 1, MPI_COMM_WORLD, rc)
    call mpi_recv(recvBuf, arraysize, MPI_INTEGER, 0, &
-        1, MPI_COMM_WORLD, status, rc)
+                 1, MPI_COMM_WORLD, status, rc)
 ```
 </div>
 
