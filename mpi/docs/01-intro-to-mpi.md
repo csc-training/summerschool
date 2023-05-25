@@ -68,10 +68,13 @@ lang:   en
 </div>
 <div class="column">
 ```c
+double a;
 if (rank == 0) {
+   a = 1.0;
    ...
 }
 else if (rank == 1) {
+   a = 0.7;
    ...
 }
 ...
@@ -85,14 +88,13 @@ else if (rank == 1) {
 
 ![](img/data-model.png){.center width=100%}
 
-# The MPI library
+# MPI library
 
 - Information about the communication framework
-    - number of processes
-    - rank of the process
+    - the number of processes
+    - the rank of the process
 - Communication between processes
-    - sending and receiving messages between two processes
-    - sending and receiving messages between several processes
+    - sending and receiving messages between two or several processes
 - Synchronization between processes
 - Advanced features
     - Communicator manipulation, user defined datatypes, one-sided communication, ...
@@ -100,9 +102,9 @@ else if (rank == 1) {
 # MPI communicator
 
 - Communicator is an object connecting a group of processes, i.e. the
-  communication framework
-- Most MPI functions require communicator as an argument
-- Initially, there is always a communicator **MPI_COMM_WORLD** which
+    - It defines the communication framework
+- Most MPI functions require a communicator as an argument
+- Initially, there is always a communicator **`MPI_COMM_WORLD`** which
   contains all the processes
 - Users can define custom communicators
 
@@ -111,13 +113,13 @@ else if (rank == 1) {
 - The MPI standard defines interfaces to C and Fortran programming
   languages
     - No C++ bindings in the standard, C++ programs use the C interface
-    - There are unofficial bindings to eg. Python, Rust, R
-- C call convention (*case sensitive*)<br>
-`rc = MPI_Xxxx(parameter,...)`
-    - some arguments have to be passed as pointers
-- Fortran call convention (*case insensitive*)<br>
-`call mpi_xxxx(parameter,..., rc)`
-    - return code in the last argument
+    - There are unofficial bindings to Python, Rust, R, ...
+- Call convention in C (*case sensitive*):<br>
+`rc = MPI_Xxxx(parameter, ...)`
+    - Some arguments have to be passed as pointers
+- Call convention in Fortran (*case insensitive*):<br>
+`call mpi_xxxx(parameter, ..., rc)`
+    - Return code in the last argument
 
 # Writing an MPI program
 
@@ -129,21 +131,21 @@ else if (rank == 1) {
 ```fortran
 use mpi_f08
 ```
-(older Fortran codes might have `use mpi` or `include 'mpif.h'`)
+    - (older Fortran codes might have `use mpi` or `include 'mpif.h'`)
 
-- Start by calling the routine **MPI_Init**
+- Start by calling the routine **`MPI_Init`**
 - Write the program
-- Call **MPI_Finalize** before exiting from the main program
+- Call **`MPI_Finalize`** before exiting from the main program
 
 # Compiling an MPI program
 
 - MPI is a library (+ runtime system)
-- In principle, MPI programs can be build with standard compilers
-  (*i.e.* `gcc` / `g++` / `gfortran`) with the appropriate `-I` / `-L` / `-l`
+- In principle, MPI programs can be built with standard compilers
+  (`gcc` / `g++` / `gfortran`) with the appropriate `-I` / `-L` / `-l`
   options
 - Most MPI implementations provide convenience wrappers, typically
   `mpicc` / `mpicxx` / `mpif90`, for easier building
-    - no need for MPI related options
+    - MPI-related options are automatically included
 
 ```bash
 mpicc -o my_mpi_prog my_mpi_code.c
@@ -151,7 +153,7 @@ mpicxx -o my_mpi_prog my_mpi_code.cpp
 mpif90 -o my_mpi_prog my_mpi_code.F90
 ```
 
-# Presenting syntax
+# The presentation syntax on the slides
 
 - MPI calls are presented as pseudocode
     - actual C and Fortran interfaces are given in reference section
