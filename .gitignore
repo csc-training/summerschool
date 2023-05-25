@@ -3,6 +3,9 @@
 *.mod
 \#*
 *~ 
+*.html
+*.pdf
+*.sif
 
 #ignore default binary name
 a.out
