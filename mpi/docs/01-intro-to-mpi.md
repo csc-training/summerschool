@@ -212,7 +212,6 @@ MPI_Barrier(`comm`{.input})
 
 - List of MPI functions with detailed descriptions
     - <http://mpi.deino.net/mpi_functions/>
-    - <https://www.rookiehpc.com/mpi/docs/>
 - Good online MPI tutorials
     - <https://hpc-tutorials.llnl.gov/mpi/>
     - <http://mpitutorial.com/tutorials/>
