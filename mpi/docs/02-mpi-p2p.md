@@ -265,13 +265,13 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 # Status parameter
 
 - The number of actually received elements
-&emsp;Use the function **`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
+  - Use the function **`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
 - The tag of the received message
-&emsp;C: `status.MPI_TAG`
-&emsp;Fortran: `status%mpi_tag` (old version `status(MPI_TAG)`)
+  - C: `status.MPI_TAG`
+  - Fortran: `status%mpi_tag` (old version `status(MPI_TAG)`)
 - The rank of the sender
-&emsp;C: `status.MPI_SOURCE`
-&emsp;Fortran: `status%mpi_source` (old version `status(MPI_SOURCE)`)
+  - C: `status.MPI_SOURCE`
+  - Fortran: `status%mpi_source` (old version `status(MPI_SOURCE)`)
 
 
 # Summary
