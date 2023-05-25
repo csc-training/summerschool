@@ -11,6 +11,7 @@ lang:   en
 - Bugs are evident in any non-trivial program
 - Crashes (Segmentation fault) or incorrect results
 - Parallel programs can have also deadlocks and race conditions
+    - <https://deadlockempire.github.io>
 
 # Finding bugs
 
@@ -30,10 +31,10 @@ lang:   en
     - Order of printouts from different processes is arbitrary
 - "Standard" debuggers
     - `gdb`: common command line debugger
-    - Debuggers within IDEs, e.g. VS Code
+    - Debuggers within IDEs, *e.g.* VS Code
     - No proper support for parallel debugging
 - Parallel debuggers
-    - **Allinea DDT**, Totalview, gdb4hpc (commercial products)
+    - **Arm DDT** (formerly Allinea DDT), Totalview, gdb4hpc (commercial products)
 
 # Common features in debuggers
 
@@ -52,9 +53,9 @@ lang:   en
 - Using `gdb` for parallel debugging <https://www.open-mpi.org/faq/?category=debugging>
 - Memory debugging with Valgrind <https://valgrind.org/docs/manual/mc-manual.html#mc-manual.mpiwrap>
 
-# Demo: using Allinea DDT {.section}
+# Demo: using Arm DDT {.section}
 
-# Using Allinea DDT
+# Using Arm DDT
 
 - Code needs to be compiled with debugging option `-g`
 - Compiler optimizations might complicate debugging (dead code
