@@ -176,6 +176,10 @@ lang:   en
 - Moving data out from the cloud can be time-consuming (and have a monetary cost)
 - Cost-effectiveness of cloud depends heavily on the use case
 
+# Containers
+
+TO BE ADDED
+
 # Parallel computing concepts {.section}
 
 # Computing in parallel
