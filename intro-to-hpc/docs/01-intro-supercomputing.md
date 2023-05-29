@@ -178,7 +178,31 @@ lang:   en
 
 # Containers
 
-TO BE ADDED
+- Problem: Moving applications between different systems
+    - Library dependencies
+    - Using different library versions
+    - Different operating systems
+- Security
+    - Isolating an application
+
+# Containers
+
+- Differs from a virtual machine
+    - Does not contain kernel modules
+    - Often only contains the application and its dependencies
+- Performance efficient way to move applications
+
+
+![](img/VM_vs_Docker.png){.center width=50%}
+
+# Common pitfalls with containers in HPC
+
+- Using the interconnect in an efficient way
+    - MPI incompatibility
+- GPU incompatibility
+    - Nvidia - AMD
+- The host and container Linux kernels need to be compatible
+    - Rarely incompatible
 
 # Parallel computing concepts {.section}
 
@@ -348,4 +372,3 @@ TO BE ADDED
     - Power consumption: current `#`1 energy efficient system requires `~`20 MW for exascale performances
     - Cost & Maintaining: Global chip shortage
     - Application scalability: how to program for 100 000 GPUs / 100 000 000 cores?
-
