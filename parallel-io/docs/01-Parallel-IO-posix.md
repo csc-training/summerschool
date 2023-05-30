@@ -120,15 +120,13 @@ thousands of nodes on the supercomputer to physical disks
 
 ![](img/striping-performance.png){.center width=60%}
 
+# Summary
 
-# Performance considerations
-
-- Files are often assigned in a round robin fashion over multiple OSTs
-- You can overwhelm an OST, OSS or MDS
-- Per node limits on bandwidth
-- Testing can be super noisy, performance depends on the load
-- Very large cache effects
-- More stripes does not automatically improve performance
+- Parallel file system is needed for efficient parallel I/O
+    - PFS distribute data across multiple disks or storage nodes
+- Lustre is in many supercomputers
+    - Separate storage for data and metadata
+    - Striping of files has potential to increase performance
 
 # Parallel I/O with posix {.section}
 
@@ -164,11 +162,9 @@ thousands of nodes on the supercomputer to physical disks
 
 # Summary
 
-- Parallel file system is needed for efficient parallel I/O
-    - Striping of files
 - Primitive parallel I/O can be achieved using just normal Posix calls (+
   MPI communication)
     - Spokesman strategy
     - Every man for himself
     - Subset of writers/readers
-    - ***Standard Output and Error streams are effectively serial I/O!***
+    - Note: ***Standard Output and Error streams are effectively serial I/O!***
