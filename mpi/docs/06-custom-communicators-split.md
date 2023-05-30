@@ -1,5 +1,5 @@
 ---
-title:  User-defined communicators and process topologies
+title:  User-defined communicators
 event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
