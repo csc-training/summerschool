@@ -11,13 +11,6 @@ lang:   en
 - MPI-IO allows processes in a parallel application to read from and write to files simultaneously.
 - It provides collective and non-collective I/O operations for efficient data access and manipulation.
 
-# Benefits of MPI-IO
-
-- Parallelism: MPI-IO enables multiple processes to access files concurrently, improving performance in parallel applications.
-- Flexibility: It supports various I/O patterns, such as independent I/O, collective I/O, and one-sided I/O.
-- Scalability: MPI-IO can efficiently scale to large numbers of processes and handle large datasets.
-- Portability: It is a portable standard supported by different MPI implementations.
-
 # Key Features of MPI-IO
 
 - Collective I/O: Enables a group of processes to perform I/O operations as a single unit, improving performance by reducing communication overhead.
