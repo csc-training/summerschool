@@ -200,15 +200,12 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 `omp_get_device_num()`
   : number of device where the function is called
 
-`omp_get_default_device`
+`omp_get_default_device()`
   : default device
 
-`omp_set_default_device`
+`omp_set_default_device(n)`
   : set the default device
 
-
-
-# OpenMP offload constructs {.section}
 
 # Target construct
 
@@ -235,6 +232,9 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 ```
 </div>
 
+
+
+# OpenMP offloading: worksharing {.section}
 
 # Teams construct
 
