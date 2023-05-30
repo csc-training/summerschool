@@ -1,6 +1,6 @@
 ---
-title:  OpenMP data movement
-event:  CSC Summer School in High-Performance Computing 2022
+title:  "OpenMP offloading: data movement"
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -183,7 +183,6 @@ double x[N], y[N], z[N];
     #pragma omp parallel for
     for (int i=0; i < N; i++)
         y[i] += a * x[i];
-
     // ... some host code that modifies x ...
     #pragma omp target update to(x)
     #pragma omp target map(tofrom:z)
