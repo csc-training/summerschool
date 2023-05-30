@@ -94,45 +94,6 @@ lang:   en
 </div>
 
 
-# OpenMP directive syntax
-
-- OpenMP uses compiler directives for defining compute regions (and data
-  transfers) that are to be performed on a GPU
-- OpenMP directives consist of a *sentinel*, followed by the directive
-  name and optional clauses
-
-|         | sentinel      | directive | clauses      |
-| ------- | ------------- | --------- | ------------ |
-| C/C++   | `#pragma omp` | `target`  | `map(data)`  |
-| Fortran | `!$omp`       | `target`  | `map(data)`  |
-
-
-# OpenMP directive syntax
-
-<div class=column>
-- In C/C++, directive applies to the following structured block
-
-```c++
-#pragma omp parallel
-{
-  // calculate in parallel
-    printf("Hello world!\n");
-}
-```
-</div>
-
-<div class=column>
-- In Fortran, and `end` directive specifies the end of the construct
-
-```fortran
-!$omp parallel
-  ! calculate in parallel
-    write(*,*) "Hello world!"
-!$omp end parallel
-```
-</div>
-
-
 # Compiling an OpenMP program for GPU offloading
 
 - In addition to normal OpenMP options (*i.e.* `-fopenmp`), one needs

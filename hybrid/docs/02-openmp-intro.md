@@ -1,6 +1,6 @@
 ---
 title:  Introduction to OpenMP
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -51,16 +51,41 @@ lang:   en
 
 - OpenMP directives consist of a *sentinel*, followed by the directive
   name and optional clauses
-- C/C++:
-```C
-#pragma omp directive [clauses]
-```
-- Fortran:
-```Fortran
-!$omp directive [clauses]
-```
+  <div style="padding-top:1em">
 
+  |         | sentinel      | directive   | clauses          |
+  | ------- | ------------- | ----------- | ---------------- |
+  | C/C++   | `#pragma omp` | `parallel`  | `private(x,y)`   |
+  | Fortran | `!$omp`       | `parallel`  | `private(x,y)`   |
+
+  </div>
 - Directives are ignored when code is compiled without OpenMP support
+
+
+# OpenMP directives
+
+<div class=column>
+- In C/C++, a directive applies to the following structured block
+
+```c++
+#pragma omp parallel
+{
+  // calculate in parallel
+    printf("Hello world!\n");
+}
+```
+</div>
+
+<div class=column>
+- In Fortran, an `end` directive specifies the end of the construct
+
+```fortran
+!$omp parallel
+  ! calculate in parallel
+    write(*,*) "Hello world!"
+!$omp end parallel
+```
+</div>
 
 
 # Compiling an OpenMP program
@@ -163,7 +188,6 @@ Over and out! -main
     - `distribute` construct (for GPUs)
     - `loop` construct
     - `sections` construct
-    
 - Thread ID can be queried and used for distributing work manually
   (similar to MPI rank)
 
