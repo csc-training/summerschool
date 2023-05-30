@@ -202,5 +202,6 @@ for(i=0; i < n; i++) {
 
 # Web resources
 
-- OpenMP homepage: <http://openmp.org/>
-- Online tutorials: <https://www.openmp.org/resources/tutorials-articles/>
+- OpenMP specification: <https://www.openmp.org/specifications/>
+    - includes code examples, reference guide etc.
+- OpenMP tutorials: <https://www.openmp.org/resources/tutorials-articles/>
