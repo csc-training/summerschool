@@ -1,8 +1,9 @@
 ---
 title:  OpenMP reductions and execution control
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
+
 
 # OpenMP reductions {.section}
 
@@ -26,12 +27,11 @@ asum = 0.0d0
 
 # Reductions
 
-- Summing elements of array is an example of reduction operation
-
-$$
-S = \sum_{j=1}^{N} A_j = \sum_{j=1}^{\frac{N}{2}} A_j +
-\sum_{j=\frac{N}{2} + 1}^{N} A_j = B_1 + B_2 = \sum_{j=1}^{2} B_j
-$$
+- Summing the elements of an array is an example of a reduction operation
+  $$
+  S = \sum_{j=1}^{N} A_j = \sum_{j=1}^{\frac{N}{2}} A_j +
+  \sum_{j=\frac{N}{2} + 1}^{N} A_j = B_1 + B_2 = \sum_{j=1}^{2} B_j
+  $$
 
 - OpenMP provides support for common reductions within parallel regions and
   loops
@@ -41,7 +41,8 @@ $$
 
 `reduction(operator:list)`
   : Performs reduction on the (scalar) variables in list
-  : `-`{.ghost}
+
+<br>
 
 - Private reduction variable is created for each thread's partial result
 - Private reduction variable is initialized to operator's initial value
@@ -55,13 +56,14 @@ $$
 
 | Operator | Initial value |
 |----------|---------------|
-| `+`     | `0`           |
+| `+`      | `0`           |
 | `-`      | `0`           |
 | `*`      | `1`           |
 | `&&`     | `1`           |
 | `||`     | `0`           |
 
 </div>
+
 <div class="column">
 
 | Bitwise Operator | Initial value |
@@ -75,8 +77,7 @@ $$
 
 # Reduction operators in Fortran
 
-<small>
-<div class="column">
+<div class="column" style="font-size:0.8em">
 
 | Operator         | Initial value |
 |------------------|---------------|
@@ -91,7 +92,8 @@ $$
 | `.neqv.`         | `.false.`     |
 
 </div>
-<div class="column">
+
+<div class="column" style="font-size:0.8em">
 
 | Bitwise Operator | Initial value |
 |------------------|---------------|
@@ -100,8 +102,6 @@ $$
 | `.ieor.`           | `0`           |
 
 </div>
-
-</small>
 
 
 # Race condition avoided with reduction clause
@@ -113,12 +113,14 @@ $$
   end do
 !$omp end parallel do
 ```
+
 ```c
 #pragma omp parallel for shared(x,y,n) private(i) reduction(+:asum)
 for(i=0; i < n; i++) {
   asum = asum + x[i] * y[i];
 }
 ```
+
 
 # OpenMP execution controls {.section}
 
@@ -127,7 +129,7 @@ for(i=0; i < n; i++) {
 - Sometimes a part of a parallel region should be executed only by the
   master thread or by a single thread at a time
     - IO, initializations, updating global values, etc.
-    - Remember the synchronization!
+    - remember to synchronize!
 - OpenMP provides clauses for controlling the execution of code blocks
 
 
@@ -138,9 +140,9 @@ for(i=0; i < n; i++) {
 
 - When a thread reaches a barrier it only continues after all the threads in
   the same thread team have reached it
-    - Each barrier must be encountered by all threads in a team, or none at
+    - each barrier must be encountered by all threads in a team, or none at
       all
-    - The sequence of work-sharing regions and barrier regions encountered
+    - the sequence of work-sharing regions and barrier regions encountered
       must be same for all threads in a team
 - Implicit barrier at the end of: `for`/`do`, `parallel`, `single`, `workshare`
   unless a `nowait` clause is specified
@@ -158,6 +160,7 @@ for(i=0; i < n; i++) {
 
 - Deprecated in OpenMP 5.1 and replaced with `masked`
 </div>
+
 <div class=column>
 `single`
   : `-`{.ghost}
@@ -168,6 +171,7 @@ for(i=0; i < n; i++) {
 - Other threads wait (implicit barrier) unless a `nowait` clause is specified
 </div>
 
+
 # Execution control constructs
 
 <div class=column>
@@ -177,6 +181,7 @@ for(i=0; i < n; i++) {
 - A section that is executed by only one thread at a time
 - No implicit barrier at the end
 </div>
+
 <div class=column>
 `atomic`
   : `-`{.ghost}
