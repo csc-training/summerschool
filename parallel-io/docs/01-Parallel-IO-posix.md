@@ -124,7 +124,7 @@ thousands of nodes on the supercomputer to physical disks
 
 - Parallel file system is needed for efficient parallel I/O
     - PFS distribute data across multiple disks or storage nodes
-- Lustre is in many supercomputers
+- Lustre is used in many supercomputers
     - Separate storage for data and metadata
     - Striping of files has potential to increase performance
 
