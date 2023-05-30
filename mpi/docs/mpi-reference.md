@@ -25,79 +25,97 @@ int MPI_Finalize()
 # C interfaces for the basic point-to-point operations
 
 ```c
-int MPI_Send(void *buffer, int count, MPI_Datatype datatype,
+int MPI_Send(const void *buf, int count, MPI_Datatype datatype,
              int dest, int tag, MPI_Comm comm)
 
 int MPI_Recv(void *buf, int count, MPI_Datatype datatype,
              int source, int tag, MPI_Comm comm, MPI_Status *status)
 
-int MPI_Sendrecv(void *sendbuf, int sendcount, MPI_Datatype sendtype, int dest, 
-                 int sendtag,
-                 void *recvbuf, int recvcount, MPI_Datatype recvtype, int source, 
-                 int recvtag,
+int MPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                 int dest, int sendtag,
+                 void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                 int source, int recvtag,
                  MPI_Comm comm, MPI_Status *status)
 
-int MPI_Get_count(MPI_Status *status, MPI_Datatype datatype, int *count)
+int MPI_Get_count(const MPI_Status *status, MPI_Datatype datatype, int *count)
 ```
 
 # MPI datatypes for C
 
-| MPI type     |  C type     |
-| ------------ | ----------- |
-|   MPI_CHAR   | signed char |
-|   MPI_SHORT  | short int   |
-|   MPI_INT    | int         |
-|   MPI_LONG   | long int    |
-|   MPI_FLOAT  | float       |
-|   MPI_DOUBLE | double      |
-|   MPI_BYTE   |             |
+| MPI type     |  C type       |
+| ------------ | ------------- |
+| `MPI_CHAR`   | `signed char` |
+| `MPI_SHORT`  | `short int`   |
+| `MPI_INT`    | `int`         |
+| `MPI_LONG`   | `long int`    |
+| `MPI_FLOAT`  | `float`       |
+| `MPI_DOUBLE` | `double`      |
+| `MPI_BYTE`   |               |
 
 # C interfaces for collective operations
 
-<small>
 ```c
-int MPI_Bcast(void* buffer, int count, MPI_datatype datatype, int root, MPI_Comm comm)
+int MPI_Bcast(void *buffer, int count, MPI_datatype datatype,
+              int root, MPI_Comm comm)
 
-int MPI_Scatter(void* sendbuf, int sendcount, MPI_datatype sendtype,
-                void* recvbuf, int recvcount, MPI_datatype recvtype, int root, MPI_Comm comm)
-
-int MPI_Scatterv(void* sendbuf, int *sendcounts, int *displs, MPI_datatype sendtype,
-                 void* recvbuf, int recvcount, MPI_datatype recvtype, int root, MPI_Comm comm)
-
-int MPI_Gather(void* sendbuf, int sendcount, MPI_datatype sendtype,
-               void* recvbuf, int recvcount, MPI_datatype recvtype, int root, MPI_Comm comm)
-
-int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype,
-                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype,
+int MPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                void *recvbuf, int recvcount, MPI_Datatype recvtype,
                 int root, MPI_Comm comm)
-```
-</small>
 
+int MPI_Scatterv(const void *sendbuf, const int *sendcounts,
+                 const int *displs, MPI_Datatype sendtype,
+                 void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                 int root, MPI_Comm comm)
+```
 
 # C interfaces for collective operations
 
-<small>
 ```c
-int MPI_Reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
-               MPI_Op op, int root, MPI_Comm comm)
+int MPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+               void *recvbuf, int recvcount, MPI_Datatype recvtype,
+               int root, MPI_Comm comm)
 
-int MPI_Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype,
-                  MPI_Op op, MPI_Comm comm)
+int MPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                void *recvbuf, const int *recvcounts,
+                const int *displs, MPI_Datatype recvtype,
+                int root, MPI_Comm comm)
 
-int MPI_Allgather(void* sendbuf, int sendcount, MPI_datatype sendtype,
-                  void* recvbuf, int recvcount, MPI_datatype recvtype, MPI_Comm comm)
-
-int MPI_Reduce_scatter(void* sendbuf, void* recvbuf, int* recvcounts, MPI_Datatype datatype,
-                       MPI_Op op, MPI_Comm comm)
-
-int MPI_Alltoall(void* sendbuf, int sendcount, MPI_datatype sendtype,
-                 void* recvbuf, int recvcount, MPI_datatype recvtype, MPI_Comm comm)
-
-int MPI_Alltoallv(void* sendbuf, int *sendcounts, int *sdispls, MPI_Datatype sendtype,
-                  void* recvbuf, int *recvcounts, int *rdispls, MPI_Datatype recvtype,
+int MPI_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                  void *recvbuf, int recvcount, MPI_Datatype recvtype,
                   MPI_Comm comm)
 ```
-</small>
+
+
+# C interfaces for collective operations
+
+```c
+int MPI_Alltoall(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                 void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                 MPI_Comm comm)
+
+int MPI_Alltoallv(const void *sendbuf, const int *sendcounts,
+                  const int *sdispls, MPI_Datatype sendtype,
+                  void *recvbuf, const int *recvcounts,
+                  const int *rdispls, MPI_Datatype recvtype,
+                  MPI_Comm comm)
+```
+
+# C interfaces for collective operations
+
+```c
+int MPI_Reduce(const void *sendbuf, void *recvbuf, int count,
+               MPI_Datatype datatype, MPI_Op op,
+               int root, MPI_Comm comm)
+
+int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count,
+                  MPI_Datatype datatype, MPI_Op op,
+                  MPI_Comm comm)
+
+int MPI_Reduce_scatter(const void *sendbuf, void *recvbuf, const int *recvcounts,
+                       MPI_Datatype datatype, MPI_Op op,
+                       MPI_Comm comm)
+```
+
 
 # Available reduction operations
 
@@ -126,88 +144,101 @@ int MPI_Alltoallv(void* sendbuf, int *sendcounts, int *sdispls, MPI_Datatype sen
 # C interfaces for user-defined communicators
 
 ```c
-int MPI_Comm_split (MPI_Comm comm, int color, int key, MPI_Comm newcomm)
+int MPI_Comm_split(MPI_Comm comm, int color, int key, MPI_Comm *newcomm)
 
-int MPI_Comm_compare (MPI_Comm comm1, MPI_Comm comm2, int result)
+int MPI_Comm_compare(MPI_Comm comm1, MPI_Comm comm2, int *result)
 
-int MPI_Comm_dup ( MPI_Comm comm, MPI_Comm newcomm )
+int MPI_Comm_dup(MPI_Comm comm, MPI_Comm *newcomm)
 
-int MPI_Comm_free ( MPI_Comm comm )
+int MPI_Comm_free(MPI_Comm *comm)
 ```
 
 # C interfaces for non-blocking operations
 
 ```c
-int MPI_Isend(void *buf, int count, MPI_Datatype datatype, int dest, int tag,
-              MPI_Comm comm, MPI_Request *request )
+int MPI_Isend(const void *buf, int count, MPI_Datatype datatype, int dest, int tag,
+              MPI_Comm comm, MPI_Request *request)
 
 int MPI_Irecv(void *buf, int count, MPI_Datatype datatype, int source, int tag,
-              MPI_Comm comm, MPI_Request *request )
+              MPI_Comm comm, MPI_Request *request)
 
 int MPI_Wait(MPI_Request *request, MPI_Status *status)
 
-int MPI_Waitall(int count, MPI_Request *array_of_requests, MPI_Status *array_of_statuses)
-```
-
-# C interfaces for Cartesian process topologies
-
-```c
-int MPI_Cart_create(MPI_Comm old_comm, int ndims, int *dims, int *periods, int reorder,
-                    MPI_Comm *comm_cart)
-
-int MPI_Dims_create(int ntasks, int ndims, int *dims);
-
-int MPI_Cart_coords(MPI_Comm comm, int rank, int maxdim, int *coords)
-
-int MPI_Cart_rank(MPI_Comm comm, int *coords, int rank)
-
-int MPI_Cart_shift( MPI_Comm comm, int direction, int displ, int *low, int *high )
+int MPI_Waitall(int count, MPI_Request *array_of_requests,
+                MPI_Status *array_of_statuses)
 ```
 
 # C interfaces for persistent communication
 
 ```c
-int MPI_Send_init(void *buf, int count, MPI_Datatype datatype, int dest, int tag,
-              MPI_Comm comm, MPI_Request *request )
+int MPI_Send_init(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag,
+                  MPI_Comm comm, MPI_Request *request)
 
-int MPI_Recv_init(void *buf, int count, MPI_Datatype datatype, int source, int tag,
-              MPI_Comm comm, MPI_Request *request )
+int MPI_Recv_init(void *buf, int count, MPI_Datatype datatype,
+                  int source, int tag,
+                  MPI_Comm comm, MPI_Request *request)
 
 int MPI_Start(MPI_Request *request)
 
-int MPI_Startall(int count, MPI_Request *array_of_requests);
+int MPI_Startall(int count, MPI_Request *array_of_requests)
+
+int MPI_Request_free(MPI_Request *request)
+```
+
+# C interfaces for Cartesian process topologies
+
+```c
+int MPI_Cart_create(MPI_Comm old_comm, int ndims, int *dims, int *periods,
+                    int reorder, MPI_Comm *comm_cart)
+
+int MPI_Dims_create(int ntasks, int ndims, int *dims)
+
+int MPI_Cart_coords(MPI_Comm comm, int rank, int maxdim, int *coords)
+
+int MPI_Cart_rank(MPI_Comm comm, int *coords, int rank)
+
+int MPI_Cart_shift(MPI_Comm comm, int direction, int displ, int *low, int *high)
 ```
 
 # C interfaces for neighborhood collectives
 
-<small>
 ```c
-int MPI_Neighbor_allgather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
-                           void* recvbuf, int recvcount, MPI_datatype recvtype, MPI_Comm comm);
+int MPI_Neighbor_allgather(const void *sendbuf, int sendcount,
+                           MPI_Datatype sendtype,
+                           void *recvbuf, int recvcount,
+                           MPI_datatype recvtype, MPI_Comm comm)
 
-int MPI_Neighbor_allgatherv(void* sendbuf, int sendcount, MPI_Datatype sendtype,
-                            void* recvbuf, int* recvcounts, int* displs, MPI_datatype recvtype,
-                            MPI_Comm comm);
-
-int MPI_Neighbor_alltoall(void* sendbuf, int sendcount, MPI_Datatype sendtype,
-                          void* recvbuf, int recvcount, MPI_datatype recvtype,
-                          MPI_Comm comm);
-
-int MPI_Neighbor_alltoallv(void* sendbuf, int* sendcounts, int* senddispls, MPI_Datatype sendtype,
-                           void* recvbuf, int* recvcounts, int* recvdispls, MPI_datatype recvtype,
-                           MPI_Comm comm);
-
-int MPI_Neighbor_alltoallw(void* sendbuf, int* sendcounts, int* senddispls, MPI_Datatype* sendtypes,
-                           void* recvbuf, int* recvcounts, int* recvdispls, MPI_datatype* recvtypes,
-                           MPI_Comm comm);
-
+int MPI_Neighbor_allgatherv(const void *sendbuf, int sendcount,
+                            MPI_Datatype sendtype,
+                            void *recvbuf, cont int *recvcounts, const int *displs,
+                            MPI_Datatype recvtype, MPI_Comm comm)
 ```
-</small>
+
+# C interfaces for neighborhood collectives
+
+```c
+int MPI_Neighbor_alltoall(const void *sendbuf, int sendcount,
+                          MPI_Datatype sendtype,
+                          void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                          MPI_Comm comm)
+
+int MPI_Neighbor_alltoallv(const void *sendbuf, const int *sendcounts,
+                           const int *sdispls, MPI_Datatype sendtype,
+                           void *recvbuf, const int *recvcounts,
+                           const int *rdispls, MPI_Datatype recvtype,
+                           MPI_Comm comm)
+
+int MPI_Neighbor_alltoallw(const void *sendbuf, const int *sendcounts,
+                           const MPI_Aint *sdispls, const MPI_Datatype *sendtypes,
+                           void *recvbuf, const int *recvcounts,
+                           const MPI_Aint *rdispls, const MPI_Datatype *recvtypes,
+                           MPI_Comm comm)
+```
 
 
 # C interfaces for datatype routines
 
-<small>
 ```c
 int MPI_Type_commit(MPI_Datatype *type)
 
@@ -215,21 +246,27 @@ int MPI_Type_free(MPI_Datatype *type)
 
 int MPI_Type_contiguous(int count, MPI_Datatype oldtype, MPI_Datatype *newtype)
 
-int MPI_Type_vector(int count, int block, int stride, MPI_Datatype oldtype,
-                    MPI_Datatype *newtype)
+int MPI_Type_vector(int count, int blocklength, int stride,
+                    MPI_Datatype oldtype, MPI_Datatype *newtype)
 
-int MPI_Type_indexed(int count, int blocks[], int displs[], MPI_Datatype oldtype,
-                     MPI_Datatype *newtype)
+int MPI_Type_indexed(int count, const int *array_of_blocklengths,
+                     const int *array_of_displacements,
+                     MPI_Datatype oldtype, MPI_Datatype *newtype)
+```
 
-int MPI_Type_create_subarray(int ndims, int array_of_sizes[], int array_of_subsizes[],
-                             int array_of_starts[], int order, MPI_Datatype oldtype,
-                             MPI_Datatype *newtype )
+# C interfaces for datatype routines
+
+```c
+int MPI_Type_create_subarray(int ndims, const int array_of_sizes[],
+                             const int array_of_subsizes[],
+                             const int array_of_starts[], int order,
+                             MPI_Datatype oldtype, MPI_Datatype *newtype)
 
 int MPI_Type_create_struct(int count, const int array_of_blocklengths[],
                            const MPI_Aint array_of_displacements[],
-                           const MPI_Datatype array_of_types[], MPI_Datatype *newtype)
+                           const MPI_Datatype array_of_types[],
+                           MPI_Datatype *newtype)
 ```
-</small>
 
 # C interfaces for one-sided routines
 
@@ -240,32 +277,47 @@ int MPI_Win_create(void *base, MPI_Aint size, int disp_unit, MPI_Info info,
 int MPI_Win_fence(int assert, MPI_Win win)
 
 int MPI_Put(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype,
-                  int target_rank, MPI_Aint target_disp, int target_count,
-                  MPI_Datatype target_datatype, MPI_Win win)
+            int target_rank, MPI_Aint target_disp, int target_count,
+            MPI_Datatype target_datatype, MPI_Win win)
 
-int MPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype, int target_rank,
-            MPI_Aint target_disp, int target_count, MPI_Datatype target_datatype, MPI_Win win)
+int MPI_Get(void *origin_addr, int origin_count, MPI_Datatype origin_datatype,
+            int target_rank, MPI_Aint target_disp,
+            int target_count, MPI_Datatype target_datatype,
+            MPI_Win win)
+```
 
-int MPI_Accumulate(const void *origin_addr, int origin_count, MPI_Datatype origin_datatype,
-                   int target_rank, MPI_Aint target_disp, int target_count,
-                   MPI_Datatype target_datatype, MPI_Op op, MPI_Win win)
+# C interfaces for one-sided routines
+
+```c
+int MPI_Accumulate(const void *origin_addr, int origin_count,
+                   MPI_Datatype origin_datatype,
+                   int target_rank, MPI_Aint target_disp,
+                   int target_count, MPI_Datatype target_datatype,
+                   MPI_Op op, MPI_Win win)
 ```
 
 # C interfaces to MPI I/O routines
 
 ```c
-int MPI_File_open(MPI_Comm comm, char *filename, int amode, MPI_Info info, MPI_File *fh)
+int MPI_File_open(MPI_Comm comm, char *filename, int amode, MPI_Info info,
+                  MPI_File *fh)
 
 int MPI_File_close(MPI_File *fh)
 
 int MPI_File_seek(MPI_File fh, MPI_Offset offset, int whence)
 
-int MPI_File_read(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status)
+int MPI_File_read(MPI_File fh, void *buf, int count, MPI_Datatype datatype,
+                  MPI_Status *status)
 
+int MPI_File_write(MPI_File fh, void *buf, int count, MPI_Datatype datatype,
+                   MPI_Status *status)
+```
+
+# C interfaces to MPI I/O routines
+
+```c
 int MPI_File_read_at(MPI_File fh, MPI_Offset offset, void *buf, int count,
                      MPI_Datatype datatype, MPI_Status *status)
-
-int MPI_File_write(MPI_File fh, void *buf, int count, MPI_Datatype datatype, MPI_Status *status)
 
 int MPI_File_write_at(MPI_File fh, MPI_Offset offset, void *buf, int count,
                       MPI_Datatype datatype, MPI_Status *status)
@@ -281,11 +333,11 @@ int MPI_File_set_view(MPI_File fh, MPI_Offset disp, MPI_Datatype etype,
 int MPI_File_read_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype,
                       MPI_Status *status)
 
-int MPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count,
-                         MPI_Datatype datatype, MPI_Status *status)
-
 int MPI_File_write_all(MPI_File fh, void *buf, int count, MPI_Datatype datatype,
                        MPI_Status *status)
+
+int MPI_File_read_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count,
+                         MPI_Datatype datatype, MPI_Status *status)
 
 int MPI_File_write_at_all(MPI_File fh, MPI_Offset offset, void *buf, int count,
                           MPI_Datatype datatype, MPI_Status *status)
@@ -358,16 +410,16 @@ mpi_get_count(status, datatype, count, ierror)
 
 # MPI datatypes for Fortran
 
-| MPI type             |  Fortran type    |
-| -------------------- | ---------------- |
-| MPI_CHARACTER        | character        |
-| MPI_INTEGER          | integer          |
-| MPI_REAL             | real32           |
-| MPI_DOUBLE_PRECISION | real64           |
-| MPI_COMPLEX          | complex          |
-| MPI_DOUBLE_COMPLEX   | double complex   |
-| MPI_LOGICAL          | logical          |
-| MPI_BYTE             |                  |
+| MPI type               |  Fortran type    |
+| ---------------------- | ---------------- |
+| `MPI_CHARACTER`        | character        |
+| `MPI_INTEGER`          | integer          |
+| `MPI_REAL`             | real32           |
+| `MPI_DOUBLE_PRECISION` | real64           |
+| `MPI_COMPLEX`          | complex          |
+| `MPI_DOUBLE_COMPLEX`   | double complex   |
+| `MPI_LOGICAL`          | logical          |
+| `MPI_BYTE`             |                  |
 
 
 
