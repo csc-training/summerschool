@@ -1,5 +1,5 @@
 ---
-title:  "OpenMP offloading: data movement"
+title:  "OpenMP offloading: <br>data movement"
 event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
