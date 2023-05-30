@@ -1,6 +1,6 @@
 ---
-title:  "OpenMP offload: introduction"
-event:  CSC Summer School in High-Performance Computing 2022
+title:  "OpenMP offloading: introduction"
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -9,8 +9,9 @@ lang:   en
 
 - Set of OpenMP constructs for heterogenous systems
     - **GPU**s, FPGAs, ...
-- Code regions are offloaded from a host CPU to be computed on an accelerator
-    - High level GPU programming
+- Code regions are offloaded from the host CPU to be computed on an
+  accelerator
+    - high-level abstraction layer for GPU programming
 - In principle same code can be run on various systems
     - CPUs only
     - NVIDIA GPUs, AMD GPUs, Intel GPUs, ...
@@ -21,12 +22,13 @@ lang:   en
 
 - OpenACC is very similar compiler directive based approach for GPU
   programming
-    - Open standard, however, NVIDIA major driver
+    - open standard, however, NVIDIA major driver
 - Why OpenMP and not OpenACC?
-    - OpenMP is going to have a more extensive platform and compiler
+    - OpenMP is likely to have a more extensive platform and compiler
       support
-    - Currently, OpenACC support in AMD GPUs is limited
-    - Currently, OpenACC can provide better performance in NVIDIA GPUs
+    - currently, OpenACC support in AMD GPUs is limited
+    - currently, OpenACC can provide better performance in NVIDIA GPUs
+
 
 # OpenACC support for AMD GPUs
 
@@ -35,28 +37,29 @@ lang:   en
 - Cray compilers
     - Fortran compiler supports OpenACC v2.7, support for latest OpenACC coming in 2022
     - C/C++ compiler does not support OpenACC
-- In LUMI, only Fortran will be supported with OpenACC
-- For now, OpenACC is not a recommended approach for new codes targeting AMD GPUs
-    - If a Fortran code already uses OpenACC, it may be possible to use it
+- In LUMI, only Fortran is supported with OpenACC
+- For now, OpenACC is not a recommended approach for new codes targeting AMD
+  GPUs
+    - if a Fortran code already uses OpenACC, it may be possible to use it
 
 
 # OpenMP vs. CUDA/HIP
 
 - Why OpenMP and not CUDA/HIP?
-    - Easier to work with
-    - Porting of existing software requires less work
-    - Same code can be compiled to CPU and GPU versions easily
+    - easier to start shifting work to GPUs (less coding)
+    - simple things are simpler
+    - same code can be compiled to CPU and GPU versions easily
 - Why CUDA/HIP and not OpenMP?
-    - Can access all features of the GPU hardware
-    - More optimization possibilities
+    - can access all features of the GPU hardware
+    - better control and assurance it will work as intended
+    - more optimization possibilities
 
 
 # OpenMP execution model
 
 - Host-directed execution with an attached accelerator
-    - Large part of the program is usually executed by the host
-    - Computationally intensive parts are *offloaded* to the accelerator
-      that executes *parallel regions*
+    - large part of the program is usually executed by the host
+    - computationally intensive parts are *offloaded* to the accelerator
 - Accelerator can have a separate memory
     - OpenMP exposes the separate memories through *data environment*
       that defines the memory management and needed copy operations
@@ -67,7 +70,7 @@ lang:   en
 <div class="column">
 - Program runs on the host CPU
 - Host offloads compute-intensive regions (*kernels*) and related data
-  to the accelerator GPU
+  to the GPU
 - Compute kernels are executed by the GPU
 </div>
 
@@ -79,7 +82,7 @@ lang:   en
 # OpenMP data model in offloading
 
 <div class="column">
-- If host memory is separate from accelerator device memory
+- If host memory is separate from device memory
     - host manages memory of the device
     - host copies data to/from the device
 - When memories are not separate, no copies are needed (difference is
@@ -177,10 +180,10 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 # Runtime API functions
 
 - Low-level runtime API functions can be used to
-    - Query the number of devices in the system
-    - Select the device to use
-    - Allocate/deallocate memory on the device(s)
-    - Transfer data to/from the device(s)
+    - query the number of devices in the system
+    - select the device to use
+    - allocate/deallocate memory on the device(s)
+    - transfer data to/from the device(s)
 -  Function definitions are in
     - C/C++ header file `omp.h`
     - `omp_lib` Fortran module
@@ -188,24 +191,31 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 
 # Useful API functions
 
-- `omp_is_initial_device()` : returns True when called in host, False
-  otherwise
-- `omp_get_num_devices()` : number of devices available
-- `omp_get_device_num()` : number of device where the function
-  is called
-- `omp_get_default_device` : default device
-- `omp_set_default_device` : set the default device
+`omp_is_initial_device()`
+  : returns True when called in host, False otherwise
+
+`omp_get_num_devices()`
+  : number of devices available
+
+`omp_get_device_num()`
+  : number of device where the function is called
+
+`omp_get_default_device`
+  : default device
+
+`omp_set_default_device`
+  : set the default device
+
 
 
 # OpenMP offload constructs {.section}
 
-
 # Target construct
 
-- OpenMP `target` constructs specifies a region to be executed on GPU
-- Initially, runs with a single thread
+- OpenMP `target` construct specifies a region to be executed on GPU
+    - initially, runs with a single thread
 - By default, execution in the host continues only after target region
-  is finished.
+  is finished
 - May trigger implicit data movements between the host and the device
 
 <div class=column>
@@ -228,11 +238,12 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 
 # Teams construct
 
-- Target construct does not create any parallelism, but additional
+- Target construct does not create any parallelism, so additional
   constructs are needed
 - `teams` creates a league of teams
     - number of teams is implementation dependent
-- Initially, single thread per team runs the following structured block
+    - initially, a single thread in each team executes the following
+      structured block
 - No synchronization between teams is possible
 - Probable mapping: team corresponds to a "thread block" /
   "workgroup" and runs within streaming multiprocessor / compute unit
@@ -240,13 +251,13 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 
 # Creating threads within a team
 
-- The league of teams cannot typically leverage all the parallelism
-  available in the accelerator
+- Just having a league of teams is typically not enough to leverage all the
+  parallelism available in the accelerator
 - A `parallel` construct within a `teams` region creates threads
   within each team
     - number of threads per team is implementation dependent
-- With N teams and M threads per team there will be N x M threads in
-  total
+    - with N teams and M threads per team there will be N x M threads in
+      total
 - Threads within a team can synchronize
 - Number of teams and threads can be queried with the
   `omp_get_num_teams()` and `omp_get_num_threads()` API functions
@@ -278,7 +289,7 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 </div>
 
 
-# League and teams of threads
+# League of multi-threaded teams
 
 ![](img/teams.png){.center width=80%}
 
@@ -287,8 +298,8 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 
 - `teams` and `parallel` constructs create threads, however, all the
   threads are still executing the same code
-- `distribute` constructs distributes loop iterations over the teams
-- `for` / `do` construct can be used within parallel region
+- `distribute` construct distributes loop iterations over the teams
+- `for` / `do` construct can also be used within a parallel region
 
 
 # Worksharing in the accelerator
@@ -335,8 +346,8 @@ end do
 - `num_teams` clause for `teams` construct and `num_threads` clause
   for `parallel` construct can be used to specify number of teams and
   threads
-    - May improve performance in some cases
-    - Performance is most likely not portable
+    - may improve performance in some cases
+    - performance is most likely not portable
 
 ```c++
 #pragma omp target
@@ -379,9 +390,8 @@ end do
 # Loop construct
 
 - In OpenMP 5.0 a new `loop` worksharing construct was introduced
-- Less prescriptive, leaves more freedom to the implementation to do
-  the work division
-    - Tells the compiler/runtime only that the loop iterations are
+- Leaves more freedom to the implementation to do the work division
+    - tells the compiler/runtime only that the loop iterations are
       independent and can be executed in parallel
 
 <div class=column>
@@ -407,19 +417,19 @@ end do
 </div>
 
 
-# Compiler diagnostics {.section}
 
+# Compiler diagnostics {.section}
 
 # Compiler diagnostics
 
 - Compiler diagnostics is usually the first thing to check when starting
-  the OpenMP work
-    - It can tell you what operations were actually performed
-    - Data copies that were made
-    - If and how the loops were parallelized
-- The diagnostics is very compiler dependent
-    - Compiler flags
-    - Level and formatting of information
+  to work with OpenMP, as it can tell you
+    - what operations were actually performed
+    - what kind of data copies that were made
+    - if and how the loops were parallelized
+- Diagnostics are very compiler dependent
+    - compiler flags
+    - level and formatting of information
 
 
 # NVIDIA compiler
@@ -447,8 +457,8 @@ evolve:
 
 - OpenMP enables directive-based programming of accelerators with
   C/C++ and Fortran
-- Host-device model
-    - host offloads computations to the accelerator
+- Host--device model
+    - host offloads computations to the device
 - Host and device may have separate memories
     - Host controls copying into/from the device
 - Key concepts:
@@ -461,5 +471,5 @@ evolve:
 
 - NVIDIA HPC SDK Documentation <br>
   <https://docs.nvidia.com/hpc-sdk/compilers/hpc-compilers-user-guide/>
-- Cray Compilers Documentation <br>
-  <[https://dcray/hpc-compilers-user-guide/](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=index.html)>
+- HPE Cray Programming Environment Documentation <br>
+  <https://cpe.ext.hpe.com/docs/>
