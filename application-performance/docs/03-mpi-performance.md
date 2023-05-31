@@ -1,6 +1,6 @@
 ---
 title:  MPI performance analysis
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -13,7 +13,7 @@ lang:   en
 # Introduction
 
 - Finding out the scalability bottlenecks of parallel application is non-trivial
-- Bottlenecks can be very different with few CPUs than with thousands of CPUs
+- Bottlenecks can be very different with few CPUs/GPUs than with thousands of CPUs/GPUs
 - Performance analysis needs to be carried in scalability limit with
   large enough test case
 - Efficient tools are needed for the analysis of massively parallel applications

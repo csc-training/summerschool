@@ -1,12 +1,12 @@
 ---
 title:  Introduction to Application Performance
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
 # A day in life at CSC
 
-<div class=column>
+<div class=column width=65%>
 **CSC customer**
 <br>
 <small>
@@ -24,7 +24,7 @@ No
 </small>
 </div>
 
-<div class=column>
+<div class=column width=30%>
 **CSC specialist**
 <br>
 <br>
@@ -122,7 +122,7 @@ Time elapsed 343773 ums
 - Choose good algorithm
     - Note: the best serial algorithm is not always the best
       parallel algorithm
-    - Computating more can be beneficial if less
+    - Computing more can be beneficial if less
       communication is needed
 - Use high performance libraries
     - linear algebra (ScaLAPACK, ELPA), FFTs, ...
@@ -136,8 +136,8 @@ Time elapsed 343773 ums
 
 - First step should always be measuring the performance and finding
   performance critical parts
-  - Typically small part of the code (`~`10 %) consumes most
-        (`~`90%) of the execution time
+  - Typically small part of the code (`~`20 %) consumes most
+        (`~`80%) of the execution time
 - Optimize only the parts of code that are relevant for the total
   execution time!
     - “Premature code optimization is the root of all evil”
@@ -166,7 +166,7 @@ Time elapsed 343773 ums
 
 # How to assess application's performance?
 
-<div class=column width=58%>
+<div class=column width=63%>
 - Two fundamental limits for CPU
 - Peak floating point performance
     - clock frequency
@@ -178,7 +178,7 @@ Time elapsed 343773 ums
     - How fast data can be fed to the CPU
 </div>
 
-<div class=column width=40%>
+<div class=column width=35%>
 <!-- Copyright CSC -->
 ![](img/cpu-memory.png){.center width=50%}
 </div>
@@ -212,7 +212,7 @@ Time elapsed 343773 ums
 
 # How to assess application's parallel performance?
 
-- First step should be always to optimize single core performance
+- First step should be always to optimize single core / single GPU performance
     - May affect computation / communication balance
 - Maximize single node performance
     - Dynamic scaling of clock frequency, shared caches etc. make
@@ -294,6 +294,7 @@ $$
 - Roofline model can work as a guide in optimization
 
 # How to start?
+
 - What limits the performance?
     - Serial / OpenMP / GPU (single node performance)
     - MPI (internode performance)

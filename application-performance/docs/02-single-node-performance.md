@@ -1,6 +1,6 @@
 ---
 title:  Single node performance optimization
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -10,7 +10,7 @@ lang:   en
 
 - You can make a big difference to code performance with how you
   express things
-- Helping the compiler spot optimisation opportunities
+- Helping the compiler to spot optimisation opportunities
 - Using the insight of your application
     - language semantics might limit compiler
 - Removing obscure (and obsolescent) "optimizations" in older code
