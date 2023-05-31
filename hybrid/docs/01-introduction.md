@@ -1,6 +1,6 @@
 ---
 title:  Introduction to hybrid programming
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 
 <div class="column">
 ```shell
-$ mpicc -fopenmp hybrid-hello.c -o hybrid-hello
+$ cc -fopenmp hybrid-hello.c -o hybrid-hello
 $ srun  --ntasks=2 --cpus-per-task=4
   ./hybrid-hello
 

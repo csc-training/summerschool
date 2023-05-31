@@ -91,7 +91,7 @@ lang:   en
 # Compiling an OpenMP program
 
 - Compilers that support OpenMP usually require an option (flag) for enabling it
-    - Most compilers (GNU, Intel, Cray) nowadays support `-fopenmp`
+    - Most compilers (GNU, Clang, Intel, Cray) nowadays support `-fopenmp`
     - Intel legacy foption: `-qopenmp`
     - NVIDIA: `-mp`
 
@@ -141,7 +141,7 @@ program omp_hello
 end program omp_hello
 ```
 ```bash
-$ gfortran -fopenmp omp_hello.F90 -o omp
+$ ftn -fopenmp omp_hello.F90 -o omp
 $ OMP_NUM_THREADS=3 ./omp
  Hello world! -main
  .. worker reporting for duty.
@@ -165,7 +165,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 ```bash
-$ gcc -fopenmp omp_hello.c -o omp
+$ cc -fopenmp omp_hello.c -o omp
 $ OMP_NUM_THREADS=3 ./omp
 Hello world! -main
 .. worker reporting for duty.
