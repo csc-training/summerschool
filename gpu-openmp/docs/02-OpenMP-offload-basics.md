@@ -128,6 +128,20 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 ```
 
 
+# Controlling affinity with GPUs
+
+- For good performance, the host process should always be pinned to a CPU
+  core that is physically close to the GPU device
+- On LUMI, to bind to the closest core to GPUs, one can use:
+    - `--cpu-bind=map_cpu:48,56,16,24,1,8,32,40` &nbsp;&nbsp; for 8 GPUs
+    - assumes that GPUs are assigned in order based on MPI rank <br>
+      (MPI rank 0 on GPU device 0 etc.)
+    - more details in: <br>
+      <span style="font-size:0.75em">
+      <https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/distribution-binding/#gpu-binding>
+      </span>
+
+
 # OpenMP internal control variables
 
 - OpenMP has internal control variables

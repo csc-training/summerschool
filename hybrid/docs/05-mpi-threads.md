@@ -149,13 +149,30 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
       `numactl --physcpubind=0,3,7 ./my_exe`
       </span>
     - threads inherit the affinity of their parent process
+- On LUMI, process affinity is set by using SLURM options
+    - `--distribution={nodes}:{sockets}:{cores}`
+        - `{nodes|sockets|cores} ∈ [block, cyclic, plane=<size>, ...]`
+    - e.g. `--distribution=block:cyclic:fcyclic`
+
+
+# Controlling affinity
+
 - Affinity of a thread can be set with OpenMP environment variables
-    - `OMP_PROC_BIND=[true/false, close, spread, primary]`
+    - `OMP_PROC_BIND=true/false|auto|spread|close|master`
         - e.g. `export OMP_PROC_BIND=spread`
-        - older implementations may use `master` instead of `primary`
-    - `OMP_PLACES=[threads, cores, sockets]`
+    - `OMP_PLACES=threads|cores|sockets`
         - e.g. `export OMP_PLACES=cores`
 - OpenMP runtime prints the affinity with `OMP_DISPLAY_AFFINITY=true`
+
+- Useful on-line resources:
+    - LUMI User Guide:<br>
+      <span style="font-size:0.72em">
+      <https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/distribution-binding/>
+      </span>
+    - Frontier User Guide:<br>
+      <span style="font-size:0.72em">
+      <https://docs.olcf.ornl.gov/systems/frontier_user_guide.html#process-and-thread-mapping-examples>
+      </span>
 
 
 # Controlling affinity
