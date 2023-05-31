@@ -1,6 +1,6 @@
 ---
 title:  Collaboration and release
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -115,10 +115,11 @@ CC-BY-SA-4.0
 
 # Case GPAW
 <div class=column>
+- Open source electronic structure simulation code
 - GPL from the beginning, copyright scattered over all developers
 - Gitlab, mailing list, issue tracker, face-to-face workshops
 - First method paper in 2005, major review article in 2010
-    - Together over 1600 citations
+    - Together over 2000 citations
 - From single developer to tens of users and developers all over the world
 </div>
 <div class=column>

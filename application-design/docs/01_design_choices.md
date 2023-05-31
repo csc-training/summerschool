@@ -1,6 +1,6 @@
 ---
 title:  Application design
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -40,13 +40,21 @@ lang:   en
 # ICON
 
 <div class=column>
-- 
-- 
+- Icosahedral Nonhydrostatic Weather and Climate Model
+- Closed source, developed my several meteorology institutes in Europe
+    - DWD, MPI-M, MeteoSwiss, ...
+    - ~200 developers
+- 1 600 000 lines of modern Fortran
+- Stencil type operations
+    - Memory bound
+- MPI + OpenMP
+- GPUs with OpenACC (+CUDA/HIP)
   
 </div>
 <div class=column>
     
-![](images/plasma.png){.center width=100%}
+<!-- Image source https://code.mpimet.mpg.de/projects/iconpublic -->
+![](images/r2b02_europe.png){.center width=100%}
 
 </div>
 
@@ -71,9 +79,11 @@ lang:   en
     
 ICON
 
-- 
-- 
-- 
+- Rewrite of earlier weather model in early 2000s
+- Next generation modeling system capable of global simulations down to 1km resolutions
+- Operational forecasts since 2015
+- GPU porting started in ~2015
+
 </div>
 
 <div class=column>
@@ -114,6 +124,20 @@ LiGen
 - Going **BIG** -> GPUs are mandatory
 - But not all HPC needs to be exascale
     - Size is not a goal in itself
+
+# Case ICON: Parallellization
+
+- Domain decomposition of the horizontal grid
+- Halo exchange with `Isend` / `Irecv`
+- Asynchronous I/O with special I/O processes
+    - One sided MPI
+
+# Case ICON: GPU porting
+
+- Most of the computations on GPU
+- Data copied to the GPU in the start of the simulation
+- Loops parallelized with OpenACC directives
+- GPU aware MPI communication
 
 # Case LiGen: Parallellization
 
@@ -207,6 +231,19 @@ LiGen
     - Python & C++ (PyBind11) for object-oriented programming
     - Julia & Fortran (native) for functional programming
 
+# GPU programming approaches
+
+- Directive based approaches: OpenACC and OpenMP
+    - "standard" and "portable"
+- Native low level languages: CUDA (NVIDIA) and HIP (AMD)
+    - HIP supports in principle also NVIDIA devices
+    - Fortran needs wrappers via C-bindings
+- Performance portability frameworks: SYCL, Kokkos
+    - Support only C++
+- Standard language features: parallel C++, `do concurrent`
+    - Rely on implicit data movements
+    - Compiler support incomplete
+
 # Modular code design: programming
 
 - Good code is modular
@@ -251,6 +288,7 @@ LiGen
 - Compilers
     - Compilers are not the same, compiler bugs are real!
     - Test your code with different compilers (gnu, clang, intel, cray,...)
+- Linters (check coding style)
 
 - **Questions**: Choices in your software and experiences about them?
 
@@ -274,6 +312,12 @@ LiGen
         - Move between Host and Device
         - Preallocation
         - Overlapping computation with copy
+
+# Case ICON: Data design
+
+- Multiply nested data structures
+- Need for deep copies for GPUs
+- Fortran pointers used as "shortcuts"
 
 # Case LiGen: Data design
 

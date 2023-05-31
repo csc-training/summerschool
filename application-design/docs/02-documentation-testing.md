@@ -1,6 +1,6 @@
 ---
 title:  Documenting and testing
-event:  CSC Summer School in High-Performance Computing 2022
+event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
@@ -75,7 +75,11 @@ LiGen
 <div class=column>
 ICON
 
-- 
+- No single extensive user or developer documentation
+- Set of LaTex files within repository
+- Separate user tutorials
+- Some developer information within gitlab wiki
+- Relatively good documentation in source 
 </div>
 
 # Testing
@@ -160,13 +164,16 @@ do not constitute science!**
     - Preferably test on multiple architectures
 - Complicated dependency chains makes testing even harder
     - Impossible to test exhaustively 
-- Systems are very noisy, especially on the filesystem and network level.  
+- Systems are very noisy, especially on the filesystem and network level.
+- Different compilers may produce different results (and have bugs)
+- How to get access to different branches of CPUs / GPUs?
 
 
 # Continuous integration
 
 - Automatic testing
     - Build test ensures that code is always in a "working state"
+    - Linting test ensures code adheres to style guide
 - Unit and integration tests can be run automatically after build succeeds
 - Nightly / weekly tests
     - Software is built and tested at specified times
@@ -209,9 +216,11 @@ LiGen
 <div class=column>
 ICON
 
-- 
-- 
-- 
+- No unit testing framework 
+- Build tests and integrations tests with buildbot
+    - ~10 different supercomputers included in the testing
+- Buildbot tests need to be triggered manually
+    - Testing may result in non-neglible usage of computational resources
 
 </div>
 
