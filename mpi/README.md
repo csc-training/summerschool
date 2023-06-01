@@ -19,6 +19,10 @@
 
   - [Collective operations](collectives)
 
+### Debugging
+
+  - [Debugging](debugging)
+
 ### Custom communicators
 
   - [Communicators and collectives](communicator)
