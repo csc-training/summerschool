@@ -180,6 +180,9 @@ MPI_Iprobe(`source`{.input}, `tag`{.input}, `comm`{.input}, `flag`{.output}, `st
 <p>
 Allows incoming messages to be checked, without actually receiving them.
 
+`MPI_Probe` is a blocking version of the same operation.
+
+
 # Non-blocking collectives
 
 - Non-blocking collectives (“``I``-collectives”) enable the overlapping of communication and computation together with the benefits of collective communication.
@@ -288,3 +291,4 @@ MPI_Request_free (&recv_req); MPI_Request_free (&send_req);
 - In persistent communication the communication pattern remains constant
 - All the parameters for the communication are set up in the initialization phase
     - Communication is started and finalized in separate steps
+- Persistent communication provides optimization opportunities for MPI library

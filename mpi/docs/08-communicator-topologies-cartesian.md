@@ -252,5 +252,4 @@ call mpi_sendrecv(buf(1,1), 1, rowtype, nbr_up, tag_up, &
 
 - Neighborhood collectives enable communication between neighbours in process topology
   with a single MPI call
-- Persistent and neighborhood communication provide optimization opportunities for MPI
-  library
+- Neighborhood communication provides optimization opportunities for MPI library
