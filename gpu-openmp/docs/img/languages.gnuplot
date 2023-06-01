@@ -38,6 +38,7 @@ GPU Application, 5, 2, 4, 1
 EOD
 
 set datafile separator comma
+set cbtics ("bad" 0, "good" 5)
 plot '$map3' matrix rowheaders columnheaders using 1:2:3 with image
 set datafile separator
 

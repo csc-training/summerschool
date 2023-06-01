@@ -54,9 +54,9 @@ lang:   en
 | | |
 | ----------- | ----------- |
 | ![](img/sisd.png){height=30%}    | ![](img/misd.png){height=30%}|
-| SISD   | MISD        |
+| Single Instruction Single Data | Multiple Instructions Single Data |
 | ![](img/simd.png){height=30%}    | ![](img/mimd.png){height=30%}|
-| SIMD   | MIMD        |
+| Single Instruction Multiple Data | Multiple Instructions Multiple Data|
 | | |
 </center>
 
