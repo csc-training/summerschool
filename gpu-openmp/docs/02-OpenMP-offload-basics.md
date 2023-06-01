@@ -121,10 +121,12 @@ host code
 #endif
 ```
 
-- Example: Compiling with NVIDIA HPC in Mahti
+- Example: Compiling with CCE 15.0.1 in Lumi
+	- Compiler wrapper will take care to set most of the correct flags for offloading (such as the `-fopenmp-targets=xx`) if you load the correct modules
+	- Required modules are at least `LUMI/23.03 partition/G rocm cpeCray`
 
 ```bash
-nvc -o my_exe test.c -mp=gpu -gpu=cc80
+cc -o my_exe test.c -fopenmp
 ```
 
 
@@ -198,31 +200,60 @@ nvc -o my_exe test.c -mp=gpu -gpu=cc80
 # OpenMP offloading: worksharing {.section}
 
 # Teams construct
-
+<div class=column>
 - Target construct does not create any parallelism, so additional
   constructs are needed
 - `teams` creates a league of teams
     - number of teams is implementation dependent
     - initially, a single thread in each team executes the following
       structured block
+
+</div>
+
+<div class=column>
+
+![ <span style=" font-size:0.5em;"></span> ](img/league2.png){width=70%}
+</div>
+
+# Teams construct
+
+<div class=column>
 - No synchronization between teams is possible
 - Probable mapping: team corresponds to a "thread block" /
   "workgroup" and runs within streaming multiprocessor / compute unit
 
+</div>
+
+<div class=column>
+
+![ <span style=" font-size:0.5em;"></span> ](img/team.png){width=70%}
+</div>
 
 # Creating threads within a team
 
+- No synchronization between teams is possible
 - Just having a league of teams is typically not enough to leverage all the
   parallelism available in the accelerator
-- A `parallel` construct within a `teams` region creates threads
+- A `parallel` or a `simd` construct within a `teams` region creates threads
   within each team
     - number of threads per team is implementation dependent
     - with N teams and M threads per team there will be N x M threads in
       total
+
+
+# Creating threads within a team
+
+<div class=column>
 - Threads within a team can synchronize
 - Number of teams and threads can be queried with the
   `omp_get_num_teams()` and `omp_get_num_threads()` API functions
 
+</div>
+
+<div class=column>
+
+![ <span style=" font-size:0.5em;"></span> ](img/thread.png){width=70%}
+</div>
 
 # Creating teams and threads
 
@@ -392,27 +423,35 @@ end do
     - compiler flags
     - level and formatting of information
 
+# CRAY compiler
 
-# NVIDIA compiler
+- Different behaviour between C/C++ and Fortran
 
-- Diagnostics is controlled by compiler flag `-Minfo[=option]`
-- Useful options:
-    - `mp` -- operations related to the OpenMP
-    - `all` -- print all compiler output
-    - `intensity` -- print loop computational intensity info
+<div class=column>
+`cc -fopenmp -fsave-loopmark`
+</div>
 
+<div class=column>
+`ftn -hmsgs -hlist=m  -fopenmp`
 
-# Example: `-Minfo`
+</div>
 
+# CRAY compiler - Fortran
+- Provides full support and nice diagnostics in file `*.lst`
+- Example:
 ```bash
-nvc++ -O3 -mp=gpu -gpu=cc80 -c -Minfo=mp,intensity core.cpp
-evolve:
-     63, #omp target teams distribute parallel for
-         63, Generating Tesla and Multicore code
-             Generating "nvkernel_evolve_F1L63_1" GPU kernel
-         68, Loop parallelized across teams and threads, schedule(static)
-     69, Intensity = 19.00
+ftn-6405 ftn: ACCEL VECTORSUM, File = sum.F90, Line = 17 
+  A region starting at line 17 and ending at line 21 was placed on the accelerator.
+
+ftn-6823 ftn: THREAD VECTORSUM, File = sum.F90, Line = 17 
+  A region starting at line 17 and ending at line 21 was multi-threaded.
 ```
+
+# CRAY compiler - C/C++
+- Provides support but limited diagnostics in file `*.lst`
+- Still possible to see what is happening during the runtime of the application by setting the environment variable `CRAY_ACC_DEBUG` and reading the stderr of the batch job
+- Less friendly to developer
+
 
 # Summary
 
@@ -430,7 +469,8 @@ evolve:
 
 # Useful resources
 
-- NVIDIA HPC SDK Documentation <br>
-  <https://docs.nvidia.com/hpc-sdk/compilers/hpc-compilers-user-guide/>
 - HPE Cray Programming Environment Documentation <br>
   <https://cpe.ext.hpe.com/docs/>
+
+- 2022 ECP Community BoF Days <br>
+  <https://www.openmp.org/wp-content/uploads/2022_ECP_Community_BoF_Days-OpenMP_RoadMap_BoF.pdf>
