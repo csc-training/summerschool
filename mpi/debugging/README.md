@@ -25,7 +25,7 @@ Load module and start debugger in an interactive session:
 ```bash
 module load ARMForge
 export SLURM_OVERLAP=1
-salloc --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug
+salloc -A project_465000536 --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug
 ddt srun ./buggy
 ```
 
@@ -38,7 +38,7 @@ Note: you can also skip the VNC step and use X11 forwarding for GUI (might be sl
 
 Set up VNC for smoother GUI performance:
 ```bash
-sinteractive --cores 1
+sinteractive -A project_2007995 --cores 1
 module load vnc
 start-vnc
 ```
@@ -49,7 +49,7 @@ Load module and start debugger in an interactive session:
 ```bash
 module load ddt
 export SLURM_OVERLAP=1
-salloc --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
+salloc -A project_2007995 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
 ddt srun ./buggy
 ```
 
@@ -69,7 +69,7 @@ Load module and start debugger in an interactive session:
 ```bash
 module load ddt
 export SLURM_OVERLAP=1
-salloc --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
+salloc -A project_2007995 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
 ddt srun ./buggy
 ```
 
