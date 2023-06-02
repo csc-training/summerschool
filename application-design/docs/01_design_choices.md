@@ -6,11 +6,6 @@ lang:   en
 
 # Why develop software? 
 
-- To do science
-- To create a product
-
-- Supercomputing platforms enable investigating bigger and more complex problems
-
 <div class=column>
     
 - **Do science**
@@ -33,7 +28,8 @@ lang:   en
 # Starting position
 
 - New code or existing project / rewrite of old code?
-    - How much effort do you have at your disposal?
+- How much effort do you have at your disposal?
+    - Number of developers may grow
 
 - **Questions**: your software project?
 
@@ -41,20 +37,19 @@ lang:   en
 
 <div class=column>
 - Icosahedral Nonhydrostatic Weather and Climate Model
-- Closed source, developed my several meteorology institutes in Europe
+- Closed source, developed my several meteorology institutes
     - DWD, MPI-M, MeteoSwiss, ...
     - ~200 developers
 - 1 600 000 lines of modern Fortran
 - Stencil type operations
     - Memory bound
-- MPI + OpenMP
-- GPUs with OpenACC (+CUDA/HIP)
+- MPI + OpenMP, OpenACC (+CUDA/HIP) for GPUs
   
 </div>
 <div class=column>
     
 <!-- Image source https://code.mpimet.mpg.de/projects/iconpublic -->
-![](images/r2b02_europe.png){.center width=100%}
+![](images/r2b02_europe.png){.center width=50%} 
 
 </div>
 
@@ -92,7 +87,7 @@ LiGen
 
 - Existing code with basic features mostly working
 - Bad scaling paradigm
-- Complete rewrite of the application to use advanced c++ features
+- Complete rewrite of the application to use advanced C++ features
     - Data flow design
     - GPU acceleration added
 </div>
@@ -104,6 +99,19 @@ LiGen
     - Also about **how** you do it
 - Instead of "Just code" it is advantageous to plan a little too!
     - Also think about future possible extensions!
+- Software engineering has come up with lots of different development models
+    - Waterfall, V-model, Agile models (Scrum etc.), ...
+    - Also scientific software may benefit from formal development models
+
+# Design considerations
+
+- Parallelization strategies
+- Data design
+- Programming languages
+- Modularity
+- I/O formats
+- Documenatation
+- Testing
 
 
 # Parallelization strategies
@@ -131,12 +139,16 @@ LiGen
 - Halo exchange with `Isend` / `Irecv`
 - Asynchronous I/O with special I/O processes
     - One sided MPI
+- Coupled simulations
+    - Some processes simulate atmosphere, some ocean at the same time
+- Good parallel scalability
 
 # Case ICON: GPU porting
 
 - Most of the computations on GPU
 - Data copied to the GPU in the start of the simulation
 - Loops parallelized with OpenACC directives
+    - Few CUDA/HIP kernels
 - GPU aware MPI communication
 
 # Case LiGen: Parallellization
@@ -150,7 +162,7 @@ LiGen
         - Find the bottleneck, increase workers, repeat
 
 - No need to communicate between nodes
-    - MPI used only for IO operations
+    - MPI used only for I/O operations
 
 </div>
 
@@ -201,7 +213,7 @@ LiGen
 
 - Direct control over memory
 - Most common are C, C++, Fortran
-- GPU has better support for C/C++, Fortran for kernels is not supported at all in HIP.
+    - Better support for GPU programming in C/C++, HIP does not support Fortran  kernels
 
 <div class=column>
 
@@ -217,6 +229,7 @@ LiGen
 - Fortran
     - Good for number crunching
     - Good array syntax
+    - Language semantics make optimization easier for compilers
 
 </div>
 
@@ -237,7 +250,7 @@ LiGen
     - "standard" and "portable"
 - Native low level languages: CUDA (NVIDIA) and HIP (AMD)
     - HIP supports in principle also NVIDIA devices
-    - Fortran needs wrappers via C-bindings
+    - With HIP Fortran needs wrappers via C-bindings
 - Performance portability frameworks: SYCL, Kokkos
     - Support only C++
 - Standard language features: parallel C++, `do concurrent`
@@ -251,6 +264,27 @@ LiGen
     - Self-contained functions
     - No global variables, input what you need
 - Modular code takes more time to design but is **a lot** easier to extend and understand
+
+# Case LiGen: Modular design
+
+- Pipeline of stages with a common structure (input/output queues)
+    - Easy to create new stages to support new functionalities
+- Single interface for compute intensive backends
+    - High level program structure separated by time consuming accelerated code
+    - Different implementation for the accelerated code.
+    - Backend characteristics (e.g data movement) are hidden from the rest of the application.
+
+# Version control
+
+- Version control is the single most important software development tool
+- Git is nowadays ubiquitous
+- Additional tools in web services (github, gitlab, bitbucket)
+    - Forking
+    - Issue tracking
+    - Review of pull/merge requests
+    - wikis
+- ICON: private gitlab
+- LiGen: private gitlab
 
 # Code design: tools
 
@@ -292,24 +326,15 @@ LiGen
 
 - **Questions**: Choices in your software and experiences about them?
 
-# Case LiGen: Modular design
-
-- Pipeline of stages with a common structure (input/output queues)
-    - Easy to create new stages to support new functionalities
-- Single interface for compute intensive backends
-    - High level program structure separated by time consuming accelerated code
-    - Different implementation for the accelerated code.
-    - Backend characteristics (e.g data movement) are hidden from the rest of the application.
-
 
 # Data design
 
 - Data has to be "designed" too:
     - Use structures!
     - Think about the flow
-    - How to distribute across the processes
+    - How to distribute the data 
     - GPU introduce more data related problems and opportunities:
-        - Move between Host and Device
+        - Memory copies between Host and Device
         - Preallocation
         - Overlapping computation with copy
 
@@ -321,25 +346,26 @@ LiGen
 
 # Case LiGen: Data design
 
-- Relies a lot on c++ data ownership semantics (usage of move, refs, ...)
+- Relies a lot on C++ data ownership semantics (usage of move, refs, ...)
     - Avoid costly copies!
 
 - GPU: 
-    - Wrapper for memory to enable c++ RAII paradigm: we can forget about mallocs!
+    - Wrapper for memory to enable C++ RAII paradigm: we can forget about mallocs!
     - Preallocate for worst case: one malloc to process them all!
     - Double buffering
 
-# IO Data formats
+# I/O Data formats
 
 - Data formats
     - Not just plain text files/binary files
     - Platform-independent formats (HDF5, NetCDF, ...)
     - Metadata together with the data?
-- Log files. Especially useful with HPC applications
+- Log files
 - Standard formats
     - Your field might have some data standards 
 - Remember also that large simulations produce lots of data
     - Storing "big data" is an issue
+    - A global climate simulation can produce one peta byte in a day
 
 # Coding style
 
@@ -349,7 +375,6 @@ LiGen
     - Many editor have tools to help
     - There are exceptions!
 
-
 # Summary 
 
 - Software design is all about planning 
@@ -358,5 +383,4 @@ LiGen
     - Use existing libraries
     - Use & adopt design, community, and collaboration tools
     - Programming language and design selection
-
 

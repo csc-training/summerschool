@@ -4,7 +4,7 @@ event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
-# Documenting and testing {.section}
+# Documenting {.section}
 
 <small>
 Material is partly based on work by Software Carpentry and Code Refinery 
@@ -23,25 +23,31 @@ licensed under CC BY-SA 4.0
     - Practically impossible without documentation
 - Even within a group, people move in and out 
 
-# What to document?
+# What to document: how to use the code
 
-- How to use the code
-    - Installation instructions
-    - Format of the input file and possible values of input parameters
-    - Tutorials on specific cases
-    - Examples that can be copy-pasted
-    - FAQs
-    - How to cite the code !
+<div class=column>
+- Installation instructions
+- Input files and input parameters
+- Format of the output files
+- Tutorials on specific cases
+- Examples that can be copy-pasted
+- FAQs
+- How to cite the code !
+</div>
+<div class=column>
+![](images/icon-readme.png){.center width=70%}
+<br>
+![](images/gpaw-tutorials.png){.center width=70%}
+</div>
 
-# What to document?
+# What to document: how to develop the code
 
-- How to develop the code
-    - Equations implemented in the code when appropriate
-        - Mapping of physical symbols to variables in code
-    - Coding style
-    - Instructions for contributing
-    - APIs (application programming interfaces)
-    - Implementation details
+- Equations implemented in the code when appropriate
+    - Mapping of physical symbols to variables in code
+- Coding style
+- Instructions for contributing
+- APIs (application programming interfaces)
+- Implementation details
 
 # How to document?
 
@@ -82,6 +88,8 @@ ICON
 - Relatively good documentation in source 
 </div>
 
+# Testing {.section}
+
 # Testing
 
 **Simulations and analysis with untested software <br>
@@ -104,6 +112,7 @@ do not constitute science!**
 - Testing helps detecting errors early
 - Testing is essential for reproducibility of results
 - Tests make it easier to verify whether software is correctly installed
+- Tests make it easier to port the code to new architectures
 
 # Defensive programming
 
@@ -147,28 +156,6 @@ do not constitute science!**
 - At the highest level tests the whole application
 - Recommended to be combined with unit testing
 
-# Challenges with HPC
-
-- Behavior can depend on the number of threads and MPI tasks
-    - Parallel components should be tested with multiple different parallelization schemes
-    - Results can change with different MPI geometries
-    - GPU have different aritmethic units: perfectly reproducible results may not be available.
-- Large scale integration tests can be time consuming
-- Changes in program code may also lead to degradation in performance and 
-  scalability
-    - Tests should track also the performance
-
-# Challenges with HPC
-
-- Performance is often system/architecture specific
-    - Preferably test on multiple architectures
-- Complicated dependency chains makes testing even harder
-    - Impossible to test exhaustively 
-- Systems are very noisy, especially on the filesystem and network level.
-- Different compilers may produce different results (and have bugs)
-- How to get access to different branches of CPUs / GPUs?
-
-
 # Continuous integration
 
 - Automatic testing
@@ -188,14 +175,38 @@ do not constitute science!**
     - Mailing list, IRC, Flowdock, …
 - Test status can be shown also in www-page
 - Tools for continuous integration:
-    - TravisCI
-    - Jenkins
-    - GitlabCI
     - GitHub Actions
+    - Gitlab CI
+    - Travis-CI
+    - Jenkins
+    - Buildbot
 </div>
 <div class=column>
 ![](images/ci-flowchart.svg){.center width=90%}
 </div>
+
+
+# Challenges with HPC
+
+- Behavior can depend on the number of threads and MPI tasks
+    - Parallel components should be tested with multiple different parallelization schemes
+    - Results can change with different MPI geometries
+    - GPU have different aritmethic units: perfectly reproducible results may not be available.
+- Large scale integration tests can be time consuming
+- Changes in program code may also lead to degradation in performance and 
+  scalability
+    - Tests should track also the performance
+
+# Challenges with HPC
+
+- Performance is often system/architecture specific
+    - How to get access to different branches of CPUs / GPUs?
+- Complicated dependency chains makes testing even harder
+    - Impossible to test exhaustively 
+- Systems are very noisy, especially on the filesystem and network level.
+- Different compilers may produce different results (and have bugs)
+- How to run CI tests from public repository on supercomputers?
+
 
 # How is your code tested?
 
@@ -220,7 +231,6 @@ ICON
 - Build tests and integrations tests with buildbot
     - ~10 different supercomputers included in the testing
 - Buildbot tests need to be triggered manually
-    - Testing may result in non-neglible usage of computational resources
 
 </div>
 
