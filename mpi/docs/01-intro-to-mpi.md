@@ -156,7 +156,7 @@ mpif90 -o my_mpi_prog my_mpi_code.F90
 # The presentation syntax on the slides
 
 - MPI calls are presented as pseudocode
-    - actual C and Fortran interfaces are given in reference section
+    - actual C and Fortran interfaces are given in the reference section
     - Fortran error code argument not included
 
 MPI_Function(`arg1`{.input}, `arg2`{.output})
@@ -216,8 +216,8 @@ MPI_Barrier(`comm`{.input})
     - <https://hpc-tutorials.llnl.gov/mpi/>
     - <http://mpitutorial.com/tutorials/>
     - <https://www.youtube.com/watch?v=BPSgXQ9aUXY>
-- MPI coding game in C <br>
-<https://www.codingame.com/playgrounds/47058/have-fun-with-mpi-in-c/lets-start-to-have-fun-with-mpi>
+- MPI coding game in C
+    - <https://www.codingame.com/playgrounds/47058/have-fun-with-mpi-in-c/lets-start-to-have-fun-with-mpi>
 
 # Web resources
 

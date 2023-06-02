@@ -246,8 +246,8 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
     - `MPI_Recv` exits once it has received the message in the receive
       buffer
 - Completion depends on other processes -> risk for *deadlocks*
-    - For example, all processes are waiting in `MPI_Recv` but no-one is sending ->
-      the program is stuck forever (deadlock)
+    - For example, all processes are waiting in `MPI_Recv` but no-one is sending <br>
+      -> the program is stuck forever (deadlock)
 
 
 # Status parameter
