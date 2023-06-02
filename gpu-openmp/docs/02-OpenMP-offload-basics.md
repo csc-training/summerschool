@@ -35,7 +35,7 @@ lang:   en
 - OpenACC support for AMD GPUs in GNU compilers under development
 - OpenACC support in general for Clang/Flang is under development
 - Cray compilers
-    - Fortran compiler supports OpenACC v2.7, support for latest OpenACC coming in 2022
+    - Fortran compiler supports OpenACC v2.7, support for latest OpenACC coming 
     - C/C++ compiler does not support OpenACC
 - In LUMI, only Fortran is supported with OpenACC
 - For now, OpenACC is not a recommended approach for new codes targeting AMD
@@ -231,7 +231,6 @@ cc -o my_exe test.c -fopenmp
 
 # Creating threads within a team
 
-- No synchronization between teams is possible
 - Just having a league of teams is typically not enough to leverage all the
   parallelism available in the accelerator
 - A `parallel` or a `simd` construct within a `teams` region creates threads
