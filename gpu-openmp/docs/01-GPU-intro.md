@@ -46,33 +46,55 @@ lang:   en
     - Very high performance per node
 - Usually major rewrites of programs required
 
-# Flynn's taxonomy
-
-- Proposed in 1966 to classify compute units
-
-<center>
-| | |
-| ----------- | ----------- |
-| ![](img/sisd.png){height=30%}    | ![](img/misd.png){height=30%}|
-| Single Instruction Single Data | Multiple Instructions Single Data |
-| ![](img/simd.png){height=30%}    | ![](img/mimd.png){height=30%}|
-| Single Instruction Multiple Data | Multiple Instructions Multiple Data|
-| | |
-</center>
 
 # Flynn's taxonomy
 
 - Proposed in 1966 to classify compute units
 
-<center>
-| | |
-| ----------- | ----------- |
-| ![](img/sisd.png){height=30%}    | ![](img/misd.png){height=30%}|
-| CPU - 1 core   | Not Really used        |
-| ![](img/simd.png){height=30%}    | ![](img/mimd.png){height=30%}|
-| GPU   | CPU - manycores        |
-| | |
-</center>
+<div class="column" style="width:44%; padding-left:2em">
+<p>
+![](img/sisd.png){height=200px}<br>
+Single Instruction Single Data<br>
+<br>
+![](img/simd.png){height=200px}<br>
+Single Instruction Multiple Data
+</p>
+</div>
+
+<div class="column" style="width:48%">
+<p>
+![](img/misd.png){height=200px}<br>
+Multiple Instructions Single Data<br>
+<br>
+![](img/mimd.png){height=200px}<br>
+Multiple Instructions Multiple Data
+</p>
+</div>
+
+
+# Flynn's taxonomy
+
+- Proposed in 1966 to classify compute units
+
+<div class="column" style="width:44%; padding-left:2em">
+<p>
+![](img/sisd.png){height=200px}<br>
+CPU - 1 core<br>
+<br>
+![](img/simd.png){height=200px}<br>
+GPU
+</p>
+</div>
+
+<div class="column" style="width:48%">
+<p>
+![](img/misd.png){height=200px}<br>
+Not really used<br>
+<br>
+![](img/mimd.png){height=200px}<br>
+CPU - manycores
+</p>
+
 
 # Different design philosophies: CPU
 
