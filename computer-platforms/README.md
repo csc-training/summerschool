@@ -1,5 +1,15 @@
-## Makefiles, modules, and batch job system
+# Getting started with computer platforms
 
-a) Clone your own summerschool repository also to Puhti. The system default **git** is pretty old, so first load a module for more recent **git** with `module load git`. In Puhti, go to the folder `unix-version-control/` and try to compile the `prog.cpp` file using the make command (`make prog`).
+Before starting the exercises, clone your personal fork of the git repository 
+in a personal folder in the *scratch* directory:
+```
+cd /scratch/project_465000536
+mkdir -p $USER
+cd $USER
+git clone git@github.com:<my-github-id>/summerschool.git
+```
 
-b) See the batch job script `job_script.sh` and add the missing `srun` command to execute the program that you just compiled. Run the program using 24 cores! Send your job to the queue with the command `sbatch job_script.sh` and check the results.
+## Exercises
+
+[Simple building and running](simple-building-running)
+[Bonus: scalability testing](scalability-test)
