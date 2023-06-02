@@ -101,7 +101,7 @@ else if (rank == 1) {
 
 # MPI communicator
 
-- Communicator is an object connecting a group of processes, i.e. the
+- Communicator is an object connecting a group of processes
     - It defines the communication framework
 - Most MPI functions require a communicator as an argument
 - Initially, there is always a communicator **`MPI_COMM_WORLD`** which
