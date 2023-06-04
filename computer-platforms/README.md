@@ -11,5 +11,5 @@ git clone git@github.com:<my-github-id>/summerschool.git
 
 ## Exercises
 
-[Simple building and running](simple-building-running)
-[Bonus: scalability testing](scalability-test)
+- [Simple building and running](simple-building-running)
+- [Bonus: scalability testing](scalability-test)
