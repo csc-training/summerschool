@@ -6,13 +6,14 @@ lang:   en
 
 # A day in life at CSC
 
-<div class=column width=65%>
+<div class=column>
 **CSC customer**
 <br>
 <small>
 ```
-I’m performing simulations with my Fortran code. It seems to perform much worse
-with MKL library in the new system than with IMSL library in the old system.
+I’m performing simulations with my Fortran code. It seems to 
+perform much worse with MKL library in the new system than with 
+IMSL library in the old system.
 ```
 <br>
 <br>
@@ -24,7 +25,7 @@ No
 </small>
 </div>
 
-<div class=column width=30%>
+<div class=column>
 **CSC specialist**
 <br>
 <br>
@@ -90,18 +91,18 @@ end do
 
 # How to improve single node performance?
 
-<div class=column width=60%>
+<div class=column style=width:60%>
 - Choose good algorithm
     - e.g. $O(N \mathrm{log} N)$ vs. $O(N^2)$
     - remember prefactor!
 - Use high performance libraries
-    - linear algebra (BLAS/LAPCK), FFTs, ...
+    - linear algebra (BLAS/LAPACK), FFTs, ...
 - Experiment with compilers and options
 - Experiment with threading options
-    - Thread pinning, loop scheduling, ...
+    - thread pinning, loop scheduling, ...
 - Optimize the program code
 </div>
-<div class=column width=38%>
+<div class=column style=width:38%>
 <small>
 ```bash
 ./fibonacci 20
@@ -113,7 +114,7 @@ Time elapsed 343773 ums
 </small>
 <br>
 <!-- Copyright CSC -->
-![](img/optimal_performance.png){.center width=80%}
+![](img/optimal_performance.png){.center width=70%}
 
 </div>
 
@@ -166,8 +167,8 @@ Time elapsed 343773 ums
 
 # How to assess application's performance?
 
-<div class=column width=63%>
-- Two fundamental limits for CPU
+<div class=column style=width:58%>
+- Two fundamental limits
 - Peak floating point performance
     - clock frequency
     - number of instructions per clock cycle
@@ -175,10 +176,10 @@ Time elapsed 343773 ums
     - number of cores
     - no real application achieves peak in sustained operation
 - Main memory bandwidth
-    - How fast data can be fed to the CPU
+    - How fast data can be fed to the CPU/GPU
 </div>
 
-<div class=column width=35%>
+<div class=column style=width:40%>
 <!-- Copyright CSC -->
 ![](img/cpu-memory.png){.center width=50%}
 </div>
@@ -197,6 +198,7 @@ Time elapsed 343773 ums
     - In Puhti, memory bandwidth is \~200 GB/s, so maximum performance
       is \~16 GFLOPS/s
     - Theoretical peak performance of Puhti node is \~2600 GFLOPS/s
+- HPCG benchmark reaches ~0.8 % of peak in LUMI
 
 # How to assess application's performance?
 
@@ -209,6 +211,7 @@ Time elapsed 343773 ums
     - With double precision numbers arithmetic intensity
       $I=\frac{2 N}{3}$ FLOPS/byte
     - With large enough $N$ limited by peak performance
+- HPL benchmark reaches 72 % of peak in LUMI
 
 # How to assess application's parallel performance?
 
@@ -229,7 +232,7 @@ Time elapsed 343773 ums
 
 # Roofline model
 
-<div class=column width=55%>
+<div class=column style=width:55%>
 - Simple visual concept for maximum achievable performance
     - can be derived in terms of arithmetic intensity $I$, peak performance
       $\pi$ and peak memory bandwidth $\beta$
@@ -247,7 +250,7 @@ $$
 
 </div>
 
-<div class=column width=43%>
+<div class=column style=width:43%>
 <!-- Copyright CSC -->
 ![](img/simple-roofline.png){.center width=90%}
 <br>
@@ -258,7 +261,7 @@ $$
 
 # Roofline model
 
-<div class=column width=55%>
+<div class=column style=width:55%>
 - Model does not tell if code can be optimized or not
     - Application 1 may not be *fundamentally* memory bound, but only
         implemented badly (not using caches efficiently)
@@ -266,7 +269,7 @@ $$
         performance (performs only additions and not fused multiply adds)
 - However, can be useful for guiding the optimization work
 </div>
-<div class=column width=43%>
+<div class=column style=width:43%>
 <!-- Copyright CSC -->
 ![](img/ceilings-roofline.png){.center width=90%}
 </div>
@@ -276,7 +279,7 @@ $$
 - How to obtain the machine parameters?
     - CPU specs
     - own microbenchmarks
-    - special tools (Intel tools, Empirical Roofline Tool)
+    - special tools (Intel tools, AMD tools, Empirical Roofline Tool)
 - How to obtain application's GFLOPS/s and arithmetic intensity?
     - Pen and paper and timing measurements
     - Performance analysis tools and hardware counters
@@ -295,13 +298,18 @@ $$
 
 # How to start?
 
+- Profile the code
+    - Several tools for different architectures and different performance aspects
+    - Intel VTune, Intel Trace Analyzer
+    - NVIDIA Nsight systems and Nsight compute
+    - Cray Perftools
+    - AMD Omnitrace and Omniperf, rocprofiler
+    - TAU, Scalasca, BSC tools, HPC Toolkit, gprof
+    - ...
 - What limits the performance?
     - Serial / OpenMP / GPU (single node performance)
     - MPI (internode performance)
     - I/O
-- Intel Performance Snapshot can provide big picture for further
-  analysis
-    - Other possible tools: gprof, TAU, scalasca, CrayPAT
 
 # Web resources
 
