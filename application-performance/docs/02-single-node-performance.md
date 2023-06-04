@@ -122,6 +122,28 @@ lang:   en
     - NVIDIA Nsight, AMD ROCm Profiler, ...
     - <http://www.vi-hps.org/tools/tools.html>
 
+# Hardware performance counters
+
+- Hardware performance counters are special registers on CPU that count
+  hardware events
+- They enable more accurate statistics and low overhead
+    - In some cases they can be used for tracing without any extra
+      instrumentation
+
+- Number of counters is much smaller than the number of events that can be
+  recorded
+- Different CPUs have different counters
+
+# PAPI
+
+- Performance Application Programming Interface (PAPI)
+- Consistent interface and methodology for collecting performance counter information 
+- Support for most major CPUs and GPUs
+- Several performance analysis tools use PAPI underneath
+    - API for collecting metrics within application
+- Command line tools for investigating available counters *etc.*
+    - `papi_avail`
+
 # Profiling application
 
 - Collecting all possible performance metrics with single run is not practical
@@ -147,17 +169,6 @@ lang:   en
 
 ![](img/tracing.png){.left width=60%}
 
-# Hardware performance counters
-
-- Hardware performance counters are special registers on CPU that count
-  hardware events
-- They enable more accurate statistics and low overhead
-    - In some cases they can be used for tracing without any extra
-      instrumentation
-
-- Number of counters is much smaller than the number of events that can be
-  recorded
-- Different CPUs have different counters
 
 # Intel VTune
 
