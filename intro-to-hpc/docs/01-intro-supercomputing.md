@@ -272,16 +272,16 @@ lang:   en
 
 # What limits parallel scaling
 
-<div width=55% class=column>
+<div class=column style=width:60%>
 - Load imbalance
-    - Variation in workload over different cores
+    - Variation in workload over different execution units
 - Parallel overheads
     - Additional operations which are not present in serial calculation
     - Synchronization, redundant computations, communications
 - Amdahl’s law: the fraction of non-parallelizable parts limits maximum speedup
 </div>
-<div width=40% class=column>
-  ![](img/AmdahlsLaw.svg){.right width=100%}
+<div class=column style=width:38%>
+  ![](img/AmdahlsLaw.svg){.center width=100%}
 </div>
 
 
@@ -344,7 +344,13 @@ lang:   en
 
 # GPU programming models
 
-![](img/gpu-offload.svg){.center width=60%}
+![](img/gpu-offload.svg){.center width=40%}
+<br>
+
+- CPU launches kernel on GPU
+- Kernel execution is normally asynchronous
+    - CPU remains active
+- Multiple kernels may run concurrently on same GPU
 
 # Parallel programming models
 
