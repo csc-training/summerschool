@@ -1,4 +1,4 @@
-CC=mpicxx
+CC=gcc
 
 prog: prog.o util.o
 	$(CC) -o $@ $^
