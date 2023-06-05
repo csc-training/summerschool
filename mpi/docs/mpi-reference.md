@@ -133,11 +133,11 @@ int MPI_Reduce_scatter(const void *sendbuf, void *recvbuf, const int *recvcounts
 | Operation  | Meaning      |
 |------------|--------------|
 | `MPI_LAND` | Logical AND  |
-| `MPI_BAND` | Bytewise AND |
+| `MPI_BAND` | Bitwise AND  |
 | `MPI_LOR`  | Logical OR   |
-| `MPI_BOR`  | Bytewise OR  |
+| `MPI_BOR`  | Bitwise OR   |
 | `MPI_LXOR` | Logical XOR  |
-| `MPI_BXOR` | Bytewise XOR |
+| `MPI_BXOR` | Bitwise XOR  |
 </div>
 
 
@@ -530,11 +530,11 @@ mpi_alltoallv(sendbuf,sendcounts, sdispls, sendtype, recvbuf, recvcounts, rdispl
 | Operation  | Meaning      |
 |------------|--------------|
 | `MPI_LAND` | Logical AND  |
-| `MPI_BAND` | Bytewise AND |
+| `MPI_BAND` | Bitwise AND  |
 | `MPI_LOR`  | Logical OR   |
-| `MPI_BOR`  | Bytewise OR  |
+| `MPI_BOR`  | Bitwise OR   |
 | `MPI_LXOR` | Logical XOR  |
-| `MPI_BXOR` | Bytewise XOR |
+| `MPI_BXOR` | Bitwise XOR  |
 </div>
 
 

@@ -427,11 +427,11 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 | Operation  | Meaning      |
 |------------|--------------|
 | `MPI_LAND` | Logical AND  |
-| `MPI_BAND` | Bytewise AND |
+| `MPI_BAND` | Bitwise AND  |
 | `MPI_LOR`  | Logical OR   |
-| `MPI_BOR`  | Bytewise OR  |
+| `MPI_BOR`  | Bitwise OR   |
 | `MPI_LXOR` | Logical XOR  |
-| `MPI_BXOR` | Bytewise XOR |
+| `MPI_BXOR` | Bitwise XOR  |
 </div>
 
 
