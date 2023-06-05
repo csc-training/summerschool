@@ -114,7 +114,7 @@ CC-BY-SA-4.0
 **Discuss:** Do you do software releases / versioning?
 
 # Case GPAW
-<div class=column>
+<div class=column style=font-size:0.85em>
 - Open source electronic structure simulation code
 - GPL from the beginning, copyright scattered over all developers
 - Gitlab, mailing list, issue tracker, face-to-face workshops
