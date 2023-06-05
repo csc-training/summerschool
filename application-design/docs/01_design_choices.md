@@ -35,7 +35,7 @@ lang:   en
 
 # ICON
 
-<div class=column>
+<div class=column style=width:65%>
 - Icosahedral Nonhydrostatic Weather and Climate Model
 - Closed source, developed my several meteorology institutes
     - DWD, MPI-M, MeteoSwiss, ...
@@ -43,13 +43,12 @@ lang:   en
 - 1 600 000 lines of modern Fortran
 - Stencil type operations
     - Memory bound
-- MPI + OpenMP, OpenACC (+CUDA/HIP) for GPUs
-  
+- MPI + OpenMP, OpenACC for GPUs
 </div>
-<div class=column>
+<div class=column style=width:30%>
     
 <!-- Image source https://code.mpimet.mpg.de/projects/iconpublic -->
-![](images/r2b02_europe.png){.center width=50%} 
+![](images/r2b02_europe.png){.center width=70%} 
 
 </div>
 
