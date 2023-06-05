@@ -19,6 +19,9 @@ lang:   en
     - Detects out-of-bounds memory access and OpenMP race conditions
     - `-fsanitize=address` (GCC / Clang)
     - `-fsanitize=thread` (GCC / Clang)
+- Memory debugging with `valgrind`
+   - Detects bad memory accesses, memory leaks, ...
+   - `valgrind4hpc` for parallel applications
 - Using MPI correctness checkers
     - MUST
     - Intel Trace Analyzer
