@@ -184,6 +184,17 @@ CCFLAGS=-O3
 ```
 </div>
 
+# Build generators
+
+- In a large software projects, figuring out all the dependencies between 
+  software modules can be difficult
+- `Makefile` is not necessarily portable
+- In order to improve portability and make dependency handling easier, build generators
+  are often used
+    - Select automatically correct compilers and compiler options
+    - Create `Makefile` from simpler template
+- **GNU Autotools** and **cmake** are the most common build generators in HPC
+
 
 # Batch queue system {.section}
 
