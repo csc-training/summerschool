@@ -12,10 +12,10 @@ __global__ void simple_kernel(mem_wrapper<int>::dev_side data)
 __global__ void complex_kernel(example::dev_side data)
 {
   if (threadIdx.x < data.content.intcont.num_elems) //struct.tuple.field_in_tuple.mem_wrapper
-    printf("Hello from thread %d, numelems is %d, my int value is %d \n", threadIdx.x,static_cast<int>(data.content.intcont.num_elems) ,data.content.intcont.dev_ptr[threadIdx.x]);
+    printf("Hello from thread %d, numelems is %d, my int value is %d \n",static_cast<int>(threadIdx.x),static_cast<int>(data.content.intcont.num_elems) ,data.content.intcont.dev_ptr[threadIdx.x]);
 
   if (threadIdx.x < data.content.floatcont.num_elems)
-    printf("Hello from thread %d, numelems is %d, my float value is %f \n",threadIdx.x,static_cast<int>(data.content.floatcont.num_elems) ,data.content.floatcont.dev_ptr[threadIdx.x]);
+    printf("Hello from thread %d, numelems is %d, my float value is %f \n",static_cast<int>(threadIdx.x),static_cast<int>(data.content.floatcont.num_elems) ,data.content.floatcont.dev_ptr[threadIdx.x]);
 }
 
 int main(){
