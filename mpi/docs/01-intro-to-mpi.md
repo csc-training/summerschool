@@ -55,7 +55,7 @@ lang:   en
     - **`srun`** on LUMI, Mahti, and Puhti
 - MPI supports also dynamic spawning of processes and launching *different*
   programs communicating with each other
-    - rarely used in HPC systems
+    - not covered here
 
 # MPI ranks
 
