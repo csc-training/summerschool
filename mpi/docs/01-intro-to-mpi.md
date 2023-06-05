@@ -153,6 +153,18 @@ mpicxx -o my_mpi_prog my_mpi_code.cpp
 mpif90 -o my_mpi_prog my_mpi_code.F90
 ```
 
+# Compiling an MPI program on LUMI
+
+- On LUMI (HPE Cray EX), there are `cc` / `CC` / `ftn` compiler wrappers
+  invoking the correct compiler
+  - use these instead of the `mpi*` wrappers
+
+```bash
+cc -o my_mpi_prog my_mpi_code.c
+CC -o my_mpi_prog my_mpi_code.cpp
+ftn -o my_mpi_prog my_mpi_code.F90
+```
+
 # The presentation syntax on the slides
 
 - MPI calls are presented as pseudocode
