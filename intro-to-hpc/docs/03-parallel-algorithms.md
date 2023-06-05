@@ -56,9 +56,53 @@ until converged(u)
 
 # Data distribution
 
-# Local 
+- Single node cannot typically hold all the data of large simulation
+    - Data needs to be distributed
+    - Data is often logically distributed also inside the node
+- Computations may require data from other execution data
+    - *Local* dependencies: data is needed only from few other units
+    - *Global* dependencies: data is needed from all the execution units
+- Data distribution should try to minimize communication time
+- Data distribution should try to maximize load balance
 
-# Communication and synchronization
+# Data distribution: local vs. global dependencies
+
+- Stencils:
+- Finite elements methods
+- Particle based methods with short range interactions
+- Fourier transform
+- Linear algebra
+
+# Data distribution: load balance
+
+- Simple domains
+- Mandelbrot
+- Complex FEM mesh
+- Moving particles
+
+# Communication: latency and bandwidth
+
+- Each communication event has a constant cost: latency
+- One should try to communicate large batches of data at once
+   - All the boundary data needed within an iteration
+   - All the particles needed within an iteration
+- Sometimes it possible to overlap communication and computation
+   - Requires hardware support
+
+# Scalability considerations
+
+- Communication to computation ratio
+- 1D halo vs 3D halo
+- All-to-all N^2
+
+# Reductions
+
+- Reduction is an operation that combines data from multiple execution units
+  into a single number
+    - Typical reduction operations: **sum**, **product**, **max**, **min**
+- Many parallel algorithms need reductions
+- Naive vs. tree
+
 
 # Case study: heat equation {.section}
 
