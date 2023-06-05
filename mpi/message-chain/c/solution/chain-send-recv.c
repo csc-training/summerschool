@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
         message[i] = myid;
     }
 
-    // Set source and destination ranks 
+    // Set source and destination ranks
     if (myid < ntasks - 1) {
         destination = myid + 1;
     } else {
@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
-    // Send messages 
-    MPI_Send(message.data(), size, MPI_INT, destination, myid + 1,
+    // Send messages
+    MPI_Send(message, msgsize, MPI_INT, destination, myid + 1,
              MPI_COMM_WORLD);
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
-           myid, size, myid + 1, destination);
+           myid, msgsize, myid + 1, destination);
 
     // Receive messages
-    MPI_Recv(receiveBuffer.data(), size, MPI_INT, source, myid,
+    MPI_Recv(receiveBuffer, msgsize, MPI_INT, source, myid,
              MPI_COMM_WORLD, &status);
     printf("Receiver: %d. first element %d.\n",
            myid, receiveBuffer[0]);

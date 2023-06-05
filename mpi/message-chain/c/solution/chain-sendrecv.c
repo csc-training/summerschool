@@ -45,11 +45,11 @@ int main(int argc, char *argv[])
     t0 = MPI_Wtime();
 
     // Send and receive messages
-    MPI_Sendrecv(message.data(), size, MPI_INT, destination, myid + 1,
-                 receiveBuffer.data(), size, MPI_INT, source, MPI_ANY_TAG,
+    MPI_Sendrecv(message, msgsize, MPI_INT, destination, myid + 1,
+                 receiveBuffer, msgsize, MPI_INT, source, MPI_ANY_TAG,
                  MPI_COMM_WORLD, &status);
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
-           myid, size, myid + 1, destination);
+           myid, msgsize, myid + 1, destination);
     printf("Receiver: %d. first element %d.\n",
            myid, receiveBuffer[0]);
 
