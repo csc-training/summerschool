@@ -459,7 +459,7 @@ ftn-6823 ftn: THREAD VECTORSUM, File = sum.F90, Line = 17
 - Host--device model
     - host offloads computations to the device
 - Host and device may have separate memories
-    - Host controls copying into/from the device
+    - host controls copying into/from the device
 - Key concepts:
     - league of teams
     - threads within a team

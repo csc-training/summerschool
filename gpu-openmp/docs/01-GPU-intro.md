@@ -194,7 +194,7 @@ CPU - manycores
    - data resides in the GPU memory; maximum performance is achieved when reading/writing is done in continuous blocks
    - very fast on-chip memory can be used as a user programmable cache
 - *Unified Virtual Addressing* provides unified view for all memory
-- Asynchronous calls can be used to overlap transfers and computations.
+- Asynchronous calls can be used to overlap transfers and computations
 
 
 # Challenges in using Accelerators
@@ -217,17 +217,17 @@ CPU - manycores
 3. Directive based methods
     - **OpenMP**, OpenACC
 4. Use native GPU language
-    - CUDA, HIP,
+    - CUDA, HIP
 
 # Directive-based accelerator languages
 
 - Annotating code to pinpoint accelerator-offloadable regions
 - OpenACC
     - created in 2011, latest version is 3.1 (November 2020)
-    - Mostly Nvidia
+    - mostly Nvidia
 - OpenMP
-    - Earlier only threading for CPUs
-    - initial support for accelerators in 4.0 (2013), significant improvements & extensions in 4.5 (2015), 5.0 (2018), 5.1 (2020 and 5.2 (2021)
+    - earlier only threading for CPUs
+    - initial support for accelerators in 4.0 (2013), significant improvements & extensions in 4.5 (2015), 5.0 (2018), 5.1 (2020) and 5.2 (2021)
 
 - Focus on optimizing productivity
 - Reasonable performance with quite limited effort, but not guaranteed
@@ -259,7 +259,7 @@ CPU - manycores
     - It is *not* true that you get *performance* portability
 
 - It is possible to optimize code for performance on GPU!
-    - it will however be probably slower on the CPU
+    - It will however be probably slower on the CPU
 
 
 
