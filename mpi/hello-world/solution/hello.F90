@@ -1,5 +1,5 @@
 program hello
-  use mpi
+  use mpi_f08
   implicit none
   integer :: rc, myid, ntasks, namelen
   character(len=MPI_MAX_PROCESSOR_NAME) :: procname
