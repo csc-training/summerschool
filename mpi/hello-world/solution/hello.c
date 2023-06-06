@@ -15,8 +15,7 @@ int main(int argc, char *argv[])
         printf("In total there are %i tasks\n", ntasks);
     }
 
-    printf("Hello from rank %i on %s\n", myid, procname);
+    printf("Hello from rank %i in node %s\n", myid, procname);
 
     MPI_Finalize();
-    return 0;
 }
