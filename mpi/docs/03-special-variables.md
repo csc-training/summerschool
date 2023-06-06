@@ -16,36 +16,47 @@ lang:   en
 - Store source and destination in variables and place MPI calls
   outside **`if`**s when possible.
 
-<small>
+# Example
+
 <div class=column>
 ```fortran
 if (myid == 0) then
-   call mpi_send(message, msgsize, MPI_INTEGER, 1, &
-                 1, MPI_COMM_WORLD, rc)
-   call mpi_recv(recvBuf, arraysize, MPI_INTEGER, 1, &
-                 1, MPI_COMM_WORLD, status, rc)
+   call mpi_send(message, msgsize, &
+                 MPI_INTEGER, 1, &
+                 42, MPI_COMM_WORLD, rc)
+   call mpi_recv(recvBuf, arraysize, &
+                 MPI_INTEGER, 1, &
+                 42, MPI_COMM_WORLD, &
+                 status, rc)
 else if (myid == 1) then
-   call mpi_send(message, msgsize, MPI_INTEGER, 0, &
-                 1, MPI_COMM_WORLD, rc)
-   call mpi_recv(recvBuf, arraysize, MPI_INTEGER, 0, &
-                 1, MPI_COMM_WORLD, status, rc)
+   call mpi_send(message, msgsize, &
+                 MPI_INTEGER, 0, &
+                 42, MPI_COMM_WORLD, rc)
+   call mpi_recv(recvBuf, arraysize, &
+                 MPI_INTEGER, 0, &
+                 42, MPI_COMM_WORLD, &
+                 status, rc)
 ```
 </div>
 
 <div class=column>
 ```fortran
-! Modulo operation can be used for wrapping around
+! Modulo operation can be used for
+! wrapping around
 dst = mod(myid + 1, ntasks)
 src = mod(myid - 1 + ntasks, ntasks)
 
-call mpi_send(message, msgsize, MPI_INTEGER, dst, &
-              1, MPI_COMM_WORLD, rc)
-call mpi_recv(recvBuf, arraysize, MPI_INTEGER, src, &
-              1, MPI_COMM_WORLD, status, rc)
+call mpi_send(message, msgsize, &
+              MPI_INTEGER, dst, &
+              42, MPI_COMM_WORLD, rc)
+call mpi_recv(recvBuf, arraysize, &
+              MPI_INTEGER, src, &
+              42, MPI_COMM_WORLD, &
+              status, rc)
 
 ```
 </div>
-</small>
+
 
 # MPI programming practices
 
@@ -55,10 +66,10 @@ call mpi_recv(recvBuf, arraysize, MPI_INTEGER, src, &
 ```c++
 if (0 == myid) {
   for (int i=1; i < ntasks; i++) {
-     MPI_Send(&data, 1, MPI_INT, i, 22, MPI_COMM_WORLD);
+     MPI_Send(&data, 1, MPI_INT, i, 42, MPI_COMM_WORLD);
   }
 } else {
-     MPI_Recv(&data, 1, MPI_INT, 0, 22, MPI_COMM_WORLD, &status);
+     MPI_Recv(&data, 1, MPI_INT, 0, 42, MPI_COMM_WORLD, &status);
 }
 ```
 
@@ -70,6 +81,8 @@ if (0 == myid) {
   `MPI_Send` / `MPI_Recv` into a dummy call
     - No matching `receive` / `send` is needed
 
+# Example
+
 ```fortran
 if (myid == 0) then
     src = MPI_PROC_NULL
@@ -78,8 +91,8 @@ if (myid == ntasks - 1) then
     dst = MPI_PROC_NULL
 end if
 
-call mpi_send(message, msgsize, MPI_INTEGER, dst, ...
-call mpi_recv(message, msgsize, MPI_INTEGER, src, ...
+call mpi_send(message, msgsize, MPI_INTEGER, dst, 42, MPI_COMM_WORLD, rc)
+call mpi_recv(message, msgsize, MPI_INTEGER, src, 42, MPI_COMM_WORLD, status, rc)
 ```
 
 
@@ -91,27 +104,25 @@ call mpi_recv(message, msgsize, MPI_INTEGER, src, ...
     - The actual sender and tag can be queried from **`status`** if
       needed
 
-<div class=column>
+<div class=column style="width:48%">
 - There needs to be still `receive` for each `send`
 - `MPI_ANY_SOURCE` may introduce performance overhead
     - Use only when there is clear benefit *e.g.* in load balancing
 </div>
 
-<div class=column>
-<br>
-<small>
+<div class=column style="width:50%">
 ```c++
 if (0 == myid) {
   for (int i=1; i < ntasks; i++) {
-     MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, 22, 
-              MPI_COMM_WORLD, &status);
-     process(data)
+     MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE,
+              42, MPI_COMM_WORLD, &status);
+     process(data);
   }
 } else {
-     MPI_Send(&data, 1, MPI_INT, 0, 22, MPI_COMM_WORLD);
+     MPI_Send(&data, 1, MPI_INT, 0,
+              42, MPI_COMM_WORLD);
 }
 ```
-</small>
 </div>
 
 
