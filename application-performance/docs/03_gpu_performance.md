@@ -33,7 +33,7 @@ In general going from CPU to GPU results in a memory bound code.
 
 # Roofline Analysis
 
-![](img/Example_of_a_Roofline_model.svg){.center}
+![](img/Example_of_a_Roofline_model.svg){.center width=60%}
 -  Creates an intuitive visual performance model used to provide performance estimates 
 -  It  shows inherent hardware limitations, and potential benefit and priority of optimizations.
 
