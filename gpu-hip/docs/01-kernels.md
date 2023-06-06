@@ -271,4 +271,4 @@ int main(void)
 - Kernels are launched by multiple threads in a grid
     - in wavefronts of 64 threads
 - Kernels need to be declared `void` and `__global__` and are launched with
-  `hipLaunchKernelGGL()` or chevron <<< >>>`
+  `hipLaunchKernelGGL()` or chevron `<<< >>>`
