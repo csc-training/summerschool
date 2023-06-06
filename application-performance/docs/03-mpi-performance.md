@@ -47,7 +47,7 @@ lang:   en
     - Also the temporal profile of MPI calls
     - Potentially huge data
 
-# Demo: Intel trace analyzer {.section}
+# Demo: TAU tracing {.section}
 
 # Summary
 
