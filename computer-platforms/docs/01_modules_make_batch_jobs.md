@@ -53,10 +53,9 @@ ssh-copy-id <my_user_id>@mahti.csc.fi
   user's environment
 - In this way, different compiler suites and application versions can be used
   more easily
-    * They basically just change where things are "pointing". So when you run
-      `gcc` the loaded module decides whether you are using version 4.9 or 5.3
-      or 6.0 and so on
-    * Most programs require loading a module to be accessible
+    * Changing compiler module loads automatically also correct versions of libraries 
+    * Loading a module for application sets up the correct environment with single 
+      command
 
 
 # Common module commands
