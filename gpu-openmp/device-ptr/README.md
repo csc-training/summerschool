@@ -1,4 +1,4 @@
-## Using CUDA library from OpenMP code
+## Using HIP library from OpenMP code
 
 The provided codes [cpp/pi.c](cpp/pi.c) / [fortran.pi.F90](fortran/pi.F90)
 calculate approximate value for **pi** by generating random numbers within a
