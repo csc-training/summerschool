@@ -21,7 +21,7 @@ lang:   en
 
 # Processes and threads
 
-![](img/processes-threads-highlight-proc.png){.center width=90%}
+![](img/processes-threads-highlight-proc.png){.center width=85%}
 
 <div class="column">
 
