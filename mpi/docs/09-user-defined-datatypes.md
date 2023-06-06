@@ -366,12 +366,13 @@ MPI_Send(particle, 1000*sizeof(particle[0]), MPI_BYTE, ...);
 
 - Main motivation for using datatypes is not necessarily performance – manual
   packing can be faster
-- Performance depends on the datatype - more general datatypes are
+- Performance depends on the datatype – more general datatypes are
   often slower
 - Overhead is potentially reduced by:
     - Sending one long message instead of many small messages
     - Avoiding the need to pack data in temporary buffers
 - Performance should be tested on target platforms
+  - Performance is currently poor with GPU-aware MPI
 
 
 # Summary
