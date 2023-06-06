@@ -16,7 +16,7 @@ lang:   en
     - needs wrappers and interfaces for all HIP calls
 * Hipfort:
     - link with hipcc
-    - Fortran Interface For GPU Kernel Libraries
+    - Fortran Interface for GPU Kernel Libraries
       - HIP: HIP runtime, hipBLAS, hipSPARSE, hipFFT, hipRAND, hipSOLVER
       - ROCm: rocBLAS, rocSPARSE, rocFFT, rocRAND, rocSOLVER
       - memory management: `hipMalloc`, `hipMemcpy`
