@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    int myid, ntasks;
+    int myid, ntasks, nrecv;
     constexpr int arraysize = 100000;
     constexpr int msgsize = 100;
     std::vector<int> message(arraysize);
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     }
 
     // TODO: Implement sending and receiving as defined in the assignment
-    // Send msgsize elements from the array "message", and receive into 
+    // Send msgsize elements from the array "message", and receive into
     // "receiveBuffer"
     if (myid == 0) {
 
