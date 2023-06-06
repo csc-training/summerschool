@@ -25,7 +25,7 @@ lang:   en
       background by the Unified Memory driver)
 
 
-# Avoid moving data between CPU and GPU
+# Data movement
 
 * Data copies between host and device are relatively slow
 * To achieve best performance, the host-device data traffic should be
@@ -82,7 +82,7 @@ lang:   en
 # Device memory hierarchy (advanced)
 
 - There are more details in the memory hierarchy, some of which are
-  architecture-dependent, eg,
+  architecture-dependent, e.g.,
     - Texture memory
     - Constant memory
 - Complicates implementation
@@ -230,24 +230,23 @@ int main() {
 - Normal `hipMemcpy()` calls are blocking (i.e. synchronizing)
     - The execution of host code is blocked until copying is finished
 - To overlap copying and program execution, asynchronous functions are required
-    - Such functions have Async suffix, eg. `hipMemcpyAsync()`
+    - Such functions have *Async* suffix, eg. `hipMemcpyAsync()`
 - User has to synchronize the program execution
 - Requires page-locked memory
 
 # Asynchronous Malloc
 
-- `hipMallocAsync()` and `hipFreeAsync()` allows to treat memory allocation and
-free as asynchronous operations
-- Allows to use memory pool (i.e. subsequent alloc/frees are less expensive)
+- `hipMallocAsync()` and `hipFreeAsync()` allow the developer to:
+	- treat memory allocation and free as asynchronous operations
+	- use memory pool (i.e. subsequent alloc/frees are less expensive)
 
 # Virtual Memory Management
 
 - Experimental feature
-- Allows to "realloc", i.e. change the size of the allocated memory without paying
+- Allows to reallocate, i.e. change the size of the allocated memory without paying
 free and allocation cost
 
-
-https://docs.amd.com/bundle/HIP-API-Guide-v5.2/page/group___virtual.html
+- Reference: [https://docs.amd.com/bundle/HIP-API-Guide-v5.2/page/group___virtual.html](https://docs.amd.com/bundle/HIP-API-Guide-v5.2/page/group___virtual.html)
 
 # Global memory access in device code
 
@@ -262,7 +261,7 @@ https://docs.amd.com/bundle/HIP-API-Guide-v5.2/page/group___virtual.html
 
 <div class="column">
 - The global memory loads and stores consist of transactions of a certain size
-  (eg. 32 bytes)
+  (e.g. 32 bytes)
 - If the threads within a warp access data within such a block of 32 bytes,
   only one global memory transaction is needed
 </div>
