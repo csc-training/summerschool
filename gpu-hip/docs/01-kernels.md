@@ -164,23 +164,20 @@ __global__ void axpy_(int n, double a, double *x, double *y)
 
 # Launching kernels
 
-- Kernels are launched with the function call `hipLaunchKernelGGL`
-    - grid dimensions need to be defined (two vectors of type `dim3`)
-    - execution is asynchronous
+- Kernels are launched with one of the two following options:
+  - CUDA syntax (recommended, because it works on CUDA and HIP both):
+  ```cpp
+  somekernel<<<blocks, threads, shmem, stream>>>(args)
+  ```
+  
+  - Native HIP syntax:
+  ```cpp
+  hipLaunchKernelGGL(somekernel, blocks, threads, shmem, stream, args)
+  ```
 
-```cpp
-dim3 blocks(32);
-dim3 threads(256);
-
-hipLaunchKernelGGL(somekernel, blocks, threads, 0, 0, ...)
-```
-
-- Compared with the CUDA syntax:
-
-```cpp
-somekernel<<<blocks, threads, 0, 0>>>(...)
-```
-
+- Grid dimensions are obligatory, `shmem`, and `stream` are optional arguments for CUDA syntax, and can be `0` for the native HIP syntax
+  - Must have an integer type or vector type of `dim3`
+- Kernel execution is asynchronous with the host
 
 # Simple memory management
 
