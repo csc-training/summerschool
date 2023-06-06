@@ -12,6 +12,6 @@ communication.
 3. Is it possible to use collective communications also in the routine `write_field` (in [fortran/io.F90](fortran/io.F90) or in [cpp/io.cpp](cpp/io.cpp))?
 
 
-Note that either the [base exercise](README.md) or exercise with [MPI_Sendrecv](READ_sendrecv.md) 
+Note that either the [base exercise](README.md) or exercise with [MPI_Sendrecv](READ_sendrecv.md)
 needs to be completed for this exercise.
 

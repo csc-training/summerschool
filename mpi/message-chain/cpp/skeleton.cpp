@@ -26,12 +26,12 @@ int main(int argc, char *argv[])
         receiveBuffer[i] = -1;
     }
 
-    // TODO: set source and destination ranks 
+    // TODO: set source and destination ranks
     // Treat boundaries with MPI_PROC_NULL
 
-        destination = 
+        destination =
 
-        source = 
+        source =
 
     // end TODO
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
-    // TODO: Send messages 
+    // TODO: Send messages
 
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
            myid, size, myid + 1, destination);

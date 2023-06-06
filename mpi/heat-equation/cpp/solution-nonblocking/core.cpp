@@ -11,16 +11,16 @@ void exchange_init(Field& field, ParallelData& parallel)
     // Send to up, receive from down
     double* sbuf_up = field.temperature.data(1, 0);
     double* rbuf_down  = field.temperature.data(field.nx + 1, 0);
-    MPI_Isend(sbuf_up, field.ny + 2, MPI_DOUBLE, 
-	      parallel.nup, 11, MPI_COMM_WORLD, &parallel.requests[0]); 
-    MPI_Irecv(rbuf_down, field.ny + 2, MPI_DOUBLE, 
-	      parallel.ndown, 11, MPI_COMM_WORLD, &parallel.requests[1]); 
+    MPI_Isend(sbuf_up, field.ny + 2, MPI_DOUBLE,
+	      parallel.nup, 11, MPI_COMM_WORLD, &parallel.requests[0]);
+    MPI_Irecv(rbuf_down, field.ny + 2, MPI_DOUBLE,
+	      parallel.ndown, 11, MPI_COMM_WORLD, &parallel.requests[1]);
 
     // Send to down, receive from up
     double* sbuf_down = field.temperature.data(field.nx, 0);
     double* rbuf_up = field.temperature.data();
-    MPI_Isend(sbuf_down, field.ny + 2, MPI_DOUBLE, 
-              parallel.ndown, 12, MPI_COMM_WORLD, &parallel.requests[2]); 
+    MPI_Isend(sbuf_down, field.ny + 2, MPI_DOUBLE,
+              parallel.ndown, 12, MPI_COMM_WORLD, &parallel.requests[2]);
     MPI_Irecv(rbuf_up, field.ny + 2, MPI_DOUBLE,
               parallel.nup, 12, MPI_COMM_WORLD, &parallel.requests[3]);
 
@@ -31,7 +31,7 @@ void exchange_finalize(ParallelData& parallel)
     MPI_Waitall(4, parallel.requests, MPI_STATUSES_IGNORE);
 }
 
-// Update the temperature values using five-point stencil 
+// Update the temperature values using five-point stencil
 // in the border-independent region of the field
 void evolve_interior(Field& curr, const Field& prev, const double a, const double dt)
 {
@@ -54,7 +54,7 @@ void evolve_interior(Field& curr, const Field& prev, const double a, const doubl
 
 }
 
-// Update the temperature values using five-point stencil 
+// Update the temperature values using five-point stencil
 // in the border regions of the field
 void evolve_edges(Field& curr, const Field& prev, const double a, const double dt)
 {

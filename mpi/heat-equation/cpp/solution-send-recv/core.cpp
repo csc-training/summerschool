@@ -14,13 +14,13 @@ void exchange(Field& field, const ParallelData parallel)
     MPI_Send(sbuf, field.ny + 2, MPI_DOUBLE,
              parallel.nup, 11, MPI_COMM_WORLD);
 
-    MPI_Recv(rbuf, field.ny + 2, MPI_DOUBLE, 
+    MPI_Recv(rbuf, field.ny + 2, MPI_DOUBLE,
              parallel.ndown, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
     // Send to down, receive from up
     sbuf = field.temperature.data(field.nx, 0);
     rbuf = field.temperature.data();
-    MPI_Send(sbuf, field.ny + 2, MPI_DOUBLE, 
+    MPI_Send(sbuf, field.ny + 2, MPI_DOUBLE,
              parallel.ndown, 12, MPI_COMM_WORLD);
 
     MPI_Recv(rbuf, field.ny + 2, MPI_DOUBLE,

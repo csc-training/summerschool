@@ -28,7 +28,7 @@ program bcast
 
   ! Print data that was received
   call print_buffers(message)
-   
+
   call mpi_finalize(ierr)
 
 contains
@@ -69,4 +69,4 @@ contains
     end if
   end subroutine print_buffers
 
-end program 
+end program

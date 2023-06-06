@@ -11,10 +11,10 @@
 /* Exchange the boundary values */
 void exchange(field *temperature, parallel_data *parallel)
 {
-    double *data;  
+    double *data;
     double *sbuf_up, *sbuf_down, *rbuf_up, *rbuf_down;
 
-    // TODO start: implement halo exchange  
+    // TODO start: implement halo exchange
 
     // You need to do a little bit of math to determine correct linear
     // indeces for inner boundaries and ghost layers

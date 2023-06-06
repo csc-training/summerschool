@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     average_temp = average(&current);
     if (parallelization.rank == 0) {
         printf("Average temperature at start: %f\n", average_temp);
-    }    
+    }
 
 
     /* Largest stable time step */

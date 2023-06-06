@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-   
-   
+
+
     /* Initialize message buffers */
     init_buffers(sendbuf.data(), recvbuf.data(), size);
 
@@ -25,10 +25,10 @@ int main(int argc, char *argv[])
     print_buffers(printbuf.data(), sendbuf.data(), size);
 
     /* Send  everywhere */
-    
+
     // Implement the scatter of the array sendbuf from the process 0 to the rest,
     // using send and recv functions
-    
+
     /* Print data that was received */
     print_buffers(printbuf.data(), ..., size);
 

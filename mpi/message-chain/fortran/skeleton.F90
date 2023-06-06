@@ -21,12 +21,12 @@ program basic
   message = myid
   receiveBuffer = -1
 
-  ! TODO: set source and destination ranks 
+  ! TODO: set source and destination ranks
   ! Treat boundaries with MPI_PROC_NULL
 
-     destination = 
-  
-     source = 
+     destination =
+
+     source =
 
   ! end TODO
 

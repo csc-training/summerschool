@@ -19,8 +19,8 @@ struct ParallelData {
       // them in nup and ndown attributes, remember to cope with
       // boundary domains appropriatly
 
-      nup = 
-      ndown = 
+      nup =
+      ndown =
 
       // TODO end
 
@@ -31,7 +31,7 @@ struct ParallelData {
 // Class for temperature field
 struct Field {
     // nx and ny are the true dimensions of the field. The temperature matrix
-    // contains also ghost layers, so it will have dimensions nx+2 x ny+2 
+    // contains also ghost layers, so it will have dimensions nx+2 x ny+2
     int nx;                     // Local dimensions of the field
     int ny;
     int nx_full;                // Global dimensions of the field

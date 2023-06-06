@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     std::vector<int> receiveBuffer(size, -1);
 
     // TODO: create a cartesian communicator
-    // and determine the source and destination ranks 
+    // and determine the source and destination ranks
     // with the help of MPI_Cart_shift
     MPI_Comm cart_comm;
     int ndims = 1;

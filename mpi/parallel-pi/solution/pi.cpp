@@ -35,7 +35,7 @@ int main(int argc, char** argv)
           istop += remainder;
        }
     }
-         
+
    double localpi = 0.0;
    for (int i=istart; i <= istop; i++) {
      double x = (i - 0.5) / n;
@@ -58,5 +58,5 @@ int main(int argc, char** argv)
    MPI_Finalize();
 
 }
-   
+
 

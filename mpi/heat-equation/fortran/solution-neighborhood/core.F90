@@ -23,7 +23,7 @@ contains
     types(3) = parallel%columntype
     types(4) = parallel%columntype
 
-    ! calculate displacements with mpi_get_ddress    
+    ! calculate displacements with mpi_get_ddress
     call mpi_get_address(field0%data(0, 0), disp0)
 
     call mpi_get_address(field0%data(1, 0), sdisps(1))
@@ -40,7 +40,7 @@ contains
        sdisps(i) = sdisps(i) - disp0
        rdisps(i) = rdisps(i) - disp0
     end do
-    
+
     call mpi_neighbor_alltoallw(field0%data, counts, sdisps, types, &
                                 field0%data, counts, rdisps, types, &
                                 parallel%comm, ierr)

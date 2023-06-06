@@ -47,7 +47,7 @@ program datatype1
   end if
 
   call mpi_finalize(rc)
-  
-  
+
+
 
 end program datatype1

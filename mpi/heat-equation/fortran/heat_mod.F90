@@ -77,8 +77,8 @@ contains
 ! them in parallel%nleft and parallel%nright, remember to cope with
 ! boundary domains appropriatly
 
-    parallel%nleft = 
-    parallel%nright = 
+    parallel%nleft =
+    parallel%nright =
 
 ! TODO end
 

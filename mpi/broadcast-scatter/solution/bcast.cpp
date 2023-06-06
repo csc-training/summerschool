@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     /* Print data that will be sent */
     print_buffers(printbuf.data(), sendbuf.data(), size);
 
-    
+
     /* Send  everywhere */
     if( myid ==0){
       for(int i=1; i<ntasks; i++){

@@ -24,7 +24,7 @@ module heat
      type(mpi_comm) :: comm
      type(mpi_datatype) :: rowtype         ! MPI Datatype for communication of rows
      type(mpi_datatype) :: columntype                 ! MPI Datatype for communication of columns
-     type(mpi_datatype) :: subarraytype               ! MPI Datatype for communication of inner region 
+     type(mpi_datatype) :: subarraytype               ! MPI Datatype for communication of inner region
 
   end type parallel_data
 
@@ -45,7 +45,7 @@ contains
 
     integer :: nx_local, ny_local
 
-    
+
     call mpi_cart_get(parallel%comm, 2, dims, periods, coords)
     nx_local = nx / dims(1)
     ny_local = ny / dims(2)
@@ -60,9 +60,9 @@ contains
   end subroutine set_field_dimensions
 
   subroutine parallel_setup(parallel, nx, ny)
-    
+
     implicit none
-    
+
     type(parallel_data), intent(out) :: parallel
     integer, intent(in), optional :: nx, ny
 
@@ -126,7 +126,7 @@ contains
     call mpi_type_create_subarray(2, sizes, subsizes, offsets, MPI_ORDER_C, &
                              MPI_DOUBLE_PRECISION, parallel%subarraytype, ierr)
     call mpi_type_commit(parallel%subarraytype, ierr)
-    
+
   end subroutine parallel_setup
 
 end module heat

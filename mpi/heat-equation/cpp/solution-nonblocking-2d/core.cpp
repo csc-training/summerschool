@@ -10,9 +10,9 @@ void exchange_init(Field& field, ParallelData& parallel)
     // Send to the up, receive from down
     double* sbuf = field.temperature.data(1, 0);
     double* rbuf  = field.temperature.data(field.nx + 1, 0);
-    MPI_Isend(sbuf, 1, parallel.rowtype, parallel.nghbrs[0][0], 11, 
+    MPI_Isend(sbuf, 1, parallel.rowtype, parallel.nghbrs[0][0], 11,
               parallel.comm, &parallel.requests[0]);
-    MPI_Irecv(rbuf, 1, parallel.rowtype, parallel.nghbrs[0][1], 11, 
+    MPI_Irecv(rbuf, 1, parallel.rowtype, parallel.nghbrs[0][1], 11,
               parallel.comm, &parallel.requests[1]);
 
     // Send to the down, receive from up
@@ -20,7 +20,7 @@ void exchange_init(Field& field, ParallelData& parallel)
     rbuf = field.temperature.data();
     MPI_Isend(sbuf, 1, parallel.rowtype, parallel.nghbrs[0][1], 12,
               parallel.comm, &parallel.requests[2]);
-    MPI_Irecv(rbuf, 1, parallel.rowtype, parallel.nghbrs[0][0], 12, 
+    MPI_Irecv(rbuf, 1, parallel.rowtype, parallel.nghbrs[0][0], 12,
               parallel.comm, &parallel.requests[3]);
 
     // Send to the left, receive from right
@@ -34,9 +34,9 @@ void exchange_init(Field& field, ParallelData& parallel)
     // Send to the right, receive from left
     sbuf = field.temperature.data(0, field.ny);
     rbuf = field.temperature.data();
-    MPI_Isend(sbuf, 1, parallel.columntype, parallel.nghbrs[1][1], 14, 
+    MPI_Isend(sbuf, 1, parallel.columntype, parallel.nghbrs[1][1], 14,
               parallel.comm, &parallel.requests[6]);
-    MPI_Irecv(rbuf, 1, parallel.columntype, parallel.nghbrs[1][0], 14, 
+    MPI_Irecv(rbuf, 1, parallel.columntype, parallel.nghbrs[1][0], 14,
               parallel.comm, &parallel.requests[7]);
 }
 

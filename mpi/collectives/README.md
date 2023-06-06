@@ -1,6 +1,6 @@
 ## Collective operations
 
-In this exercise we test different routines for collective communication. 
+In this exercise we test different routines for collective communication.
 
 Write a program for four MPI tasks. Each task should have a data vector with
 the values initialised to:

@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     t0 = MPI_Wtime();
 
     // Send and receive messages
-    MPI_Isend(message.data(), size, MPI_INT, destination, myid + 1, 
+    MPI_Isend(message.data(), size, MPI_INT, destination, myid + 1,
               MPI_COMM_WORLD, &requests[0]);
     MPI_Irecv(receiveBuffer.data(), size, MPI_INT, source, MPI_ANY_TAG,
                  MPI_COMM_WORLD, &requests[1]);

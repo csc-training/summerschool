@@ -15,10 +15,10 @@ current task. Your program should work as follows:
   received array.
 
 1. Create a Cartesian topology for the chain. Utilize MPI_Cart_shift for finding
-   the neighbouring ranks and implement the communication with MPI point-to-point routines 
+   the neighbouring ranks and implement the communication with MPI point-to-point routines
    (either blocking or non-blocking). Use
-   [skeleton.cpp](cpp/skeleton.cpp) or [skeleton.F90](fortran/skeleton.F90) 
-   as a starting point. 
+   [skeleton.cpp](cpp/skeleton.cpp) or [skeleton.F90](fortran/skeleton.F90)
+   as a starting point.
 
 2. Make a version where the chain is periodic, i.e. task `ntasks-1` sends to task 0
    and every task receives.

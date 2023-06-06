@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
         message[i] = myid;
     }
 
-    // Send and receive messages as defined in exercise 
+    // Send and receive messages as defined in exercise
     if (myid == 0) {
         int dest = 1;
         int src = 1;

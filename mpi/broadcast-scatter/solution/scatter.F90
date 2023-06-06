@@ -15,7 +15,7 @@ program scatter
   call init_buffers
   recvbuf=-1
   call print_buffers(message)
-  
+
   if (size<ntasks) then
      if (myid == 0) then
         print *, "Size is too small. Increase size or decrease number of tasks to have at least one element sent"
@@ -35,7 +35,7 @@ program scatter
   recvbuf(1:(size/ntasks))=tmp(1:(size/ntasks))
   endif
 
-  call print_buffers(recvbuf) 
+  call print_buffers(recvbuf)
   call mpi_finalize(ierr)
 
 contains
@@ -77,4 +77,4 @@ contains
     end if
   end subroutine print_buffers
 
-end program 
+end program

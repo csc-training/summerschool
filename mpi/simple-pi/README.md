@@ -2,7 +2,7 @@
 
 # Parallel calculation of π
 
-An approximation to the value of π can be calculated from the following 
+An approximation to the value of π can be calculated from the following
 expression
 
 <!--
@@ -22,7 +22,7 @@ that performs the calculation parallel with **two** processes.
 2. Both tasks calculate their own partial sums
 
 3. Once finished with the calculation, rank 1 sends its partial sum to rank 0, which then
-   calculates the final result and prints it out. 
+   calculates the final result and prints it out.
 
 4. Compare the result to the that of the serial calculation, do you get **exactly** the same
    result? If not, can you explain why?

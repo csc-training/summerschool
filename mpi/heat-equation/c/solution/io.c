@@ -83,8 +83,8 @@ void read_field(field *temperature1, field *temperature2, char *filename,
     set_field_dimensions(temperature2, nx, ny, parallel);
 
     /* Allocate arrays */
-    allocate_field(temperature1); 
-    allocate_field(temperature2); 
+    allocate_field(temperature1);
+    allocate_field(temperature2);
 
     inner_data = (double *) malloc((temperature1->nx * temperature1->ny) * sizeof(double));
 

@@ -7,7 +7,7 @@ program parallel_pi
 
   integer, parameter :: n = 840
   integer :: myid, ntasks, rc
-  
+
   type(mpi_status) :: status
 
   integer :: i, istart, istop
@@ -20,7 +20,7 @@ program parallel_pi
      call mpi_finalize(rc)
      stop
   end if
-  
+
   call mpi_comm_rank(MPI_COMM_WORLD, myid, rc);
 
   if (myid == 0) then
@@ -31,24 +31,24 @@ program parallel_pi
   if (myid == 0) then
      istart = 1
      istop = n / 2
-     
+
      localpi = 0.0
      do i = istart, istop
         x = (i - 0.5) / n
         localpi = localpi + 1.0 / (1.0 + x**2)
      end do
-     
+
      pi = localpi
      call mpi_recv(localpi, 1, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD, &
           status, rc)
      pi = pi + localpi
      pi = pi * 4.0 / n
      write(*,'(A,F18.16,A,F10.8,A)') 'Approximate pi=', pi, ' (exact pi=', 4.0*atan(1.0_dp), ')'
-     
+
   else if (myid == 1) then
      istart = n / 2 + 1
      istop = n
-     
+
      localpi = 0.0
      do i = istart, istop
         x = (i - 0.5) / n

@@ -23,18 +23,18 @@ current task. Your program should work as follows:
    may start from scratch or use the skeleton code
    ([cpp/skeleton.cpp](cpp/skeleton.cpp) or
    [fortran/skeleton.F90](fortran/skeleton.F90)) as a starting
-   point. 
+   point.
 
-2. The skeleton code prints out the time spent in communication. 
-   Investigate the timings with different numbers of MPI tasks 
-   (e.g. 2, 4, 8, 16, ...), and pay attention especially to rank 0. 
+2. The skeleton code prints out the time spent in communication.
+   Investigate the timings with different numbers of MPI tasks
+   (e.g. 2, 4, 8, 16, ...), and pay attention especially to rank 0.
    Can you explain the behaviour?
-   
+
 3. Use the status parameter to find out how much data was received,
    and print out this piece of information for all receivers.
 
 4. Next, use combined `MPI_Sendrecv` instead of individual `MPI_Send`s or
-   `MPI_Recv`s. Investigate again the timings with different numbers of MPI tasks 
-   (e.g. 2, 4, 8, 16, ...). Compare the results to the implementation with individual 
-   `MPI_Send`s or `MPI_Recv`s and pay attention especially to rank 0. 
+   `MPI_Recv`s. Investigate again the timings with different numbers of MPI tasks
+   (e.g. 2, 4, 8, 16, ...). Compare the results to the implementation with individual
+   `MPI_Send`s or `MPI_Recv`s and pay attention especially to rank 0.
    Can you explain the behaviour?
