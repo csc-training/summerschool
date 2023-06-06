@@ -2,7 +2,7 @@ program exchange
   use mpi
   implicit none
   integer, parameter :: msgsize = 100, arraysize = 100000
-  integer :: rc, myid, ntasks, count
+  integer :: rc, myid, ntasks, nrecv
   integer :: status(MPI_STATUS_SIZE)
   integer :: message(arraysize)
   integer :: receiveBuffer(arraysize)
@@ -20,11 +20,11 @@ program exchange
   if ( myid == 0 ) then
 
      write(*,'(A10,I3,A10,I3, A17, I3)') 'Rank: ', myid, &
-          ' received ', count, ' elements, first ', receiveBuffer(1)
+          ' received ', nrecv, ' elements, first ', receiveBuffer(1)
   else if (myid == 1) then
 
      write(*,'(A10,I3,A10,I3, A17, I3)') 'Rank: ', myid, &
-          ' received ', count, ' elements, first ', receiveBuffer(1)
+          ' received ', nrecv, ' elements, first ', receiveBuffer(1)
   end if
 
   call mpi_finalize(rc)
