@@ -1,9 +1,9 @@
 program exchange
-  use mpi
+  use mpi_f08
   implicit none
-  integer, parameter :: msgsize = 100, arraysize = 100000
+  integer, parameter :: arraysize = 100000, msgsize = 100
   integer :: rc, myid, ntasks, nrecv
-  integer :: status(MPI_STATUS_SIZE)
+  type(mpi_status) :: status
   integer :: message(arraysize)
   integer :: receiveBuffer(arraysize)
 
@@ -15,9 +15,9 @@ program exchange
   receiveBuffer = -1
 
   ! TODO: Implement sending and receiving as defined in the assignment
-  ! Send msgsize elements from the array "message", and receive into 
+  ! Send msgsize elements from the array "message", and receive into
   ! "receiveBuffer"
-  if ( myid == 0 ) then
+  if (myid == 0) then
 
      write(*,'(A10,I3,A10,I3, A17, I3)') 'Rank: ', myid, &
           ' received ', nrecv, ' elements, first ', receiveBuffer(1)

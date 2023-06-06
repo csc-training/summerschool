@@ -1,7 +1,7 @@
 program exchange
   use mpi_f08
   implicit none
-  integer, parameter :: msgsize = 100, arraysize = 100000
+  integer, parameter :: arraysize = 100000, msgsize = 100
   integer :: rc, myid, ntasks, nrecv
   type(mpi_status) :: status
   integer :: message(arraysize)
@@ -15,7 +15,7 @@ program exchange
   receiveBuffer = -1
 
   ! Send and receive as defined in the assignment
-  if ( myid == 0 ) then
+  if (myid == 0) then
      call mpi_send(message, msgsize, MPI_INTEGER, 1, &
           1, MPI_COMM_WORLD, rc)
      call mpi_recv(receiveBuffer, arraysize, MPI_INTEGER, 1,  &
