@@ -4,16 +4,15 @@ event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
-# Fortran
 
-* First Scenario: Fortran + CUDA C/C++
-    - Assuming there is no CUDA code in the Fortran files.
-    - Hipify CUDA
-    - Compile and link with hipcc
-* Second Scenario: CUDA Fortran
-    - There is no HIP equivalent
-    - HIP functions are callable from C, using `extern C`
-    - See hipfort
+
+* No native GPU support in Fortran:
+    - HIP functions are callable from C, using `extern C`, compile hipcc
+    - interoperability with Fortran via `iso_c_binding` 
+* Fortran + HIP:
+    - link with Fortran
+    - needs wrappers and interfaces for all HIP calls
+
 
 
 # Hipfort
@@ -26,8 +25,6 @@ does not support it.
     1) We write the kernels in a new C++ file
     2) Wrap the kernel launch in a C function
     3) Use Fortran 2003 C binding to call the C function
-    4) Things could change
-* Use OpenMP offload to GPUs
 
 
 # Fortran SAXPY example
@@ -184,3 +181,14 @@ extern "C"
 2. Fortran+OpenACC and CUDA Fortran -> Fortran + [GCC/AOMP OpenACC/MP runtime calls] + HIP C++
     
 ![](img/gpufort.png){width=1000px}
+    
+
+
+# Summary
+
+* No native GPU support in Fortran
+* HIP functions are callable from C, using `extern C`
+  - `iso_c_binding` 
+  - GPU objects are of type `c_ptr` in Fortran
+* Hipfort provides Fortran interfaces for GPU libraries
+* GPUFort promises looks promising
