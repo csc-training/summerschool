@@ -21,7 +21,7 @@ current task. Your program should work as follows:
    the first and the last task in the chain so that all the `MPI_Send`s and
    `MPI_Recv`s are outside `if` statements. You
    may start from scratch or use the skeleton code
-   ([cpp/skeleton.cpp](cpp/skeleton.cpp), [c/skeleton.c](c/skeleton.c) or
+   ([cpp/skeleton.cpp](cpp/skeleton.cpp) or
    [fortran/skeleton.F90](fortran/skeleton.F90)) as a starting
    point. 
 
