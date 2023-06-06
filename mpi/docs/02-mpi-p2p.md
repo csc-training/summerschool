@@ -234,8 +234,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
       `double`
     - Fortran examples: `MPI_INTEGER` for `integer`,
       `MPI_DOUBLE_PRECISION` for `real64`
-- One can also define custom datatypes for communicating more complex
-  data
+- One can also define custom datatypes for communicating complex data
 
 
 # Blocking routines & deadlocks
