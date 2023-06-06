@@ -14,7 +14,7 @@ Versions from previous years can be found in tags.
 ## Exercises
 
  - [General instructions](exercise-instructions.md)
- - [Using version control and unix](unix-version-control)
+ - [Basic supercomputer usage](computer-platforms)
  - [MPI](mpi)
  - [Parallel I/O](parallel-io)
  - [Hybrid MPI/OpenMP](hybrid)
