@@ -14,28 +14,8 @@ lang:   en
 # General consideration
 - Keep all the compute resources busy (idle resources are a waste)
 - Minimize the synchronization at all levels
-- Minimize the data transfers between host and device
+- Minimize the data transfers between host and device 
 - Keep the data in faster memory and use an appropriate access pattern
-
-# Compute bound vs memory bound
-
-- **Compute Bound:** The program spends most of its time performing calculations.
-  - GPU cores fully occupied with calculations.
-  - Complex mathematical operations, simulations, or algorithms with little data access
-  - Performance can be improved by reducing the register pressure
-
-- **Memory Bound:** The program spends time waiting for data transfers.
-  - Performance limited by memory bandwidth.
-  - Accessing large amounts of data or frequent memory operations.
-  - Performance can be improved with better access patterns and using shared memory. 
-
-In general going from CPU to GPU results in a memory bound code.
-
-# Roofline Analysis
-
-![](img/Example_of_a_Roofline_model.svg){.center width=60%}
--  Creates an intuitive visual performance model used to provide performance estimates 
--  It  shows inherent hardware limitations, and potential benefit and priority of optimizations.
 
 # GPU performance analysis {.section}
 
