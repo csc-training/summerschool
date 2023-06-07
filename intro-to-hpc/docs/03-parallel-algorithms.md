@@ -5,7 +5,7 @@ lang:   en
 ---
 
 
-# Parallel algoritms {.section}
+# Parallel algorithms {.section}
 
 # What can be calculated in parallel?
 
@@ -107,7 +107,7 @@ Simple domains with different computational cost
 # Data distribution: load balance
 
 <div class=column>
-Compex FEM meshes
+Complex FEM meshes
 <br>
 <br>
 <!-- Copyright CSC / Peter Råback -->

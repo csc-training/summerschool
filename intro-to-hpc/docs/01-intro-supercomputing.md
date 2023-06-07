@@ -19,7 +19,7 @@ lang:   en
 # Top 500 list
 
 <!-- Source: top500.org, Copyright 1993-2023 TOP500.org (c) -->
- ![](img/top_500.png){.center width=50%}
+ ![](img/top_500.png){.center width=48%}
 
 # What are supercomputers used for? {.section}
 
@@ -31,7 +31,8 @@ lang:   en
 - Complex computational problems
 - Problems that are hard to experiment on
     - Simulations with decade-long timescales
-- Very time consuming or even impossible to <br> solve on a standard computer
+- Many of these are very time consuming, or even<br>
+  impossible to solve on a standard computer
 
 # Application areas
 
