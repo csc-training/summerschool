@@ -121,7 +121,7 @@ end program testSaxpy
 
 # GPUFort
     
-![](img/gpufort.png){.center }
+![](img/gpufort.png){.center width=120%}
 
 <small>
     
