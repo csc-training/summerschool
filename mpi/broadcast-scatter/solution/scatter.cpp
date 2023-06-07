@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     int block_size = size/ntasks;
     if (myid == 0) {
         for (int i = 1; i < ntasks; i++) {
-            MPI_Send(sendbuf.data() + i*block_size, block_size, MPI_INT, i, i, MPI_COMM_WORLD);
+            MPI_Send(&sendbuf[i*block_size], block_size, MPI_INT, i, i, MPI_COMM_WORLD);
         }
 
         // Scatter also the local part
