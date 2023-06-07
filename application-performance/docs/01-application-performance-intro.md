@@ -314,4 +314,4 @@ $$
 # Web resources
 
 - Roofline performance model and Empiral Roofline Tool
-    - <https://crd.lbl.gov/departments/computer-science/par/research/roofline/>
+    - <https://crd.lbl.gov/divisions/amcr/computer-science-amcr/par/research/roofline/software/ert/>
