@@ -11,8 +11,10 @@
 #ignore default binary name
 a.out
 
-#ignore heat solver output PNGs
+#ignore heat solver outputs
 heat_*.png
+heat
+heat_mpi
 
 #ignore default SLURM output files
 slurm-*.out
