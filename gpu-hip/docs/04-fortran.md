@@ -23,6 +23,42 @@ lang:   en
 
 
 
+# HIPFort for SAXPY (`Y=Y+a*X`). HIP code
+<div class="column">
+```cpp
+#include <hip/hip_runtime.h>
+#include <cstdio>
+
+__global__ void saxpy(float *y, float *x, 
+                      float a, int n)
+{
+    int i = blockDim.x*blockIdx.x+threadIdx.x;
+    if (i < n) {
+      y[i] = y[i] + a*x[i];
+    }
+}
+``` 
+
+</div>
+
+<div class="column">
+``` cpp
+extern "C"{
+void launch(float **dout, float **da, 
+            float db, int N)
+  {
+     dim3 tBlock(256,1,1);
+     dim3 grid(ceil((float)N/tBlock.x),1,1);
+    
+    hipLaunchKernelGGL(saxpy, 
+                       grid, tBlock, 
+                       0, 0, 
+                       *dout, *da, db, N);
+  }
+}
+```
+</div>
+
 # HIPFort for SAXPY (`Y=Y+a*X`). Fortran Code
 <small>
 <div class="column" width=45%>>
@@ -83,42 +119,6 @@ end program testSaxpy
 ```
 </div>
 </small>
-
-# HIPFort for SAXPY (`Y=Y+a*X`). HIP code
-<div class="column">
-```cpp
-#include <hip/hip_runtime.h>
-#include <cstdio>
-
-__global__ void saxpy(float *y, float *x, 
-                      float a, int n)
-{
-    int i = blockDim.x*blockIdx.x+threadIdx.x;
-    if (i < n) {
-      y[i] = y[i] + a*x[i];
-    }
-}
-``` 
-
-</div>
-
-<div class="column">
-``` cpp
-extern "C"{
-void launch(float **dout, float **da, 
-            float db, int N)
-  {
-     dim3 tBlock(256,1,1);
-     dim3 grid(ceil((float)N/tBlock.x),1,1);
-    
-    hipLaunchKernelGGL(saxpy, 
-                       grid, tBlock, 
-                       0, 0, 
-                       *dout, *da, db, N);
-  }
-}
-```
-</div>
 
 # GPUFort
     
