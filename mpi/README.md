@@ -6,9 +6,9 @@
 
  - [Hello world](hello-world/)
 
-### Simple point-to-point communication
+### Point-to-point communication
 
- - [Simple message exchange](message-exchange/)
+ - [Message exchange](message-exchange/)
  - [Parallel pi with two processes](paralle-pi-two-procs/)
 
 ### Special MPI variables and communication patterns
