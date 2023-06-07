@@ -10,12 +10,9 @@ void init_buffers(int *sendbuffer, int *recvbuffer, int buffersize);
 
 int main(int argc, char *argv[])
 {
-    int ntasks, rank, color;
-
+    int ntasks, rank;
     std::vector<int> sendbuf(2 * NTASKS), recvbuf(2 * NTASKS);
     std::vector<int> printbuf(2 * NTASKS * NTASKS);
-
-    MPI_Comm sub_comm;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);

@@ -10,11 +10,9 @@ void init_buffers(int *sendbuffer, int *recvbuffer, int buffersize);
 
 int main(int argc, char *argv[])
 {
-    int ntasks, rank, color;
+    int ntasks, rank;
     std::vector<int> sendbuf(2 * NTASKS), recvbuf(2 * NTASKS);
     std::vector<int> printbuf(2 * NTASKS * NTASKS);
-
-    MPI_Comm sub_comm;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
@@ -33,12 +31,13 @@ int main(int argc, char *argv[])
     /* Print data that will be sent */
     print_buffers(printbuf.data(), sendbuf.data(), 2 * NTASKS);
 
-    /* TODO: use a single collective communication call (and maybe prepare
-     *       some parameters for the call) */
+    /* TODO: use a single collective communication call
+     *       (and maybe prepare some parameters for the call)
+     */
 
     /* Print data that was received */
-    /* TODO: add correct buffer */
-    print_buffers(printbuf.data(), ..., 2 * NTASKS);
+    /* TODO: use correct buffer */
+    print_buffers(printbuf.data(), recvbuf.data(), 2 * NTASKS);
 
     MPI_Finalize();
     return 0;
