@@ -25,12 +25,12 @@ program coll_exer
   ! Print data that will be sent
   call print_buffers(sendbuf)
 
-  ! TODO: use a single collective communication call (and maybe prepare
-  !       some parameters for the call)
+  ! TODO: use a single collective communication call
+  !       (and maybe prepare some parameters for the call)
 
   ! Print data that was received
-  ! TODO: add correct buffer
-  call print_buffers(...)
+  ! TODO: use correct buffer
+  call print_buffers(recvbuf)
 
   call mpi_finalize(ierr)
 
