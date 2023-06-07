@@ -17,21 +17,19 @@ lang:   en
 
 * Workstations or supercomputer nodes can be equipped with several GPUs
     * For the current supercomputers, the number of GPUs per node usually
-      ranges between 2 to 6
+      ranges between 2 and 6
     * Allows sharing (and saving) resources (disks, power units, e.g.)
     * More GPU resources per node, better per-node-performance
 
 
 # GPU Context
 
-* Context is established implicitly on the current device when the first task requiring an active context is evaluated (HIP and OpenMP)
+* A context is established implicitly on the current device when the first task requiring an active context is evaluated (HIP and OpenMP)
 * Several processes can create contexts for a single device
-* The device resources are allocated per context
+    * The device resources are allocated per context
 * By default, one context per device per process in HIP (since CUDA 4.0)
     * Threads of the same process share the primary context (for each device)
-* HIP supports explicit context management 
-* OpenMP does not support explicit context management
-
+* HIP supports explicit context management whereas OpenMP do not
 
 # Selecting device
 
@@ -87,7 +85,7 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
     * Syncing is handled through message passing (eg. MPI)
 * Many GPUs per process (II)
     * Process manages all context switching and syncing explicitly
-* One GPU per thread (III)
+* One GPU per thread (III, advanced)
     * Syncing is handled through thread synchronization requirements
 </div>
 
@@ -152,10 +150,10 @@ for(int n = 0; n < num_devices; n++) {
 </small>
 
 
-# One GPU per thread (III)
+# One GPU per thread (III, advanced)
 
 * One GPU per CPU thread
-    * Eg, one OpenMP CPU thread per GPU being used
+    * E.g. one OpenMP CPU thread per GPU being used
 * HIP and OpenMP APIs are threadsafe
     * Multiple threads can call the functions at the same time
 * Each thread can create its own context on a different GPU
@@ -164,7 +162,7 @@ for(int n = 0; n < num_devices; n++) {
 * Communication between threads still not trivial
 
 
-# One GPU per thread (III), code example
+# One GPU per thread (III, advanced), code example
 
 <small>
 
@@ -219,9 +217,8 @@ hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 * Memcopies between different devices can be done as follows:
 
 ```cpp
-// HIP: First option that requires unified virtual addressing
-hipError_t hipMemcpy(void* dst, void* src, size_t size, 
-hipMemcpyKind kind=hipMemcpyDefault)
+// HIP: First option that requires unified virtual addressing (use "hipMemcpyDefault" for "kind")
+hipError_t hipMemcpy(void* dst, void* src, size_t size, hipMemcpyKind kind=hipMemcpyDefault)
 
 // HIP: Second option does not require unified virtual addressing
 hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t size)
@@ -231,43 +228,35 @@ int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
                       size_t srcOffset, int dstDev, int dstDev)
 ```
 
-* If direct peer to peer access is not available or implemented, the functions should fallback in a normal copy through host memory
-
-# Message Passing Interface (MPI)
-
-* MPI is a widely adopted standardized message passing interface for
-  distributed memory parallel computing
-* The parallel program is launched as a set of independent, identical
-  processes
-    * Same program code and instructions
-    * Each process can reside in different nodes or even different computers
-* All variables and data structures are local to the process
-* Processes can exchange data by sending and receiving messages
-
+* If direct peer to peer access is not available or implemented, the functions should fall back to a normal copy through host memory
 
 # Three levels of parallelism
 
-1. GPU - GPU threads on the multiprocessors
-    * Parallelization strategy: HIP, SYCL, Kokkos, OpenMP
-2. Node - Multiple GPUs and CPUs
+<small>
+
+1. GPU -- GPU threads on the multiprocessors
+    * Parallelization strategy: HIP, OpenMP, SYCL, Kokkos, OpenCL
+2. Node -- Multiple GPUs and CPUs
     * Parallelization strategy: MPI, Threads, OpenMP
-3. Supercomputer - Many nodes connected with interconnect
+3. Supercomputer -- Many nodes connected with interconnect
     * Parallelization strategy: MPI between nodes
 
-![](img/parallel_regions.png){width=40%}
+</small>
+
+![](img/parallel_regions.png){width=60%}
 
 
 # MPI and HIP
 
 * Compiling HIP/OpenMP and MPI calls in the same compilation unit may not always be trivial
-* One can set MPI compiler to use `hipcc` or the desirable OpenMP compiler like `nvc`, eg for OpenMPI:
-```bash
-OMPI_CXXFLAGS='' OMPI_CXX='hipcc'
-```
+* One can set MPI compiler to use `hipcc` or the desirable OpenMP compiler like `nvc`, e.g. for OpenMPI:
+  ```bash
+  OMPI_CXXFLAGS='' OMPI_CXX='hipcc'
+  ```
 or 
-```bash
-OMPI_CXXFLAGS='' OMPI_CXX='nvc -mp=gpu -gpu=cc80'
-```
+  ```bash
+  OMPI_CXXFLAGS='' OMPI_CXX='nvc -mp=gpu -gpu=cc80'
+  ```
 
 * Alternatively, one could separate HIP/OpenMP and MPI code in different compilation units compiled with `mpicxx` and `hipcc`/`nvc`
     * Link object files in a separate step using `mpicxx` or `hipcc`/`nvc`
@@ -291,7 +280,7 @@ OMPI_CXXFLAGS='' OMPI_CXX='nvc -mp=gpu -gpu=cc80'
 
 # Selecting the correct GPU
 
-* Typically all processes on the node can access all GPUs of that node
+* Typically, all processes on the node can access all GPUs of that node
 * The following implementation allows utilizing all GPUs using one or more
   processes per GPU
     * Use CUDA MPS when launching more processes than GPUs
@@ -315,7 +304,7 @@ MPI_Comm_rank(commNode, &nodeRank);
 
 * GPU-aware (CUDA/ROCm aware) MPI libraries support direct GPU-GPU transfers
     * Can take a pointer to device buffer (avoids host/device data copies)
-* Unfortunately, currently no GPU support for custom MPI datatypes (must use a
+* Unfortunately, currently no GPU support for custom MPI data types (must use a
   datatype representing a contiguous block of memory)
     * Data packing/unpacking must be implemented application-side on GPU
 * ROCm aware MPI libraries are still new and there may be problems
@@ -347,10 +336,10 @@ MPI_Comm_rank(commNode, &nodeRank);
 
 - There are many ways to write a multi-GPU program
 - Use `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) to choose the default device
-   * In OpenMP, `device()`-directive can be used as well
+   * In OpenMP, `device()`-directive can also be used to select the target device
 * If you have an MPI program, it is often best to use one GPU per process, and
   let MPI handle data transfers between GPUs
-* There is still little experience from ROCm aware MPIs, there may be issues
+* There is still little experience of ROCm aware MPIs, there may be issues
     * Note that a GPU-aware MPI is only required when passing device
-      pointers to the MPI, passing only host pointers does not require any
+      pointers to MPI, passing host pointers does not require any
       GPU awareness
