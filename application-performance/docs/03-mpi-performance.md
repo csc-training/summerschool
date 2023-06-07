@@ -8,7 +8,7 @@ lang:   en
 
 # Performance analysis cycle
 
-![](img/perf-analysis-mpi.png){.center width=60%}
+![](img/perf-analysis-mpi-gpu.svg){.center width=60%}
 
 # Introduction
 

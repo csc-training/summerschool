@@ -6,22 +6,28 @@ lang:   en
 
 # GPU performance optimization {.section}
 
-# Doesn't the compiler do everything?
-- GPUs are ubquituos in HPC
-- GPUs are powerful and complex
-- parallelism has to be explicitely expressed by the programmer
+# Introduction
+- GPUs (Graphics Processing Units) are widely used in High-Performance Computing (HPC) applications.
+- GPUs are powerful and complex processors designed for parallel computing.
+- GPUs require explicit expression of parallelism by the programmer.
 
-# General consideration
+# General Principles for High GPU Performance 
+
+<div class=column>
 - Keep all the compute resources busy (idle resources are a waste)
 - Minimize the synchronization at all levels
 - Minimize the data transfers between host and device 
 - Keep the data in faster memory and use an appropriate access pattern
+</div>
+<div class=column>
+![](img/lumi_node.png){.center width=40%}
+</div>
 
 # GPU performance analysis {.section}
 
 # Performance analysis cycle
 
-![](img/perf-analysis-single-core.svg){.center width=60%}
+![](img/perf-analysis-single-gpu.svg){.center width=60%}
 
 # Measuring performance
 - Don’t speculate about performance – measure it!
@@ -83,31 +89,23 @@ lang:   en
 ![](img/tracing.png){.left width=60%}
 
 
-# Intel VTune
+# Tau  Analysis Utilities
 
-- VTune is a tool that can give detailed information on application resource
-  utilization
-    - Uses CPU hardware counters on Intel CPUs for more accurate statistics
-- VTune has extensive GUI for result analysis and visualization
+<small> 
 
-# VTune
+- TAU is a powerful performance evaluation toolkit
+- Runs on all HPC platforms, relatively easy to install
+- Targets all parallel programming/execution paradigms (GPU, MPI, OpenMP, pthreads, ...)
+- Programming languages: Fortran, C, C++, UPC,  Java, Python, ...
+- TAU has instrumentation, measurement and analysis tools 
+- User-friendly graphical interface
+- Profiling: Measures total time spent in each routine
+- Tracing: Shows events and their timings across processes on a timeline
+- I/O performance evaluation
+- Memory debugging
 
-- Analysis in three steps
-    1. **Collect:** Run binary and collect performance data - sampling based
-       analysis
-    2. **Finalize:** Prepare data for analysis - by default combined with
-       collect
-    3. **Report:** Analyze data with VTune
+</small>
 
-# VTune
-- In addition to the GUI, command-line tools can be used to collect the
-  statistics
-    - Works with batch jobs too
-- Many different profiles (actions), for example
-    - *hotspots* for general overview
-    - *advanced-hotspots* for more detailed view with hardware counters
-    - *hpc-performance* for HPC specific analysis
-    - *memory-access* for detailed memory access analysis
+# Omniperf
 
-# VTune demo {.section}
-
+- 
