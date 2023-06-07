@@ -104,7 +104,7 @@ double *data = (double *) malloc(N * sizeof(double));
 # Motivation for optimizing data movement
 
 - When dealing with an accelerator GPU device attached to a PCIe bus,
-  **optimizing data movement** is often **essential** to achieving good
+  **optimizing data movement** is often **essential** to achieve good
   performance
 - The four key steps in porting to high performance accelerated code
     1. Identify parallelism
