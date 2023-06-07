@@ -8,6 +8,7 @@ lang:   en
 
 # Fortran
 <small>
+    
 * No native GPU support in Fortran:
     - HIP functions are callable from C, using `extern C`, compile hipcc
     - interoperability with Fortran via `iso_c_binding` 
@@ -20,6 +21,7 @@ lang:   en
       - HIP: HIP runtime, hipBLAS, hipSPARSE, hipFFT, hipRAND, hipSOLVER
       - ROCm: rocBLAS, rocSPARSE, rocFFT, rocRAND, rocSOLVER
       - memory management: `hipMalloc`, `hipMemcpy`
+    
 </small>
 
 
