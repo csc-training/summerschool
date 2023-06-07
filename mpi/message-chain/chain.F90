@@ -1,5 +1,5 @@
 program basic
-  use mpi
+  use mpi_f08
   use iso_fortran_env, only : REAL64
 
   implicit none
@@ -7,8 +7,7 @@ program basic
   integer :: rc, myid, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
-  integer :: status(MPI_STATUS_SIZE)
-  integer :: requests(2)
+  type(mpi_status) :: status
 
   real(REAL64) :: t0, t1
 
@@ -21,14 +20,8 @@ program basic
   message = myid
   receiveBuffer = -1
 
-  ! TODO: set source and destination ranks
-  ! Treat boundaries with MPI_PROC_NULL
-
-     destination =
-
-     source =
-
-  ! end TODO
+  ! TODO: Set source and destination ranks
+  ! TODO: Treat boundaries with MPI_PROC_NULL
 
   ! Start measuring the time spent in communication
   call mpi_barrier(mpi_comm_world, rc)
@@ -37,7 +30,7 @@ program basic
   ! TODO: Send messages
 
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
-          ' Sent elements: ',size, &
+          ' Sent elements: ', size, &
           '. Tag: ', myid+1, '. Receiver: ', destination
 
   ! TODO: Receive messages

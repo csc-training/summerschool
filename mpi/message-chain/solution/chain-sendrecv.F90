@@ -1,5 +1,5 @@
 program basic
-  use mpi
+  use mpi_f08
   use iso_fortran_env, only : REAL64
 
   implicit none
@@ -7,8 +7,7 @@ program basic
   integer :: rc, myid, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
-  integer :: status(MPI_STATUS_SIZE)
-  integer :: requests(2)
+  type(mpi_status) :: status
 
   real(REAL64) :: t0, t1
 
@@ -42,9 +41,8 @@ program basic
        receiveBuffer, size, MPI_INTEGER, source, MPI_ANY_TAG, &
        MPI_COMM_WORLD, status, rc)
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
-       ' Sent elements: ', size, &
-       '. Tag: ', myid + 1, &
-       '. Receiver: ', destination
+          ' Sent elements: ', size, &
+          '. Tag: ', myid+1, '. Receiver: ', destination
   write(*,'(A10,I3,A,I3)') 'Receiver: ', myid, &
           ' First element: ', receiveBuffer(1)
 
