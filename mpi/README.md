@@ -38,20 +38,21 @@
 
   - [Communicators and collectives](communicator/)
 
-### Non-blocking communication
+### Non-blocking communication and persistent communication
 
-  - [Non-blocking message chain](message-chain/README-nonblocking.md)
-  - [Message chain with persistent communication](message-chain/README-persistent.md)
+  - [Message chain revisited](message-chain-non-blocking/)
 
 ### Process topologies
+
  - [Cartesian grid process topology](cartesian-grid)
- - [Message chain with Cartesian communicator](message-chain/README-cartesian.md)
+ - [Message chain with Cartesian communicator](message-chain-cartesian/)
 
 ### Simple derived types
 
  - [Simple datatypes](simple-datatypes)
 
 ### Advanced derived types
+
  - [Communicating struct / derived type](struct-datatype)
  - [Modifying extent](datatype-extent)
 
