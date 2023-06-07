@@ -8,7 +8,7 @@ To parallelise the code, one needs to divide the grid into blocks of columns
 (in Fortran) or rows (in C/C++) and assign each block to one MPI task. Or in other
 words, share the work among the MPI tasks by doing a domain decomposition.
 
-![2D domain decomposition](img/domain-decomposition.svg)
+![domain decomposition](img/domain-decomposition.svg)
 
 The MPI tasks are able to update the grid independently everywhere else than
 on the boundaries -- there the communication of a single column (or row) with
@@ -17,17 +17,129 @@ ghost-layers that contain the boundary data of the neighbouring tasks. As the
 system is aperiodic, the outermost ranks communicate with only one neighbour,
 and the inner ranks with two neighbours.
 
+## Tasks
+
+1. [First steps](#first-steps)
+1. [Using sendrecv](#using-sendrecv)
+1. [Using collective communication](#using-collective-communication)
+1. [Using Cartesian communicator](#using-cartesian-communicator)
+1. [Using non-blocking communication](#using-non-blocking-communication)
+1. [2D decomposition](#2d-decomposition)
+
+### First steps
+
 Some parts of the code are already parallelized (*e.g.* input/output), complete
 the parallelization as follows (marked with TODOs in the source code):
 
-  1. Initialize and finalize MPI in the main routine ([cpp/main.cpp](cpp/main.cpp) or [fortran/main.F90](fortran/main.F90))
-  2. Determine the number of MPI processes, rank, as well as the left (or up) and right (or down) neighbours
-     of a domain in the routine `parallel_setup()` (in [fortran/heat_mod.F90](fortran/heat_mod.F90)) or in the `ParallelData()` constructor (in [cpp/heat.hpp](cpp/heat.hpp)
-  3. Use `MPI_Send` and `MPI_Recv` for implementing the "halo exchange" operation in the
-     `exchange()` routine in [cpp/core.cpp](cpp/core.cpp) or [fortran/core.F90](fortran/core.F90).
+1. Initialize and finalize MPI in the main routine ([cpp/main.cpp](cpp/main.cpp) or [fortran/main.F90](fortran/main.F90))
+2. Determine the number of MPI processes, rank, as well as the left (or up) and right (or down) neighbours
+   of a domain in the routine `parallel_setup()` (in [fortran/heat_mod.F90](fortran/heat_mod.F90)) or in the `ParallelData()` constructor (in [cpp/heat.hpp](cpp/heat.hpp)
+3. Use `MPI_Send` and `MPI_Recv` for implementing the "halo exchange" operation in the
+   `exchange()` routine in [cpp/core.cpp](cpp/core.cpp) or [fortran/core.F90](fortran/core.F90).
 
 To build the code, please use the provided `Makefile` (by typing `make`). By default, Intel
 compiler is used, in order to use gcc type `make COMP=gnu`.
 
 There is also working serial code under [cpp/serial](cpp/serial) / [fortran/serial](fortran/serial)
 which you can use as reference.
+
+
+### Using sendrecv
+
+*Note that at least the steps 1 and 2 of [the first steps](#first-steps) need to be completed for this exercise.*
+
+1. Implement the "halo exchange" operation in the `exchange()` routine
+in [cpp/core.cpp](cpp/core.cpp) or [fortran/core.F90](fortran/core.F90) with `MPI_Sendrecv`.
+
+
+### Using collective communication
+
+*Note that either [the first steps](#first-steps) or [sendrecv](#using-sendrecv) needs to be completed for this exercise.*
+
+Implement collective communication in the code.
+
+1. Replace the individual sends and receives in the routine `average` (in [fortran/utilities.F90](fortran/utilities.F90) or in [cpp/utilities.cpp](cpp/utilities.cpp)) with appropriate collective
+communication.
+2. Replace the individual sends and receives in the routine `read_field` (in [fortran/io.F90](fortran/io.F90) or in [cpp/io.cpp](cpp/io.cpp)) with appropriate collective communication. Note that the code needs to be run with the initial data read from an input file (found under the [common](common) directory), *i.e.*
+  ```
+  srun ./heat_mpi bottle_dat
+  ```
+
+3. Is it possible to use collective communications also in the routine `write_field` (in [fortran/io.F90](fortran/io.F90) or in [cpp/io.cpp](cpp/io.cpp))?
+
+
+### Using Cartesian communicator
+
+If you are not familiar with the two dimensional heat equation, please have a look
+for [basic description](https://github.com/csc-training/mpi-introduction/tree/main/heat-equation)
+in "Parallel programming with MPI" exercise material.
+
+Here, starting point is a working code parallelized over columns (in Fortran) or rows (in C/C++).
+
+The current version uses only MPI_COMM_WORLD, and neighboring process are determined manually.
+
+1. Add a "communicator" attribute to the basic parallelization data structure (`type :: parallel_data` in [fortran/heat_mod.F90](fortran/heat_mod.F90) or class `ParallelData` in [cpp/heat.hpp](cpp/heat.hpp))
+2. Create the Cartesian communicator in the routine `parallel_setup()` (Fortran) or in the
+the `ParallelData()` constructor (C++), and use `MPI_Cart_shift` for determining the
+neighboring processes
+3. Use the Cartesian communicator in all communication routines
+
+To build the code, please use the provided `Makefile` (by typing `make`). By default, Intel
+compiler is used, in order to use gcc type `make COMP=gnu`.
+
+
+### Using non-blocking communication
+
+Utilize non-blocking communication in the "halo exchange" of the heat equation solver.
+The aim is to be able to overlap the communication and communication. In order to achieve this,
+you need to divide the communication and computation into four steps:
+
+1. Initiate the communication in the halo exchange
+2. Compute the inner values of the temperature field (those that do not depend on the ghost layers)
+3. Finalize the communication in halo exchange
+4. Compute the edge values of the temperature field (those that depend on the ghost layers)
+
+Implement the required routines in [fortran/core.F90](fortran/core.F90) or [cpp/core.cpp](cpp/core.cpp), and replace the calls to `exchange` and `evolve` in the `main` routine by the newly
+implemented ones.
+
+In principle it is enough to have the steps 1 and 2 in the [base exercise](README.md) completed
+for this exercise, however, we recommend that you have fully working parallel code to start with.
+
+
+### 2D decomposition
+
+If you are not familiar with the two dimensional heat equation, please have a look
+for [basic description](https://github.com/csc-training/mpi-introduction/tree/main/heat-equation)
+in "Parallel programming with MPI" exercise material.
+
+Here, starting point is a working code parallelized over columns (in Fortran) or rows (in C/C++).
+
+Before starting with this exercise, it is recommended that you have
+the [usage of Cartesian communicator](README-cartesian.md) implemented.
+You can also use its model solution as starting point.
+
+1. Modify the creation of Cartesian communicator so that the
+   decomposition is done in two dimensions, and determine all four
+   neighbors (up, down, left, right).
+
+2. As the rows (in Fortran) or columns (in C/C++) are not contiguous
+   in the computer memory, one needs to use user-defined datatypes
+   when communicating in the `exchange()` routine in [cpp/core.cpp](cpp/core.cpp)
+   or [fortran/core.F90](fortran/core.F90). In order to make code more
+   symmetric, one can utilize derived type also for the contiguous
+   dimension. Create required datatypes (it is recommended to store
+   them as attributes in "parallel" data structure).
+3. Perform the halo exchange with `MPI_Neighbor_alltoallw`. Together
+   with the user defined datatypes, no temporary buffers are needed in
+   the user code. In order to use `MPI_Neighbor_alltoallw`, you need
+   to determine the correct `displacements` both in sending and
+   receiving.
+4. In the base version, the I/O routines `write_field` and
+   `read_field` (in [cpp/core.cpp](cpp/io.cpp) or
+   [fortran/core.F90](fortran/io.F90))
+   use temporary buffers for communication. Create appropriate
+   datatype and utilize it in I/O related communication. Note that you
+   need also the coordinates of processes in the cartesian grid in
+   order to read from / write to the correct part of the global
+   temperature field.
+
