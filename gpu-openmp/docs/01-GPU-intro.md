@@ -31,7 +31,7 @@ lang:   en
 </div>
 
 <div class="column" width=43%>
-![](img/microprocessor-trend-data.png)
+![<span style=" font-size:25px; line-height:0px; ">original data up to year 2010 collected and plotted by M.Horowitz, F.Labonte, O. Shacham, K.Olukotun, L.Hammond and C.Batten. New plot and data collected for 2010-2017 by K.Rupp](img/microprocessor-trend-data_nocapt.png)
 </div>
 
 
@@ -107,7 +107,7 @@ CPU - manycores
 - Large area dedicated to caches and control
     - Good for control-flow
     - Great for task parallelism (MIMD)
-- Less silicon dedicated at ALUs
+- Less silicon dedicated at Arithmetic-Logic Units (ALU)
     - Bad with parallel execution
 
 
@@ -149,9 +149,9 @@ CPU - manycores
 # Accelerator model today
 
 <div class="column">
-- GPU is connected to CPUs via PCIe
+- GPU is connected to CPUs via PCIe (Infinity Fabric on LUMI)
 - Local memory in GPU
-    - Smaller than main memory (32 GB in Puhti)
+    - Smaller than main memory (128 GB in LUMI)
     - Very high bandwidth (up to 3200 GB/s in LUMI)
     - Latency high compared to compute performance
 - Data must be copied from CPU to GPU over the PCIe bus

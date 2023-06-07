@@ -244,8 +244,9 @@ cc -o my_exe test.c -fopenmp
 
 <div class=column>
 - Threads within a team can synchronize
-- Number of teams and threads can be queried with the
-  `omp_get_num_teams()` and `omp_get_num_threads()` API functions
+- Number of teams and threads can be queried with the following API functions:
+	- `omp_get_num_teams()`
+	- `omp_get_num_threads()`
 
 </div>
 
