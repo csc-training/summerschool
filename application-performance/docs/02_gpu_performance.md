@@ -84,6 +84,9 @@ lang:   en
 
 
 # Tau  Analysis Utilities
+
+<small> 
+
 - TAU is a powerful performance evaluation toolkit
 - Runs on all HPC platforms, relatively easy to install
 - Targets all parallel programming/execution paradigms (GPU, MPI, OpenMP, pthreads, ...)
@@ -94,6 +97,8 @@ lang:   en
 - Tracing: Shows events and their timings across processes on a timeline
 - I/O performance evaluation
 - Memory debugging
+
+</small>
 
 # Omniperf
 
