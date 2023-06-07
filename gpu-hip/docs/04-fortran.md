@@ -108,7 +108,7 @@ program saxpy
 
   call hipCheck(hipMemcpy(c_loc(y), dy, Nbytes, hipMemcpyDeviceToHost))
 
-  write(*,*) 'Max error: ', maxval(abs(y-4.0))
+  write(*,*) "Max error: ", maxval(abs(y-4.0))
 
   call hipCheck(hipFree(dx));call hipCheck(hipFree(dy))
 
@@ -120,6 +120,8 @@ end program testSaxpy
 </small>
 
 # GPUFort
+    
+![](img/gpufort.png){.center width=1100px}
 
 <small>
     
@@ -127,8 +129,6 @@ end program testSaxpy
 2. Fortran+OpenACC and CUDA Fortran -> Fortran + [GCC/AOMP OpenACC/MP runtime calls] + HIP C++
     
 </small>
-    
-![](img/gpufort.png){.center width=1000px}
     
 
 
