@@ -20,7 +20,7 @@ lang:   en
 - Keep the data in faster memory and use an appropriate access pattern
 </div>
 <div class=column>
-![](img/lumi_node.png){.center width=100%}
+![](img/lumi_node.png){.center width=40%}
 </div>
 
 # GPU performance analysis {.section}
