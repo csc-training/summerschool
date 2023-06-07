@@ -27,7 +27,7 @@ lang:   en
 
 # Performance analysis cycle
 
-![](img/perf-analysis-single-core.svg){.center width=60%}
+![](img/perf-analysis-single-gpu.svg){.center width=60%}
 
 # Measuring performance
 - Don’t speculate about performance – measure it!
