@@ -140,7 +140,7 @@ lang:   en
   - handles the data transfers between CPU and GPUs
 - GPU kernels run multiple threads
     - Typically much more threads than "GPU cores"
-- When using multiple GPUs, CPU runs multiple processes (MPI) or multiple threads (OpenMP)
+- When using multiple GPUs, CPU runs typically multiple processes (MPI) or multiple threads (OpenMP)
 
 # GPU programming models
 
