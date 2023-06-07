@@ -32,6 +32,3 @@ You can start from scratch or use the skeleton code
 
 ![](img/alltoall.png)
 
-
-
-
