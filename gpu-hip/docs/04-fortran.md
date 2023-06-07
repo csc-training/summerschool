@@ -139,4 +139,4 @@ end program testSaxpy
   - `iso_c_binding` 
   - GPU objects are of type `c_ptr` in Fortran
 * Hipfort provides Fortran interfaces for GPU libraries
-* GPUFort promises looks promising
+* GPUFort 
