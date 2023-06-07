@@ -272,3 +272,15 @@ for (int i=0; i < N; i++) {
     sum += y[i] * x[i];
 }
 ```
+
+
+# Summary
+
+- GPU device has a separate memory space from the host CPU
+  - unified memory accessible from both
+- Implicit copy of data to/from `target` region
+  - explicit data mapping with `map(type:list)`
+- Structured data regions
+  - `target data map(type:list)`
+- Update
+- Reduction
