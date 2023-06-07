@@ -265,7 +265,7 @@ int main(void)
 
 # Summary
 
-- HIP supports both AMD and NVIDIA GPUs
+- HIP provides a common programming interface for CUDA and ROCm devices
 - HIP contains both API functions and declarations etc. needed to write GPU
   kernels
 - Kernels are launched by multiple threads in a grid
