@@ -26,14 +26,8 @@ int main(int argc, char *argv[])
         receiveBuffer[i] = -1;
     }
 
-    // TODO: set source and destination ranks
-    // Treat boundaries with MPI_PROC_NULL
-
-        destination =
-
-        source =
-
-    // end TODO
+    // TODO: Set source and destination ranks
+    // TODO: Treat boundaries with MPI_PROC_NULL
 
     // Start measuring the time spent in communication
     MPI_Barrier(MPI_COMM_WORLD);
