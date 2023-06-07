@@ -13,9 +13,9 @@ of an array of data using point-to-point operations.
 2. Print out the initial values in all the processes
 3. Implement **broadcast**: rank 0 sends the contents of the entire array to other ranks.
    Print out the final values in all the processes.
-4. Implement **scatter**: imagine that the array is divided into N / P sections (P=number of
-   processes), and rank 0 sends different section to other ranks, so that rank *i* receives
-   the *i*th section. Print out the final values in all the processes.
+4. Implement **scatter**: imagine that the array is divided into blocks of size N / P (P=number of
+   processes), and rank 0 sends a different block to other ranks, so that the rank *i* receives
+   the *i*th block. Print out the final values in all the processes.
 
 
 You may start from scratch or use [skeleton.cpp](c/skeleton.cpp) (or
