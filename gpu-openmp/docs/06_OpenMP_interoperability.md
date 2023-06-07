@@ -64,20 +64,20 @@ double *x, *y;
 ```
 
 
-# Calling CUDA-kernel from OpenMP-program
+# Calling HIP-kernel from OpenMP-program
 
 - In this scenario we have a (main) program written in C/C++ (or Fortran)
   and this driver uses OpenMP directives
-    - CUDA-kernels must be called with help of OpenMP `use_device_ptr`
-- Interface function in CUDA-file must have `extern "C" void func(...)`
-- The CUDA-codes are compiled with NVIDIA `nvcc` compiler e.g.:
-    - `nvcc -c -O3 --restrict daxpy_cuda.cu`
+    - HIP-kernels must be called with help of OpenMP `use_device_ptr`
+- Interface function in HIP-file must have `extern "C" void func(...)`
+- The HIP-codes are compiled separetely with `hipcc` compiler e.g.:
+    - `hipcc -c -O3 daxpy_hip.cu`
 - The OpenMP-codes are compiled with NVIDIA `nvc` or `nvc++` compiler e.g.:
-    - `nvc -c -mp=gpu -O3 call_cuda_from_openmp.c`
-- For linking, `-lcudart -L$CUDA_HOME/lib64` is needed
+    - `ftn -c -fopenmp ... -O3 call_hip_from_openmp.f90`
+- For linking, `-lamdhip64` is needed 
 
 
-# Calling CUDA/HIP-kernel from C OpenMP-program
+# Calling HIP-kernel from C OpenMP-program
 
 <small>
 <div class="column">
@@ -134,11 +134,11 @@ extern "C" void daxpy(int n, double a,
 
 
 
-# Calling CUDA/HIP-kernel from  Fortran OpenMP-program
+# Calling HIP-kernel from  Fortran OpenMP-program
 <small>
 <div class="column">
 ```c
-// call_cuda/hip_from_openmp.f90
+// call_hip_from_openmp.f90
 MODULE CUDA_INTERFACES
     INTERFACE
       subroutine f_daxpy(n, a, x, y) bind(C,name=daxpy)
