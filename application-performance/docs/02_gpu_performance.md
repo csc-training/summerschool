@@ -11,7 +11,7 @@ lang:   en
 - GPUs are powerful and complex processors designed for parallel computing.
 - GPUs require explicit expression of parallelism by the programmer.
 
-# Principles for High GPU Performance 
+# General Principles for High GPU Performance 
 - Keep all the compute resources busy (idle resources are a waste)
 - Minimize the synchronization at all levels
 - Minimize the data transfers between host and device 
@@ -83,7 +83,7 @@ lang:   en
 ![](img/tracing.png){.left width=60%}
 
 
-# **T**au and **A**nalysis **U**tilities
+# Tau  Analysis Utilities
 - TAU is a powerful performance evaluation toolkit
 - Runs on all HPC platforms, relatively easy to install
 - Targets all parallel programming/execution paradigms (GPU, MPI, OpenMP, pthreads, ...)
