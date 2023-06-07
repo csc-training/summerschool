@@ -64,7 +64,7 @@ process_in_host();
 
 <div class=column>
 ```c
-// The two tasks can be executed concurrently
+//The two tasks can be executed concurrently
 #pragma omp task
 {do something}
 
@@ -75,7 +75,7 @@ process_in_host();
 
 <div class=column>
 ```c
-// The two tasks can be executed concurrently
+//The two tasks cannot be executed concurrently
 #pragma omp task depend(out:a)
 {do something which produces a}
 
@@ -161,9 +161,7 @@ for (int ib = 0; ib < n; ib += bf) {
 </div>
 </small>
 
-# Asynchronous funtions and the default stream
-
-<small>
+# Asynchronous functions and the default stream
 
 * The functions without `Async`-postfix run on the default stream, and are synchronizing with host
   ```cpp
@@ -176,25 +174,23 @@ for (int ib = 0; ib < n; ib += bf) {
   * These functions take the stream as an additional argument (`0` denotes the default stream)
   ```cpp
   hipError_t hipMallocAsync ( void** devPtr, size_t size, hipStream_t stream ) 
-  hipError_t hipMemcpyAsync ( void* dst, const void* src, size_t count, hipMemcpyKind kind, hipStream_t stream) 
+  hipError_t hipMemcpyAsync ( void* dst, const void* src, size_t count, 
+                              hipMemcpyKind kind, hipStream_t stream ) 
   hipError_t hipFreeAsync ( void* devPtr, hipStream_t stream ) 
-  ```
+    ```
+
+# Asynchronous functions and the page-locked memory
 
  * Asynchronous memory copies require page-locked host memory (more in Memory lectures)
-   * Allocate with `hipMallocHost()` or `hipHostAlloc()` instead of `malloc()`:
+   * Allocate with `hipHostMalloc()` instead of `malloc()`:
   ```cpp
-  hipError_t hipMallocHost ( void** ptr, size_t size ) 
-  ```
-  ```cpp
-  ​hipError_t hipHostAlloc ( void** pHost, size_t size, unsigned int  flags ) 
+  ​hipError_t hipHostMalloc ( void** pHost, size_t size, unsigned int  flags ) 
   ```
   
    * Deallocate with `hipFreeHost()`:
   ```cpp
   ​hipError_t hipFreeHost ( void* ptr ) 
   ```
-
-  </small>
 
 # Asynchronisity and kernels
 
@@ -208,37 +204,37 @@ for (int ib = 0; ib < n; ib += bf) {
 
 <small>
 
-```cpp
-// Use the default stream
-hipkernel<<<grid, block>>>(args);
-// Use the default stream
-hipkernel<<<grid, block, bytes, 0>>>(args);
-// Use the stream strm[i]
-hipkernel<<<grid, block, bytes, strm[i]>>>(args);
-```
+  ```cpp
+  // Use the default stream
+  hipkernel<<<grid, block>>>(args);
+  // Use the default stream
+  hipkernel<<<grid, block, bytes, 0>>>(args);
+  // Use the stream strm[i]
+  hipkernel<<<grid, block, bytes, strm[i]>>>(args);
+  ```
 </small>
 
 # Stream creation, synchronization, and destruction
 
 * Declare a stream variable
-```cpp
-hipStream_t stream
-```
+  ```cpp
+  hipStream_t stream
+  ```
 
 * Create `stream`
-```cpp
-hipError_t hipStreamCreate ( hipStream_t* stream ) 
-```
+  ```cpp
+  hipError_t hipStreamCreate ( hipStream_t* stream ) 
+  ```
 
 * Synchronize `stream`
-```cpp
-​hipError_t hipStreamSynchronize ( hipStream_t stream ) 
-``` 
+  ```cpp
+  ​hipError_t hipStreamSynchronize ( hipStream_t stream ) 
+  ``` 
 
 * Destroy `stream`
-```cpp
-​hipError_t hipStreamDestroy ( hipStream_t stream ) 
-```
+  ```cpp
+  ​hipError_t hipStreamDestroy ( hipStream_t stream ) 
+  ```
 
 # Stream example
 
@@ -254,14 +250,14 @@ for (int i = 0; i < 3; ++i){
 
   // Each streams copies data from host to device
   hipMemcpyAsync(d_data[i], h_data[i], bytes, 
-    hipMemcpyHostToDevice, stream[i]);
+      hipMemcpyHostToDevice, stream[i]);
 
   // Each streams runs a kernel
   hipkernel<<<grid, block, 0, stream[i]>>>(d_data[i]);
 
   // Each streams copies data from device to host
   hipMemcpyAsync(h_data[i], d_data[i],  bytes, 
-    hipMemcpyDeviceToHost, stream[i]);
+      hipMemcpyDeviceToHost, stream[i]);
 }
 
 // Synchronize and destroy streams
@@ -279,42 +275,6 @@ for (int i = 0; i < 3; ++i){
 </small>
 
 # Events
-
-<small>
-
-* Create `event` object
-```cpp
-​hipError_t hipEventCreate ( hipEvent_t* event ) 
-```
-
-* Capture in `event` the contents of `stream` at the time of this call
-```cpp
-hipError_t hipEventRecord ( hipEvent_t event, hipStream_t stream ) 
-``` 
-
-* Compute the elapsed time in milliseconds between `start` and `end` events
-```cpp
-hipError_t hipEventElapsedTime ( float* ms, hipEvent_t start, hipEvent_t end ) 
-``` 
-
-* Make all future work submitted to `stream` wait for all work captured in `event`
-```cpp
-​hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int  flags = 0 ) 
-```
-
-* Wait for `event` to complete
-```cpp
-hipError_t hipEventSynchronize ( hipEvent_t event ) 
-``` 
-
-* Destroy `event` object
-```cpp
-hipError_t hipEventDestroy ( hipEvent_t event ) 
-```
-
-</small>
-
-# Why events?
 
 <small>
 
@@ -364,34 +324,71 @@ in a stream
 </div>
 </small>
 
+# Event usage
+
+<small>
+
+* Create `event` object
+  ```cpp
+  ​hipError_t hipEventCreate ( hipEvent_t* event ) 
+  ```
+
+* Capture in `event` the contents of `stream` at the time of this call
+  ```cpp
+  hipError_t hipEventRecord ( hipEvent_t event, hipStream_t stream ) 
+  ``` 
+
+* Compute the elapsed time in milliseconds between `start` and `end` events
+  ```cpp
+  hipError_t hipEventElapsedTime ( float* ms, hipEvent_t start, hipEvent_t end ) 
+  ``` 
+
+* Make all future work submitted to `stream` wait for all work captured in `event`
+  ```cpp
+​ hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int flags = 0 ) 
+  ```
+
+* Wait for `event` to complete
+  ```cpp
+  hipError_t hipEventSynchronize ( hipEvent_t event ) 
+  ``` 
+
+* Destroy `event` object
+  ```cpp
+  hipError_t hipEventDestroy ( hipEvent_t event ) 
+  ```
+
+</small>
+
+
 # Synchronization
 
 <small>
 
 * Synchronize the host with a specific stream
-```cpp
-​hipError_t hipStreamSynchronize ( hipStream_t stream ) 
-``` 
+  ```cpp
+  ​hipError_t hipStreamSynchronize ( hipStream_t stream ) 
+  ``` 
 
 * Synchronize the host with a specific event
-```cpp
-​hipError_t hipEventSynchronize ( hipEvent_t event )
-``` 
+  ```cpp
+  ​hipError_t hipEventSynchronize ( hipEvent_t event )
+  ``` 
 
 * Synchronize a specific stream with a specific event (the event can be in another stream) 
-```cpp
-​hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int  flags = 0 ) 
-``` 
+  ```cpp
+​  hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int  flags = 0 ) 
+  ``` 
 
 * Synchronize the host with the whole device (wait until all device tasks are finished)
-```cpp
-hipError_t hipDeviceSynchronize ( void ) 
-``` 
+  ```cpp
+  hipError_t hipDeviceSynchronize ( void ) 
+  ``` 
 
 * In-kernel blockwise synchronization across threads (not between host/device)
-```cpp
-__syncthreads()
-```
+  ```cpp
+  __syncthreads()
+  ```
 
 </small>
 
@@ -422,9 +419,9 @@ __global__ void reverse(double *d_a) {
 * Streams provide a mechanism to evaluate tasks on the GPU concurrently and asynchronously with the host
   * Asynchronous functions requiring a stream argument are required
   * Kernels are always asynchronous with the host
-  * Default stream is by `0` (no stream creation required)
+  * Default stream is denoted by `0` (no stream creation required)
 * Events provide a mechanism to signal when operations have occurred
 in a stream
-  * Good for inter-stream sychronization and timing events
+  * Good for inter-stream synchronization and timing events
 * Many host/device synchronizations functions for different purposes
   * The device function `__syncthreads()` is only for in-kernel synchronization between threads in a same block (does not synch threads across blocks)
