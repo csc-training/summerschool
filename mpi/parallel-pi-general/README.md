@@ -2,7 +2,7 @@
 
 # Parallel calculation of π
 
-Starting from the serial code or your solution from [the earlier parallel pi exercise](../simple-pi), make a version
+Starting from the serial code or your solution from [the earlier parallel pi exercise](../parallel-pi-two-procs), make a version
 that performs the calculation parallel with any number of processes.
 
 1. Divide the range over N in `ntasks`, so that rank 0 does i=1, 2, ..., N / ntasks, rank 1 does

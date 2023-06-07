@@ -9,12 +9,12 @@
 ### Simple point-to-point communication
 
  - [Simple message exchange](message-exchange/)
- - [Simple parallel pi](simple-pi/)
+ - [Parallel pi with two processes](paralle-pi-two-procs/)
 
 ### Special MPI variables and communication patterns
 
  - [Message chain](message-chain/)
- - [Parallel pi](parallel-pi/)
+ - [Parallel pi revisited](parallel-pi-general/)
  - [(Bonus) Broadcast and scatter](broadcast-scatter/)
 
 ### Collective operations
