@@ -1,5 +1,5 @@
 ---
-title:  OpenMP interoperability with libraries
+title:  OpenMP interoperability with libraries and HIP
 event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
@@ -12,11 +12,11 @@ lang:   en
 - Often it may be useful to integrate the accelerated OpenMP code with
   other accelerated libraries
 - MPI: MPI libraries are GPU-aware
-- HIP/CUDA: It is possible to mix OpenMP and HIP/CUDA
+- HIP: It is possible to mix OpenMP and HIP
     - Use OpenMP for memory management
     - Introduce OpenMP in existing GPU code
-    - Use HIP/CUDA for tightest kernels, otherwise OpenMP
-- Numerical GPU libraries: CUBLAS, CUFFT, MAGMA, CULA...
+    - Use HIP for tightest kernels, otherwise OpenMP
+- Numerical GPU libraries: HIPBLAS, HIPFFT, ...
 - Thrust, etc.
 
 
@@ -26,7 +26,7 @@ lang:   en
   host side
 - Device data pointers can be used to interoperate with libraries and
   other programming techniques available for accelerator devices
-    - HIP/CUDA kernels and libraries
+    - HIP kernels and libraries
     - GPU-aware MPI libraries
 - Some features are still under active development, many things may not
   yet work as they are supposed to!
@@ -49,16 +49,16 @@ lang:   en
 - Can be used with non-pointer variables
 
 
-# use_device_ptr: example with cublas
+# use_device_ptr: example with hipblas
 
 ```c
-cublasInit();
+// hipblas initialization
 double *x, *y;
 //Allocate x and y, and initialise x
 #pragma omp target data map(to:x[:n]), map(from:y[:n]))
 {
     #pragma omp target data use_device_ptr(x, y) {
-        cublasDaxpy(n, a, x, 1, y, 1);
+        cublasDaxpy(hipblashandler, a, x, 1, y, 1);
     }
 }
 ```
@@ -72,7 +72,7 @@ double *x, *y;
 - Interface function in HIP-file must have `extern "C" void func(...)`
 - The HIP-codes are compiled separetely with `hipcc` compiler e.g.:
     - `hipcc -c -O3 daxpy_hip.cu`
-- The OpenMP-codes are compiled with NVIDIA `nvc` or `nvc++` compiler e.g.:
+- The OpenMP-codes are compiled separetely  e.g.:
     - `ftn -c -fopenmp ... -O3 call_hip_from_openmp.f90`
 - For linking, `-lamdhip64` is needed 
 
@@ -82,7 +82,7 @@ double *x, *y;
 <small>
 <div class="column">
 ```c
-// call_cuda_from_openmp.c
+// call_hip_from_openmp.c
 
 extern void daxpy(int n, double a,
                   const double *x, double *y);
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
     {
         // Initialize x & y
         ...
-        // Call CUDA-kernel
+        // Call HIP-kernel
         #pragma omp target data use_device_ptr(x, y)
         daxpy(n, a, x, y);
         ...
@@ -108,12 +108,12 @@ int main(int argc, char *argv[])
 
 <div class="column">
 ```c
-// daxpy_cuda.cu
+// daxpy_hip.cu
 
 __global__
 void daxpy_kernel(int n, double a,
                   const double *x, double *y)
-{ // The actual CUDA-kernel
+{ // The actual HIP-kernel
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
     while (tid < n) {
@@ -138,38 +138,8 @@ extern "C" void daxpy(int n, double a,
 <small>
 <div class="column">
 ```c
-// call_hip_from_openmp.f90
-MODULE CUDA_INTERFACES
-    INTERFACE
-      subroutine f_daxpy(n, a, x, y) bind(C,name=daxpy)
-      use iso_c_binding
-      integer(c_int), value :: n
-      double(c_double), value :: a
-      real :: x(*), y(*)
-    END INTERFACE
-END MODULE CUDA_INTERFACES
-
-...
-
-// in the main programs
- use iso_c_binding
- ...
- integer(c_int) :: n
- double(c_double) :: a
- ...
-
-!$omp target data use_device_ptr(x, y)
-
-  call f_daxpy(n,a,x,y)
-
-```
-
-</div>
-
-<div class="column">
-```c
 ! call_hip_from_openmp.f90
-MODULE CUDA_INTERFACES
+MODULE HIP_INTERFACES
     INTERFACE
       subroutine f_daxpy(n, a, x, y) bind(C,name=daxpy)
       use iso_c_binding
@@ -177,7 +147,7 @@ MODULE CUDA_INTERFACES
       double(c_double), value :: a
       type(c_ptr), value :: x, y
     END INTERFACE
-END MODULE CUDA_INTERFACES
+END MODULE HIP_INTERFACES
 
 ...
 
@@ -193,6 +163,33 @@ END MODULE CUDA_INTERFACES
   call f_daxpy(n,a,c_loc(x),c_loc(y))
 
 ```
+
+</div>
+
+<div class="column">
+
+```c
+// daxpy_hip.cu
+
+__global__
+void daxpy_kernel(int n, double a,
+                  const double *x, double *y)
+{ // The actual HIP-kernel
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+    while (tid < n) {
+        y[tid] += a * x[tid];
+        tid += stride;
+    }
+}
+extern "C" void daxpy(int n, double a,
+                      const double *x, double *y)
+{ // This can be called from C/C++ or Fortran
+    dim3 blockdim = dim3(256, 1, 1);
+    dim3 griddim = dim3(65536, 1, 1);
+    daxpy_kernel<<<griddim, blockdim>>>(n, a, x, y);
+}
+```
 </div>
 </small>
 
@@ -201,6 +198,6 @@ END MODULE CUDA_INTERFACES
 
 - OpenMP programs can work in conjuction with GPU libraries or with
   own computational kernels written with lower level languages
-  (e.g. CUDA/HIP).
+  (e.g. HIP).
 - The pointer / reference to the data in device can be obtained with
   the `use_device_ptr` / `use_device_addr` clauses.
