@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
-    // Initialize message and receive buffer
+    // Initialize buffers
     for (i = 0; i < size; i++) {
         message[i] = myid;
         receiveBuffer[i] = -1;
