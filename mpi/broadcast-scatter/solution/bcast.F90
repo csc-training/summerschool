@@ -1,33 +1,38 @@
 program bcast
-  use mpi
+  use mpi_f08
   implicit none
 
   integer, parameter :: size=12
-  integer :: ntasks, myid, ierr, i, color, sub_comm
-  integer, dimension(size) :: message, recvbuf
+  integer :: ntasks, myid, ierr, i
+  integer, dimension(size) :: sendbuf, recvbuf
   integer, dimension(size**2) :: printbuf
+  type(mpi_status) :: status
 
   call mpi_init(ierr)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, ierr)
 
-  ! Initialize message buffers
+  ! Initialize buffers
   call init_buffers
 
   ! Print data that will be sent
-  call print_buffers(message)
+  call print_buffers(sendbuf)
 
-  ! Send message everywhere
+  ! Send everywhere
   if(myid == 0) then
-     do i=0, ntasks-1
-       call mpi_send(message, size, MPI_INTEGER, i,i,MPI_COMM_WORLD, ierr)
+     do i=1, ntasks-1
+        call mpi_send(sendbuf, size, MPI_INTEGER, i, i, MPI_COMM_WORLD, ierr)
      enddo
+
+     ! Broadcast also the local part
+     ! Note: The real mpi_bcast() function uses the same buffer for send and recv!
+     recvbuf(:) = sendbuf(:)
   else
-     call mpi_recv(message, size, MPI_INTEGER, 0, myid, MPI_COMM_WORLD, status,ierr)
+     call mpi_recv(recvbuf, size, MPI_INTEGER, 0, myid, MPI_COMM_WORLD, status, ierr)
   endif
 
   ! Print data that was received
-  call print_buffers(message)
+  call print_buffers(recvbuf)
 
   call mpi_finalize(ierr)
 
@@ -38,11 +43,13 @@ contains
     integer :: i
     if(myid==0) then
       do i = 1, size
-         message(i) = i
+         recvbuf(i) = -1
+         sendbuf(i) = i
       end do
     else
      do i=1, size
-         message(i)= -1
+         recvbuf(i) = -1
+         sendbuf(i) = -1
      enddo
     endif
   end subroutine init_buffers
