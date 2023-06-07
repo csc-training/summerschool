@@ -120,10 +120,15 @@ end program testSaxpy
 </small>
 
 # GPUFort
+
+<small>
+    
 1. Fortran+OpenACC and CUDA Fortran -> Fortran + OpenMP 4.5+
 2. Fortran+OpenACC and CUDA Fortran -> Fortran + [GCC/AOMP OpenACC/MP runtime calls] + HIP C++
     
-![](img/gpufort.png){.center width=900px}
+</small>
+    
+![](img/gpufort.png){.center width=1000px}
     
 
 
