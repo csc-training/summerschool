@@ -12,10 +12,16 @@ lang:   en
 - GPUs require explicit expression of parallelism by the programmer.
 
 # General Principles for High GPU Performance 
+
+<div class=column>
 - Keep all the compute resources busy (idle resources are a waste)
 - Minimize the synchronization at all levels
 - Minimize the data transfers between host and device 
 - Keep the data in faster memory and use an appropriate access pattern
+</div>
+<div class=column>
+![](img/lumi_node.png){.center width=100%}
+</div>
 
 # GPU performance analysis {.section}
 
