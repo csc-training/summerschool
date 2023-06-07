@@ -2,19 +2,8 @@
 
 # Parallel calculation of π
 
-An approximation to the value of π can be calculated from the following
-expression
-
-<!--
-\frac{\pi}{4} = \int_0^1 \frac{dx}{1+x^2} \approx \frac{1}{N} \sum_{i=1}^N \frac{1}{1+\left( \frac{i-\frac{1}{2}}{N}\right)^2}
--->
-![img](img/eq1.png)
-
-where the answer becomes more accurate with increasing N. As each term is independent,
-the summation over i can be parallelized nearly trivially.
-
-Starting from the serial code [pi.cpp](pi.cpp) (or [pi.F90}(pi.F90) for Fortran), make a version
-that performs the calculation in parallel.
+Starting from the serial code or your solution from [the earlier parallel pi exercise](../simple-pi), make a version
+that performs the calculation parallel with any number of processes.
 
 1. Divide the range over N in `ntasks`, so that rank 0 does i=1, 2, ..., N / ntasks, rank 1 does
    i=N / ntasks + 1, N / ntasks + 2, ... , *etc.*. You
@@ -35,5 +24,3 @@ that performs the calculation in parallel.
 6. (Bonus) Make a version that works with arbitrary number of processes. Now,
   if N cannot be divided evenly by `ntasks`, some processes
   calculate more terms than others.
-
-
