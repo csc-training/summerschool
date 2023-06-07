@@ -168,7 +168,7 @@ END MODULE CUDA_INTERFACES
 
 <div class="column">
 ```c
-// call_cuda/hip_from_openmp.f90
+! call_hip_from_openmp.f90
 MODULE CUDA_INTERFACES
     INTERFACE
       subroutine f_daxpy(n, a, x, y) bind(C,name=daxpy)
