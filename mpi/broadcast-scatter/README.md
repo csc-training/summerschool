@@ -2,7 +2,7 @@
 
 # Broadcast and scatter
 
-Write a simple program using send and receive calls to implement **broadcast** and **scatter**
+Write a program using send and receive calls to implement **broadcast** and **scatter**
 operations. We will see later in the course how to do this using MPI’s collective operations,
 but it is useful to implement them by hand as they illustrate how to communicate all or part
 of an array of data using point-to-point operations.
