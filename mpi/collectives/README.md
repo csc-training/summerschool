@@ -13,8 +13,8 @@ values in the buffer are initialized to -1.
 Implement communication that sends and receives values from the data
 vectors to the receive buffers using a single collective routine in
 each case, so that the receive buffers will have the following values.
-You can start from scratch or use the skeleton code found in
-[cpp/skeleton.cpp](cpp/skeleton.cpp) or [fortran/skeleton.F90](fortran/skeleton.F90).
+You can start from scratch or use the skeleton code
+[skeleton.cpp](skeleton.cpp) or [skeleton.F90](skeleton.F90).
 
 ### Case 1
 
