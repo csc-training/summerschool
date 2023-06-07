@@ -44,16 +44,13 @@ __global__ void saxpy(float *y, float *x,
 <div class="column">
 ``` cpp
 extern "C"{
-void launch(float **dout, float **da, 
+void launch(float *dout, float *da, 
             float db, int N)
   {
      dim3 tBlock(256,1,1);
      dim3 grid(ceil((float)N/tBlock.x),1,1);
     
-    hipLaunchKernelGGL(saxpy, 
-                       grid, tBlock, 
-                       0, 0, 
-                       *dout, *da, db, N);
+    saxpy<<<grid, tBlock>>>(dout, da, db, N);
   }
 }
 ```
@@ -73,7 +70,7 @@ program saxpy
      subroutine launch(y,x,b,N) bind(c)
        use iso_c_binding
        implicit none
-       type(c_ptr) :: y,x
+       type(c_ptr),value :: y,x
        integer, value :: N
        real, value :: b
      end subroutine
@@ -121,11 +118,10 @@ end program testSaxpy
 </small>
 
 # GPUFort
-    
 1. Fortran+OpenACC and CUDA Fortran -> Fortran + OpenMP 4.5+
 2. Fortran+OpenACC and CUDA Fortran -> Fortran + [GCC/AOMP OpenACC/MP runtime calls] + HIP C++
     
-![](img/gpufort.png){width=1000px}
+![](img/gpufort.png){.center width=900px}
     
 
 
