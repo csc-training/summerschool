@@ -6,7 +6,7 @@ lang:   en
 
 # What is high-performance computing?
 
-- Utilising computing power that is much larger than available in a typical desktop computer
+- Utilizing computing power that is much larger than available in a typical desktop computer
 - Performance of HPC systems (i.e. supercomputers) is often measured in floating point operations per second (flop/s)
     - For software, other measures can be more meaningful
 - Currently, the most powerful system reaches > $10^{18}$ flop/s (1 Eflop / s)
@@ -158,6 +158,8 @@ lang:   en
     - The interconnect in high end systems is often also more capable
 </div>
 
+# Cloud computing {.section}
+
 # Cloud computing
 
 - Cloud infrastructure is run on top of normal HPC system:
@@ -176,6 +178,8 @@ lang:   en
 - Bare metal cloud with high-speed interconnects can provide similar performance as traditional cluster
 - Moving data out from the cloud can be time-consuming (and have a monetary cost)
 - Cost-effectiveness of cloud depends heavily on the use case
+
+# Containers {.section}
 
 # Containers
 
@@ -210,7 +214,7 @@ lang:   en
 # Quantum computing
 
 <div class=column>
-- Quantum computers can solve certain types of problems exponentially faster than classical computers
+- Solving certain types of problems exponentially faster than classical computers
 - General purpose quantum computer is still far away
 - Use cases still largely experimental and hypothetical
 - Hybrid approaches
