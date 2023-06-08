@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
         MPI_Abort(MPI_COMM_WORLD, -1);
     }
 
-    // Initialize message buffers 
+    // Initialize message buffers
     init_buffers(sendbuf, recvbuf);
 
     // Print data that will be sent */

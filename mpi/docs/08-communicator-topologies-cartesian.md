@@ -1,5 +1,5 @@
 ---
-title:  Process topologies, Cartesian communicator and Neighborhood collectives 
+title:  Process topologies, Cartesian communicator and Neighborhood collectives
 event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
@@ -205,7 +205,7 @@ call mpi_sendrecv(buf(1,1), 1, rowtype, nbr_up, tag_up, &
     - Define a process grid with `MPI_Cart_create`
     - Use the obtained new communicator as the `comm` argument in communication
       routines
-    - For getting the ranks of the neighboring processes, use `MPI_Cart_shift` 
+    - For getting the ranks of the neighboring processes, use `MPI_Cart_shift`
       or wrangle with `MPI_Cart_coords` and `MPI_Cart_rank`
 - MPI provides also more general graph topologies
 

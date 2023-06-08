@@ -37,13 +37,13 @@ int main(int argc, char *argv[])
   MPI_Aint disp[cnt], dist[2], lb, extent;
   int blocklen[cnt];
 
-  // TODO: check extent (not really necessary on most platforms) 
+  // TODO: check extent (not really necessary on most platforms)
 
   // communicate using the created particletype
   t1 = MPI_Wtime();
   if (myid == 0) {
     for (i=0; i < reps; i++) // multiple sends for better timing
-      // TODO: send  
+      // TODO: send
 
   } else if (myid == 1) {
     for (i=0; i < reps; i++)

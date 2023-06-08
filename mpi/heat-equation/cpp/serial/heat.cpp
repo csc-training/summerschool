@@ -3,7 +3,7 @@
 #include <iostream>
 #include <mpi.h>
 
-void Field::setup(int nx_in, int ny_in) 
+void Field::setup(int nx_in, int ny_in)
 {
     nx = nx_in;
     ny = ny_in;
@@ -14,11 +14,11 @@ void Field::setup(int nx_in, int ny_in)
 
 void Field::generate() {
 
-    // Radius of the source disc 
+    // Radius of the source disc
     auto radius = nx / 6.0;
     for (int i = 0; i < nx + 2; i++) {
         for (int j = 0; j < ny + 2; j++) {
-            // Distance of point i, j from the origin 
+            // Distance of point i, j from the origin
             auto dx = i - nx / 2 + 1;
             auto dy = j - ny / 2 + 1;
             if (dx * dx + dy * dy < radius * radius) {

@@ -3,14 +3,14 @@
 #include <iostream>
 #include <mpi.h>
 
-void Field::setup(int nx_in, int ny_in, ParallelData &parallel) 
+void Field::setup(int nx_in, int ny_in, ParallelData &parallel)
 {
   nx_full = nx_in;
   ny_full = ny_in;
 
   int dims[2], periods[2], coords[2];
   MPI_Cart_get(parallel.comm, 2, dims, periods, coords);
-  
+
   nx = nx_full / dims[0];
   if (nx * dims[0] != nx_full) {
     std::cout << "Cannot divide grid evenly to processors" << std::endl;
@@ -21,10 +21,10 @@ void Field::setup(int nx_in, int ny_in, ParallelData &parallel)
     std::cout << "Cannot divide grid evenly to processors" << std::endl;
     MPI_Abort(MPI_COMM_WORLD, -2);
   }
-  
+
   // matrix includes also ghost layers
   temperature = Matrix<double> (nx + 2, ny + 2);
-  
+
   // MPI datatypes for halo exchange
   MPI_Type_vector(nx + 2, 1, ny + 2, MPI_DOUBLE,
                   &parallel.columntype);
@@ -47,7 +47,7 @@ void Field::setup(int nx_in, int ny_in, ParallelData &parallel)
     }
     MPI_Type_create_subarray(2, sizes, subsizes, offsets, MPI_ORDER_C,
                              MPI_DOUBLE, &parallel.subarraytype);
-    MPI_Type_commit(&parallel.subarraytype);    
+    MPI_Type_commit(&parallel.subarraytype);
 }
 
 void Field::generate(ParallelData parallel) {
@@ -55,11 +55,11 @@ void Field::generate(ParallelData parallel) {
     int dims[2], coords[2], periods[2];
     MPI_Cart_get(parallel.comm, 2, dims, periods, coords);
 
-    // Radius of the source disc 
+    // Radius of the source disc
     auto radius = nx_full / 6.0;
     for (int i = 0; i < nx + 2; i++) {
         for (int j = 0; j < ny + 2; j++) {
-            // Distance of point i, j from the origin 
+            // Distance of point i, j from the origin
             auto dx = i + coords[0] * nx - nx_full / 2 + 1;
             auto dy = j + coords[1] * ny - ny_full / 2 + 1;
             if (dx * dx + dy * dy < radius * radius) {

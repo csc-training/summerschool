@@ -1,7 +1,7 @@
 /* I/O related functions for heat equation solver */
 
 #include <string>
-#include <iomanip> 
+#include <iomanip>
 #include <fstream>
 #include <string>
 
@@ -17,15 +17,15 @@ void write_field(const Field& field, const int iter)
     auto width = field.ny;
 
     // array for MPI sends and receives
-    auto tmp_mat = Matrix<double> (field.nx, field.ny); 
+    auto tmp_mat = Matrix<double> (field.nx, field.ny);
 
     // Copy the inner data
     auto full_data = Matrix<double>(height, width);
     for (int i = 0; i < field.nx; i++)
-        for (int j = 0; j < field.ny; j++) 
+        for (int j = 0; j < field.ny; j++)
              full_data(i, j) = field(i + 1, j + 1);
-          
-    // Write out the data to a png file 
+
+    // Write out the data to a png file
     std::ostringstream filename_stream;
     filename_stream << "heat_" << std::setw(4) << std::setfill('0') << iter << ".png";
     std::string filename = filename_stream.str();

@@ -8,16 +8,16 @@ in "Parallel programming with MPI" exercise material.
 Here, starting point is a working code parallelized over columns (in Fortran) or rows (in C/C++).
 
 Before starting with this exercise, it is recommended that you have
-the [usage of Cartesian communicator](README-cartesian.md) implemented. 
+the [usage of Cartesian communicator](README-cartesian.md) implemented.
 You can also use its model solution as starting point.
 
 1. Modify the creation of Cartesian communicator so that the
    decomposition is done in two dimensions, and determine all four
    neighbors (up, down, left, right).
-   
+
 2. As the rows (in Fortran) or columns (in C/C++) are not contiguous
    in the computer memory, one needs to use user-defined datatypes
-   when communicating in the `exchange()` routine in [cpp/core.cpp](cpp/core.cpp) 
+   when communicating in the `exchange()` routine in [cpp/core.cpp](cpp/core.cpp)
    or [fortran/core.F90](fortran/core.F90). In order to make code more
    symmetric, one can utilize derived type also for the contiguous
    dimension. Create required datatypes (it is recommended to store

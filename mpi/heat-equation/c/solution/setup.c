@@ -87,7 +87,7 @@ void generate_field(field *temperature, parallel_data *parallel)
      * we have to allocate also the ghost layers */
     temperature->data = (double *) malloc((temperature->nx + 2) * (temperature->ny + 2) * sizeof(double));
 
- 
+
     /* Radius of the source disc */
     radius = temperature->nx_full / 6.0;
     for (int i = 0; i < temperature->nx + 2; i++) {
@@ -115,7 +115,7 @@ void generate_field(field *temperature, parallel_data *parallel)
         for (int j = 0; j < temperature->ny + 2; j++) {
             temperature->data[j] = 85.0;
         }
-    } 
+    }
     if (parallel->rank == parallel->size - 1) {
         for (int j = 0; j < temperature->ny + 2; j++) {
             temperature->data[(temperature->nx + 1) * (temperature->ny + 2) + j] = 5.0;
@@ -175,6 +175,6 @@ void parallel_set_dimensions(parallel_data *parallel, int nx, int ny)
 void finalize(field *temperature1, field *temperature2)
 {
     free(temperature1->data);
-    free(temperature2->data); 
+    free(temperature2->data);
 }
 

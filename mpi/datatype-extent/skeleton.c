@@ -19,7 +19,7 @@ int main(int argc, char **argv)
                 sendarray[i][j] = (i + 1) * 10 + j + 1;
             }
         }
-    } 
+    }
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 6; j++) {
@@ -37,13 +37,13 @@ int main(int argc, char **argv)
         }
     }
 
-    // TODO create datatype 
+    // TODO create datatype
 
     // Communicate with the datatype
     if (rank == 0)
-        
+
     else if (rank == 1)
-        
+
 
     // free datatype
 

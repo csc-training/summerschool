@@ -5,7 +5,7 @@
 // Class for temperature field
 struct Field {
     // nx and ny are the true dimensions of the field. The temperature matrix
-    // contains also ghost layers, so it will have dimensions nx+2 x ny+2 
+    // contains also ghost layers, so it will have dimensions nx+2 x ny+2
     int nx;                     // Global dimensions of the field
     int ny;                     // Global dimensions of the field
     double dx = 0.01;           // Grid spacing

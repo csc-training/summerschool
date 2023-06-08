@@ -34,7 +34,7 @@ program heat_solve
 
   average_temp = average(current, parallelization)
   if (parallelization % rank == 0) then
-     write(*,'(A, I5, A, I5, A, I5)') 'Simulation grid: ', current%nx_full, ' x ', & 
+     write(*,'(A, I5, A, I5, A, I5)') 'Simulation grid: ', current%nx_full, ' x ', &
           & current%ny_full, ' time steps: ', nsteps
      write(*,'(A, I5)') 'MPI processes: ', parallelization%size
      write(*,'(A,F9.6)') 'Average temperature at start: ', average_temp

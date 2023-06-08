@@ -6,15 +6,15 @@
 
  - [Hello world](hello-world/)
 
-### Simple point-to-point communication
+### Point-to-point communication
 
- - [Simple message exchange](message-exchange/)
- - [Simple parallel pi](simple-pi/)
+ - [Message exchange](message-exchange/)
+ - [Parallel pi with two processes](paralle-pi-two-procs/)
 
 ### Special MPI variables and communication patterns
 
  - [Message chain](message-chain/)
- - [Parallel pi](parallel-pi/)
+ - [Parallel pi revisited](parallel-pi-general/)
  - [(Bonus) Broadcast and scatter](broadcast-scatter/)
 
 ### Collective operations
@@ -38,20 +38,21 @@
 
   - [Communicators and collectives](communicator/)
 
-### Non-blocking communication
+### Non-blocking communication and persistent communication
 
-  - [Non-blocking message chain](message-chain/README-nonblocking.md)
-  - [Message chain with persistent communication](message-chain/README-persistent.md)
+  - [Message chain revisited](message-chain-non-blocking/)
 
 ### Process topologies
+
  - [Cartesian grid process topology](cartesian-grid)
- - [Message chain with Cartesian communicator](message-chain/README-cartesian.md)
+ - [Message chain with Cartesian communicator](message-chain-cartesian/)
 
 ### Simple derived types
 
  - [Simple datatypes](simple-datatypes)
 
 ### Advanced derived types
+
  - [Communicating struct / derived type](struct-datatype)
  - [Modifying extent](datatype-extent)
 

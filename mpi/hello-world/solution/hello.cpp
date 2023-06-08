@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <iostream>
 #include <mpi.h>
 
 int main(int argc, char *argv[])
@@ -12,10 +12,10 @@ int main(int argc, char *argv[])
     MPI_Get_processor_name(procname, &namelen);
 
     if (myid == 0) {
-        printf("In total there are %i tasks\n", ntasks);
+        std::cout << "In total there are " << ntasks << " tasks" << std::endl;
     }
 
-    printf("Hello from rank %i in processor %s\n", myid, procname);
+    std::cout << "Hello from rank " << myid << " in node " << procname << std::endl;
 
     MPI_Finalize();
 }

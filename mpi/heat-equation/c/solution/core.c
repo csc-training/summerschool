@@ -11,7 +11,7 @@
 /* Exchange the boundary values */
 void exchange(field *temperature, parallel_data *parallel)
 {
-    double *data;  
+    double *data;
     double *sbuf_up, *sbuf_down, *rbuf_up, *rbuf_down;
 
     data = temperature->data;
@@ -22,14 +22,14 @@ void exchange(field *temperature, parallel_data *parallel)
 
     MPI_Sendrecv(sbuf_up, temperature->ny + 2, MPI_DOUBLE,
                  parallel->nup, 11,
-                 rbuf_down, temperature->ny + 2, MPI_DOUBLE, 
+                 rbuf_down, temperature->ny + 2, MPI_DOUBLE,
                  parallel->ndown, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
     // Send to the down, receive from up
     sbuf_down = data + temperature->nx * (temperature->ny + 2); // lower data
     rbuf_up = data; // upper halo
 
-    MPI_Sendrecv(sbuf_down, temperature->ny + 2, MPI_DOUBLE, 
+    MPI_Sendrecv(sbuf_down, temperature->ny + 2, MPI_DOUBLE,
                  parallel->ndown, 12,
                  rbuf_up, temperature->ny + 2, MPI_DOUBLE,
                  parallel->nup, 12, MPI_COMM_WORLD, MPI_STATUS_IGNORE);

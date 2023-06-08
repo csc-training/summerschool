@@ -28,7 +28,7 @@ program heat_solve
   call write_field(current, 0)
 
   average_temp = average(current)
-  write(*,'(A, I5, A, I5, A, I5)') 'Simulation grid: ', current%nx, ' x ', & 
+  write(*,'(A, I5, A, I5, A, I5)') 'Simulation grid: ', current%nx, ' x ', &
        & current%ny, ' time steps: ', nsteps
   write(*,'(A,F9.6)') 'Average temperature at start: ', average_temp
 

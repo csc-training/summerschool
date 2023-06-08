@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    int myid, ntasks;
+    int myid, ntasks, nrecv;
     constexpr int arraysize = 100000;
     constexpr int msgsize = 100;
     std::vector<int> message(arraysize);
@@ -21,19 +21,17 @@ int main(int argc, char *argv[])
         receiveBuffer[i] = -1;
     }
 
-    // Send and receive messages as defined in exercise 
+    // Send and receive messages as defined in exercise
     if (myid == 0) {
         MPI_Send(message.data(), msgsize, MPI_INT, 1, 1, MPI_COMM_WORLD);
         MPI_Recv(receiveBuffer.data(), arraysize, MPI_INT, 1, 2, MPI_COMM_WORLD,
                  &status);
-        int nrecv;
         MPI_Get_count(&status, MPI_INT, &nrecv);
         printf("Rank %i received %i elements, first %i\n", myid, nrecv, receiveBuffer[0]);
     } else if (myid == 1) {
         MPI_Send(message.data(), msgsize, MPI_INT, 0, 2, MPI_COMM_WORLD);
         MPI_Recv(receiveBuffer.data(), arraysize, MPI_INT, 0, 1, MPI_COMM_WORLD,
                  &status);
-        int nrecv;
         MPI_Get_count(&status, MPI_INT, &nrecv);
         printf("Rank %i received %i elements, first %i\n", myid, nrecv, receiveBuffer[0]);
     }

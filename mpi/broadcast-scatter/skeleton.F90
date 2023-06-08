@@ -1,28 +1,30 @@
-program bcas_scatter
-  use mpi
+program bcast_scatter
+  use mpi_f08
   implicit none
 
-  integer, parameter :: size=24
-  integer :: ntasks, myid, ierr, i, color, sub_comm
-  integer, dimension(size) :: message, recvbuf
+  integer, parameter :: size=12
+  integer :: ntasks, myid, ierr, i
+  integer, dimension(size) :: sendbuf, recvbuf
   integer, dimension(size**2) :: printbuf
+  type(mpi_status) :: status
 
   call mpi_init(ierr)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, ierr)
 
-  ! Initialize message buffers
+  ! Initialize buffers
   call init_buffers
 
   ! Print data that will be sent
-  call print_buffers(message)
+  call print_buffers(sendbuf)
 
-
-  ! TODO: use collective communication call
+  ! Send everywhere
+  ! TODO for broadcast: Implement the broadcast of the array sendbuf using send and recv functions
+  ! TODO for scatter: Implement the scatter of the array sendbuf using send and recv functions
 
   ! Print data that was received
-  ! TODO: add correct argument
-  call print_buffers(...)
+  call print_buffers(recvbuf)
+
   call mpi_finalize(ierr)
 
 contains
@@ -32,11 +34,13 @@ contains
     integer :: i
     if(myid==0) then
       do i = 1, size
-         message(i) = i
+         recvbuf(i) = -1
+         sendbuf(i) = i
       end do
     else
      do i=1, size
-         message(i)= -1
+         recvbuf(i) = -1
+         sendbuf(i) = -1
      enddo
     endif
   end subroutine init_buffers
@@ -63,4 +67,4 @@ contains
     end if
   end subroutine print_buffers
 
-end program 
+end program

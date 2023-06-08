@@ -1,7 +1,7 @@
 /* I/O related functions for heat equation solver */
 
 #include <string>
-#include <iomanip> 
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <mpi.h>
@@ -21,9 +21,9 @@ void write_field(Field& field, const int iter, const ParallelData parallel)
         // Copy the inner data
         auto full_data = Matrix<double>(height, width);
         for (int i = 0; i < field.nx; i++)
-            for (int j = 0; j < field.ny; j++) 
+            for (int j = 0; j < field.ny; j++)
                  full_data(i, j) = field(i + 1, j + 1);
-          
+
         // Receive data from other ranks
         int coords[2];
         for (int p = 1; p < parallel.size; p++) {
@@ -33,13 +33,13 @@ void write_field(Field& field, const int iter, const ParallelData parallel)
             MPI_Recv(full_data.data(ix, iy), 1, parallel.subarraytype, p, 22,
                      parallel.comm, MPI_STATUS_IGNORE);
         }
-        // Write out the data to a png file 
+        // Write out the data to a png file
         std::ostringstream filename_stream;
         filename_stream << "heat_" << std::setw(4) << std::setfill('0') << iter << ".png";
         std::string filename = filename_stream.str();
         save_png(full_data.data(), height, width, filename.c_str(), 'c');
     } else {
-        // Send data 
+        // Send data
         MPI_Send(field.temperature.data(1, 1), 1, parallel.subarraytype,
                  0, 22, parallel.comm);
     }

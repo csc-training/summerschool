@@ -1,5 +1,5 @@
 // Utility functions for heat equation solver
-//    NOTE: This file does not need to be edited! 
+//    NOTE: This file does not need to be edited!
 
 #include <mpi.h>
 

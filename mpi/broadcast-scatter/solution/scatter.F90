@@ -1,41 +1,47 @@
 program scatter
-  use mpi
+  use mpi_f08
   implicit none
 
-  integer, parameter :: size=24
-  integer :: ntasks, myid, ierr, i, color, sub_comm
-  integer, dimension(size) :: message, recvbuf
+  integer, parameter :: size=12
+  integer :: ntasks, myid, ierr, i
+  integer :: block_size
+  integer, dimension(size) :: sendbuf, recvbuf
   integer, dimension(size**2) :: printbuf
-  integer, allocatable :: tmp
+  type(mpi_status) :: status
 
   call mpi_init(ierr)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, ierr)
 
+  ! Initialize buffers
   call init_buffers
-  recvbuf=-1
-  call print_buffers(message)
-  
-  if (size<ntasks) then
+
+  ! Print data that will be sent
+  call print_buffers(sendbuf)
+
+  ! Send everywhere
+  if (mod(size, ntasks) /= 0) then
      if (myid == 0) then
-        print *, "Size is too small. Increase size or decrease number of tasks to have at least one element sent"
+        print *, "Size not divisible by the number of tasks. This program will fail."
      end if
      call mpi_abort(MPI_COMM_WORLD, -1, ierr)
   end if
 
-  allocate(tmp(size/ntasks))
+  block_size = size/ntasks
   if(myid == 0) then
-  recvbuf(1:(size/ntasks))=message(1:(size/ntasks))
-  do i=1, ntasks-1
-     tmp(1:(size/ntasks))=message(i*(size/ntasks)+1:(i+1)*(size/ntasks))
-     call mpi_send(tmp, size/ntasks, MPI_INTEGER, i,i,MPI_COMM_WORLD, ierr)
-  enddo
+     do i=1, ntasks-1
+        call mpi_send(sendbuf(i*block_size + 1:), block_size, MPI_INTEGER, i, i, MPI_COMM_WORLD, ierr)
+     enddo
+
+     ! Scatter also the local part
+     recvbuf(:block_size) = sendbuf(:block_size)
   else
-  call mpi_recv(tmp, size/ntasks, MPI_INTEGER, 0, myid, MPI_COMM_WORLD, status,ierr)
-  recvbuf(1:(size/ntasks))=tmp(1:(size/ntasks))
+     call mpi_recv(recvbuf, block_size, MPI_INTEGER, 0, myid, MPI_COMM_WORLD, status, ierr)
   endif
 
-  call print_buffers(recvbuf) 
+  ! Print data that was received
+  call print_buffers(recvbuf)
+
   call mpi_finalize(ierr)
 
 contains
@@ -45,15 +51,16 @@ contains
     integer :: i
     if(myid==0) then
       do i = 1, size
-         message(i) = i
+         recvbuf(i) = -1
+         sendbuf(i) = i
       end do
     else
      do i=1, size
-         message(i)= -1
+         recvbuf(i) = -1
+         sendbuf(i) = -1
      enddo
     endif
   end subroutine init_buffers
-
 
 
   subroutine print_buffers(buffer)
@@ -77,4 +84,4 @@ contains
     end if
   end subroutine print_buffers
 
-end program 
+end program

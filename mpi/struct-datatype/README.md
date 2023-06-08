@@ -7,7 +7,7 @@ The skeleton code provided in
 1. Implement a custom MPI datatype, and send a single struct / derived type between two
    processes. Verify that the communication is performed succesfully.
 
-2. Next, try to send an array of structs / derived types. Make sure that the *extent* of the 
+2. Next, try to send an array of structs / derived types. Make sure that the *extent* of the
    datatype is correct (you may use `MPI_Type_get_extent` and `MPI_Get_address` for checking).
 
 3. Implement the same send by sending just a stream of bytes (type `MPI_BYTE`).

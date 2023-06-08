@@ -86,7 +86,7 @@ contains
 
     call mpi_comm_size(parallel%comm, parallel%size, ierr)
     call mpi_comm_rank(parallel%comm, parallel%rank, ierr)
-    
+
 
   end subroutine parallel_setup
 

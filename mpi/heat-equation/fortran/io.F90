@@ -92,7 +92,7 @@ contains
        end do
     else
        ! Receive data
-       call mpi_recv(inner_data, field0%nx * field0%ny, & 
+       call mpi_recv(inner_data, field0%nx * field0%ny, &
                & MPI_DOUBLE_PRECISION, 0, 22, MPI_COMM_WORLD, &
                & MPI_STATUS_IGNORE, ierr)
     end if

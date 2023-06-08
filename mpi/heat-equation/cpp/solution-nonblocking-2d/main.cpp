@@ -25,10 +25,10 @@ int main(int argc, char **argv)
 
     auto average_temp = average(current, parallelization);
     if (0 == parallelization.rank) {
-        std::cout << "Simulation parameters: " 
+        std::cout << "Simulation parameters: "
                   << "rows: " << current.nx_full << " columns: " << current.ny_full
                   << " time steps: " << nsteps << std::endl;
-        std::cout << "Number of MPI tasks: " << parallelization.size 
+        std::cout << "Number of MPI tasks: " << parallelization.size
                   << " (" << parallelization.dims[0] << " x " << parallelization.dims[1] << ")"
                   << std::endl;
         std::cout << std::fixed << std::setprecision(6);
@@ -36,13 +36,13 @@ int main(int argc, char **argv)
     }
 
 
-    const double a = 0.5;     // Diffusion constant 
+    const double a = 0.5;     // Diffusion constant
     auto dx2 = current.dx * current.dx;
     auto dy2 = current.dy * current.dy;
-    // Largest stable time step 
+    // Largest stable time step
     auto dt = dx2 * dy2 / (2.0 * a * (dx2 + dy2));
 
-    //Get the start time stamp 
+    //Get the start time stamp
     auto start_clock = MPI_Wtime();
 
     // Time evolve
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
     auto stop_clock = MPI_Wtime();
 
-    // Average temperature for reference 
+    // Average temperature for reference
     average_temp = average(previous, parallelization);
 
     if (0 == parallelization.rank) {
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
                   << " seconds." << std::endl;
         std::cout << "Average temperature: " << average_temp << std::endl;
         if (1 == argc) {
-            std::cout << "Reference value with default arguments: " 
+            std::cout << "Reference value with default arguments: "
                       << 59.281239 << std::endl;
         }
     }

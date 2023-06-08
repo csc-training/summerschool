@@ -37,7 +37,7 @@ int main(int argc, char **argv)
         }
     }
 
-    //TODO: Create datatype 
+    //TODO: Create datatype
 
     //TODO: Send data
 

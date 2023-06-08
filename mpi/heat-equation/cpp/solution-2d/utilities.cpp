@@ -1,5 +1,5 @@
 // Utility functions for heat equation solver
-//    NOTE: This file does not need to be edited! 
+//    NOTE: This file does not need to be edited!
 
 #include <mpi.h>
 
@@ -17,7 +17,7 @@ double average(const Field& field, const ParallelData parallel)
        }
      }
 
-     MPI_Allreduce(&local_average, &average, 1, MPI_DOUBLE, MPI_SUM, 
+     MPI_Allreduce(&local_average, &average, 1, MPI_DOUBLE, MPI_SUM,
                    parallel.comm);
      average /= (field.nx_full * field.ny_full);
      return average;

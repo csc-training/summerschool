@@ -11,7 +11,7 @@ contains
 
     type(field), intent(inout) :: field0
     type(parallel_data), intent(in) :: parallel
-    
+
     integer :: ierr
 
     ! Send to left, receive from right
