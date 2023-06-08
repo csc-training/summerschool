@@ -51,7 +51,6 @@ contains
   end subroutine set_field_dimensions
 
   subroutine parallel_setup(parallel, nx, ny)
-    use mpi
 
     implicit none
 
