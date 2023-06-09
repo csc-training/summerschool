@@ -4,10 +4,11 @@ module my_module
 
   contains
 
-    !$omp declare target (my_sum)
 
     real(rk) function my_sum(a, b)
       implicit none
+      !$omp declare target (my_sum)
+     
       real(rk) :: a, b
 
       my_sum = a + b
