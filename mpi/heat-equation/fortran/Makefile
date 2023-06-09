@@ -1,5 +1,5 @@
 ifeq ($(COMP),)
-COMP=cray
+COMP=lumi
 endif
 
 COMMONDIR=../common
@@ -22,8 +22,8 @@ LDFLAGS=
 LIBS=-lpng
 endif
 
-ifeq ($(COMP),cray)
-LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12/
+ifeq ($(COMP),lumi)
+LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12
 FC=ftn
 CC=cc
 FCFLAGS=-O3
@@ -31,6 +31,7 @@ CCFLAGS=-O3 -I$(COMMONDIR) -I$(LIBPNG_DIR)/include
 LDFLAGS=-L$(LIBPNG_DIR)/lib
 LIBS=-lpng
 endif
+
 
 EXE=heat_mpi
 OBJS=main.o heat_mod.o core.o setup.o utilities.o io.o pngwriter_mod.o
