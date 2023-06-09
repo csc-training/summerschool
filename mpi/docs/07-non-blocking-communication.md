@@ -9,7 +9,8 @@ lang:   en
 # Non-blocking communication
 
 - Non-blocking communication operations return immediately and perform sending/receiving in the background
-    - `MPI_Isend` & `MPI_Irecv`
+    - `MPI_Isend` & `MPI_Irecv` initilize the communication
+    - Communication needs to be separately finalized (more about this later)
 - Enables some computing concurrently with communication
 - Avoids many common dead-lock situations
 - Collective operations are also available as non-blocking versions
@@ -182,6 +183,19 @@ Allows incoming messages to be checked, without actually receiving them.
 
 `MPI_Probe` is a blocking version of the same operation.
 
+# Background messaging -- what does it require
+
+- Progressing communication requires some CPU resources
+
+- Two communication protocols, depending on message size
+    - **`eager`{.output}** sends the message without synchronization to the receiver
+    - **`rendezvous`{.output}** delays the message until receive operation (can be pipelined)
+
+- Three ways to handle message progression: manual, NIC or threads
+    - **`manual`{.output}** progression (with `MPI_Test`) is not really an option
+    - offloading to **`network interface card`{.output}** (NIC) and using (remote) direct memory access (DMA); this utilises an external CPU to take the load
+    - **`threading`{.output}** is usually referred to as a silver bullet as modern CPUs are capable of Simultaneous Multi-Threading (or Hyper-Threading)
+    - SMT is viable for inter-node communication, but not for shared memory
 
 # Non-blocking collectives
 
