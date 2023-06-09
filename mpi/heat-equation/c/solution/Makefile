@@ -43,4 +43,4 @@ $(EXE): $(OBJS) $(OBJS_PNG)
 
 .PHONY: clean
 clean:
-	-/bin/rm -f $(EXE) a.out *.o *.png *~
+	-/bin/rm -f $(EXE) a.out *.o *.png *~ $(COMMONDIR)/*.o

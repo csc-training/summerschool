@@ -48,4 +48,4 @@ $(EXE): $(OBJS) $(OBJS_PNG)
 
 .PHONY: clean
 clean:
-	-/bin/rm -f $(EXE) a.out *.o *.mod *.png *~
+	-/bin/rm -f $(EXE) a.out *.o *.mod *.png *~ $(COMMONDIR)/*.o
