@@ -124,7 +124,7 @@ do not constitute science!**
 - Test drive development
     - Tests are written before actually implementing the functionality
 
-# What should be tested in software ?
+# What should be tested in scientific software ?
 
 - Validity of the physical model
     - Comparison to experimental results

@@ -35,7 +35,7 @@ lang:   en
 
 # ICON
 
-<div class=column style=width:65%>
+<div class=column style="width:65%">
 - Icosahedral Nonhydrostatic Weather and Climate Model
 - Closed source, developed my several meteorology institutes
     - DWD, MPI-M, MeteoSwiss, ...
@@ -45,10 +45,14 @@ lang:   en
     - Memory bound
 - MPI + OpenMP, OpenACC for GPUs
 </div>
-<div class=column style=width:30%>
+<div class=column style="width:30%">
     
 <!-- Image source https://code.mpimet.mpg.de/projects/iconpublic -->
 ![](images/r2b02_europe.png){.center width=70%} 
+<br>
+<!-- Image source https://earthobservatory.nasa.gov/images/47628/global-warming-mapped
+     Copyright NASA’s Earth Observatory -->
+![](images/climate-temperature.png){.center width=80%} 
 
 </div>
 
@@ -134,6 +138,7 @@ LiGen
 
 # Case ICON: Parallellization
 
+<div class=column style="width:65%">
 - Domain decomposition of the horizontal grid
 - Halo exchange with `Isend` / `Irecv`
 - Asynchronous I/O with special I/O processes
@@ -141,6 +146,16 @@ LiGen
 - Coupled simulations
     - Some processes simulate atmosphere, some ocean at the same time
 - Good parallel scalability
+</div>
+
+<div class=column style="width:33%">
+<!-- Image source ICON Tutorial 
+     https://www.dwd.de/EN/ourservices/nwv_icon_tutorial/nwv_icon_tutorial_en.html
+     Copyright DWD -->
+![](images/icon-domain-decomposition.png){.center width=70%}
+</div>
+
+
 
 # Case ICON: GPU porting
 
@@ -152,7 +167,7 @@ LiGen
 
 # Case LiGen: Parallellization
 
-<div class=column>
+<div class=column style="width:58%">
     
 - Embarassingly parallel (or data parallel)
 - One process per node
@@ -165,8 +180,7 @@ LiGen
 
 </div>
 
-<div class=column>
-<br />
+<div class=column style="width:40%">
 <br />
 <br />
 
@@ -177,7 +191,7 @@ LiGen
 
 # Case LiGen: GPU parallelization
 
-<div class=column>
+<div class=column style="width:55%">
 - Traditional approach: distribute computation
     - Latency oriented: process a single data as fast as possible
 
@@ -188,7 +202,7 @@ LiGen
 </div>
 
 
-<div class=column>
+<div class=column style="width:43%">
 
 ![](images/latency.jpg){.justify width=90%}
 
@@ -249,7 +263,7 @@ LiGen
     - "standard" and "portable"
 - Native low level languages: CUDA (NVIDIA) and HIP (AMD)
     - HIP supports in principle also NVIDIA devices
-    - With HIP Fortran needs wrappers via C-bindings
+    - With HIP, Fortran needs wrappers via C-bindings
 - Performance portability frameworks: SYCL, Kokkos
     - Support only C++
 - Standard language features: parallel C++, `do concurrent`
@@ -282,8 +296,7 @@ LiGen
     - Issue tracking
     - Review of pull/merge requests
     - wikis
-- ICON: private gitlab
-- LiGen: private gitlab
+- ICON and LiGen: private gitlab
 
 # Code design: tools
 
@@ -311,6 +324,7 @@ LiGen
 - Software development is time consuming, many tools exist to help you in the process
 - Build systems automate configuring and compiling
     - CMake
+    - GNU Autotools
     - Make, Ninja
 - The bigger your project is, the better is to rely on these automatic tools.
     - Setup can be painful
@@ -328,20 +342,25 @@ LiGen
 
 # Data design
 
-- Data has to be "designed" too:
-    - Use structures!
-    - Think about the flow
-    - How to distribute the data 
-    - GPU introduce more data related problems and opportunities:
-        - Memory copies between Host and Device
-        - Preallocation
-        - Overlapping computation with copy
+- Data has to be "designed" too
+- Use structures!
+    - Note possible performance difference between structure of arrays vs.
+      arrays of structures
+- Think about the flow
+- How to distribute the data 
+- GPU introduce more data related problems and opportunities:
+    - Memory copies between Host and Device
+    - Preallocation
+    - Overlapping computation with copy
 
 # Case ICON: Data design
 
 - Multiply nested data structures
-- Need for deep copies for GPUs
+- Need to perform deep copies for GPUs
 - Fortran pointers used as "shortcuts"
+- Blocking for innermost array dimension ("nproma")
+    - Helps for cache performance and vectorization
+    - Optimum block size very different in CPUs and GPUs (~32 vs. ~10 000)
 
 # Case LiGen: Data design
 
@@ -365,6 +384,13 @@ LiGen
 - Remember also that large simulations produce lots of data
     - Storing "big data" is an issue
     - A global climate simulation can produce one peta byte in a day
+
+# Case ICON: I/O Data formats
+
+- Input data (grids, initial values etc.) normally as netcdf
+- Output data either in netcdf or grib2 (binary format for weather and climate data)
+- Large climate simulation can produce a petabyte of data per day
+    - Need to consider post-processing and long time storage
 
 # Coding style
 
