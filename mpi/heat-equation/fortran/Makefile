@@ -42,7 +42,7 @@ all: $(EXE)
 $(COMMONDIR)/pngwriter.o: $(COMMONDIR)/pngwriter.c $(COMMONDIR)/pngwriter.h
 core.o: core.F90 heat_mod.o
 utilities.o: utilities.F90 heat_mod.o
-io.o: io.F90 heat_mod.o pngwriter_mod.o 
+io.o: io.F90 heat_mod.o pngwriter_mod.o
 setup.o: setup.F90 heat_mod.o utilities.o io.o
 pngwriter_mod.o: pngwriter_mod.F90 heat_mod.o
 main.o: main.F90 heat_mod.o core.o io.o setup.o utilities.o
