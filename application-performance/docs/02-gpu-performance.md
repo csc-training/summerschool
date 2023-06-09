@@ -71,23 +71,41 @@ lang:   en
 - Start with an overview!
     - Call tree information, what routines are most expensive?
 
-# <ins>Sampling</ins> vs. Tracing
+# Sampling vs. Tracing
 
-- When application is profiled using sampling, the execution is stopped at
-  predetermined intervals and the state of the application is examined
-    - Lightweight, but may give skewed results
+<div class=column>
+Sampling
 
-![](img/sampling.png){.left width=60%}
+- Application is stopped at predetermined intervals 
+    - Information is collected about the state of application
+- Lightweight, but may give skewed results
+    - Statistical information
 
-# Sampling vs. <ins>Tracing</ins>
-- Tracing records events, e.g., every function call
-    - Usually requires modification to the executable
-        - These modifications are called instrumentation
-    - More accurate, but may affect program behavior
-    - Often generates lots of data
+</div>
+<div class=column>
+Tracing
 
-![](img/tracing.png){.left width=60%}
+- Records events, e.g., every function call
+- Requires usually modification to the executable *i.e.* instrumentation
+- More accurate, but may affect program behavior
+- Generates often lots of data
 
+</div>
+
+# Sampling vs. Tracing
+
+<div class=column>
+Sampling
+
+![](img/sampling.png){.left width=80%}
+
+</div>
+<div class=column>
+Tracing
+
+![](img/tracing.png){.left width=80%}
+
+</div>
 
 # Tau  Analysis Utilities
 
