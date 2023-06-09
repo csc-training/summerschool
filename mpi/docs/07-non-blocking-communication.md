@@ -187,13 +187,13 @@ Allows incoming messages to be checked, without actually receiving them.
 
 - Progressing communication requires some CPU resources
 
-- Two communication protocols, depending on message size
+- Typically two communication protocols, depending on message size
     - **`eager`{.output}** sends the message without synchronization to the receiver
     - **`rendezvous`{.output}** delays the message until receive operation (can be pipelined)
 
 - Three ways to handle message progression: manual, NIC or threads
     - **`manual`{.output}** progression (with `MPI_Test`) is not really an option
-    - offloading to **`network interface card`{.output}** (NIC) and using (remote) direct memory access (DMA); this utilises an external CPU to take the load
+    - offloading communication to **`network interface card`{.output}** (NIC) and using (remote) direct memory access (DMA)
     - **`threading`{.output}** is usually referred to as a silver bullet as modern CPUs are capable of Simultaneous Multi-Threading (or Hyper-Threading)
     - SMT is viable for inter-node communication, but not for shared memory
 
