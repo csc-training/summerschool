@@ -28,7 +28,7 @@ FC=ftn
 CC=cc
 FCFLAGS=-O3
 CCFLAGS=-O3 -I$(COMMONDIR) -I$(LIBPNG_DIR)/include
-LDFLAGS=-L$(LIBPNG_DIR)/lib
+LDFLAGS=-L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib
 LIBS=-lpng
 endif
 
