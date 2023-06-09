@@ -2,8 +2,8 @@
 #include <vector>
 #include <mpi.h>
 
-void print_buffers(int *printbuffer, int *sendbuffer, int buffersize);
-void init_buffers(int *sendbuffer, int *recvbuffer, int buffersize);
+void init_buffers(std::vector<int> &sendbuffer, std::vector<int> &recvbuffer);
+void print_buffers(std::vector<int> &buffer);
 
 
 int main(int argc, char *argv[])
@@ -11,7 +11,6 @@ int main(int argc, char *argv[])
     int ntasks, myid, size=12;
     std::vector<int> sendbuf(size);
     std::vector<int> recvbuf(size);
-    std::vector<int> printbuf(size*size);
     MPI_Status status;
 
     MPI_Init(&argc, &argv);
@@ -19,10 +18,10 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
     /* Initialize message buffers */
-    init_buffers(sendbuf.data(), recvbuf.data(), size);
+    init_buffers(sendbuf, recvbuf);
 
     /* Print data that will be sent */
-    print_buffers(printbuf.data(), sendbuf.data(), size);
+    print_buffers(sendbuf);
 
     /* Send everywhere */
     if (myid == 0) {
@@ -40,25 +39,27 @@ int main(int argc, char *argv[])
     }
 
     /* Print data that was received */
-    print_buffers(printbuf.data(), recvbuf.data(), size);
+    print_buffers(recvbuf);
 
     MPI_Finalize();
     return 0;
 }
 
 
-void init_buffers(int *sendbuffer, int *recvbuffer, int buffersize)
+void init_buffers(std::vector<int> &sendbuffer, std::vector<int> &recvbuffer)
 {
-    int rank, i;
+    int rank;
+    int buffersize = sendbuffer.size();
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
     if (rank == 0) {
-        for (i = 0; i < buffersize; i++) {
+        for (int i = 0; i < buffersize; i++) {
             recvbuffer[i] = -1;
             sendbuffer[i] = i;
         }
     } else {
-        for (i = 0; i < buffersize; i++) {
+        for (int i = 0; i < buffersize; i++) {
             recvbuffer[i] = -1;
             sendbuffer[i] = -1;
         }
@@ -66,19 +67,24 @@ void init_buffers(int *sendbuffer, int *recvbuffer, int buffersize)
 }
 
 
-void print_buffers(int *printbuffer, int *sendbuffer, int buffersize)
+void print_buffers(std::vector<int> &buffer)
 {
-    int i, j, rank, ntasks;
+    int rank, ntasks;
+    int buffersize = buffer.size();
 
-    MPI_Gather(sendbuffer, buffersize, MPI_INT,
-               printbuffer, buffersize, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
 
+    std::vector<int> printbuffer(buffersize * ntasks);
+
+    MPI_Gather(buffer.data(), buffersize, MPI_INT,
+               printbuffer.data(), buffersize, MPI_INT,
+               0, MPI_COMM_WORLD);
+
     if (rank == 0) {
-        for (j = 0; j < ntasks; j++) {
+        for (int j = 0; j < ntasks; j++) {
             printf("Task %2i:", j);
-            for (i = 0; i < buffersize; i++) {
+            for (int i = 0; i < buffersize; i++) {
                 printf(" %2i", printbuffer[i + buffersize * j]);
             }
             printf("\n");

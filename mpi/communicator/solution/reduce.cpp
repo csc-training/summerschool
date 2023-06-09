@@ -80,7 +80,7 @@ void print_buffers(std::vector<int> &buffer)
 
     if (rank == 0) {
         for (int j = 0; j < ntasks; j++) {
-            printf("Task %i:", j);
+            printf("Task %2i:", j);
             for (int i = 0; i < buffersize; i++) {
                 printf(" %2i", printbuffer[i + buffersize * j]);
             }
