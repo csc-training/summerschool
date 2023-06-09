@@ -15,6 +15,5 @@ operation so that the receive buffers will have the following values:
 ![](img/comm-split-reduce.svg)
 
 You can start from scratch or use the skeleton code
-[skeleton.cpp](skeleton.cpp), [skeleton.c](skeleton.c) or
-[skeleton.F90](skeleton.F90).
+[skeleton.cpp](skeleton.cpp) or [skeleton.F90](skeleton.F90).
 
