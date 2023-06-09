@@ -195,9 +195,9 @@ Time elapsed 343773 ums
     - With double precision numbers arithmetic intensity <br>
       $I=\frac{\mathrm{FLOPS}}{\mathrm{memory traffic}} =
       \frac{2}{3*8}=0.08$ FLOPS/byte
-    - In Puhti, memory bandwidth is \~200 GB/s, so maximum performance
-      is \~16 GFLOPS/s
-    - Theoretical peak performance of Puhti node is \~2600 GFLOPS/s
+    - In LUMI-G, memory bandwidth is \~1.6 TB/s, so maximum performance
+      is \~ 0.1 TFLOPS/s
+    - Theoretical peak performance of GPUs in LUMI \~26.5 GFLOPS/s
 - HPCG benchmark reaches ~0.8 % of peak in LUMI
 
 # How to assess application's performance?
@@ -211,7 +211,7 @@ Time elapsed 343773 ums
     - With double precision numbers arithmetic intensity
       $I=\frac{2 N}{3}$ FLOPS/byte
     - With large enough $N$ limited by peak performance
-- HPL benchmark reaches 72 % of peak in LUMI
+- HPL benchmark reaches 72 % of peak in LUMI-G
 
 # How to assess application's parallel performance?
 
@@ -220,7 +220,7 @@ Time elapsed 343773 ums
 - Maximize single node performance
     - Dynamic scaling of clock frequency, shared caches etc. make
       scalability within node complex concept
-    - Example: in Mahti independent computations (no parallel
+    - Example: in LUMI-C independent computations (no parallel
       overheads) run 10 % faster with only one core per node than with full node
 <!--        - Single core: 1.99 s
         - All the cores: 2.20 - 2.25 s per core
