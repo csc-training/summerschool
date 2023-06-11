@@ -159,7 +159,7 @@ CPU - manycores
 </div>
 <div class="column">
 ![](img/gpuConnect.png){}
-![](img/gpu-bws.png){width=100%}
+![](img/gpu-bws.png){width=70%}
 </div>
 
 #  Heterogeneous Programming Model
