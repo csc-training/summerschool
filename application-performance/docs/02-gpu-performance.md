@@ -130,7 +130,7 @@ Tracing
 learning/HPC workloads running on AMD MI GPUs. 
  - presently targets usage on MI100 and MI200 accelerators.
  - profiling, roofline model, tracing
- - built on top of `roctracer` and `rocprof` 
+ - built on top of `roctracer` and `rocprof`  
  - supports both a web-based GUI and a command-line analyzer for user convenience.
 
 
