@@ -133,7 +133,8 @@ learning/HPC workloads running on AMD MI GPUs.
  - built on top of `roctracer` and `rocprof` 
  - supports both a web-based GUI and a command-line analyzer for user convenience.
 
-# Web Reources
+
+# Web Resources
  - TAU homepage
     - <https://www.cs.uoregon.edu/research/tau/home.php>
  - Omniperf
