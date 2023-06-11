@@ -1,6 +1,6 @@
 ---
 title:  CSC Summer School in High-Performance Computing 2023
-date:   June 27 - July 6, 2022
+date:   June 27 - July 6, 2023
 author: CSC - IT Center for Science, Finland
 lang:   en
 ---
