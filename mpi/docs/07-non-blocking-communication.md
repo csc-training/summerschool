@@ -194,7 +194,7 @@ Allows incoming messages to be checked, without actually receiving them.
 - Three ways to handle message progression: manual, NIC or threads
     - **`manual`{.output}** progression (with `MPI_Test`) is not really an option
     - offloading communication to **`network interface card`{.output}** (NIC) and using (remote) direct memory access (DMA)
-    - **`threading`{.output}** is usually referred to as a silver bullet as modern CPUs are capable of Simultaneous Multi-Threading (or Hyper-Threading)
+    - MPI implementation can use **`progress thread(s)`{.output}**, but it may slow down computations (new CPUs are capable of Simultaneous Multi-Threading)
     - SMT is viable for inter-node communication, but not for shared memory
 
 # Non-blocking collectives
