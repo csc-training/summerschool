@@ -212,7 +212,7 @@ cc -o my_exe test.c -fopenmp
 
 <div class=column>
 
-![ <span style=" font-size:0.5em;"></span> ](img/league2.png){width=70%}
+![ <span style=" font-size:0.5em;"></span> ](img/league2.png){width=65%}
 </div>
 
 # Teams construct
@@ -226,7 +226,7 @@ cc -o my_exe test.c -fopenmp
 
 <div class=column>
 
-![ <span style=" font-size:0.5em;"></span> ](img/team.png){width=70%}
+![ <span style=" font-size:0.5em;"></span> ](img/team.png){width=65%}
 </div>
 
 # Creating threads within a team
@@ -252,7 +252,7 @@ cc -o my_exe test.c -fopenmp
 
 <div class=column>
 
-![ <span style=" font-size:0.5em;"></span> ](img/thread.png){width=70%}
+![ <span style=" font-size:0.5em;"></span> ](img/thread.png){width=65%}
 </div>
 
 # Creating teams and threads
