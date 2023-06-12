@@ -7,31 +7,30 @@ lang:   en
 
 # High-performance computing
 
-<div class="column">
+<div class="column" width= 55%>
 
 - High performance computing is fueled by ever increasing performance
-- Increasing performance allows  breakthroughs in many major challenges that
-  humankind faces today
-- Not only hardware performance, algorithmic improvements have also added orders of magnitude of real performance
+- Increasing performance allows  breakthroughs in many major challenges that humankind faces today
+- Not only hardware performance, algorithmic improvements have also helped a lot
 
 </div>
 
-<div class="column">
+<div class="column" width=43%>
 ![](img/top500-perf-dev.png)
 </div>
 
 # HPC through the ages
 
 <div class="column" width=55%>
-- Achieving performance has been based on various strategies throughout the years
+- Various strategies to achieve performances through the years:
     - Frequency, vectorization, multi-node, multi-core ...
     - Now performance is mostly limited by power consumption
-- Accelerators provide compute resources based on a very high level of parallelism to reach
-  high performance at low relative power consumption
+- Accelerators provide compute resources with high parallelism to reach high performance at low relative power consumption
 </div>
 
 <div class="column" width=43%>
-![<span style=" font-size:25px; line-height:0px; ">original data up to year 2010 collected and plotted by M.Horowitz, F.Labonte, O. Shacham, K.Olukotun, L.Hammond and C.Batten. New plot and data collected for 2010-2017 by K.Rupp](img/microprocessor-trend-data_nocapt.png)
+![](img/microprocessor-trend-data_nocapt.png)
+![](img/caption.png)
 </div>
 
 
