@@ -145,20 +145,20 @@ CPU - manycores
  ![](img/lumi.png){.center width=50%}
 
 
-# Accelerator model today
+# Accelerator model in LUMI 
 
 <div class="column">
-- GPU is connected to CPUs via PCIe (Infinity Fabric on LUMI)
+- GPU is connected to CPUs via Infinity Fabric
 - Local memory in GPU
-    - Smaller than main memory (128 GB in LUMI)
-    - Very high bandwidth (up to 3200 GB/s in LUMI)
+    - Smaller than main memory (128 GB)
+    - Very high bandwidth (up to 3200 GB/s)
     - Latency high compared to compute performance
-- Data must be copied from CPU to GPU over the PCIe bus
+- Data must be copied from CPU to GPU over the Infinity Fabric
 
 </div>
-<div class="column">
-![](img/gpuConnect.png){}
-![](img/gpu-bws.png){width=70%}
+<div class="column" >
+![](img/lumi-interconnectimgonly.png){width=70%}
+![](img/lumi-interconnectlegend.png){width=70%}
 </div>
 
 #  Heterogeneous Programming Model
