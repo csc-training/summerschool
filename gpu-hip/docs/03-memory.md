@@ -27,16 +27,12 @@ lang:   en
 
 # Data movement
 
-* Data copies between host and device are relatively slow
-* To achieve best performance, the host-device data traffic should be
-  minimized regardless of the chosen memory management strategy
-    * Initializing arrays on the GPU
-    * Rather than just solving a linear equation on a GPU, also setting it up
-      on the device
-* Not copying data back and forth between CPU and GPU every step or iteration
-  can have a large performance impact!
-* When working with different data (so moving is mandatory) consider use a single 
-  malloc for worst case and reuse the same area: malloc is way slower than memcpy
+* Data copies between host and device are slow
+* To achieve best performance, the host-device data traffic should be minimized 
+    * Initialize arrays on the GPU
+    * Even if some pieces of the algorithm are better suited to the CPU, execute on the GPU to avoid moving data.
+* Not copying data back and forth between CPU and GPU every step or iteration can have a large performance impact!
+* When working with different data consider use a single malloc for worst case and reuse the same area: malloc is way slower than memcpy.
 
 
 # Device memory hierarchy
