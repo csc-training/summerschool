@@ -138,8 +138,8 @@ call mpi_bcast(a, 16, MPI_INTEGER, 0, &
 if (my_id==3) print *, a(:)
 ```
 <small>
- **A)** `1 2 3 4`
- **B)** `13 14 15 16`
+ **A)** `1 2 3 4`<br>
+ **B)** `13 14 15 16`<br>
  **C)** `1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16`
 </small>
 
@@ -156,10 +156,11 @@ call mpi_scatter(a, 4, MPI_INTEGER, aloc, 4 &
 if (my_id==3) print *, aloc(:)
 ```
 <small>
- **A)** `1 2 3 4`
- **B)** `13 14 15 16`
+ **A)** `1 2 3 4`<br>
+ **B)** `13 14 15 16`<br>
  **C)** `1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16`
 </small>
+
 </div>
 
 # Vector version of MPI_Scatter {.split-definition}
@@ -219,8 +220,8 @@ Assume 4 MPI tasks. What are the values in `aloc` in the last task (#3)?
 
 <br>
 
-**A)** `1 2 3`
-**B)** `7 8 9 10`
+**A)** `1 2 3`<br>
+**B)** `7 8 9 10`<br>
 **C)** `1 2 3 4 5 6 7 8 9 10`
 </div>
 
