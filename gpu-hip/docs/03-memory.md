@@ -275,7 +275,8 @@ free and allocation cost
 
 # Coalesced memory access example
 
-<div class="column">
+<div class="column" style="width:49%;">
+<p>
 ```
 __global__ void memAccess(float *out, float *in)
 {
@@ -283,10 +284,14 @@ __global__ void memAccess(float *out, float *in)
  if(tid != 12) out[tid + 16] = in[tid + 16];
 }
 ```
+</p>
+<p>
 ![](img/coalesced_access_4.png){width=80%}
+</p>
 </div>
 
-<div class="column">
+<div class="column" style="width:49%">
+<p>
 ```
 __global__ void memAccess(float *out, float *in)
 {
@@ -294,7 +299,10 @@ __global__ void memAccess(float *out, float *in)
  out[tid + 1] = in[tid + 1];
 }
 ```
+</p>
+<p>
 ![](img/coalesced_access_3.png){width=80%}
+</p>
 </div>
 
 
