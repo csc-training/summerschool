@@ -168,7 +168,7 @@ int main() {
       for memory allocations
 2. Offload compute kernels to GPUs
 3. Check profiler backtrace for GPU->CPU Unified Memory page-faults (NVIDIA
-   Visual Profiler, Nsight Systems, AMD profiler?)
+   Visual Profiler, Nsight Systems, AMD omniperf, rocprof)
     - This indicates where the data residing on the GPU is accessed by the CPU
       (very useful for large codebases, especially if the developer is new to
       the code)
