@@ -46,7 +46,7 @@ lang:   en
 
 # Execution model in MPI
 
-- Normally, parallel program is launched as set of *independent*, *identical
+- Normally, parallel program is launched as a set of *independent*, *identical
   processes*
     - execute the *same program code* and instructions
     - processes can reside in different nodes (or even in different computers)
