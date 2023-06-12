@@ -29,7 +29,7 @@ lang:   en
     * The device resources are allocated per context
 * By default, one context per device per process in HIP (since CUDA 4.0)
     * Threads of the same process share the primary context (for each device)
-* HIP supports explicit context management whereas OpenMP do not
+* HIP supports explicit context management whereas OpenMP does not
 
 # Selecting device
 
@@ -71,7 +71,7 @@ In HIP, the function returns the device properties in struct `prop`
 ```
 hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
 ```
-In OpenMP, `requires` clause can be used to verify the device properties, eg,
+In OpenMP, `requires` clause can be used to verify the device properties, e.g.
 ```
 #pragma omp requires unified_shared_memory
 ```
@@ -82,7 +82,7 @@ In OpenMP, `requires` clause can be used to verify the device properties, eg,
 
 <div class="column">
 * One GPU per process (I)
-    * Syncing is handled through message passing (eg. MPI)
+    * Syncing is handled through message passing (e.g. MPI)
 * Many GPUs per process (II)
     * Process manages all context switching and syncing explicitly
 * One GPU per thread (III, advanced)

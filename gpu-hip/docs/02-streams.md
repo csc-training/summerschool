@@ -143,7 +143,7 @@ for (int ib = 0; ib < n; ib += bf) {
 
 # What is a stream?
 
-* A sequence of operations that execute in order on the GPU
+* A sequence of operations that are executed in order on the GPU
 * Operations in different streams may run concurrently if sufficient resources are available
 
 <small>
