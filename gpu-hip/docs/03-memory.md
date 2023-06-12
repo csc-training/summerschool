@@ -217,7 +217,7 @@ int main() {
 - The allocation can be mapped to the device address space for device access
   (slow)
     - On some architectures, the host pointer to device-mapped allocation can
-      be directly used in device code (ie. it works similarly to Unified
+      be directly used in device code (i.e. it works similarly to Unified
       Memory pointer, but the access from the device is slow)
 - Deallocated using `hipHostFree()`
 
@@ -226,7 +226,7 @@ int main() {
 - Normal `hipMemcpy()` calls are blocking (i.e. synchronizing)
     - The execution of host code is blocked until copying is finished
 - To overlap copying and program execution, asynchronous functions are required
-    - Such functions have *Async* suffix, eg. `hipMemcpyAsync()`
+    - Such functions have *Async* suffix, e.g. `hipMemcpyAsync()`
 - User has to synchronize the program execution
 - Requires page-locked memory
 
