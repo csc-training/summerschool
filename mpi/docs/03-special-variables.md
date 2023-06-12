@@ -84,6 +84,9 @@ if (0 == myid) {
 # Example
 
 ```fortran
+dst = myid + 1
+src = myid - 1
+
 if (myid == 0) then
     src = MPI_PROC_NULL
 end if
