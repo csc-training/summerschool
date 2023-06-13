@@ -3,31 +3,33 @@
 
 @title-course.pdf
 
+@title-lumi-overview.pdf
+../lumi-overview/docs/01-lumi.pdf
+
 @title-supercomputing.pdf
 ../intro-to-hpc/docs/01-intro-supercomputing.pdf
-../intro-to-hpc/docs/02-heat-equation.pdf
+../intro-to-hpc/docs/02-parallel-computing.pdf
+../intro-to-hpc/docs/03-parallel-algorithms.pdf
 
 @title-unix.pdf
-../unix-version-control/docs/01_Unix.pdf
-../unix-version-control/docs/02_Make_modules_and_batch_jobs.pdf
-../unix-version-control/docs/03_version_control.pdf
+../computer-platforms/docs/01_modules_make_batch_jobs.pdf
 
 @title-mpi.pdf
 ../mpi/docs/01-intro-to-mpi.pdf
 ../mpi/docs/02-mpi-p2p.pdf
 ../mpi/docs/03-special-variables.pdf
-../mpi/docs/04-debugging.pdf
-../mpi/docs/05-collectives.pdf
-../mpi/docs/06-custom-communicators-split.pdf
-../mpi/docs/07-datatypes-intro.pdf
-../mpi/docs/08-advanced-datatypes.pdf
-../mpi/docs/09-custom-communicators-cartesian.pdf
-../mpi/docs/10-non-blocking-communication.pdf
+../mpi/docs/04-collectives.pdf
+../mpi/docs/05-debugging.pdf
+../mpi/docs/06-user-defined-communicators.pdf
+../mpi/docs/07-non-blocking-communication.pdf
+../mpi/docs/08-communicator-topologies-cartesian.pdf
+../mpi/docs/09-user-defined-datatypes.pdf
+../mpi/docs/10-further-mpi-topics.pdf
 
 @title-io.pdf
 ../parallel-io/docs/01-Parallel-IO-posix.pdf
-../parallel-io/docs/02-MPI-IO.pdf
-../parallel-io/docs/03-HighLevel.pdf
+../parallel-io/docs/02-MPI-IO-and-libraries.pdf
+../parallel-io/docs/03-HDF5.pdf
 
 @title-hybrid.pdf
 ../hybrid/docs/01-introduction.pdf
@@ -37,26 +39,28 @@
 ../hybrid/docs/05-mpi-threads.pdf
 ../hybrid/docs/06-tasks.pdf
 
-@title-performance.pdf
-../application-performance/docs/01-application-performance-intro.pdf
-../application-performance/docs/02-single-node-performance.pdf
-../application-performance/docs/03-mpi-performance.pdf
-
 @title-gpu-openmp.pdf
 ../gpu-openmp/docs/01-GPU-intro.pdf
 ../gpu-openmp/docs/02-OpenMP-offload-basics.pdf
 ../gpu-openmp/docs/03-OpenMP-data.pdf
 ../gpu-openmp/docs/04-OpenMP-unstructured-data.pdf
-../gpu-openmp/docs/05-OpenMP-interoperability.pdf
-../gpu-openmp/docs/06-OpenMP-async-operations.pdf
-../gpu-openmp/docs/07-OpenMP-multiple-GPUs.pdf
+../gpu-openmp/docs/05-OpenMP-device-functions.pdf
 
 @title-gpu-hip.pdf
 ../gpu-hip/docs/01-kernels.pdf
 ../gpu-hip/docs/02-streams.pdf
 ../gpu-hip/docs/03-memory.pdf
 ../gpu-hip/docs/04-fortran.pdf
+../gpu-openmp/docs/06-OpenMP-interoperability.pdf
 ../gpu-hip/docs/05-multi-gpu.pdf
+
+@title-performance.pdf
+../application-performance/docs/01-application-performance-intro.pdf
+../application-performance/docs/02-gpu-performance.pdf
+../application-performance/docs/03-mpi-performance.pdf
+
+@title-quantum-computing.pdf
+../qc/docs/01-quantum.pdf
 
 @title-design.pdf
 ../application-design/docs/01_design_choices.pdf
