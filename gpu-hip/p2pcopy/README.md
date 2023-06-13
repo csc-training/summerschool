@@ -27,15 +27,5 @@ module load rocm
 ```
 This is because Cray compiler has no multi-gpu support for `omp_target_alloc()`.
 
-On **Puhti**, load the following modules:
-```
-module load .unsupported
-module load nvhpc/22.7
-```
-This is because we use `nvc` to compile the OpenMP code on **Puhti** as follows:
-```
-nvc -mp=gpu -gpu=cc70 omp-p2pcopy.cpp
-```
-
 Copy [hip-p2pcopy.cpp](hip-p2pcopy.cpp) into [omp-p2pcopy.cpp](omp-p2pcopy.cpp) and modify the code to use OpenMP instead of HIP. With OpenMP, you can't check, enable or disable peer access like with HIP, so these parts of the code can be removed. You may find `omp_target_alloc()` and `omp_target_free()` and `omp_target_memcpy()` functions useful for device memory management with OpenMP. Does it look like the direct peer to peer access works properly with OpenMP, when comparing the bandwith between Case 1 and Case 2?
 
