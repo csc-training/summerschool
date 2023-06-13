@@ -115,7 +115,7 @@ void GPUtoGPUdirect(int rank, double *dA, int N, double &timer)
         // Receive vector from rank 0
         MPI_Recv(dA, N, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         // Launch kernel to increment values on the GPU
-        add_kernel<<<blocksize, gridsize>>> (dA, N);
+        add_kernel<<<gridsize, blocksize>>> (dA, N);
         hipStreamSynchronize(0);
         // Send vector to rank 0
         MPI_Send(dA, N, MPI_DOUBLE, 0, 12, MPI_COMM_WORLD);
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
         printf("Not enough MPI tasks! Need at least 2.\n");
         exit(EXIT_FAILURE);
     } else if (devcount == 0) {
-        printf("Could now find any GPU devices.\n");
+        printf("Could not find any GPU devices.\n");
         exit(EXIT_FAILURE);
     } else {
         printf("MPI rank %d: Found %d GPU devices, using GPU %d\n",
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
             errorsum += hA[i] - 2.0;
-        printf("CPU-CPU: time %f, errorsum %f\n", CPUtime, errorsum);
+        printf("CPU-CPU: time %e, errorsum %f\n", CPUtime, errorsum);
     }
 
     // Dummy transfer to remove the overhead of the first communication
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
             errorsum += hA[i] - 2.0;
-        printf("GPU-GPU direct: time %f, errorsum %f\n", GPUtime, errorsum);
+        printf("GPU-GPU direct: time %e, errorsum %f\n", GPUtime, errorsum);
     }
 
     // Dummy transfer to remove the overhead of the first communication
@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
             errorsum += hA[i] - 2.0;
-        printf("GPU-GPU via host: time %f, errorsum %f\n", GPUtime, errorsum);
+        printf("GPU-GPU via host: time %e, errorsum %f\n", GPUtime, errorsum);
     }
 
     // Deallocate memory

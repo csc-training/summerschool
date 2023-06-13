@@ -13,9 +13,27 @@ For reference, there is also a CPU-to-CPU implementation in the skeleton
 code ([ping-pong.cpp](ping-pong.cpp)). Timing of all tests is also included to
 compare the execution times.
 
-To run, one should use two GPUs and two MPI tasks. On Puhti, HIP-aware MPI is
-available with:
+
+NOTE: Remember to request 2 MPI processes and 2 GPUs when running this exercise. 
+
+On **Lumi**, one can compile the MPI example simply using the Cray compiler with
 ```
-module load hip
-module load openmpi
+CC -xhip ping-pong.cpp
+```
+and run with
+```
+srun --account=XXXXXX --partition=dev-g -N1 -n2 --cpus-per-task=1 --gpus-per-task=2 --time=00:15:00 ./a.out
+```
+
+On **Puhti**, compile the MPI example with
+```
+OMPI_CXXFLAGS='' OMPI_CXX='hipcc --x cu' mpicxx -c -o ping-pong.o ping-pong.cpp
+```
+then link with
+```
+hipcc ping-pong.o -lmpi
+```
+and finally run:
+```
+srun --account=XXXXXX --partition=gputest -N1 -n2 --cpus-per-task=1 --gres=gpu:v100:2 --time=00:15:00 ./a.out
 ```

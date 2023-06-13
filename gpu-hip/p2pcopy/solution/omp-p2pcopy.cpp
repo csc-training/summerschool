@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     // Allocate memory for both GPUs
     int size = pow(2, 28);
     int gpu0 = 0, gpu1 = 1;
-    int *dA_0, *dA_1, *hA_0, *hA_1;
+    int *dA_0, *dA_1;
     dA_0 = (int*)omp_target_alloc(size, gpu0);
     dA_1 = (int*)omp_target_alloc(size, gpu1);
 
