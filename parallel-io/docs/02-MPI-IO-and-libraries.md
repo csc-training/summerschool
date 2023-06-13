@@ -4,6 +4,8 @@ event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
+# MPI-IO {.section}
+
 # MPI-IO
 
 - MPI-IO stands for Message Passing Interface I/O.

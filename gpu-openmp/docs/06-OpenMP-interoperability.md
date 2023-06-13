@@ -4,7 +4,7 @@ event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
-# Interoperability with libraries and HIP{.section}
+# OpenMP interoperability with libraries and HIP{.section}
 
 
 # Interoperability with libraries

@@ -5,6 +5,8 @@ lang:   en
 ---
 
 
+# Memory allocations, access, and unified memory {.section}
+
 # Outline
 
 * Memory model and hierarchy
