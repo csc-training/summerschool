@@ -1,3 +1,3 @@
-# Understanding asynchronity using events
+# Understanding asynchronicity using events
 
 The purpose of this exercise is understand asynchronous operations, and how they can be timed using HIP events. In the skeleton, the timing has been implemented using `<time.h>` header and `clock_t` type. This attempt to time asynchronous events, however, fails to measure the timings correctly. Your task is to implement the timings correctly using HIP events (you don't have to remove the `clock_t` timings, you can leave them in place to explore the difference). The locations where modifications are required, are marked with `#error` together with an instruction. Basically, your task is to measure and print the timing of a GPU kernel, a device-to-host copy, and their combined time.
