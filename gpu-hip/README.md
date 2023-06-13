@@ -6,8 +6,9 @@
 - [Kernel: saxpy](kernel-saxpy)
 - [Kernel: copy2d](kernel-copy2d)
 
-## Synchronisation and streams
+## Streams, events, and synchronization
 
+- [Understanding asynchronicity using events](events)
 - [Investigating streams and events](streams)
 
 ## Memory management
