@@ -4,6 +4,8 @@ event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
+# Multi-GPU programming and HIP/OpenMP + MPI{.section}
+
 # Outline
 
 * GPU context
