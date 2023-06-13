@@ -5,7 +5,7 @@ lang:   en
 ---
 
 
-# Basic concepts {.section}
+# User-defined datatypes  {.section}
 
 # MPI datatypes
 
@@ -79,7 +79,7 @@ lang:   en
 
 
 
-# Describing regularly spaced data (vector) {.section}
+#  User-defined datatypes: regularly spaced data (vector) {.section}
 
 # MPI_TYPE_VECTOR
 
@@ -203,7 +203,7 @@ else
 
 
 
-# Describing heterogeneous data (struct) {.section}
+# User-defined datatypes: heterogeneous data (struct) {.section}
 
 
 # Example: sending an array of structs
@@ -360,7 +360,7 @@ MPI_Send(particle, 1000*sizeof(particle[0]), MPI_BYTE, ...);
     - Performance will likely be an issue
 
 
-# General remarks {.section}
+# User-defined datatypes: general remarks {.section}
 
 # Performance
 
@@ -386,7 +386,7 @@ MPI_Send(particle, 1000*sizeof(particle[0]), MPI_BYTE, ...);
 - MPI provides constructors for several specific types
 
 
-# Other datatype constructors {.section}
+#  User-defined datatypes: other datatype constructors {.section}
 
 # MPI_TYPE_CONTIGUOUS
 

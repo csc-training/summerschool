@@ -5,6 +5,8 @@ lang:   en
 ---
 
 
+# Using MPI with OpenMP threads {.section}
+
 # Thread support in MPI
 
 ![](img/mpi-thread-support.svg){.center width=80%}

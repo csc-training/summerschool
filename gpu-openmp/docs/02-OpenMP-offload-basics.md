@@ -4,6 +4,7 @@ event:  CSC Summer School in High-Performance Computing 2023
 lang:   en
 ---
 
+# OpenMP offloading {.section}
 
 # What is OpenMP offloading ?
 

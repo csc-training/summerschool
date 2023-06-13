@@ -239,8 +239,7 @@ $$u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)$$
 
 - Note: algorithm is stable only when
 
-$$\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2
-(\Delta y)^2}$$
+$$\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2} {(\Delta x)^2+ (\Delta y)^2} $$
 
 - Given the initial condition ($u(t=0) = u^0$) one can follow the time evolution of the temperature field
 

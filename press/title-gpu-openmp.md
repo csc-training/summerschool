@@ -1,1 +1,1 @@
-# GPU Programming: OpenMP offload {.section}
+# GPU Programming: OpenMP{.section}

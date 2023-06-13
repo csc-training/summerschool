@@ -853,7 +853,7 @@ mpi_file_write_at_all(fh, offset, buf, count, datatype, status, ierror)
   type(mpi_datatype) :: datatype
   type(mpi_status) :: status
 ```
-# Fortra interfaces for environmental inquiries
+# Fortran interfaces for environmental inquiries
 
 ```fortran
 mpi_get_processor_name(name, resultlen, ierror)
