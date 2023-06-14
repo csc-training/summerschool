@@ -1,9 +1,17 @@
 ifeq ($(COMP),)
-COMP=nvhpc
+COMP=lumi
 endif
 
-
 COMMONDIR=../../common
+
+ifeq ($(COMP),gnu)
+FC=mpif90
+CC=gcc
+FCFLAGS=-O3 -Wall -fopenmp
+CCFLAGS=-O3 -Wall -I$(COMMONDIR)
+LDFLAGS=-fopenmp
+LIBS=-lpng
+endif
 
 ifeq ($(COMP),nvhpc)
 FC=mpif90
@@ -18,19 +26,20 @@ LDFLAGS=
 LIBS=-lpng
 endif
 
-ifeq ($(COMP),gnu)
-FC=mpif90
-CC=gcc
-FCFLAGS=-O3 -Wall -fopenmp
-CCFLAGS=-O3 -Wall -I$(COMMONDIR)
-LDFLAGS=-fopenmp
+ifeq ($(COMP),lumi)
+LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12
+FC=ftn
+CC=cc
+FCFLAGS=-O3 -fopenmp
+CCFLAGS=-O3 -I$(COMMONDIR) -I$(LIBPNG_DIR)/include
+LDFLAGS=-fopenmp -L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib
 LIBS=-lpng
 endif
 
 
-EXE=heat_hybrid
+EXE=heat_offload
 OBJS=main.o heat_mod.o core.o setup.o utilities.o io.o pngwriter_mod.o
-OBJS_PNG= $(COMMONDIR)/pngwriter.o
+OBJS_PNG=$(COMMONDIR)/pngwriter.o
 
 all: $(EXE)
 
@@ -55,4 +64,3 @@ $(EXE): $(OBJS) $(OBJS_PNG)
 .PHONY: clean
 clean:
 	-/bin/rm -f $(EXE) a.out *.o *.mod *.png *~  $(COMMONDIR)/*.o
-
