@@ -11,4 +11,4 @@ called at the end of this file by the `main()` function:
 * The function `unifiedMemPrefetch()` represents a unified memory management strategy with prefetching
 * The function `unifiedMemNoCopy()` represents a unified memory management strategy where the data can reside at GPU memory during an iterative loop (no recurring memory copies needed)
 
-The task is to fill the missing function calls in the code indicated by lines beginning with `#error`, and followed by a descriptive instruction.
+The task is to fill the missing function calls in the code indicated by lines beginning with `#error`, and followed by a descriptive instruction. To compile this rocm/5.3.3 is needed, older rocm modules do not support memory asynchronous malloc/free (they hang)

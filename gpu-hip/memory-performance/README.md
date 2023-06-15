@@ -6,4 +6,4 @@ The kernel will be called with 3 different strategies: no recurring allocations,
 
 The task is to fill the missing function calls in the code indicated by lines beginning with `#error`, and followed by a descriptive instruction.
 
-To compile this, the usage of c++17 is required, so the application must be compiled with `CC -xhip --std=c++17 performance.cpp`
+To compile this, the usage of c++17 is required, so the application must be compiled with `CC -xhip --std=c++17 performance.cpp`. Moreover, rocm/5.3.3 is needed, older rocm modules do not support memory asynchronous malloc/free (they hang)
