@@ -19,6 +19,8 @@
 
 - [Memory management strategies](memory-prefetch)
 - [Unified memory and structs](memory-struct)
+- [Memory performance strategies](memory-performance)
+- [EXTRA: advanced c++ memory wrapping strategies](memory-advanced)
 
 ## Fortran and HIP
 
