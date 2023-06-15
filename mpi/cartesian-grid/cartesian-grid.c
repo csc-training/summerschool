@@ -5,9 +5,9 @@
 
 int main(int argc, char* argv[]) {
     int ntasks, my_id, irank;
-    int dims[2];      /* Dimensions of the grid */
-    int coords[2];    /* Coordinates in the grid */
-    int neighbors[4]; /* Neighbors in 2D grid */
+    int dims[2] = {0};      /* Dimensions of the grid */
+    int coords[2] = {0};    /* Coordinates in the grid */
+    int neighbors[4] = {0}; /* Neighbors in 2D grid */
     int period[2] = {1, 1};
     MPI_Comm comm2d;
 
@@ -35,13 +35,13 @@ int main(int argc, char* argv[]) {
     }
 
     /* Create the 2D Cartesian communicator */
-    /* TO DO */
+    /* TODO */
 
     /* Find out and store the neighboring ranks */
-    /* TO DO */
+    /* TODO */
 
     /* Find out and store also the Cartesian coordinates of a rank */
-    /* TO DO */
+    /* TODO */
 
     for (irank = 0; irank < ntasks; irank++) {
         if (my_id == irank) {
