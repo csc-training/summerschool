@@ -12,5 +12,3 @@ called at the end of this file by the `main()` function:
 * The function `unifiedMemNoCopy()` represents a unified memory management strategy where the data can reside at GPU memory during an iterative loop (no recurring memory copies needed)
 
 The task is to fill the missing function calls in the code indicated by lines beginning with `#error`, and followed by a descriptive instruction.
-
-Hint! The installed HIP version is too old to support `hipMemPrefetchAsync()`and `hipCpuDeviceId()` functions. The newer HIP versions, however, support these functions. Please replace these with the CUDA equivalents. This works fine when compiling for CUDA, ie, use `cudaMemPrefetchAsync()`and `cudaCpuDeviceId()`.
