@@ -46,9 +46,10 @@ int main(int argc, char *argv[])
     // Send and receive messages
     MPI_Isend(message.data(), size, MPI_INT, destination, myid + 1,
               MPI_COMM_WORLD, &requests[0]);
-    MPI_Irecv(receiveBuffer.data(), size, MPI_INT, source, MPI_ANY_TAG,
-                 MPI_COMM_WORLD, &requests[1]);
+    MPI_Irecv(receiveBuffer.data(), size, MPI_INT, source, myid,
+              MPI_COMM_WORLD, &requests[1]);
     MPI_Waitall(2, requests, statuses);
+
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
            myid, size, myid + 1, destination);
     printf("Receiver: %d. first element %d.\n",
