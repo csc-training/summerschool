@@ -45,14 +45,11 @@
  - [Cartesian grid process topology](cartesian-grid/)
  - [Message chain with Cartesian communicator](message-chain-cartesian/)
 
-### Simple derived types
+### User-defined datatypes
 
- - [Simple datatypes](simple-datatypes/)
-
-### Advanced derived types
-
- - [Communicating struct / derived type](struct-datatype/)
- - [Modifying extent](datatype-extent/)
+ - [Custom datatypes](datatypes/)
+ - [Modifying extent](datatypes-extent/)
+ - [Communicating struct](datatypes-struct/)
 
 ### Heat equation cont'd
 
