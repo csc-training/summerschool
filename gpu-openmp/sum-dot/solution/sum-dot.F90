@@ -16,19 +16,19 @@ program vectorsum
 
   !$omp target data map(to:vecA, vecB) map(from:vecC)
 
-  !$omp target teams distribute parallel do
+  !$omp target teams distribute simd
   do i = 1, nx
      vecC(i) = vecA(i) + vecB(i)
   end do
-  !$omp end target teams distribute parallel do
+  !$omp end target teams distribute simd
 
   res = 0.0
 
-  !$omp target teams distribute parallel do reduction(+:res)
+  !$omp target teams distribute simd reduction(+:res)
   do i = 1, nx
      res = res + vecC(i) * vecB(i)
   end do
-  !$omp end target teams distribute parallel do
+  !$omp end target teams distribute simd
 
   !$omp end target data
 

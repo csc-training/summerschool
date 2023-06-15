@@ -28,7 +28,7 @@ program jacobi
     ! Stencil update 1
     !$omp target teams distribute
     do j = 2, ny - 1
-      !$omp parallel do
+      !$omp simd
       do i = 2, nx - 1
         unew(i, j) = factor * (u(i + 1, j) - 2.0 * u(i, j) + u(i - 1, j) + &
                                u(i, j + 1) - 2.0 * u(i, j) + u(i, j - 1))
@@ -38,7 +38,7 @@ program jacobi
     ! "Swap" the arrays, stencil update 2
     !$omp target teams distribute
     do j = 2, ny - 1
-      !$omp parallel do
+      !$omp simd
       do i = 2, nx - 1
         u(i, j) = factor * (unew(i + 1, j) - 2.0 * unew(i, j) + unew(i - 1, j) + &
                             unew(i, j + 1) - 2.0 * unew(i, j) + unew(i, j - 1))
