@@ -8,8 +8,10 @@ int main(int argc, char *argv[])
 {
     int i, myid, ntasks;
     constexpr int size = 10000000;
-    MPI_Status status;
-    MPI_Request reqs[2];
+    std::vector<int> message(size);
+    std::vector<int> receiveBuffer(size);
+    MPI_Status statuses[2];
+    MPI_Request requests[2];
 
     double t0, t1;
 
@@ -20,42 +22,41 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
     // Initialize buffers
-    std::vector<int> message(size, myid);
-    std::vector<int> receiveBuffer(size, -1);
+    for (i = 0; i < size; i++) {
+        message[i] = myid;
+        receiveBuffer[i] = -1;
+    }
 
-    // TODO: create a cartesian communicator
-    // and determine the source and destination ranks
-    // with the help of MPI_Cart_shift
-    MPI_Comm cart_comm;
-    int ndims = 1;
-    int dims[1] = {ntasks};
-    int periods[1] = {0};
-
-    MPI_Cart_create(MPI_COMM_WORLD, ndims, dims, periods, 1, &cart_comm);
-    MPI_Cart_shift(cart_comm, 0, 1, &source, &destination);
-    int cart_id;
-    MPI_Comm_rank(cart_comm, &cart_id);
-
-    // end TODO
+    // Set source and destination ranks
+    if (myid < ntasks - 1) {
+        destination = myid + 1;
+    } else {
+        destination = MPI_PROC_NULL;
+    }
+    if (myid > 0) {
+        source = myid - 1;
+    } else {
+        source = MPI_PROC_NULL;
+    }
 
     // Start measuring the time spent in communication
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
     // Initialize communication
-    MPI_Recv_init(receiveBuffer.data(), receiveBuffer.size(), MPI_INT, source, cart_id,
-                  cart_comm, &reqs[0]);
-    MPI_Send_init(message.data(), message.size(), MPI_INT, destination, cart_id + 1,
-                  cart_comm, &reqs[1]);
+    MPI_Send_init(message.data(), size, MPI_INT, destination, myid + 1,
+                  MPI_COMM_WORLD, &requests[0]);
+    MPI_Recv_init(receiveBuffer.data(), size, MPI_INT, source, myid,
+                  MPI_COMM_WORLD, &requests[1]);
 
     // Start communication
-    MPI_Startall(2, reqs);
+    MPI_Startall(2, requests);
+
     // Finalize communication
-    MPI_Waitall(2, reqs, MPI_STATUS_IGNORE);
+    MPI_Waitall(2, requests, statuses);
 
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
            myid, size, myid + 1, destination);
-
     printf("Receiver: %d. first element %d.\n",
            myid, receiveBuffer[0]);
 
@@ -66,7 +67,6 @@ int main(int argc, char *argv[])
 
     print_ordered(t1 - t0);
 
-    MPI_Comm_free(&cart_comm);
     MPI_Finalize();
     return 0;
 }
