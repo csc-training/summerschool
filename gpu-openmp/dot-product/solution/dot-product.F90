@@ -15,11 +15,13 @@ program dot_product
   end do
 
   res = 0.0
-  !$omp target teams distribute parallel do map(to:vecA, vecB) reduction(+:res)
+  ! Note: on non-Cray systems, one could instead use:
+  ! omp target teams distribute parallel do map(to:vecA, vecB) reduction(+:res)
+  !$omp target teams distribute simd map(to:vecA, vecB) reduction(+:res)
   do i = 1, nx
      res = res + vecA(i) * vecB(i)
   end do
-  !$omp end target teams distribute parallel do
+  !$omp end target teams distribute simd
 
   ! Compute the check value
   write(*,*) 'Dot product: ', res
