@@ -2,15 +2,17 @@ program datatype1
   use mpi_f08
   implicit none
 
+  integer :: i, j
   integer, dimension(8,8) :: array
   integer :: rank, ierr
-  !TODO: declare variable for datatype
-  integer :: i, j
+
+  ! Declare a variable storing the MPI datatype
+  ! TODO
 
   call mpi_init(ierr)
   call mpi_comm_rank(MPI_COMM_WORLD, rank ,ierr)
 
-  ! initialize arrays
+  ! Initialize arrays
   if (rank == 0) then
      do i=1,8
         do j=1,8
@@ -21,6 +23,7 @@ program datatype1
      array(:,:) = 0
   end if
 
+  ! Print data on rank 0
   if (rank == 0) then
      write(*,*) 'Data in rank 0'
      do i=1,8
@@ -28,21 +31,22 @@ program datatype1
      end do
   end if
 
+  ! Create datatype
+  ! TODO
 
-  !TODO: create datatype
+  ! Send data from rank 0 to rank 1
+  ! TODO
 
-  !TODO: communicate with datatype
+  ! Free datatype
+  ! TODO
 
-  !TODO: free datatype
-
-  ! Print out the result
+  ! Print out the result on rank 1
   if (rank == 1) then
      write(*,*) 'Received data'
      do i=1,8
         write(*,'(8I3)') array(i, :)
      end do
   end if
-
 
   call mpi_finalize(ierr)
 
