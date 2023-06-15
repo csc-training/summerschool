@@ -266,7 +266,7 @@ void unifiedMemPrefetch(int nSteps, int nx, int ny)
     memset(A, 0, size);
 
     // Prefetch data from host to device
-    cudaMemPrefetchAsync(A, size, device, 0);
+    hipMemPrefetchAsync(A, size, device, 0);
 
     // Launch GPU kernel
     hipLaunchKernelGGL(hipKernel,
@@ -278,7 +278,7 @@ void unifiedMemPrefetch(int nSteps, int nx, int ny)
   }
 
   // Prefetch data from device to host
-  cudaMemPrefetchAsync(A, size, cudaCpuDeviceId, 0);
+  hipMemPrefetchAsync(A, size, hipCpuDeviceId, 0);
 
   // Synchronization
   hipStreamSynchronize(0);
@@ -326,7 +326,7 @@ void unifiedMemNoCopy(int nSteps, int nx, int ny)
       A, nx, ny);
   }
   // Prefetch data from device to host
-  cudaMemPrefetchAsync(A, size, cudaCpuDeviceId, 0);
+  hipMemPrefetchAsync(A, size, hipCpuDeviceId, 0);
 
   // Synchronization
   hipStreamSynchronize(0);
