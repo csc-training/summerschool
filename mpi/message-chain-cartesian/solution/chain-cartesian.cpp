@@ -8,6 +8,8 @@ int main(int argc, char *argv[])
 {
     int i, myid, ntasks;
     constexpr int size = 10000000;
+    std::vector<int> message(size);
+    std::vector<int> receiveBuffer(size);
     MPI_Status status;
 
     double t0, t1;
@@ -19,10 +21,12 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
     // Initialize buffers
-    std::vector<int> message(size, myid);
-    std::vector<int> receiveBuffer(size, -1);
+    for (i = 0; i < size; i++) {
+        message[i] = myid;
+        receiveBuffer[i] = -1;
+    }
 
-    // TODO: create a cartesian communicator
+    // Create a cartesian communicator
     // and determine the source and destination ranks
     // with the help of MPI_Cart_shift
     MPI_Comm cart_comm;
@@ -35,16 +39,15 @@ int main(int argc, char *argv[])
     int cart_id;
     MPI_Comm_rank(cart_comm, &cart_id);
 
-    // end TODO
-
     // Start measuring the time spent in communication
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
-
+    // Send and receive messages
     MPI_Sendrecv(message.data(), message.size(), MPI_INT, destination, cart_id + 1,
                  receiveBuffer.data(), receiveBuffer.size(), MPI_INT, source, cart_id,
-                 cart_comm, MPI_STATUS_IGNORE);
+                 cart_comm, &status);
+
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
            myid, size, myid + 1, destination);
 
