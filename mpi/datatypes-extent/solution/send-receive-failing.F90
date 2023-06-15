@@ -25,13 +25,18 @@ program datatype1
   end if
 
   ! Create datatype
-  ! TODO
+  call mpi_type_vector(6, 1, 8, MPI_INTEGER, vector, rc);
+  call mpi_type_commit(vector, rc)
 
   ! Send data from rank 0 to rank 1
-  ! TODO
+  if (rank == 0) then
+      call mpi_send(array, 2, vector, 1, 0, MPI_COMM_WORLD, rc)
+  else if (rank == 1) then
+      call mpi_recv(array, 2, vector, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
+  end if
 
   ! Free datatype
-  ! TODO
+  call mpi_type_free(vector, rc)
 
   ! Print received data
   if (rank == 1) then

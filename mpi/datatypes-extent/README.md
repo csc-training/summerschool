@@ -13,4 +13,6 @@ datatype for sending a column (C) or row (Fortran) of a matrix.
 3. Create a new datatype with resized extent, so that communicating multiple columns / rows
    succeeds.
 
-4. Try to scatter columns / rows with `MPI_Scatter`
+4. Generalize the code to multiple processes and scatter columns / rows with `MPI_Scatter`
+   collective. Define a new array for the receive buffer and print it out on all ranks.
+

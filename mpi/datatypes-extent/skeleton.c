@@ -4,10 +4,8 @@
 int main(int argc, char **argv)
 {
     int rank;
-    int sendarray[8][6];
-    int recvarray[8][6];
-    MPI_Datatype vector, vector2;
-
+    int array[8][6];
+    MPI_Datatype vector;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -16,44 +14,43 @@ int main(int argc, char **argv)
     if (rank == 0) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 6; j++) {
-                sendarray[i][j] = (i + 1) * 10 + j + 1;
+                array[i][j] = (i + 1) * 10 + j + 1;
+            }
+        }
+    } else {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 6; j++) {
+                array[i][j] = 0;
             }
         }
     }
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 6; j++) {
-            recvarray[i][j] = 0;
-        }
-    }
-
+    // Print data on rank 0
     if (rank == 0) {
-        printf("Data in rank 0\n");
+        printf("Data on rank %d\n", rank);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 6; j++) {
-                printf("%3d", sendarray[i][j]);
+                printf("%3d", array[i][j]);
             }
             printf("\n");
         }
     }
 
-    // TODO create datatype
+    // Create datatype
+    // TODO
 
-    // Communicate with the datatype
-    if (rank == 0)
+    // Send data from rank 0 to rank 1
+    // TODO
 
-    else if (rank == 1)
+    // Free datatype
+    // TODO
 
-
-    // free datatype
-
-    // TODO end
-
+    // Print received data
     if (rank == 1) {
-        printf("Received data\n");
+        printf("Received data on rank %d\n", rank);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 6; j++) {
-                printf("%3d", recvarray[i][j]);
+                printf("%3d", array[i][j]);
             }
             printf("\n");
         }
