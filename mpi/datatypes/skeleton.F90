@@ -3,31 +3,26 @@ program datatype1
   implicit none
 
   integer :: i, j
-  integer, dimension(8,8) :: array
+  integer :: array(8,8)
   integer :: rank, ierr
 
   ! Declare a variable storing the MPI datatype
   ! TODO
 
   call mpi_init(ierr)
-  call mpi_comm_rank(MPI_COMM_WORLD, rank ,ierr)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, ierr)
 
   ! Initialize arrays
+  array = 0
   if (rank == 0) then
-     do i=1,8
-        do j=1,8
-           array(i,j) = i*10 + j
-        end do
-     end do
-  else
-     array(:,:) = 0
+     array = reshape([ ((i*10 + j, i=1,8), j=1,8) ], [8, 8] )
   end if
 
   ! Print data on rank 0
   if (rank == 0) then
-     write(*,*) 'Data in rank 0'
+     write(*,*) 'Data on rank', rank
      do i=1,8
-        write(*,'(8I3)') array(i, :)
+        write(*,'(*(I3))') array(i, :)
      end do
   end if
 
@@ -40,11 +35,11 @@ program datatype1
   ! Free datatype
   ! TODO
 
-  ! Print out the result on rank 1
+  ! Print received data
   if (rank == 1) then
-     write(*,*) 'Received data'
+     write(*,*) 'Received data on rank', rank
      do i=1,8
-        write(*,'(8I3)') array(i, :)
+        write(*,'(*(I3))') array(i, :)
      end do
   end if
 

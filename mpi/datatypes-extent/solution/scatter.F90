@@ -3,14 +3,14 @@ program datatype1
   implicit none
 
   integer :: i, j
-  integer :: rank, ntasks, irank, rc
   integer :: array(8,6), recvarray(8,6)
+  integer :: rank, ntasks, irank, ierr
   type(mpi_datatype) :: vector, tmp
   integer(kind=mpi_address_kind) :: extent, lb
 
-  call mpi_init(rc)
-  call mpi_comm_rank(MPI_COMM_WORLD, rank, rc)
-  call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
+  call mpi_init(ierr)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, ierr)
+  call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)
 
   ! Initialize arrays
   recvarray = 0
@@ -22,38 +22,36 @@ program datatype1
   ! Print data on rank 0
   if (rank == 0) then
      write(*,*) 'Data on rank', rank
-     do i=1, 8
+     do i=1,8
         write(*,'(*(I3))') array(i, :)
      end do
   end if
 
   ! Create datatype
-  call mpi_type_vector(6, 1, 8, MPI_INTEGER, vector, rc);
+  call mpi_type_vector(6, 1, 8, MPI_INTEGER, vector, ierr);
   tmp = vector
   extent = storage_size(i) / 8
   lb = 0
-  call mpi_type_create_resized(tmp, lb, extent, vector, rc)
-  call mpi_type_commit(vector, rc)
+  call mpi_type_create_resized(tmp, lb, extent, vector, ierr)
+  call mpi_type_commit(vector, ierr)
 
   ! Scatter rows
-  call mpi_scatter(array, 1, vector, recvarray, 1, vector, 0, MPI_COMM_WORLD, rc)
+  call mpi_scatter(array, 1, vector, recvarray, 1, vector, 0, MPI_COMM_WORLD, ierr)
 
   ! Free datatype
-  call mpi_type_free(vector, rc)
+  call mpi_type_free(vector, ierr)
 
   ! Print received data
   do irank = 0, ntasks-1
     if (rank == irank) then
        write(*,*) 'Received data on rank', rank
-       do i=1, 8
+       do i=1,8
           write(*,'(*(I3))') recvarray(i, :)
        end do
     end if
-    call mpi_barrier(mpi_comm_world, rc)
+    call mpi_barrier(mpi_comm_world, ierr)
   end do
 
-  call mpi_finalize(rc)
-
-
+  call mpi_finalize(ierr)
 
 end program datatype1

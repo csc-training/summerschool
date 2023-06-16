@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 
     // Print data on rank 0
     if (rank == 0) {
-        printf("Data in rank 0\n");
+        printf("Data on rank %d\n", rank);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 printf("%3d", array[i][j]);
@@ -53,9 +53,9 @@ int main(int argc, char **argv)
     // Free datatype
     MPI_Type_free(&columntype);
 
-    // Print out the result on rank 1
+    // Print received data
     if (rank == 1) {
-        printf("Received data\n");
+        printf("Received data on rank %d\n", rank);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 printf("%3d", array[i][j]);

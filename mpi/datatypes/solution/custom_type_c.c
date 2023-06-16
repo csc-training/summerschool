@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 
     // Print data on rank 0
     if (rank == 0) {
-        printf("Data in rank 0\n");
+        printf("Data on rank %d\n", rank);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 printf("%3d", array[i][j]);
@@ -47,18 +47,18 @@ int main(int argc, char **argv)
 
     // Send data from rank 0 to rank 1
     if (rank == 0) {
-        MPI_Send(&array[0][0], 1, subarray, 1, 1, MPI_COMM_WORLD);
+        MPI_Send(array, 1, subarray, 1, 1, MPI_COMM_WORLD);
     } else if (rank == 1) {
-        MPI_Recv(&array[0][0], 1, subarray, 0, 1, MPI_COMM_WORLD,
+        MPI_Recv(array, 1, subarray, 0, 1, MPI_COMM_WORLD,
                  MPI_STATUS_IGNORE);
     }
 
     // Free datatype
     MPI_Type_free(&subarray);
 
-    // Print out the result on rank 1
+    // Print received data
     if (rank == 1) {
-        printf("Received data\n");
+        printf("Received data on rank %d\n", rank);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 printf("%3d", array[i][j]);

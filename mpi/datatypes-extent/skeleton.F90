@@ -3,12 +3,12 @@ program datatype1
   implicit none
 
   integer :: i, j
-  integer :: rank, rc
   integer :: array(8,6)
+  integer :: rank, ierr
   type(mpi_datatype) :: vector
 
-  call mpi_init(rc)
-  call mpi_comm_rank(MPI_COMM_WORLD, rank, rc)
+  call mpi_init(ierr)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, ierr)
 
   ! Initialize arrays
   array = 0
@@ -19,7 +19,7 @@ program datatype1
   ! Print data on rank 0
   if (rank == 0) then
      write(*,*) 'Data on rank', rank
-     do i=1, 8
+     do i=1,8
         write(*,'(*(I3))') array(i, :)
      end do
   end if
@@ -36,13 +36,11 @@ program datatype1
   ! Print received data
   if (rank == 1) then
      write(*,*) 'Received data on rank', rank
-     do i=1, 8
+     do i=1,8
         write(*,'(*(I3))') array(i, :)
      end do
   end if
 
-  call mpi_finalize(rc)
-
-
+  call mpi_finalize(ierr)
 
 end program datatype1
