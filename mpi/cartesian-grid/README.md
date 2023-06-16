@@ -13,4 +13,4 @@ with the direction and displacement parameters of the `MPI_Cart_shift`
 routine.
 
 You can start from scratch or use one of the provided skeleton codes
-([cartesian-grid.c](cartesian-grid.c) or [cartesian-grid.f90](cartesian-grid.f90)).
+([cartesian-grid.c](cartesian-grid.c) or [cartesian-grid.F90](cartesian-grid.F90)).
