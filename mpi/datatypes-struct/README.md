@@ -1,8 +1,8 @@
 ## Datatype for a struct / derived type
 
 The skeleton code provided in
-[struct_type.c](struct_type.c) or
-[struct_type.F90](struct_type.F90) defines a struct (C) / derived type (Fortran)
+[struct.c](struct.c) / [struct.F90](struct.F90)
+defines a struct (C) / derived type (Fortran).
 
 1. Implement a custom MPI datatype, and send a single struct / derived type between two
    processes. Verify that the communication is performed succesfully.
