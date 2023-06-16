@@ -3,7 +3,7 @@ program datatype_struct
   use iso_fortran_env, only : REAL64
   implicit none
 
-  integer, parameter :: n = 1000, cnt=3, reps=10000
+  integer, parameter :: n = 1000, reps=10000
 
   type particle
      real :: coords(3)
@@ -13,22 +13,21 @@ program datatype_struct
 
   type(particle) :: particles(n)
 
-  integer :: i, ierror,  myid,  ntasks, tag
+  integer :: i, ierror, myid
 
   type(mpi_datatype) :: particle_mpi_type, temp_type
-  type(mpi_datatype):: types(cnt)
-  integer :: blocklen(cnt)
-  integer(kind=MPI_ADDRESS_KIND) :: disp(cnt)
+  type(mpi_datatype) :: types(3)
+  integer :: blocklen(3)
+  integer(kind=MPI_ADDRESS_KIND) :: disp(3)
   integer(kind=MPI_ADDRESS_KIND) :: lb, extent
 
   real(REAL64) :: t1, t2
 
   call mpi_init(ierror)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, ierror)
-  call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierror)
 
-  ! insert some data for the particle struct
-  if (myid == 0) then
+  ! Fill in some values for the particles
+  if(myid == 0) then
     do i = 1, n
       call random_number(particles(i)%coords)
       particles(i)%charge = 54
@@ -36,26 +35,24 @@ program datatype_struct
     end do
   end if
 
-  ! define the datatype for type particle
+  ! Define datatype for the struct
   types = (/ MPI_REAL, MPI_INTEGER, MPI_CHARACTER  /)
   blocklen = (/ 3, 1, 2 /)
   call MPI_GET_ADDRESS(particles(1)%coords, disp(1), ierror)
   call mpi_get_address(particles(1)%charge, disp(2), ierror)
   call mpi_get_address(particles(1)%label, disp(3), ierror)
-  do i = cnt, 1, -1
+  do i = 3, 1, -1
     disp(i) = disp(i) - disp(1)
   end do
 
-  call mpi_type_create_struct(cnt, blocklen, &
+  call mpi_type_create_struct(3, blocklen, &
       disp, types, particle_mpi_type, ierror)
   call mpi_type_commit(particle_mpi_type, ierror)
 
-  ! Check extent.
-  ! (Not really neccessary on most systems.)
+  ! Check extent
   call mpi_type_get_extent(particle_mpi_type, lb, extent, ierror)
   call mpi_get_address(particles(1), disp(1), ierror)
   call mpi_get_address(particles(2), disp(2), ierror)
-  ! resize the particle_mpi_type
   if (extent /= disp(2) - disp(1)) then
     temp_type = particle_mpi_type
     lb = 0
@@ -65,6 +62,8 @@ program datatype_struct
     call mpi_type_free(temp_type, ierror)
   end if
 
+  ! Communicate using the created particletype
+  ! Multiple sends are done for better timing
   t1 = mpi_wtime()
   if(myid == 0) then
      do i = 1, reps
@@ -83,7 +82,9 @@ program datatype_struct
   write(*,*) "Check:", myid, particles(n)%label, particles(n)%coords(1), &
                        particles(n)%coords(2), particles(n)%coords(3)
 
+  ! Free datatype
   call mpi_type_free(particle_mpi_type, ierror)
+
   call mpi_finalize(ierror)
 
 end program datatype_struct

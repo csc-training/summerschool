@@ -6,43 +6,52 @@
 
 int main(int argc, char *argv[])
 {
-  int n=1000, cnt=3, reps=10000;
-  typedef struct{
+  int n=1000, reps=10000;
+
+  typedef struct {
     float coords[3];
     int charge;
     char label[2];
   } particle;
+
   particle particles[n];
-  MPI_Aint lb0, lb1, extent;
-  int i, j, myid, ntasks;
+
+  int i, j, myid;
   double t1, t2;
 
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
-  /* fill in some values for the particles */
+  // Fill in some values for the particles
   if (myid == 0) {
     for (i=0; i < n; i++) {
-      for (j=0; j < 3; j++)
+      for (j=0; j < 3; j++) {
         particles[i].coords[j] = (float)rand()/(float)RAND_MAX*10.0;
+      }
       particles[i].charge = 54;
       strcpy(particles[i].label, "Xe");
     }
   }
-  /* determine the true extent of one particle struct */
+
+  // Determine the true extent of one particle struct
+  MPI_Aint extent, lb0, lb1;
   MPI_Get_address(&particles[0], &lb0);
   MPI_Get_address(&particles[1], &lb1);
   extent = lb1 - lb0;
 
-  /* send and receive using the MPI_BYTE datatype */
+  // Send and receive using the MPI_BYTE datatype
+  // Multiple sends are done for better timing
   t1 = MPI_Wtime();
+  int nbytes = n * extent;
   if (myid == 0) {
-    for (i=0; i < reps; i++)
-      MPI_Send(particles, n*extent, MPI_BYTE, 1, i, MPI_COMM_WORLD);
+    for (i=0; i < reps; i++) {
+      MPI_Send(particles, nbytes, MPI_BYTE, 1, i, MPI_COMM_WORLD);
+    }
   } else if (myid == 1) {
-    for (i=0; i < reps; i++)
-      MPI_Recv(particles, n*extent, MPI_BYTE, 0, i, MPI_COMM_WORLD,
+    for (i=0; i < reps; i++) {
+      MPI_Recv(particles, nbytes, MPI_BYTE, 0, i, MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
+    }
   }
   t2 = MPI_Wtime();
 

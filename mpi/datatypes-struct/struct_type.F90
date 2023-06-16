@@ -1,9 +1,9 @@
 program datatype_struct
   use mpi_f08
-  use use iso_fortran_env, only : REAL64
+  use iso_fortran_env, only : REAL64
   implicit none
 
-  integer, parameter :: n = 1000, cnt=3, reps=10000
+  integer, parameter :: n = 1000, reps=10000
 
   type particle
      real :: coords(3)
@@ -13,20 +13,20 @@ program datatype_struct
 
   type(particle) :: particles(n)
 
-  integer :: i, ierror,  myid,  ntasks, tag
+  integer :: i, ierror, myid
 
   type(mpi_datatype) :: particle_mpi_type, temp_type
-  integer :: types(cnt), blocklen(cnt)
-  integer(kind=MPI_ADDRESS_KIND) :: disp(cnt)
+  type(mpi_datatype) :: types(3)
+  integer :: blocklen(3)
+  integer(kind=MPI_ADDRESS_KIND) :: disp(3)
   integer(kind=MPI_ADDRESS_KIND) :: lb, extent
 
-  real(REAL64) :: t1,t2
+  real(REAL64) :: t1, t2
 
   call mpi_init(ierror)
   call mpi_comm_rank(MPI_COMM_WORLD, myid, ierror)
-  call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierror)
 
-  ! insert some data for the particle struct
+  ! Fill in some values for the particles
   if(myid == 0) then
     do i = 1, n
       call random_number(particles(i)%coords)
@@ -35,15 +35,17 @@ program datatype_struct
     end do
   end if
 
-  ! TODO: define the datatype for type particle
+  ! Define datatype for the struct
+  ! TODO
 
-  ! TODO: Check extent.
-  ! (Not really neccessary on most systems.)
+  ! Check extent
+  ! TODO
 
-  ! communicate using the created particletype
+  ! Communicate using the created particletype
+  ! Multiple sends are done for better timing
   t1 = mpi_wtime()
   if(myid == 0) then
-     do i = 1, reps  ! multiple sends for better timing
+     do i = 1, reps
        ! TODO: send
      end do
   else if(myid == 1) then
@@ -53,13 +55,13 @@ program datatype_struct
   end if
   t2=mpi_wtime()
 
-  ! TODOs end
-
   write(*,*) "Time: ", myid, (t2-t1) / reps
   write(*,*) "Check:", myid, particles(n)%label, particles(n)%coords(1), &
                        particles(n)%coords(2), particles(n)%coords(3)
 
-  call mpi_type_free(particle_mpi_type, ierror)
+  ! Free datatype
+  ! TODO
+
   call mpi_finalize(ierror)
 
 end program datatype_struct
