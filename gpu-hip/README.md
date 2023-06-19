@@ -14,6 +14,7 @@
 
 - [Understanding asynchronicity using events](events)
 - [Investigating streams and events](streams)
+- [Asynchronous operations (OpenMP)](../gpu-openmp/async-operations)
 
 ## Memory management
 
@@ -30,5 +31,5 @@
 
 - [Vector sum on two GPUs without MPI](vector-sum)
 - [Ping-pong with multiple GPUs and MPI](ping-pong)
-- [Peer to peer device access](p2pcopy)
+- [Peer to peer device access (HIP and OpenMP)](p2pcopy)
 - [Bonus: Heat equation with HIP](heat-equation)

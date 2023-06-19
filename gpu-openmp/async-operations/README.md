@@ -18,4 +18,4 @@ Before compiling the code, you need to load the libpng module by
 ```
 module load libpng/1.6.37-cpeCray-22.08
 ```
-after which the code should compile with the provided [Makefile](makefile).
+after which the code should compile with the provided Makefiles.
