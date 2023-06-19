@@ -18,7 +18,7 @@ program vectorsum
   do i = 1, nx
      vecC(i) = vecA(i) + vecB(i)
   end do
-  !$omp end target loop
+  !$omp end target teams loop
 
   ! Compute the check value
   write(*,*) 'Reduction sum: ', sum(vecC)

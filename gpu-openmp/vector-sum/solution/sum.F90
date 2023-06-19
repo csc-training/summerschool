@@ -14,11 +14,11 @@ program vectorsum
      vecB(i) = vecA(i)**2
   end do
 
-  !$omp target teams distribute parallel do
+  !$omp target teams distribute simd
   do i = 1, nx
      vecC(i) = vecA(i) + vecB(i)
   end do
-  !$omp end target teams distribute parallel do
+  !$omp end target teams distribute simd
 
   ! Compute the check value
   write(*,*) 'Reduction sum: ', sum(vecC)

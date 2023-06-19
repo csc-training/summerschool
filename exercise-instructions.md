@@ -134,12 +134,26 @@ Usage in local workstation may vary.
 
 ### OpenMP offloading
 
-In order to use programs with OpenMP offloading to GPUs, you need to load the following modules:
+On **Lumi**, the following modules are required:
+
 ```bash
-module nvhpc/21.9  nvhpc-mpi/openmpi-4.0.5
+module load PrgEnv-cray
+module load craype-accel-amd-gfx90a
+module load rocm/5.3.3
 ```
 
-The compiler commands (without MPI) for C, C++ and Fortran are `nvc`,
+On **Lumi**, to compile your program, use
+```bash
+CC -fopenmp <source.cpp>
+```
+
+On **Puhti**, in order to use programs with OpenMP offloading to GPUs, you need to load the following modules:
+```bash
+module load .unsupported
+module load nvhpc/22.7
+```
+
+On **Puhti**, the compiler commands (without MPI) for C, C++ and Fortran are `nvc`,
 `nvc++`, and `nvfortran`, and OpenMP offload support is enabled with
 `-mp=gpu -gpu=cc70` options, *i.e.*
 
@@ -159,9 +173,22 @@ For MPI codes, use the wrapper commands `mpicc`, `mpic++`, or `mpif90`
 
 ### HIP
 
-In order to use HIP on Puhti, you need to load the following modules:
+On **Lumi**, the following modules are required:
+
+```bash
+module load PrgEnv-cray
+module load craype-accel-amd-gfx90a
+module load rocm/5.3.3
 ```
-module load gcc/9.1.0 cuda/11.1.0 hip/4.0.0 openmpi/4.1.1-cuda
+
+On **Lumi**, to compile your program, use
+```bash
+CC -xhip <source.cpp>
+```
+
+In order to use HIP on **Puhti**, you need to load the following modules:
+```
+module load gcc/11.3.0 cuda/11.7.0 hip/5.1.0 openmpi/4.1.4-cuda
 ```
 Then you can compile with hipcc, eg,
 ```

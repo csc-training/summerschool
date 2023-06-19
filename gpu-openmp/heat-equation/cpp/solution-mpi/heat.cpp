@@ -34,7 +34,8 @@ void Field::setup(int nx_in, int ny_in, ParallelData parallel)
     devCount = omp_get_num_devices();
 
     if (nodeProcs > devCount) {
-        printf("Not enough GPUs for all processes in the node.\n");
+        printf("Not enough GPUs (%d) for all processes (%d) in the node.\n",
+               devCount, nodeProcs);
         fflush(stdout);
         MPI_Abort(MPI_COMM_WORLD, -2);
     }

@@ -12,7 +12,8 @@ int main(void)
         vecB[i] = vecA[i] * vecA[i];
     }
 
-#pragma omp target teams loop
+#pragma omp target teams
+#pragma omp loop
     for (int i = 0; i < NX; i++) {
         vecC[i] = vecA[i] + vecB[i];
     }

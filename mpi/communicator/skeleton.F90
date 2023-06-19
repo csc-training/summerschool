@@ -4,7 +4,8 @@ program coll_exer
 
   integer, parameter :: n_mpi_tasks = 4
 
-  integer :: ntasks, rank, ierr, i, color, sub_comm
+  integer :: ntasks, rank, ierr, color
+  type(mpi_comm) :: sub_comm
   integer, dimension(2*n_mpi_tasks) :: sendbuf, recvbuf
   integer, dimension(2*n_mpi_tasks**2) :: printbuf
 
@@ -25,12 +26,12 @@ program coll_exer
   ! Print data that will be sent
   call print_buffers(sendbuf)
 
-  ! TODO: use a single collective communication call (and maybe prepare
-  !       some parameters for the call)
+  ! TODO: create a new communicator and
+  !       use a single collective communication call
+  !       (and maybe prepare some parameters for the call)
 
   ! Print data that was received
-  ! TODO: add correct buffer
-  call print_buffers(...)
+  call print_buffers(recvbuf)
 
   call mpi_finalize(ierr)
 
