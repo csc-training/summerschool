@@ -14,8 +14,8 @@ each step.
      - After each block, copy the data to the host
 3. Do the offloading and copying to host asynchronously
 
-Before compiling the code, you need to load the libpng module by 
+Before compiling the code on Lumi, you need to load the libpng module by 
 ```
 module load libpng/1.6.37-cpeCray-22.08
 ```
-after which the code should compile with the provided Makefiles.
+after which the codes should compile with the provided Makefiles.
