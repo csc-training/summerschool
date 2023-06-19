@@ -4,7 +4,6 @@ module mandelbrot_kernel
 
 contains
   integer function kernel(xi, yi)
-    implicit none
     integer, intent(in) :: xi, yi
 
     real(dp) :: x0, y0, x, y, z

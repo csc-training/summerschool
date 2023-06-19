@@ -14,4 +14,8 @@ each step.
      - After each block, copy the data to the host
 3. Do the offloading and copying to host asynchronously
 
-Code can be built with the provided [Makefile](makefile).
+Before compiling the code, you need to load the libpng module by 
+```
+module load libpng/1.6.37-cpeCray-22.08
+```
+after which the code should compile with the provided [Makefile](makefile).

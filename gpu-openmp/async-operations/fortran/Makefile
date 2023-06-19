@@ -1,9 +1,6 @@
-FCFLAGS=-mp=gpu -gpu=cc70
-FC=nvfortran
-CC=nvc
-#FCFLAGS=-g -fopenmp -O0
-#FC=gfortran
-#CC=gcc
+CC=cc
+FC=ftn
+FLAGS=-fopenmp
 
 LDFLAGS=-lpng
 
@@ -18,13 +15,13 @@ mandelbrot.o: mandelbrot.F90 kernel.o pngwriter_mod.o
 kernel.o: kernel.F90 constants.o
 
 mandelbrot: $(OBJS)
-	$(FC) -o $@ $(FCFLAGS) $(OBJS) $(LDFLAGS)
+	$(CC) -o $@ $(FLAGS) $(OBJS) $(LDFLAGS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 %.o: %.F90
-	$(FC) $(FCFLAGS) -c $< -o $@
+	$(FC) $(FLAGS) -c $< -o $@
 
 clean:
-	-/bin/rm -f $(EXE) a.out *.o *.mod *.png
+	-/bin/rm -f $(EXE) a.out *.o *.mod *.png *.s
