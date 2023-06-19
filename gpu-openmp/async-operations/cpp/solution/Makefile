@@ -1,6 +1,16 @@
+ifneq ($(PUHTI),1)
+
 CC=cc
 CXX=CC
 FLAGS=-O2 -fopenmp
+
+else
+
+CC=nvc
+CXX=nvc++
+FLAGS=-O2 -mp=gpu -gpu=cc70
+
+endif
 
 LDFLAGS=-lpng
 
