@@ -1,6 +1,6 @@
 CC=cc
 FC=ftn
-FLAGS=-fopenmp
+FLAGS=-O2 -fopenmp
 
 LDFLAGS=-lpng
 

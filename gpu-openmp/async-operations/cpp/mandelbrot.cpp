@@ -1,5 +1,3 @@
-#include <array>
-#include <vector>
 #include <iostream>
 #include <omp.h>
 #include "constants.hpp"
@@ -12,7 +10,7 @@ int kernel(int xi, int yi);
 
 int main() {
 
-  std::vector<int> image(width * height);
+  int *image = new int[width * height];
   int num_blocks = 8;
   int block_size = (height / num_blocks) * width;
   int y_block_size = height / num_blocks;
@@ -39,6 +37,7 @@ int main() {
   double et = omp_get_wtime();
 
   cout << "Time: " << (et - st) << " seconds" << endl;
-  int *image_ptr = image.data();
-  save_png(image_ptr, width, height, "mandelbrot.png");
+  save_png(image, width, height, "mandelbrot.png");
+
+  delete [] image;
 }

@@ -1,10 +1,6 @@
-CCFLAGS=-mp=gpu -gpu=cc70
-CXX=nvc++
-CC=nvc
-# CCFLAGS=-fopenmp
-# CXX=g++
-# CC=gcc
-CFLAGS=
+CC=cc
+CXX=CC
+FLAGS=-O2 -fopenmp
 
 LDFLAGS=-lpng
 
@@ -21,13 +17,13 @@ kernel.o: kernel.cpp constants.hpp
 pngwrite.o: pngwriter.c pngwriter.h
 
 $(EXE): $(OBJS)
-	$(CXX) -o $@ $(CCFLAGS) $(OBJS) $(LDFLAGS)
+	$(CXX) -o $@ $(FLAGS) $(OBJS) $(LDFLAGS)
 
 %.o: %.cpp
-	$(CXX) $(CCFLAGS) -c $< -o $@
+	$(CXX) $(FLAGS) -c $< -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	-/bin/rm -f $(EXE) a.out *.o *.png
