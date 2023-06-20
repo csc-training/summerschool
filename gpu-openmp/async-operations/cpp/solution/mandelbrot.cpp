@@ -42,7 +42,7 @@ int main() {
   double et = omp_get_wtime();
 
   cout << "Time: " << (et - st) << " seconds" << endl;
-  save_png(image, width, height, "mandelbrot.png");
+  save_png(image, height, width, "mandelbrot.png");
 
   delete [] image;
 }
