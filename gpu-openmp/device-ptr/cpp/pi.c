@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
-#include <hiprand.h>
+#include <hiprand/hiprand.h>
 
 
 float cpu_pi(int n)
