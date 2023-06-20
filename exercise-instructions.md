@@ -137,6 +137,8 @@ Usage in local workstation may vary.
 On **Lumi**, the following modules are required:
 
 ```bash
+module load LUMI/22.08
+module load partition/G 
 module load PrgEnv-cray
 module load craype-accel-amd-gfx90a
 module load rocm/5.3.3
@@ -176,6 +178,8 @@ For MPI codes, use the wrapper commands `mpicc`, `mpic++`, or `mpif90`
 On **Lumi**, the following modules are required:
 
 ```bash
+module load LUMI/22.08
+module load partition/G
 module load PrgEnv-cray
 module load craype-accel-amd-gfx90a
 module load rocm/5.3.3
