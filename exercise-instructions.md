@@ -1,22 +1,28 @@
 # General exercise instructions
 
+## Working with the summerschool repository
+
+We recommend that you work with your own personal **fork** of the summerschool 
+git-repository. That way you can easily commit and push your own solutions
+to exercises.
+
+Before starting out, synchronize your fork with "Sync fork" in the github web-GUI.
+
+We also recommend that you create a separate branch for your own work, see "Using local workstation" or "Using supercomputers" below for details.
+
+Once forked to yourself, you can sync with the original repository (in case of updates) by running:
+```
+git pull https://github.com/csc-training/summerschool.git
+
+### Repository structure
+
+The exercise assignments are provided in various `README.md`s.
 For most of the exercises, skeleton codes are provided both for
 Fortran and C/C++ in the corresponding subdirectory. Some exercise
 skeletons have sections marked with “TODO” for completing the
-exercises. In addition, all of the
-exercises have exemplary full codes (that can be compiled and run) in the
-`solutions` folder. Note that these are seldom the only or even the best way to
-solve the problem.
-
-The exercise material can be downloaded with the command
-
-```
-git clone https://github.com/csc-training/summerschool.git
-```
-
-However, we recommend that you use your GitHub account (and create a one if not having yet),
-**Fork** this repository and clone then your fork. This way you can keep also your own work
-under version control.
+exercises. In addition, all of the exercises have exemplary full codes 
+(that can be compiled and run) in the `solutions` folder. Note that these are 
+seldom the only or even the best way to solve the problem.
 
 ## Using local workstation
 
@@ -26,23 +32,23 @@ exercises. Note, however, that no support for installing MPI environment can be
 provided during the course. Otherwise, you can use CSC supercomputers for
 carrying out the exercises.
 
-## Using CSC supercomputers
+Clone your personal fork in appropriate directory:
+```
+git clone git@github.com:<my-github-id>/summerschool.git
+```
+Create a branch:
+```
+git checkout -b hpcss23
+```
 
-Exercises can be carried out using the CSC's [LUMI](https://docs.lumi-supercomputer.eu/)  supercomputer.
+## Using supercomputers
+
+Exercises can be carried out using the [LUMI](https://docs.lumi-supercomputer.eu/)  supercomputer.
 
 LUMI can be accessed via ssh using the provided username and ssh key pair:
 ```
 ssh -i <path-to-private-key> <username>@lumi.csc.fi
-
 ```
-
-For editing program source files you can use e.g. *nano* editor:
-
-```
-nano prog.f90
-```
-(`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save file and exit editor press `Ctrl+X`)
-Also other popular editors (emacs, vim, gedit) are available.
 
 ### Disk areas
 
@@ -57,23 +63,72 @@ mkdir -p $USER
 cd $USER
 ```
 
+### Working with git
+
+In order to push code to your own fork, you need to add your SSH public key in LUMI to
+your github account. The SSH key can be added via "Settings"->"SSH and GPG keys"->"New SSH key", by copy-pasting output of the following command:
+```
+cat $HOME/.ssh/id_rsa.pub
+```
+
+Once succesfull, make sure you in your personal workspace in **scratch** area `/scratch/project_465000536/$USER`, clone the repository, and a create a branch:
+```
+git clone git@github.com:<my-github-id>/summerschool.git
+git checkout -b hpcss23
+```
+
+If you haven't used git before in LUMI, you need to add also your identity:
+```
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+```
+
+Default editor for commit messages is *vim*, if you prefer something else you can add
+to the file `$HOME/.bashrc` *e.g.*
+```
+export EDITOR=nano
+```
+
+### Editors
+
+For editing program source files you can use e.g. *nano* editor:
+
+```
+nano prog.f90
+```
+(`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save file and exit editor press `Ctrl+X`)
+Also other popular editors such as emacs and vim are available. 
 
 ## Compilation
 
+LUMI has several programming environments. For summerschool, we recommend that you use
+the special summerschool modules:
+```
+module use /project/project_465000536/modules
+```
+For CPU programming use:
+```
+module load hpcss/cpu
+```
+For GPU programming use:
+```
+module load hpcss/gpu
+```
+
 ### MPI
 
-Compilation of the MPI programs can be performed with the `mpif90`,
-`mpicxx`, and `mpicc` wrapper commands:
+Compilation of the MPI programs can be performed with the `CC`, `cc`, or `ftn`
+wrapper commands:
 ```
-mpif90 -o my_mpi_exe test.f90
-```
-or
-```
-mpicxx -o my_mpi_exe test.cpp
+CC -o my_mpi_exe test.cpp
 ```
 or
 ```
-mpicc -o my_mpi_exe test.c
+cc -o my_mpi_exe test.c
+```
+or
+```
+ftn -o my_mpi_exe test.f90
 ```
 
 The wrapper commands include automatically all the flags needed for building
@@ -81,19 +136,19 @@ MPI programs.
 
 ### OpenMP (threading with CPUs)
 
-Pure OpenMP (as well as serial) programs can also be compiled with the `mpif90`,
-`mpicxx`, and `mpicc` wrapper commands. OpenMP is enabled with the
+Pure OpenMP (as well as serial) programs can also be compiled with the `CC`,
+`cc`, and `ftn` wrapper commands. OpenMP is enabled with the
 `-fopenmp` flag:
 ```
-mpif90 -o my_exe test.f90 -fopenmp
+CC -o my_exe test.cpp -fopenmp
 ```
 or
 ```
-mpicxx -o my_exe test.cpp -fopenmp
+cc -o my_exe test.c -fopenmp
 ```
 or
 ```
-mpicc -o my_exe test.c -fopenmp
+ftn -o my_exe test.f90 -fopenmp
 ```
 
 When code uses also MPI, the wrapper commands include automatically all the flags needed for

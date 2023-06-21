@@ -1,13 +1,7 @@
 # Getting started with computer platforms
 
-Before starting the exercises, clone your personal fork of the git repository 
-in a personal folder in the *scratch* directory:
-```
-cd /scratch/project_465000536
-mkdir -p $USER
-cd $USER
-git clone git@github.com:<my-github-id>/summerschool.git
-```
+Before starting the exercises, make sure you have a clone of the repository as
+discussed in [exercise instructions](../exercise-instructions.md) 
 
 ## Exercises
 
