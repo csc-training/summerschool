@@ -5,17 +5,14 @@ program mandelbrot
   use omp_lib
   implicit none
 
-  integer, parameter :: num_blocks = 1
+  integer, parameter :: num_blocks = 8
   integer :: block_size, y_start, y_end, x, y, block
-  integer, allocatable :: image(:,:)
+  integer, dimension(0:width-1, 0:height-1) :: image
   real(dp) :: t0, t1
 
   integer :: stat
 
-  allocate(image(0:height-1, 0:width-1))
-
   t0 = omp_get_wtime()
-
   do block = 0, num_blocks - 1
     y_start = block * (height / num_blocks)
     y_end = y_start + (height / num_blocks)
@@ -31,7 +28,5 @@ program mandelbrot
   stat = save_png(image, height, width, 'mandelbrot.png')
 
   write(*,*) 'Time spent', t1 - t0
-
-  deallocate(image)
 
 end program
