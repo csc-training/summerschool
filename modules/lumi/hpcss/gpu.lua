@@ -2,10 +2,10 @@
 
 help('GPU programming environment for CSC HPC Summerschool')
 
-load('LUMI/22.08')
-load('partition/G')
-load('PrgEnv-cray')
-load('cce/14.0.2')
-load('rocm/5.3.3')
+depends_on('LUMI/22.08')
+depends_on('partition/G')
+depends_on('PrgEnv-cray')
+depends_on('cce/14.0.2')
+depends_on('rocm/5.3.3')
 
 prepend_path('PATH', '/project/project_465000536/bin')
