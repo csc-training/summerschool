@@ -130,7 +130,8 @@ On **Lumi**, the following modules are required:
 ```bash
 module load LUMI/22.08
 module load partition/G 
-module load rocm/5.2.3
+module load cce/15.0.0
+module load rocm/5.3.3
 ```
 
 On **Lumi**, to compile your program, use
@@ -146,7 +147,8 @@ On **Lumi**, the following modules are required:
 ```bash
 module load LUMI/22.08
 module load partition/G
-module load rocm/5.2.3
+module load cce/15.0.0
+module load rocm/5.3.3
 ```
 
 On **Lumi**, to compile your program, use
