@@ -75,3 +75,36 @@ ddt srun ./buggy
 
 Note: you can also skip the desktop session step and use X11 forwarding for GUI (might be slow).
 
+
+## Examples
+
+These example codes can be built with `make all`.
+
+### Message exchange revisited
+
+Debug the [exchange.cpp](exchange.cpp) code similar to
+[the earlier exercise](../message-exchange/).
+
+The following will be demoed with DDT:
+* Launching DDT
+* Examining per-process status
+* Setting build configuration
+* Fixing the code within DDT
+
+### Collective operations revisited
+
+Debug the [collective.cpp](collective.cpp) code similar to
+[the earlier exercise](../collectives/).
+
+The following will be demoed with DDT:
+* Setting breakpoints
+* Stepping execution
+* Using distributed array view
+
+Bonus: Memory debugging with valgrind4hpc on LUMI:
+
+```bash
+module load valgrind4hpc
+valgrind4hpc --num-ranks=4 --launcher-args="-A project_465000536 --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug" ./collective.exe
+```
+

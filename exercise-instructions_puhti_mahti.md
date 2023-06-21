@@ -28,18 +28,27 @@ carrying out the exercises.
 
 ## Using CSC supercomputers
 
-Exercises can be carried out using the CSC's [LUMI](https://docs.lumi-supercomputer.eu/)  supercomputer.
+Exercises can be carried out using the CSC's Puhti and Mahti supercomputers. In this course,
+we'll use by default Puhti. See CSC User Documentation for quick start guide for [Puhti](https://docs.csc.fi/support/tutorials/puhti_quick/) or for [Mahti](https://docs.csc.fi/support/tutorials/mahti_quick/)
 
-LUMI can be accessed via ssh using the provided username and ssh key pair:
+Puhti and Mahti can be accessed via ssh using the
+provided username (`trainingxxx`) and password:
 ```
-ssh -i <path-to-private-key> <username>@lumi.csc.fi
+ssh -Y training000@puhti.csc.fi
+```
+or
+```
+ssh -Y training000@mahti.csc.fi
+```
 
-```
+For easier connecting we recommend that you set up *ssh keys* along the instructions in
+[CSC Docs](https://docs.csc.fi/computing/connecting/#setting-up-ssh-keys)
+
 
 For editing program source files you can use e.g. *nano* editor:
 
 ```
-nano prog.f90
+nano prog.f90 &
 ```
 (`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save file and exit editor press `Ctrl+X`)
 Also other popular editors (emacs, vim, gedit) are available.
@@ -48,11 +57,11 @@ Also other popular editors (emacs, vim, gedit) are available.
 
 All the exercises in the supercomputers should be carried out in the
 **scratch** disk area. The name of the scratch directory can be
-queried with the command `lumi-workspaces`. As the base directory is
+queried with the command `csc-workspaces`. As the base directory is
 shared between members of the project, you should create your own
 directory:
 ```
-cd /scratch/project_465000536/
+cd /scratch/project_2000745
 mkdir -p $USER
 cd $USER
 ```
@@ -130,6 +139,8 @@ On **Lumi**, the following modules are required:
 ```bash
 module load LUMI/22.08
 module load partition/G 
+module load PrgEnv-cray
+module load craype-accel-amd-gfx90a
 module load rocm/5.2.3
 ```
 
@@ -138,6 +149,29 @@ On **Lumi**, to compile your program, use
 CC -fopenmp <source.cpp>
 ```
 
+On **Puhti**, in order to use programs with OpenMP offloading to GPUs, you need to load the following modules:
+```bash
+module load .unsupported
+module load nvhpc/22.7
+```
+
+On **Puhti**, the compiler commands (without MPI) for C, C++ and Fortran are `nvc`,
+`nvc++`, and `nvfortran`, and OpenMP offload support is enabled with
+`-mp=gpu -gpu=cc70` options, *i.e.*
+
+```
+nvc -o my_exe test.c -mp=gpu -gpu=cc70
+```
+or
+```
+nvc++ -o my_exe test.cpp -mp=gpu -gpu=cc70
+```
+or
+```
+nvfortran -o my_exe test.f90 -mp=gpu -gpu=cc70
+```
+
+For MPI codes, use the wrapper commands `mpicc`, `mpic++`, or `mpif90`
 
 ### HIP
 
@@ -146,6 +180,8 @@ On **Lumi**, the following modules are required:
 ```bash
 module load LUMI/22.08
 module load partition/G
+module load PrgEnv-cray
+module load craype-accel-amd-gfx90a
 module load rocm/5.2.3
 ```
 
@@ -154,19 +190,30 @@ On **Lumi**, to compile your program, use
 CC -xhip <source.cpp>
 ```
 
-## Running in LUMI
+In order to use HIP on **Puhti**, you need to load the following modules:
+```
+module load gcc/11.3.0 cuda/11.7.0 hip/5.1.0 openmpi/4.1.4-cuda
+```
+Then you can compile with hipcc, eg,
+```
+hipcc  --gpu-architecture=sm_70 -o hello hello.cpp
+```
+where `--gpu-architecture=sm_70` is required when compiling for V100.
+
+## Running in Puhti
 
 ### Pure MPI
 
-Programs need to be executed via the batch job system. Simple job running with 4 MPI tasks can be submitted with the following batch job script:
+In Puhti, programs need to be executed via the batch job system. Simple job running with 4 MPI tasks can be submitted with the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
-#SBATCH --partition=standard
+#SBATCH --account=project_2000745
+#SBATCH --partition=large
+#SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=4
-.....!
+
 srun my_mpi_exe
 ```
 
@@ -184,12 +231,13 @@ for threading with `--cpus-per-task`. Furthermore, one should use the `small` pa
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
-#SBATCH --partition=standard
+#SBATCH --account=project_2000745
+#SBATCH --partition=small
+#SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-......!
+
 srun my_omp_exe
 ```
 
@@ -206,36 +254,68 @@ the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
-#SBATCH --partition=standard
+#SBATCH --account=project_2000745
+#SBATCH --partition=large
+#SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=10
 #SBATCH --cpus-per-task=4
-.....!
+
 # Set the number of threads based on --cpus-per-task
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun my_exe
 ```
 
+When using only single node, one should use the `small` partition, *i.e.*
+```
+...
+#SBATCH --partition=small
+SBATCH --nodes=1
+...
+```
 
 ### GPU programs
 
 When running GPU programs, few changes need to made to the batch job
-script. The `partition` is are now different, and one must also request explicitly given number of GPUs per node with the
-`--gpus-per-node=8` option. As an example, in order to use a
+script. The `partition` and `reservation` are now different, and one
+must also request explicitly given number of GPUs with the
+`--gres=gpu:v100:ngpus` option. As an example, in order to use a
 single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
-#SBATCH --partition=standard-g
-#SBATCH --gpus-per-node=8
+#SBATCH --account=project_2000745
+#SBATCH --partition=gpu
+#SBATCH --reservation=summerschool-gpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
+#SBATCH --gres=gpu:v100:1
 #SBATCH --time=00:05:00
 
 srun my_gpu_exe
+```
+
+## Running in Mahti
+
+Batch job system in Mahti is very similar to Puhti, and batch scripts written for Puhti
+work in Mahti with only minor modifications. The most important difference is that one should use
+the `medium` partition instead of `large` partition, *i.e.* batch job script should start as:
+```
+#!/bin/bash
+#SBATCH --job-name=example
+#SBATCH --account=project_2000745
+#SBATCH --partition=medium
+#SBATCH --reservation=summerschool
+...
+```
+
+For GPU programs, the `--gres` option is also a bit different, as one
+needs to use `a100` instead of `v100` *i.e.*:
+```
+...
+#SBATCH --gres=gpu:a100:1
+...
 ```
 
 ## Running in local workstation
@@ -258,6 +338,104 @@ OMP_NUM_THREADS=4 mpiexec -n 2 ./my_exe
 
 ## Debugging in CSC supercomputers
 
-## Performance analysis with TAU and Omniperf
+The [Allinea DDT parallel debugger](https://docs.csc.fi/apps/ddt/) is available in CSC
+supercomputers. In order to use the debugger, build your code first with the `-g` flag. The DDT is
+then enabled via the module system:
 
-More information about TAU can be found in [TAU User Documentation](https://docs.csc.fi/apps/scalasca/), while for Omniperf at [Omniperf User Documentation](https://docs.csc.fi/apps/scalasca/)
+```bash
+module load ddt
+```
+
+The debugger is run in an interactive session, and for proper
+functioning the environment variable `SLURM_OVERLAP` needs to be set.
+
+1. Set `SLURM_OVERLAP` and request Slurm allocation interactively:
+```bash
+export SLURM_OVERLAP=1
+salloc --nodes=1 --ntasks-per-node=2 --account=project_2000745 --partition=small --reservation=mpi_intro
+```
+2. Start the application under debugger
+```bash
+ddt srun ./buggy
+```
+
+For GUI applications we recommend to use the
+[Desktop app](https://docs.csc.fi/computing/webinterface/desktop/) in the Puhti web interface.
+For smoother GUI performance one may use VNC client such as RealVNC or TigerVNC in the local
+workstation.
+
+## Performance analysis with ScoreP / Scalasca
+
+Start by loading `scorep` and `scalasca` modules:
+
+```bash
+module load scorep scalasca
+```
+
+Instrument the application by prepeding compile command with `scorep`:
+
+```bash
+scorep mpicc -o my_mpi_app my_mpi_code.c
+```
+
+Collect and create flat profile by prepending `srun` with `scan`:
+```
+...
+#SBATCH --ntasks=8
+
+module load scalasca
+scan srun ./my_mpi_app
+```
+
+Scalasca analysis report explorer `square` does not work currently in
+the CSC supercomputers, but the experiment directory can be copied to
+local workstation for visual analysis:
+
+(On local workstation)
+```bash
+rsync -r puhti.csc.fi:/path_to_rundir/scorep_my_mpi_app_8_sum .
+```
+
+The `scorep-score` command can be used also in the supercomputers to
+estimate storage requirements before starting tracing:
+
+```bash
+scorep-score -r scorep_my_mpi_app_8_sum/profile.cubex
+```
+
+In order to collect and analyze the trace, add `-q` and `-t` options
+to `scan`:
+
+```bash
+...
+#SBATCH --ntasks=8
+
+module load scalasca
+scan -q -t srun ./my_mpi_app
+```
+
+The experiment directory containing the trace can now be copied to
+local workstation for visual analysis:
+
+```bash
+rsync -r puhti.csc.fi:/path_to_rundir/scorep_my_mpi_app_8_trace .
+```
+
+On CSC supercomputers, one can use Intel Traceanalyzer for
+investigating the trace (Traceanalyzer can read the `.otf2` produced
+by ScoreP / Scalasca):
+
+```bash
+module load intel-itac
+traceanalyzer &
+```
+
+Next, choose the "Open" dialog and select the `trace.otf2` file within
+the experiment directory (e.g. `scorep_my_mpi_app_8_trace`).
+For GUI applications we recommend to use the
+[Desktop app](https://docs.csc.fi/computing/webinterface/desktop/) in the Puhti web interface.
+For smoother GUI performance one may use VNC client such as RealVNC or TigerVNC in the local
+workstation.
+
+
+More information about Scalasca can be found in [CSC User Documentation](https://docs.csc.fi/apps/scalasca/)
