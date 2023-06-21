@@ -27,12 +27,6 @@ SOFTWARE.
 #include <string>
 #include <iostream>
 #include <iomanip>
-#ifndef NO_MPI
-#include <mpi.h>
-#ifdef CHECK_GPU_MPI
-#include <mpi-ext.h> // Needed for CUDA-aware check
-#endif
-#endif
 #include "heat.hpp"
 #include "parallel.hpp"
 #include "functions.hpp"
@@ -42,15 +36,7 @@ SOFTWARE.
 int main(int argc, char **argv)
 {
 
-#ifndef NO_MPI
     MPI_Init(&argc, &argv);
-#ifdef CHECK_GPU_MPI
-    if (1 != MPIX_Query_cuda_support()) {
-        std::cout << "CUDA aware MPI required" << std::endl;
-        MPI_Abort(MPI_COMM_WORLD, 5);
-    }
-#endif
-#endif
 
     const int image_interval = 15000;    // Image output interval
 
@@ -89,24 +75,29 @@ int main(int argc, char **argv)
     enter_data(current, previous);
     auto t_mem = timer() - start_mem;
 
-    double start_mpi, start_comp;
+    double start_mpi;
+    float hip_elapsed;
     double t_mpi = 0.0;
     double t_comp = 0.0;
 
+    hipEvent_t start, stop;
+    hipEventCreate(&start);
+    hipEventCreate(&stop);
+
     // Time evolve
     for (int iter = 1; iter <= nsteps; iter++) {
-        start_comp = timer();
-        evolve_interior(current, previous, a, dt, streams);
-        t_comp += timer() - start_comp;
         start_mpi = timer();
         exchange_init(previous, parallelization);
-        t_mpi += timer() - start_mpi;
-        start_mpi = timer();
         exchange_finalize(previous, parallelization);
         t_mpi += timer() - start_mpi;
-        start_comp = timer();
+
+        hipEventRecord(start, 0);
+        evolve_interior(current, previous, a, dt, streams);
         evolve_edges(current, previous, a, dt, streams);
-        t_comp += timer() - start_comp;
+        hipEventRecord(stop, 0);
+        hipEventSynchronize(stop);
+        hipEventElapsedTime(&hip_elapsed, start, stop);
+        t_comp += 1.0e-3 * hip_elapsed ;
         if (iter % image_interval == 0) {
             update_host(current);
             write_field(current, iter, parallelization);
@@ -131,12 +122,12 @@ int main(int argc, char **argv)
         std::cout << "Iteration took " << (stop_clock - start_clock)
                   << " seconds." << std::endl;
         std::cout << "  Memory copies " << t_mem << " s." << std::endl;
-        std::cout << "  MPI           " << t_mpi << " s." << std::endl;
+        std::cout << "  Communication " << t_mpi << " s." << std::endl;
         std::cout << "  Compute       " << t_comp << " s." << std::endl;
         std::cout << "Average temperature: " << average_temp << std::endl;
         if (1 == argc) {
             std::cout << "Reference value with default arguments: " 
-                      << 63.834223 << std::endl;
+                      << 63.829613 << std::endl;
         }
     }
 
@@ -146,9 +137,7 @@ int main(int argc, char **argv)
     for (int i=0; i < 3; i++)
       GPU_CHECK( hipStreamDestroy(streams[i]) );
 
-#ifndef NO_MPI
     MPI_Finalize();
-#endif
 
     return 0;
 }

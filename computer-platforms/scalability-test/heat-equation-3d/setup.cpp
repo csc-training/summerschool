@@ -18,15 +18,15 @@ void initialize(int argc, char *argv[], Field& current,
      */
 
 
-    int height = 800;             //!< Field dimensions with default values
-    int width = 800;
-    int length = 800;
+    int height = 480;             //!< Field dimensions with default values
+    int width = 480;
+    int length = 480;
 
     std::string input_file;        //!< Name of the optional input file
 
     bool read_file = 0;
 
-    nsteps = 500;
+    nsteps = 3000;
 
     switch (argc) {
     case 1:
