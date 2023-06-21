@@ -141,7 +141,7 @@ module load LUMI/22.08
 module load partition/G 
 module load PrgEnv-cray
 module load craype-accel-amd-gfx90a
-module load rocm/5.3.3
+module load rocm/5.2.3
 ```
 
 On **Lumi**, to compile your program, use
@@ -182,7 +182,7 @@ module load LUMI/22.08
 module load partition/G
 module load PrgEnv-cray
 module load craype-accel-amd-gfx90a
-module load rocm/5.3.3
+module load rocm/5.2.3
 ```
 
 On **Lumi**, to compile your program, use
