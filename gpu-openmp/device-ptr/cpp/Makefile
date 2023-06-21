@@ -4,7 +4,7 @@ endif
 
 ifeq ($(COMP),lumi)
 HIPRAND_DIR=$(ROCM_PATH)/hiprand
-CFLAGS=-D__HIP_PLATFORM_AMD__ -O2 -fopenmp 
+CFLAGS=-D__HIP_PLATFORM_AMD__ -O2 -fopenmp -std=c++14
 LIBS=-I$(HIPRAND_DIR)/include -L$(HIPRAND_DIR)/lib  -lhiprand 
 CC=CC
 endif
