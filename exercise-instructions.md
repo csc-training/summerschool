@@ -308,7 +308,12 @@ and a hybrid MPI+OpenMP program e.g. with
 OMP_NUM_THREADS=4 mpiexec -n 2 ./my_exe
 ```
 
-## Debugging in CSC supercomputers
+## Debugging
+
+See [the MPI debugging exercise](mpi/debugging),
+[CSC user guide](https://docs.csc.fi/computing/debugging/), and
+[LUMI documentation](https://docs.lumi-supercomputer.eu/development/)
+for possible debugging options.
 
 ## Performance analysis with TAU and Omniperf
 
