@@ -158,8 +158,8 @@ if rank == 0:
 else:
   left = rank - 1
 
-<span style="color:var(--csc-orange)">send</span>(my_name, right)  <span style="color:var(--csc-orange)">! deadlock</span>
-
+<span style="color:var(--csc-blue)">send</span>(my_name, right)
+<span style="color:var(--csc-blue)">recv</span>(left_name, left)
 
 
 </pre>
