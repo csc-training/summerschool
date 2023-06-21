@@ -221,6 +221,7 @@ Programs need to be executed via the batch job system. Simple job running with 4
 #SBATCH --job-name=example
 #SBATCH --account=project_465000536
 #SBATCH --partition=standard
+#SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=4
 .....!
@@ -243,6 +244,7 @@ for threading with `--cpus-per-task`. Furthermore, one should use the `small` pa
 #SBATCH --job-name=example
 #SBATCH --account=project_465000536
 #SBATCH --partition=standard
+#SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
@@ -265,6 +267,7 @@ the following batch job script:
 #SBATCH --job-name=example
 #SBATCH --account=project_465000536
 #SBATCH --partition=standard
+#SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=10
@@ -287,6 +290,7 @@ single GPU with single MPI task and a single thread use:
 #SBATCH --job-name=example
 #SBATCH --account=project_465000536
 #SBATCH --partition=standard-g
+#SBATCH --reservation=summerschool_standard-g
 #SBATCH --gpus-per-node=8
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
