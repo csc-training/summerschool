@@ -33,37 +33,13 @@ The debugger GUI will open in VNC in the browser window.
 
 Note: you can also skip the VNC step and use X11 forwarding for GUI (might be slow).
 
+### Puhti and Mahti
 
-### Mahti
-
-Set up VNC for smoother GUI performance:
-```bash
-sinteractive -A project_2007995 --cores 1
-module load vnc
-start-vnc
-```
-Follow the instructions from the command output to set up
-SSH port forwarding and opening VNC on a browser.
-
-Load module and start debugger in an interactive session:
-```bash
-module load ddt
-export SLURM_OVERLAP=1
-salloc -A project_2007995 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
-ddt srun ./buggy
-```
-
-The debugger GUI will open in VNC in the browser window.
-
-Note: you can also skip the VNC step and use X11 forwarding for GUI (might be slow).
-
-
-### Puhti
-
-Launch a desktop session on a browser for smoother GUI performance:
-* Login to https://www.puhti.csc.fi
+Launch a desktop session on a browser for smoother GUI performance
+(see [the documentation](https://docs.csc.fi/computing/webinterface/desktop/) for detailed instructions):
+* Login to https://www.puhti.csc.fi or https://www.mahti.csc.fi
 * Launch Desktop with 1 core
-* Open terminal in the desktop session and proceed there
+* Open a terminal window in the desktop session and proceed there
 
 Load module and start debugger in an interactive session:
 ```bash
