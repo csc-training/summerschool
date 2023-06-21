@@ -26,3 +26,13 @@ and on **Puhti**, use instead
 ```
 make PUHTI=1
 ```
+
+NOTE! It is important to note that the OpenMP array index range notation is different between C/CPP and Fortran, ie, the following are equivalent:
+
+```
+#pragma omp target update from(array[5:3])
+```
+```
+!$omp target update from(array(5:7))
+```
+In the former case (C/CPP), the integer `3` denotes the number of elements, whereas in the latter (Fortran), the integer `7` denotes the last element. Ie, both notations refer to the elements `array[5]`, `array[6]`, and `array[7]`.
