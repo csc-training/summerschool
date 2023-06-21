@@ -158,23 +158,13 @@ building MPI programs.
 ### HDF5
 
 In order to use HDF5 in CSC supercomputers, you need the load the HDF5 module with MPI I/O support.
-The appropriate module in Puhti is
+The appropriate module in **Lumi** is
 ```
-module load hdf5/1.10.4-mpi
-```
-and in Mahti
-```
-module load hdf5/1.10.7-mpi
+module load cray-hdf5-parallel/1.12.2.1
 ```
 
-When building programs, `-lhdf5` (C/C++) or `-lhdf5_fortran` (Fortran) needs to be added to linker flags, e.g.
-```
-mpicxx -o my_hdf5_exe test.cpp -lhdf5
-mpif90 -o my_hdf5_exe test.f90 -lhdf5_fortran
-```
-or setting `LDFLAGS` *etc.* in a Makefile:
-```
-LDFLAGS=... -lhdf5
+No special flags are needed for compiling and linking, the compiler wrappers take care of them automatically.
+
 ```
 
 Usage in local workstation may vary.
