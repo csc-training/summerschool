@@ -222,9 +222,8 @@ srun my_exe
 ### GPU programs
 
 When running GPU programs, few changes need to made to the batch job
-script. The `partition` and `reservation` are now different, and one
-must also request explicitly given number of GPUs with the
-`--gres=gpu:v100:ngpus` option. As an example, in order to use a
+script. The `partition` is are now different, and one must also request explicitly given number of GPUs per node with the
+`--gpus-per-node=8` option. As an example, in order to use a
 single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
