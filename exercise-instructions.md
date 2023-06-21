@@ -39,7 +39,7 @@ ssh -i <path-to-private-key> <username>@lumi.csc.fi
 For editing program source files you can use e.g. *nano* editor:
 
 ```
-nano prog.f90 &
+nano prog.f90
 ```
 (`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save file and exit editor press `Ctrl+X`)
 Also other popular editors (emacs, vim, gedit) are available.
@@ -154,7 +154,7 @@ On **Lumi**, to compile your program, use
 CC -xhip <source.cpp>
 ```
 
-## Running in Puhti
+## Running in LUMI
 
 ### Pure MPI
 
