@@ -13,6 +13,7 @@ We also recommend that you create a separate branch for your own work, see "Usin
 Once forked to yourself, you can sync with the original repository (in case of updates) by running:
 ```
 git pull https://github.com/csc-training/summerschool.git
+```
 
 ### Repository structure
 
