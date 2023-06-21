@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
-#include <curand.h>
+#include <hiprand/hiprand.h>
 
 
 float cpu_pi(int n)
@@ -33,7 +33,7 @@ float cpu_pi(int n)
 
 float gpu_pi(size_t n)
 {
-    curandGenerator_t g;
+    hiprandGenerator_t g;
     int istat;
     int inside;
     float *x, *y, pi;
@@ -42,22 +42,22 @@ float gpu_pi(size_t n)
 
     x = (float *)malloc(n * sizeof(float));
     y = (float *)malloc(n * sizeof(float));
-
+    
     // TODO start: allocate x and y in the device with OpenMP enter data
 
     // TODO end
 
     inside = 0;
 
-    istat = curandCreateGenerator(&g, CURAND_RNG_PSEUDO_DEFAULT);
+    istat = hiprandCreateGenerator(&g, HIPRAND_RNG_PSEUDO_DEFAULT);
 
-    // TODO start: use device pointer for CUDA random generator calls
+    // TODO start: use device pointer for HIP random generator calls
 
-    istat = curandGenerateUniform(g, x, n);
-    if (istat != CURAND_STATUS_SUCCESS) printf("Error in curandGenerate: %d\n", istat);
-    istat = curandGenerateUniform(g, y, n);
-    if (istat != CURAND_STATUS_SUCCESS) printf("Error in curandGenerate: %d\n", istat);
-
+    istat = hiprandGenerateUniform(g, x, n);
+    if (istat != HIPRAND_STATUS_SUCCESS) printf("Error in hiprandGenerate: %d\n", istat);
+    istat = hiprandGenerateUniform(g, y, n);
+    if (istat != HIPRAND_STATUS_SUCCESS) printf("Error in hiprandGenerate: %d\n", istat);
+    
     // TODO end
 
 
@@ -68,7 +68,7 @@ float gpu_pi(size_t n)
                 inside++;
             }
         }
-
+    
     // TODO end
 
     // TODO start: deallocate x and y in the device with OpenMP exit data
@@ -78,9 +78,9 @@ float gpu_pi(size_t n)
     free(x);
     free(y);
 
-    istat = curandDestroyGenerator(g);
-    if (istat != CURAND_STATUS_SUCCESS) {
-        fprintf(stderr, "Error in curandDestroyGenerator: %d\n", istat);
+    istat = hiprandDestroyGenerator(g);
+    if (istat != HIPRAND_STATUS_SUCCESS) {
+        fprintf(stderr, "Error in hiprandDestroyGenerator: %d\n", istat);
     }
 
     pi = 4.0 * (float)inside / (float)n;
