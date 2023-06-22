@@ -165,8 +165,6 @@ module load cray-hdf5-parallel/1.12.2.1
 
 No special flags are needed for compiling and linking, the compiler wrappers take care of them automatically.
 
-```
-
 Usage in local workstation may vary.
 
 ### OpenMP offloading
