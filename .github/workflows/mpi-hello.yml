@@ -17,6 +17,7 @@ jobs:
           mpiexec -np 2 hostname
       - name: Build heat
         run: |
+          ls ${{ github.workspace }}
           cd ${{github.workspace}}/mpi/heat_equation/cpp/solution-sendrecv
           make COMP=gnu
       - name: Run heat
