@@ -1,4 +1,6 @@
-# Hipfort: saxpy
+# Hipfort
+
+## Usage 
 
 Test hipfort by compiling and running a simple Fortran code that uses a HIP kernel to calculate saxpy on the GPU.
 
@@ -27,6 +29,13 @@ ftn -o main <fortran_code>.o hip_kernels.o
 ```
 The second option gives more flexibility when using a mix of OpenMP/OpenACC offloading to GPUs and HIP kernels/libraries.
 
-## Equivalent CUDA Fortran code
+## Examples: `saxpy` and `pi` 
 
-For reference, file [cuda-fortran/main.cuf](cuda-fortran/main.cuf) contains an equivalent CUDA Fortran code.
+There are two examples for exploring. 
+
+The first one [`saxpy`](saxpy/) demonstrates a basic memory management and  how to call from fortran a `hip` kernel. For reference, file [cuda-fortran/main.cuf](saxpy/cuda-fortran/main.cuf) contains an equivalent CUDA Fortran code. 
+Hipfort provides interfaces for various highly optimized library. 
+
+The folder  [hiprand_example](hiprand_example/) shows how to call the `hiprand` for generating single precision uniform random distributed nbumbers. 
+
+The exercise is to analyse and run the programs. For more examples of hipfort check also the [official repository](https://github.com/ROCmSoftwarePlatform/hipfort/tree/develop/test).
