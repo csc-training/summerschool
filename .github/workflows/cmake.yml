@@ -1,6 +1,8 @@
 name: CMake
 
-on:
+on: 
+  workflow_dispatch
+off:
   push:
     branches: [ "master" ]
   pull_request:
