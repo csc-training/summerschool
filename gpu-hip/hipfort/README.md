@@ -30,7 +30,7 @@ ftn -c <fortran_code>.f90
 CC -xhip -c <hip_kernels>.cpp
 ftn -o main <fortran_code>.o hip_kernels.o
 ```
-The second option gives more flexibility when using a mix of OpenMP offloading to GPUs and HIP kernels/libraries.
+The second option gives more flexibility when using a mix of OpenMP/OpenACC offloading to GPUs and HIP kernels/libraries.
 
 ## Equivalent CUDA Fortran code
 
