@@ -11,6 +11,7 @@ jobs:
       - name: Install MPI
         run: |
           sudo apt-get update 
+          sudo apt-get install -y openmpi-common openmpi-bin
       - name: Run MPI
         run: |
           mpiexec -np 4 hostname
