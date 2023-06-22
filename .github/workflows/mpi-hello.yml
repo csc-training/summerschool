@@ -17,12 +17,11 @@ jobs:
           mpiexec -np 2 hostname
       - name: Build heat
         run: |
-          ls ${{ github.workspace }}
-          cd ${{github.workspace}}/mpi/heat_equation/cpp/solution-sendrecv
+          cd ${{github.workspace}}/mpi/heat-equation/cpp/solution-sendrecv
           make COMP=gnu
       - name: Run heat
         run: |
-          cd ${{github.workspace}}/mpi/heat_equation/cpp/solution-sendrecv
+          cd ${{github.workspace}}/mpi/heat-equation/cpp/solution-sendrecv
           mpiexec -np ./heat_mpi | tee heat.out
           # check correctness
           result=`awk '/Average temperature:/ {print $3}' heat.out`
