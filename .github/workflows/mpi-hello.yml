@@ -14,5 +14,5 @@ jobs:
           sudo apt-get install -y openmpi-common openmpi-bin
       - name: Run MPI
         run: |
-          mpiexec -np 4 hostname
+          mpiexec -np 2 hostname
           
