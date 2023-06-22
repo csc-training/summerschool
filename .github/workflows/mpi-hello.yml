@@ -22,7 +22,7 @@ jobs:
       - name: Run heat
         run: |
           cd ${{github.workspace}}/mpi/heat-equation/cpp/solution-sendrecv
-          mpiexec -np ./heat_mpi | tee heat.out
+          mpiexec -np 2 ./heat_mpi | tee heat.out
           # check correctness
           result=`awk '/Average temperature:/ {print $3}' heat.out`
           ref=`awk '/Reference value/ {print $6}' heat.out`
