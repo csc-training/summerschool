@@ -18,7 +18,7 @@ srun --account=<my_account> --nodes=<nodes> --ntasks-per-node=<tasks-per-node> -
 ### Building and running GPU code
 
 1. Build the code in [gpu](gpu) with `make`. Modify [Makefile](gpu/Makefile) as needed.
-   **Note:** You need `rocm` and `craype-accel-amd-gfx90a` are needed.
+   **Note:** You need to load proper GPU module `hpcss/gpu`.
 2. Try to run the resulting executable `prog` via batch system. A template batch job 
    scripts are provided in [../](../). Try different number of nodes and gpus per node.
 3. Try to run the program also directly from command line with `srun`
