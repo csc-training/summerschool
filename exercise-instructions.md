@@ -212,7 +212,13 @@ module load rocm/5.3.3
 module use /project/project_465000536/EasyBuild/modules/LUMI/22.08/partition/G/
 module load hipfort
 ```
-Because the defualt `HIPFORT` installation only supports gfortran,  we usa custom module (installed via `EasyBuild`)  prepared in the summer school project.
+or  
+```bash
+module load hpcss/gpu
+module use /project/project_465000536/EasyBuild/modules/LUMI/22.08/partition/G/
+module load hipfort
+``` 
+Because the default `HIPFORT` installation only supports gfortran,  we us a custom module (installed via `EasyBuild`)  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn).
 
 Depending on the programmer needs, there are two way to compile the code. The first option is to use the AMD  provided `hipfc` compiler script:
 ```bash
@@ -225,6 +231,7 @@ CC -xhip -c <hip_kernels>.cpp
 ftn -o main <fortran_code>.o hip_kernels.o
 ```
 The second option gives more flexibility when using a mix of OpenMP offloading to GPUs and HIP kernels/libraries.
+
 ## Running in LUMI
 
 ### Pure MPI
