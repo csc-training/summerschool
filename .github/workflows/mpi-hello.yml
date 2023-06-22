@@ -1,0 +1,17 @@
+name: MPI demo
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install MPI
+        run: |
+          sudo apt-get update 
+      - name: Run MPI
+        run: |
+          mpiexec -np 4 hostname
+          
