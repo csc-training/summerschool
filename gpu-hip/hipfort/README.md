@@ -35,3 +35,5 @@ There are two examples for exploring.
 
 The first one [`saxpy`](saxpy/) demonstrates a basic memory management and  how to call from fortran a `hip` kernel. For reference, file [cuda-fortran/main.cuf](saxpy/cuda-fortran/main.cuf) contains an equivalent CUDA Fortran code. 
 Hipfort provides interfaces for various highly optimized library. The folder  [hiprand_example](hiprand_example/) shows how to call the `hiprand` for generating single precision uniform random distributed nbumbers. 
+
+The exercise is to analyse and run the programs. For more examples of hipfort check also the [official repository](https://github.com/ROCmSoftwarePlatform/hipfort/tree/develop/test).
