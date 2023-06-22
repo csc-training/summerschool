@@ -77,10 +77,24 @@ The following will be demoed with DDT:
 * Stepping execution
 * Using distributed array view
 
-Bonus: Memory debugging with valgrind4hpc on LUMI:
+#### Bonus 1
+
+Memory debugging with sanitizer. On LUMI:
+```bash
+CC -g -fsanitize=address collective.cpp -o collective.exe
+srun -A project_465000536 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug --label ./collective.exe
+```
+
+Note the `--label` option that prepends task number to lines of stdout/err.
+
+#### Bonus 2
+
+Memory debugging with valgrind4hpc. On LUMI:
 
 ```bash
 module load valgrind4hpc
-valgrind4hpc --num-ranks=4 --launcher-args="-A project_465000536 --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug" ./collective.exe
+
+CC -g collective.cpp -o collective.exe
+valgrind4hpc --num-ranks=4 --launcher-args="-A project_465000536 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug" ./collective.exe
 ```
 

@@ -31,7 +31,14 @@ int main(int argc, char *argv[])
     print_buffers(sendbuf);
 
     /* Perform collective communication pattern */
-    MPI_Scatter(sendbuf.data(), 8, MPI_INT, recvbuf.data(), 8, MPI_INT, 0, MPI_COMM_WORLD);
+    int counts[NTASKS] = { 1, 2, 4, 8 };
+    int offsets[NTASKS] = { 0 };
+    for (int i = 1; i < NTASKS; i++) {
+        offsets[i] = offsets[i - 1] + counts[i - 1];
+    }
+    MPI_Scatterv(sendbuf.data(), counts, offsets, MPI_INT,
+                 recvbuf.data(), counts[rank], MPI_INT,
+                 0, MPI_COMM_WORLD);
 
     /* Print data that was received */
     print_buffers(recvbuf);
