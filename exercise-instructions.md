@@ -208,22 +208,28 @@ module load partition/G
 module load cce/15.0.0
 module load rocm/5.3.3
 module use /project/project_465000536/EasyBuild/modules/LUMI/22.08/partition/G/
-module load hipfort
 ```
 
-Because the default `HIPFORT` installation only supports gfortran,  we use a custom module (installed via `EasyBuild`)  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn).
+Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn). 
 
-Depending on the programmer needs, there are two way to compile the code. The first option is to use the AMD  provided `hipfc` compiler script:
+The package was installed via:
 ```bash
-hipfc -o main --offload-arch=gfx90a <hip_kernels>.cpp <fortran_code>.f90
+git clone https://github.com/ROCmSoftwarePlatform/hipfort.git
+cd hipfort;
+mkdir build;
+cd build;
+cmake -DHIPFORT_INSTALL_DIR=/project/project_465000536/appl/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
+make -j 64 
+make install
 ```
-The second option is use the Cray 'ftn' compiler wrapper as you would do to compile any fortran code. The appropriate module and library search paths as well as library linking flags will be automatically added by the compiler wrappper:
+
+We will use the Cray 'ftn' compiler wrapper as you would do to compile any fortran code plus some additional flags:
 ```bash
-ftn -c <fortran_code>.f90
+ftn -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -c <fortran_code>.f90 
 CC -xhip -c <hip_kernels>.cpp
-ftn -o main <fortran_code>.o hip_kernels.o
+ftn  -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -o main <fortran_code>.o hip_kernels.o
 ```
-The second option gives more flexibility when using a mix of OpenMP offloading to GPUs and HIP kernels/libraries.
+This option gives enough flexibility for calling HIP libraries from Fortran or for a mix of OpenMP/OpenACC offloading to GPUs and HIP kernels/libraries.
 
 ## Running in LUMI
 
