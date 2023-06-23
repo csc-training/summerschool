@@ -205,9 +205,8 @@ The following models are required:
 
 module load LUMI/22.08
 module load partition/G
-module load cce/15.0.0
+module load cce/15.0.1
 module load rocm/5.3.3
-module use /project/project_465000536/EasyBuild/modules/LUMI/22.08/partition/G/
 ```
 
 Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn). 
