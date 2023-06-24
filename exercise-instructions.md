@@ -200,7 +200,7 @@ To compile your program, use:
 CC -xhip <source.cpp>
 ```
 ### HIPFORT 
-The following models are required:
+The following modules are required:
 ```bash
 
 module load LUMI/22.08
