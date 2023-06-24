@@ -2,31 +2,26 @@ ifeq ($(COMP),)
 COMP=lumi
 endif
 
-LINKOPTS = -lhiprand
-
 ifeq ($(COMP),lumi)
-HIPFORT_HOME = /project/project_465000536/appl/HIPFORT 
+HIPFORT_HOME = /project/project_465000536/appl/HIPFORT
+LIB_FLAGS = -lhiprand
+CXX = CC -xhip
 FC = ftn -I$(HIPFORT_HOME)/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$(HIPFORT_HOME)/lib -lhipfort-amdgcn $(LIB_FLAGS)
 endif 
 
-ifeq ($(COMP),nvhpc)
-# Puhti
-export ROCM=${ROCM_PATH}
-export HIPFORT_ARCHGPU=nvptx-sm_70
-export HIPFORT_HOME=${ROCM_PATH}/hipfort/
-include ${HIPFORT_HOME}/bin/Makefile.hipfort
-endif
+OBJS=pi.o 
 
+all: pi
 
-pi: hiprand_test.o
-	$(FC) $(LINKOPTS)  $^ -o $@
+pi.F90: pi.F90
+
+pi: $(OBJS)
+	$(FC) -o $@ $(OBJS) $(FCFLAGS) 
 
 %.o: %.F90
-	$(FC) -c -o $@ $<
+	$(FC) $(FCFLAGS) -c $< -o $@
 
-%.o: %.cpp
-	$(CXX) -c -o $@ $<
-
-.PHONY: clean
+%.mod: %.F90
+	$(FC) $(FCFLAGS) -c $<
 clean:
-	rm -f *.o saxpy
+	rm -f pi *.o *.mod
