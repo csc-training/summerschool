@@ -350,4 +350,16 @@ for possible debugging options.
 
 ## Performance analysis with TAU and Omniperf
 
+`TAU` and `Omniperf` can be used to do performance analysis. 
+In order to use TAU one only has to load the modules needed to run the application be ran and set the paths to the TAU install folder:
+```
+export TAU=/project/project_465000536/appl/tau/2.32/craycnl
+export PATH=$TAU/bin:$PATH
+```
+In order to use omniperf load the follwoing modules:
+```
+/project/project_465000536/Omni/omniperf/modulefiles
+module load omniperf
+module load cray-python
+``` 
 More information about TAU can be found in [TAU User Documentation](https://www.cs.uoregon.edu/research/tau/docs/newguide/), while for Omniperf at [Omniperf User Documentation](https://github.com/AMDResearch/omniperf)
