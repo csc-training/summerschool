@@ -1,6 +1,6 @@
 ## Using HIP library from OpenMP code
 
-The provided codes [cpp/pi.c](cpp/pi.c) / [fortran.pi.F90](fortran/pi.F90)
+The provided codes [cpp/pi.c](cpp/pi.c) / [fortran.pi.F90](fortran/lumi/pi.F90)
 calculate approximate value for **pi** by generating random numbers within a
 square and calculating how many of them falls within a unit circle.
 
