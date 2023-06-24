@@ -24,7 +24,8 @@ program rand_test
   write(*,*) 'Pi calculated with CPU', pi1
   pi2 = gpu_pi(nsamples)
   write(*,*) 'Pi calculated with GPU', pi2
-  deallocate(x, y)
+
+  
   
 contains
 
@@ -64,12 +65,16 @@ contains
     integer(kind=INT64) :: n
     integer :: i, inside
     type(c_ptr) :: gen = c_null_ptr
+    !integer(c_size_t) :: gen
     real(c_float), allocatable,target :: x(:),y(:)
     integer(c_size_t) :: istat
 
     allocate(x(1:n))
     allocate(y(1:n))
     Nbytes=sizeof(x)
+
+  call hipCheck(hipMalloc(x_d,Nbytes))
+  call hipCheck(hipMalloc(y_d,Nbytes))
 
     inside = 0
 
@@ -95,6 +100,6 @@ contains
 
     gpu_pi = 4.0 * real(inside) / real(n)
 
- 
+  deallocate(x,y)
   end function gpu_pi
   end program
