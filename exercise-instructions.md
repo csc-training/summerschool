@@ -259,8 +259,8 @@ is accessible only with the training user accounts.
 
 ### Pure OpenMP
 
-For pure OpenMP programs one should use only single tasks and specify the number of cores reserved
-for threading with `--cpus-per-task`. Furthermore, one should use the `small` partition:
+For pure OpenMP programs one should use only one node and one MPI task per nodesingle tasks and specify the number of cores reserved
+for threading with `--cpus-per-task`:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
@@ -268,7 +268,8 @@ for threading with `--cpus-per-task`. Furthermore, one should use the `small` pa
 #SBATCH --partition=standard
 #SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
-#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
 
 # Set the number of threads based on --cpus-per-task
