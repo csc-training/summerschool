@@ -74,7 +74,6 @@ contains
 
     inside = 0
 
-!$omp target enter data map(alloc:x, y)
 
     istat= hiprandCreateGenerator(gen, HIPRAND_RNG_PSEUDO_DEFAULT)
 
