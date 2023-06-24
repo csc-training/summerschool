@@ -1,9 +1,21 @@
+ifeq ($(COMP),)
+COMP=lumi
+endif
+
+ifeq ($(COMP),lumi)
+HIPFORT_HOME = /project/project_465000536/appl/HIPFORT
+CXX = CC -xhip
+FC = ftn -I$(HIPFORT_HOME)/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$(HIPFORT_HOME)/lib -lhipfort-amdgcn $(LIB_FLAGS)
+endif 
+
+ifeq ($(COMP),nvhpc)
 # Puhti
 export ROCM=${ROCM_PATH}
 export HIPFORT_ARCHGPU=nvptx-sm_70
 export HIPFORT_HOME=${ROCM_PATH}/hipfort/
 include ${HIPFORT_HOME}/bin/Makefile.hipfort
 CXX = $(HIPCC_ENV) $(HIP_PATH)/bin/hipcc -x cu $(HIPCC_OPTS)
+endif
 
 saxpy: main.o hipsaxpy.o
 	$(FC) $^ $(LINKOPTS) -o $@
