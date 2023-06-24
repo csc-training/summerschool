@@ -1,5 +1,4 @@
-!ftn -fopenmp  -I$root/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -lhiprand -L$root/lib -lhipfort-amdgcn  hiprand_test.F90
-!srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465000536 ./a.out 150000
+
 program rand_test
   use iso_c_binding
   use iso_fortran_env, only : INT64
