@@ -7,7 +7,7 @@ square and calculating how many of them falls within a unit circle.
 The code uses combination of OpenMP offloading and CUDA library functions:
 
   - Memory management is done with OpenMP offload constructs
-  - Random numbers are generated with `curand` library
+  - Random numbers are generated with `hiprand` library
   - Calculation of **pi** is done with OpenMP offload constructs
 
 Add appropriate OpenMP constructs according the TODOs in the code. You can
