@@ -9,7 +9,7 @@
 ### Point-to-point communication
 
  - [Message exchange](message-exchange/)
- - [Parallel pi with two processes](paralle-pi-two-procs/)
+ - [Parallel pi with two processes](parallel-pi-two-procs/)
 
 ### Special MPI variables and communication patterns
 
