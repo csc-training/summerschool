@@ -174,7 +174,7 @@ On **Lumi**, the following modules are required:
 ```bash
 module load LUMI/22.08
 module load partition/G 
-module load cce/15.0.0
+module load cce/15.0.1
 module load rocm/5.3.3
 ```
 
@@ -191,7 +191,7 @@ Use the following modules :
 ```bash
 module load LUMI/22.08
 module load partition/G
-module load cce/15.0.0
+module load cce/15.0.1
 module load rocm/5.3.3
 ```
 
@@ -243,8 +243,10 @@ Programs need to be executed via the batch job system. Simple job running with 4
 #SBATCH --partition=standard
 #SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
-#SBATCH --ntasks=4
-.....!
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=1  
+
 srun my_mpi_exe
 ```
 
@@ -268,7 +270,9 @@ for threading with `--cpus-per-task`. Furthermore, one should use the `small` pa
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-......!
+
+# Set the number of threads based on --cpus-per-task
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun my_omp_exe
 ```
 
@@ -290,9 +294,8 @@ the following batch job script:
 #SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
 #SBATCH --nodes=2
-#SBATCH --ntasks-per-node=10
+#SBATCH --ntasks-per-node=32
 #SBATCH --cpus-per-task=4
-.....!
 # Set the number of threads based on --cpus-per-task
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun my_exe
@@ -346,4 +349,4 @@ for possible debugging options.
 
 ## Performance analysis with TAU and Omniperf
 
-More information about TAU can be found in [TAU User Documentation](https://docs.csc.fi/apps/scalasca/), while for Omniperf at [Omniperf User Documentation](https://docs.csc.fi/apps/scalasca/)
+More information about TAU can be found in [TAU User Documentation](https://www.cs.uoregon.edu/research/tau/docs/newguide/), while for Omniperf at [Omniperf User Documentation](https://github.com/AMDResearch/omniperf)
