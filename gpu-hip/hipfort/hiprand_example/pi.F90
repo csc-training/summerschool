@@ -7,8 +7,6 @@ program rand_test
 
   implicit none
 
-  type(c_ptr) :: x_d,y_d
-  type(c_ptr) :: rand_gen
   integer(kind=INT64) :: nsamples
   character(len=85) :: arg
   real :: pi1, pi2
@@ -63,7 +61,7 @@ contains
     integer(kind=INT64) :: n
     integer :: i, inside
     type(c_ptr) :: gen = c_null_ptr
-    !integer(c_size_t) :: gen
+    type(c_ptr) :: x_d,y_d
     real(c_float), allocatable,target :: x(:),y(:)
     integer(c_size_t) :: istat
 
@@ -80,27 +78,20 @@ contains
 
     istat= hiprandCreateGenerator(gen, HIPRAND_RNG_PSEUDO_DEFAULT)
 
-!$omp target data use_device_ptr(x, y)
     istat= hiprandGenerateUniform(gen, x_d, n)
     istat= hiprandGenerateUniform(gen, y_d, n)
-!$omp end target data
 
   call hipCheck(hipMemcpy(c_loc(x), x_d, Nbytes, hipMemcpyDeviceToHost))
   call hipCheck(hipMemcpy(c_loc(y), y_d, Nbytes, hipMemcpyDeviceToHost))
 
-!$omp target loop reduction(+:inside)
     do i = 1, n
       if (x(i)**2 + y(i)**2 < 1.0) then
         inside = inside + 1
       end if
     end do
-!$omp end target loop
-
-
-!$omp target exit data map(delete:x, y)
 
     gpu_pi = 4.0 * real(inside) / real(n)
 
-    ! deallocate(x, y)
+   deallocate(x, y)
   end function gpu_pi
   end program
