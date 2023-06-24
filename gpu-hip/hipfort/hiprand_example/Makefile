@@ -5,7 +5,8 @@ endif
 LINKOPTS = -lhiprand
 
 ifeq ($(COMP),lumi)
-FC = ftn
+HIPFORT_HOME = /project/project_465000536/appl/HIPFORT 
+FC = ftn -I$(HIPFORT_HOME)/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$(HIPFORT_HOME)/lib -lhipfort-amdgcn $(LIB_FLAGS)
 endif 
 
 ifeq ($(COMP),nvhpc)
