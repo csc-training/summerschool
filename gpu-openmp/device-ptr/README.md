@@ -13,5 +13,4 @@ The code uses combination of OpenMP offloading and CUDA library functions:
 Add appropriate OpenMP constructs according the TODOs in the code. You can
 compile the code in Mahti with the provided Makefile by typing `make`.
 
-(Fortran code uses the hipfort module for calling `hiprand`library. See also this [example](../../gpu-hip/hipfort
-/hiprand_example))
+(Fortran code uses the hipfort package for calling `hiprand` library. See also this [example](../../gpu-hip/hipfort/hiprand_example))
