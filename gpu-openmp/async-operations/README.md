@@ -14,14 +14,7 @@ each step.
      - After each block, copy the data to the host
 3. Do the offloading and copying to host asynchronously
 
-Before compiling the code on **Lumi**, set the following two library paths 
-```
-export CPATH=$CPATH:/appl/lumi/SW/LUMI-22.08/L/EB/libpng/1.6.37-cpeCray-22.08/include
-```
-```
-export LIBRARY_PATH=$LIBRARY_PATH:/appl/lumi/SW/LUMI-22.08/L/EB/libpng/1.6.37-cpeCray-22.08/lib
-```
-after which the codes should compile with the provided Makefiles. On **Lumi**, simply type
+Compile the program with the provided Makefiles. On **Lumi**, simply type
 ```
 make
 ```
