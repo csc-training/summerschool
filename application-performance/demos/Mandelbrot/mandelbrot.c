@@ -51,7 +51,7 @@ int kernel(int w, int h, float complex cmin, float complex cmax,
 int main(int argc, char **argv)
 {
     // Picture size, should be power of two
-    const int w = 256;
+    const int w = 512;
     const int h = w;
     int *iter_counts, *my_iter_counts;
 
