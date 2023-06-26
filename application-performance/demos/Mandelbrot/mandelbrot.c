@@ -24,22 +24,22 @@ const int SUBDIV = 4;
 
 
 // |z|^2 of a complex number z
-float abs2(complex v)
+float abs2(float complex v)
 {
     return creal(v) * creal(v) + cimag(v) * cimag(v);
 }
 
 // The kernel to count per-pixel values of the portion of the Mandelbrot set
 // Does not need to be edited
-int kernel(int w, int h, complex cmin, complex cmax,
+int kernel(int w, int h, float complex cmin, float complex cmax,
         int x, int y)
 {
-    complex dc = cmax - cmin;
+    float complex dc = cmax - cmin;
     float fx = (float)x / w;
     float fy = (float)y / h;
-    complex c = cmin + fx * creal(dc) + fy * cimag(dc) * I;
+    float complex c = cmin + fx * creal(dc) + fy * cimag(dc) * I;
     int iteration = 0;
-    complex z = c;
+    float complex z = c;
     while(iteration < MAX_ITER_COUNT && abs2(z) < 2 * 2) {
         z = z * z + c;
         iteration++;
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     int ntasks, myid;
     int myh;
 
-    complex cmin, cmax;
+    float complex cmin, cmax;
 
     int pic_bytes = w * h * sizeof(int);
     iter_counts = (int*)malloc(pic_bytes);
