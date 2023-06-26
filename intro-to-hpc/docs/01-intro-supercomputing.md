@@ -126,7 +126,8 @@ lang:   en
     - `#`2 system (CPU-only) has `~`8 000 000 cores
 - Vectorization
     - A single instruction can process multiple data (SIMD)
-- Pipelining
+- Instruction level parallelism and pipelining
+    - Core executes multiple instructions in parallel (superscalar execution)
     - Core executes different parts of instructions in parallel
 
 
