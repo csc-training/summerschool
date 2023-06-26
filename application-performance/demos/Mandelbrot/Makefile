@@ -9,7 +9,7 @@ ifeq ($(COMP),lumi)
 FC=ftn
 LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12
 CC=cc
-CCFLAGS=-O3 -Wall -I$(COMMONDIR) -I$(LIBPNG_DIR)/include
+CCFLAGS=-O2 -g -Wall -I$(COMMONDIR) -I$(LIBPNG_DIR)/include -fno-inline-functions
 LDFLAGS=-L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib
 LIBS=-lpng
 endif
