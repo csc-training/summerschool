@@ -156,25 +156,3 @@ lang:   en
 
 ![](img/anatomy.svg){.center width=100%}
 
-# Future of High-performance computing {.section}
-
-# Quantum computing
-
-<div class=column>
-- Quantum computers can solve certain types of problems exponentially faster than classical computers
-- General purpose quantum computer is still far away
-- Use cases still largely experimental and hypothetical
-- Hybrid approaches
-</div>
-<div class=column>
-![](img/quantum.png){.center width=50%}
-</div>
-
-
-# Post-Exascale challenges
-
-- Performance of supercomputers has increased exponentially for a long time
-- However, there are still challenges in continuing onwards from exascale supercomputers ($> 1 \times 10^{18}$ flop/s)
-    - Power consumption: current `#`1 energy efficient system requires `~`20 MW for exascale performances
-    - Cost & Maintaining: Global chip shortage
-    - Application scalability: how to program for 100 000 GPUs / 100 000 000 cores?
