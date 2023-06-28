@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
     // Allocate buffers
-    message = (int *)malloc(sizeof(int) * msgsize);
-    receiveBuffer = (int *)malloc(sizeof(int) * msgsize);
+    message = (int *)malloc(sizeof(int) * arraysize);
+    receiveBuffer = (int *)malloc(sizeof(int) * arraysize);
 
     // Initialize message and receive buffer
     for (int i = 0; i < arraysize; i++) {

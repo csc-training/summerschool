@@ -24,10 +24,10 @@ program exchange
      write(*,'(A10,I3,A10,I3, A17, I3)') 'Rank: ', myid, &
           ' received ', nrecv, ' elements, first ', receiveBuffer(1)
   else if (myid == 1) then
-     call mpi_send(message, msgsize, MPI_INTEGER, 0, &
-          2, MPI_COMM_WORLD, rc)
      call mpi_recv(receiveBuffer, arraysize, MPI_INTEGER, 0,  &
           1, MPI_COMM_WORLD, status, rc)
+     call mpi_send(message, msgsize, MPI_INTEGER, 0, &
+          2, MPI_COMM_WORLD, rc)
      call mpi_get_count(status, MPI_INTEGER, nrecv, rc)
      write(*,'(A10,I3,A10,I3, A17, I3)') 'Rank: ', myid, &
           ' received ', nrecv, ' elements, first ', receiveBuffer(1)

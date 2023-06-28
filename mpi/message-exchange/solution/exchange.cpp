@@ -29,9 +29,9 @@ int main(int argc, char *argv[])
         MPI_Get_count(&status, MPI_INT, &nrecv);
         printf("Rank %i received %i elements, first %i\n", myid, nrecv, receiveBuffer[0]);
     } else if (myid == 1) {
-        MPI_Send(message.data(), msgsize, MPI_INT, 0, 2, MPI_COMM_WORLD);
         MPI_Recv(receiveBuffer.data(), arraysize, MPI_INT, 0, 1, MPI_COMM_WORLD,
                  &status);
+        MPI_Send(message.data(), msgsize, MPI_INT, 0, 2, MPI_COMM_WORLD);
         MPI_Get_count(&status, MPI_INT, &nrecv);
         printf("Rank %i received %i elements, first %i\n", myid, nrecv, receiveBuffer[0]);
     }
