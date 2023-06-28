@@ -1,4 +1,4 @@
-## Heat equation: checkpoint + restart with MPI-IO
+## Heat equation: checkpoint + restart with HDF5
 
 1. Add a feature to the heat equation solver program that enables one to
    start the program from a given state (i.e. not from scratch every time).
@@ -12,4 +12,4 @@ calculation. So, when the program starts and a checkpoint file is present, it
 will replace the initial state with the one in the restart file.
 
 Use MPI-IO to accomplish the I/O routines. Starting points are provided in
-[c/io.c](c/io.c) and [fortran/io.F90](fortran/io.F90).
+[c/io.c](c/io.c).

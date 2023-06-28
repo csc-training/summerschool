@@ -27,7 +27,7 @@ typedef struct {
 #define DY 0.01
 
 /* file name for restart checkpoints*/
-#define CHECKPOINT "HEAT_RESTART.dat"
+#define CHECKPOINT "HEAT_RESTART.h5"
 
 /* Function prototypes */
 double **malloc_2d(int nx, int ny);
@@ -42,9 +42,11 @@ void parallel_setup(parallel_data *parallel, int nx, int ny);
 void parallel_set_dimensions(parallel_data *parallel, int nx, int ny);
 
 void initialize(int argc, char *argv[], field *temperature1,
-                field *temperature2, int *nsteps, parallel_data *parallel);
+                field *temperature2, int *start_iter, int *nsteps, parallel_data *parallel);
 
 void generate_field(field *temperature, parallel_data *parallel);
+
+void update_boundary_conditions(field *temperature, parallel_data *parallel, int iter);
 
 void exchange(field *temperature, parallel_data *parallel);
 

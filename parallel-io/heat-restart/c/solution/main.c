@@ -17,23 +17,24 @@ int main(int argc, char **argv)
     double dt;                  //!< Time step
     int nsteps;                 //!< Number of time steps
 
-    int image_interval = 500;    //!< Image output interval
-    int restart_interval = 200;  //!< Checkpoint output interval
+    int image_interval = 500;   //!< Image output interval
+    int restart_interval = 200; //!< Checkpoint output interval
 
     parallel_data parallelization; //!< Parallelization info
 
-    int iter;                   //!< Iteration counter
+    int iter = 0;               //!< Iteration counter
+    int start_iter = 1;
 
     double dx2, dy2;            //!< delta x and y squared
 
-    double start_clock;        //!< Time stamps
+    double start_clock;         //!< Time stamps
 
     MPI_Init(&argc, &argv);
 
-    initialize(argc, argv, &current, &previous, &nsteps, &parallelization);
+    initialize(argc, argv, &current, &previous, &start_iter, &nsteps, &parallelization);
 
-    /* Output the initial field */
-    write_field(&current, 0, &parallelization);
+    /* Output the initial field for the current restart */
+    write_field(&current, start_iter-1, &parallelization);
 
     /* Largest stable time step */
     dx2 = current.dx * current.dx;
@@ -44,7 +45,8 @@ int main(int argc, char **argv)
     start_clock = MPI_Wtime();
 
     /* Time evolve */
-    for (iter = 1; iter <= nsteps; iter++) {
+    for (iter = start_iter; iter <= nsteps; iter++) {
+        update_boundary_conditions(&previous, &parallelization, iter-1);
         exchange(&previous, &parallelization);
         evolve(&current, &previous, a, dt);
         if (iter % image_interval == 0) {
