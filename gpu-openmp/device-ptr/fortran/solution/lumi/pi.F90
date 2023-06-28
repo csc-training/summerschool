@@ -87,7 +87,7 @@ contains
         inside = inside + 1
       end if
     end do
-!$omp end target teams distribute simd
+!$omp end target teams distribute parallel do
 
 
 !$omp target exit data map(delete:x, y)
