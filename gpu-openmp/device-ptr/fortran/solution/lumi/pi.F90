@@ -70,11 +70,6 @@ contains
 
     allocate(x(1:n))
     allocate(y(1:n))
-    Nbytes=sizeof(x)
-
-  call hipCheck(hipMalloc(x_d,Nbytes))
-  call hipCheck(hipMalloc(y_d,Nbytes))
-
     inside = 0
 
 !$omp target enter data map(alloc:x, y)
@@ -86,7 +81,7 @@ contains
     istat= hiprandGenerateUniform(gen, c_loc(y), n)
 !$omp end target data
 
-!$omp target teams distribute simd reduction(+:inside)
+!$omp target teams distribute parallel do reduction(+:inside)
     do i = 1, n
       if (x(i)**2 + y(i)**2 < 1.0) then
         inside = inside + 1
