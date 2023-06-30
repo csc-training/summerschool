@@ -149,8 +149,8 @@ void write_restart(field *temperature, parallel_data *parallel, int iter)
     //   each rank writes.
 
     // TODO: define a dataspace with the dimensions of a local
-    //   domain for each rank and user hyperslabs to select 
-    //   the part containing "real" data (i.e., not the ghost
+    //   domain for each rank and user hyperslabs to select
+    //   the part containing the data (not including the ghost
     //   cells).
 
     // TODO: write data using a collective write operation.
@@ -170,9 +170,10 @@ void read_restart(field *temperature, parallel_data *parallel, int *iter)
 
     // TODO: open the dataset containing the temperature field.
 
-    // TODO: read the dimensions of the dataspace and 
+    // TODO: read the dimensions of the dataspace and
     //   set correct dimensions to MPI metadata
     parallel_setup(parallel, dim[0], dim[1]);
+
     //   set local dimensions and allocate memory for the data
     set_field_dimensions(temperature, dim[0], dim[1], parallel);
     allocate_field(temperature);
@@ -180,8 +181,8 @@ void read_restart(field *temperature, parallel_data *parallel, int *iter)
     // TODO: use hyperslabs to define the part of the file that
     //   each rank reads.
 
-    // TODO: in each rank create a dataspace to read the data into 
-    //   and use hyperslabs to define the part containing "real"
+    // TODO: in each rank create a dataspace to read the data into
+    //   and use hyperslabs to define the part containing the
     //   data.
 
     // TODO: read the data using a collective read.

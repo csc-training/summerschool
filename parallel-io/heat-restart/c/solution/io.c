@@ -143,12 +143,12 @@ void write_restart(field *temperature, parallel_data *parallel, int iter)
 {
     herr_t status;
     hid_t plist_id, dset_id, filespace, memspace, attrspace, file_id, attr_id;
-    hsize_t size_full[2]   = {temperature->nx_full, temperature->ny_full}; 
-    hsize_t start_full[2]  = {parallel->rank*temperature->nx, 0}; 
+    hsize_t size_full[2]   = {temperature->nx_full, temperature->ny_full};
+    hsize_t start_full[2]  = {parallel->rank*temperature->nx, 0};
     hsize_t size_block[2]  = {temperature->nx, temperature->ny};
-    hsize_t ones[2] = {1, 1}; 
+    hsize_t ones[2] = {1, 1};
     hsize_t size_block_ghost[2] = {temperature->nx+2, temperature->ny+2};
- 
+
     /* Create the file. */
     plist_id = H5Pcreate(H5P_FILE_ACCESS);
     H5Pset_fapl_mpio(plist_id, MPI_COMM_WORLD, MPI_INFO_NULL);
@@ -157,7 +157,7 @@ void write_restart(field *temperature, parallel_data *parallel, int iter)
     H5Pclose(plist_id);
 
     /* Define the dataspace for the dataset. */
- 
+
     filespace = H5Screate_simple(2, size_full, NULL);
 
     /* Create the dataset */
@@ -169,7 +169,7 @@ void write_restart(field *temperature, parallel_data *parallel, int iter)
     H5Sselect_hyperslab(filespace, H5S_SELECT_SET, start_full, NULL, ones,
                         size_block);
 
-    /* Define the dataspace and hyperslab that containst the data 
+    /* Define the dataspace and hyperslab that containst the data
        to be written to disk. */
 
     memspace = H5Screate_simple(2, size_block_ghost, NULL);
@@ -208,7 +208,7 @@ void write_restart(field *temperature, parallel_data *parallel, int iter)
 /* Read a restart checkpoint that contains the current
  * iteration number and temperature field. */
 void read_restart(field *temperature, parallel_data *parallel, int *iter)
-{ 
+{
     herr_t status;
     hid_t plist_id, dset_id, filespace, memspace, file_id, attr_id;
     hsize_t size_full[2], start_full[2], size_block[2], size_block_ghost[2];
@@ -235,7 +235,7 @@ void read_restart(field *temperature, parallel_data *parallel, int *iter)
     parallel_setup(parallel, size_full[0], size_full[1]);
     set_field_dimensions(temperature, size_full[0], size_full[1], parallel);
     allocate_field(temperature);
-   
+
     /* Select the hyperslab to read. */
 
     start_full[0] = parallel->rank*temperature->nx;
@@ -269,7 +269,7 @@ void read_restart(field *temperature, parallel_data *parallel, int *iter)
 
     attr_id = H5Aopen(dset_id, "Iteration", H5P_DEFAULT);
     H5Aread(attr_id, H5T_NATIVE_INT, iter);
-    
+
     (*iter) += 1;
 
     /* Close the handles. */

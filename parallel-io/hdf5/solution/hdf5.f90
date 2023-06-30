@@ -57,16 +57,45 @@ contains
 
     ! Create the handle for parallel file access property list
     ! and create a new file
+    call h5open_f(errc)
+    call h5pcreate_f(H5P_FILE_ACCESS_F, property_list, errc)
+    call h5pset_fapl_mpio_f(property_list, MPI_COMM_WORLD, MPI_INFO_NULL, errc)
+    call h5fcreate_f("data.h5", H5F_ACC_TRUNC_F, file_handle, errc, &
+         & access_prp=property_list)
+    call h5pclose_f(property_list, errc)
 
     ! Create the dataset
+    dims = datasize
+    call h5screate_simple_f(1, dims, file_space, errc)
+    call h5dcreate_f(file_handle, 'data', H5T_NATIVE_INTEGER, &
+         & file_space, dataset_id, errc)
+    call h5sclose_f(file_space, errc)
 
     ! Select a hyperslab of the file dataspace
+    counts = localsize
+    offsets = my_id * localsize
+    call h5dget_space_f(dataset_id, file_space, errc)
+    call h5sselect_hyperslab_f(file_space, H5S_SELECT_SET_F, offsets, &
+         & counts, errc)
 
     ! Now we can write our local data to the correct position in the
     ! dataset. Here we use collective write, but independent writes are
     ! also possible.
+    call h5screate_simple_f(1, counts, mem_space, errc)
+    call h5pcreate_f(H5P_DATASET_XFER_F, property_list, errc)
+    call h5pset_dxpl_mpio_f(property_list, H5FD_MPIO_COLLECTIVE_F, errc)
+
+    call h5dwrite_f(dataset_id, H5T_NATIVE_INTEGER, writevector, dims, errc, &
+         & file_space_id=file_space, mem_space_id=mem_space, &
+         & xfer_prp=property_list)
 
     ! Close all opened HDF5 handles
+    call h5pclose_f(property_list, errc)
+    call h5sclose_f(mem_space, errc)
+    call h5sclose_f(file_space, errc)
+    call h5dclose_f(dataset_id, errc)
+    call h5fclose_f(file_handle, errc)
+    call h5close_f(errc)
 
   end subroutine h5_writer
 
@@ -82,16 +111,44 @@ contains
 
     ! Create the handle for parallel file access property list
     ! and open a file for reading
+    call h5open_f(errc)
+    call h5pcreate_f(H5P_FILE_ACCESS_F, property_list, errc)
+    call h5pset_fapl_mpio_f(property_list, MPI_COMM_WORLD, MPI_INFO_NULL, errc)
+    call h5fopen_f("data.h5", H5F_ACC_RDONLY_F, file_handle, errc, &
+         & access_prp=property_list)
+    call h5pclose_f(property_list, errc)
 
     ! Open the dataset and get the filespace id
+    dims = datasize
+    call h5dopen_f(file_handle, 'data', dataset_id, errc)
+    call h5dget_space_f(dataset_id, file_space, errc)
+    call h5sclose_f(file_space, errc)
 
     ! Select a hyperslab of the file dataspace
+    counts = localsize
+    offsets = my_id * localsize
+    call h5dget_space_f(dataset_id, file_space, errc)
+    call h5sselect_hyperslab_f(file_space, H5S_SELECT_SET_F, offsets, &
+         & counts, errc)
 
     ! Now we can read our local data from the correct position in the
     ! dataset. Here we use collective read, but independent reads are
     ! also possible.
+    call h5screate_simple_f(1, counts, mem_space, errc)
+    call h5pcreate_f(H5P_DATASET_XFER_F, property_list, errc)
+    call h5pset_dxpl_mpio_f(property_list, H5FD_MPIO_COLLECTIVE_F, errc)
+
+    call h5dread_f(dataset_id, H5T_NATIVE_INTEGER, readvector, dims, errc, &
+         & file_space_id=file_space, mem_space_id=mem_space, &
+         & xfer_prp=property_list)
 
     ! Close all opened HDF5 handles
+    call h5pclose_f(property_list, errc)
+    call h5sclose_f(mem_space, errc)
+    call h5sclose_f(file_space, errc)
+    call h5dclose_f(dataset_id, errc)
+    call h5fclose_f(file_handle, errc)
+    call h5close_f(errc)
 
   end subroutine h5_reader
 

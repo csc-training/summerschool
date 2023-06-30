@@ -130,7 +130,7 @@ void generate_field(field *temperature, parallel_data *parallel)
 void update_boundary_conditions(field *temperature, parallel_data *parallel, int iter)
 {
     int i, j;
-   
+
     /* Boundary conditions (could be time dependent) */
     for (i = 0; i < temperature->nx + 2; i++) {
         temperature->data[i][0] = 20.0;
