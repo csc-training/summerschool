@@ -1,3 +1,4 @@
+#include "hip/hip_runtime.h"
 /* Main solver routines for heat equation solver */
 
 #include <stdio.h>
@@ -5,7 +6,7 @@
 #include <string.h>
 #include <assert.h>
 #include <mpi.h>
-#include <cuda_runtime_api.h>
+#include <hip/hip_runtime_api.h>
 
 #include "heat.h"
 
@@ -21,17 +22,17 @@ __global__ void evolve_kernel(double *currdata, double *prevdata, double a, doub
 
     // CUDA threads are arranged in column major order; thus j index from x, i from y
     int j = blockIdx.x * blockDim.x + threadIdx.x;
-    int i = blockIdx.y * blockDim.y + threadIdx.y;
+    int i = blockIdx.y * blockDim.y + threadIdx.y;        
 
     if (i > 0 && j > 0 && i < nx+1 && j < ny+1) {
         ind = i * (ny + 2) + j;
         ip = (i + 1) * (ny + 2) + j;
         im = (i - 1) * (ny + 2) + j;
-        jp = i * (ny + 2) + j + 1;
-        jm = i * (ny + 2) + j - 1;
+	jp = i * (ny + 2) + j + 1;
+	jm = i * (ny + 2) + j - 1;
         currdata[ind] = prevdata[ind] + a * dt *
-          ((prevdata[ip] -2.0 * prevdata[ind] + prevdata[im]) / dx2 +
-          (prevdata[jp] - 2.0 * prevdata[ind] + prevdata[jm]) / dy2);
+	      ((prevdata[ip] -2.0 * prevdata[ind] + prevdata[im]) / dx2 +
+	      (prevdata[jp] - 2.0 * prevdata[ind] + prevdata[jm]) / dy2);
 
     }
 
@@ -48,13 +49,13 @@ void evolve(field *curr, field *prev, double a, double dt)
 
     /* CUDA thread settings */
     const int blocksize = 16;  //!< CUDA thread block dimension
-    dim3 dimBlock(blocksize, blocksize);
+    dim3 dimBlock(blocksize, blocksize); 
     // CUDA threads are arranged in column major order; thus make ny x nx grid
-    dim3 dimGrid((ny + 2 + blocksize - 1) / blocksize,
-                 (nx + 2 + blocksize - 1) / blocksize);
+    dim3 dimGrid((ny + 2 + blocksize - 1) / blocksize, 
+                 (nx + 2 + blocksize - 1) / blocksize); 
 
-    evolve_kernel<<<dimGrid, dimBlock>>>(curr->devdata, prev->devdata, a, dt, nx, ny, dx2, dy2);
-    cudaDeviceSynchronize();
+    hipLaunchKernelGGL(evolve_kernel, dim3(dimGrid), dim3(dimBlock), 0, 0, curr->devdata, prev->devdata, a, dt, nx, ny, dx2, dy2);
+    hipDeviceSynchronize();
 }
 
 void enter_data(field *temperature1, field *temperature2)
@@ -62,12 +63,12 @@ void enter_data(field *temperature1, field *temperature2)
     size_t datasize;
 
     datasize = (temperature1->nx + 2) * (temperature1->ny + 2) * sizeof(double);
+  
+    hipMalloc(&temperature1->devdata, datasize);
+    hipMalloc(&temperature2->devdata, datasize);
 
-    cudaMalloc(&temperature1->devdata, datasize);
-    cudaMalloc(&temperature2->devdata, datasize);
-
-    cudaMemcpy(temperature1->devdata, temperature1->data, datasize, cudaMemcpyHostToDevice);
-    cudaMemcpy(temperature2->devdata, temperature2->data, datasize, cudaMemcpyHostToDevice);
+    hipMemcpy(temperature1->devdata, temperature1->data, datasize, hipMemcpyHostToDevice);
+    hipMemcpy(temperature2->devdata, temperature2->data, datasize, hipMemcpyHostToDevice);
 }
 
 /* Copy a temperature field from the device to the host */
@@ -76,7 +77,7 @@ void update_host(field *temperature)
     size_t datasize;
 
     datasize = (temperature->nx + 2) * (temperature->ny + 2) * sizeof(double);
-    cudaMemcpy(temperature->data, temperature->devdata, datasize, cudaMemcpyDeviceToHost);
+    hipMemcpy(temperature->data, temperature->devdata, datasize, hipMemcpyDeviceToHost);
 }
 
 /* Copy a temperature field from the host to the device */
@@ -85,6 +86,6 @@ void update_device(field *temperature)
     size_t datasize;
 
     datasize = (temperature->nx + 2) * (temperature->ny + 2) * sizeof(double);
-    cudaMemcpy(temperature->devdata, temperature->data, datasize, cudaMemcpyHostToDevice);
+    hipMemcpy(temperature->devdata, temperature->data, datasize, hipMemcpyHostToDevice);
 }
 
