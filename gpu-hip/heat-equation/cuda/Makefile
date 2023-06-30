@@ -14,6 +14,16 @@ LDFLAGS=
 LIBS=-lpng -lamdhip64 -lcudart
 endif
 
+ifeq ($(COMP),lumi)
+CXX=mpicxx
+CC=gcc
+HIPCC=hipcc --x cu
+HIPFLAGS=-g -O3 -I$(COMMONDIR)
+CCFLAGS=-g -O3 -Wall -I$(COMMONDIR) 
+LDFLAGS=
+LIBS=-lpng -lamdhip64 -lcudart
+endif
+
 EXE=heat_hip
 OBJS=main.o core.o setup.o utilities.o io.o 
 OBJS_PNG=$(COMMONDIR)/pngwriter.o
