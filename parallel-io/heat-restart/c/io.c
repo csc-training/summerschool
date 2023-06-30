@@ -136,43 +136,59 @@ void read_field(field *temperature1, field *temperature2, char *filename,
     fclose(fp);
 }
 
-/* Write a restart checkpoint that contains field dimensions, current
+/* Write an HDF5 restart checkpoint file that contains the current
  * iteration number and temperature field. */
 void write_restart(field *temperature, parallel_data *parallel, int iter)
 {
-    // TODO: open the file called CHECKPOINT (defined in heat.h)
+    // TODO: create a file called CHECKPOINT (defined in heat.h)
 
-    // TODO: rank 0 writes out a header that has three values:
-    //   temperature->nx_full
-    //   temperature->ny_full
-    //   iter
+    // TODO: define a dataspace with the dimensions of the full
+    //   temperature field and create the dataset.
 
-    // TODO: all processes write out their temperature data into the file,
-    //   i.e. the temperature->data array including the ghost layers.
-    //   Use a collective write routine.
+    // TODO: use hyperslabs to define the part of the file that
+    //   each rank writes.
 
-    // TODO: close file
+    // TODO: define a dataspace with the dimensions of a local
+    //   domain for each rank and user hyperslabs to select
+    //   the part containing the data (not including the ghost
+    //   cells).
+
+    // TODO: write data using a collective write operation.
+
+    // TODO: write the current iteration number as an
+    //   attribute to the dataset containing the temperature
+    //   field.
+
+    // TODO: close all handles.
 }
 
-/* Read a restart checkpoint that contains field dimensions, current
+/* Read an HDF restart checkpoint file that contains the current
  * iteration number and temperature field. */
 void read_restart(field *temperature, parallel_data *parallel, int *iter)
 {
-    int rows, cols;
-
     // TODO: open the file called CHECKPOINT (defined in heat.h)
 
-    // TODO: all ranks read the header using collective IO
+    // TODO: open the dataset containing the temperature field.
 
-    // set correct dimensions to MPI metadata
-    parallel_setup(parallel, rows, cols);
-    // set local dimensions and allocate memory for the data
-    set_field_dimensions(temperature, rows, cols, parallel);
+    // TODO: read the dimensions of the dataspace and
+    //   set correct dimensions to MPI metadata
+    parallel_setup(parallel, dim[0], dim[1]);
+
+    //   set local dimensions and allocate memory for the data
+    set_field_dimensions(temperature, dim[0], dim[1], parallel);
     allocate_field(temperature);
 
-    // TODO: all processes read their temperature data from the file,
-    //   i.e. the temperature->data array including the ghost layers.
-    //   Use a collective read routine.
+    // TODO: use hyperslabs to define the part of the file that
+    //   each rank reads.
 
-    // TODO: close file
+    // TODO: in each rank create a dataspace to read the data into
+    //   and use hyperslabs to define the part containing the
+    //   data.
+
+    // TODO: read the data using a collective read.
+
+    // TODO: read the attribute containing the number of
+    //   current iteration.
+
+    // TODO: close all handles.
 }

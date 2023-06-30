@@ -8,13 +8,12 @@
 #include <mpi.h>
 
 #include "heat.h"
-#include "../../common/pngwriter.h"
 
 #define NSTEPS 500  // Default number of iteration steps
 
 /* Initialize the heat equation solver */
 void initialize(int argc, char* argv[], field *current,
-                field *previous, int *nsteps, parallel_data *parallel)
+                field *previous, int *start_iter, int *nsteps, parallel_data *parallel)
 {
     /*
      * Following combinations of command line arguments are possible:
@@ -69,14 +68,17 @@ void initialize(int argc, char* argv[], field *current,
 
     // Check if checkpoint exists
     if (!access(CHECKPOINT, F_OK)) {
+
         read_restart(current, parallel, &start);
+	*start_iter = start;
         set_field_dimensions(previous, current->nx_full, current->ny_full,
                              parallel);
         allocate_field(previous);
         if (parallel->rank == 0)
             printf("Restarting from an earlier checkpoint saved"
-                   " at iteration %d.\n", start);
+                   " at iteration %d.\n", start-1);
         copy_field(current, previous);
+
     }
     else if (read_file)
       read_field(current, previous, input_file, parallel);
@@ -121,7 +123,14 @@ void generate_field(field *temperature, parallel_data *parallel)
         }
     }
 
-    /* Boundary conditions */
+}
+
+
+void update_boundary_conditions(field *temperature, parallel_data *parallel, int iter)
+{
+    int i, j;
+
+    /* Boundary conditions (could be time dependent) */
     for (i = 0; i < temperature->nx + 2; i++) {
         temperature->data[i][0] = 20.0;
         temperature->data[i][temperature->ny + 1] = 70.0;
@@ -137,6 +146,7 @@ void generate_field(field *temperature, parallel_data *parallel)
         }
     }
 }
+
 
 /* Set dimensions of the field. Note that the nx is the size of the first
  * dimension and ny the second. */

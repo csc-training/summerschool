@@ -5,9 +5,10 @@
 #include <string.h>
 #include <assert.h>
 #include <mpi.h>
+#include <hdf5.h>
 
 #include "heat.h"
-#include "../../common/pngwriter.h"
+#include "pngwriter.h"
 
 /* Output routine that prints out a picture of the temperature
  * distribution. */
@@ -136,73 +137,146 @@ void read_field(field *temperature1, field *temperature2, char *filename,
     fclose(fp);
 }
 
-/* Write a restart checkpoint that contains field dimensions, current
+/* Write a restart checkpoint that contains the current
  * iteration number and temperature field. */
 void write_restart(field *temperature, parallel_data *parallel, int iter)
 {
-    MPI_File fp;
-    int disp, size;
+    herr_t status;
+    hid_t plist_id, dset_id, filespace, memspace, attrspace, file_id, attr_id;
+    hsize_t size_full[2]   = {temperature->nx_full, temperature->ny_full};
+    hsize_t start_full[2]  = {parallel->rank*temperature->nx, 0};
+    hsize_t size_block[2]  = {temperature->nx, temperature->ny};
+    hsize_t ones[2] = {1, 1};
+    hsize_t size_block_ghost[2] = {temperature->nx+2, temperature->ny+2};
 
-    // open the file and write the dimensions
-    MPI_File_open(MPI_COMM_WORLD, CHECKPOINT,
-                  MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &fp);
-    if (parallel->rank == 0) {
-        MPI_File_write(fp, &temperature->nx_full, 1, MPI_INT,
-                       MPI_STATUS_IGNORE);
-        MPI_File_write(fp, &temperature->ny_full, 1, MPI_INT,
-                       MPI_STATUS_IGNORE);
-        MPI_File_write(fp, &iter, 1, MPI_INT, MPI_STATUS_IGNORE);
-    }
-    // size of the local data including the ghost layers
-    size = (temperature->nx + 2) * (temperature->ny + 2);
+    /* Create the file. */
+    plist_id = H5Pcreate(H5P_FILE_ACCESS);
+    H5Pset_fapl_mpio(plist_id, MPI_COMM_WORLD, MPI_INFO_NULL);
+    file_id = H5Fcreate(CHECKPOINT, H5F_ACC_TRUNC, H5P_DEFAULT, plist_id);
 
-    // point each MPI task to the correct part of the file
-    disp = 3 * sizeof(int);
-    disp += parallel->rank * (temperature->ny + 2) *
-            (temperature->nx + 2) * sizeof(double);
+    H5Pclose(plist_id);
 
-    // write data simultaneously from all processes
-    MPI_File_write_at_all(fp, disp, &temperature->data[0][0],
-                          size, MPI_DOUBLE, MPI_STATUS_IGNORE);
+    /* Define the dataspace for the dataset. */
 
-    // close up shop
-    MPI_File_close(&fp);
+    filespace = H5Screate_simple(2, size_full, NULL);
+
+    /* Create the dataset */
+    dset_id = H5Dcreate(file_id, "Temperature", H5T_NATIVE_DOUBLE, filespace,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+    /* Select a hyperslab of the file dataspace */
+
+    H5Sselect_hyperslab(filespace, H5S_SELECT_SET, start_full, NULL, ones,
+                        size_block);
+
+    /* Define the dataspace and hyperslab that containst the data
+       to be written to disk. */
+
+    memspace = H5Screate_simple(2, size_block_ghost, NULL);
+    H5Sselect_hyperslab(memspace, H5S_SELECT_SET, ones, NULL, ones,
+                        size_block);
+
+    /* Now we can write our local data to the correct position in the
+       dataset. Here we use collective write, but independent writes are
+       also possible. */
+
+    plist_id = H5Pcreate(H5P_DATASET_XFER);
+    H5Pset_dxpl_mpio(plist_id, H5FD_MPIO_COLLECTIVE);
+
+    status = H5Dwrite(dset_id, H5T_NATIVE_DOUBLE, memspace, filespace,
+                      plist_id, &(temperature->data[0][0]));
+
+
+    /* Create dataspace for a scalar attribute. */
+    attrspace = H5Screate(H5S_SCALAR);
+
+    /* Create and write attribute holding the iteration number. */
+
+    attr_id = H5Acreate(dset_id, "Iteration", H5T_NATIVE_INT, attrspace, H5P_DEFAULT, H5P_DEFAULT);
+    H5Awrite(attr_id, H5T_NATIVE_INT, &iter);
+
+    /* Close all open HDF5 handles. */
+    H5Sclose(attrspace);
+    H5Aclose(attr_id);
+    H5Dclose(dset_id);
+    H5Pclose(plist_id);
+    H5Sclose(filespace);
+    H5Sclose(memspace);
+    H5Fclose(file_id);
 }
 
-/* Read a restart checkpoint that contains field dimensions, current
+/* Read a restart checkpoint that contains the current
  * iteration number and temperature field. */
 void read_restart(field *temperature, parallel_data *parallel, int *iter)
 {
-    MPI_File fp;
-    int rows, cols;
-    int disp, size;
+    herr_t status;
+    hid_t plist_id, dset_id, filespace, memspace, file_id, attr_id;
+    hsize_t size_full[2], start_full[2], size_block[2], size_block_ghost[2];
+    hsize_t ones[2]={1, 1};
 
-    // open file for reading
-    MPI_File_open(MPI_COMM_WORLD, CHECKPOINT, MPI_MODE_RDONLY,
-                  MPI_INFO_NULL, &fp);
+    /* Open the file for read-only access. */
+    plist_id = H5Pcreate(H5P_FILE_ACCESS);
+    H5Pset_fapl_mpio(plist_id, MPI_COMM_WORLD, MPI_INFO_NULL);
+    file_id = H5Fopen(CHECKPOINT, H5F_ACC_RDONLY, plist_id);
 
-    // read grid size and current iteration
-    MPI_File_read_all(fp, &rows, 1, MPI_INT, MPI_STATUS_IGNORE);
-    MPI_File_read_all(fp, &cols, 1, MPI_INT, MPI_STATUS_IGNORE);
-    MPI_File_read_all(fp, iter, 1, MPI_INT, MPI_STATUS_IGNORE);
-    // set correct dimensions to MPI metadata
-    parallel_setup(parallel, rows, cols);
-    // set local dimensions and allocate memory for the data
-    set_field_dimensions(temperature, rows, cols, parallel);
+    H5Pclose(plist_id);
+
+    /* Open the dataset in the file. */
+
+    dset_id = H5Dopen(file_id, "Temperature", H5P_DEFAULT);
+
+    /* Open the dataspace and read its dimensions .*/
+
+    filespace = H5Dget_space(dset_id);
+    H5Sget_simple_extent_dims(filespace, size_full, NULL);
+
+    /* Set local dimensions and allocate memory for the data. */
+
+    parallel_setup(parallel, size_full[0], size_full[1]);
+    set_field_dimensions(temperature, size_full[0], size_full[1], parallel);
     allocate_field(temperature);
 
-    // size of the local data including the ghost layers
-    size = (temperature->nx + 2) * (temperature->ny + 2);
+    /* Select the hyperslab to read. */
 
-    // point each MPI task to the correct part of the file
-    disp = 3 * sizeof(int);
-    disp += parallel->rank * (temperature->ny + 2) *
-            (temperature->nx + 2) * sizeof(double);
+    start_full[0] = parallel->rank*temperature->nx;
+    start_full[1] = 0;
+    size_block[0] = temperature->nx;
+    size_block[1] = temperature->ny;
 
-    // read data simultaneously to all processes
-    MPI_File_read_at_all(fp, disp, &temperature->data[0][0],
-                         size, MPI_DOUBLE, MPI_STATUS_IGNORE);
+    H5Sselect_hyperslab(filespace, H5S_SELECT_SET, start_full, NULL, ones,
+                        size_block);
 
-    // close up shop
-    MPI_File_close(&fp);
+    /* Create the dataspace for the dataset in memory */;
+
+    size_block_ghost[0] = temperature->nx+2;
+    size_block_ghost[1] = temperature->ny+2;
+
+    memspace = H5Screate_simple(2, size_block_ghost, NULL);
+    H5Sselect_hyperslab(memspace, H5S_SELECT_SET, ones, NULL, ones,
+                        size_block);
+
+    /* Read the data. */
+
+    plist_id = H5Pcreate(H5P_DATASET_XFER);
+    H5Pset_dxpl_mpio(plist_id, H5FD_MPIO_COLLECTIVE);
+
+
+    status = H5Dread(dset_id, H5T_NATIVE_DOUBLE, memspace, filespace,
+                      plist_id, &(temperature->data[0][0]));
+
+
+    /* Read the iteration number. */
+
+    attr_id = H5Aopen(dset_id, "Iteration", H5P_DEFAULT);
+    H5Aread(attr_id, H5T_NATIVE_INT, iter);
+
+    (*iter) += 1;
+
+    /* Close the handles. */
+    H5Aclose(attr_id);
+    H5Dclose(dset_id);
+    H5Pclose(plist_id);
+    H5Sclose(filespace);
+    H5Sclose(memspace);
+    H5Fclose(file_id);
 }
