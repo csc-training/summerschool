@@ -87,3 +87,4 @@ void update_device(field *temperature)
     datasize = (temperature->nx + 2) * (temperature->ny + 2) * sizeof(double);
     cudaMemcpy(temperature->devdata, temperature->data, datasize, cudaMemcpyHostToDevice);
 }
+
