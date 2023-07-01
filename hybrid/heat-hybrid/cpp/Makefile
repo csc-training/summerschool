@@ -1,5 +1,5 @@
 ifeq ($(COMP),)
-COMP=gnu
+COMP=lumi
 endif
 
 COMMONDIR=../common
@@ -7,7 +7,7 @@ COMMONDIR=../common
 ifeq ($(COMP),gnu)
 CXX=mpicxx
 CC=gcc
-CCFLAGS=-g -O3 -march=native -Wall -I$(COMMONDIR) -DNDEBUG
+CCFLAGS=-g -O3 -march=native -Wall -I$(COMMONDIR) -DNDEBUG -fopenmp
 LDFLAGS=
 LIBS=-lpng
 endif
@@ -15,8 +15,17 @@ endif
 ifeq ($(COMP),intel)
 CXX=mpicxx
 CC=icc
-CCFLAGS=-g -O3 -xHost -I$(COMMONDIR) -DNDEBUG
+CCFLAGS=-g -O3 -xHost -I$(COMMONDIR) -DNDEBUG -fopenmp
 LDFLAGS=
+LIBS=-lpng
+endif
+
+ifeq ($(COMP),lumi)
+LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12
+CXX=CC
+CC=cc
+CCFLAGS=-O3 -Wall -I$(COMMONDIR) -I$(LIBPNG_DIR)/include -fopenmp
+LDFLAGS=-L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib -fopenmp
 LIBS=-lpng
 endif
 
