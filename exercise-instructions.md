@@ -358,7 +358,7 @@ export PATH=$TAU/bin:$PATH
 ```
 In order to use omniperf load the follwoing modules:
 ```
-/project/project_465000536/Omni/omniperf/modulefiles
+module use /project/project_465000536/Omni/omniperf/modulefiles
 module load omniperf
 module load cray-python
 ``` 
