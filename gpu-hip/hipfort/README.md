@@ -47,3 +47,6 @@ Hipfort provides interfaces for various highly optimized library.
 The folder  [hiprand_example](hiprand_example/) shows how to call the `hiprand` for generating single precision uniform random distributed nubmbers for calculation the value of `pi`.
 
 The exercise is to analyse and run the programs. For more examples of hipfort check also the [official repository](https://github.com/ROCmSoftwarePlatform/hipfort/tree/develop/test).
+
+## Heat Equation
+Starting from the Fortran, serial or MPI, heat equation offload to GPU the update loops. 
