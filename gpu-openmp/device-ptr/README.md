@@ -11,6 +11,6 @@ The code uses combination of OpenMP offloading and CUDA library functions:
   - Calculation of **pi** is done with OpenMP offload constructs
 
 Add appropriate OpenMP constructs according the TODOs in the code. You can
-compile the code in Mahti with the provided Makefile by typing `make`.
+compile the code in the provided Makefile by typing `make`.
 
 (Fortran code uses the hipfort package for calling `hiprand` library. See also this [example](../../gpu-hip/hipfort/hiprand_example))
