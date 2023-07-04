@@ -356,10 +356,11 @@ In order to use TAU one only has to load the modules needed to run the applicati
 export TAU=/project/project_465000536/appl/tau/2.32/craycnl
 export PATH=$TAU/bin:$PATH
 ```
-In order to use omniperf load the follwoing modules:
+In order to use omniperf load the following modules:
 ```
 module use /project/project_465000536/Omni/omniperf/modulefiles
 module load omniperf
 module load cray-python
-``` 
+```
+In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/5.3.3`.
 More information about TAU can be found in [TAU User Documentation](https://www.cs.uoregon.edu/research/tau/docs/newguide/), while for Omniperf at [Omniperf User Documentation](https://github.com/AMDResearch/omniperf)
