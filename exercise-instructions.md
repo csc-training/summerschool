@@ -349,12 +349,37 @@ See [the MPI debugging exercise](mpi/debugging),
 for possible debugging options.
 
 ## Performance analysis with TAU and Omniperf
+```
+# Create installation directory
+mkdir -p .../appl/tau
+cd .../appl/tau
+
+# Download TAU
+wget https://www.cs.uoregon.edu/research/tau/tau_releases/tau-2.32.tar.gz
+tar xvf tau-2.32.tar.gz
+mv tau-2.32 2.32
+
+# Go to TAU directory
+cd 2.32
+
+./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -phiprof -papi=/opt/cray/pe/papi/6.0.0.15/
+make -j 64
+
+./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/ -rocprofiler=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/rocprofiler
+make -j 64
+
+./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/ -roctracer=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/roctracer
+make -j 64
+```
 
 `TAU` and `Omniperf` can be used to do performance analysis. 
 In order to use TAU one only has to load the modules needed to run the application be ran and set the paths to the TAU install folder:
 ```
 export TAU=/project/project_465000536/appl/tau/2.32/craycnl
 export PATH=$TAU/bin:$PATH
+```
+```
+https://amdresearch.github.io/omniperf/installation.html#client-side-installation
 ```
 In order to use omniperf load the following modules:
 ```
