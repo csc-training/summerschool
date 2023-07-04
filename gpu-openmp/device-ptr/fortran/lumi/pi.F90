@@ -69,9 +69,6 @@ contains
     allocate(y(1:n))
     Nbytes=sizeof(x)
 
-  call hipCheck(hipMalloc(x_d,Nbytes))
-  call hipCheck(hipMalloc(y_d,Nbytes))
-
     inside = 0
 
 
