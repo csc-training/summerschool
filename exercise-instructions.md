@@ -390,6 +390,6 @@ srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465
 omniperf analyze -p workloads/workload_xy/mi200/ > analyse_xy.txt
 ```
 In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/5.3.3`.
-
+It is useful add to the applciation to be analysed the follwing `-g -gdwarf-4`
 
 More information about TAU can be found in [TAU User Documentation](https://www.cs.uoregon.edu/research/tau/docs/newguide/), while for Omniperf at [Omniperf User Documentation](https://github.com/AMDResearch/omniperf)
