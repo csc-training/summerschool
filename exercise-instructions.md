@@ -378,6 +378,26 @@ In order to use TAU one only has to load the modules needed to run the applicati
 export TAU=/project/project_465000536/appl/tau/2.32/craycnl
 export PATH=$TAU/bin:$PATH
 ```
+Profiling mpi code:
+```
+srun --cpus-per-task=1 --account=project_465000536 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
+```
+Visualize:
+```
+paraprof
+```
+
+Tracing:
+
+```
+export TAU_TRACE=1
+srun --cpus-per-task=1 --account=project_465000536 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
+tau_treemerge.pl
+tau_trace2json tau.trc tau.edf -chrome -ignoreatomic -o app.json
+```
+
+Copy `app.json`  to local computer, open ui.perfett.dev and then load the `app.json` file.
+## Omniperf
 ```
 https://amdresearch.github.io/omniperf/installation.html#client-side-installation
 ```
