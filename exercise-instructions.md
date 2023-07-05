@@ -382,11 +382,15 @@ Profiling mpi code:
 ```
 srun --cpus-per-task=1 --account=project_465000536 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
 ```
+In order to to see the `paraprof` in browser use `vnc`:
+```
+module load lumi-vnc
+start-vnc
+```
 Visualize:
 ```
 paraprof
 ```
-
 Tracing:
 
 ```
