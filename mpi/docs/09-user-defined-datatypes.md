@@ -179,7 +179,7 @@ call mpi_type_free(rowtype, ierr)
 </div>
 <div class=column>
 ```c
-if (myid == 0)
+if (rank == 0)
   MPI_Type_vector(n, 1, 2, MPI_FLOAT,
                   &newtype)
   ...
@@ -190,7 +190,7 @@ else
 ```
 
 ```c
-if (myid == 0)
+if (rank == 0)
   MPI_Send(A, n, MPI_FLOAT, 1, ...)
 else
   MPI_Type_vector(n, 1, 2, MPI_FLOAT,
@@ -550,5 +550,3 @@ MPI_Type_free(&sub_type);
 <div class=column>
 ![](img/type_array.png){.center width=100%}
 </div>
-
-

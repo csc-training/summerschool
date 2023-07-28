@@ -61,10 +61,10 @@ if (rank%2 == 0) {
 MPI_Comm_split(MPI_COMM_WORLD, color,
     rank, &subcomm);
 
-MPI_Comm_rank(subcomm, &mysubid);
+MPI_Comm_rank(subcomm, &subrank);
 
 printf ("I am rank %d in MPI_COMM_WORLD, but"
-    "%d in Comm %d.\n", rank, mysubid,
+    "%d in Comm %d.\n", rank, subrank,
     color);
 ```
 
@@ -100,7 +100,7 @@ if (rank%2 == 0) {
 }
 MPI_Comm_split(MPI_COMM_WORLD, color,
                rank, &subcomm);
-MPI_Comm_rank(subcomm, &mysubid);
+MPI_Comm_rank(subcomm, &subrank);
 MPI_Bcast(sendbuf, 8, MPI_INT, 0,
           subcomm);
 ```
