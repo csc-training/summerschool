@@ -53,18 +53,18 @@ new communicators
 
 <div class=column>
 ```c
-if (myid%2 == 0) {
+if (rank%2 == 0) {
     color = 1;
 } else {
     color = 2;
 }
 MPI_Comm_split(MPI_COMM_WORLD, color,
-    myid, &subcomm);
+    rank, &subcomm);
 
 MPI_Comm_rank(subcomm, &mysubid);
 
 printf ("I am rank %d in MPI_COMM_WORLD, but"
-    "%d in Comm %d.\n", myid, mysubid,
+    "%d in Comm %d.\n", rank, mysubid,
     color);
 ```
 
@@ -93,13 +93,13 @@ I am rank 1 in MPI_COMM_WORLD, but 0 in Comm 2.
 <div class=column>
 <p>
 ```c
-if (myid%2 == 0) {
+if (rank%2 == 0) {
   color = 1;
 } else {
   color = 2;
 }
 MPI_Comm_split(MPI_COMM_WORLD, color,
-               myid, &subcomm);
+               rank, &subcomm);
 MPI_Comm_rank(subcomm, &mysubid);
 MPI_Bcast(sendbuf, 8, MPI_INT, 0,
           subcomm);

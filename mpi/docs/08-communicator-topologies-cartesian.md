@@ -132,8 +132,8 @@ period=(/ .true., .false. /)
 
 call mpi_dims_create(ntasks, 2, dims, rc)
 call mpi_cart_create(mpi_comm_world, 2, dims, period, .true., comm2d, rc)
-call mpi_comm_rank(comm2d, my_id, rc)
-call mpi_cart_coords(comm2d, my_id, 2, coords, rc)
+call mpi_comm_rank(comm2d, rank, rc)
+call mpi_cart_coords(comm2d, rank, 2, coords, rc)
 ```
 
 

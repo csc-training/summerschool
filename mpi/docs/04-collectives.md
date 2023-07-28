@@ -23,7 +23,7 @@ lang:   en
 
 <div class=column>
 ```fortran
-if (my_id == 0) then
+if (rank == 0) then
     do i = 1, ntasks-1
         call mpi_send(a, 1048576, &
             MPI_REAL, i, tag, &
@@ -128,14 +128,14 @@ Assume 4 MPI tasks. What would the (full) program print?
 
 <div class=column>
 ```fortran
-if (my_id==0) then
+if (rank==0) then
     do i = 1, 16
         a(i) = i
     end do
 end if
 call mpi_bcast(a, 16, MPI_INTEGER, 0, &
         MPI_COMM_WORLD, rc)
-if (my_id==3) print *, a(:)
+if (rank==3) print *, a(:)
 ```
 <small>
  **A)** `1 2 3 4`<br>
@@ -146,14 +146,14 @@ if (my_id==3) print *, a(:)
 </div>
 <div class=column>
 ```fortran
-if (my_id==0) then
+if (rank==0) then
     do i = 1, 16
         a(i) = i
     end do
 end if
 call mpi_scatter(a, 4, MPI_INTEGER, aloc, 4 &
     MPI_INTEGER, 0, MPI_COMM_WORLD, rc)
-if (my_id==3) print *, aloc(:)
+if (rank==3) print *, aloc(:)
 ```
 <small>
  **A)** `1 2 3 4`<br>
@@ -197,7 +197,7 @@ MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtyp
 
 <div class=column>
 ```fortran
-if (my_id==0) then
+if (rank==0) then
   do i = 1, 10
     a(i) = i
   end do
@@ -208,7 +208,7 @@ displs(0:3) = [ 0, 1, 3, 6 ]
 
 call mpi_scatterv(a, scounts, &
     displs, MPI_INTEGER, &
-    aloc, scounts(my_id), &
+    aloc, scounts(rank), &
     MPI_INTEGER, 0, &
     MPI_COMM_WORLD, rc)
 
@@ -383,7 +383,7 @@ MPI_Alltoall(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbu
 
 <div class=column>
 ```fortran
-if (my_id==0) then
+if (rank==0) then
   do i = 1, 16
     a(i) = i
   end do
@@ -497,7 +497,7 @@ MPI_Allreduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`
 ```fortran
 real :: a(1024), aloc(128)
 ...
-if (my_id==0) then
+if (rank==0) then
     call random_number(a)
 end if
 call mpi_scatter(a, 128, MPI_INTEGER, &
@@ -527,7 +527,7 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL, &
 # Common mistakes with collectives
 
 - Using a collective operation within if-rank test:<br>
-`if (my_id == 0) call mpi_bcast(...`
+`if (rank == 0) call mpi_bcast(...`
     - All the processes, both the root (the sender or the gatherer) and
       the rest (receivers or senders), must call the collective routine!
 - Assuming that all processes making a collective call would complete at the same time
@@ -546,4 +546,3 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL, &
 # Summary
 
 ![](img/collective-patterns.png){.center width=100%}
-

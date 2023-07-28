@@ -20,7 +20,7 @@ lang:   en
 
 <div class=column>
 ```fortran
-if (myid == 0) then
+if (rank == 0) then
    call mpi_send(message, msgsize, &
                  MPI_INTEGER, 1, &
                  42, MPI_COMM_WORLD, rc)
@@ -28,7 +28,7 @@ if (myid == 0) then
                  MPI_INTEGER, 1, &
                  42, MPI_COMM_WORLD, &
                  status, rc)
-else if (myid == 1) then
+else if (rank == 1) then
    call mpi_send(message, msgsize, &
                  MPI_INTEGER, 0, &
                  42, MPI_COMM_WORLD, rc)
@@ -43,8 +43,8 @@ else if (myid == 1) then
 ```fortran
 ! Modulo operation can be used for
 ! wrapping around
-dst = mod(myid + 1, ntasks)
-src = mod(myid - 1 + ntasks, ntasks)
+dst = mod(rank + 1, ntasks)
+src = mod(rank - 1 + ntasks, ntasks)
 
 call mpi_send(message, msgsize, &
               MPI_INTEGER, dst, &
@@ -64,7 +64,7 @@ call mpi_recv(recvBuf, arraysize, &
   chosen as the special task in scatter and gather type operations
 
 ```c++
-if (0 == myid) {
+if (0 == rank) {
   for (int i=1; i < ntasks; i++) {
      MPI_Send(&data, 1, MPI_INT, i, 42, MPI_COMM_WORLD);
   }
@@ -84,13 +84,13 @@ if (0 == myid) {
 # Example
 
 ```fortran
-dst = myid + 1
-src = myid - 1
+dst = rank + 1
+src = rank - 1
 
-if (myid == 0) then
+if (rank == 0) then
     src = MPI_PROC_NULL
 end if
-if (myid == ntasks - 1) then
+if (rank == ntasks - 1) then
     dst = MPI_PROC_NULL
 end if
 
@@ -115,7 +115,7 @@ call mpi_recv(message, msgsize, MPI_INTEGER, src, 42, MPI_COMM_WORLD, status, rc
 
 <div class=column style="width:50%">
 ```c++
-if (0 == myid) {
+if (0 == rank) {
   for (int i=1; i < ntasks; i++) {
      MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE,
               42, MPI_COMM_WORLD, &status);
