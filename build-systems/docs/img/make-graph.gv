@@ -1,0 +1,16 @@
+digraph G {
+graph [inputscale=true size="12!,2" fontsize="24" rankdir=LR, dpi=96];
+// rankdir=LR;
+// scale=1.5;
+n3 [label="hello", color="red"];
+n5 [label="hello.c", color="forestgreen"];
+n4 [label="hello.o", color="red"];
+n2 [label="install", color="red"];
+n7 [label="module.c", color="forestgreen"];
+n6 [label="module.o", color="red"];
+n4 -> n3 ; 
+n6 -> n3 ; 
+n5 -> n4 ; 
+n3 -> n2 ; 
+n7 -> n6 ; 
+}
