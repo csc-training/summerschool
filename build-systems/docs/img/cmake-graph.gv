@@ -1,0 +1,9 @@
+digraph{
+  rankdir=LR;
+  graph [ size="12!" ];
+  a -> b [label="cmake"];
+  b -> c [label="make"];
+  a[label="CMakeLists.txt"];
+  b[label="makefile"];
+  c[label="resulting binary"];
+}
