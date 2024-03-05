@@ -296,7 +296,7 @@ install(TARGETS hello module RUNTIME DESTINATION "bin" ARCHIVE DESTINATION "lib"
 > mkdir build; cd build                            # Out of source build
 > cmake .. -C precache.cmake -T toolchain.cmake    # Generate makefiles and cmake cache files
 > ccmake .                                         # Modify configuration further
-> cmake .                                          # Re-run cmake here using generated cache files
+> make                                             # Build software
 ```
 <hr>
 
