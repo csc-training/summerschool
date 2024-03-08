@@ -14,81 +14,538 @@ lang:   en
 # Why? {.section}
 
 # Why test your software?
-- Improves code quality
 
 # Why test your software?
-<div class=column>
-- Improves code quality
-    - testing is easier when you have *modular-code-of-small-functions*
-    - *modular-code-of-small-functions* leads to code that is *easy-to-understand*
-    - when code is *easy-to-understand*, it's easier to have *thoroughly-tested-code*
-    - *thoroughly-tested-code* usually has fewer bugs and is more pleasant to work with and modify
-    - bonus: well named (short) functions self-document your code
-</div>
-<div class=column>
-    <div class=column>
-        ![](images/long_function.png){width=80%}
-    </div>
-    <div class=column>
-        ![](images/short_function.png){width=80%}
-    </div>
-</div>
+- Why use version control?
 
 # Why test your software?
-<div class=column>
-- Improves code quality
-    - testing is easier when you have *modular-code-of-small-functions*
-    - *modular-code-of-small-functions* leads to code that is *easy-to-understand*
-</div>
-<div class=column>
-    <div class=column>
-        ![](images/long_function.png){width=80%}
-    </div>
-    <div class=column>
-        ![](images/short_function.png){width=80%}
-    </div>
-</div>
+- Why use version control?
+- Why use linting?
 
 # Why test your software?
-- Improves code quality
-- Improves life quality
-    - Software with fewer bugs is more pleasant to use and modify
+- Why use version control?
+- Why use linting?
+- Why use code formatting tools?
 
 # Why test your software?
-- Improves code quality
-- Improves life quality
-- Provides guarantees
-    - Passing tests prove that your code does what it says it does
+- Why use version control?
+- Why use linting?
+- Why use code formatting tools?
+- Why use out-of-source build systems?
 
 # Why test your software?
-- Improves code quality
-- Improves life quality
-- Provides guarantees
-    - Passing tests prove that your code does what it says it does
-    - *See, it works* vs *Trust me, it works*
+- Why use version control?
+- Why use linting?
+- Why use code formatting tools?
+- Why use out-of-source build systems?
+- (Why use Vim and purge emacs from your OS?)
 
 # Why test your software?
-- Improves code quality
-- Improves life quality
-- Provides guarantees
-- Provides a safety net
-    - Modifying code is less daunting when a test battery is there to catch your mistakes
+- Why use version control?
+- Why use linting?
+- Why use code formatting tools?
+- Why use out-of-source build systems?
+- ~~(Why use Vim and purge emacs from your OS?)~~
+
+# Why test your software?
+Because it makes
+
+- you more productive
+- your life easier
+- creation of **well working** and **easy to maintain** software easier
 
 # Test types {.section}
+
+# Test types
+
+# Test types
+- Unit tests
+
+# Test types
+- Unit tests
+- Integration tests
 
 # Test types
 - Unit tests
 - Integration tests
 - Regression tests
 
+# Test types
+- Unit tests
+- Integration tests
+- Regression tests
+- Others (security, usability, acceptance, performance...)
+
 # Unit tests
-- Write small tests for small functions
+```cpp
+Logger::Logger(const std::string &fname,
+               bool add_location):
+    fname(out_name),
+    add_location(add_location)
+{}
+
+TEST(Logger_constructed_correctly) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+
+    // [Act]
+
+    // Assert
+    ASSERT(logger.fname == fname);
+    ASSERT(logger.add_location == add_location);
+}
+```
+
+# Unit tests
+<div class=column>
+<small>
+A test is not a unit test if:
+
+</small>
+</div>
+<div class=column>
+```cpp
+Logger::Logger(const std::string &fname,
+               bool add_location):
+    fname(out_name),
+    add_location(add_location)
+{}
+
+TEST(Logger_constructed_correctly) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+
+    // [Act]
+
+    // Assert
+    ASSERT(logger.fname == fname);
+    ASSERT(logger.add_location == add_location);
+}
+```
+</div>
+
+# Unit tests
+<div class=column>
+<small>
+A test is not a unit test if:
+
+- It talks to the database
+
+</small>
+</div>
+<div class=column>
+```cpp
+Logger::Logger(const std::string &fname,
+               bool add_location):
+    fname(out_name),
+    add_location(add_location)
+{}
+
+TEST(Logger_constructed_correctly) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+
+    // [Act]
+
+    // Assert
+    ASSERT(logger.fname == fname);
+    ASSERT(logger.add_location == add_location);
+}
+```
+</div>
+
+# Unit tests
+<div class=column>
+<small>
+A test is not a unit test if:
+
+- It talks to the database
+- It communicates across the network
+
+</small>
+</div>
+<div class=column>
+```cpp
+Logger::Logger(const std::string &fname,
+               bool add_location):
+    fname(out_name),
+    add_location(add_location)
+{}
+
+TEST(Logger_constructed_correctly) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+
+    // [Act]
+
+    // Assert
+    ASSERT(logger.fname == fname);
+    ASSERT(logger.add_location == add_location);
+}
+```
+</div>
+
+# Unit tests
+<div class=column>
+<small>
+A test is not a unit test if:
+
+- It talks to the database
+- It communicates across the network
+- It touches the file system
+
+</small>
+</div>
+<div class=column>
+```cpp
+Logger::Logger(const std::string &fname,
+               bool add_location):
+    fname(out_name),
+    add_location(add_location)
+{}
+
+TEST(Logger_constructed_correctly) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+
+    // [Act]
+
+    // Assert
+    ASSERT(logger.fname == fname);
+    ASSERT(logger.add_location == add_location);
+}
+```
+</div>
+
+# Unit tests
+<div class=column>
+<small>
+A test is not a unit test if:
+
+- It talks to the database
+- It communicates across the network
+- It touches the file system
+- It can't run at the same time as any of your other unit tests
+
+</small>
+</div>
+<div class=column>
+```cpp
+Logger::Logger(const std::string &fname,
+               bool add_location):
+    fname(out_name),
+    add_location(add_location)
+{}
+
+TEST(Logger_constructed_correctly) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+
+    // [Act]
+
+    // Assert
+    ASSERT(logger.fname == fname);
+    ASSERT(logger.add_location == add_location);
+}
+```
+</div>
+
+# Unit tests
+<div class=column>
+<small>
+A test is not a unit test if:
+
+- It talks to the database
+- It communicates across the network
+- It touches the file system
+- It can't run at the same time as any of your other unit tests
+- You have to do special things to your environment (such as editing config files) to run it
+
+</small>
+</div>
+<div class=column>
+```cpp
+Logger::Logger(const std::string &fname,
+               bool add_location):
+    fname(out_name),
+    add_location(add_location)
+{}
+
+TEST(Logger_constructed_correctly) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+
+    // [Act]
+
+    // Assert
+    ASSERT(logger.fname == fname);
+    ASSERT(logger.add_location == add_location);
+}
+```
+</div>
+
+# Unit tests
+<div class=column>
+<small>
+A test is not a unit test if:
+
+- It talks to the database
+- It communicates across the network
+- It touches the file system
+- It can't run at the same time as any of your other unit tests
+- You have to do special things to your environment (such as editing config files) to run it
+
+Source: Michael Feathers https://www.artima.com/weblogs/viewpost.jsp?thread=126923
+</small>
+</div>
+<div class=column>
+```cpp
+Logger::Logger(const std::string &fname,
+               bool add_location):
+    fname(out_name),
+    add_location(add_location)
+{}
+
+TEST(Logger_constructed_correctly) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+
+    // [Act]
+
+    // Assert
+    ASSERT(logger.fname == fname);
+    ASSERT(logger.add_location == add_location);
+}
+```
+</div>
+
+# Unit tests
+<br>
+<br>
+<br>
+Unit tests run **fast** so you can run them **often**
 
 # Integration tests
-- Write small tests for small functions
+```cpp
+Logger::write(const std::string &message);
+
+TEST(Logger_writes_message) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+    const auto message =
+        "This is logged to file";
+
+    // Act
+    logger.write(message);
+
+    // Assert
+    const auto contents =
+        std::read_to_string(fname);
+    ASSERT(contents.contains(message) == true);
+}
+```
+
+# Integration tests
+<div class=column>
+- Test integrated parts of the program for correctness
+</div>
+<div class=column>
+```cpp
+Logger::write(const std::string &message);
+
+TEST(Logger_writes_message) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+    const auto message =
+        "This is logged to file";
+
+    // Act
+    logger.write(message);
+
+    // Assert
+    const auto contents =
+        std::read_to_string(fname);
+    ASSERT(contents.contains(message) == true);
+}
+```
+</div>
+
+# Integration tests
+<div class=column>
+- Test integrated parts of the program for correctness, i.e. the 'gaps' or the 'glue' between smaller units
+</div>
+<div class=column>
+```cpp
+Logger::write(const std::string &message);
+
+TEST(Logger_writes_message) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+    const auto message =
+        "This is logged to file";
+
+    // Act
+    logger.write(message);
+
+    // Assert
+    const auto contents =
+        std::read_to_string(fname);
+    ASSERT(contents.contains(message) == true);
+}
+```
+</div>
+
+# Integration tests
+<div class=column>
+- Test integrated parts of the program for correctness, i.e. the 'gaps' or the 'glue' between smaller units
+- Can vary in size
+</div>
+<div class=column>
+```cpp
+Logger::write(const std::string &message);
+
+TEST(Logger_writes_message) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+    const auto message =
+        "This is logged to file";
+
+    // Act
+    logger.write(message);
+
+    // Assert
+    const auto contents =
+        std::read_to_string(fname);
+    ASSERT(contents.contains(message) == true);
+}
+```
+</div>
+
+# Integration tests
+<div class=column>
+- Test integrated parts of the program for correctness, i.e. the 'gaps' or the 'glue' between smaller units
+- Can vary in size
+    - operation of a single module
+</div>
+<div class=column>
+```cpp
+Logger::write(const std::string &message);
+
+TEST(Logger_writes_message) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+    const auto message =
+        "This is logged to file";
+
+    // Act
+    logger.write(message);
+
+    // Assert
+    const auto contents =
+        std::read_to_string(fname);
+    ASSERT(contents.contains(message) == true);
+}
+```
+</div>
+
+# Integration tests
+<div class=column>
+- Test integrated parts of the program for correctness, i.e. the 'gaps' or the 'glue' between smaller units
+- Can vary in size
+    - operation of a single module
+    - co-operation of multiple modules
+</div>
+<div class=column>
+```cpp
+Logger::write(const std::string &message);
+
+TEST(Logger_writes_message) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+    const auto message =
+        "This is logged to file";
+
+    // Act
+    logger.write(message);
+
+    // Assert
+    const auto contents =
+        std::read_to_string(fname);
+    ASSERT(contents.contains(message) == true);
+}
+```
+</div>
+
+# Integration tests
+<div class=column>
+- Test integrated parts of the program for correctness, i.e. the 'gaps' or the 'glue' between smaller units
+- Can vary in size
+    - operation of a single module
+    - co-operation of multiple modules
+    - operation of an entire library or application
+</div>
+<div class=column>
+```cpp
+Logger::write(const std::string &message);
+
+TEST(Logger_writes_message) {
+    // Arrange
+    const auto fname = "log.log";
+    const auto add_location = true;
+    const Logger logger(fname, add_location);
+    const auto message =
+        "This is logged to file";
+
+    // Act
+    logger.write(message);
+
+    // Assert
+    const auto contents =
+        std::read_to_string(fname);
+    ASSERT(contents.contains(message) == true);
+}
+```
+</div>
+
+# Integration tests
+<br>
+<br>
+**Don't** run after every change
+<br>
+<br>
+**Do** run as part of CI pipeline after every commit or pull request
+
 
 # Regression tests
-- Write small tests for small functions
+- TODO
 
 # Frameworks {.section}
 
