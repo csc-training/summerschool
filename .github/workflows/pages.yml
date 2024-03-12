@@ -1,0 +1,78 @@
+# Script based on examples in https://github.com/actions/starter-workflows/tree/main/pages
+name: Deploy slides to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["master"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/csc-training/slidefactory:3.0.0-beta.3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+      - name: Build slides
+        run: |
+          mkdir build
+          for d in \
+                   intro-to-hpc \
+                   computer-platforms \
+                   mpi \
+                   hybrid \
+                   gpu-openmp \
+                   gpu-hip \
+                   parallel-io \
+                   application-design \
+                   application-performance \
+                   qc \
+                   ; do
+            echo "# $d" >> index.md
+            /slidefactory/slidefactory.py --format html $d/docs/*.md
+            mkdir build/$d
+            mv $d/docs/*.html build/$d/
+            [ -d "$d/docs/img" ] && cp -r $d/docs/img build/$d/
+
+            for f in build/$d/*.html; do
+              echo "* [${f##*/}](${f#build/})" >> index.md
+            done
+            echo "" >> index.md
+          done
+          cat index.md
+          pandoc --standalone --metadata title="CSC Summer School in High-Performance Computing" index.md -o build/index.html
+          rm index.md
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
