@@ -46,7 +46,7 @@ process_in_host();
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
  !$omp target nowait
  call process_in_device();
  !$omp end target

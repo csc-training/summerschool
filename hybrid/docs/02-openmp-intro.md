@@ -79,7 +79,7 @@ lang:   en
 <div class=column>
 - In Fortran, an `end` directive specifies the end of the construct
 
-```fortran
+```fortranfree
 !$omp parallel
   ! calculate in parallel
     write(*,*) "Hello world!"
@@ -107,7 +107,7 @@ lang:   en
        structured block
     ```
     - Fortran:
-    ```fortran
+    ```fortranfree
     !$omp parallel [clauses]
        structured block
     !$omp end parallel
@@ -129,7 +129,7 @@ lang:   en
 
 <small>
 <div class="column">
-```fortran
+```fortranfree
 program omp_hello
 
    write(*,*) "Hello world! -main"
@@ -200,7 +200,7 @@ Over and out! -main
 #pragma omp for [clauses]
 ...
 ```
-```fortran
+```fortranfree
 !$omp do [clauses]
 ...
 !$omp end do
@@ -214,7 +214,7 @@ Over and out! -main
 
 # for/do construct
 
-```fortran
+```fortranfree
 !$omp parallel
 !$omp do
   do i = 1, n
@@ -241,7 +241,7 @@ Over and out! -main
 - The `workshare` directive divides the execution of the enclosed structured
   block into separate units of work, each of which is executed only once
 
-```fortran
+```fortranfree
 real :: a(n,n), b(n,n), c(n,n) d(n,n)
 ...
 !$omp parallel

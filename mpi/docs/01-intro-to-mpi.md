@@ -128,7 +128,7 @@ else if (rank == 1) {
 #include <mpi.h>
 ```
 - Fortran: use MPI module
-```fortran
+```fortranfree
 use mpi_f08
 ```
 &emsp;(older Fortran codes might have `use mpi` or `include 'mpif.h'`)

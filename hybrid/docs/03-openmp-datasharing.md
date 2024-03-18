@@ -71,7 +71,7 @@ lang:   en
 -->
 
 <div class=column>
-```fortran
+```fortranfree
 program hello
   use omp_lib
   integer :: omp_rank

@@ -101,7 +101,7 @@ MPI_Type_vector(`count`{.input}, `blocklen`{.input}, `stride`{.input}, `oldtype`
 
 # Example: sending rows of matrix in Fortran
 
-```fortran
+```fortranfree
 integer, parameter :: n=2, m=3
 real, dimension(n,m) :: a
 type(mpi_datatype) :: rowtype
@@ -403,13 +403,13 @@ MPI_Type_contiguous(`count`{.input}, `oldtype`{.input}, `newtype`{.output})
 
 <small>
 <div class=column>
-```fortran
+```fortranfree
 ! Using derived type
 call mpi_send(buf, 1, conttype, ...)
 ```
 </div>
 <div class=column>
-```fortran
+```fortranfree
 ! Equivalent call with count and basic type
 call mpi_send(buf, count, MPI_REAL, ...)
 ```

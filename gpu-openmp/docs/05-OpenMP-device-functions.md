@@ -49,7 +49,7 @@ for (int i=0; i<n; ++i) {
 
 <div class="column">
 **Fortran**
-```fortran
+```fortranfree
 subroutine foo(v, i, n)
   !$omp declare target
   real :: v(:,:)

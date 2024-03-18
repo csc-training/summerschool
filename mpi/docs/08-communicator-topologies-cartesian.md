@@ -126,7 +126,7 @@ MPI_Dims_create(`ntasks`{.input}, `ndims`{.input}, `di`{.input}`ms`{.output})
 
 # Creating a Cartesian communication topology
 
-```fortran
+```fortranfree
 dims = 0
 period=(/ .true., .false. /)
 
@@ -175,7 +175,7 @@ call mpi_cart_coords(comm2d, rank, 2, coords, rc)
 # Halo exchange
 
 <small>
-```fortran
+```fortranfree
 call mpi_cart_shift(comm2d, 0, 1, nbr_up, nbr_down, rc)
 call mpi_cart_shift(comm2d, 1, 1, nbr_left, nbr_right, rc)
 ...

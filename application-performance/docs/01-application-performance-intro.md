@@ -41,7 +41,7 @@ Have you profiled your code?
 
 - Profiled the code: 99.9% of the execution time was being spent on these lines:
 
-```fortran
+```fortranfree
 do i=1,n          ! Removing these unnecessary loop iterations reduced the
  do j=1,m         ! wall-time of one simulation run from 17 hours to 3 seconds…
     do k=1,fact(x)

@@ -49,7 +49,7 @@ lang:   en
 
 - Syntax (Fortran)
 
-    ```fortran
+    ```fortranfree
     !$omp task[clause[[,] clause],...]
     ...
     !$omp end task

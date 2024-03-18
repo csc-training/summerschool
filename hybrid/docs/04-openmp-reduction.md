@@ -12,7 +12,7 @@ lang:   en
 - Race conditions take place when multiple threads read and write a variable
   simultaneously, for example:
 
-```fortran
+```fortranfree
 asum = 0.0d0
 !$omp parallel do shared(x,y,n,asum) private(i)
   do i = 1, n
@@ -106,7 +106,7 @@ asum = 0.0d0
 
 # Race condition avoided with reduction clause
 
-```fortran
+```fortranfree
 !$omp parallel do shared(x,y,n) private(i) reduction(+:asum)
   do i = 1, n
      asum = asum + x(i)*y(i)

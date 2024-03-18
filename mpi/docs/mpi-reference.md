@@ -353,7 +353,7 @@ int MPI_Get_processor_name(char *name, int *resultlen)
 
 # Fortran interfaces for the "first six" MPI operations
 
-```fortran
+```fortranfree
 mpi_init(ierror)
   integer :: ierror
 
@@ -375,7 +375,7 @@ mpi_finalize(ierror)
 
 # Fortran interfaces for the basic point-to-point operations
 
-```fortran
+```fortranfree
 mpi_send(buffer, count, datatype, dest, tag, comm, ierror)
   <type> :: buf(*)
   integer :: count, dest, tag, ierror
@@ -392,7 +392,7 @@ mpi_recv(buf, count, datatype, source, tag, comm, status, ierror)
 
 # Fortran interfaces for the basic point-to-point operations
 
-```fortran
+```fortranfree
 mpi_sendrecv(sendbuf, sendcount, sendtype, dest, sendtag, recvbuf, recvcount, &
              recvtype, source, recvtag, comm, status, ierror)
   <type> :: sendbuf(*), recvbuf(*)
@@ -426,7 +426,7 @@ mpi_get_count(status, datatype, count, ierror)
 
 # Fortran interfaces for collective operations
 
-```fortran
+```fortranfree
 mpi_bcast(buffer, count, datatype, root, comm, ierror)
   <type> :: buffer(*)
   integer :: count, root, ierror
@@ -450,7 +450,7 @@ mpi_scatterv(sendbuf, sendcounts, displs, sendtype, recvbuf, recvcount, recvtype
 
 # Fortran interfaces for collective operations
 
-```fortran
+```fortranfree
 mpi_gather(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, root, comm, ierror)
   <type> :: sendbuf(*), recvbuf(*)
   integer :: sendcount, recvcount,  root, ierror
@@ -475,7 +475,7 @@ mpi_reduce(sendbuf, recvbuf, count, datatype, op, root, comm, ierror)
 
 # Fortran interfaces for collective operations
 
-```fortran
+```fortranfree
 mpi_allreduce(sendbuf, recvbuf, count, datatype, op, comm, ierror)
   <type> :: sendbuf(*), recvbuf(*)
   integer :: count, ierror
@@ -499,7 +499,7 @@ mpi_reduce_scatter(sendbuf, recvbuf, recvcounts, datatype, op, comm, ierror)
 
 # Fortran interfaces for collective operations
 
-```fortran
+```fortranfree
 mpi_alltoall(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, comm, ierror)
   type:: sendbuf(*), recvbuf(*)
   integer :: sendcount, recvcount, ierror
@@ -540,7 +540,7 @@ mpi_alltoallv(sendbuf,sendcounts, sdispls, sendtype, recvbuf, recvcounts, rdispl
 
 # Fortran interfaces for user-defined communicators
 
-```fortran
+```fortranfree
 mpi_comm_split(comm, color, key, newcomm, ierror)
   integer :: color, key, ierror
   type(mpi_comm) :: comm, newcomm
@@ -560,7 +560,7 @@ mpi_comm_free(comm, ierror)
 
 # Fortran interfaces for non-blocking operations
 <small>
-```fortran
+```fortranfree
 mpi_isend(buf, count, datatype, dest, tag, comm, request,ierror)
   <type> :: buf(*)
   integer :: count, dest, tag, ierror
@@ -592,7 +592,7 @@ mpi_waitall(count, array_of_requests, array_of_statuses, ierror)
 # Fortran interfaces for Cartesian process topologies
 
 <small>
-```fortran
+```fortranfree
 mpi_cart_create(old_comm, ndims, dims, periods, reorder, comm_cart, ierror)
   integer :: ndims, dims(:), ierror
   type(mpi_comm) :: old_comm, comm_cart
@@ -618,7 +618,7 @@ mpi_cart_shift(comm, direction, displ, low, high, ierror)
 # Fortran interfaces for persistent communication
 
 <small>
-```fortran
+```fortranfree
 mpi_send_init(buf, count, datatype, dest, tag, comm, request,ierror)
   <type> :: buf(*)
   integer :: count, dest, tag, ierror
@@ -645,7 +645,7 @@ mpi_startall(count, array_of_requests, ierror)
 
 # Fortran interfaces for neighborhood collectives
 
-```fortran
+```fortranfree
 mpi_neighbor_allgather(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, comm, ierror)
   <type> :: sendbuf(*), recvbuf(*)
   integer :: sendcount, recvcount, ierror
@@ -669,7 +669,7 @@ mpi_neighbor_alltoall(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype
 
 # Fortran interfaces for neighborhood collectives
 
-```fortran
+```fortranfree
 mpi_neighbor_alltoallv(sendbuf, sendcounts, sendtype, senddispls, &
                        recvbuf, recvcounts, recvdispls, recvtype, comm, ierror)
   <type> :: sendbuf(*), recvbuf(*)
@@ -689,7 +689,7 @@ mpi_neighbor_alltoallw(sendbuf, sendcounts, sendtypes, senddispls, &
 
 # Fortran interfaces for datatype routines
 
-```fortran
+```fortranfree
 mpi_type_commit(type, ierror)
   type(mpi_datatype) :: type
   integer :: ierror
@@ -710,7 +710,7 @@ mpi_type_vector(count, block, stride, oldtype, newtype, ierror)
 
 # Fortran interfaces for datatype routines
 
-```fortran
+```fortranfree
 mpi_type_indexed(count, blocks, displs, oldtype, newtype, ierror)
   integer :: count, ierror
   integer, dimension(count) :: blocks, displs
@@ -731,7 +731,7 @@ mpi_type_create_struct(count, blocklengths, displacements, types, newtype, ierro
 # Fortran interfaces for one-sided routines
 
 <small>
-```fortran
+```fortranfree
 mpi_win_create(base, size, disp_unit, info, comm, win, ierror)
   <type> :: base(*)
   integer(kind=mpi_address_kind) :: size
@@ -757,7 +757,7 @@ mpi_put(origin_addr, origin_count, origin_datatype, target_rank, target_disp, ta
 
 # Fortran interfaces for one-sided routines
 
-```fortran
+```fortranfree
 mpi_get(origin_addr, origin_count, origin_datatype, target_rank, target_disp, target_count,
         target_datatype, win, ierror)
   <type> :: origin_addr(*)
@@ -780,7 +780,7 @@ mpi_accumulate(origin_addr, origin_count, origin_datatype, target_rank, target_d
 
 # Fortran interfaces for MPI I/O routines
 
-```fortran
+```fortranfree
 mpi_file_open(comm, filename, amode, info, fh, ierror)
   integer :: amode, ierror
   character* :: filename
@@ -801,7 +801,7 @@ mpi_file_seek(fh, offset, whence, ierror)
 
 # Fortran interfaces for MPI I/O routines
 
-```fortran
+```fortranfree
 mpi_file_read(fh, buf, count, datatype, status, ierror)
 mpi_file_write(fh, buf, count, datatype, status, ierror)
   <type> :: buf(*)
@@ -823,7 +823,7 @@ mpi_file_write_at(fh, offset, buf, count, datatype, status, ierror)
 
 # Fortran interfaces for MPI I/O routines
 
-```fortran
+```fortranfree
 mpi_file_set_view(fh, disp, etype, filetype, datarep, info, ierror)
   integer :: ierror
   integer(kind=MPI_OFFSET_KIND) :: disp
@@ -843,7 +843,7 @@ mpi_file_write_all(fh, buf, count, datatype, status, ierror)
 
 # Fortran interfaces for MPI I/O routines
 
-```fortran
+```fortranfree
 mpi_file_read_at_all(fh, offset, buf, count, datatype, status, ierror)
 mpi_file_write_at_all(fh, offset, buf, count, datatype, status, ierror)
   <type> :: buf(*)
@@ -855,7 +855,7 @@ mpi_file_write_at_all(fh, offset, buf, count, datatype, status, ierror)
 ```
 # Fortran interfaces for environmental inquiries
 
-```fortran
+```fortranfree
 mpi_get_processor_name(name, resultlen, ierror)
   character(len=MPI_MAX_PROCESSOR_NAME) :: name
   integer :: resultlen, ierror

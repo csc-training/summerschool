@@ -189,7 +189,7 @@ cc -o my_exe test.c -fopenmp
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target
   ! code executed in device
 !$omp end target
@@ -270,7 +270,7 @@ cc -o my_exe test.c -fopenmp
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target
 !$omp teams
 !$omp parallel
@@ -312,7 +312,7 @@ for (int i = 0; i < N; i++)
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target
 !$omp teams
 !$omp distribute
@@ -368,7 +368,7 @@ for (int i = 0; i < N; i++) {
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target teams
 !$omp distribute parallel do
 do i = 1, N
@@ -398,7 +398,7 @@ for (int i = 0; i < N; i++) {
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target
 !$omp loop
 do i = 1, N
