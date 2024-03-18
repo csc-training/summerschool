@@ -56,7 +56,7 @@ jobs:
             /slidefactory/slidefactory.py --format html $d/docs/*.md -o build/$d/ --theme_url ../theme/csc-plain/csc.css
 
             for f in build/$d/*.html; do
-              echo "* [${f##*/}](${f#build/})" >> index.md
+              echo "* [${f##*/}](${f#build/}){target=\"_blank\"}" >> index.md
             done
 
             echo "" >> index.md
