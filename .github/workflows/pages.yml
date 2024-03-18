@@ -25,7 +25,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/csc-training/slidefactory:3.0.0-beta.3
+      image: ghcr.io/csc-training/slidefactory:3.0.0-beta.4
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,14 +48,12 @@ jobs:
                    qc \
                    ; do
             echo "# $d" >> index.md
-            /slidefactory/slidefactory.py --format html $d/docs/*.md
-            mkdir build/$d
-            mv $d/docs/*.html build/$d/
-            [ -d "$d/docs/img" ] && cp -r $d/docs/img build/$d/
+            /slidefactory/slidefactory.py --format html $d/docs/*.md -o build/$d/
 
             for f in build/$d/*.html; do
               echo "* [${f##*/}](${f#build/})" >> index.md
             done
+
             echo "" >> index.md
           done
           cat index.md
