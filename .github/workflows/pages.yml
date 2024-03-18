@@ -52,7 +52,7 @@ jobs:
                    application-performance \
                    qc \
                    ; do
-            echo "# $d" >> index.md
+            echo "## $d" >> index.md
             /slidefactory/slidefactory.py --format html $d/docs/*.md -o build/$d/ --theme_url ../theme/csc-plain/csc.css
 
             for f in build/$d/*.html; do
