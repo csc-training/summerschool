@@ -25,7 +25,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/csc-training/slidefactory:3.0.0-beta.4
+      image: ghcr.io/csc-training/slidefactory:3.0.0-beta.5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,6 +35,11 @@ jobs:
       - name: Build slides
         run: |
           mkdir build
+
+          mkdir -p build/theme/csc-plain
+          cp /slidefactory/theme/csc-plain/csc.css build/theme/csc-plain/
+          cp -r /slidefactory/theme/csc-plain/img build/theme/csc-plain/
+
           for d in \
                    intro-to-hpc \
                    computer-platforms \
@@ -48,7 +53,7 @@ jobs:
                    qc \
                    ; do
             echo "# $d" >> index.md
-            /slidefactory/slidefactory.py --format html $d/docs/*.md -o build/$d/
+            /slidefactory/slidefactory.py --format html $d/docs/*.md -o build/$d/ --theme_url ../theme/csc-plain/csc.css
 
             for f in build/$d/*.html; do
               echo "* [${f##*/}](${f#build/})" >> index.md
