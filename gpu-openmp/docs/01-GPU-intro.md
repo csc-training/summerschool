@@ -113,7 +113,7 @@ CPU - manycores
 </div>
 
 <div class="column">
-![ <span style=" font-size:0.5em;">image credits: Nemez @GPUsAreMagic https://nemez.net/die/RocketLake</span> ](img/core_die_shot.jpg){width=57%}
+![ <span style=" font-size:0.5em;">image credits: Nemez @GPUsAreMagic https://nemez.net/die/RocketLake</span> ](img/core_die_shot_small.jpg){width=57%}
 
 </div>
 
@@ -135,7 +135,7 @@ CPU - manycores
 
 
 <div class="column">
-![ <span style=" font-size:0.5em;">image credits: Nemez @GPUsAreMagic https://nemez.net/die/Ampere</span> ](img/gpu_die_shot.jpg){width=70%}
+![ <span style=" font-size:0.5em;">image credits: Nemez @GPUsAreMagic https://nemez.net/die/Ampere</span> ](img/gpu_die_shot_small.jpg){width=70%}
 
 </div>
 
