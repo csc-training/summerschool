@@ -77,7 +77,7 @@ jobs:
               echo "* [${f##*/}](${f#build/}){target=\"_blank\"}" >> index.md
               if [[ "$INCLUDE_PDF" == "true" ]]; then
                 f_pdf=${f%.*}.pdf
-                echo "  ([PDF](${f_pdf#build/}))" >> index.md
+                echo "  ([PDF](${f_pdf#build/}){target=\"_blank\"})" >> index.md
               fi
             done
 
