@@ -2,12 +2,11 @@
 name: Deploy slides to Pages
 
 on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["master"]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      include_pdf:
+        required: true
+        type: boolean
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -33,6 +32,8 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
       - name: Build slides
+        env:
+          INCLUDE_PDF: ${{ inputs.include_pdf }}
         run: |
           mkdir build
 
@@ -55,8 +56,16 @@ jobs:
             echo "## $d" >> index.md
             /slidefactory/slidefactory.py --format html $d/docs/*.md -o build/$d/ --theme_url ../theme/csc-plain/csc.css
 
+            if [[ "$INCLUDE_PDF" == "true" ]]; then
+                /slidefactory/slidefactory.py --format pdf $d/docs/*.md -o build/$d/
+            fi
+
             for f in build/$d/*.html; do
               echo "* [${f##*/}](${f#build/}){target=\"_blank\"}" >> index.md
+              if [[ "$INCLUDE_PDF" == "true" ]]; then
+                  f_pdf=${f%.*}.pdf
+                  echo " ([PDF](${f_pdf#build/}))" >> index.md
+              fi
             done
 
             echo "" >> index.md
