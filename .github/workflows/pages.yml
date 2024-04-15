@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/csc-training/slidefactory:3.0.0-beta.8
+      image: ghcr.io/csc-training/slidefactory:3.0.0-beta.9
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,11 +36,17 @@ jobs:
         env:
           INCLUDE_PDF: ${{ inputs.include_pdf }}
         run: |
+          SLIDE_ZIP=slides.zip
+
           mkdir build
 
           mkdir -p build/theme/csc-plain
           cp /slidefactory/theme/csc-plain/csc.css build/theme/csc-plain/
           cp -r /slidefactory/theme/csc-plain/img build/theme/csc-plain/
+
+          if [[ "$INCLUDE_PDF" == "true" ]]; then
+            echo "[Download a zip file containing all slides]($SLIDE_ZIP)" >> index.md
+          fi
 
           for d in \
                    intro-to-hpc \
@@ -70,7 +76,15 @@ jobs:
             done
 
             echo "" >> index.md
+
           done
+
+          if [[ "$INCLUDE_PDF" == "true" ]]; then
+            cd build
+            zip $SLIDE_ZIP */*.pdf
+            cd -
+          fi
+
           cat index.md
           pandoc --standalone --metadata title="CSC Summer School in High-Performance Computing" index.md -o build/index.html
           rm index.md
