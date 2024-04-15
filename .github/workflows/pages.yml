@@ -64,14 +64,14 @@ jobs:
             /slidefactory/slidefactory.py --format html $d/docs/*.md -o build/$d/ --theme_url ../theme/csc-plain/csc.css
 
             if [[ "$INCLUDE_PDF" == "true" ]]; then
-                /slidefactory/slidefactory.py --format pdf $d/docs/*.md -o build/$d/
+              /slidefactory/slidefactory.py --format pdf $d/docs/*.md -o build/$d/
             fi
 
             for f in build/$d/*.html; do
               echo "* [${f##*/}](${f#build/}){target=\"_blank\"}" >> index.md
               if [[ "$INCLUDE_PDF" == "true" ]]; then
-                  f_pdf=${f%.*}.pdf
-                  echo " ([PDF](${f_pdf#build/}))" >> index.md
+                f_pdf=${f%.*}.pdf
+                echo "  ([PDF](${f_pdf#build/}))" >> index.md
               fi
             done
 
