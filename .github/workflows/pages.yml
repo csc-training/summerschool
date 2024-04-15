@@ -38,6 +38,11 @@ jobs:
         run: |
           SLIDE_ZIP=slides.zip
 
+          git config --global --add safe.directory $PWD
+          GIT_DATE=$(git show -s --format=%ci $GITHUB_SHA)
+          echo "Updated $GIT_DATE ($GITHUB_SHA)" >> index.md
+          echo "" >> index.md
+
           mkdir build
 
           mkdir -p build/theme/csc-plain
@@ -46,6 +51,7 @@ jobs:
 
           if [[ "$INCLUDE_PDF" == "true" ]]; then
             echo "[Download a zip file containing all slides]($SLIDE_ZIP)" >> index.md
+            echo "" >> index.md
           fi
 
           for d in \
