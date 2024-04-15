@@ -40,7 +40,7 @@ jobs:
 
           git config --global --add safe.directory $PWD
           GIT_DATE=$(git show -s --format=%ci $GITHUB_SHA)
-          echo "Updated $GIT_DATE [$GITHUB_SHA]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)" >> index.md
+          echo "Updated on $GIT_DATE ([$GITHUB_SHA]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA))" >> index.md
           echo "" >> index.md
 
           mkdir build
