@@ -10,10 +10,10 @@ program hdf5_writerank
     call mpi_init(err)
     call mpi_comm_rank(MPI_COMM_WORLD, myproc, err)
     call mpi_comm_size(MPI_COMM_WORLD, numprocs, err)
-    
+
     ! Initialize Fortran HDF5 interface
     call h5open_f(err)
-    ! Create a new property list for file acccess
+    ! Create a new property list for file access
     call h5pcreate_f(H5P_FILE_ACCESS_F, plist, err)
     ! Store MPI IO communicator info to the file access property list
     call h5pset_fapl_mpio_f(plist, MPI_COMM_WORLD, MPI_INFO_NULL, err)
@@ -21,7 +21,7 @@ program hdf5_writerank
     call h5fcreate_f("parallel_out.h5", H5F_ACC_TRUNC_F, file, err, access_prp=plist)
     ! Create a new simple dataspace for the file and open for access
     call h5screate_simple_f(1, int([numprocs], hsize_t), dataspace, err)
-    ! creates a new dataset named "MPI_RANKS" for 'file'
+    ! Create a new dataset named "MPI_RANKS" for 'file'
     call h5dcreate_f(file, "MPI_RANKS", H5T_NATIVE_INTEGER, dataspace, dataset, err)
     ! Number of blocks to be included in the hyperslab region
     counts(1) = 1
@@ -35,6 +35,7 @@ program hdf5_writerank
     ! Close all handles
     call h5dclose_f(dataset, err)
     call h5sclose_f(dataspace, err)
+    call h5sclose_f(memspace, err)
     call h5fclose_f(file, err)
     call h5pclose_f(plist, err)
     call h5close_f(err)

@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &myproc);
     MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 
-    // Create a new property list for file acccess
+    // Create a new property list for file access
     hid_t plist = H5Pcreate(H5P_FILE_ACCESS);
     // Store MPI IO communicator info to the file access property list
     H5Pset_fapl_mpio(plist, MPI_COMM_WORLD, MPI_INFO_NULL);
@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
     hid_t file = H5Fcreate("parallel_out.h5", H5F_ACC_TRUNC, H5P_DEFAULT, plist);
     // Create a new simple dataspace for the file and open for access
     hid_t dataspace = H5Screate_simple(1, (const hsize_t[]){numprocs}, NULL);
-    // creates a new dataset named "MPI_RANKS" for 'file'
+    // Create a new dataset named "MPI_RANKS" for 'file'
     hid_t dataset = H5Dcreate(file, "MPI_RANKS", H5T_NATIVE_INT, dataspace, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
     // Number of blocks to be included in the hyperslab region
     hsize_t count[] = {1};
@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
     // Close all handles and return
     H5Dclose(dataset);
     H5Sclose(dataspace);
+    H5Sclose(memspace);
     H5Fclose(file);
     H5Pclose(plist);
     MPI_Finalize();
