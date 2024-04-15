@@ -1,6 +1,6 @@
 ## HDF5-writerank exercise
 
-Explore the HDF5 codes ([hdf5-writerank.c](hdf5-writerank.c) or [hdf5-writerank.f90](hdf5-writerank.f90)) and try to compile them.
+Explore the HDF5 codes ([hdf5-writerank.c](hdf5-writerank.c) or [hdf5-writerank.F90](hdf5-writerank.F90)) and try to compile them.
 
 On Lumi, you will need to load the module `cray-hdf5-parallel` before you 
 can compile the code:
