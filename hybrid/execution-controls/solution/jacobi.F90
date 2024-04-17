@@ -43,6 +43,8 @@ program jacobi
 
   ! Jacobi iteration
   do
+! Without barrier here, norm may be set to zero before some threads have 
+! finished the "if" check in the end of the loop
 !$omp barrier
 !$omp single
     norm = 0.0
