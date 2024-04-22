@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/csc-training/slidefactory:3.0.0-beta.10
+      image: ghcr.io/csc-training/slidefactory:3.1.0-beta.1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,64 +36,14 @@ jobs:
         env:
           INCLUDE_PDF: ${{ inputs.include_pdf }}
         run: |
-          SLIDE_ZIP=slides.zip
-
           git config --global --add safe.directory $PWD
           GIT_DATE=$(git show -s --format=%ci $GITHUB_SHA)
-          echo "Updated on $GIT_DATE ([$GITHUB_SHA]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA))" >> index.md
-          echo "" >> index.md
 
-          mkdir build
+          ARGS=""
+          [[ "$INCLUDE_PDF" == "true" ]] && ARGS="--with-pdf"
 
-          mkdir -p build/theme/csc-plain
-          cp /slidefactory/theme/csc-plain/csc.css build/theme/csc-plain/
-          cp -r /slidefactory/theme/csc-plain/img build/theme/csc-plain/
+          slidefactory pages about.yml build --info_content "Updated for [$GITHUB_SHA]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA) ($GIT_DATE)" $ARGS
 
-          if [[ "$INCLUDE_PDF" == "true" ]]; then
-            echo "[Download a zip file containing all slides]($SLIDE_ZIP)" >> index.md
-            echo "" >> index.md
-          fi
-
-          for d in \
-                   intro-to-hpc \
-                   computer-platforms \
-                   mpi \
-                   hybrid \
-                   gpu-openmp \
-                   gpu-hip \
-                   parallel-io \
-                   application-design \
-                   application-performance \
-                   qc \
-                   ; do
-            echo "## $d" >> index.md
-            /slidefactory/slidefactory.py --format html $d/docs/*.md -o build/$d/ --theme_url ../theme/csc-plain/csc.css
-
-            if [[ "$INCLUDE_PDF" == "true" ]]; then
-              /slidefactory/slidefactory.py --format pdf $d/docs/*.md -o build/$d/
-            fi
-
-            for f in build/$d/*.html; do
-              echo "* [${f##*/}](${f#build/}){target=\"_blank\"}" >> index.md
-              if [[ "$INCLUDE_PDF" == "true" ]]; then
-                f_pdf=${f%.*}.pdf
-                echo "  ([PDF](${f_pdf#build/}){target=\"_blank\"})" >> index.md
-              fi
-            done
-
-            echo "" >> index.md
-
-          done
-
-          if [[ "$INCLUDE_PDF" == "true" ]]; then
-            cd build
-            zip $SLIDE_ZIP */*.pdf
-            cd -
-          fi
-
-          cat index.md
-          pandoc --standalone --metadata title="CSC Summer School in High-Performance Computing" index.md -o build/index.html
-          rm index.md
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
