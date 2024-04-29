@@ -1,6 +1,6 @@
 ---
 title:  Further MPI topics
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
