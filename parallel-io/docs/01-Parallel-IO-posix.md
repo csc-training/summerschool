@@ -117,7 +117,7 @@ thousands of nodes on the supercomputer to physical disks
 
 # Lustre file striping in C codes
 - The striping policy for files within an application
-- 
+
 ```c
 ...
 #include <lustre/lustraapi.h>
