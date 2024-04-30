@@ -4,85 +4,46 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
+# Introduction to GPU parallel computing and programming model{.section}
 
-# High-performance computing
-
-<div class="column">
-
-- High performance computing is fueled by ever increasing performance
-- Increasing performance allows  breakthroughs in many major challenges that
-  humankind faces today
-- Not only hardware performance, algorithmic improvements have also added orders of magnitude of real performance
-
-</div>
+# High Performance Computing through the ages
 
 <div class="column">
-![](img/top500-perf-dev.png)
+
+![](img/top500-perf-dev.png){.center width=70%}
 </div>
 
-# HPC through the ages
-
-<div class="column" width=55%>
-- Achieving performance has been based on various strategies throughout the years
-    - Frequency, vectorization, multi-node, multi-core ...
-    - Now performance is mostly limited by power consumption
-- Accelerators provide compute resources based on a very high level of parallelism to reach
-  high performance at low relative power consumption
-</div>
-
-<div class="column" width=43%>
-![](img/microprocessor-trend-data.png)
+<div class="column"> 
+![](img/microprocessor-trend-data.png){.center width=100%}
 </div>
 
 
 # Accelerators
 
-- Specialized parallel hardware for floating point operations
+- Specialized parallel hardware for compute-intensive operations
     - Co-processors for traditional CPUs
     - Based on highly parallel architectures
     - Graphics processing units (GPU) have been the most common
       accelerators during the last few years
 - Promises
     - Very high performance per node
+    - More FLOPS/Watt
 - Usually major rewrites of programs required
 
-# Why use them?
-CPU vs Accelerator
-
-![ <span style=" font-size:0.5em;">https://github.com/karlrupp/cpu-gpu-mic-comparison</span> ](img/comparison.png)
 
 
-# Different design philosophies
-
-<div class="column">
-
-**CPU**
-\
-\
-
-- General purpose
-- Good for serial processing
-- Great for task parallelism
-- Low latency per thread
-- Large area dedicated cache and control
+# Accelerator model today
 
 
-</div>
+- Local memory in GPU
+    - Smaller than main memory (32 GB in Puhti, 64GB in LUMI)
+    - Very high bandwidth (up to 3200 GB/s in LUMI)
+    - Latency high compared to compute performance
 
-<div class="column">
+![](img/gpu-bws.png){width=100%}
 
-**GPU**
-\
-\
-
-- Highly specialized for parallelism
-- Good for parallel processing
-- Great for data parallelism
-- High-throughput
-- Hundreds of floating-point execution units
-
-
-</div>
+- GPUs are connected to CPUs via PCIe
+- Data must be copied from CPU to GPU over the PCIe bus
 
 
 # Lumi - Pre-exascale system in Finland
@@ -90,34 +51,7 @@ CPU vs Accelerator
  ![](img/lumi.png){.center width=50%}
 
 
-# Accelerator model today
-
-<div class="column">
-- GPU is connected to CPUs via PCIe
-- Local memory in GPU
-    - Smaller than main memory (32 GB in Puhti)
-    - Very high bandwidth (up to 3200 GB/s in LUMI)
-    - Latency high compared to compute performance
-- Data must be copied from CPU to GPU over the PCIe bus
-
-</div>
-<div class="column">
-![](img/gpuConnect.png){}
-![](img/gpu-bws.png){width=100%}
-</div>
-
-#  Heterogeneous Programming Model
-
-- GPUs are co-processors to the CPU
-- CPU controls the work flow:
-  - *offloads* computations to GPU by launching *kernels*
-  - allocates and deallocates the memory on GPUs
-  - handles the data transfers between CPU and GPUs
-- CPU and GPU can work concurrently
-   - kernel launches are normally asynchronous
-
 # GPU architecture
-
 <div class="column">
 - Designed for running tens of thousands of threads simultaneously on
   thousands of cores
@@ -130,16 +64,6 @@ CPU vs Accelerator
 ![](img/mi100-architecture.png)
 <small>AMD Instinct MI100 architecture (source: AMD)</small>
 </div>
-
-
-# Advance features & Performance considerations
-
-- Memory accesses:
-   - data resides in the GPU memory; maximum performance is achieved when reading/writing is done in continuous blocks
-   - very fast on-chip memory can be used as a user programmable cache
-- *Unified Virtual Addressing* provides unified view for all memory
-- Asynchronous calls can be used to overlap transfers and computations.
-
 
 # Challenges in using Accelerators
 
@@ -154,29 +78,43 @@ CPU vs Accelerator
 **Scalability**: Can you scale the GPU software efficiently to several nodes?
 
 
+#  Heterogeneous Programming Model
+
+- GPUs are co-processors to the CPU
+- CPU controls the work flow:
+  - *offloads* computations to GPU by launching *kernels*
+  - allocates and deallocates the memory on GPUs
+  - handles the data transfers between CPU and GPUs
+- CPU and GPU can work concurrently
+   - kernel launches are normally asynchronous
+
 # Using GPUs
 
 <div class="column">
+
+
+
 1. Use existing GPU applications
 2. Use accelerated libraries
 3. Directive based methods
-    - **OpenMP**, OpenACC
-4. Use native GPU language
-    - CUDA, HIP, SYCL, Kokkos,...
+    - OpenMP, OpenACC
+4. High-level GPU programming
+    - **SYCL**, **Kokkos**, ...
+5. Use direct GPU programming
+    - CUDA, HIP, ...
 </div>
-<div class="column" width=40%>
+<div class="column">
+**Easier, more limited**
 
-Easier, but more limited
+![](img/arrow.png){width=16% }
 
-![](img/arrow.png){.center width=20% }
-
-More difficult, but more opportunities
+**More difficult, more opportunities**
 
 </div>
 
 
 
-
+<!--
 # Directive-based accelerator languages
 
 - Annotating code to pinpoint accelerator-offloadable regions
@@ -206,6 +144,7 @@ More difficult, but more opportunities
     - almost a one-on-one clone of CUDA from the user perspective
     - ecosystem is new and developing fast
 
+-->
 
 # GPUs @ CSC
 
