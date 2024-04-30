@@ -4,7 +4,7 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Further MPI topics
+# Further MPI topics{.section}
 
 - One-sided communication
 - MPI shared memory programming
