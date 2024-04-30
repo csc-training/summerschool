@@ -115,6 +115,21 @@ thousands of nodes on the supercomputer to physical disks
     - Also stripe size can be specified, see *man lfs* for details
 - Proper striping can enhance I/O performance a lot
 
+# Lustre file striping in C codes
+- The striping policy for files within an application
+
+```c
+...
+#include <lustre/lustreapi.h>
+int main(int argc, char **argv){
+ int fd;
+ char fname[]="lfile";
+ unsigned long long stripe_size;
+ int stripe_count, stripe_pattern=0, stripe_offset=-1;
+ // Try to create file
+ stripe_size=1048576; stripe_count=4;
+ fd=llapi_file_open(fname,O_CREAT|O_RDWR,S_IRWXU,stripe_size,stripe_offset,stripe_count,stripe_pattern);
+```
 
 # Performance with Lustre striping
 
