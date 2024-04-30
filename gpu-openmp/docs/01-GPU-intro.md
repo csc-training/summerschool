@@ -4,7 +4,7 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Introduction to GPU parallel computing and programming model{.section}
+# Introduction to GPUs in HPC{.section}
 
 # High Performance Computing through the ages
 
