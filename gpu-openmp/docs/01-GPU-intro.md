@@ -140,9 +140,6 @@ lang:   en
     - almost a one-on-one clone of CUDA from the user perspective
     - ecosystem is new and developing fast
 
-# Using GPUs
-
-![](img/gpu_approaches.png){.center width=70%}
 
 # GPUs @ CSC
 
