@@ -120,7 +120,7 @@ thousands of nodes on the supercomputer to physical disks
 
 ```c
 ...
-#include <lustre/lustraapi.h>
+#include <lustre/lustreapi.h>
 int main(int argc, char **argv){
  int fd;
  char fname[]="lfile";
