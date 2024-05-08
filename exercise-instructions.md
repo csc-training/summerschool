@@ -102,18 +102,17 @@ Also other popular editors such as emacs and vim are available.
 
 ## Compilation
 
-LUMI has several programming environments. For summerschool, we recommend that you use
-the special summerschool modules:
-```
-module use /project/project_465000536/modules
-```
+LUMI has several programming environments. For summerschool, we recommend that you use cray tools.
+
 For CPU programming use:
 ```
-module load hpcss/cpu
+module load LUMI/23.09
 ```
 For GPU programming use:
 ```
-module load hpcss/gpu
+module load LUMI/23.09
+module load partition/G
+module load rocm/6.1.0
 ```
 
 ### MPI
@@ -160,7 +159,7 @@ building MPI programs.
 In order to use HDF5 in CSC supercomputers, you need the load the HDF5 module with MPI I/O support.
 The appropriate module in **Lumi** is
 ```
-module load cray-hdf5-parallel/1.12.2.1
+module load cray-hdf5-parallel
 ```
 
 No special flags are needed for compiling and linking, the compiler wrappers take care of them automatically.
@@ -172,10 +171,9 @@ Usage in local workstation may vary.
 On **Lumi**, the following modules are required:
 
 ```bash
-module load LUMI/22.08
+module load LUMI/23.09
 module load partition/G 
-module load cce/15.0.1
-module load rocm/5.3.3
+module load rocm/6.1.0
 ```
 
 On **Lumi**, to compile your program, use
@@ -189,10 +187,9 @@ CC -fopenmp <source.cpp>
 Use the following modules :
 
 ```bash
-module load LUMI/22.08
-module load partition/G
-module load cce/15.0.1
-module load rocm/5.3.3
+module load LUMI/23.09
+module load partition/G 
+module load rocm/6.1.0
 ```
 
 To compile your program, use:
@@ -203,18 +200,19 @@ CC -xhip <source.cpp>
 The following modules are required:
 ```bash
 
-module load LUMI/22.08
-module load partition/G
-module load cce/15.0.1
-module load rocm/5.3.3
+
+module load LUMI/23.09
+module load partition/G 
+module load rocm/6.1.0
 ```
 
 Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn). 
 
 The package was installed via:
 ```bash
-git clone https://github.com/ROCmSoftwarePlatform/hipfort.git
-cd hipfort;
+# In some temporary folder
+wget https://github.com/ROCm/hipfort/archive/refs/tags/rocm-6.1.0.tar.gz # the realese is matched to the rocm version!
+cd hipfort-rocm-6.1.0;
 mkdir build;
 cd build;
 cmake -DHIPFORT_INSTALL_DIR=<path-to>/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
@@ -224,7 +222,7 @@ make install
 
 We will use the Cray 'ftn' compiler wrapper as you would do to compile any fortran code plus some additional flags:
 ```bash
-export HIPFORT_HOME=/project/project_465000536/appl/HIPFORT
+export HIPFORT_HOME=<path-to>/appl/HIPFORT
 ftn -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -c <fortran_code>.f90 
 CC -xhip -c <hip_kernels>.cpp
 ftn  -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -o main <fortran_code>.o hip_kernels.o
