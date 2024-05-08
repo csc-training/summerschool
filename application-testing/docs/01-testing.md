@@ -5,13 +5,12 @@ lang:   en
 ---
 
 # Overview
-- Why?
-- Different types of tests
-- Testing frameworks
+- Motivation
+- Types of tests
 - Demo
 - Summary
 
-# Why? {.section}
+# Motivation {.section}
 
 # Why test your software?
 Why use
@@ -21,7 +20,7 @@ Why use
 - linting?
 - code formatting tools?
 - out-of-source build systems?
-- Vim and purge emacs from your OS?
+- Vim instead of emacs?
 :::
 
 # Why test your software?
@@ -36,6 +35,7 @@ Because it makes (among other things)
 # Test types {.section}
 
 # Test types
+
 ::: incremental
 - Unit tests
 - Integration tests
@@ -145,26 +145,24 @@ Ensure the program doesn't regress in
     - unit & integration tests
 :::
 
-# Frameworks {.section}
-
-# Frameworks
-A long list ^[https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks] to choose from
-
-Focus on googletest ^[https://github.com/google/googletest] with CTest integration
-
-# Googletest
-- TODO
-
 # Demo {.section}
+What to do here?
+
+- Demo
+    - Starting from basics?
+    - Running tests?
+    - Making the cmakelists for tests?
+    - Ctest usage?
+    - ctest with googletest?
+    - test driven development demo?
+    - example about modularization of code?
+    - refactoring and leaning on tests?
 
 # Summary
 - Motivation
-    - Makes your life easier
-    - Improves your program's quality
-- Different types of tests
+    - Testing makes your life easier and improves your program's quality
+- Types of tests
     - Unit tests
     - Integration tests
     - Regression tests
-- Testing software and frameworks
-    - Googletest
 - Demo
