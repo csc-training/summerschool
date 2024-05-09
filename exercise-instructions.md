@@ -405,15 +405,13 @@ tau_trace2json tau.trc tau.edf -chrome -ignoreatomic -o app.json
 
 Copy `app.json`  to local computer, open ui.perfett.dev and then load the `app.json` file.
 ## Omniperf
-```
-https://amdresearch.github.io/omniperf/installation.html#client-side-installation
-```
+Installing Omniperf is straightforward follwing the instructions from the [official webpage](https://amdresearch.github.io/omniperf/installation.html#client-side-installation)
 In order to use omniperf load the following modules:
 ```
-module use /project/project_465000536/Omni/omniperf/modulefiles
+module use <path-ro>/Omni/omniperf/modulefiles
 module load omniperf
 module load cray-python
-srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465000536 omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
+srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465zzzzzz omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
 omniperf analyze -p workloads/workload_xy/mi200/ > analyse_xy.txt
 ```
 In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/x.y.z`.
