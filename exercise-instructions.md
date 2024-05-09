@@ -374,7 +374,7 @@ make -j 64
 `TAU` and `Omniperf` can be used to do performance analysis. 
 In order to use TAU one only has to load the modules needed to run the application be ran and set the paths to the TAU install folder:
 ```
-export TAU=/project/<path-to>/tau/2.32/craycnl
+export TAU=<path-to>/tau/2.32/craycnl
 export PATH=$TAU/bin:$PATH
 ```
 Profiling mpi code:
@@ -390,9 +390,10 @@ Visualize:
 ```
 paraprof
 ```
-This will open the application in the vnc window.
+This will open the application in a vnc window.
 
-Alternartively one can use the [Open on Demand](https://www.lumi.csc.fi/) interface. Via this on e can have access to a desktop running on LUMI. 
+Alternatively one can use the [Open on Demand](https://www.lumi.csc.fi/) interface. This way one can have access to a desktop running on LUMI.
+
 Tracing:
 
 ```
