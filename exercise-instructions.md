@@ -180,7 +180,7 @@ On **Lumi**, to compile your program, use
 ```bash
 CC -fopenmp <source.cpp>
 ```
-**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L`  is loaded it will create code for multi-core cpus. If  `partition/G` it will create code for offloading on gpus.
+**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L`  is loaded it will use compiling options for creating code for multi-core cpus. If  `partition/G` it will use compiling opttions create code for offloading on gpus.
 
 ### HIP
 
