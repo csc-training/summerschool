@@ -112,7 +112,7 @@ For GPU programming use:
 ```
 module load LUMI/23.09
 module load partition/G
-module load rocm/6.1.0
+module load rocm/5.6.1
 ```
 
 ### MPI
@@ -173,14 +173,14 @@ On **Lumi**, the following modules are required:
 ```bash
 module load LUMI/23.09
 module load partition/G 
-module load rocm/6.1.0
+module load rocm/5.6.1
 ```
 
 On **Lumi**, to compile your program, use
 ```bash
 CC -fopenmp <source.cpp>
 ```
-
+**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L`  is loaded it will create code for multi-core cpus. If  `partition/G` it will create code for offloading on gpus.
 
 ### HIP
 
@@ -189,7 +189,7 @@ Use the following modules :
 ```bash
 module load LUMI/23.09
 module load partition/G 
-module load rocm/6.1.0
+module load rocm/5.6.1
 ```
 
 To compile your program, use:
@@ -203,7 +203,7 @@ The following modules are required:
 
 module load LUMI/23.09
 module load partition/G 
-module load rocm/6.1.0
+module load rocm/5.6.1
 ```
 
 Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn). 
@@ -211,18 +211,19 @@ Because the default `HIPFORT` installation only supports gfortran,  we use a cus
 The package was installed via:
 ```bash
 # In some temporary folder
-wget https://github.com/ROCm/hipfort/archive/refs/tags/rocm-6.1.0.tar.gz # the realese is matched to the rocm version!
+wget https://github.com/ROCm/hipfort/archive/refs/tags/rocm-6.1.0.tar.gz # one can try various realeases
 cd hipfort-rocm-6.1.0;
 mkdir build;
 cd build;
-cmake -DHIPFORT_INSTALL_DIR=<path-to>/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
+cmake -DHIPFORT_INSTALL_DIR=<path-to>/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=<path-to>/ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
 make -j 64 
 make install
 ```
+Where `<path-to>/ftn` can be obtain by running `which ftn`. 
 
 We will use the Cray 'ftn' compiler wrapper as you would do to compile any fortran code plus some additional flags:
 ```bash
-export HIPFORT_HOME=<path-to>/appl/HIPFORT
+export HIPFORT_HOME=<path-to>/HIPFORT
 ftn -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -c <fortran_code>.f90 
 CC -xhip -c <hip_kernels>.cpp
 ftn  -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -o main <fortran_code>.o hip_kernels.o
@@ -363,17 +364,17 @@ cd 2.32
 ./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -phiprof -papi=/opt/cray/pe/papi/6.0.0.15/
 make -j 64
 
-./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/ -rocprofiler=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/rocprofiler
+./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=<path-to>/rocm/x.y.z/ -rocprofiler=<path-to>/rocm/x.y.z/rocprofiler
 make -j 64
 
-./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/ -roctracer=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/roctracer
+./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=<path-to>/rocm/x.y.z/ -roctracer=<path-to>/rocm/x.y.z/roctracer
 make -j 64
 ```
 
 `TAU` and `Omniperf` can be used to do performance analysis. 
 In order to use TAU one only has to load the modules needed to run the application be ran and set the paths to the TAU install folder:
 ```
-export TAU=/project/project_465000536/appl/tau/2.32/craycnl
+export TAU=/project/<path-to>/tau/2.32/craycnl
 export PATH=$TAU/bin:$PATH
 ```
 Profiling mpi code:
@@ -389,6 +390,9 @@ Visualize:
 ```
 paraprof
 ```
+This will open the application in the vnc window.
+
+Alternartively one can use the [Open on Demand](https://www.lumi.csc.fi/) interface. Via this on e can have access to a desktop running on LUMI. 
 Tracing:
 
 ```
@@ -411,7 +415,7 @@ module load cray-python
 srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465000536 omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
 omniperf analyze -p workloads/workload_xy/mi200/ > analyse_xy.txt
 ```
-In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/5.3.3`.
+In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/x.y.z`.
 It is useful add to the compilation of the application to be analysed the follwing `-g -gdwarf-4`.
 
 More information about TAU can be found in [TAU User Documentation](https://www.cs.uoregon.edu/research/tau/docs/newguide/), while for Omniperf at [Omniperf User Documentation](https://github.com/AMDResearch/omniperf)
