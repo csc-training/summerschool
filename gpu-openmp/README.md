@@ -25,7 +25,7 @@
 
 ## Interoperability with libraries
 
-- [Using CUDA library](device-ptr)
+- [Using HIP library](device-ptr)
 
 ## Asynchronous operations
 
