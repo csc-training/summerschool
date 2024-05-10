@@ -148,7 +148,7 @@ lang:   en
 - **Mahti-AI**: 24 nodes, total peak performance of 2. Petaflops
     - Four Nvidia A100 GPUs, two 64 cores AMD Epyc processors, 3.8 TB fast local storage,  network connectivity of  200Gbps aggregate bandwidth   
 - **LUMI-G**: 2978 nodes, total peak performance of 500 Petaflops
-    - Four AMD MI250X GPUs, one 64 cores AMD Epyc processors, 2x3 TB fast local storage, network connectivity of  800Gbps aggregate bandwidth
+    - Four AMD MI250X GPUs, one 64 cores AMD Epyc processors, no local storage, network connectivity of  800Gbps aggregate bandwidth
 
 # Summary
 
