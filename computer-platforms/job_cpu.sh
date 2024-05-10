@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
+#SBATCH --account=project_465zzzzz
 #SBATCH --error=%x.%J.err
 #SBATCH --output=%x.%J.out
 #SBATCH --partition=standard
