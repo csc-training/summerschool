@@ -42,9 +42,6 @@ Agent 5
 With `rocm-smi` we can get runtime information:
 ```
 > srun -p dev-g --gpus 1  -n 1 --time=00:30:00 --account=project_462000007 rocm-smi
-srun: job 7073220 queued and waiting for resources
-srun: job 7073220 has been allocated resources
-
 
 ========================= ROCm System Management Interface =========================
 =================================== Concise Info ===================================
@@ -53,4 +50,4 @@ GPU  Temp (DieEdge)  AvgPwr  SCLK    MCLK     Fan  Perf    PwrCap  VRAM%  GPU%
 ====================================================================================
 =============================== End of ROCm SMI Log ================================
 ```
-When a GPU application is running we can live info about the temperature, RAM usage and perctange of GPU used. 
+When a GPU application is running we can seelive info about the temperature, RAM usage, and perctange of GPU used. 
