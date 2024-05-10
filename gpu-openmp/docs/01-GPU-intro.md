@@ -61,8 +61,8 @@ lang:   en
 </div>
 
 <div class="column">
-![](img/mi100-architecture.png)
-<small>AMD Instinct MI100 architecture (source: AMD)</small>
+![](img/mi250x-gcd.svg)
+<small>Overview of MI250x Graphics Compute Die (GCD) (source: AMD)</small>
 </div>
 
 # Challenges in using Accelerators
