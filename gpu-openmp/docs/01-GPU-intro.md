@@ -52,8 +52,8 @@ lang:   en
 
 
 # GPU architecture
-<div class="column">
-- Designed for running tens of thousands of threads simultaneously on
+<div class="column" >
+- Designed for simultaneous exe-cution of tens of thousands of threads on
   thousands of cores
 - Very small penalty for switching threads
 - Running large amounts of threads hides memory access penalties
@@ -61,9 +61,10 @@ lang:   en
 </div>
 
 <div class="column">
-![](img/mi250x-gcd-rotated.svg){.center width=42% height=60%}
-    
-<small>Overview of MI250x Graphics Compute Die (GCD) (source: AMD)</small>
+![](img/mi250x-gcd.svg)
+
+<small>Overview of MI250x Graphics Compute Die</small>
+
 </div>
 
 # Challenges in using Accelerators
