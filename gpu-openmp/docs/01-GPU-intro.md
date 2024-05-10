@@ -61,7 +61,8 @@ lang:   en
 </div>
 
 <div class="column">
-![](img/mi250x-gcd-rotated.svg){width=40% }
+![](img/mi250x-gcd-rotated.svg){.center width=50%}
+    
 <small>Overview of MI250x Graphics Compute Die (GCD) (source: AMD)</small>
 </div>
 
