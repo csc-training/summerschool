@@ -61,7 +61,7 @@ lang:   en
 </div>
 
 <div class="column">
-![](img/mi250x-gcd.svg)
+![](img/mi250x-gcd-rotated.svg)
 <small>Overview of MI250x Graphics Compute Die (GCD) (source: AMD)</small>
 </div>
 
