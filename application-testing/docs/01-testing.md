@@ -146,17 +146,6 @@ Ensure the program doesn't regress in
 :::
 
 # Demo {.section}
-What to do here?
-
-- Demo
-    - Starting from basics?
-    - Running tests?
-    - Making the cmakelists for tests?
-    - Ctest usage?
-    - ctest with googletest?
-    - test driven development demo?
-    - example about modularization of code?
-    - refactoring and leaning on tests?
 
 # Summary
 - Motivation
