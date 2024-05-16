@@ -1,0 +1,12 @@
+# This file is used in the generation of the web page
+title: CSC Summer School in High-Performance Computing
+modules:
+  - intro-to-hpc
+  - computer-platforms
+  - mpi
+  - parallel-io
+  - hybrid
+  - gpu-openmp
+  - gpu-hip
+  - application-performance
+  - application-design

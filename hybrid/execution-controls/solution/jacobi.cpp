@@ -48,6 +48,8 @@ int main()
 
     // Jacobi iteration
     do {
+        // Without barrier here, norm may be set to zero before some threads have 
+        // finished the check at the "while"
         #pragma omp barrier
         #pragma omp single
         norm = 0.0;

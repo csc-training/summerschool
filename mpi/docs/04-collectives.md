@@ -1,6 +1,6 @@
 ---
 title:  Collective communication
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -22,7 +22,7 @@ lang:   en
 - Code becomes more compact and easier to read:
 
 <div class=column>
-```fortran
+```fortranfree
 if (rank == 0) then
     do i = 1, ntasks-1
         call mpi_send(a, 1048576, &
@@ -37,7 +37,7 @@ end if
 ```
 </div>
 <div class=column>
-```fortran
+```fortranfree
 call mpi_bcast(a, 1048576, &
                MPI_REAL, 0, &
                MPI_COMM_WORLD, rc)
@@ -127,7 +127,7 @@ MPI_Scatter(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 Assume 4 MPI tasks. What would the (full) program print?
 
 <div class=column>
-```fortran
+```fortranfree
 if (rank==0) then
     do i = 1, 16
         a(i) = i
@@ -145,7 +145,7 @@ if (rank==3) print *, a(:)
 
 </div>
 <div class=column>
-```fortran
+```fortranfree
 if (rank==0) then
     do i = 1, 16
         a(i) = i
@@ -196,7 +196,7 @@ MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtyp
 # Scatterv example
 
 <div class=column>
-```fortran
+```fortranfree
 if (rank==0) then
   do i = 1, 10
     a(i) = i
@@ -382,7 +382,7 @@ MPI_Alltoall(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbu
 # All-to-all example
 
 <div class=column>
-```fortran
+```fortranfree
 if (rank==0) then
   do i = 1, 16
     a(i) = i
@@ -494,7 +494,7 @@ MPI_Allreduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`
 # Allreduce example: parallel dot product
 
 <div class=column>
-```fortran
+```fortranfree
 real :: a(1024), aloc(128)
 ...
 if (rank==0) then

@@ -1,6 +1,6 @@
 ---
 title:  Fortran and HIP
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 

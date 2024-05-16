@@ -1,3 +1,9 @@
+---
+title:  Demo
+event:  CSC Summer School in High-Performance Computing 2024
+lang:   en
+---
+
 # Parallel I/O
 ### Striping example:
 Different tools to setting and displaying stripe properties

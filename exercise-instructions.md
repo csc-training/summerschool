@@ -102,18 +102,17 @@ Also other popular editors such as emacs and vim are available.
 
 ## Compilation
 
-LUMI has several programming environments. For summerschool, we recommend that you use
-the special summerschool modules:
-```
-module use /project/project_465000536/modules
-```
+LUMI has several programming environments. For summerschool, we recommend that you use cray tools.
+
 For CPU programming use:
 ```
-module load hpcss/cpu
+module load LUMI/23.09
 ```
 For GPU programming use:
 ```
-module load hpcss/gpu
+module load LUMI/23.09
+module load partition/G
+module load rocm/5.6.1
 ```
 
 ### MPI
@@ -160,7 +159,7 @@ building MPI programs.
 In order to use HDF5 in CSC supercomputers, you need the load the HDF5 module with MPI I/O support.
 The appropriate module in **Lumi** is
 ```
-module load cray-hdf5-parallel/1.12.2.1
+module load cray-hdf5-parallel
 ```
 
 No special flags are needed for compiling and linking, the compiler wrappers take care of them automatically.
@@ -172,27 +171,25 @@ Usage in local workstation may vary.
 On **Lumi**, the following modules are required:
 
 ```bash
-module load LUMI/22.08
+module load LUMI/23.09
 module load partition/G 
-module load cce/15.0.1
-module load rocm/5.3.3
+module load rocm/5.6.1
 ```
 
 On **Lumi**, to compile your program, use
 ```bash
 CC -fopenmp <source.cpp>
 ```
-
+**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L`  is loaded it will use compiling options for creating code for multi-core cpus. If  `partition/G` it will use compiling opttions create code for offloading on gpus.
 
 ### HIP
 
 Use the following modules :
 
 ```bash
-module load LUMI/22.08
-module load partition/G
-module load cce/15.0.1
-module load rocm/5.3.3
+module load LUMI/23.09
+module load partition/G 
+module load rocm/5.6.1
 ```
 
 To compile your program, use:
@@ -203,28 +200,30 @@ CC -xhip <source.cpp>
 The following modules are required:
 ```bash
 
-module load LUMI/22.08
-module load partition/G
-module load cce/15.0.1
-module load rocm/5.3.3
+
+module load LUMI/23.09
+module load partition/G 
+module load rocm/5.6.1
 ```
 
 Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn). 
 
 The package was installed via:
 ```bash
-git clone https://github.com/ROCmSoftwarePlatform/hipfort.git
-cd hipfort;
+# In some temporary folder
+wget https://github.com/ROCm/hipfort/archive/refs/tags/rocm-6.1.0.tar.gz # one can try various realeases
+cd hipfort-rocm-6.1.0;
 mkdir build;
 cd build;
-cmake -DHIPFORT_INSTALL_DIR=<path-to>/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
+cmake -DHIPFORT_INSTALL_DIR=<path-to>/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=<path-to>/ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
 make -j 64 
 make install
 ```
+Where `<path-to>/ftn` can be obtain by running `which ftn`. 
 
 We will use the Cray 'ftn' compiler wrapper as you would do to compile any fortran code plus some additional flags:
 ```bash
-export HIPFORT_HOME=/project/project_465000536/appl/HIPFORT
+export HIPFORT_HOME=<path-to>/HIPFORT
 ftn -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -c <fortran_code>.f90 
 CC -xhip -c <hip_kernels>.cpp
 ftn  -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -o main <fortran_code>.o hip_kernels.o
@@ -365,17 +364,17 @@ cd 2.32
 ./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -phiprof -papi=/opt/cray/pe/papi/6.0.0.15/
 make -j 64
 
-./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/ -rocprofiler=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/rocprofiler
+./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=<path-to>/rocm/x.y.z/ -rocprofiler=<path-to>/rocm/x.y.z/rocprofiler
 make -j 64
 
-./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/ -roctracer=/appl/lumi/SW/LUMI-22.08/G/EB/rocm/5.3.3/roctracer
+./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -papi=/opt/cray/pe/papi/6.0.0.15/ -rocm=<path-to>/rocm/x.y.z/ -roctracer=<path-to>/rocm/x.y.z/roctracer
 make -j 64
 ```
 
 `TAU` and `Omniperf` can be used to do performance analysis. 
 In order to use TAU one only has to load the modules needed to run the application be ran and set the paths to the TAU install folder:
 ```
-export TAU=/project/project_465000536/appl/tau/2.32/craycnl
+export TAU=<path-to>/tau/2.32/craycnl
 export PATH=$TAU/bin:$PATH
 ```
 Profiling mpi code:
@@ -391,6 +390,10 @@ Visualize:
 ```
 paraprof
 ```
+This will open the application in a vnc window.
+
+Alternatively one can use the [Open on Demand](https://www.lumi.csc.fi/) interface. This way one can have access to a desktop running on LUMI.
+
 Tracing:
 
 ```
@@ -402,18 +405,16 @@ tau_trace2json tau.trc tau.edf -chrome -ignoreatomic -o app.json
 
 Copy `app.json`  to local computer, open ui.perfett.dev and then load the `app.json` file.
 ## Omniperf
-```
-https://amdresearch.github.io/omniperf/installation.html#client-side-installation
-```
+Installing Omniperf is straightforward follwing the instructions from the [official webpage](https://amdresearch.github.io/omniperf/installation.html#client-side-installation)
 In order to use omniperf load the following modules:
 ```
-module use /project/project_465000536/Omni/omniperf/modulefiles
+module use <path-ro>/Omni/omniperf/modulefiles
 module load omniperf
 module load cray-python
-srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465000536 omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
+srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465zzzzzz omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
 omniperf analyze -p workloads/workload_xy/mi200/ > analyse_xy.txt
 ```
-In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/5.3.3`.
+In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/x.y.z`.
 It is useful add to the compilation of the application to be analysed the follwing `-g -gdwarf-4`.
 
 More information about TAU can be found in [TAU User Documentation](https://www.cs.uoregon.edu/research/tau/docs/newguide/), while for Omniperf at [Omniperf User Documentation](https://github.com/AMDResearch/omniperf)

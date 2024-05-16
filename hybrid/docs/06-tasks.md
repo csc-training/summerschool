@@ -1,6 +1,6 @@
 ---
 title:  OpenMP tasks
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -49,7 +49,7 @@ lang:   en
 
 - Syntax (Fortran)
 
-    ```fortran
+    ```fortranfree
     !$omp task[clause[[,] clause],...]
     ...
     !$omp end task

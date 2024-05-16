@@ -1,6 +1,6 @@
 ---
 title:  Special MPI parameters
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -19,7 +19,7 @@ lang:   en
 # Example
 
 <div class=column>
-```fortran
+```fortranfree
 if (rank == 0) then
    call mpi_send(message, msgsize, &
                  MPI_INTEGER, 1, &
@@ -40,7 +40,7 @@ else if (rank == 1) then
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 ! Modulo operation can be used for
 ! wrapping around
 dst = mod(rank + 1, ntasks)
@@ -83,7 +83,7 @@ if (0 == rank) {
 
 # Example
 
-```fortran
+```fortranfree
 dst = rank + 1
 src = rank - 1
 

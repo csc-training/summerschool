@@ -1,6 +1,6 @@
 ---
 title:  Message-Passing Interface (MPI)
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -128,7 +128,7 @@ else if (rank == 1) {
 #include <mpi.h>
 ```
 - Fortran: use MPI module
-```fortran
+```fortranfree
 use mpi_f08
 ```
 &emsp;(older Fortran codes might have `use mpi` or `include 'mpif.h'`)

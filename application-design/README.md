@@ -1,3 +1,3 @@
-## Exercieses
+## Exercises
 
 - [Continuous integration](ci/)

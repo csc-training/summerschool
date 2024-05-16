@@ -1,6 +1,6 @@
 ---
 title:  Synchronization, streams, and asynchronous operations
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -46,7 +46,7 @@ process_in_host();
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
  !$omp target nowait
  call process_in_device();
  !$omp end target

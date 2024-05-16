@@ -1,6 +1,6 @@
 ---
 title:  "OpenMP offloading: <br>device functions"
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -49,7 +49,7 @@ for (int i=0; i<n; ++i) {
 
 <div class="column">
 **Fortran**
-```fortran
+```fortranfree
 subroutine foo(v, i, n)
   !$omp declare target
   real :: v(:,:)
