@@ -9,4 +9,5 @@ modules:
   - gpu-openmp
   - gpu-hip
   - application-performance
-  - application-design
+  - application-testing
+  - build-systems
