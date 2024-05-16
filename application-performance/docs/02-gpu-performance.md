@@ -73,7 +73,7 @@ lang:   en
 - Start with an overview!
     - Call tree information, what routines are most expensive?
 
-# Sampling
+# [Sampling]{.underline} vs. Tracing
 
 :::::: {.columns}
 ::: {.column width="50%"}
@@ -91,7 +91,7 @@ lang:   en
 :::
 ::::::
 
-# Tracing
+# Sampling vs. [Tracing]{.underline}
 
 :::::: {.columns}
 ::: {.column width="50%"}
