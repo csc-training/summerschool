@@ -21,7 +21,7 @@ lang:   en
 
 # Persistent communication
 
-- Inititiate communication by creating requests
+- Initiate communication by creating requests
     - `MPI_Send_init` and `MPI_Recv_init`
     - Same arguments as in `MPI_Isend` and `MPI_Irecv`
 - Start communication
