@@ -13,7 +13,7 @@ lang:   en
 - It may be possible to optimize such pattern by persistent communication requests
     - Can be thought as a ”communication port”
 - Three separate phases:
-    1. Inititation of communication
+    1. Initiation of communication
     2. Starting of communication
     3. Completing communication
 - Recently published MPI 4.0 includes also persistent collectives
