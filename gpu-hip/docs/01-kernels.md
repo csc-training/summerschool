@@ -120,10 +120,8 @@ int main(void)
 # Kernels
 
 - Kernel is a (device) function to be executed by the GPU
-- Function should be of `void` type and needs to be declared with the
-  `__global__` or `__device__` attribute
-- All pointers passed to the kernel need to point to memory accessible from
-  the device
+- Needs to be declared with the `__global__` (has to be of `void` type) or `__device__` attribute
+- All pointers passed to the kernel need to point to memory accessible from the device
 - Unique thread and block IDs can be used to distribute work
 
 
