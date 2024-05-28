@@ -16,7 +16,7 @@ lang:   en
 - MPI is flexible and comprehensive
     - large (hundreds of procedures)
     - concise (only 10-20 procedures are typically needed)
-- First version of standard (1.0) published in 1994, latest (4.0) in June 2021
+- First version of standard (1.0) published in 1994, latest (4.1) in 2023
     - <https://www.mpi-forum.org/docs/>
 
 # Processes and threads
