@@ -123,19 +123,50 @@ else if (rank == 1) {
 
 # Writing an MPI program
 
-- C: include the MPI header file
-```c
-#include <mpi.h>
-```
-- Fortran: use MPI module
-```fortranfree
-use mpi_f08
-```
-&emsp;(older Fortran codes might have `use mpi` or `include 'mpif.h'`)
+<div class="column">
+## C:
 
-- Start by calling the routine **`MPI_Init`**
-- Write the program
-- Call **`MPI_Finalize`** before exiting from the main program
+```c
+// Include MPI header file
+#include <mpi.h>
+
+int main(int argc, char *argv[])
+{
+    // Start by calling MPI_Init()
+    MPI_Init(&argc, &argv);
+
+    ...  // program code
+
+    // Call MPI_Finalize() before exiting
+    MPI_Finalize();
+}
+
+
+```
+</div>
+
+<div class="column">
+## Fortran:
+
+```fortranfree
+program my_prog
+  ! Use MPI module
+  use mpi_f08
+  implicit none
+  integer :: rc
+
+  ! Start by calling mpi_init()
+  call mpi_init(rc)
+
+  ... ! program code
+
+  ! Call mpi_finalize() before exiting
+  call mpi_finalize(rc)
+end program my_prog
+```
+</div>
+
+- Older Fortran codes might have `use mpi` or `include 'mpif.h'`
 
 # Compiling an MPI program
 
