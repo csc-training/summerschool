@@ -4,9 +4,7 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Point-to-point communication{.section}
-
-# Communication
+# Communication in MPI
 
 <div class="column">
 
