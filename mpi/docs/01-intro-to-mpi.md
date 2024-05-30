@@ -16,8 +16,16 @@ lang:   en
 - MPI is flexible and comprehensive
     - large (hundreds of procedures)
     - concise (only 10-20 procedures are typically needed)
-- First version of standard (1.0) published in 1994, latest (4.1) in 2023
+
+# MPI standard and implementations
+
+- MPI is a standard, first version (1.0) published in 1994, latest (4.1) in 2023
     - <https://www.mpi-forum.org/docs/>
+- The MPI standard is implemented by different MPI implementations
+    - [OpenMPI](http://www.open-mpi.org/)
+    - [MPICH](https://www.mpich.org/)
+    - [Intel MPI](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/mpi-library.html)
+
 
 # Processes and threads
 
@@ -188,7 +196,7 @@ mpif90 -o my_mpi_prog my_mpi_code.F90
 
 - On LUMI (HPE Cray EX), there are `cc` / `CC` / `ftn` compiler wrappers
   invoking the correct compiler
-  - use these instead of the `mpi*` wrappers
+  - Use these instead of the `mpi*` wrappers
 
 ```bash
 cc -o my_mpi_prog my_mpi_code.c
@@ -196,76 +204,63 @@ CC -o my_mpi_prog my_mpi_code.cpp
 ftn -o my_mpi_prog my_mpi_code.F90
 ```
 
-# The presentation syntax on the slides
+# MPI calls
 
-- MPI calls are presented as pseudocode
-    - actual C and Fortran interfaces are given in the reference section
-    - Fortran error code argument not included
-
-MPI_Function(`arg1`{.input}, `arg2`{.output})
-  : `arg1`{.input}
-    : input arguments in red
-  : `arg2`{.output}
-    : output arguments in blue. Note that in C the output arguments are always
-      pointers
+- Syntax on slides: **`MPI_Function(` `input_arg`{.input} `, ` `output_arg`{.output} `)`**
+  - Input arguments in `red`{.input} and output arguments in `blue`{.output}
+- Note that in C the output arguments are always pointers!
+- See references of MPI implementations for detailed function definitions:
+  - <https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/index.html>
+  - <https://www.mpich.org/static/docs/v4.2.x/>
+  - `man MPI_Function` on LUMI (e.g., `man MPI_Init`)
 
 
 # First five MPI commands: Initialization and finalization
 
-MPI_Init()
-  : Call at the start
-  : (in C `argc`{.input} and `argv`{.input} pointer arguments are needed)
+MPI_Init(...)
+  : Initializes the MPI execution environment
 
 MPI_Finalize()
-  : Call before exiting from the main program
+  : Terminates the MPI execution environment
+
+<p>
+- Demo: `hello.c`
 
 # First five MPI commands: Information about the communicator
 
 MPI_Comm_size(`comm`{.input}, `size`{.output})
-  : `comm`{.input}
-    : communicator
-  : `size`{.output}
-    : number of processes in the communicator
+  : Determines the size of the group associated with a communicator
 
 MPI_Comm_rank(`comm`{.input}, `rank`{.output})
-  : `comm`{.input}
-    : communicator
-  : `rank`{.output}
-    : rank of this process
+  : Determines the rank of the calling process in the communicator
+
+<p>
+- Demo: `hello_rank.c`
 
 # First five MPI commands: Synchronization
 
-- Wait until all ranks within the communicator reaches the call
-
 MPI_Barrier(`comm`{.input})
-  : `comm`{.input}
-    : communicator
+  : Waits until all ranks within the communicator reaches the call
 
+<p>
+- Demo: `barrier.c`
 
 # Summary
 
-- In parallel programming with MPI, the key concept is a set of
-  independent processes
+- In parallel programming with MPI, the key concept is a set of independent processes
 - Data is always local to the process
 - Processes can exchange data by sending and receiving messages
-- The MPI library contains functions for communication and
-  synchronization between processes
+- MPI defines functions for communication and synchronization between processes
 
 # Web resources
 
 - List of MPI functions with detailed descriptions
-    - <http://mpi.deino.net/mpi_functions/>
+    - <https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/index.html>
+    - <https://www.mpich.org/static/docs/v4.2.x/>
+    - <https://rookiehpc.org/mpi/docs/>
 - Good online MPI tutorials
     - <https://hpc-tutorials.llnl.gov/mpi/>
     - <http://mpitutorial.com/tutorials/>
     - <https://www.youtube.com/watch?v=BPSgXQ9aUXY>
 - MPI coding game in C
     - <https://www.codingame.com/playgrounds/47058/have-fun-with-mpi-in-c/lets-start-to-have-fun-with-mpi>
-
-# Web resources
-
-- MPI 4.0 standard <http://www.mpi-forum.org/docs/>
-- MPI implementations
-    - OpenMPI <http://www.open-mpi.org/>
-    - MPICH <https://www.mpich.org/>
-    - Intel MPI <https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/mpi-library.html>
