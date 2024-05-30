@@ -85,7 +85,34 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - MPI has a number of predefined basic datatypes corresponding to C or Fortran datatypes
     - C examples: `MPI_INT` for `int` and `MPI_DOUBLE` for `double`
     - Fortran examples: `MPI_INTEGER` for `integer`, `MPI_DOUBLE_PRECISION` for `real64`
+- Datatype `MPI_BYTE` for raw bytes is available both in C and Fortran
+    - Portability can be an issue - be careful
 - One can also define custom datatypes for communicating complex data
+
+
+# MPI datatypes specific for C
+
+| MPI type     |  C type       |
+| ------------ | ------------- |
+| `MPI_CHAR`   | `signed char` |
+| `MPI_SHORT`  | `short int`   |
+| `MPI_INT`    | `int`         |
+| `MPI_LONG`   | `long int`    |
+| `MPI_FLOAT`  | `float`       |
+| `MPI_DOUBLE` | `double`      |
+
+
+# MPI datatypes specific for Fortran
+
+| MPI type               |  Fortran type    |
+| ---------------------- | ---------------- |
+| `MPI_CHARACTER`        | character        |
+| `MPI_INTEGER`          | integer          |
+| `MPI_REAL`             | real32           |
+| `MPI_DOUBLE_PRECISION` | real64           |
+| `MPI_COMPLEX`          | complex          |
+| `MPI_DOUBLE_COMPLEX`   | double complex   |
+| `MPI_LOGICAL`          | logical          |
 
 
 # Case study: parallel sum on two processes
