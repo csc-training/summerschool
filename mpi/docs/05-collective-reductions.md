@@ -40,59 +40,18 @@ lang:   en
 </div>
 
 
-# Reduce operation {.split-definition}
+# Reduce operation
 
 MPI_Reduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `root`{.input}, `comm`{.input})
-  : `sendbuf`{.input}
-    : Data to be reduced
+  : Combines values from all processes within a group.
 
-    `recvbuf`{.output}
-    : Buffer for receiving data
-
-    `count`{.input}
-    : Number of elements in send buffer
-
-    `datatype`{.input}
-    : Type of elements in send buffer
-
-    `op`{.input}
-    : Applied operation
-
-    `root`{.input}
-    : The rank of receiving process
-
-    `comm`{.input}
-    : Communicator
-
-    `-`{.ghost}
-    : `-`{.ghost}
-
-# Global reduction {.split-definition}
-
-- Reduce data over all the processes and replicate the result to all of them
-    - Similar to `MPI_Reduce` + `MPI_Bcast` but more efficient
-
-
-# Global reduction {.split-definition}
+# Global reduction
 
 MPI_Allreduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `comm`{.input})
-  : `sendbuf`{.input}
-    : Data to be reduced
+  :  Combines values from all processes and distributes the result back to all processes
 
-    `recvbuf`{.output}
-    : Buffer for receiving data
-
-    `count`{.input}
-    : Number of elements in send buffer
-
-    `datatype`{.input}
-    : Type of elements in send buffer
-
-    `op`{.input}
-    : Applied operation
-
-    `comm`{.input}
-    : Communicator
+<p>
+- Similar to `MPI_Reduce` + `MPI_Bcast` but more efficient
 
 
 # Allreduce example: parallel dot product
@@ -128,7 +87,7 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL, &
 </div>
 
 
-# Common mistakes with reductions
+# In-place collective operations
 
 - Using the input buffer as the output buffer<br>
 `call mpi_allreduce(a, a, n, mpi_real,...`

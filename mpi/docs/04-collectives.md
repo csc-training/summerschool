@@ -59,28 +59,10 @@ the task 0 to all other tasks
 
 ![](img/bcast_comment.png){.center width=80%}
 
-# Broadcasting {.split-definition}
-
-- The root process sends the same data to all other processes
+# Broadcasting
 
 MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `root`{.input}, `comm`{.input})
-  : `buf`{.input}`fer`{.output}
-    : Data to be broadcasted / Buffer for receiving data
-
-    `count`{.input}
-    : Number of elements in buffer
-
-    `datatype`{.input}
-    : Type of elements in buffer
-
-    `root`{.input}
-    : The rank of sending process
-
-    `comm`{.input}
-    : Communicator
-
-    `-`{.ghost}
-    : `-`{.ghost}
+  : Broadcasts a message from the process with rank root to all other processes of the group.
 
 # Scattering
 
@@ -91,34 +73,13 @@ MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `roo
 <p>
 - Segments A, B, … may contain multiple elements
 
-# Scattering {.split-definition}
+# Scattering
 
 - The root process sends an equal share of the data to all other processes
 
 MPI_Scatter(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-  : `sendbuf`{.input}
-    : Data to be scattered
+  : Sends data from one task to all tasks in a group.
 
-    `sendcount`{.input}
-    : Number of elements to send to each process
-
-    `sendtype`{.input}
-    : Type of elements in send buffer
-
-    `recvbuf`{.output}
-    : Buffer for receiving data
-
-    `recvcount`{.input}
-    : Number of elements to receive
-
-    `recvtype`{.input}
-    : Type of elements to receive
-
-    `root`{.input}
-    : The rank of sending process
-
-    `comm`{.input}
-    : Communicator
 
 # Examples
 
@@ -161,35 +122,10 @@ if (rank==3) print *, aloc(:)
 
 </div>
 
-# Vector version of MPI_Scatter {.split-definition}
+# Vector version of MPI_Scatter
 
 MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-  : `sendbuf`{.input}
-    : Data to be scattered
-
-    `sendcounts`{.input}
-    : Array (of length `ntasks`) specifying the number of elements to send to each process
-
-    `displs`{.input}
-    : Array (of length `ntasks`) specifying the starting indices (relative to `sendbuf`)
-
-    `sendtype`{.input}
-    : Type of elements in send buffer
-
-    `recvbuf`{.output}
-    : Buffer for receiving data
-
-    `recvcount`{.input}
-    : Number of elements to receive
-
-    `recvtype`{.input}
-    : Type of elements to receive
-
-    `root`{.input}
-    : The rank of sending process
-
-    `comm`{.input}
-    : Communicator
+  : Scatters a buffer in parts to all tasks in a group.
 
 # Scatterv example
 
@@ -231,76 +167,15 @@ Assume 4 MPI tasks. What are the values in `aloc` in the last task (#3)?
 
 - Segments A, B, ... may contain multiple elements
 
-# Gathering data {.split-definition}
+# Gathering data
 
 - The root process collects an equal share of data from all other processes
 
 MPI_Gather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-  : `sendbuf`{.input}
-    : Data to be gathered
-
-    `sendcount`{.input}
-    : Number of elements sent by each process
-
-    `sendtype`{.input}
-    : Type of elements sent
-
-    `recvbuf`{.output}
-    : Buffer for receiving data
-
-    `recvcount`{.input}
-    : Number of elements to receive
-
-    `recvtype`{.input}
-    : Type of elements to receive
-
-    `root`{.input}
-    : The rank of receiving process
-
-    `comm`{.input}
-    : Communicator
-
-
-# Vector version of MPI_Gather {.split-def-3}
+  : Gathers values from a group of processes.
 
 MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcounts`{.input}, `displs`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-  : `sendbuf`{.input}
-    : Data to be gathered
-
-    `sendcount`{.input}
-    : Number of elements sent by each process
-
-    `sendtype`{.input}
-    : Type of elements sent
-
-    `-`{.ghost}
-    : `-`{.ghost}
-    : `-`{.ghost}
-
-    `recvbuf`{.output}
-    : Buffer for receiving data
-
-    `recvcounts`{.input}
-    : Array (of length `ntasks`) specifying the number of elements to receive from each process
-
-    `displs`{.input}
-    : Array (of length `ntasks`) specifying the starting indices (relative to `recvbuf`)
-
-
-    `recvtype`{.input}
-    : Type of elements to receive
-
-    `root`{.input}
-    : The rank of receiving process
-
-    `comm`{.input}
-    : Communicator
-
-    `-`{.ghost}
-    : `-`{.ghost}
-    : `-`{.ghost}
-    : `-`{.ghost}
-
+  : Gathers varying amounts of data from all processes to the root process
 
 
 # All gather
@@ -312,32 +187,10 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 ![](img/allgather.png){.center width=50%}
 
 
-# All gather {.split-definition}
+# All gather
 
 MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
-  : `sendbuf`{.input}
-    : Data to be gathered
-
-    `sendcount`{.input}
-    : Number of elements sent by each process
-
-    `sendtype`{.input}
-    : Type of elements sent
-
-    `recvbuf`{.output}
-    : Buffer for receiving data
-
-    `recvcount`{.input}
-    : Number of elements to receive from each process
-
-    `recvtype`{.input}
-    : Type of elements to receive
-
-    `comm`{.input}
-    : Communicator
-
-    `-`{.ghost}
-    : `-`{.ghost}
+  : Gathers data from all processes and distributes it to all processes
 
 # All to all
 
@@ -349,32 +202,10 @@ MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvb
 
 <p>
 
-# All to all {.split-definition}
+# All to all
 
 MPI_Alltoall(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
-  : `sendbuf`{.input}
-    : Data to be sent
-
-    `sendcount`{.input}
-    : Number of elements to send by each process
-
-    `sendtype`{.input}
-    : Type of elements to send
-
-    `recvbuf`{.output}
-    : Buffer for receiving data
-
-    `recvcount`{.input}
-    : Number of elements to receive from each process
-
-    `recvtype`{.input}
-    : Type of elements to receive
-
-    `comm`{.input}
-    : Communicator
-
-    `-`{.ghost}
-    : `-`{.ghost}
+  : All processes send data to all processes
 
 
 # All-to-all example
