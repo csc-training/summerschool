@@ -131,11 +131,13 @@ Message-passing game
     - No C++ bindings in the standard, C++ programs use the C interface
     - There are unofficial bindings to Python, Rust, R, ...
 - Call convention in C (*case sensitive*):<br>
-`rc = MPI_Xxxx(parameter, ...)`
+`error_code = MPI_Xxxx(parameter, ...)`
+    - Return value is the error code (e.g., `MPI_SUCCESS`)
     - Some arguments have to be passed as pointers
 - Call convention in Fortran (*case insensitive*):<br>
-`call mpi_xxxx(parameter, ..., rc)`
-    - Return code in the last argument
+`call mpi_xxxx(parameter, ..., error_code)`
+    - Error code in the last argument
+
 
 # Writing an MPI program
 
