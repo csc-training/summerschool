@@ -96,6 +96,7 @@ else if (rank == 1) {
 
 ![](img/data-model.png){.center width=100%}
 
+
 # MPI library
 
 - Information about the communication framework
@@ -107,6 +108,7 @@ else if (rank == 1) {
 - Advanced features
     - Communicator manipulation, user defined datatypes, one-sided communication, ...
 
+
 # MPI communicator
 
 - Communicator is an object connecting a group of processes
@@ -115,6 +117,12 @@ else if (rank == 1) {
 - Initially, there is always a communicator **`MPI_COMM_WORLD`** which
   contains all the processes
 - Users can define custom communicators
+
+
+# Interlude
+
+Message-passing game
+
 
 # Programming MPI
 
