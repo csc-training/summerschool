@@ -1,5 +1,5 @@
 ---
-title:  User-defined datatypes
+title:  "Extra: User-defined datatypes"
 event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
