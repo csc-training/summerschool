@@ -1,4 +1,6 @@
-# MPI exercises
+# MPI exercises and demo codes
+
+See [demos](demos/) for demo codes referred to in the slides.
 
 ## Wednesday
 
@@ -11,26 +13,28 @@
  - [Message exchange](message-exchange/)
  - [Parallel pi with two processes](parallel-pi-two-procs/)
 
-### Special MPI variables and communication patterns
+### MPI programming practices
 
  - [Message chain](message-chain/)
- - [Parallel pi revisited](parallel-pi-general/)
+ - [Heat equation solver](heat-equation/): First two tasks
+ - [(Bonus) Parallel pi with any number of processes](parallel-pi-general/)
  - [(Bonus) Broadcast and scatter](broadcast-scatter/)
 
 ### Collective operations
 
-  - [Collective operations](collectives/)
+ - [Collective operations](collectives/)
+
+
+## Thursday
 
 ### Debugging
 
   - [Debugging](debugging/)
 
-### Heat equation
+### Collective reductions
 
-  - [Parallel heat equation solver](heat-equation/): First three tasks
+ - [Heat equation solver](heat-equation/): Third task
 
-
-## Thursday
 
 ### Custom communicators
 
