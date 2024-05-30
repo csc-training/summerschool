@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
 </div>
 
 <div class="column">
-## Fortran:
+## Fortran 2008:
 
 ```fortranfree
 program my_prog
