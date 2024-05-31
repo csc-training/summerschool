@@ -31,17 +31,17 @@ lang:   en
     - currently, OpenACC can provide better performance in NVIDIA GPUs
 
 
-# OpenACC support for AMD GPUs
+<!-- # OpenACC support for AMD GPUs -->
 
-- OpenACC support for AMD GPUs in GNU compilers under development
-- OpenACC support in general for Clang/Flang is under development
-- Cray compilers
-    - Fortran compiler supports OpenACC v2.7, support for latest OpenACC coming 
-    - C/C++ compiler does not support OpenACC
-- In LUMI, only Fortran is supported with OpenACC
-- For now, OpenACC is not a recommended approach for new codes targeting AMD
-  GPUs
-    - if a Fortran code already uses OpenACC, it may be possible to use it
+<!-- - OpenACC support for AMD GPUs in GNU compilers under development -->
+<!-- - OpenACC support in general for Clang/Flang is under development -->
+<!-- - Cray compilers -->
+<!--     - Fortran compiler supports OpenACC v2.7, support for latest OpenACC coming  -->
+<!--     - C/C++ compiler does not support OpenACC -->
+<!-- - In LUMI, only Fortran is supported with OpenACC -->
+<!-- - For now, OpenACC is not a recommended approach for new codes targeting AMD -->
+<!--   GPUs -->
+<!--     - if a Fortran code already uses OpenACC, it may be possible to use it -->
 
 
 # OpenMP vs. CUDA/HIP
