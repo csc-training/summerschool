@@ -13,25 +13,23 @@
 
 ### LUMI
 
-Set up VNC for smoother GUI performance:
-```bash
-module load lumi-vnc
-start-vnc
-```
-Follow the instructions from the command output to set up
-SSH port forwarding and opening VNC on a browser.
+Launch a desktop session on a browser for smoother GUI performance
+(see [the documentation](https://docs.lumi-supercomputer.eu/runjobs/webui/) for detailed instructions):
+* Login to https://www.lumi.csc.fi
+* Launch Desktop with 1 core on interactive partition
+* Open a terminal window in the desktop session
+* Bug fix: run `module reload` in the terminal
+* Follow the commands below
 
-Load module and start debugger in an interactive session:
+Run DDT for a buggy program:
 ```bash
 module load ARMForge
 export SLURM_OVERLAP=1
 salloc -A project_465000536 --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug
-ddt srun ./buggy
+ddt srun ./buggy.exe
 ```
 
-The debugger GUI will open in VNC in the browser window.
-
-Note: you can also skip the VNC step and use X11 forwarding for GUI (might be slow).
+Note: you can also skip the desktop session step and run DDT using X11 forwarding (might be slow).
 
 ### Puhti and Mahti
 
@@ -39,17 +37,18 @@ Launch a desktop session on a browser for smoother GUI performance
 (see [the documentation](https://docs.csc.fi/computing/webinterface/desktop/) for detailed instructions):
 * Login to https://www.puhti.csc.fi or https://www.mahti.csc.fi
 * Launch Desktop with 1 core
-* Open a terminal window in the desktop session and proceed there
+* Open a terminal window in the desktop session
+* Follow the commands below
 
-Load module and start debugger in an interactive session:
+Run DDT for a buggy program:
 ```bash
 module load ddt
 export SLURM_OVERLAP=1
 salloc -A project_2007995 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
-ddt srun ./buggy
+ddt srun ./buggy.exe
 ```
 
-Note: you can also skip the desktop session step and use X11 forwarding for GUI (might be slow).
+Note: you can also skip the desktop session step and run DDT using X11 forwarding (might be slow).
 
 
 ## Examples
