@@ -43,7 +43,7 @@ lang:   en
 # Reduce operation
 
 MPI_Reduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `root`{.input}, `comm`{.input})
-  : Combines values from all processes within a group.
+  : Combines values to the root process from all processes of the group
 
 # Global reduction
 
