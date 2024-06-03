@@ -37,7 +37,7 @@ lang:   en
     - Debuggers within IDEs, *e.g.* VS Code
     - No proper support for parallel debugging
 - Parallel debuggers
-    - Arm DDT (formerly Allinea DDT), Totalview, gdb4hpc (commercial products)
+    - Linaro DDT (formerly Arm DDT, Allinea DDT), Totalview, gdb4hpc (commercial products)
 
 # Common features in debuggers
 
@@ -46,8 +46,7 @@ lang:   en
 - Stepping into / out from functions
 - Investigating values of variables
 - Investigating program stack
-- Parallel debuggers allow all of the above on per process/thread
-  basis
+- Parallel debuggers allow all of the above on per process/thread basis
 
 # Web resources
 
