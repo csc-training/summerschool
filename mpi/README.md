@@ -54,6 +54,8 @@ See [demos](demos/) for demo codes referred to in the slides.
   - [User-defined datatypes](datatypes/)
   - [Modifying extent](datatypes-extent/)
   - [Communicating struct](datatypes-struct/)
+- Persistent communication
+  - [Message chain with persistent communication](message-chain-persistent/)
 
 ### Bonus
 
