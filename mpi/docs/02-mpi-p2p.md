@@ -28,23 +28,24 @@ lang:   en
 
 - One process *sends* a message to another process that *receives* it with **`MPI_Send`** and **`MPI_Recv`** routines
 - Sends and receives in a program should match – one receive per send
-
-# MPI point-to-point operations
-
-MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
-  : Performs a blocking send
-
-MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
-  : Performs a blocking receive
-
-<p>
-
 - Each message (envelope) contains
     - The actual *data* (buffer) that is to be sent
     - The *number of elements* in the data
     - The *datatype* of each element of the data
     - The ranks of the *source* and *destination* processes
     - An identification number for the message (*tag*)
+
+
+# MPI point-to-point operations
+
+MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
+  : Performs a blocking send
+  : Note: `count` parameter is the number of elements to send
+
+MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
+  : Performs a blocking receive
+  : Note: `count` parameter is the **maximum** number of elements to receive
+
 <p>
 - Demo: `send_and_recv.c`
 
@@ -54,7 +55,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - The status parameter in `MPI_Recv` contains information about the received data after the call has completed
   - The number of received elements
     - Use the function **`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
-    - Note that `count` parameter of `MPI_Recv` is the **maximum** number of elements to receive
+    - Note: `count` parameter of `MPI_Recv` is the **maximum** number of elements to receive
   - The tag of the received message
     - C: `status.MPI_TAG`
     - Fortran 2008: `status%mpi_tag` (old Fortran `status(MPI_TAG)`)
@@ -63,14 +64,14 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
     - Fortran 2008: `status%mpi_source` (old Fortran `status(MPI_SOURCE)`)
 
 
-# "Buffers" in MPI
+# Buffers in MPI
 
 - The `buffer` arguments are memory addresses
 - MPI assumes contiguous chunk of memory
     - `count` elements are send starting from the address
     - received elements are stored starting from the address
 - In C/C++ `buffer` is pointer
-    - For C++ `<array>` and `<vector>` containers, use `array.data()` method
+    - For C++ `<array>` and `<vector>` containers, use `array.data()` or `&array[i]`
 - In Fortran arguments are passed by reference and variables can be passed as such to MPI calls
     - Note: be careful if passing non-contiguous array segmens such as <br>`a(1, 1:N)`
 
@@ -81,14 +82,13 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - MPI datatypes specify how the bytes should be interpreted
     - Allows data conversions in heterogenous environments (*e.g.* little endian to big endian)
 - MPI has a number of predefined basic datatypes corresponding to C or Fortran datatypes
-    - C examples: `MPI_INT` for `int` and `MPI_DOUBLE` for `double`
-    - Fortran examples: `MPI_INTEGER` for `integer`, `MPI_DOUBLE_PRECISION` for `real64`
+    - Listed in the next slides
 - Datatype `MPI_BYTE` for raw bytes is available both in C and Fortran
-    - Portability can be an issue - be careful
+    - Portability can be an issue when using `MPI_BYTE` - be careful
 - One can also define custom datatypes for communicating complex data
 
 
-# MPI datatypes specific for C
+# Common MPI datatypes specific for C
 
 | MPI type     |  C type       |
 | ------------ | ------------- |
@@ -100,7 +100,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 | `MPI_DOUBLE` | `double`      |
 
 
-# MPI datatypes specific for Fortran
+# Common MPI datatypes specific for Fortran
 
 | MPI type               |  Fortran type    |
 | ---------------------- | ---------------- |
@@ -117,8 +117,9 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 <div class=column>
 ![](img/case_study_left-01.png){.center width=45%}
+<p>
+- Demo: `parallel_sum.c`
 </div>
-
 <div class=column>
 - Array initially on process #0 (P0)
 - Parallel algorithm:
@@ -138,6 +139,8 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 <div class=column>
 ![](img/case_study_left-03.png){.center width=45%}
+<p>
+- Demo: `parallel_sum.c`
 </div>
 <div class=column>
 **Step 1**: Scatter array
@@ -149,6 +152,8 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 <div class=column>
 ![](img/case_study_left-04.png){.center width=45%}
+<p>
+- Demo: `parallel_sum.c`
 </div>
 <div class=column>
 **Step 2**: Compute the sum in parallel
@@ -160,6 +165,8 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 <div class=column>
 ![](img/case_study_left-06.png){.center width=45%}
+<p>
+- Demo: `parallel_sum.c`
 </div>
 <div class=column>
 **Step 3.1**: Gather partial sums
@@ -171,6 +178,8 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 <div class=column>
 ![](img/case_study_left-07.png){.center width=45%}
+<p>
+- Demo: `parallel_sum.c`
 </div>
 <div class=column>
 **Step 3.2**: Compute the total sum
@@ -178,10 +187,6 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 ![](img/case_study_right-06.png){.center width=90%}
 </div>
 
-
-# Demo
-
-- `parallel_sum.c`
 
 
 # Blocking routines and deadlocks
