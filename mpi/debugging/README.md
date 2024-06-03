@@ -53,6 +53,8 @@ Note: you can also skip the desktop session step and run DDT using X11 forwardin
 
 ## Demos
 
+*Note to the instructor: `rm -r ~/.allinea/` to reset DDT configs on LUMI.*
+
 ### Buggy message exchange
 
 Debug the [exchange.cpp](exchange.cpp) code similar to
