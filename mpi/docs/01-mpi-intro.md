@@ -112,8 +112,7 @@ else if (rank == 1) {
 - Communicator is an object connecting a group of processes
     - It defines the communication framework
 - Most MPI functions require a communicator as an argument
-- Initially, there is always a communicator **`MPI_COMM_WORLD`** which
-  contains all the processes
+- Initially, there is always a communicator **`MPI_COMM_WORLD`** which contains all the processes
 - Users can define custom communicators
 
 
@@ -124,8 +123,7 @@ Message passing game
 
 # Programming MPI
 
-- The MPI standard defines interfaces to C and Fortran programming
-  languages
+- The MPI standard defines interfaces to C and Fortran programming languages
     - No C++ bindings in the standard, C++ programs use the C interface
     - There are unofficial bindings to Python, Rust, R, ...
 - Call convention in C (*case sensitive*):<br>
@@ -212,7 +210,7 @@ CC -o my_mpi_prog my_mpi_code.cpp
 ftn -o my_mpi_prog my_mpi_code.F90
 ```
 
-# MPI calls
+# MPI functions
 
 - Syntax on slides: **`MPI_Function(` `input_arg`{.input} `, ` `output_arg`{.output} `)`**
   - Input arguments in `red`{.input} and output arguments in `blue`{.output}
