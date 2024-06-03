@@ -9,7 +9,7 @@
     - Sometimes bugs show up only with optimizations
 
 
-## Launching Arm DDT
+## Launching DDT
 
 ### LUMI
 
