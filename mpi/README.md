@@ -40,9 +40,10 @@ See [demos](demos/) for demo codes referred to in the slides.
 
   - [Communicators and collectives](communicator/)
 
-### Non-blocking communication and persistent communication
+### Non-blocking communication
 
-  - [Message chain revisited](message-chain-non-blocking/)
+ - [Non-blocking message chain](message-chain-non-blocking/)
+ - [Heat equation solver](heat-equation/): Task 4
 
 ### Process topologies
 
