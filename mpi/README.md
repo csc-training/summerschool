@@ -36,7 +36,7 @@ See [demos](demos/) for demo codes referred to in the slides.
  - [Heat equation solver](heat-equation/): Third task
 
 
-### Custom communicators
+### User-defined communicators
 
   - [Communicators and collectives](communicator/)
 
