@@ -51,32 +51,39 @@ ddt srun ./buggy.exe
 Note: you can also skip the desktop session step and run DDT using X11 forwarding (might be slow).
 
 
-## Examples
+## Demos
 
-These example codes can be built with `make all`.
-
-### Message exchange revisited
+### Buggy message exchange
 
 Debug the [exchange.cpp](exchange.cpp) code similar to
-[the earlier exercise](../message-exchange/).
+[the earlier exercise](../message-exchange/):
+```bash
+...
+CC -g exchange.cpp -o exchange.exe
+ddt srun ./exchange.exe
+```
 
 The following will be demoed with DDT:
 * Launching DDT
 * Examining per-process status
+* Stepping execution
+* Setting breakpoints
 * Setting build configuration
 * Fixing the code within DDT
 
-### Collective operations revisited
+## Bonus exercises
+
+### Buggy collective operations
 
 Debug the [collective.cpp](collective.cpp) code similar to
-[the earlier exercise](../collectives/).
+[the earlier exercise](../collectives/):
+```bash
+...
+CC -g collective.cpp -o collective.exe
+ddt srun ./collective.exe
+```
 
-The following will be demoed with DDT:
-* Setting breakpoints
-* Stepping execution
-* Using distributed array view
-
-#### Bonus 1
+### Memory debugging with sanitizer
 
 Memory debugging with sanitizer. On LUMI:
 ```bash
@@ -86,7 +93,7 @@ srun -A project_465000536 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partit
 
 Note the `--label` option that prepends task number to lines of stdout/err.
 
-#### Bonus 2
+### Memory debugging with valgrind4hpc
 
 Memory debugging with valgrind4hpc. On LUMI:
 
