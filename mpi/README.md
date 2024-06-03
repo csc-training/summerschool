@@ -6,57 +6,56 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 ### Introduction to MPI
 
- - [Hello world](hello-world/)
+- [Hello world](hello-world/)
 
 ### Point-to-point communication
 
- - [Message exchange](message-exchange/)
- - [Parallel pi with two processes](parallel-pi-two-procs/)
+- [Message exchange](message-exchange/)
+- [Parallel pi with two processes](parallel-pi-two-procs/)
 
 ### MPI programming practices
 
- - [Message chain](message-chain/)
- - [Heat equation solver](heat-equation/): First two tasks
- - [(Bonus) Parallel pi with any number of processes](parallel-pi-general/)
- - [(Bonus) Broadcast and scatter](broadcast-scatter/)
+- [Message chain](message-chain/)
+- [Heat equation solver](heat-equation/): Tasks 1-2
+- [(Bonus) Parallel pi with any number of processes](parallel-pi-general/)
+- [(Bonus) Broadcast and scatter](broadcast-scatter/)
 
 ### Collective operations
 
- - [Collective operations](collectives/)
+- [Collective operations](collectives/)
 
 
 ## Thursday
 
 ### Debugging
 
-  - [Debugging](debugging/)
+- [Debugging](debugging/)
 
 ### Collective reductions
 
- - [Heat equation solver](heat-equation/): Third task
-
+- [Heat equation solver](heat-equation/): Task 3
 
 ### User-defined communicators
 
-  - [Communicators and collectives](communicator/)
+- [Communicators and collectives](communicator/)
 
 ### Non-blocking communication
 
- - [Non-blocking message chain](message-chain-non-blocking/)
- - [Heat equation solver](heat-equation/): Task 4
+- [Non-blocking message chain](message-chain-non-blocking/)
+- [Heat equation solver](heat-equation/): Task 4
 
 ### Process topologies
 
- - [Cartesian grid process topology](cartesian-grid/)
- - [Message chain with Cartesian communicator](message-chain-cartesian/)
+- [Cartesian grid process topology](cartesian-grid/)
+- [Message chain with Cartesian communicator](message-chain-cartesian/)
 
 ### User-defined datatypes
 
- - [Custom datatypes](datatypes/)
- - [Modifying extent](datatypes-extent/)
- - [Communicating struct](datatypes-struct/)
+- [Custom datatypes](datatypes/)
+- [Modifying extent](datatypes-extent/)
+- [Communicating struct](datatypes-struct/)
 
 ### Heat equation cont'd
 
-  - [Parallel heat equation solver](heat-equation/): Remaining tasks
+- [Parallel heat equation solver](heat-equation/): Remaining tasks
 
