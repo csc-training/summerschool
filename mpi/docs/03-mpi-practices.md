@@ -63,10 +63,10 @@ call mpi_recv(recvBuf, arraysize, &
 ```c
 if (0 == rank) {
   for (int i=1; i < ntasks; i++) {
-     MPI_Send(&data, 1, MPI_INT, i, 42, MPI_COMM_WORLD);
+    MPI_Send(&data, 1, MPI_INT, i, 42, MPI_COMM_WORLD);
   }
 } else {
-     MPI_Recv(&data, 1, MPI_INT, 0, 42, MPI_COMM_WORLD, &status);
+  MPI_Recv(&data, 1, MPI_INT, 0, 42, MPI_COMM_WORLD, &status);
 }
 ```
 
@@ -112,13 +112,13 @@ call mpi_recv(message, msgsize, MPI_INTEGER, src, 42, MPI_COMM_WORLD, status, rc
 ```c++
 if (0 == rank) {
   for (int i=1; i < ntasks; i++) {
-     MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE,
-              42, MPI_COMM_WORLD, &status);
-     process(data);
+    MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE,
+             42, MPI_COMM_WORLD, &status);
+    process(data);
   }
 } else {
-     MPI_Send(&data, 1, MPI_INT, 0,
-              42, MPI_COMM_WORLD);
+   MPI_Send(&data, 1, MPI_INT, 0,
+            42, MPI_COMM_WORLD);
 }
 ```
 </div>
