@@ -4,8 +4,6 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# User-defined communicators {.section}
-
 # Communicators
 
 - The communicator determines the "communication universe"
@@ -31,23 +29,13 @@ lang:   en
 
 # Creating new communicator {.split-definition}
 
-* **`MPI_Comm_split`** creates new communicators based on "colors" and "keys"
-
 MPI_Comm_split(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})
-  : `comm`{.input}
-    : Communicator
+: Creates new communicators based on colors and keys
 
-    `color`{.input}
-    : Processes with the same "color" belong to the same new communicator
-
-    `key`{.input}
-    : Control of rank assignment
-
-    `newcomm`{.output}
-    : New communicator handle
-
-If color is `MPI_UNDEFINED`, a process does not belong to any of the
-new communicators
+<p>
+- Processes with the same color belong to the same new communicator
+  - If color is `MPI_UNDEFINED`, a process does not belong to any of the new communicators
+- Key controls rank assignment
 
 # Creating new communicator
 

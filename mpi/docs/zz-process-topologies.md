@@ -1,5 +1,5 @@
 ---
-title:  Process topologies, Cartesian communicator and Neighborhood collectives
+title:  "Extra: Process topologies"
 event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---

@@ -1,201 +1,142 @@
 ---
-title:  Non-blocking and persistent communication
+title:  Non-blocking communication
 event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Non-blocking communication {.section}
-
 # Non-blocking communication
 
 - Non-blocking communication operations return immediately and perform sending/receiving in the background
-    - `MPI_Isend` & `MPI_Irecv` initilize the communication
     - Communication needs to be separately finalized (more about this later)
 - Enables some computing concurrently with communication
-- Avoids many common dead-lock situations
+- Avoids many common deadlock situations
 - Collective operations are also available as non-blocking versions
 
 # Non-blocking send
 
-Parameters similar to **`MPI_Send`** but has an additional request parameter.
+MPI_Isend(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
+: Starts a nonblocking send
 
 <p>
-MPI_Isend(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
-  : `buffer`{.input}
-    : send buffer that must not be written to until one has checked
-      that the operation is over
-  : `request`{.output}
-    : a handle that is used when checking if the operation has
-      finished (`type(mpi_request)` in Fortran, `MPI_Request` in C)
+* Parameters similar to `MPI_Send` but has an additional request parameter
+* Send buffer must not be written to until one has checked that the operation is over
 
 # Non-blocking receive
 
-Parameters similar to **`MPI_Recv`** but has no status parameter.
+MPI_Irecv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
+: Starts a nonblocking receive
 
 <p>
-MPI_Irecv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
-  : `buffer`{.output}
-    : receive buffer guaranteed to contain the data only after one has
-      checked that the operation is over
-  : `request`{.output}
-    : a handle that is used when checking if the operation has
-      finished
+* Parameters similar to `MPI_Recv` but has an additional request parameter and no status parameter
+* Receive buffer guaranteed to contain the data only after one has checked that the operation is over
 
 # Non-blocking communication
 
 - Important: Send/receive operations have to be finalized
     - `MPI_Wait`, `MPI_Waitall`, ...
-        - Waits for the communication started with `MPI_Isend` or
-          `MPI_Irecv` to finish (blocking)
+        - Blocking calls to wait for the communication started with `MPI_Isend` or `MPI_Irecv` to finish
     - `MPI_Test`, ...
-        - Tests if the communication has finished (non-blocking)
-    - Remember: successfully finished send does not mean successful receive!
+        - Non-blocking calls testing if the communication has finished
+    - Note: successfully finished send does not mean successful receive!
 - You can mix non-blocking and blocking routines
-    - e.g., receive a message sent by `MPI_Isend` with `MPI_Recv`
+    - A message sent by `MPI_Isend` can be received with `MPI_Recv`
 
-# Wait for non-blocking operation
+# Wait for a non-blocking operation
 
 MPI_Wait(`request`{.input}, `status`{.output})
-  : `request`{.input}
-    : handle of the non-blocking communication
-  : `status`{.output}
-    : status of the completed communication, see `MPI_Recv`
+: Waits for a communication to complete
 
-A call to `MPI_Wait` returns when the operation identified by request is complete
+<p>
+- Status of the completed communication is similar to that of `MPI_Recv`
 
-# Wait for non-blocking operations
 
-MPI_Waitall(`count`{.input}, `requests`{.input}, `status`{.output})
-  : `count`{.input}
-    : number of requests
-  : `requests`{.input}
-    : array of requests
-  : `status`{.output}
-    : array of statuses for the operations that are waited for
+# Wait for many non-blocking operations
 
-A call to `MPI_Waitall` returns when all operations identified by the array of requests are complete.
+MPI_Waitall(`count`{.input}, `array_of_requests`{.input}, `array_of_statuses`{.output})
+: Waits for all the given communications to complete
 
-# Non-blocking test for non-blocking operations
+MPI_Waitany(`count`{.input}, `array_of_requests`{.input}, `index`{.output}, `status`{.output})
+: Waits for any one of the given communication to complete
 
-MPI_Test(`request`{.input}, `flag`{.output}, `status`{.output})
-  : `request`{.input}
-    : request
-  : `flag`{.output}
-    : True if the operation has completed
-  : `status`{.output}
-    : status for the completed operation
+MPI_Waitsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, `array_of_indices`{.output}, `array_of_statuses`{.output})
+: Waits for some of the given communications to complete
 
-A call to `MPI_Test` is non-blocking. It allows one to schedule alternative activities while periodically checking for completion.
-
-`MPI_Probe` is a similar kind of operation (see later slides).
 
 # Typical usage pattern
 
 <div class=column>
-**`MPI_Irecv`(<font color="green">ghost_data</font>)**
-**`MPI_Isend`(<font color="purple">border_data</font>)**
-**`compute`(<font color="DeepSkyBlue">ghost_independent_data</font>)**
-**`MPI_Waitall`**
+**`MPI_Irecv`(<font color="green">ghost_data</font>)**<br>
+**`MPI_Isend`(<font color="purple">border_data</font>)**<br>
+**`compute`(<font color="DeepSkyBlue">ghost_independent_data</font>)**<br>
+**`MPI_Waitall`**<br>
 **`compute`(<font color="purple">border_data</font>)**
 </div>
 <div class=column>
 ![](img/usage_pattern.png){.center width=100%}
 </div>
 
-# Additional completion operations
+# Overlapping communication with computation
 
-| Routine      | Meaning                                            |
-|--------------|----------------------------------------------------|
-| MPI_Waitany  | Waits until any one operation has completed        |
-| MPI_Waitsome | Waits until at least one operation has completed   |
-| MPI_Test     | Tests if an operation has completed (non-blocking) |
-| MPI_Testall  | Tests whether a list of operations have completed  |
-| MPI_Testany  | Like Waitany but non-blocking                      |
-| MPI_Testsome | Like Waitsome but non-blocking                     |
-| MPI_Probe    | Check for incoming messages without receiving them |
+- Use of non-blocking operations does not guarantee overlapping communication with computation
+  - In terms of code logic, non-blocking operations return immediately, but performing communication requires CPU resources that need to be available for communication too
 
-# Wait for non-blocking operations {.split-definition}
+# Overlapping communication with computation
 
-**`MPI_Waitany`(`count`{.input}, `requests`{.input}, `index`{.output}, `status`{.output})**
-  : `count`{.input}
-    : number of requests
+- There are two general mechanisms inside the MPI library to allow communication to proceed at the same time with computations
+  - Progress thread within the library
+  - Offloadng part of the communication to network interface card (NIC) and using (remote) direct memory access (DMA)
+- The MPI implementations have typically settings and environment variables to configure communication progression mechanism
+  - See demonstrations codes: <https://github.com/cschpc/mpi-overlap>
 
-    `requests`{.input}
-    : array of requests
 
-    `index`{.output}
-    : index of request that completed
+# Checking non-blocking messages {.section}
 
-    `status`{.output}
-    : status for the completed operations
+# Non-blocking test for non-blocking operations
+
+MPI_Test(`request`{.input}, `flag`{.output}, `status`{.output})
+: Tests for the completion of a specific communication
 
 <p>
-A call to `MPI_Waitany` returns when one operation identified by the array of requests is complete.
+- A call to `MPI_Test` is non-blocking
+  - Allows one to schedule alternative activities while periodically checking for completion
+- Flag is true if the operation has completed
+- Status of the completed communication is similar to that of `MPI_Recv`
 
-# Wait for non-blocking operations {.split-definition}
+# Test for many non-blocking operations
 
-MPI_Waitsome(`count`{.input}, `requests`{.input}, `done`{.output}, `index`{.output}, `status`{.output})
-  : `count`{.input}
-    : number of requests
+MPI_Testall(`count`{.input}, `array_of_requests`{.input}, `flag`{.output}, `array_of_statuses`{.output})
+: Tests for the completion of all the given communications
 
-    `requests`{.input}
-    : array of requests
+MPI_Testany(`count`{.input}, `array_of_requests`{.input}, `index`{.output}, `flag`{.output}, `status`{.output})
+: Tests for the completion of any one of the given communications
 
-    `done`{.output}
-    : number of completed requests
+MPI_Testsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, `array_of_indices`{.output}, `array_of_statuses`{.output})
+: Tests for the completion of some of the given communications
 
-    `index`{.output}
-    : array of indexes of completed requests
 
-    `status`{.output}
-    : array of statuses of completed requests
-
-    `-`{.ghost}
-    : `-`{.ghost}
-
-<p>
-Returns when one or more operations is/are complete.
-
-# Message Probing {.split-definition}
+# Message probing
 
 MPI_Iprobe(`source`{.input}, `tag`{.input}, `comm`{.input}, `flag`{.output}, `status`{.output})
-  : `source`{.input}
-    : rank of sender (or `MPI_ANY_SOURCE`)
-
-    `tag`{.input}
-    : message of the tag (or `MPI_ANY_TAG`)
-
-    `comm`{.input}
-    : communicator
-
-    `flag`{.output}
-    : true if there is a message that matches the pattern and can be
-      received
-
-    `status`{.output}
-    : status object
-
-    `-`{.ghost}
-    : `-`{.ghost}
+: Non-blocking test for a message without receiving it
 
 <p>
-Allows incoming messages to be checked, without actually receiving them.
+- Flag is true if there is a message that matches the pattern and can be received
+- `MPI_ANY_SOURCE` can be used for source
+- `MPI_ANY_TAG` can be used for tag
 
-`MPI_Probe` is a blocking version of the same operation.
 
-# Background messaging -- what does it require
+# Message probing
 
-- Progressing communication requires some CPU resources
+MPI_Probe(`source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
+: Blocking test for a message without receiving it
 
-- Typically two communication protocols, depending on message size
-    - **`eager`{.output}** sends the message without synchronization to the receiver
-    - **`rendezvous`{.output}** delays the message until receive operation (can be pipelined)
+<p>
+- `MPI_Probe` is blocking version of `MPI_Iprobe`
+- The call returns only after a matching message has been found
 
-- Three ways to handle message progression: manual, NIC or threads
-    - **`manual`{.output}** progression (with `MPI_Test`) is not really an option
-    - offloading communication to **`network interface card`{.output}** (NIC) and using (remote) direct memory access (DMA)
-    - MPI implementation can use **`progress thread(s)`{.output}**, but it may slow down computations (new CPUs are capable of Simultaneous Multi-Threading)
-    - SMT is viable for inter-node communication, but not for shared memory
+
+
+# Non-blocking collectives {.section}
 
 # Non-blocking collectives
 
@@ -206,11 +147,21 @@ Allows incoming messages to be checked, without actually receiving them.
     - Request parameter at the end of the list of arguments
     - Completion needs to be waited
 
+# Example: Non-blocking broadcasting
+
+MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `root`{.input}, `comm`{.input}, `request`{.output})
+: Broadcasts data from the root process to all other processes of the group
+
+<p>
+- Request parameter at the end of the list of arguments in comparison to `MPI_Bcast`
+
+
 # Non-blocking collectives
 
 - Restrictions
     - Have to be called in same order by all ranks in a communicator
     - Mixing of blocking and non-blocking collectives is not allowed
+
 
 # Non-blocking collectives
 
@@ -220,31 +171,10 @@ Allows incoming messages to be checked, without actually receiving them.
 ![](img/green_arrow.png){width=1%} (Computation) work 2, not
 involving data in the ``Allreduce`` operation
 
-# Example: Non-blocking broadcasting {.split-definition}
-
-MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `root`{.input}, `comm`{.input}, `request`{.output})
-  : `buf`{.input}`fer`{.output}
-    : data to be distributed
-
-    `count`{.input}
-    : number of entries in buffer
-
-    `datatype`{.input}
-    : data type of buffer
-
-    `root`{.input}
-    : rank of broadcast root
-
-    `comm`{.input}
-    : communicator
-
-    `request`{.output}
-    : a handle that is used when checking if the operation has finished
 
 # Summary
 
-- Non-blocking communication is often useful way to do point-to-point
-  communication in MPI.
+- Non-blocking communication is often useful way to do point-to-point communication in MPI
 - Non-blocking communication core features
     - Open receives with `MPI_Irecv`
     - Start sending with `MPI_Isend`

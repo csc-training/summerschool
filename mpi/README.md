@@ -1,57 +1,63 @@
-# MPI exercises
+# MPI exercises and demo codes
+
+See [demos](demos/) for demo codes referred to in the slides.
 
 ## Wednesday
 
 ### Introduction to MPI
 
- - [Hello world](hello-world/)
+- [Hello world](hello-world/)
 
 ### Point-to-point communication
 
- - [Message exchange](message-exchange/)
- - [Parallel pi with two processes](parallel-pi-two-procs/)
+- [Message exchange](message-exchange/)
+- [Parallel pi with two processes](parallel-pi-two-procs/)
 
-### Special MPI variables and communication patterns
+### MPI programming practices
 
- - [Message chain](message-chain/)
- - [Parallel pi revisited](parallel-pi-general/)
- - [(Bonus) Broadcast and scatter](broadcast-scatter/)
+- [Message chain](message-chain/)
+- [Heat equation solver](heat-equation/): Tasks 1-2
+- [(Bonus) Parallel pi with any number of processes](parallel-pi-general/)
+- [(Bonus) Broadcast and scatter](broadcast-scatter/)
 
 ### Collective operations
 
-  - [Collective operations](collectives/)
-
-### Debugging
-
-  - [Debugging](debugging/)
-
-### Heat equation
-
-  - [Parallel heat equation solver](heat-equation/): First three tasks
+- [Collective operations](collectives/)
 
 
 ## Thursday
 
-### Custom communicators
+### Debugging
 
-  - [Communicators and collectives](communicator/)
+- [Debugging](debugging/)
 
-### Non-blocking communication and persistent communication
+### Collective reductions
 
-  - [Message chain revisited](message-chain-non-blocking/)
+- [Heat equation solver](heat-equation/): Task 3
 
-### Process topologies
+### User-defined communicators
 
- - [Cartesian grid process topology](cartesian-grid/)
- - [Message chain with Cartesian communicator](message-chain-cartesian/)
+- [Communicators and collectives](communicator/)
 
-### User-defined datatypes
+### Non-blocking communication
 
- - [Custom datatypes](datatypes/)
- - [Modifying extent](datatypes-extent/)
- - [Communicating struct](datatypes-struct/)
+- [Non-blocking message chain](message-chain-non-blocking/)
+- [Heat equation solver](heat-equation/): Task 4
 
-### Heat equation cont'd
+### Further MPI topics
 
-  - [Parallel heat equation solver](heat-equation/): Remaining tasks
+- Cartesian topology
+  - [Cartesian grid process topology](cartesian-grid/)
+  - [Message chain with Cartesian communicator](message-chain-cartesian/)
+  - [Heat equation solver](heat-equation/): Task 5
+- User-defined datatypes
+  - [User-defined datatypes](datatypes/)
+  - [Modifying extent](datatypes-extent/)
+  - [Communicating struct](datatypes-struct/)
+- Persistent communication
+  - [Message chain with persistent communication](message-chain-persistent/)
+
+### Bonus
+
+- [Heat equation solver](heat-equation/): Remaining tasks
 

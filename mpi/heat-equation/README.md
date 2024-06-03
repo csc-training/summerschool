@@ -20,11 +20,11 @@ and the inner ranks with two neighbours.
 ## Tasks
 
 1. [First steps](#first-steps)
-1. [Using sendrecv](#using-sendrecv)
-1. [Using collective communication](#using-collective-communication)
-1. [Using non-blocking communication](#using-non-blocking-communication)
-1. [Using Cartesian communicator](#using-cartesian-communicator)
-1. [2D decomposition](#2d-decomposition)
+2. [Using sendrecv](#using-sendrecv)
+3. [Using collective communication](#using-collective-communication)
+4. [Using non-blocking communication](#using-non-blocking-communication)
+5. [Using Cartesian communicator](#using-cartesian-communicator)
+6. [2D decomposition](#2d-decomposition)
 
 
 ### First steps
