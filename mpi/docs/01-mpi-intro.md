@@ -1,13 +1,12 @@
 ---
-title:  Introduction to Message Passing Interface (MPI)
+title:  Introduction to MPI
 event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Message passing interface
+# Message Passing Interface (MPI)
 
-- MPI is an application programming interface (API) for distributed parallel
-  computing
+- MPI is an application programming interface (API) for distributed parallel computing
 - MPI programs are portable and scalable
     - the same program can run on different types of computers, from
       laptops to supercomputers
