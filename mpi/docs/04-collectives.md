@@ -48,7 +48,7 @@ the task 0 to all other tasks
 
 # Introduction
 
-- These routines _must be called by all the processes_ in the communicator
+- These routines **must be called by all the processes** in the communicator
 - Amount of sent and received data must match
 - No tag arguments
     - Order of execution must coincide across processes
@@ -62,7 +62,8 @@ the task 0 to all other tasks
 # Broadcasting
 
 MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `root`{.input}, `comm`{.input})
-  : Broadcasts a message from the process with rank root to all other processes of the group.
+: Broadcasts data from the root process to all other processes of the group
+
 
 # Scattering
 
@@ -75,10 +76,10 @@ MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `roo
 
 # Scattering
 
-- The root process sends an equal share of the data to all other processes
-
 MPI_Scatter(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-  : Sends data from one task to all tasks in a group.
+: Sends data from the root process to all other processes of the group
+
+- Data is scattered in portions of equal size (`sendcount`)
 
 
 # Examples
@@ -122,10 +123,13 @@ if (rank==3) print *, aloc(:)
 
 </div>
 
-# Vector version of MPI_Scatter
+# Vector version of scatter
 
 MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-  : Scatters a buffer in parts to all tasks in a group.
+: Sends data from the root process to all other processes of the group
+
+- Data is scattered in portions given by `sendcounts` and `displs`
+
 
 # Scatterv example
 
@@ -167,15 +171,20 @@ Assume 4 MPI tasks. What are the values in `aloc` in the last task (#3)?
 
 - Segments A, B, ... may contain multiple elements
 
+
 # Gathering data
 
-- The root process collects an equal share of data from all other processes
+MPI_Gather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
+: Gathers data to the root process from all other processes of the group
 
-MPI_Gather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-  : Gathers values from a group of processes.
+- Data is gathered in portions of equal size (`recvcount`)
+
+# Vector version of gather
 
 MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcounts`{.input}, `displs`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-  : Gathers varying amounts of data from all processes to the root process
+: Gathers data to the root process from all other processes of the group
+
+- Data is gathered in portions given by `recvcounts` and `displs`
 
 
 # All gather
@@ -190,7 +199,8 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 # All gather
 
 MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
-  : Gathers data from all processes and distributes it to all processes
+: Gathers data from all processes and distributes it to all processes
+
 
 # All to all
 
@@ -202,10 +212,11 @@ MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvb
 
 <p>
 
+
 # All to all
 
 MPI_Alltoall(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
-  : All processes send data to all processes
+: All processes send data to all processes
 
 
 # All-to-all example
@@ -237,11 +248,11 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 
 # Common mistakes with collectives
 
-- Using a collective operation within if-rank test:<br>
+1. Using a collective operation within if-rank test:<br>
 `if (rank == 0) call mpi_bcast(...`
-    - All the processes, both the root (the sender or the gatherer) and
+    - All the processes, both the root (the sender or the receiver) and
       the rest (receivers or senders), must call the collective routine!
-- Assuming that all processes making a collective call would complete at the same time
+2. Assuming that all processes making a collective call would complete at the same time
 
 # Summary
 
