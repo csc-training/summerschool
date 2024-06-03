@@ -44,18 +44,18 @@ See [demos](demos/) for demo codes referred to in the slides.
 - [Non-blocking message chain](message-chain-non-blocking/)
 - [Heat equation solver](heat-equation/): Task 4
 
-### Process topologies
+### Further MPI topics
 
-- [Cartesian grid process topology](cartesian-grid/)
-- [Message chain with Cartesian communicator](message-chain-cartesian/)
+- Cartesian topology
+  - [Cartesian grid process topology](cartesian-grid/)
+  - [Message chain with Cartesian communicator](message-chain-cartesian/)
+  - [Heat equation solver](heat-equation/): Task 5
+- User-defined datatypes
+  - [User-defined datatypes](datatypes/)
+  - [Modifying extent](datatypes-extent/)
+  - [Communicating struct](datatypes-struct/)
 
-### User-defined datatypes
+### Bonus
 
-- [Custom datatypes](datatypes/)
-- [Modifying extent](datatypes-extent/)
-- [Communicating struct](datatypes-struct/)
-
-### Heat equation cont'd
-
-- [Parallel heat equation solver](heat-equation/): Remaining tasks
+- [Heat equation solver](heat-equation/): Remaining tasks
 
