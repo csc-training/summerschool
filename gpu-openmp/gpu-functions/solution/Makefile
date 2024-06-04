@@ -9,6 +9,13 @@ FCFLAGS=-O3 -Wall -fopenmp
 CCFLAGS=-O3 -Wall -fopenmp
 endif
 
+ifeq ($(COMP),nvhpc)
+FC=nvfortran
+CC=nvc
+FCFLAGS=-O3 -mp=gpu -gpu=cc80 -Minfo=mp
+CCFLAGS=-O3 -mp=gpu -gpu=cc80 -Minfo=mp
+endif
+
 ifeq ($(COMP),lumi)
 FC=ftn
 CC=cc
