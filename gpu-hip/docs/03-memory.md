@@ -265,6 +265,7 @@ int main() {
 # Coalesced memory access example
 
 <div class="column" style="width:49%;">
+<small>
 <p>
 ```
 __global__ void memAccess(float *out, float *in)
@@ -274,12 +275,14 @@ __global__ void memAccess(float *out, float *in)
 }
 ```
 </p>
+</small>
 <p>
 ![](img/coalesced_access_4.png){width=80%}
 </p>
 </div>
 
 <div class="column" style="width:49%">
+<small>
 <p>
 ```
 __global__ void memAccess(float *out, float *in)
@@ -289,6 +292,7 @@ __global__ void memAccess(float *out, float *in)
 }
 ```
 </p>
+</small>
 <p>
 ![](img/coalesced_access_3.png){width=80%}
 </p>
