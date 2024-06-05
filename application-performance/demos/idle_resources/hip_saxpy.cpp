@@ -1,39 +1,47 @@
 #include "common.h"
-#include <chrono>
+#include <cstddef>
 #include <hip/hip_runtime.h>
 
-__global__ void saxpy_(int n, float a, float *x, float *y)
-{
-    int tid = threadIdx.x + blockIdx.x * blockDim.x;
-    int stride = gridDim.x * blockDim.x;
+__global__ void saxpy_(size_t n, float a, float *x, float *y, float *r) {
+    size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    const size_t stride = gridDim.x * blockDim.x;
 
     for (; tid < n; tid += stride) {
-        saxpy(tid, a, x, y);
+        saxpy(tid, a, x, y, r);
     }
 }
 
+__global__ void init_data(size_t n, float *x, float *y) {
+    size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    const size_t stride = gridDim.x * blockDim.x;
+
+    for (; tid < n; tid += stride) {
+        init_x(tid, x);
+        init_y(tid, y);
+    }
+}
+
+void *gpu_allocate(size_t bytes) {
+    void *p = nullptr;
+    [[maybe_unused]] const auto result = hipMalloc(&p, bytes);
+    return p;
+}
+
+void gpu_free(void *p) { [[maybe_unused]] const auto result = hipFree(p); }
+
+void gpu_init(size_t n, float *x, float *y) {
+    constexpr dim3 blocks(32);
+    constexpr dim3 threads(256);
+    init_data<<<blocks, threads, 0, 0>>>(n, x, y);
+}
+
 int main() {
-    run([](auto n, auto a, auto &x, auto &y) -> auto {
-        // Setup code
-        const size_t num_bytes = n * sizeof(decltype(x.back()));
-        float *d_x = nullptr;
-        float *d_y = nullptr;
-        hipMalloc(reinterpret_cast<void **>(&d_x), num_bytes);
-        hipMalloc(reinterpret_cast<void **>(&d_y), num_bytes);
-        hipMemcpy(d_x, x.data(), num_bytes, hipMemcpyHostToDevice);
-        hipMemcpy(d_y, y.data(), num_bytes, hipMemcpyHostToDevice);
+    run(gpu_allocate, gpu_free, gpu_init,
+        [](auto n, auto a, auto *x, auto *y, auto *r) -> auto {
+            constexpr dim3 blocks(32);
+            constexpr dim3 threads(256);
 
-        const dim3 blocks(32);
-        const dim3 threads(256);
-
-        const auto c_start = std::chrono::high_resolution_clock::now();
-        saxpy_<<<blocks, threads, 0, 0>>>(n, a, d_x, d_y);
-        hipDeviceSynchronize();
-        const auto c_end = std::chrono::high_resolution_clock::now();
-
-        hipFree(d_x);
-        hipFree(d_y);
-
-        return c_end - c_start;
-    });
+            saxpy_<<<blocks, threads, 0, 0>>>(n, a, x, y, r);
+            [[maybe_unused]] const auto result = hipDeviceSynchronize();
+        });
 }
