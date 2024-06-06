@@ -78,13 +78,14 @@ MPI_Waitsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, 
 # Overlapping communication with computation
 
 - Use of non-blocking operations does not guarantee overlapping communication with computation
-  - In terms of code logic, non-blocking operations return immediately, but performing communication requires CPU resources that need to be available for communication too
+- In terms of code logic, non-blocking operations return immediately, but performing communication requires CPU resources that need to be available for communication too
+- Without dedicated resources for communication, the communication might progress only when needed for MPI calls, e.g., `MPI_Wait`
 
 # Overlapping communication with computation
 
 - There are two general mechanisms inside the MPI library to allow communication to proceed at the same time with computations
   - Progress thread within the library
-  - Offloadng part of the communication to network interface card (NIC) and using (remote) direct memory access (DMA)
+  - Offloading part of the communication to network interface card (NIC)
 - The MPI implementations have typically settings and environment variables to configure communication progression mechanism
   - See demonstrations codes: <https://github.com/cschpc/mpi-overlap>
 
