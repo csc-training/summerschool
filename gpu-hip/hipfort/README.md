@@ -17,18 +17,19 @@ Because the default `HIPFORT` installation only supports gfortran,  we use a cus
 
 The package was installed via:
 ```bash
-git clone https://github.com/ROCmSoftwarePlatform/hipfort.git
-cd hipfort;
+# In some temporary folder
+wget https://github.com/ROCm/hipfort/archive/refs/tags/rocm-6.1.0.tar.gz # one can try various realeases
+cd hipfort-rocm-6.1.0;
 mkdir build;
 cd build;
-cmake -DHIPFORT_INSTALL_DIR=<path-to>/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
+cmake -DHIPFORT_INSTALL_DIR=<path-to>/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=<path-to>/ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
 make -j 64 
 make install
 ```
 
 We will use the Cray 'ftn' compiler wrapper as you would do to compile any fortran code plus some additional flags:
 ```bash
-export HIPFORT_HOME=/project/project_465000536/appl/HIPFORT
+export HIPFORT_HOME=/project/project_4650xxxx/appl/HIPFORT
 ftn -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -c <fortran_code>.f90 
 CC -xhip -c <hip_kernels>.cpp
 ftn  -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -o main <fortran_code>.o hip_kernels.o
