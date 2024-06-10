@@ -1,4 +1,15 @@
 Commands to compile and run this demo on LUMI
 
-CC -fopenmp vector.cpp
-srun --account=<project_id> -n 1 --ntasks-per-node=1 --partition=small-g --gres=gpu:mi250:1 a.out
+Load modules:
+```
+module load PrgEnv-cray
+module load rocm
+module load craype-accel-amd-gfx90a
+```
+
+Compile: 
+> CC -fopenmp vector.cpp
+
+Run:
+> srun --account=<project_id> -n 1 -N 1 --partition=small-g -G 1 ./a.out
+
