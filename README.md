@@ -8,7 +8,7 @@ Versions from previous years can be found in tags.
 
 ## Presentation slides
 
-The slides are available [here](https://csc-training.github.io/summerschool/).
+The slides are available [here](https://github.com/csc-training/summerschool/releases/).
 
 ## Exercises
 
