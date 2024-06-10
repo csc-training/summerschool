@@ -18,9 +18,9 @@ Compile the program with the provided Makefiles. On **Lumi**, simply type
 ```
 make
 ```
-and on **Puhti**, use instead
+and on **Mahti**, use instead
 ```
-make PUHTI=1
+make MAHTI=1
 ```
 
 NOTE! It is important to note that the OpenMP array index range notation is different between C/CPP and Fortran, ie, the following are equivalent:
