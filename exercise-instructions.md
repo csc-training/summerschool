@@ -238,7 +238,7 @@ Programs need to be executed via the batch job system. Simple job running with 4
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
+#SBATCH --account=project_465001194
 #SBATCH --partition=standard
 #SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
@@ -263,7 +263,7 @@ for threading with `--cpus-per-task`:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
+#SBATCH --account=project_465001194
 #SBATCH --partition=standard
 #SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
