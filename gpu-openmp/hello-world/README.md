@@ -6,14 +6,12 @@ Examples of batch scripts for GPUs and CPUs can be found in
 
 1. Compile the program first without offloading support. you will need
    ```
-   module use /project/project_465000536/modules
-   module load hpcss/cpu
+   source ../modules-cpu
    ```
    Try to run the code in a CPU and GPU node.
 
 2. Next, compile the code with offloading support.
    ```
-   module use /project/project_465000536/modules
-   module load hpcss/gpu
+   source ../modules-gpu
    ```
    Try to run both in a GPU node and in a CPU node.
