@@ -375,7 +375,7 @@ MPI_Send(particle, 1000*sizeof(particle[0]), MPI_BYTE, ...);
   - Performance is currently poor with GPU-aware MPI
 
 
-# Summary
+# Summary 
 
 - User-defined types enable communication of non-contiguous or
   heterogeneous data with single MPI communication operations
