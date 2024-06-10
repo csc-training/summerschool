@@ -1,0 +1,3 @@
+module purge
+
+module load PrgEnv-cray
