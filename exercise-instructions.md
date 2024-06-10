@@ -289,7 +289,7 @@ the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
+#SBATCH --account=project_465zzzzzzzz
 #SBATCH --partition=standard
 #SBATCH --reservation=summerschool_standard
 #SBATCH --time=00:05:00
@@ -311,7 +311,7 @@ single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465000536
+#SBATCH --account=project_465zzzzzzz
 #SBATCH --partition=standard-g
 #SBATCH --reservation=summerschool_standard-g
 #SBATCH --gpus-per-node=8
@@ -379,7 +379,7 @@ export PATH=$TAU/bin:$PATH
 ```
 Profiling mpi code:
 ```
-srun --cpus-per-task=1 --account=project_465000536 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
+srun --cpus-per-task=1 --account=project_465465zzzzzz --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
 ```
 In order to to see the `paraprof` in browser use `vnc`:
 ```
