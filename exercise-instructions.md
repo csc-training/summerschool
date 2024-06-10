@@ -37,9 +37,9 @@ Clone your personal fork in appropriate directory:
 ```
 git clone git@github.com:<my-github-id>/summerschool.git
 ```
-Create a branch:
+Create a branch (optional):
 ```
-git checkout -b hpcss23
+git checkout -b hpcss24
 ```
 
 ## Using supercomputers
