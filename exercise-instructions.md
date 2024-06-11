@@ -123,7 +123,7 @@ For GPU programming use:
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G
-module load rocm/5.6.1
+module load rocm/5.4.6
 ```
 
 ### MPI
