@@ -2,11 +2,20 @@
 
 ## Working with the summerschool repository
 
-We recommend that you work with your own personal **fork** of the summerschool 
+The repository of the summer school can be cloned via:
+```
+git pull https://github.com/csc-training/summerschool.git
+``` 
+
+However, we recommend that you work with your own personal **fork** of the summerschool 
 git-repository. That way you can easily commit and push your own solutions
 to exercises.
 
 Before starting out, synchronize your fork with "Sync fork" in the github web-GUI.
+Start by cloning your personal fork in appropriate directory:
+```
+git clone git@github.com:<my-github-id>/summerschool.git
+```
 
 We also recommend that you create a separate branch for your own work, see "Using local workstation" or "Using supercomputers" below for details.
 
