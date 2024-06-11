@@ -21,6 +21,12 @@ lang:   en
 - Compiler support for 5.0 is still incomplete
 - This course discusses mostly features present in < 4.5
 
+# OpenMP Architecture Review Board resources
+
+- Home page: [openmp.org](https://www.openmp.org)
+- [www.openmp.org/specifications/](https://www.openmp.org/specifications/)
+  - [v5.0 API Specification](https://www.openmp.org/spec-html/5.0/openmp.html): very abstract
+  - [v5.0.1 Examples document](https://www.openmp.org/wp-content/uploads/openmp-examples-5-0-1.pdf): examples how to use directives
 
 # Why would you want to learn OpenMP?
 

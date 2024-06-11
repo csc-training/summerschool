@@ -115,10 +115,12 @@ LUMI has several programming environments. For summerschool, we recommend that y
 
 For CPU programming use:
 ```
+module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 ```
 For GPU programming use:
 ```
+module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G
 module load rocm/5.6.1
@@ -180,6 +182,7 @@ Usage in local workstation may vary.
 On **Lumi**, the following modules are required:
 
 ```bash
+module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G 
 module load rocm/5.6.1
@@ -196,6 +199,7 @@ CC -fopenmp <source.cpp>
 Use the following modules :
 
 ```bash
+module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G 
 module load rocm/5.6.1
@@ -209,7 +213,7 @@ CC -xhip <source.cpp>
 The following modules are required:
 ```bash
 
-
+module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G 
 module load rocm/5.6.1
