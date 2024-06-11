@@ -185,7 +185,7 @@ On **Lumi**, the following modules are required:
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G 
-module load rocm/5.6.1
+module load rocm/5.4.6
 ```
 
 On **Lumi**, to compile your program, use
@@ -202,7 +202,7 @@ Use the following modules :
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G 
-module load rocm/5.6.1
+module load rocm/5.4.6
 ```
 
 To compile your program, use:
@@ -216,7 +216,7 @@ The following modules are required:
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G 
-module load rocm/5.6.1
+module load rocm/5.4.6
 ```
 
 Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn). 
