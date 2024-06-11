@@ -182,6 +182,7 @@ Usage in local workstation may vary.
 On **Lumi**, the following modules are required:
 
 ```bash
+module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G 
 module load rocm/5.6.1
