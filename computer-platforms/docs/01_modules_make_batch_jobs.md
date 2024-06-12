@@ -261,7 +261,7 @@ srun myprog
 Alternatively to `sbatch` one can submit a job to the queue using `srun`
 
 ```bash
-srun --account=<project_id> –-partition=small –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
+srun --account=<...> –-partition=<...> –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
 ```
 
 In this case the output will be shown on the terminal  (job will fail if the connection is lost). 
