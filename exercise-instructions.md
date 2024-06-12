@@ -4,7 +4,7 @@
 
 The repository of the summer school can be cloned via:
 ```
-git pull https://github.com/csc-training/summerschool.git
+git clone https://github.com/csc-training/summerschool.git
 ``` 
 
 However, we recommend that you work with your own personal **fork** of the summerschool 
