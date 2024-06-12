@@ -71,9 +71,6 @@ thousands of nodes on the supercomputer to physical disks
 
 # Parallel File systems {.section}
 
-# Anatomy of supercomputer
- ![](img/cluster_diagram.jpeg){.center width=80%}
-
 # File systems
 
 - All large parallel computer systems provide a parallel file
