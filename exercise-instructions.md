@@ -68,7 +68,7 @@ queried with the command `lumi-workspaces`. As the base directory is
 shared between members of the project, you should create your own
 directory:
 ```
-cd /scratch/project_465000536/
+cd /scratch/project_465001194/
 mkdir -p $USER
 cd $USER
 ```
@@ -252,8 +252,8 @@ Programs need to be executed via the batch job system. Simple job running with 4
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=project_465001194
-#SBATCH --partition=standard
-#SBATCH --reservation=summerschool_standard
+#SBATCH --partition=small
+#SBATCH --reservation=CSC_summer_school_cpu
 #SBATCH --time=00:05:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
@@ -277,8 +277,8 @@ for threading with `--cpus-per-task`:
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=project_465001194
-#SBATCH --partition=standard
-#SBATCH --reservation=summerschool_standard
+#SBATCH --partition=small
+#SBATCH --reservation=CSC_summer_school_cpu
 #SBATCH --time=00:05:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
@@ -392,7 +392,7 @@ export PATH=$TAU/bin:$PATH
 ```
 Profiling mpi code:
 ```
-srun --cpus-per-task=1 --account=project_465465zzzzzz --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
+srun --cpus-per-task=1 --account=project_465001194 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
 ```
 In order to to see the `paraprof` in browser use `vnc`:
 ```
@@ -411,7 +411,7 @@ Tracing:
 
 ```
 export TAU_TRACE=1
-srun --cpus-per-task=1 --account=project_465000536 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
+srun --cpus-per-task=1 --account=project_465001194 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
 tau_treemerge.pl
 tau_trace2json tau.trc tau.edf -chrome -ignoreatomic -o app.json
 ```
@@ -424,10 +424,10 @@ In order to use omniperf load the following modules:
 module use <path-ro>/Omni/omniperf/modulefiles
 module load omniperf
 module load cray-python
-srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465zzzzzz omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
+srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465001194 omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
 omniperf analyze -p workloads/workload_xy/mi200/ > analyse_xy.txt
 ```
-In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/x.y.z`.
+In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/5.4.6`.
 It is useful add to the compilation of the application to be analysed the follwing `-g -gdwarf-4`.
 
 More information about TAU can be found in [TAU User Documentation](https://www.cs.uoregon.edu/research/tau/docs/newguide/), while for Omniperf at [Omniperf User Documentation](https://github.com/AMDResearch/omniperf)
