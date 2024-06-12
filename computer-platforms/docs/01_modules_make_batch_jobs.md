@@ -15,6 +15,9 @@ lang:   en
 <br>
 Some information provided here is specific to LUMI, Mahti, and Puhti, some more general
 
+# Anatomy of supercomputer
+ ![](img/cluster_diagram.jpeg){.center width=80%}
+ 
 # Connecting to supercomputers
 
 - `ssh` is used to connect to all CSC supercomputers
