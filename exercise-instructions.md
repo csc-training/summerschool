@@ -81,7 +81,7 @@ your github account. The SSH key can be added via "Settings"->"SSH and GPG keys"
 cat $HOME/.ssh/id_rsa.pub
 ```
 
-Once succesfull, make sure you in your personal workspace in **scratch** area `/scratch/project_465000536/$USER`, clone the repository, and a create a branch:
+Once succesfull, make sure you in your personal workspace in **scratch** area `/scratch/project_project_465001194/$USER`, clone the repository, and a create a branch:
 ```
 git clone git@github.com:<my-github-id>/summerschool.git
 git checkout -b hpcss23
@@ -302,9 +302,9 @@ the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465zzzzzzzz
-#SBATCH --partition=standard
-#SBATCH --reservation=summerschool_standard
+#SBATCH --account=project_465001194
+#SBATCH --partition=small
+#SBATCH --reservation=CSC_summer_school_cpu
 #SBATCH --time=00:05:00
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=32
@@ -324,9 +324,9 @@ single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465zzzzzzz
-#SBATCH --partition=standard-g
-#SBATCH --reservation=summerschool_standard-g
+#SBATCH --account=project_465001194
+#SBATCH --partition=small-g
+#SBATCH --reservation=CSC_summer_school_gpu
 #SBATCH --gpus-per-node=8
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
