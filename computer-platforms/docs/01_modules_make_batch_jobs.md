@@ -221,7 +221,7 @@ CCFLAGS=-O3
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=<project_id>
-#SBATCH –-partition=debug
+#SBATCH –-partition=small
 #SBATCH –-time=00:10:00
 #SBATCH –-nodes=2
 #SBATCH –-ntasks-per-nodes=128
@@ -242,6 +242,13 @@ srun myprog
   ```bash
   sbatch my_job.sh
   ```
+- Submit your batch job script to the queue using `srun` (jon will fail if the connection is lost)
+  ```bash
+  srun --account=<project_id> –-partition=small –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
+  ```
+# srun launches "nodes * ntasks-per-nodes" copies of myprog
+srun myprog
+  ```
 - You can follow the status of your jobs with `squeue`:
   ```bash
   squeue -u my_username
@@ -255,6 +262,18 @@ srun myprog
   ```bash
   sacct jobid
   ```
+  
+# Interactive jobs
+
+Sometimes (when debugging or doing performance analysys) the user needs to interact with application on the compute nodes.
+ ```bash
+salloc --account=<project_id> –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00
+```
+Once the allocation is made, this command will start a shell on the login node.
+
+```bash
+srun --ntasks=32 --cpus-per-task=8 ./my_interactive_prog
+```
 
 # Useful Slurm environment variables
 
@@ -286,3 +305,4 @@ Following variables override the corresponding variables in the batch script
 - `SBATCH_PARTITION` : `--partition`
 
 </small>
+
