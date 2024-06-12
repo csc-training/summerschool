@@ -242,10 +242,6 @@ srun myprog
   ```bash
   sbatch my_job.sh
   ```
-- Submit your batch job script to the queue using `srun` (jon will fail if the connection is lost)
-  ```bash
-  srun --account=<project_id> –-partition=small –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
-  ```
 - You can follow the status of your jobs with `squeue`:
   ```bash
   squeue -u my_username
@@ -262,8 +258,15 @@ srun myprog
   
 # Interactive jobs
 
-Sometimes (when debugging or doing performance analysys) the user needs to interact with application on the compute nodes.
- ```bash
+Alternatevly to `sbtach` one can submit a job to the queue using `srun`
+  ```bash
+  srun --account=<project_id> –-partition=small –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
+  ```
+In this case the output will be shown on the terminal  (job will fail if the connection is lost). 
+
+When debugging or doing performance analysys the user needs to interact with application on the compute nodes.
+
+```bash
 salloc --account=<project_id> –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00
 ```
 Once the allocation is made, this command will start a shell on the login node.
