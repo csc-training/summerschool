@@ -246,9 +246,6 @@ srun myprog
   ```bash
   srun --account=<project_id> –-partition=small –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
   ```
-# srun launches "nodes * ntasks-per-nodes" copies of myprog
-srun myprog
-  ```
 - You can follow the status of your jobs with `squeue`:
   ```bash
   squeue -u my_username
