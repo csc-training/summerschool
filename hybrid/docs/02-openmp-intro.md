@@ -6,7 +6,6 @@ lang:   en
 
 # OpenMP {.section}
 
-
 # What is OpenMP?
 
 - A collection of _compiler directives_ and _library routines_ ,
@@ -21,17 +20,11 @@ lang:   en
 - Compiler support for 5.0 is still incomplete
 - This course discusses mostly features present in < 4.5
 
-# OpenMP Architecture Review Board resources
-
-- Home page: [openmp.org](https://www.openmp.org)
-- [www.openmp.org/specifications/](https://www.openmp.org/specifications/)
-  - [v5.0 API Specification](https://www.openmp.org/spec-html/5.0/openmp.html): very abstract
-  - [v5.0.1 Examples document](https://www.openmp.org/wp-content/uploads/openmp-examples-5-0-1.pdf): examples how to use directives
 
 # Why would you want to learn OpenMP?
 
-- OpenMP parallelized program can be run on your many-core workstation or on a
-  node of a cluster
+- OpenMP parallelized program can be run on your many-core workstation or
+  on a node of a cluster
 - Enables one to parallelize one part of the program at a time
     - Get some speedup with a limited investment in time
     - Efficient and well scaling code still requires effort
@@ -96,10 +89,11 @@ lang:   en
 
 # Compiling an OpenMP program
 
-- Compilers that support OpenMP usually require an option (flag) for enabling it
-    - Most compilers (GNU, Clang, Intel, Cray) nowadays support `-fopenmp`
-    - Intel legacy foption: `-qopenmp`
-    - NVIDIA: `-mp`
+- Compilers that support OpenMP usually require an option (flag) for
+  enabling it
+  - Most compilers (GNU, Clang, Intel, Cray) nowadays support `-fopenmp`
+  - Intel legacy foption: `-qopenmp`
+  - NVIDIA: `-mp`
 
 
 # Parallel construct
@@ -197,6 +191,7 @@ Over and out! -main
 - Thread ID can be queried and used for distributing work manually
   (similar to MPI rank)
 
+
 # for/do construct
 
 - Directive instructing compiler to share the work of a loop
@@ -239,6 +234,7 @@ Over and out! -main
 }
 ```
 
+
 # Workshare directive (Fortran only)
 
 - In Fortran many array operations can be done conveniently with array
@@ -258,9 +254,17 @@ real :: a(n,n), b(n,n), c(n,n) d(n,n)
 !$omp end parallel
 ```
 
+
 # Summary
 
 - OpenMP can be used with compiler directives
     - Ignored when code is build without OpenMP
 - Threads are launched within **parallel** regions
 - Simple loops can be parallelized easily with a `for`/`do` construct
+
+<br>
+
+- OpenMP resources:
+  - <https://www.openmp.org/specifications/>
+    - [v5.2 API Specification](https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5-2.pdf)
+    - [v5.2.2 Examples document](https://www.openmp.org/wp-content/uploads/openmp-examples-5.2.2-final.pdf)
