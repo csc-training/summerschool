@@ -10,8 +10,10 @@ lang:   en
 <div class="column" width= 55%>
 
 - High performance computing is fueled by ever increasing performance
-- Increasing performance allows  breakthroughs in many major challenges that humankind faces today
-- Not only hardware performance, algorithmic improvements have also helped a lot
+- Increasing performance allows  breakthroughs in many major challenges that
+  humankind faces today
+- Not only hardware performance, algorithmic improvements have also helped a
+  lot
 
 </div>
 
@@ -19,13 +21,15 @@ lang:   en
 ![](img/top500-perf-dev.png)
 </div>
 
+
 # HPC through the ages
 
 <div class="column" width=55%>
 - Various strategies to achieve performances through the years:
     - Frequency, vectorization, multi-node, multi-core ...
     - Now performance is mostly limited by power consumption
-- Accelerators provide compute resources with high parallelism to reach high performance at low relative power consumption
+- Accelerators provide compute resources with high parallelism to reach high
+  performance at low relative power consumption
 </div>
 
 <div class="column" width=43%>
@@ -109,17 +113,15 @@ CPU - manycores
     - Great for task parallelism (MIMD)
 - Less silicon dedicated at Arithmetic-Logic Units (ALU)
     - Bad with parallel execution
-
-
 </div>
 
 <div class="column">
 ![ <span style=" font-size:0.5em;">image credits: Nemez @GPUsAreMagic https://nemez.net/die/RocketLake</span> ](img/core_die_shot_small.jpg){width=57%}
-
 </div>
 
 
 # Different design philosophies: GPU
+
 <div class="column">
 
 **GPU**
@@ -130,24 +132,21 @@ CPU - manycores
 - Great for data parallelism
 - High-throughput
 - Bad at control-flow processing
-
-
 </div>
-
 
 <div class="column">
 ![ <span style=" font-size:0.5em;">image credits: Nemez @GPUsAreMagic https://nemez.net/die/Ampere</span> ](img/gpu_die_shot_small.jpg){width=70%}
-
 </div>
 
 
 # Lumi - Pre-exascale system in Finland
 
- ![](img/lumi.png){.center width=50%}
+![](img/lumi.png){.center width=50%}
 
 ![](img/gpu-bws.png){width=100%}
 
-# Accelerator model in LUMI 
+
+# Accelerator model in LUMI
 
 <div class="column">
 - GPU is connected to CPUs via Infinity Fabric
@@ -183,7 +182,8 @@ CPU - manycores
 # Advance features & Performance considerations
 
 - Memory accesses:
-   - data resides in the GPU memory; maximum performance is achieved when reading/writing is done in continuous blocks
+   - data resides in the GPU memory; maximum performance is achieved when
+     reading/writing is done in continuous blocks
    - very fast on-chip memory can be used as a user programmable cache
 - *Unified Virtual Addressing* provides unified view for all memory
 - Asynchronous calls can be used to overlap transfers and computations
@@ -212,12 +212,10 @@ CPU - manycores
 - CPU and GPU can work concurrently
    - kernel launches are normally asynchronous
 
+
 # Using GPUs
 
 <div class="column">
-
-
-
 1. Use existing GPU applications
 2. Use accelerated libraries
 3. Directive based methods
@@ -233,8 +231,8 @@ CPU - manycores
 ![](img/arrow.png){width=16% }
 
 **More difficult, more opportunities**
-
 </div>
+
 
 # Directive-based accelerator languages
 
@@ -244,7 +242,8 @@ CPU - manycores
     - mostly Nvidia
 - OpenMP
     - earlier only threading for CPUs
-    - initial support for accelerators in 4.0 (2013), significant improvements & extensions in 4.5 (2015), 5.0 (2018), 5.1 (2020) and 5.2 (2021)
+    - initial support for accelerators in 4.0 (2013), significant improvements
+      & extensions in 4.5 (2015), 5.0 (2018), 5.1 (2020) and 5.2 (2021)
 
 - Focus on optimizing productivity
 - Reasonable performance with quite limited effort, but not guaranteed
@@ -269,6 +268,7 @@ CPU - manycores
 
 ![](img/gpu_approaches.png){.center width=70%}
 
+
 # Directive languages and performances
 
 - "Write once, run everywhere"
@@ -282,11 +282,14 @@ CPU - manycores
 # GPUs @ CSC
 
 - **Puhti-AI**: 80 nodes, total peak performance of 2.7 Petaflops
-    - Four Nvidia V100 GPUs, two 20 cores Intel Xeon processors, 3.2 TB fast local storage, network connectivity of  200Gbps aggregate bandwidth  
+    - Four Nvidia V100 GPUs, two 20 cores Intel Xeon processors, 3.2 TB fast
+      local storage, network connectivity of  200Gbps aggregate bandwidth
 - **Mahti-AI**: 24 nodes, total peak performance of 2. Petaflops
-    - Four Nvidia A100 GPUs, two 64 cores AMD Epyc processors, 3.8 TB fast local storage,  network connectivity of  200Gbps aggregate bandwidth   
+    - Four Nvidia A100 GPUs, two 64 cores AMD Epyc processors, 3.8 TB fast
+      local storage,  network connectivity of  200Gbps aggregate bandwidth
 - **LUMI-G**: 2978 nodes, total peak performance of 500 Petaflops
-    - Four AMD MI250X GPUs, one 64 cores AMD Epyc processors, no local storage, network connectivity of  800Gbps aggregate bandwidth
+    - Four AMD MI250X GPUs, one 64 cores AMD Epyc processors, no local
+      storage, network connectivity of  800Gbps aggregate bandwidth
 
 
 # Summary
