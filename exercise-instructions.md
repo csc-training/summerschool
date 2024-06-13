@@ -192,7 +192,7 @@ On **Lumi**, to compile your program, use
 ```bash
 CC -fopenmp <source.cpp>
 ```
-**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L`  is loaded it will use compiling options for creating code for multi-core cpus. If  `partition/G` it will use compiling opttions create code for offloading on gpus.
+**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L`  is loaded it will use compiling options for creating code for multi-core cpus. If  `partition/G` it will use compiling options to create code for offloading on gpus.
 
 ### HIP
 
@@ -269,6 +269,10 @@ The output of job will be in file `slurm-xxxxx.out`. You can check the status of
 The reservation `summerschool` is available during the course days and it
 is accessible only with the training user accounts.
 
+The same result can be achived using directly `srun`
+```
+srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=4 --cpus-per-task=1  my_mpi_exe
+```
 ### Pure OpenMP
 
 For pure OpenMP programs one should use only one node and one MPI task per nodesingle tasks and specify the number of cores reserved
@@ -289,6 +293,10 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun my_omp_exe
 ```
 
+The same result can be achived using directly `srun`
+```
+srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=1 --cpus-per-task=4   my_omp_exe
+```
 ### Hybrid MPI+OpenMP
 
 For hybrid MPI+OpenMP programs it is recommended to specify explicitly number of nodes, number of
@@ -314,7 +322,10 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun my_exe
 ```
 
-
+The same result can be achived using directly `srun`
+```
+srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=2 --ntasks-per-node=32 --cpus-per-task=4   my_omp_exe
+```
 ### GPU programs
 
 When running GPU programs, few changes need to made to the batch job
@@ -333,6 +344,25 @@ single GPU with single MPI task and a single thread use:
 #SBATCH --time=00:05:00
 
 srun my_gpu_exe
+```
+
+The same result can be achived using directly `srun`
+```
+srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=8 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
+```
+
+### Interactive jobs
+
+
+When debugging or doing performance analysys the user needs to interact with application on the compute nodes.
+
+```bash
+salloc --account=<project_id> –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00
+```
+Once the allocation is made, this command will start a shell on the login node.
+
+```bash
+srun --ntasks=32 --cpus-per-task=8 ./my_interactive_prog
 ```
 
 ## Running in local workstation
