@@ -322,10 +322,10 @@ Overview of a MI250x Graphics Compute Die <br>
 # GPUs @ CSC
 
 - **Puhti-AI**: 80 nodes, total peak performance of 2.7 Petaflops
-    - Four Nvidia V100 GPUs, two 20-core Intel Xeon processors, 3.6 TB fast
+    - Four NVIDIA V100 GPUs, two 20-core Intel Xeon processors, 3.6 TB fast
       local storage, network connectivity of 200Gbps aggregate bandwidth
 - **Mahti-AI**: 24 nodes, total peak performance of 2.0 Petaflops
-    - Four Nvidia A100 GPUs, two 64-core AMD Epyc processors, 3.8 TB fast
+    - Four NVIDIA A100 GPUs, two 64-core AMD Epyc processors, 3.8 TB fast
       local storage,  network connectivity of 200Gbps aggregate bandwidth
 - **LUMI-G**: 2978 nodes, total peak performance of 500 Petaflops
     - Four AMD MI250X GPUs, one 64-core AMD Epyc processors, no local
