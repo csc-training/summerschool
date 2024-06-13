@@ -203,15 +203,14 @@ CPU - manycores
 
 - CPUs are easy, GPUs a bit harder
 - How to support different GPU architectures?
-<div style="border:3px solid var(--csc-blue); border-radius: 15px; margin-top:1e
-x">
+  <div style="border:3px solid var(--csc-blue); border-radius: 15px; margin-top:1ex">
   1. use accelerated GPU libraries: cublas, rocsolver, ...
   2. use a high-level abstraction layer
      - directive based methods: OpenMP, OpenACC
      - programming models: SYCL, Kokkos, Raja, ...
   3. use native GPU programming
      - CUDA, HIP
-</div>
+  </div>
 
 
 # Native GPU code: HIP / CUDA
@@ -282,15 +281,19 @@ x">
 
 # Which programming approach to choose?
 
+:::::: {.columns}
+::: {.column width=58%}
+![](img/gpu-approaches.png){.center width=100%}
+:::
+::: {.column width=40%}
+<br>
+
 - Current code base
   - Extensive code rewriting is time-consuming
 - Long-term perspective
-  - Portable code also to future HPC generations
-
-
-# Using GPUs
-
-![](img/gpu_approaches.png){.center width=70%}
+  - Portable code also for future HPC systems
+:::
+::::::
 
 
 # GPUs @ CSC
