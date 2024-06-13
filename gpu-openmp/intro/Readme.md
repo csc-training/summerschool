@@ -2,9 +2,9 @@
 ROCM provides us with a tool, `romcminfo` to get the device properties. We can get the information of the GPUS that are allocated during a hob via:
 
 ```
-srun -p dev-g --gpus 1  -n 1  --time=00:30:00 --account=project_462000007 rocminfo
+srun -p dev-g --gpus 1  -n 1  --time=00:30:00 --account=<summerschool_project> rocminfo
 ```
-Thiw will output:
+This will output:
 
 ```
 Agent 5                  
@@ -41,7 +41,7 @@ Agent 5
 ```
 With `rocm-smi` we can get runtime information:
 ```
-> srun -p dev-g --gpus 1  -n 1 --time=00:30:00 --account=project_462000007 rocm-smi
+> srun -p dev-g --gpus 1  -n 1 --time=00:30:00 --account=<summerschool_project> rocm-smi
 
 ========================= ROCm System Management Interface =========================
 =================================== Concise Info ===================================
