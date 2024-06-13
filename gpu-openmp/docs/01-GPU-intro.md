@@ -147,18 +147,22 @@ multi-core CPUs
 
 # GPU architecture
 
-<div class="column">
+::::::{.columns}
+:::{.column width=40%}
 - Designed for running tens of thousands of threads simultaneously on
   thousands of cores
 - Very small penalty for switching threads
 - Running large amounts of threads hides memory access penalties
 - Very expensive to synchronize all threads
-</div>
-
-<div class="column">
+:::
+:::{.column width=58%}
 ![](img/mi250x-gcd.svg)
-<small>Overview of MI250x Graphics Compute Die</small>
+<div style="font-size:0.7em; margin-left:2em; margin-top:-1em">
+Overview of a MI250x Graphics Compute Die <br>
+(<https://docs.lumi-supercomputer.eu/hardware/lumig/>)
 </div>
+:::
+::::::
 
 
 # LUMI supercomputer hardware
