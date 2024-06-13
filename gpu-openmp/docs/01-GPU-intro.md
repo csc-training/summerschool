@@ -153,7 +153,6 @@ multi-core CPUs
   thousands of cores
 - Very small penalty for switching threads
 - Running large amounts of threads hides memory access penalties
-- Very expensive to synchronize all threads
 :::
 :::{.column width=58%}
 ![](img/mi250x-gcd.svg)
@@ -163,6 +162,8 @@ Overview of a MI250x Graphics Compute Die <br>
 </div>
 :::
 ::::::
+
+- Very expensive to synchronize all threads
 
 
 # LUMI supercomputer hardware
