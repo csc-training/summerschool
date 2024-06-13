@@ -85,20 +85,34 @@ lang:   en
 <div class="column" style="width:44%; padding-left:2em">
 <p>
 ![](img/sisd.png){height=200px}<br>
-Single Instruction Single Data<br>
+<span style="color:var(--csc-blue)">S</span>ingle
+<span style="color:var(--csc-blue)">I</span>nstruction
+<span style="color:var(--csc-blue)">S</span>ingle
+<span style="color:var(--csc-blue)">D</span>ata
+<br>
 <br>
 ![](img/simd.png){height=200px}<br>
-Single Instruction Multiple Data
+<span style="color:var(--csc-blue)">S</span>ingle
+<span style="color:var(--csc-blue)">I</span>nstruction
+<span style="color:var(--csc-blue)">M</span>ultiple
+<span style="color:var(--csc-blue)">D</span>ata
 </p>
 </div>
 
 <div class="column" style="width:48%">
 <p>
 ![](img/misd.png){height=200px}<br>
-Multiple Instructions Single Data<br>
+<span style="color:var(--csc-blue)">M</span>ultiple
+<span style="color:var(--csc-blue)">I</span>nstructions
+<span style="color:var(--csc-blue)">S</span>ingle
+<span style="color:var(--csc-blue)">D</span>ata
+<br>
 <br>
 ![](img/mimd.png){height=200px}<br>
-Multiple Instructions Multiple Data
+<span style="color:var(--csc-blue)">M</span>ultiple
+<span style="color:var(--csc-blue)">I</span>nstructions
+<span style="color:var(--csc-blue)">M</span>ultiple
+<span style="color:var(--csc-blue)">D</span>ata
 </p>
 </div>
 
@@ -110,20 +124,24 @@ Multiple Instructions Multiple Data
 <div class="column" style="width:44%; padding-left:2em">
 <p>
 ![](img/sisd.png){height=200px}<br>
-CPU - 1 core<br>
+<span style="color:var(--csc-blue)">SISD</span>:
+single CPU core<br>
 <br>
 ![](img/simd.png){height=200px}<br>
-GPU
+<span style="color:var(--csc-blue)">SIMD</span>:
+GPUs, SSE, AVX, ...
 </p>
 </div>
 
 <div class="column" style="width:48%">
 <p>
 ![](img/misd.png){height=200px}<br>
-Not really used<br>
+<span style="color:var(--csc-blue)">MISD</span>:
+--<br>
 <br>
 ![](img/mimd.png){height=200px}<br>
-CPU - manycores
+<span style="color:var(--csc-blue)">MIMD</span>:
+multi-core CPUs
 </p>
 
 
