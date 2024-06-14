@@ -219,7 +219,6 @@ CCFLAGS=-O3
     - Describe how you want to run the job and what resources you need
     - Add a command that launches your program
     - Submit your job to a queue
-- This is done with a batch job script
 
 
 # Example SLURM batch job script
