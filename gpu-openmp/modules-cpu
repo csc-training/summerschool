@@ -1,3 +1,5 @@
-module load PrgEnv-cray
 module unload rocm
-module unload craype-accel-amd-gfx90a
+module load LUMI/23.09  partition/C
+#module load PrgEnv-cray
+#module unload rocm
+#module unload craype-accel-amd-gfx90a
