@@ -24,9 +24,9 @@ lang:   en
       and in Fortran an additional output parameter
 
 - Pre-defined integer constants:
-  <code style="font-size:0.7em">
-  MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE
-  </code>
+  <div style="font-size:0.8em">
+  `MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
+  </div>
 
 
 # Hybrid programming styles: fine/coarse grained
