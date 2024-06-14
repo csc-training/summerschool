@@ -121,8 +121,7 @@ cc main.c -o main
 </div>
 
 <div class=column>
-_A make rule_
-![](images/depend.png){.center width=40%}
+![](images/depend.png){.center width=20%}
 </div>
 
 # Compiling and linking: possible problems
