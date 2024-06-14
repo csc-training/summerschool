@@ -9,7 +9,7 @@ lang:   en
 - Connecting to supercomputers
 - Directory structure in CSC supercomputers
 - Module system
-- Building applications with `make`
+- Building applications
 - Running applications via batch job system
 
 <br>
