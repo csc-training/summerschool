@@ -118,18 +118,8 @@ cc main.c -o main
     - could we just rebuild the parts that changed?
 - Having different options when building
     - debug versions, enabling/disabling features, etc.
-    - 
-# Compiling and linking: possible problems
 
-<small>
-- Programs should usually be separated into several files
-  <br>$\Rightarrow$ complicated dependency structures
-- Building large programs takes time
-    - could we just rebuild the parts that changed?
-- Having different options when building
-    - debug versions, enabling/disabling features, etc.
-</small>
-
+ 
 # Compiling and linking: possible problems
 
 - Programs should usually be separated into several files
