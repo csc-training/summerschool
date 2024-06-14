@@ -115,7 +115,7 @@ cc main.c -o main
 <div class=column>
  
 <small>
- In practice programs be separated into several files
+ In practice programs are separated into several files
   <br>$\Rightarrow$ complicated dependency structures
 - Building large programs takes time
     - could we just rebuild the parts that changed?
@@ -128,6 +128,17 @@ cc main.c -o main
 <div class=column>
 ![](images/depend.png){.center width=40%}
 </div>
+
+# Compiling and linking: possible problems
+
+<small>
+- Programs should usually be separated into several files
+  <br>$\Rightarrow$ complicated dependency structures
+- Building large programs takes time
+    - could we just rebuild the parts that changed?
+- Having different options when building
+    - debug versions, enabling/disabling features, etc.
+</small>
 
 # Compiling and linking: possible problems
 
