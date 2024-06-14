@@ -272,7 +272,7 @@ srun --account=<...> –-partition=<...> –-time=00:10:00 –-nodes=2 –-ntask
 
 In this case the output will be shown on the terminal  (job will fail if the connection is lost). 
 
-When debugging or doing performance analysys the user needs to interact with application on the compute nodes.
+When debugging or doing performance analisys the user needs to interact with the application.
 
 ```bash
 salloc --account=<project_id> –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00
