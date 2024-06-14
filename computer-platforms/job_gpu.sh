@@ -8,6 +8,6 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --gpus-per-node=4
-##SBATCH --reservation=CSC_summer_school_
+##SBATCH --reservation=CSC_summer_school_gpu
 
 srun my_prog
