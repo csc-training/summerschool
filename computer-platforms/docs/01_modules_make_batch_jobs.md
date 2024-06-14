@@ -107,21 +107,26 @@ ssh-copy-id <my_user_id>@mahti.csc.fi
 # Compiling and linking
 
 Single file source code:
+
 ```bash
 cc main.c -o main
 ```
  
 <div class=column>
+ 
+<small>
  In practice programs be separated into several files
   <br>$\Rightarrow$ complicated dependency structures
 - Building large programs takes time
     - could we just rebuild the parts that changed?
 - Having different options when building
     - debug versions, enabling/disabling features, etc.
+</small>
+
 </div>
 
 <div class=column>
-![](images/depend.png){.center width=20%}
+![](images/depend.png){.center width=40%}
 </div>
 
 # Compiling and linking: possible problems
