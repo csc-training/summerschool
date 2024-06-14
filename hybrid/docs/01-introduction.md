@@ -4,8 +4,6 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Introduction {.section}
-
 # Anatomy of supercomputer
 
 - Supercomputers consist of nodes connected with high-speed network
