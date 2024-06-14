@@ -111,24 +111,14 @@ Single file source code:
 ```bash
 cc main.c -o main
 ```
- 
-<div class=column>
- 
-<small>
- In practice programs are separated into several files
+
+- In practice programs are separated into several files
   <br>$\Rightarrow$ complicated dependency structures
 - Building large programs takes time
     - could we just rebuild the parts that changed?
 - Having different options when building
     - debug versions, enabling/disabling features, etc.
-</small>
-
-</div>
-
-<div class=column>
-![](images/depend.png){.center width=40%}
-</div>
-
+    - 
 # Compiling and linking: possible problems
 
 <small>
