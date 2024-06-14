@@ -117,6 +117,7 @@ For CPU programming use:
 ```
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
+module load partition/C
 ```
 For GPU programming use:
 ```
@@ -192,7 +193,7 @@ On **Lumi**, to compile your program, use
 ```bash
 CC -fopenmp <source.cpp>
 ```
-**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L`  is loaded it will use compiling options for creating code for multi-core cpus. If  `partition/G` it will use compiling options to create code for offloading on gpus.
+**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L` or `partition/C` is loaded it will use compiling options for creating code for multi-core cpus. If  `partition/G` it will use compiling options to create code for offloading on gpus.
 
 ### HIP
 
