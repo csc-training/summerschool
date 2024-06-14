@@ -4,8 +4,6 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# OpenMP {.section}
-
 # What is OpenMP?
 
 - A collection of _compiler directives_ and _library routines_ ,
