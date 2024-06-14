@@ -104,6 +104,27 @@ ssh-copy-id <my_user_id>@mahti.csc.fi
 ![](images/building.svg){.center}
 </div>
 
+# Compiling and linking
+
+Single file source code:
+```bash
+cc main.c -o main
+```
+ 
+<div class=column>
+ In practice programs be separated into several files
+  <br>$\Rightarrow$ complicated dependency structures
+- Building large programs takes time
+    - could we just rebuild the parts that changed?
+- Having different options when building
+    - debug versions, enabling/disabling features, etc.
+</div>
+
+<div class=column>
+_A make rule_
+![](images/depend.png){.center width=40%}
+</div>
+
 # Compiling and linking: possible problems
 
 - Programs should usually be separated into several files
