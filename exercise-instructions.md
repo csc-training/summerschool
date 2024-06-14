@@ -9,7 +9,7 @@ git clone https://github.com/csc-training/summerschool.git
 
 However, we recommend that you work with your own personal **fork** of the summerschool 
 git-repository. That way you can easily commit and push your own solutions
-to exercises.
+to exercises. This can be done via the github web-GUI.
 
 Before starting out, synchronize your fork with "Sync fork" in the github web-GUI.
 Start by cloning your personal fork in appropriate directory:
