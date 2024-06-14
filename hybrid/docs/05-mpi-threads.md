@@ -5,8 +5,6 @@ lang:   en
 ---
 
 
-# Using MPI with OpenMP threads {.section}
-
 # Thread support in MPI
 
 ![](img/mpi-thread-support.svg){.center width=80%}
@@ -25,8 +23,8 @@ lang:   en
     : Error value; in C/C++ it's the return value of the function,
       and in Fortran an additional output parameter
 
-- Pre-defined integer constants:<br>
-  <code style="font-size:0.8em">
+- Pre-defined integer constants:
+  <code style="font-size:0.7em">
   MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE
   </code>
 
