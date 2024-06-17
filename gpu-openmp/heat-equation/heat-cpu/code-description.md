@@ -20,7 +20,7 @@ is the Laplacian partial differential operator.
 
 Rewriting the above equation we have
    
-$$\frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)$.$
+$$\frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right).$$
 
 This equation is well approximated by replacing the derivatives with finite
 difference discretizations. This way the temperature is described only at finite
@@ -28,8 +28,9 @@ number of locations in space and time, which is desirable from the perspective o
 available finite memory in modern computers.
 
 In this mini-app we will discretize all three dimensions $x$, $y$, and
-$t$, such that 
-$$ \nabla^2 u  = \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2}  + \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}$$
+$t$, such that
+
+$$\nabla^2 u  = \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2}  + \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}$$
 
 
 \begin{eqnarray*}
