@@ -51,7 +51,7 @@ This equation expresses that the time evolution of the temperature
 field at a particular location depends on the value of the field at
 the previous step at the same location *and* four adjacent locations:
 
-![Heat distribution is updated from 5 cell indices (green) to the center of the cells (purple). Each cell in the grid corresponds to a $(i,j)$ -combination.](img/stencil.png)
+![Heat distribution is updated from 5 cell indices (green) to the center of the cells (purple). Each cell in the grid corresponds to a $(i,j)$ -combination.](img/stencil.svg)
 
 ## Parallelization
 
