@@ -20,7 +20,7 @@ is the Laplacian partial differential operator.
 
 Rewriting the above equation we have
    
-$$\frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right).$$
+$$\frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)$$.
 
 This equation is well approximated by replacing the derivatives with finite
 difference discretizations. This way the temperature is described only at finite
