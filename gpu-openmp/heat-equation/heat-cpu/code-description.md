@@ -29,6 +29,8 @@ available finite memory in modern computers.
 
 In this mini-app we will discretize all three dimensions $x$, $y$, and
 $t$, such that 
+$$ \nabla^2 u  = \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2}  + \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}$$
+
 
 \begin{eqnarray*}
 \nabla^2 u  &= \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2} \\
