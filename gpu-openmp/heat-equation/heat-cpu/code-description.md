@@ -32,12 +32,6 @@ $t$, such that
 
 $$\nabla^2 u  = \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2}  + \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}$$
 
-
-\begin{eqnarray*}
-\nabla^2 u  &= \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2} \\
- &+ \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}
-\end{eqnarray*}
-
 where $u(i,j)$ refers to the temperature at location with
 integer index $i$ within the domain of $x$ spaced by $\Delta x$ and location
 with integer index $j$ within the domain of $y$ spaced by $\Delta y$.
