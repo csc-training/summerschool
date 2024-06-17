@@ -52,7 +52,7 @@ field at a particular location depends on the value of the field at
 the previous step at the same location *and* four adjacent locations:
 
 ![](img/stencil.svg)
-
+Heat distribution is updated from 5 cell indices (green) to the center of the cells (purple). Each cell in the grid corresponds to a $(i,j)$ -combination.
 ## Parallelization
 
 The problem can be parallelized by diving the two dimensional
