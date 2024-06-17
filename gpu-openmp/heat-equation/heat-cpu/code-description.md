@@ -4,78 +4,62 @@
 
 ## Heat diffusion
 
-Heat flows in objects according to local temperature differences, as if seeking local equilibrium.
-Such processes can be modelled with partial differential equations via discretization to a regular grid.
-Solving for the flow over time can involve a lot of computational effort.
-Fortunately that effort is quite regular and so can suit parallelization with a variety of techniques.
+Heat flows in medium according to local temperature gradient by diffusing in to
+a certain equilibrium state. Such process is accurately represented with a
+partial differential equation for the temperature field. In it, the
+rate of change in time $t$ of the temperature field $u=u(x,y,t)$, over two
+spatial dimensions $x$ and $y$, is governed by 
 
-### Theory
+$$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$$
 
-The rate of change of the temperature field *u*(*x*, *y*, *t*) over two spatial
-dimensions *x* and *y* and time *t*
-with diffusivity α can be modelled via the partial differential equation
+where $\alpha$ is the constant heat conduction coefficient of the medium and 
 
-<!-- Equation
-\frac{\partial u}{\partial t} = \alpha \nabla^2 u
--->
-![img](img/eq1.png)
+$$\nabla^2 = \displaystyle\frac{\partial^2}{\partial x^2} + \displaystyle\frac{\partial^2}{\partial y^2}$$
 
-where ∇ is the Laplacian operator, which describes how
-the temperature field varies with the spatial dimensions *x* and
-*y*. When those are continuous variables, that looks like
+is the Laplacian partial differential operator.
 
-<!-- Equation
-   \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial x^2}\right)
--->
-![img](img/no-nabla.png)
+Rewriting the above equation we have
+   
+$$\frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right).$$
 
-Because computers are finite devices, we often need to solve such
-equations numerically, rather than analytically. 
-This often involves *discretization*, where spatial and temporal
-variables only take on specific values from a set. 
-In this mini-app we will discretize all three dimensions *x*, *y*, and
-*t*, such that 
+This equation is well approximated by replacing the derivatives with finite
+difference discretizations. This way the temperature is described only at finite
+number of locations in space and time, which is desirable from the perspective of
+available finite memory in modern computers.
 
-<!-- Equation
+In this mini-app we will discretize all three dimensions $x$, $y$, and
+$t$, such that 
+
 \begin{align*}
 \nabla^2 u  &= \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2} \\
  &+ \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}
 \end{align*}
--->
-![img](img/eq2.png)
 
-where *u(i,j)* refers to the temperature at location with
-integer index *i* within the domain of *x spaced by ∆x and location
-with integer index *j* within the 
-domain of *y* spaced by ∆y.
+where $u(i,j)$ refers to the temperature at location with
+integer index $i$ within the domain of $x$ spaced by $\Delta x$ and location
+with integer index $j$ within the domain of $y$ spaced by $\Delta y$.
 
-Given an initial condition (*u*(t=0) = u0), one can follow the time
-dependence of the temperature field from state *m* to *m+1* over
-regular time steps ∆t with explicit 
+Given an initial condition ($u(t=0) = u^0$), one can follow the time
+dependence of the temperature field from state $m$ to $m+1$ over
+regular time steps $\Delta t$ with explicit 
 time evolution method:
 
-<!-- Equation
-u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)
--->
-![img](img/eq3.png)
+$$u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)$$
 
 Note: The algorithm is stable only when
 
-<!-- Equation
-\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2 (\Delta y)^2}
--->
-![img](img/eq4.png)
+$$\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2 (\Delta y)^2}$$
 
 This equation expresses that the time evolution of the temperature
 field at a particular location depends on the value of the field at
 the previous step at the same location *and* four adjacent locations:
 
-![img](img/stencil.png)
+![Heat distribution is updated from 5 cell indices (green) to the center of the cells (purple). Each cell in the grid corresponds to a $(i,j)$ -combination.](img/stencil.png)
 
-### Parallelization
+## Parallelization
 
 The problem can be parallelized by diving the two dimensional
-temperature field to different workers, *i.e*. doing domain
+temperature field to different workers, i.e. doing domain
 decomposition. With shared memory computers the parallelization is
 relatively straightforward, however, with distributed memory
 parallelization MPI some extra steps are needed.
@@ -95,7 +79,7 @@ system is aperiodic, the outermost ranks communicate with only one neighbour,
 and the inner ranks with two neighbours.
 
 
-### Code
+## Code
 
 The solver carries out the time development of the 2D heat equation over the
 number of time steps provided by the user. The default geometry is a flat
