@@ -4,8 +4,6 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Further MPI topics{.section}
-
 # Process topologies {.section}
 
 
