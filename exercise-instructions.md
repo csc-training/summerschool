@@ -5,7 +5,7 @@
 The repository of the summer school can be cloned via:
 ```
 git clone https://github.com/csc-training/summerschool.git
-``` 
+```
 
 ### Repository structure
 
@@ -13,8 +13,8 @@ The exercise assignments are provided in various `README.md`s.
 For most of the exercises, skeleton codes are provided both for
 Fortran and C/C++ in the corresponding subdirectory. Some exercise
 skeletons have sections marked with “TODO” for completing the
-exercises. In addition, all of the exercises have exemplary full codes 
-(that can be compiled and run) in the `solutions` folder. Note that these are 
+exercises. In addition, all of the exercises have exemplary full codes
+(that can be compiled and run) in the `solutions` folder. Note that these are
 seldom the only or even the best way to solve the problem.
 
 ## Using local workstation
@@ -55,7 +55,7 @@ For editing program source files you can use e.g. *nano* editor:
 nano prog.f90
 ```
 (`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save file and exit editor press `Ctrl+X`)
-Also other popular editors such as emacs and vim are available. 
+Also other popular editors such as emacs and vim are available.
 
 ## Compilation
 
@@ -133,7 +133,7 @@ On **Lumi**, the following modules are required:
 ```bash
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
-module load partition/G 
+module load partition/G
 module load rocm/5.4.6
 ```
 
@@ -150,7 +150,7 @@ Use the following modules :
 ```bash
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
-module load partition/G 
+module load partition/G
 module load rocm/5.4.6
 ```
 
@@ -158,17 +158,17 @@ To compile your program, use:
 ```bash
 CC -xhip <source.cpp>
 ```
-### HIPFORT 
+### HIPFORT
 The following modules are required:
 ```bash
 
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
-module load partition/G 
+module load partition/G
 module load rocm/5.4.6
 ```
 
-Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn). 
+Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn).
 
 The package was installed via:
 ```bash
@@ -178,15 +178,15 @@ cd hipfort-rocm-6.1.0;
 mkdir build;
 cd build;
 cmake -DHIPFORT_INSTALL_DIR=<path-to>/HIPFORT -DHIPFORT_COMPILER_FLAGS="-ffree -eZ" -DHIPFORT_COMPILER=<path-to>/ftn -DHIPFORT_AR=${CRAY_BINUTILS_BIN_X86_64}/ar -DHIPFORT_RANLIB=${CRAY_BINUTILS_BIN_X86_64}/ranlib  ..
-make -j 64 
+make -j 64
 make install
 ```
-Where `<path-to>/ftn` can be obtain by running `which ftn`. 
+Where `<path-to>/ftn` can be obtain by running `which ftn`.
 
 We will use the Cray 'ftn' compiler wrapper as you would do to compile any fortran code plus some additional flags:
 ```bash
 export HIPFORT_HOME=<path-to>/HIPFORT
-ftn -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -c <fortran_code>.f90 
+ftn -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -c <fortran_code>.f90
 CC -xhip -c <hip_kernels>.cpp
 ftn  -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -o main <fortran_code>.o hip_kernels.o
 ```
@@ -206,7 +206,7 @@ Programs need to be executed via the batch job system. Simple job running with 4
 #SBATCH --time=00:05:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
-#SBATCH --cpus-per-task=1  
+#SBATCH --cpus-per-task=1
 
 srun my_mpi_exe
 ```
@@ -363,7 +363,7 @@ make -j 64
 make -j 64
 ```
 
-`TAU` and `Omniperf` can be used to do performance analysis. 
+`TAU` and `Omniperf` can be used to do performance analysis.
 In order to use TAU one only has to load the modules needed to run the application be ran and set the paths to the TAU install folder:
 ```
 export TAU=<path-to>/tau/2.32/craycnl
