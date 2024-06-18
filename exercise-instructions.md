@@ -53,32 +53,6 @@ mkdir -p $USER
 cd $USER
 ```
 
-### Working with git
-
-In order to push code to your own fork, you need to add your SSH public key in LUMI to
-your github account. The SSH key can be added via "Settings"->"SSH and GPG keys"->"New SSH key", by copy-pasting output of the following command:
-```
-cat $HOME/.ssh/id_rsa.pub
-```
-
-Once succesfull, make sure you in your personal workspace in **scratch** area `/scratch/project_project_465001194/$USER`, clone the repository, and a create a branch:
-```
-git clone git@github.com:<my-github-id>/summerschool.git
-git checkout -b hpcss23
-```
-
-If you haven't used git before in LUMI, you need to add also your identity:
-```
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
-```
-
-Default editor for commit messages is *vim*, if you prefer something else you can add
-to the file `$HOME/.bashrc` *e.g.*
-```
-export EDITOR=nano
-```
-
 ### Editors
 
 For editing program source files you can use e.g. *nano* editor:
