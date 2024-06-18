@@ -42,9 +42,8 @@ queried with the command `lumi-workspaces`. As the base directory is
 shared between members of the project, you should create your own
 directory:
 ```
-cd /scratch/project_465001194/
-mkdir -p $USER
-cd $USER
+mkdir -p /scratch/project_465001194/$USER
+cd /scratch/project_465001194/$USER
 ```
 
 ### Editors
