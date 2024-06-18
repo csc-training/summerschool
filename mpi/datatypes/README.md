@@ -9,7 +9,7 @@ start from skeleton codes in [C](skeleton.c) or [Fortran](skeleton.F90)
 a)
 
 ![](img/vector.png)
-### Optional
+### Optional (not covered in the lectures)
 b)
 
 ![](img/indexed.png)
