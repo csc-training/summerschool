@@ -58,7 +58,7 @@ double *x, *y;
 #pragma omp target data map(to:x[:n]), map(from:y[:n]))
 {
     #pragma omp target data use_device_ptr(x, y) {
-        cublasDaxpy(hipblashandler, a, x, 1, y, 1);
+        hipblasDaxpy(hipblashandler, a, x, 1, y, 1);
     }
 }
 ```
