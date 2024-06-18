@@ -6,7 +6,7 @@ constexpr int n = 840;
 
 int main(int argc, char** argv)
 {
-   int myid, ntasks;
+   int rank, ntasks;
 
    MPI_Status status;
 
@@ -18,14 +18,14 @@ int main(int argc, char** argv)
       return -1;
    }
 
-   MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-   if (0 == myid) {
+   if (0 == rank) {
       printf("Computing approximation to pi with N=%d\n", n);
       printf("Using %d MPI processes\n", ntasks);
    }
 
-   if (0 == myid) {
+   if (0 == rank) {
       int istart = 1;
       int istop = n / 2;
 
@@ -40,7 +40,7 @@ int main(int argc, char** argv)
       pi += localpi;
       pi *= 4.0 / n;
       printf("Approximate pi=%18.16f (exact pi=%10.8f)\n", pi, M_PI);
-   } else if (1 == myid) {
+   } else if (1 == rank) {
       int istart = n / 2 + 1;
       int istop = n;
 

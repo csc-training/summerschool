@@ -13,7 +13,7 @@ program datatype_struct
 
   type(particle) :: particles(n)
 
-  integer :: i, ierror, myid
+  integer :: i, ierror, rank
 
   type(mpi_datatype) :: particle_mpi_type, temp_type
   type(mpi_datatype) :: types(3)
@@ -24,10 +24,10 @@ program datatype_struct
   real(REAL64) :: t1, t2
 
   call mpi_init(ierror)
-  call mpi_comm_rank(MPI_COMM_WORLD, myid, ierror)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, ierror)
 
   ! Fill in some values for the particles
-  if(myid == 0) then
+  if(rank == 0) then
     do i = 1, n
       call random_number(particles(i)%coords)
       particles(i)%charge = 54
@@ -44,19 +44,19 @@ program datatype_struct
   ! Communicate using the created particletype
   ! Multiple sends are done for better timing
   t1 = mpi_wtime()
-  if(myid == 0) then
+  if(rank == 0) then
      do i = 1, reps
        ! TODO: send
      end do
-  else if(myid == 1) then
+  else if(rank == 1) then
      do i = 1, reps
        ! TODO: receive
      end do
   end if
   t2=mpi_wtime()
 
-  write(*,*) "Time: ", myid, (t2-t1) / reps
-  write(*,*) "Check:", myid, particles(n)%label, particles(n)%coords(1), &
+  write(*,*) "Time: ", rank, (t2-t1) / reps
+  write(*,*) "Check:", rank, particles(n)%label, particles(n)%coords(1), &
                        particles(n)%coords(2), particles(n)%coords(3)
 
   ! Free datatype

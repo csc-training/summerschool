@@ -3,7 +3,7 @@ program scatter
   implicit none
 
   integer, parameter :: size=12
-  integer :: ntasks, myid, ierr, i
+  integer :: ntasks, rank, ierr, i
   integer :: block_size
   integer, dimension(size) :: sendbuf, recvbuf
   integer, dimension(size**2) :: printbuf
@@ -11,7 +11,7 @@ program scatter
 
   call mpi_init(ierr)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)
-  call mpi_comm_rank(MPI_COMM_WORLD, myid, ierr)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, ierr)
 
   ! Initialize buffers
   call init_buffers
@@ -21,14 +21,14 @@ program scatter
 
   ! Send everywhere
   if (mod(size, ntasks) /= 0) then
-     if (myid == 0) then
+     if (rank == 0) then
         print *, "Size not divisible by the number of tasks. This program will fail."
      end if
      call mpi_abort(MPI_COMM_WORLD, -1, ierr)
   end if
 
   block_size = size/ntasks
-  if(myid == 0) then
+  if(rank == 0) then
      do i=1, ntasks-1
         call mpi_send(sendbuf(i*block_size + 1:), block_size, MPI_INTEGER, i, i, MPI_COMM_WORLD, ierr)
      enddo
@@ -36,7 +36,7 @@ program scatter
      ! Scatter also the local part
      recvbuf(:block_size) = sendbuf(:block_size)
   else
-     call mpi_recv(recvbuf, block_size, MPI_INTEGER, 0, myid, MPI_COMM_WORLD, status, ierr)
+     call mpi_recv(recvbuf, block_size, MPI_INTEGER, 0, rank, MPI_COMM_WORLD, status, ierr)
   endif
 
   ! Print data that was received
@@ -49,7 +49,7 @@ contains
   subroutine init_buffers
     implicit none
     integer :: i
-    if(myid==0) then
+    if(rank==0) then
       do i = 1, size
          recvbuf(i) = -1
          sendbuf(i) = i
@@ -76,7 +76,7 @@ contains
          & printbuf, bufsize, MPI_INTEGER, &
          & 0, MPI_COMM_WORLD, ierr)
 
-    if (myid == 0) then
+    if (rank == 0) then
        do i = 1, ntasks
           write(*,pformat) 'Task', i - 1, printbuf((i-1)*bufsize+1:i*bufsize)
        end do

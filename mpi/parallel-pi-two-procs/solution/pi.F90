@@ -6,7 +6,7 @@ program parallel_pi
   integer, parameter :: dp = REAL64
 
   integer, parameter :: n = 840
-  integer :: myid, ntasks, rc
+  integer :: rank, ntasks, rc
 
   type(mpi_status) :: status
 
@@ -21,14 +21,14 @@ program parallel_pi
      stop
   end if
 
-  call mpi_comm_rank(MPI_COMM_WORLD, myid, rc);
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, rc);
 
-  if (myid == 0) then
+  if (rank == 0) then
      write(*,*) "Computing approximation to pi with n=", n
      write(*,*) "Using", ntasks, "mpi processes"
   end if
 
-  if (myid == 0) then
+  if (rank == 0) then
      istart = 1
      istop = n / 2
 
@@ -45,7 +45,7 @@ program parallel_pi
      pi = pi * 4.0 / n
      write(*,'(A,F18.16,A,F10.8,A)') 'Approximate pi=', pi, ' (exact pi=', 4.0*atan(1.0_dp), ')'
 
-  else if (myid == 1) then
+  else if (rank == 1) then
      istart = n / 2 + 1
      istop = n
 

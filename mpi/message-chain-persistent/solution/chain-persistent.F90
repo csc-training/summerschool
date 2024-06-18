@@ -4,7 +4,7 @@ program basic
 
   implicit none
   integer, parameter :: size = 10000000
-  integer :: rc, myid, ntasks
+  integer :: rc, rank, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
   type(mpi_status) :: status(2)
@@ -16,20 +16,20 @@ program basic
   type(mpi_request) :: requests(2)
 
   call mpi_init(rc)
-  call mpi_comm_rank(MPI_COMM_WORLD, myid, rc)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, rc)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
-  message = myid
+  message = rank
   receiveBuffer = -1
 
   ! Set source and destination ranks
-  if (myid < ntasks-1) then
-     destination = myid + 1
+  if (rank < ntasks-1) then
+     destination = rank + 1
   else
      destination = MPI_PROC_NULL
   end if
-  if (myid > 0) then
-     source = myid - 1
+  if (rank > 0) then
+     source = rank - 1
   else
      source = MPI_PROC_NULL
   end if
@@ -39,9 +39,9 @@ program basic
   t0 = mpi_wtime()
 
   ! Initialize communication
-  call mpi_recv_init(receiveBuffer, size, MPI_INTEGER, source, myid, &
+  call mpi_recv_init(receiveBuffer, size, MPI_INTEGER, source, rank, &
        MPI_COMM_WORLD, requests(1), rc)
-  call mpi_send_init(message, size, MPI_INTEGER, destination, myid + 1, &
+  call mpi_send_init(message, size, MPI_INTEGER, destination, rank + 1, &
        MPI_COMM_WORLD, requests(2), rc)
 
   ! Start communication
@@ -52,11 +52,11 @@ program basic
 
   ! Use status parameter to find out the no. of elements received
   call mpi_get_count(status(1), MPI_INTEGER, count, rc)
-  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
+  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', rank, &
        ' Sent elements: ', size, &
-       '. Tag: ', myid + 1, &
+       '. Tag: ', rank + 1, &
        '. Receiver: ', destination
-  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Receiver: ', myid, &
+  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Receiver: ', rank, &
        'received elements: ', count, &
        '. Tag: ', status(1)%mpi_tag, &
        '. Sender:   ', status(1)%mpi_source
@@ -78,8 +78,8 @@ contains
 
     integer i
 
-    if (myid == 0) then
-       write(*, '(A20, I3, A, F6.3)') 'Time elapsed in rank', myid, ':', t
+    if (rank == 0) then
+       write(*, '(A20, I3, A, F6.3)') 'Time elapsed in rank', rank, ':', t
        do i=1, ntasks-1
            call mpi_recv(t, 1, MPI_DOUBLE_PRECISION, i, 11,  &
                          MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)

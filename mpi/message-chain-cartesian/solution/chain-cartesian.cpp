@@ -6,7 +6,7 @@ void print_ordered(double t);
 
 int main(int argc, char *argv[])
 {
-    int i, myid, ntasks;
+    int i, rank, ntasks;
     constexpr int size = 10000000;
     std::vector<int> message(size);
     std::vector<int> receiveBuffer(size);
@@ -18,11 +18,11 @@ int main(int argc, char *argv[])
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     // Initialize buffers
     for (i = 0; i < size; i++) {
-        message[i] = myid;
+        message[i] = rank;
         receiveBuffer[i] = -1;
     }
 
@@ -49,10 +49,10 @@ int main(int argc, char *argv[])
                  cart_comm, &status);
 
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
-           myid, size, myid + 1, destination);
+           rank, size, rank + 1, destination);
 
     printf("Receiver: %d. first element %d.\n",
-           myid, receiveBuffer[0]);
+           rank, receiveBuffer[0]);
 
     // Finalize measuring the time and print it out
     t1 = MPI_Wtime();

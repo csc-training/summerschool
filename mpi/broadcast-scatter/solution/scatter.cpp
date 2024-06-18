@@ -8,14 +8,14 @@ void print_buffers(std::vector<int> &buffer);
 
 int main(int argc, char *argv[])
 {
-    int ntasks, myid, size=12;
+    int ntasks, rank, size=12;
     std::vector<int> sendbuf(size);
     std::vector<int> recvbuf(size);
     MPI_Status status;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     /* Initialize message buffers */
     init_buffers(sendbuf, recvbuf);
@@ -25,13 +25,13 @@ int main(int argc, char *argv[])
 
     /* Send everywhere */
     if (size % ntasks != 0) {
-        if (myid == 0) {
+        if (rank == 0) {
             fprintf(stderr, "Size not divisible by the number of tasks. This program will fail.\n");
         }
         MPI_Abort(MPI_COMM_WORLD, -1);
     }
     int block_size = size/ntasks;
-    if (myid == 0) {
+    if (rank == 0) {
         for (int i = 1; i < ntasks; i++) {
             MPI_Send(&sendbuf[i*block_size], block_size, MPI_INT, i, i, MPI_COMM_WORLD);
         }
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
             recvbuf[i] = sendbuf[i];
         }
     } else {
-        MPI_Recv(recvbuf.data(), block_size, MPI_INT, 0, myid, MPI_COMM_WORLD, &status);
+        MPI_Recv(recvbuf.data(), block_size, MPI_INT, 0, rank, MPI_COMM_WORLD, &status);
     }
 
     /* Print data that was received */

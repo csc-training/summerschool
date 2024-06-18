@@ -4,7 +4,7 @@
 
 
 int main(int argc, char* argv[]) {
-    int ntasks, myid, irank;
+    int ntasks, rank, irank;
     int dims[2] = {0};      /* Dimensions of the grid */
     int coords[2] = {0};    /* Coordinates in the grid */
     int neighbors[4] = {0}; /* Neighbors in 2D grid */
@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     /* Determine the process grid (dims[0] x dims[1] = ntasks) */
     if (ntasks < 16) {
@@ -44,9 +44,9 @@ int main(int argc, char* argv[]) {
     /* TODO */
 
     for (irank = 0; irank < ntasks; irank++) {
-        if (myid == irank) {
+        if (rank == irank) {
             printf("%3i = %2i %2i neighbors=%3i %3i %3i %3i\n",
-                   myid, coords[0], coords[1], neighbors[0], neighbors[1],
+                   rank, coords[0], coords[1], neighbors[0], neighbors[1],
                    neighbors[2], neighbors[3]);
         }
         MPI_Barrier(MPI_COMM_WORLD);

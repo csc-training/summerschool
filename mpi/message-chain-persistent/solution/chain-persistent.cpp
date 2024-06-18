@@ -6,7 +6,7 @@ void print_ordered(double t);
 
 int main(int argc, char *argv[])
 {
-    int i, myid, ntasks;
+    int i, rank, ntasks;
     constexpr int size = 10000000;
     std::vector<int> message(size);
     std::vector<int> receiveBuffer(size);
@@ -19,22 +19,22 @@ int main(int argc, char *argv[])
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     // Initialize buffers
     for (i = 0; i < size; i++) {
-        message[i] = myid;
+        message[i] = rank;
         receiveBuffer[i] = -1;
     }
 
     // Set source and destination ranks
-    if (myid < ntasks - 1) {
-        destination = myid + 1;
+    if (rank < ntasks - 1) {
+        destination = rank + 1;
     } else {
         destination = MPI_PROC_NULL;
     }
-    if (myid > 0) {
-        source = myid - 1;
+    if (rank > 0) {
+        source = rank - 1;
     } else {
         source = MPI_PROC_NULL;
     }
@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
     t0 = MPI_Wtime();
 
     // Initialize communication
-    MPI_Send_init(message.data(), size, MPI_INT, destination, myid + 1,
+    MPI_Send_init(message.data(), size, MPI_INT, destination, rank + 1,
                   MPI_COMM_WORLD, &requests[0]);
-    MPI_Recv_init(receiveBuffer.data(), size, MPI_INT, source, myid,
+    MPI_Recv_init(receiveBuffer.data(), size, MPI_INT, source, rank,
                   MPI_COMM_WORLD, &requests[1]);
 
     // Start communication
@@ -56,9 +56,9 @@ int main(int argc, char *argv[])
     MPI_Waitall(2, requests, statuses);
 
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
-           myid, size, myid + 1, destination);
+           rank, size, rank + 1, destination);
     printf("Receiver: %d. first element %d.\n",
-           myid, receiveBuffer[0]);
+           rank, receiveBuffer[0]);
 
     // Finalize measuring the time and print it out
     t1 = MPI_Wtime();

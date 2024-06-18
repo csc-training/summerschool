@@ -3,7 +3,7 @@ program cart_test
   implicit none
 
   integer :: ntask,  & ! number of MPI tasks
-       my_id,        & ! MPI rank of the task
+       rank,         & ! MPI rank of the task
        rc,           & ! return code
        neighbors(4), & ! neighbors in the 2D grid
        coord(0:1),   & ! coordinates in the grid
@@ -14,7 +14,7 @@ program cart_test
 
   call mpi_init(rc)
   call mpi_comm_size(MPI_COMM_WORLD, ntask, rc)
-  call mpi_comm_rank(MPI_COMM_WORLD, my_id, rc)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, rc)
 
   ! Determine the process grid (dims(0) x dims(1) = ntask)
   if (ntask < 16) then
@@ -42,8 +42,8 @@ program cart_test
   ! TO DO
 
   do irank = 0, ntask-1
-     if (my_id == irank) print '(I3,A,2I2,A,4I3)', &
-          my_id, '=', coord, ' neighbors=', neighbors(:)
+     if (rank == irank) print '(I3,A,2I2,A,4I3)', &
+          rank, '=', coord, ' neighbors=', neighbors(:)
      call mpi_barrier(mpi_comm_world, rc)
   end do
 

@@ -3,14 +3,14 @@ program bcast_scatter
   implicit none
 
   integer, parameter :: size=12
-  integer :: ntasks, myid, ierr, i
+  integer :: ntasks, rank, ierr, i
   integer, dimension(size) :: sendbuf, recvbuf
   integer, dimension(size**2) :: printbuf
   type(mpi_status) :: status
 
   call mpi_init(ierr)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, ierr)
-  call mpi_comm_rank(MPI_COMM_WORLD, myid, ierr)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, ierr)
 
   ! Initialize buffers
   call init_buffers
@@ -32,7 +32,7 @@ contains
   subroutine init_buffers
     implicit none
     integer :: i
-    if(myid==0) then
+    if(rank==0) then
       do i = 1, size
          recvbuf(i) = -1
          sendbuf(i) = i
@@ -59,7 +59,7 @@ contains
          & printbuf, bufsize, MPI_INTEGER, &
          & 0, MPI_COMM_WORLD, ierr)
 
-    if (myid == 0) then
+    if (rank == 0) then
        do i = 1, ntasks
           write(*,pformat) 'Task', i - 1, printbuf((i-1)*bufsize+1:i*bufsize)
        end do
