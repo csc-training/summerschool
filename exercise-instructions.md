@@ -7,7 +7,7 @@ The repository of the summer school can be cloned via:
 git clone https://github.com/csc-training/summerschool.git
 ```
 
-### Repository structure
+#### Repository structure
 
 The exercise assignments are provided in various `README.md`s.
 For most of the exercises, skeleton codes are provided both for
@@ -34,7 +34,7 @@ LUMI can be accessed via ssh using the provided username and ssh key pair:
 ssh -i <path-to-private-key> <username>@lumi.csc.fi
 ```
 
-### Disk areas
+#### Disk areas
 
 All the exercises in the supercomputers should be carried out in the
 **scratch** disk area. The name of the scratch directory can be
@@ -46,7 +46,7 @@ mkdir -p /scratch/project_465001194/$USER
 cd /scratch/project_465001194/$USER
 ```
 
-### Editors
+#### Editors
 
 For editing program source files you can use e.g. *nano* editor:
 
@@ -74,7 +74,7 @@ module load partition/G
 module load rocm/5.4.6
 ```
 
-### MPI
+#### MPI
 
 Compilation of the MPI programs can be performed with the `CC`, `cc`, or `ftn`
 wrapper commands:
@@ -93,7 +93,7 @@ ftn -o my_mpi_exe test.f90
 The wrapper commands include automatically all the flags needed for building
 MPI programs.
 
-### OpenMP (threading with CPUs)
+#### OpenMP (threading with CPUs)
 
 Pure OpenMP (as well as serial) programs can also be compiled with the `CC`,
 `cc`, and `ftn` wrapper commands. OpenMP is enabled with the
@@ -113,7 +113,7 @@ ftn -o my_exe test.f90 -fopenmp
 When code uses also MPI, the wrapper commands include automatically all the flags needed for
 building MPI programs.
 
-### HDF5
+#### HDF5
 
 In order to use HDF5 in CSC supercomputers, you need the load the HDF5 module with MPI I/O support.
 The appropriate module in **Lumi** is
@@ -125,7 +125,7 @@ No special flags are needed for compiling and linking, the compiler wrappers tak
 
 Usage in local workstation may vary.
 
-### OpenMP offloading
+#### OpenMP offloading
 
 On **Lumi**, the following modules are required:
 
@@ -142,7 +142,7 @@ CC -fopenmp <source.cpp>
 ```
 **NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L` or `partition/C` is loaded it will use compiling options for creating code for multi-core cpus. If  `partition/G` it will use compiling options to create code for offloading on gpus.
 
-### HIP
+#### HIP
 
 Use the following modules :
 
@@ -157,7 +157,7 @@ To compile your program, use:
 ```bash
 CC -xhip <source.cpp>
 ```
-### HIPFORT
+#### HIPFORT
 The following modules are required:
 ```bash
 
@@ -193,7 +193,7 @@ This option gives enough flexibility for calling HIP libraries from Fortran or f
 
 ## Running in LUMI
 
-### Pure MPI
+#### Pure MPI
 
 Programs need to be executed via the batch job system. Simple job running with 4 MPI tasks can be submitted with the following batch job script:
 ```
@@ -221,7 +221,7 @@ The same result can be achived using directly `srun`
 ```
 srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=4 --cpus-per-task=1  my_mpi_exe
 ```
-### Pure OpenMP
+#### Pure OpenMP
 
 For pure OpenMP programs one should use only one node and one MPI task per nodesingle tasks and specify the number of cores reserved
 for threading with `--cpus-per-task`:
@@ -245,7 +245,7 @@ The same result can be achived using directly `srun`
 ```
 srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=1 --cpus-per-task=4   my_omp_exe
 ```
-### Hybrid MPI+OpenMP
+#### Hybrid MPI+OpenMP
 
 For hybrid MPI+OpenMP programs it is recommended to specify explicitly number of nodes, number of
 MPI tasks per node (pure OpenMP programs as special case with one node and one task per node),
@@ -274,7 +274,7 @@ The same result can be achived using directly `srun`
 ```
 srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=2 --ntasks-per-node=32 --cpus-per-task=4   my_omp_exe
 ```
-### GPU programs
+#### GPU programs
 
 When running GPU programs, few changes need to made to the batch job
 script. The `partition` is are now different, and one must also request explicitly given number of GPUs per node with the
@@ -299,7 +299,7 @@ The same result can be achived using directly `srun`
 srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=8 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
 ```
 
-### Interactive jobs
+#### Interactive jobs
 
 
 When debugging or doing performance analysys the user needs to interact with application on the compute nodes.
