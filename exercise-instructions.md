@@ -313,24 +313,6 @@ Once the allocation is made, this command will start a shell on the login node.
 srun --ntasks=32 --cpus-per-task=8 ./my_interactive_prog
 ```
 
-## Running in local workstation
-
-In most MPI implementations parallel program can be started with the `mpiexec` launcher:
-```
-mpiexec -n 4 ./my_mpi_exe
-```
-
-In most workstations, programs build with OpenMP use as many threads as there are CPU cores
-(note that this might include also "logical" cores with simultaneous multithreading). A pure OpenMP
-program can be normally started with specific number of threads with
-```bash
-OMP_NUM_THREADS=4 ./my_exe
-```
-and a hybrid MPI+OpenMP program e.g. with
-```
-OMP_NUM_THREADS=4 mpiexec -n 2 ./my_exe
-```
-
 ## Debugging
 
 See [the MPI debugging exercise](mpi/debugging),
