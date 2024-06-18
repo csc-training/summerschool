@@ -2,6 +2,21 @@
 
 Explore the HDF5 codes ([hdf5-writerank.c](hdf5-writerank.c) or [hdf5-writerank.F90](hdf5-writerank.F90)) and try to compile them.
 
+On Lumi, you will need to load the module `cray-hdf5-parallel/1.12.2.7` before you 
+can compile the code:
+
+```
+module load cray-hdf5-parallel/1.12.2.7
+```
+Now you shoud be able to compile with
+```
+cc hdf5-writerank.c -lhdf5
+```
+or
+```
+ftn hdf5-writerank.F90 -lhdf5_fortran
+```
+
 On Mahti, you will need to load the module `hdf5/1.10.7-mpi` before you 
 can compile the code:
 
