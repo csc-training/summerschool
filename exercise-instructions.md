@@ -25,12 +25,6 @@ exercises. Note, however, that no support for installing MPI environment can be
 provided during the course. Otherwise, you can use CSC supercomputers for
 carrying out the exercises.
 
-Clone your personal fork in appropriate directory:
-```
-git clone https://github.com/csc-training/summerschool.git
-``` 
-
-
 ## Using supercomputers
 
 Exercises can be carried out using the [LUMI](https://docs.lumi-supercomputer.eu/)  supercomputer.
