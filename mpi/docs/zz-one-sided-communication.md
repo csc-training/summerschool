@@ -114,11 +114,6 @@ MPI_Win_free(&window);
 - Maximize the amount of operations within an epoch
 - Provide the assert parameters for `MPI_Win_fence`
 
-# OSU benchmark example
-
-![](img/osu-benchmark.png)
-
-
 # Summary
 
 - One-sided communication allows communication patterns to be specified
