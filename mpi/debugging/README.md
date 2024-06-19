@@ -25,7 +25,7 @@ Run DDT for a buggy program:
 ```bash
 module load ARMForge
 export SLURM_OVERLAP=1
-salloc -A project_465000536 --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug
+salloc -A project_465001194 --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug
 ddt srun ./buggy.exe
 ```
 
@@ -44,7 +44,7 @@ Run DDT for a buggy program:
 ```bash
 module load ddt
 export SLURM_OVERLAP=1
-salloc -A project_2007995 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
+salloc -A project_2010509 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
 ddt srun ./buggy.exe
 ```
 
@@ -90,7 +90,7 @@ ddt srun ./collective.exe
 Memory debugging with sanitizer. On LUMI:
 ```bash
 CC -g -fsanitize=address collective.cpp -o collective.exe
-srun -A project_465000536 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug --label ./collective.exe
+srun -A project_465001194 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug --label ./collective.exe
 ```
 
 Note the `--label` option that prepends task number to lines of stdout/err.
@@ -103,6 +103,6 @@ Memory debugging with valgrind4hpc. On LUMI:
 module load valgrind4hpc
 
 CC -g collective.cpp -o collective.exe
-valgrind4hpc --num-ranks=4 --launcher-args="-A project_465000536 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug" ./collective.exe
+valgrind4hpc --num-ranks=4 --launcher-args="-A project_465001194 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug" ./collective.exe
 ```
 
