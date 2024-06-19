@@ -31,8 +31,7 @@ endif
 
 
 EXE=heat_mpi
-OBJS=main.o heat.o core.o setup.o io.o utilities.o
-OBJS_PNG=$(COMMONDIR)/pngwriter.o
+OBJS=main.o heat.o core.o setup.o io.o utilities.o pngwriter.o
 
 
 all: $(EXE)
@@ -44,11 +43,12 @@ setup.o: setup.cpp heat.hpp
 io.o: io.cpp heat.hpp matrix.hpp
 main.o: main.cpp heat.hpp
 
-$(OBJS_PNG): C_COMPILER := $(CC)
-$(OBJS): C_COMPILER := $(CXX)
+$(EXE): $(OBJS)
+	$(CXX) $(CCFLAGS) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
 
-$(EXE): $(OBJS) $(OBJS_PNG)
-	$(CXX) $(CCFLAGS) $(OBJS) $(OBJS_PNG) -o $@ $(LDFLAGS) $(LIBS)
+
+%.o: $(COMMONDIR)/%.c
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 %.o: %.cpp
 	$(CXX) $(CCFLAGS) -c $< -o $@
@@ -58,4 +58,4 @@ $(EXE): $(OBJS) $(OBJS_PNG)
 
 .PHONY: clean
 clean:
-	-/bin/rm -f $(EXE) a.out *.o *.png *~ $(COMMONDIR)/*.o
+	-/bin/rm -f $(EXE) $(OBJS) a.out *.o *.png *~
