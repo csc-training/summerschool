@@ -4,8 +4,6 @@ event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Multi-GPU programming and HIP/OpenMP + MPI{.section}
-
 # Outline
 
 * GPU context
@@ -19,8 +17,8 @@ lang:   en
 
 * Workstations or supercomputer nodes can be equipped with several GPUs
     * For the current supercomputers, the number of GPUs per node usually
-      ranges between 2 and 6
-    * Allows sharing (and saving) resources (disks, power units, e.g.)
+      ranges between 2 and 8
+    * Allows sharing (and saving) resources (disks, power units, etc.)
     * More GPU resources per node, better per-node-performance
 
 
@@ -29,7 +27,7 @@ lang:   en
 * A context is established implicitly on the current device when the first task requiring an active context is evaluated (HIP and OpenMP)
 * Several processes can create contexts for a single device
     * The device resources are allocated per context
-* By default, one context per device per process in HIP (since CUDA 4.0)
+* By default, one context per device per process in HIP
     * Threads of the same process share the primary context (for each device)
 * HIP supports explicit context management whereas OpenMP does not
 
@@ -43,41 +41,36 @@ lang:   en
 # Device management
 
 ```cpp
-// Return the number of available devices
+// HIP
+hipError_t hipGetDeviceCount(int *count)
+hipError_t hipSetDevice(int device)
+hipError_t hipGetDevice(int *device)
 
-int omp_get_num_devices(void); // OpenMP, returns the result
-hipError_t hipGetDeviceCount(int *count) // HIP, stores the result in `count`
-
-// Set device as the current device for the calling host thread
-
-void omp_set_default_device(int device) // OpenMP
-hipError_t hipSetDevice(int device) // HIP
-
-// Return the current device for the calling host thread
-
-int omp_get_default_device(void) // OpenMP, returns the result
-hipError_t hipGetDevice(int *device) // HIP, stores the result in `device`
+// OpenMP
+int omp_get_num_devices(void)
+void omp_set_default_device(int device)
+int omp_get_default_device(void)
 ```
+
+* Demos: `device_management_hip.cpp`, `device_management_omp.cpp`
 
 
 # Querying or verifying device properties
 
-* In HIP, one can query the properties of different devices in the system using
-  `hipGetDeviceProperties()` function
-    * No context needed
-    * Provides e.g. name, amount of memory, warp size, support for unified
-      virtual addressing, etc.
+* One can query or verify the properties of different devices in the system
+    * Properties include name, amount of memory, warp size, support for unified virtual addressing, etc.
     * Useful for code portability
 
 In HIP, the function returns the device properties in struct `prop`
-```
+```cpp
+// HIP - get device properties as struct
 hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
-```
-In OpenMP, `requires` clause can be used to verify the device properties, e.g.
-```
+
+// OpenMP - use `requires` clause to verify the device properties, e.g.
 #pragma omp requires unified_shared_memory
 ```
 
+* Demo: `device_properties_hip.cpp`
 
 
 # Multi-GPU programming models
