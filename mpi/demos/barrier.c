@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 
   printf("Hello from rank %d of %d\n", rank, size);
 
+  fflush(stdout);
   MPI_Barrier(MPI_COMM_WORLD);
 
   printf("Hello again from rank %d\n", rank);
