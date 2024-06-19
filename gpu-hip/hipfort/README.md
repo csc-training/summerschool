@@ -19,6 +19,7 @@ The package was installed via:
 ```bash
 # In some temporary folder
 wget https://github.com/ROCm/hipfort/archive/refs/tags/rocm-6.1.0.tar.gz # one can try various realeases
+tar -xvzf rocm-6.1.0.tar.gz;
 cd hipfort-rocm-6.1.0;
 mkdir build;
 cd build;
