@@ -9,8 +9,8 @@ lang:   en
 * GPU context
 * Device management
 * Programming models
-* Peer to peer (GPU-GPU) access
 * HIP/OpenMP + MPI
+* Peer to peer (GPU-GPU) access
 
 
 # Introduction
@@ -95,7 +95,7 @@ hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
 
 # One GPU per process
 
-* Recommended for multi-process applications using a message passing library
+* Recommended for multi-process applications using MPI
 * Message passing library takes care of all GPU-GPU communication
 * Each process interacts with only one GPU which makes the implementation
   easier and less invasive (if MPI is used anyway)
@@ -105,16 +105,12 @@ hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
 # Compling MPI+HIP/OpenMP code
 
 * Compiling HIP/OpenMP and MPI calls in the same compilation unit may not always be trivial
-  * On LUMI, use `CC` compiler wrapper
+  * On LUMI, `CC` compiler wrapper takes care of this
 * One can set MPI compiler to use `hipcc` or the desirable OpenMP compiler like `nvc`, e.g. for OpenMPI:
   ```bash
-  OMPI_CXXFLAGS='' OMPI_CXX='hipcc'
+  OMPI_CXXFLAGS='' OMPI_CXX='hipcc'  # hip
+  OMPI_CXXFLAGS='' OMPI_CXX='nvc -mp=gpu -gpu=cc80'  # nvc
   ```
-or
-  ```bash
-  OMPI_CXXFLAGS='' OMPI_CXX='nvc -mp=gpu -gpu=cc80'
-  ```
-
 * Alternatively, one could separate HIP/OpenMP and MPI code in different compilation units compiled with `mpicxx` and `hipcc`/`nvc`
     * Link object files in a separate step using `mpicxx` or `hipcc`/`nvc`
 
