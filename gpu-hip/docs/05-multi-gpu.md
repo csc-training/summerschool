@@ -246,6 +246,8 @@ for(int n = 0; n < num_devices; n++) {
 </small>
 
 
+# Direct peer to peer access {.section}
+
 # Direct peer to peer access (HIP)
 
 * Access peer GPU memory directly from another GPU
