@@ -34,6 +34,31 @@ LUMI can be accessed via ssh using the provided username and ssh key pair:
 ssh -i <path-to-private-key> <username>@lumi.csc.fi
 ```
 
+#### Working with git (OPTIONAL)
+
+In order to push code to your own fork, you need to **add your SSH public key in LUMI** (created on LUMI, **not** the used to log into LUMI)
+your github account. The SSH key can be added to your github account using a browser . In you github profile go to  "Settings"->"SSH and GPG keys"->"New SSH key" and  copy-paste output of the following command:
+```
+cat $HOME/.ssh/id_rsa.pub
+```
+
+Once succesfull, make sure you in your personal workspace in **scratch** area `/scratch/project_465000536/$USER`, clone the repository, and a create a branch:
+```
+git clone git@github.com:<my-github-id>/summerschool.git
+git checkout -b hpcss24
+```
+
+If you haven't used git before in LUMI, you need to add also your identity:
+```
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+```
+
+Default editor for commit messages is *vim*, if you prefer something else you can add
+to the file `$HOME/.bashrc` *e.g.*
+```
+export EDITOR=nano
+```
 #### Disk areas
 
 All the exercises in the supercomputers should be carried out in the
