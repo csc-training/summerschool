@@ -21,7 +21,7 @@ seldom the only or even the best way to solve the problem.
 
 In case you have working parallel program development environment in your laptop
 (Fortran or C/C++ compiler, MPI development library, etc.) you may use that for
-exercises. Note, however, that no support for installing MPI environment can be
+exercises. Note, however, that no support for installing MPI environment or ROCM can be
 provided during the course. Otherwise, you can use CSC supercomputers for
 carrying out the exercises.
 
