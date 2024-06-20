@@ -288,20 +288,22 @@ int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
 * If direct peer to peer access is not available or implemented, the functions should fall back to a normal copy through host memory
 
 
+# Summary {.section}
+
 # Three levels of parallelism
 
-<small>
-
-1. GPU -- GPU threads on the multiprocessors
+<div class="column">
+1. GPU: GPU threads
     * Parallelization strategy: HIP, OpenMP, SYCL, Kokkos, OpenCL
-2. Node -- Multiple GPUs and CPUs
+2. Node: Multiple GPUs and CPUs
     * Parallelization strategy: MPI, Threads, OpenMP
-3. Supercomputer -- Many nodes connected with interconnect
+3. Supercomputer: Many nodes connected with interconnect
     * Parallelization strategy: MPI between nodes
+</div>
 
-</small>
-
-![](img/parallel_regions.png){width=60%}
+<div class="column">
+![](img/parallel_regions.png){width=99%}
+</div>
 
 
 # Summary
