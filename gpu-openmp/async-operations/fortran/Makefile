@@ -3,7 +3,7 @@ ifneq ($(MAHTI),1)
 CC=cc
 FC=ftn
 LINKER=$(CC)
-FLAGS=-O2 -fopenmp
+FLAGS=-O2 -fopenmp -I/appl/lumi/SW/LUMI-22.08/L/EB/libpng/1.6.37-cpeCray-22.08/include -L/appl/lumi/SW/LUMI-22.08/L/EB/libpng/1.6.37-cpeCray-22.08/lib
 
 else
 

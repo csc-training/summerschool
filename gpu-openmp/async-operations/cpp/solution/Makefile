@@ -13,7 +13,6 @@ FLAGS=-O2 -mp=gpu -gpu=cc80 -Minfo=mp
 endif
 
 LDFLAGS=-lpng
-
 EXE=mandelbrot
 
 all: $(EXE)
