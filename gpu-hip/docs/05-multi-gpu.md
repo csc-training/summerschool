@@ -80,7 +80,7 @@ hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
     * Syncing is handled through message passing (e.g. MPI)
 * Many GPUs per process (II)
     * Process manages all context switching and syncing explicitly
-* One GPU per thread (III, advanced)
+* One GPU per thread (III)
     * Syncing is handled through thread synchronization requirements
 </div>
 
@@ -102,7 +102,7 @@ hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
     * Apart from each process selecting a different device, the implementation
       looks much like a single-GPU program
 
-# Compling MPI+HIP/OpenMP code
+# Compiling MPI+HIP/OpenMP code
 
 * Compiling HIP/OpenMP and MPI calls in the same compilation unit may not always be trivial
   * On LUMI, `CC` compiler wrapper takes care of this
@@ -205,7 +205,7 @@ for(int n = 0; n < num_devices; n++) {
 
 # One GPU per thread{.section}
 
-# One GPU per thread (advanced)
+# One GPU per thread
 
 * One GPU per CPU thread
     * E.g. one OpenMP CPU thread per GPU being used
