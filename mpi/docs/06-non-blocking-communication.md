@@ -7,7 +7,7 @@ lang:   en
 # Non-blocking communication
 
 - Non-blocking communication operations return immediately and perform sending/receiving in the background
-    - Communication needs to be separately finalized (more about this later)
+    - Communication needs to be separately finalized
 - Enables some computing concurrently with communication
 - Avoids many common deadlock situations
 - Collective operations are also available as non-blocking versions
@@ -49,6 +49,9 @@ MPI_Wait(`request`{.input}, `status`{.output})
 <p>
 - Status of the completed communication is similar to that of `MPI_Recv`
 
+<p>
+- Demo: `send_and_recv_nonblocking.c`
+
 
 # Wait for many non-blocking operations
 
@@ -68,7 +71,7 @@ MPI_Waitsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, 
 **`MPI_Irecv`(<font color="green">ghost_data</font>)**<br>
 **`MPI_Isend`(<font color="purple">border_data</font>)**<br>
 **`compute`(<font color="DeepSkyBlue">ghost_independent_data</font>)**<br>
-**`MPI_Waitall`**<br>
+**`MPI_Waitall()`**<br>
 **`compute`(<font color="purple">border_data</font>)**
 </div>
 <div class=column>
@@ -90,7 +93,7 @@ MPI_Waitsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, 
   - See demonstrations codes: <https://github.com/cschpc/mpi-overlap>
 
 
-# Checking non-blocking messages {.section}
+# Checking for non-blocking messages {.section}
 
 # Non-blocking test for non-blocking operations
 
@@ -169,13 +172,14 @@ MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `ro
 ![](img/non_blocking_large.png){.center width=100%}
 
 ![](img/blue_arrow.png){width=1%} (Computation) work 1
+<br>
 ![](img/green_arrow.png){width=1%} (Computation) work 2, not
-involving data in the ``Allreduce`` operation
+involving data in the `MPI_Allreduce` operation
 
 
 # Summary
 
-- Non-blocking communication is often useful way to do point-to-point communication in MPI
+- Non-blocking communication is often useful way to do communication in MPI
 - Non-blocking communication core features
     - Open receives with `MPI_Irecv`
     - Start sending with `MPI_Isend`
