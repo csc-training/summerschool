@@ -16,14 +16,11 @@ Skeleton code [hip-p2pcopy.cpp](hip-p2pcopy.cpp) tests peer to peer device acces
 TODOs.
 
 ## Case 2 - OpenMP
-First, some modules are needed.
+First, some changes in modules are needed.
 
-On **Lumi**, load the PrgEnv-amd instead of PrgEnv-cray as follows:
+On **LUMI**, swap the loaded PrgEnv-cray to PrgEnv-cray-amd as follows:
 ```
-module purge
-module load PrgEnv-amd
-module load craype-accel-amd-gfx90a
-module load rocm
+module load PrgEnv-cray-amd
 ```
 This is because Cray compiler has no multi-gpu support for `omp_target_alloc()`.
 
