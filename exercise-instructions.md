@@ -324,7 +324,7 @@ The same result can be achived using directly `srun`
 ```
 srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=8 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
 ```
-**Note!** Some programs require gpu-aware MPI to perform MPI operations using directly the GPU pointers. This si enabled via:
+**Note!** Some programs require gpu-aware MPI to perform MPI operations using directly the GPU pointers (this avoiding some GPU-CPU trasnfers). This is enabled via:
 
 ```
 export MPICH_GPU_SUPPORT_ENABLED=1
