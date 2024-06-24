@@ -106,6 +106,9 @@ MPI_Test(`request`{.input}, `flag`{.output}, `status`{.output})
 - Flag is true if the operation has completed
 - Status of the completed communication is similar to that of `MPI_Recv`
 
+<p>
+- Demo: `send_and_recv_nonblocking_testing.c`
+
 # Test for many non-blocking operations
 
 MPI_Testall(`count`{.input}, `array_of_requests`{.input}, `flag`{.output}, `array_of_statuses`{.output})
@@ -127,6 +130,9 @@ MPI_Iprobe(`source`{.input}, `tag`{.input}, `comm`{.input}, `flag`{.output}, `st
 - Flag is true if there is a message that matches the pattern and can be received
 - `MPI_ANY_SOURCE` can be used for source
 - `MPI_ANY_TAG` can be used for tag
+
+<p>
+- Demo: `send_and_recv_nonblocking_probing.c`
 
 
 # Message probing
