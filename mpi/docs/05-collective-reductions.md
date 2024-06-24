@@ -92,8 +92,10 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL, &
 - Using the input buffer as the output buffer<br>
 `call mpi_allreduce(a, a, n, mpi_real,...`
     - One should employ `MPI_IN_PLACE` for this purpose
+- Replacing the send buffer with the `MPI_IN_PLACE` clause informs MPI that the buffers are the same
 
 # Summary
 
 - Collective reductions allow efficient collective computation
+- The `MPI_IN_PLACE` clause can be useful when you want to overwrite your send buffer in certain collective operations
 

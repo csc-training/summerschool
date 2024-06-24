@@ -62,7 +62,7 @@ lang:   en
 <div class=column>
 - Simulating ice sheets, air pollutants, sea-level rise etc.
 - Building short and long-term simulations
-- Analyzing with different parameters for future predictions and possible solutions
+- Simulated areas can span over countries or continents
 - Modeling space weather
 </div>
 <div class=column>
@@ -145,7 +145,7 @@ lang:   en
 
 # Supercomputer autopsy – Lumi
 
- ![](img/lumi.png){.center width=50%}
+ ![](img/lumi.png){.center width=60%}
 
 # From laptop to Tier-0
 
@@ -181,36 +181,6 @@ lang:   en
 - Moving data out from the cloud can be time-consuming (and have a monetary cost)
 - Cost-effectiveness of cloud depends heavily on the use case
 
-# Containers {.section}
-
-# Containers
-
-- Problem: Moving applications between different systems
-    - Different software stacks
-    - Different library versions, compilers
-    - Different operating systems
-- Security
-    - Isolating an application
-
-# Containers
-
-- Differs from a virtual machine
-    - Does not contain kernel modules
-    - Often only contains the application and its dependencies
-- Performance efficient way to move applications
-
-
-![](img/VM_vs_Docker.png){.center width=50%}
-
-# Common pitfalls with containers in HPC
-
-- Using the interconnect in an efficient way
-    - MPI incompatibility
-- GPU incompatibility
-    - Nvidia - AMD
-- The host and container Linux kernels need to be compatible
-    - Rarely incompatible
-
 # Future of High-performance computing {.section}
 
 # Quantum computing
@@ -233,3 +203,11 @@ lang:   en
     - Power consumption: current `#`1 energy efficient system requires `~`20 MW for exascale performances
     - Manufacturing: Transistor sizes being extremely small 
     - Application scalability: how to program for 100 000 GPUs / 100 000 000 cores?
+
+# Summary
+
+- HPC reaches a lot of different fields of research
+- Supercomputers base their performance on extreme parallelism
+    - And GPUs nowadays
+- Cloud computing as an option for accessing HPC resources
+- The future of HPC looks bright but presents unique challenges

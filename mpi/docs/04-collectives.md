@@ -74,6 +74,12 @@ MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `roo
 <p>
 - Segments A, B, … may contain multiple elements
 
+# Scattering data, example with data
+
+- Example: Scattering elements from process `#`0 to all other processes with a recvcount of 2
+
+![](img/scatter_data.png){.center width=80%}
+
 # Scattering
 
 MPI_Scatter(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
@@ -132,6 +138,11 @@ MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtyp
 <p>
 - Data is scattered in portions given by `sendcounts` and `displs`
 
+# Scattering data, example with data
+
+- Example: Scattering elements from process `#`2 with different amounts of elements for each process
+
+![](img/scatterv_data.png){.center width=80%}
 
 # Scatterv example
 
@@ -173,6 +184,11 @@ Assume 4 MPI tasks. What are the values in `aloc` in the last task (#3)?
 
 - Segments A, B, ... may contain multiple elements
 
+# Gathering data, example with data
+
+- Example: Gathering two elements from each process into process `#`0
+
+![](img/gather_data.png){.center width=80%}
 
 # Gathering data
 
@@ -190,6 +206,11 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 <p>
 - Data is gathered in portions given by `recvcounts` and `displs`
 
+# Gathering data, vector example
+
+- Example: Gathering different number of elements from each process into process `#`2
+
+![](img/gatherv_data.png){.center width=80%}
 
 # All gather
 
