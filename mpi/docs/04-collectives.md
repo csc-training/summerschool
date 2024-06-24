@@ -79,6 +79,7 @@ MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `roo
 MPI_Scatter(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
 : Sends data from the root process to all other processes of the group
 
+<p>
 - Data is scattered in portions of equal size (`sendcount`)
 
 
@@ -128,6 +129,7 @@ if (rank==3) print *, aloc(:)
 MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
 : Sends data from the root process to all other processes of the group
 
+<p>
 - Data is scattered in portions given by `sendcounts` and `displs`
 
 
@@ -177,6 +179,7 @@ Assume 4 MPI tasks. What are the values in `aloc` in the last task (#3)?
 MPI_Gather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
 : Gathers data to the root process from all other processes of the group
 
+<p>
 - Data is gathered in portions of equal size (`recvcount`)
 
 # Vector version of gather
@@ -184,6 +187,7 @@ MPI_Gather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`
 MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcounts`{.input}, `displs`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
 : Gathers data to the root process from all other processes of the group
 
+<p>
 - Data is gathered in portions given by `recvcounts` and `displs`
 
 
