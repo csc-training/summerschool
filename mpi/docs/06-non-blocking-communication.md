@@ -182,6 +182,10 @@ MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `ro
 ![](img/green_arrow.png){width=1%} (Computation) work 2, not
 involving data in the `MPI_Allreduce` operation
 
+# Non-blocking collectives
+
+- Demo: `nonblocking_collectives.c`
+
 
 # Summary
 
