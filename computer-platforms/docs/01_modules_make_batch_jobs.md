@@ -22,7 +22,7 @@ Some information provided here is specific to LUMI, Mahti, and Puhti, some more 
 
 - `ssh` is used to connect to all CSC supercomputers
 ```
-ssh <my_user_id>@lumi.csc.fi
+ssh -i <path-to-ssh-key> <my_user_id>@lumi.csc.fi
 ```
 - With **ssh keys** one can login without password
     - Automatically setup for LUMI
