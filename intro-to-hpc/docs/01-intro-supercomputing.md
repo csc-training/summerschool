@@ -6,6 +6,12 @@ lang:   en
 
 # This lecture
 
+- What is High-performance computing?
+- What kind of research can benefit from HPC?
+- Anatomy of supercomputers
+- Cloud computing
+- Future of high-performance computing
+
 # What is high-performance computing?
 
 - Utilizing computing power that is much larger than available in a typical desktop computer
@@ -21,7 +27,7 @@ lang:   en
 # What is high-performance computing?
 
 <!-- Copyright CSC -->
- ![](img/LUMI_supercomputer.png){.center width=40%}
+ ![](img/LUMI_supercomputer.png){.center width=60%}
 
 # Top 500 list
 
