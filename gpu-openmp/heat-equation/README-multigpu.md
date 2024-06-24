@@ -15,3 +15,7 @@ In order to achieve a working multi-GPU code, you should:
       communication, or
     - b) Pass device pointer to MPI routines
 3. Use OpenMP offload constructs in the `evolve` routine
+
+Note: If opt for 2b then 
+- Set environment variable `export MPICH_GPU_SUPPORT_ENABLED=1` prior to compiling abd running.
+- Run the program with `srun -n <ntasks> --gpus <ntasks> <rest of the flags> ./heat_offload`.
