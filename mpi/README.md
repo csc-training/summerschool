@@ -35,14 +35,14 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 - [Heat equation solver](heat-equation/): Task 3
 
-### User-defined communicators
-
-- [Communicators and collectives](communicator/)
-
 ### Non-blocking communication
 
 - [Non-blocking message chain](message-chain-non-blocking/)
 - [Heat equation solver](heat-equation/): Task 4
+
+### User-defined communicators
+
+- [Communicators and collectives](communicator/)
 
 ### Further MPI topics
 
