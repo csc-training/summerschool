@@ -17,7 +17,7 @@ Gauss-Seidel iteration:
 ```
 while True
   for i:
-    u[i] = (u[i-1]) + u[i+1]) - h**2 f[i]) / 2
+    u[i] = (u[i-1]) + u[i+1] - h**2 f[i]) / 2
 
 until converged(u)
 ```
@@ -32,7 +32,7 @@ Jacobi iteration:
 ```
 while True
   for i:
-    u_new[i] = (u_old[i-1]) + u_old[i+1]) - h**2 f[i]) / 2
+    u_new[i] = (u_old[i-1]) + u_old[i+1] - h**2 f[i]) / 2
   swap(u_new, u_old)
 until converged(u)
 ```
