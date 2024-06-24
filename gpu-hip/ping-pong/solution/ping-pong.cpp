@@ -129,7 +129,7 @@ void GPUtoGPUdirect(int rank, double *dA, int N, double &timer)
 int main(int argc, char *argv[])
 {
     int rank, nprocs, noderank, nodenprocs, devcount;
-    int N = 100;
+    int N = 256*1024*1024;
     double GPUtime, CPUtime;
     double *dA, *hA;
 
