@@ -27,7 +27,7 @@ lang:   en
 # What is high-performance computing?
 
 <!-- Copyright CSC -->
- ![](img/LUMI_supercomputer.png){.center width=60%}
+ ![](img/LUMI_supercomputer.png){.center width=65%}
 
 # Top 500 list
 
@@ -145,7 +145,7 @@ lang:   en
 
 # Supercomputer autopsy – Lumi
 
- ![](img/lumi.png){.center width=60%}
+ ![](img/lumi.png){.center width=50%}
 
 # From laptop to Tier-0
 
