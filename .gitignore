@@ -7,6 +7,8 @@
 *.html
 *.pdf
 *.sif
+build/
+core
 
 #ignore default binary name
 a.out

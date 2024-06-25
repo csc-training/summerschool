@@ -3,7 +3,7 @@ program cartesian_grid
   implicit none
 
   integer :: ntask,  & ! number of MPI tasks
-       myid,         & ! MPI rank of the task
+       rank,         & ! MPI rank of the task
        rc,           & ! return code
        comm2d,       & ! Cartesian communicator
        neighbors(4), & ! neighbors in the 2D grid
@@ -14,7 +14,7 @@ program cartesian_grid
 
   call mpi_init(rc)
   call mpi_comm_size(MPI_COMM_WORLD, ntask, rc)
-  call mpi_comm_rank(MPI_COMM_WORLD, myid, rc)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, rc)
 
   ! Determine the process grid (dims(0) x dims(1) = ntask)
   if (ntask < 16) then
@@ -40,11 +40,11 @@ program cartesian_grid
   call mpi_cart_shift(comm2d, 0, 1, neighbors(1), neighbors(2), rc)
   call mpi_cart_shift(comm2d, 1, 1, neighbors(3), neighbors(4), rc)
   ! Find out & store also the Cartesian coordinates of a rank
-  call mpi_cart_coords(comm2d, myid, 2, coord, rc)
+  call mpi_cart_coords(comm2d, rank, 2, coord, rc)
 
   do irank = 0, ntask-1
-     if (myid == irank) print '(I3,A,2I2,A,4I3)', &
-          myid, '=', coord, ' neighbors=', neighbors(:)
+     if (rank == irank) print '(I3,A,2I2,A,4I3)', &
+          rank, '=', coord, ' neighbors=', neighbors(:)
      call mpi_barrier(mpi_comm_world, rc)
   end do
 

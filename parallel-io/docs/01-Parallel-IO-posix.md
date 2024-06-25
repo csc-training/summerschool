@@ -1,6 +1,6 @@
 ---
 title:  Introduction to parallel I/O
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -71,9 +71,6 @@ thousands of nodes on the supercomputer to physical disks
 
 # Parallel File systems {.section}
 
-# Anatomy of supercomputer
- ![](img/cluster_diagram.jpeg){.center width=80%}
-
 # File systems
 
 - All large parallel computer systems provide a parallel file
@@ -115,6 +112,21 @@ thousands of nodes on the supercomputer to physical disks
     - Also stripe size can be specified, see *man lfs* for details
 - Proper striping can enhance I/O performance a lot
 
+# Lustre file striping in C codes
+- The striping policy for files within an application
+
+```c
+...
+#include <lustre/lustreapi.h>
+int main(int argc, char **argv){
+ int fd;
+ char fname[]="lfile";
+ unsigned long long stripe_size;
+ int stripe_count, stripe_pattern=0, stripe_offset=-1;
+ // Try to create file
+ stripe_size=1048576; stripe_count=4;
+ fd=llapi_file_open(fname,O_CREAT|O_RDWR,S_IRWXU,stripe_size,stripe_offset,stripe_count,stripe_pattern);
+```
 
 # Performance with Lustre striping
 

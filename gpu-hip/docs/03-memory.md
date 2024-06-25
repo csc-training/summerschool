@@ -158,7 +158,6 @@ int main() {
     - Through prefetches
     - Through hints
 - Must still obey concurrency & coherency rules, not foolproof
-- The performance on the AMD cards is an open question
 - Easier to overlook optimization possibilities
 
 
@@ -238,14 +237,6 @@ int main() {
 	- treat memory allocation and free as asynchronous operations
 	- use memory pool (i.e. subsequent alloc/frees are less expensive)
 
-# Virtual Memory Management
-
-- Experimental feature
-- Allows to reallocate, i.e. change the size of the allocated memory without paying
-free and allocation cost
-
-- Reference: [https://docs.amd.com/bundle/HIP-API-Guide-v5.2/page/group___virtual.html](https://docs.amd.com/bundle/HIP-API-Guide-v5.2/page/group___virtual.html)
-
 # Global memory access in device code
 
 - Global memory access from the device is slow
@@ -274,6 +265,7 @@ free and allocation cost
 # Coalesced memory access example
 
 <div class="column" style="width:49%;">
+<small>
 <p>
 ```
 __global__ void memAccess(float *out, float *in)
@@ -283,12 +275,14 @@ __global__ void memAccess(float *out, float *in)
 }
 ```
 </p>
+</small>
 <p>
 ![](img/coalesced_access_4.png){width=80%}
 </p>
 </div>
 
 <div class="column" style="width:49%">
+<small>
 <p>
 ```
 __global__ void memAccess(float *out, float *in)
@@ -298,6 +292,7 @@ __global__ void memAccess(float *out, float *in)
 }
 ```
 </p>
+</small>
 <p>
 ![](img/coalesced_access_3.png){width=80%}
 </p>

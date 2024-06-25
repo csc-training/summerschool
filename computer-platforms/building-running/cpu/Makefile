@@ -1,4 +1,4 @@
-CC=gcc
+CC=CC
 
 prog: prog.o util.o
 	$(CC) -o $@ $^

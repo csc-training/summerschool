@@ -6,7 +6,7 @@ program parallel_pi
   integer, parameter :: dp = REAL64
 
   integer, parameter :: n = 840
-  integer :: myid, ntasks, rc
+  integer :: rank, ntasks, rc
 
   type(mpi_status) :: status
 
@@ -15,25 +15,25 @@ program parallel_pi
 
   call mpi_init(rc)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
-  call mpi_comm_rank(MPI_COMM_WORLD, myid, rc);
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, rc);
 
-  if (myid == 0) then
+  if (rank == 0) then
      write(*,*) "Computing approximation to pi with n=", n
      write(*,*) "Using", ntasks, "mpi processes"
   end if
 
   chunksize = n / ntasks
-  istart = myid * chunksize + 1
-  istop = (myid + 1) * chunksize
+  istart = rank * chunksize + 1
+  istop = (rank + 1) * chunksize
 
   ! Handle possible uneven division
   remainder = mod(n, ntasks)
 
   if (remainder > 0) then
-    if (myid < remainder) then
+    if (rank < remainder) then
       ! Assign this task one element more
-      istart = istart + myid
-      istop = istop + myid + 1
+      istart = istart + rank
+      istop = istop + rank + 1
     else
       istart = istart + remainder
       istop = istop + remainder
@@ -47,7 +47,7 @@ program parallel_pi
   end do
 
    ! Reduction to rank 0
-   if (myid == 0) then
+   if (rank == 0) then
      pi = localpi
      do i=1, ntasks - 1
         call mpi_recv(localpi, 1, MPI_DOUBLE_PRECISION, i, 0, MPI_COMM_WORLD, &

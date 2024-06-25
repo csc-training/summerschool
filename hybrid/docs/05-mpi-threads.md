@@ -1,11 +1,9 @@
 ---
 title:  Using MPI with OpenMP threads
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-
-# Using MPI with OpenMP threads {.section}
 
 # Thread support in MPI
 
@@ -25,10 +23,10 @@ lang:   en
     : Error value; in C/C++ it's the return value of the function,
       and in Fortran an additional output parameter
 
-- Pre-defined integer constants:<br>
-  <code style="font-size:0.8em">
-  MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE
-  </code>
+- Pre-defined integer constants:
+  <div style="font-size:0.8em">
+  `MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
+  </div>
 
 
 # Hybrid programming styles: fine/coarse grained
@@ -74,7 +72,7 @@ lang:   en
 - In point-to-point communication the thread ID can be used to
   generate a tag that guides the messages to the correct thread
 
-```fortran
+```fortranfree
 !$omp parallel private(tid, tidtag, ierr)
 tid = omp_get_thread_num()
 tidtag = 2**10 + tid

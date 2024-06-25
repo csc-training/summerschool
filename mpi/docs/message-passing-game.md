@@ -1,12 +1,10 @@
 ---
-title:  Message-Passing Game
-event:  CSC Summer School in High-Performance Computing 2023
+title:  Message Passing Game
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
-# Message-passing game {.section}
-
-# Message-passing game
+# Message passing game
 
 * Illustrate MPI execution and data model
 * Four volunteers: processes

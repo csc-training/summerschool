@@ -2,7 +2,7 @@ ifeq ($(COMP),)
 COMP=intel
 endif
 
-COMMONDIR=../../../heat/common
+COMMONDIR=../../heat-equation/common
 
 ifeq ($(COMP),intel)
 CXX=icpc
@@ -17,6 +17,16 @@ FC=gfortran
 CC=gcc
 FCFLAGS=-fopenmp -O3 -Wall
 CCFLAGS=-fopenmp -O3 -Wall -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+endif
+
+ifeq ($(COMP),cray)
+FC=ftn
+CC=cc
+CXX=CC
+FCFLAGS=-fopenmp -O3
+CCFLAGS=-fopenmp -I$(COMMONDIR) -O3
 LDFLAGS=
 LIBS=-lpng
 endif

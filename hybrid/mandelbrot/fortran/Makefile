@@ -2,7 +2,7 @@ ifeq ($(COMP),)
 COMP=gnu
 endif
 
-COMMONDIR=../../../heat/common
+COMMONDIR=../../heat-equation/common
 
 ifeq ($(COMP),gnu)
 FC=gfortran
@@ -11,6 +11,15 @@ FCFLAGS=-fopenmp -O3 -Wall
 CCFLAGS=-fopenmp -O3 -Wall -I$(COMMONDIR)
 LDFLAGS=
 LIBS=-lpng
+endif
+
+ifeq ($(COMP),cray)
+FC=ftn
+CC=cc
+FCFLAGS=-fopenmp -O3 
+CCFLAGS=-fopenmp -O3 -I$(COMMONDIR)
+LDFLAGS=
+LIBS=`pkg-config --libs libpng`
 endif
 
 ifeq ($(COMP),intel)

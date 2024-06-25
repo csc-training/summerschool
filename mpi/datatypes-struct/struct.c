@@ -16,14 +16,14 @@ int main(int argc, char *argv[])
 
   particle particles[n];
 
-  int i, j, myid;
+  int i, j, rank;
   double t1, t2;
 
   MPI_Init(&argc, &argv);
-  MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   // Fill in some values for the particles
-  if (myid == 0) {
+  if (rank == 0) {
     for (i=0; i < n; i++) {
       for (j=0; j < 3; j++) {
         particles[i].coords[j] = (float)rand()/(float)RAND_MAX*10.0;
@@ -42,19 +42,19 @@ int main(int argc, char *argv[])
   // Communicate using the created particletype
   // Multiple sends are done for better timing
   t1 = MPI_Wtime();
-  if (myid == 0) {
+  if (rank == 0) {
     for (i=0; i < reps; i++) {
       // TODO: send
     }
-  } else if (myid == 1) {
+  } else if (rank == 1) {
     for (i=0; i < reps; i++) {
       // TODO: receive
     }
   }
   t2 = MPI_Wtime();
 
-  printf("Time: %i, %e \n", myid, (t2-t1)/(double)reps);
-  printf("Check: %i: %s %f %f %f \n", myid, particles[n-1].label,
+  printf("Time: %i, %e \n", rank, (t2-t1)/(double)reps);
+  printf("Check: %i: %s %f %f %f \n", rank, particles[n-1].label,
           particles[n-1].coords[0], particles[n-1].coords[1],
           particles[n-1].coords[2]);
 

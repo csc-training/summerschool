@@ -25,12 +25,12 @@
 
 ## Interoperability with libraries
 
-- [Using CUDA library](device-ptr)
+- [Using HIP library](device-ptr)
 
 ## Asynchronous operations
 
 - [Asynchronous operations](async-operations)
 
-## Using multiple GPUS
+## Using multiple GPUs
 
 - [Multi-GPU parallelization for heat equation](heat-equation/README-multigpu.md)

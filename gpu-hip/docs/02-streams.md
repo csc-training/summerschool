@@ -1,6 +1,6 @@
 ---
 title:  Synchronization, streams, and asynchronous operations
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -46,7 +46,7 @@ process_in_host();
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
  !$omp target nowait
  call process_in_device();
  !$omp end target
@@ -64,7 +64,8 @@ process_in_host();
 
 <div class=column>
 ```c
-//The two tasks can be executed concurrently
+// The two tasks can be 
+// executed concurrently
 #pragma omp task
 {do something}
 
@@ -75,7 +76,8 @@ process_in_host();
 
 <div class=column>
 ```c
-//The two tasks cannot be executed concurrently
+// The two tasks cannot be 
+// executed concurrently
 #pragma omp task depend(out:a)
 {do something which produces a}
 
@@ -164,20 +166,29 @@ for (int ib = 0; ib < n; ib += bf) {
 # Asynchronous functions and the default stream
 
 * The functions without `Async`-postfix run on the default stream, and are synchronizing with host
+
+<small>
+
   ```cpp
   ​hipError_t hipMalloc ( void** devPtr, size_t size )
   ​hipError_t hipMemcpy ( void* dst, const void* src, size_t count, hipMemcpyKind kind )
   ​hipError_t hipFree ( void* devPtr ) 
   ```
 
+  </small>
+
 * When using non-default streams, functions with `Async`-postfix are needed
   * These functions take the stream as an additional argument (`0` denotes the default stream)
+
+<small>
+
   ```cpp
   hipError_t hipMallocAsync ( void** devPtr, size_t size, hipStream_t stream ) 
   hipError_t hipMemcpyAsync ( void* dst, const void* src, size_t count, 
                               hipMemcpyKind kind, hipStream_t stream ) 
   hipError_t hipFreeAsync ( void* devPtr, hipStream_t stream ) 
-    ```
+  ```
+</small>
 
 # Asynchronous functions and the page-locked memory
 
@@ -289,15 +300,15 @@ in a stream
 ```cpp
   // Start timed GPU kernel
   clock_t start_kernel_clock = clock();
-  kernel<<<gridsize, blocksize, 0, stream>>>(d_a, n_total);
+  kernel<<<gridsize,blocksize,0,strm>>>(d_a,n_total);
 
   // Start timed device-to-host memcopy
   clock_t start_d2h_clock = clock();
-  hipMemcpyAsync(a, d_a, bytes, hipMemcpyDeviceToHost, stream);
+  hipMemcpyAsync(a,d_a,bytes,hipMemcpyDeviceToHost,strm);
 
   // Stop timing
   clock_t stop_clock = clock();
-  hipStreamSynchronize(stream);
+  hipStreamSynchronize(strm);
 ```
 
 * This code snippet can measure how quick the CPU is throwing asynchronous tasks into a queue for the GPU
@@ -307,15 +318,15 @@ in a stream
 
 ```cpp
   // Start timed GPU kernel
-  hipEventRecord(start_kernel_event, stream);
-  kernel<<<gridsize, blocksize, 0, stream>>>(d_a, n_total);
+  hipEventRecord(start_kernel_event, strm);
+  kernel<<<gridsize,blocksize,0,strm>>>(d_a,n_total);
 
   // Start timed device-to-host memcopy
-  hipEventRecord(start_d2h_event, stream);
-  hipMemcpyAsync(a, d_a, bytes, hipMemcpyDeviceToHost, stream);
+  hipEventRecord(start_d2h_event, strm);
+  hipMemcpyAsync(a,d_a,bytes,hipMemcpyDeviceToHost,strm);
 
   // Stop timing
-  hipEventRecord(stop_event, stream);
+  hipEventRecord(stop_event, strm);
   hipEventSynchronize(stop_event);
 ```
 

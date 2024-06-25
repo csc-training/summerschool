@@ -29,7 +29,7 @@ void checkResults(int* const A, const int nx, const int ny, const std::string st
 
   // Indicate if the results are correct
   if(errored)
-    printf("The results are incorrect!/n");
+    printf("The results are incorrect! (%.3fs - %s)\n", timing, strategy.c_str());
   else
     printf("The results are OK! (%.3fs - %s)\n", timing, strategy.c_str());
 }
@@ -162,6 +162,8 @@ void explicitMemNoCopy(int nSteps, int nx, int ny)
   }
 
   #error Copy data back to host (d_A to A)
+
+  #error Synchronization
 
   // Check results and print timings
   clock_t tStop = clock();

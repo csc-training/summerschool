@@ -8,14 +8,14 @@ void print_buffers(std::vector<int> &buffer);
 
 int main(int argc, char *argv[])
 {
-    int ntasks, myid, size=12;
+    int ntasks, rank, size=12;
     std::vector<int> sendbuf(size);
     std::vector<int> recvbuf(size);
     MPI_Status status;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     /* Initialize message buffers */
     init_buffers(sendbuf, recvbuf);

@@ -23,11 +23,10 @@ endif
 ifeq ($(COMP),nvhpc)
 CXX=mpicxx
 CC=nvc
-MINFO=
-# MINFO=-Minfo=mp
+MINFO=-Minfo=mp
 #GPU_MPI=-DGPU_MPI
 GPU_MPI=
-CCFLAGS=-O3 -mp=gpu -gpu=cc70 -I$(COMMONDIR) $(MINFO) $(GPU_MPI)
+CCFLAGS=-O3 -mp=gpu -gpu=cc80 -I$(COMMONDIR) $(MINFO) $(GPU_MPI)
 # CCFLAGS=-O3 -I$(COMMONDIR) $(MINFO)
 LDFLAGS=
 LIBS=-lpng

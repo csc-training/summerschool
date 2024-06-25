@@ -7,7 +7,7 @@ module my_module
 
     real(rk) function my_sum(a, b)
       implicit none
-      !$omp declare target (my_sum)
+      !$omp declare target
      
       real(rk) :: a, b
 

@@ -7,4 +7,4 @@
    export MPICH_GPU_SUPPORT_ENABLED=1
    ```
   as the code uses GPU aware communication.
-  **Note:** for 16 GPUs you need two nodes, other cases should be run wiht single node
+  **Note:** for 16 GPUs you need two nodes, other cases should be run with single node.

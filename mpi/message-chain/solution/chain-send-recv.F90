@@ -4,7 +4,7 @@ program basic
 
   implicit none
   integer, parameter :: size = 10000000
-  integer :: rc, myid, ntasks
+  integer :: rc, rank, ntasks
   integer :: message(size)
   integer :: receiveBuffer(size)
   type(mpi_status) :: status
@@ -14,20 +14,20 @@ program basic
   integer :: source, destination
 
   call mpi_init(rc)
-  call mpi_comm_rank(MPI_COMM_WORLD, myid, rc)
+  call mpi_comm_rank(MPI_COMM_WORLD, rank, rc)
   call mpi_comm_size(MPI_COMM_WORLD, ntasks, rc)
 
-  message = myid
+  message = rank
   receiveBuffer = -1
 
   ! Set source and destination ranks
-  if (myid < ntasks-1) then
-     destination = myid + 1
+  if (rank < ntasks-1) then
+     destination = rank + 1
   else
      destination = MPI_PROC_NULL
   end if
-  if (myid > 0) then
-     source = myid - 1
+  if (rank > 0) then
+     source = rank - 1
   else
      source = MPI_PROC_NULL
   end if
@@ -38,15 +38,15 @@ program basic
 
   ! Send messages
   call mpi_send(message, size, MPI_INTEGER, destination, &
-          myid+1, MPI_COMM_WORLD, rc)
-  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', myid, &
+          rank+1, MPI_COMM_WORLD, rc)
+  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', rank, &
           ' Sent elements: ', size, &
-          '. Tag: ', myid+1, '. Receiver: ', destination
+          '. Tag: ', rank+1, '. Receiver: ', destination
 
   ! Receive messages
   call mpi_recv(receiveBuffer, size, MPI_INTEGER, source,  &
-          myid, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
-  write(*,'(A10,I3,A,I3)') 'Receiver: ', myid, &
+          rank, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
+  write(*,'(A10,I3,A,I3)') 'Receiver: ', rank, &
           ' First element: ', receiveBuffer(1)
 
   ! Finalize measuring the time and print it out
@@ -66,8 +66,8 @@ contains
 
     integer i
 
-    if (myid == 0) then
-       write(*, '(A20, I3, A, F6.3)') 'Time elapsed in rank', myid, ':', t
+    if (rank == 0) then
+       write(*, '(A20, I3, A, F6.3)') 'Time elapsed in rank', rank, ':', t
        do i=1, ntasks-1
            call mpi_recv(t, 1, MPI_DOUBLE_PRECISION, i, 11,  &
                          MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)

@@ -1,4 +1,4 @@
-ifneq ($(PUHTI),1)
+ifneq ($(MAHTI),1)
 
 CC=cc
 CXX=CC
@@ -8,12 +8,11 @@ else
 
 CC=nvc
 CXX=nvc++
-FLAGS=-O2 -mp=gpu -gpu=cc70
+FLAGS=-O2 -mp=gpu -gpu=cc80 -Minfo=mp
 
 endif
 
 LDFLAGS=-lpng
-
 EXE=mandelbrot
 
 all: $(EXE)

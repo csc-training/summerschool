@@ -129,7 +129,7 @@ void GPUtoGPUdirect(int rank, double *dA, int N, double &timer)
 int main(int argc, char *argv[])
 {
     int rank, nprocs, noderank, nodenprocs, devcount;
-    int N = 100;
+    int N = 256*1024*1024;
     double GPUtime, CPUtime;
     double *dA, *hA;
 
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
             errorsum += hA[i] - 2.0;
-        printf("CPU-CPU: time %e, errorsum %f\n", CPUtime, errorsum);
+        printf("CPU-CPU:          time %e, errorsum %f\n", CPUtime, errorsum);
     }
 
     // Dummy transfer to remove the overhead of the first communication
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
             errorsum += hA[i] - 2.0;
-        printf("GPU-GPU direct: time %e, errorsum %f\n", GPUtime, errorsum);
+        printf("GPU-GPU direct:   time %e, errorsum %f\n", GPUtime, errorsum);
     }
 
     // Dummy transfer to remove the overhead of the first communication

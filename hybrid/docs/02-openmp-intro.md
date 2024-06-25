@@ -1,11 +1,8 @@
 ---
 title:  Introduction to OpenMP
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
-
-# OpenMP {.section}
-
 
 # What is OpenMP?
 
@@ -24,8 +21,8 @@ lang:   en
 
 # Why would you want to learn OpenMP?
 
-- OpenMP parallelized program can be run on your many-core workstation or on a
-  node of a cluster
+- OpenMP parallelized program can be run on your many-core workstation or
+  on a node of a cluster
 - Enables one to parallelize one part of the program at a time
     - Get some speedup with a limited investment in time
     - Efficient and well scaling code still requires effort
@@ -79,7 +76,7 @@ lang:   en
 <div class=column>
 - In Fortran, an `end` directive specifies the end of the construct
 
-```fortran
+```fortranfree
 !$omp parallel
   ! calculate in parallel
     write(*,*) "Hello world!"
@@ -90,10 +87,11 @@ lang:   en
 
 # Compiling an OpenMP program
 
-- Compilers that support OpenMP usually require an option (flag) for enabling it
-    - Most compilers (GNU, Clang, Intel, Cray) nowadays support `-fopenmp`
-    - Intel legacy foption: `-qopenmp`
-    - NVIDIA: `-mp`
+- Compilers that support OpenMP usually require an option (flag) for
+  enabling it
+  - Most compilers (GNU, Clang, Intel, Cray) nowadays support `-fopenmp`
+  - Intel legacy foption: `-qopenmp`
+  - NVIDIA: `-mp`
 
 
 # Parallel construct
@@ -107,7 +105,7 @@ lang:   en
        structured block
     ```
     - Fortran:
-    ```fortran
+    ```fortranfree
     !$omp parallel [clauses]
        structured block
     !$omp end parallel
@@ -129,7 +127,7 @@ lang:   en
 
 <small>
 <div class="column">
-```fortran
+```fortranfree
 program omp_hello
 
    write(*,*) "Hello world! -main"
@@ -191,6 +189,7 @@ Over and out! -main
 - Thread ID can be queried and used for distributing work manually
   (similar to MPI rank)
 
+
 # for/do construct
 
 - Directive instructing compiler to share the work of a loop
@@ -200,7 +199,7 @@ Over and out! -main
 #pragma omp for [clauses]
 ...
 ```
-```fortran
+```fortranfree
 !$omp do [clauses]
 ...
 !$omp end do
@@ -214,7 +213,7 @@ Over and out! -main
 
 # for/do construct
 
-```fortran
+```fortranfree
 !$omp parallel
 !$omp do
   do i = 1, n
@@ -233,6 +232,7 @@ Over and out! -main
 }
 ```
 
+
 # Workshare directive (Fortran only)
 
 - In Fortran many array operations can be done conveniently with array
@@ -241,7 +241,7 @@ Over and out! -main
 - The `workshare` directive divides the execution of the enclosed structured
   block into separate units of work, each of which is executed only once
 
-```fortran
+```fortranfree
 real :: a(n,n), b(n,n), c(n,n) d(n,n)
 ...
 !$omp parallel
@@ -252,9 +252,17 @@ real :: a(n,n), b(n,n), c(n,n) d(n,n)
 !$omp end parallel
 ```
 
+
 # Summary
 
 - OpenMP can be used with compiler directives
     - Ignored when code is build without OpenMP
 - Threads are launched within **parallel** regions
 - Simple loops can be parallelized easily with a `for`/`do` construct
+
+<br>
+
+- OpenMP resources:
+  - <https://www.openmp.org/specifications/>
+    - [v5.2 API Specification](https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5-2.pdf)
+    - [v5.2.2 Examples document](https://www.openmp.org/wp-content/uploads/openmp-examples-5.2.2-final.pdf)

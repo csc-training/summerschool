@@ -12,3 +12,8 @@ implementation for calculating the Mandelbrot fractal, which can be
 parallelized dynamically with OpenMP tasks. Insert missing directives for
 parallelizing the code (look for TODOs in the source code), and
 investigate the scalability with varying number of threads.
+
+### Compilation on LUMI
+
+1. Load modules (with "clean" environment) `source modules-lumi`
+2. Compile with `COMP=cray make mandelbrot`

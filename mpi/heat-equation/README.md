@@ -8,8 +8,6 @@ To parallelise the code, one needs to divide the grid into blocks of columns
 (in Fortran) or rows (in C/C++) and assign each block to one MPI task. Or in other
 words, share the work among the MPI tasks by doing a domain decomposition.
 
-![domain decomposition](img/domain-decomposition.svg)
-
 The MPI tasks are able to update the grid independently everywhere else than
 on the boundaries -- there the communication of a single column (or row) with
 the nearest neighbour is needed. This can be achieved by having additional
@@ -17,14 +15,19 @@ ghost-layers that contain the boundary data of the neighbouring tasks. As the
 system is aperiodic, the outermost ranks communicate with only one neighbour,
 and the inner ranks with two neighbours.
 
+![domain decomposition C](img/domain-decomposition-c.svg)
+
+![domain decomposition Fortran](img/domain-decomposition-fortran.svg)
+
+
 ## Tasks
 
 1. [First steps](#first-steps)
-1. [Using sendrecv](#using-sendrecv)
-1. [Using collective communication](#using-collective-communication)
-1. [Using non-blocking communication](#using-non-blocking-communication)
-1. [Using Cartesian communicator](#using-cartesian-communicator)
-1. [2D decomposition](#2d-decomposition)
+2. [Using sendrecv](#using-sendrecv)
+3. [Using collective communication](#using-collective-communication)
+4. [Using non-blocking communication](#using-non-blocking-communication)
+5. [Using Cartesian communicator](#using-cartesian-communicator)
+6. [2D decomposition](#2d-decomposition)
 
 
 ### First steps

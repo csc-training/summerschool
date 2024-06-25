@@ -1,30 +1,4 @@
-# General exercise instructions
-
-For most of the exercises, skeleton codes are provided both for
-Fortran and C/C++ in the corresponding subdirectory. Some exercise
-skeletons have sections marked with “TODO” for completing the
-exercises. In addition, all of the
-exercises have exemplary full codes (that can be compiled and run) in the
-`solutions` folder. Note that these are seldom the only or even the best way to
-solve the problem.
-
-The exercise material can be downloaded with the command
-
-```
-git clone https://github.com/csc-training/summerschool.git
-```
-
-However, we recommend that you use your GitHub account (and create a one if not having yet),
-**Fork** this repository and clone then your fork. This way you can keep also your own work
-under version control.
-
-## Using local workstation
-
-In case you have working parallel program development environment in your laptop
-(Fortran or C/C++ compiler, MPI development library, etc.) you may use that for
-exercises. Note, however, that no support for installing MPI environment can be
-provided during the course. Otherwise, you can use CSC supercomputers for
-carrying out the exercises.
+# Exercise instructions for Puhti and Mahti
 
 ## Using CSC supercomputers
 
@@ -45,14 +19,6 @@ For easier connecting we recommend that you set up *ssh keys* along the instruct
 [CSC Docs](https://docs.csc.fi/computing/connecting/#setting-up-ssh-keys)
 
 
-For editing program source files you can use e.g. *nano* editor:
-
-```
-nano prog.f90 &
-```
-(`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save file and exit editor press `Ctrl+X`)
-Also other popular editors (emacs, vim, gedit) are available.
-
 ### Disk areas
 
 All the exercises in the supercomputers should be carried out in the
@@ -61,9 +27,8 @@ queried with the command `csc-workspaces`. As the base directory is
 shared between members of the project, you should create your own
 directory:
 ```
-cd /scratch/project_2000745
-mkdir -p $USER
-cd $USER
+mkdir -p /scratch/project_2000745/$USER
+cd /scratch/project_2000745/$USER
 ```
 
 
@@ -134,21 +99,6 @@ Usage in local workstation may vary.
 
 ### OpenMP offloading
 
-On **Lumi**, the following modules are required:
-
-```bash
-module load LUMI/22.08
-module load partition/G 
-module load PrgEnv-cray
-module load craype-accel-amd-gfx90a
-module load rocm/5.2.3
-```
-
-On **Lumi**, to compile your program, use
-```bash
-CC -fopenmp <source.cpp>
-```
-
 On **Puhti**, in order to use programs with OpenMP offloading to GPUs, you need to load the following modules:
 ```bash
 module load .unsupported
@@ -174,21 +124,6 @@ nvfortran -o my_exe test.f90 -mp=gpu -gpu=cc70
 For MPI codes, use the wrapper commands `mpicc`, `mpic++`, or `mpif90`
 
 ### HIP
-
-On **Lumi**, the following modules are required:
-
-```bash
-module load LUMI/22.08
-module load partition/G
-module load PrgEnv-cray
-module load craype-accel-amd-gfx90a
-module load rocm/5.2.3
-```
-
-On **Lumi**, to compile your program, use
-```bash
-CC -xhip <source.cpp>
-```
 
 In order to use HIP on **Puhti**, you need to load the following modules:
 ```
@@ -316,24 +251,6 @@ needs to use `a100` instead of `v100` *i.e.*:
 ...
 #SBATCH --gres=gpu:a100:1
 ...
-```
-
-## Running in local workstation
-
-In most MPI implementations parallel program can be started with the `mpiexec` launcher:
-```
-mpiexec -n 4 ./my_mpi_exe
-```
-
-In most workstations, programs build with OpenMP use as many threads as there are CPU cores
-(note that this might include also "logical" cores with simultaneous multithreading). A pure OpenMP
-program can be normally started with specific number of threads with
-```bash
-OMP_NUM_THREADS=4 ./my_exe
-```
-and a hybrid MPI+OpenMP program e.g. with
-```
-OMP_NUM_THREADS=4 mpiexec -n 2 ./my_exe
 ```
 
 ## Debugging in CSC supercomputers

@@ -1,26 +1,24 @@
 ---
 title:  Multi-GPU programming and HIP/OpenMP + MPI
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
-
-# Multi-GPU programming and HIP/OpenMP + MPI{.section}
 
 # Outline
 
 * GPU context
 * Device management
 * Programming models
-* Peer to peer (GPU-GPU) access
 * HIP/OpenMP + MPI
+* Peer to peer (GPU-GPU) access
 
 
 # Introduction
 
 * Workstations or supercomputer nodes can be equipped with several GPUs
     * For the current supercomputers, the number of GPUs per node usually
-      ranges between 2 and 6
-    * Allows sharing (and saving) resources (disks, power units, e.g.)
+      ranges between 2 and 8
+    * Allows sharing (and saving) resources (disks, power units, etc.)
     * More GPU resources per node, better per-node-performance
 
 
@@ -29,7 +27,7 @@ lang:   en
 * A context is established implicitly on the current device when the first task requiring an active context is evaluated (HIP and OpenMP)
 * Several processes can create contexts for a single device
     * The device resources are allocated per context
-* By default, one context per device per process in HIP (since CUDA 4.0)
+* By default, one context per device per process in HIP
     * Threads of the same process share the primary context (for each device)
 * HIP supports explicit context management whereas OpenMP does not
 
@@ -43,41 +41,36 @@ lang:   en
 # Device management
 
 ```cpp
-// Return the number of available devices
+// HIP
+hipError_t hipGetDeviceCount(int *count)
+hipError_t hipSetDevice(int device)
+hipError_t hipGetDevice(int *device)
 
-int omp_get_num_devices(void); // OpenMP, returns the result
-hipError_t hipGetDeviceCount(int *count) // HIP, stores the result in `count`
-
-// Set device as the current device for the calling host thread
-
-void omp_set_default_device(int device) // OpenMP
-hipError_t hipSetDevice(int device) // HIP
-
-// Return the current device for the calling host thread
-
-int omp_get_default_device(void) // OpenMP, returns the result
-hipError_t hipGetDevice(int *device) // HIP, stores the result in `device`
+// OpenMP
+int omp_get_num_devices(void)
+void omp_set_default_device(int device)
+int omp_get_default_device(void)
 ```
+
+* Demos: `device_management_hip.cpp`, `device_management_omp.cpp`
 
 
 # Querying or verifying device properties
 
-* In HIP, one can query the properties of different devices in the system using
-  `hipGetDeviceProperties()` function
-    * No context needed
-    * Provides e.g. name, amount of memory, warp size, support for unified
-      virtual addressing, etc.
+* One can query or verify the properties of different devices in the system
+    * Properties include name, amount of memory, warp size, support for unified virtual addressing, etc.
     * Useful for code portability
 
 In HIP, the function returns the device properties in struct `prop`
-```
+```cpp
+// HIP - get device properties as struct
 hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
-```
-In OpenMP, `requires` clause can be used to verify the device properties, e.g.
-```
+
+// OpenMP - use `requires` clause to verify the device properties, e.g.
 #pragma omp requires unified_shared_memory
 ```
 
+* Demo: `device_properties_hip.cpp`
 
 
 # Multi-GPU programming models
@@ -87,7 +80,7 @@ In OpenMP, `requires` clause can be used to verify the device properties, e.g.
     * Syncing is handled through message passing (e.g. MPI)
 * Many GPUs per process (II)
     * Process manages all context switching and syncing explicitly
-* One GPU per thread (III, advanced)
+* One GPU per thread (III)
     * Syncing is handled through thread synchronization requirements
 </div>
 
@@ -98,18 +91,77 @@ In OpenMP, `requires` clause can be used to verify the device properties, e.g.
 </div>
 
 
-# One GPU per process (I)
+# One GPU per process with MPI{.section}
 
-* Recommended for multi-process applications using a message passing library
+# One GPU per process
+
+* Recommended for multi-process applications using MPI
 * Message passing library takes care of all GPU-GPU communication
 * Each process interacts with only one GPU which makes the implementation
   easier and less invasive (if MPI is used anyway)
     * Apart from each process selecting a different device, the implementation
       looks much like a single-GPU program
-* **Multi-GPU implementation using MPI is discussed at the end!**
+
+# Compiling MPI+HIP/OpenMP code
+
+* Compiling HIP/OpenMP and MPI calls in the same compilation unit may not always be trivial
+  * On LUMI, `CC` compiler wrapper takes care of this
+* One can set MPI compiler to use `hipcc` or the desirable OpenMP compiler like `nvc`, e.g. for OpenMPI:
+  ```bash
+  OMPI_CXXFLAGS='' OMPI_CXX='hipcc'  # hip
+  OMPI_CXXFLAGS='' OMPI_CXX='nvc -mp=gpu -gpu=cc80'  # nvc
+  ```
+* Alternatively, one could separate HIP/OpenMP and MPI code in different compilation units compiled with `mpicxx` and `hipcc`/`nvc`
+    * Link object files in a separate step using `mpicxx` or `hipcc`/`nvc`
 
 
-# Many GPUs per process (II)
+# MPI+HIP strategies
+
+1. One MPI process per node
+2. **One MPI process per GPU**
+3. Many MPI processes per GPU, only one uses it
+4. **Many MPI processes sharing a GPU**
+
+* 2 is recommended (also allows using 4)
+    * Typically results in most productive and least invasive implementation
+      for an MPI program
+    * No need to implement GPU-GPU transfers explicitly (MPI handles all
+      this)
+    * It is further possible to utilize remaining CPU cores with OpenMP (but
+      this is not always worth the effort/increased complexity)
+
+
+# Selecting the correct GPU
+
+* Typically, all processes on the node can access all GPUs of that node
+* The following implementation allows utilizing all GPUs using one or more
+  processes per GPU
+    * On Nvidia systems, use CUDA MPS when launching more processes than GPUs
+<p>
+* Demo: `device_management_mpi_hip.cpp`
+
+
+# GPU-GPU communication through MPI
+
+* GPU-aware (CUDA/ROCm aware) MPI libraries support direct GPU-GPU transfers
+    * Can take a pointer to device buffer (avoids host/device data copies)
+* Unfortunately, currently no GPU support for custom MPI data types (must use a
+  datatype representing a contiguous block of memory)
+    * Data packing/unpacking must be implemented application-side on GPU
+* On LUMI, enable on runtime by `export MPICH_GPU_SUPPORT_ENABLED=1`
+
+
+# MPI communication with GPU-aware MPI
+
+* With MPI+HIP, one can simply pass a device pointer to GPU-aware MPI
+   * In OpenMP this can be achieved using `use_device_ptr` clause
+<p>
+* Demos: `mpi_send_and_recv_hip.cpp`, `mpi_send_and_recv_omp.cpp`
+
+
+# Many GPUs per process{.section}
+
+# Many GPUs per process
 
 * Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions 
    * OpenMP has also `device()`-directive to offload work to a specific device
@@ -118,10 +170,10 @@ In OpenMP, `requires` clause can be used to verify the device properties, e.g.
     * Memory operations
     * Kernel execution
     * Streams and events (HIP)
-* Asynchronous function calls (HIP) or `nowait` clause (OpenMP) are required to overlap work 
+* Asynchronous function calls (HIP) or `nowait` clause (OpenMP) are required to overlap work
 
 
-# Many GPUs per process (II), code example
+# Many GPUs per process, code example
 
 <small>
 
@@ -151,8 +203,9 @@ for(int n = 0; n < num_devices; n++) {
 ```
 </small>
 
+# One GPU per thread{.section}
 
-# One GPU per thread (III, advanced)
+# One GPU per thread
 
 * One GPU per CPU thread
     * E.g. one OpenMP CPU thread per GPU being used
@@ -164,14 +217,14 @@ for(int n = 0; n < num_devices; n++) {
 * Communication between threads still not trivial
 
 
-# One GPU per thread (III, advanced), code example
+# One GPU per thread, code example
 
 <small>
 
 * HIP example
 ```cpp
 // Launch and synchronize kernels from parallel CPU threads using HIP
-#pragma omp parallel num_threads(num_devices) 
+#pragma omp parallel num_threads(num_devices)
 {
   unsigned n = omp_get_thread_num();
   hipSetDevice(n);
@@ -182,7 +235,7 @@ for(int n = 0; n < num_devices; n++) {
 * OpenMP example
 ```cpp
 // Launch and synchronize kernels from parallel CPU threads using OpenMP
-#pragma omp parallel num_threads(num_devices) 
+#pragma omp parallel num_threads(num_devices)
 {
   unsigned n = omp_get_thread_num();
   #pragma omp target teams distribute parallel for device(n)
@@ -192,6 +245,8 @@ for(int n = 0; n < num_devices; n++) {
 ```
 </small>
 
+
+# Direct peer to peer access {.section}
 
 # Direct peer to peer access (HIP)
 
@@ -232,106 +287,23 @@ int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
 
 * If direct peer to peer access is not available or implemented, the functions should fall back to a normal copy through host memory
 
+
+# Summary {.section}
+
 # Three levels of parallelism
 
-<small>
-
-1. GPU -- GPU threads on the multiprocessors
+<div class="column">
+1. GPU: GPU threads
     * Parallelization strategy: HIP, OpenMP, SYCL, Kokkos, OpenCL
-2. Node -- Multiple GPUs and CPUs
+2. Node: Multiple GPUs and CPUs
     * Parallelization strategy: MPI, Threads, OpenMP
-3. Supercomputer -- Many nodes connected with interconnect
+3. Supercomputer: Many nodes connected with interconnect
     * Parallelization strategy: MPI between nodes
+</div>
 
-</small>
-
-![](img/parallel_regions.png){width=60%}
-
-
-# MPI and HIP
-
-* Compiling HIP/OpenMP and MPI calls in the same compilation unit may not always be trivial
-* One can set MPI compiler to use `hipcc` or the desirable OpenMP compiler like `nvc`, e.g. for OpenMPI:
-  ```bash
-  OMPI_CXXFLAGS='' OMPI_CXX='hipcc'
-  ```
-or 
-  ```bash
-  OMPI_CXXFLAGS='' OMPI_CXX='nvc -mp=gpu -gpu=cc80'
-  ```
-
-* Alternatively, one could separate HIP/OpenMP and MPI code in different compilation units compiled with `mpicxx` and `hipcc`/`nvc`
-    * Link object files in a separate step using `mpicxx` or `hipcc`/`nvc`
-
-
-# MPI+HIP strategies
-
-1. One MPI process per node
-2. **One MPI process per GPU**
-3. Many MPI processes per GPU, only one uses it
-4. **Many MPI processes sharing a GPU**
-
-* 2 is recommended (also allows using 4 with services such as CUDA MPS)
-    * Typically results in most productive and least invasive implementation
-      for an MPI program
-    * No need to implement GPU-GPU transfers explicitly (MPI handles all
-      this)
-    * It is further possible to utilize remaining CPU cores with OpenMP (but
-      this is not always worth the effort/increased complexity)
-
-
-# Selecting the correct GPU
-
-* Typically, all processes on the node can access all GPUs of that node
-* The following implementation allows utilizing all GPUs using one or more
-  processes per GPU
-    * Use CUDA MPS when launching more processes than GPUs
-
-```cpp
-int deviceCount, nodeRank;
-MPI_Comm commNode;
-MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, 0, MPI_INFO_NULL, &commNode);
-MPI_Comm_rank(commNode, &nodeRank);
-#ifdef _OPENMP
-  deviceCount = omp_get_num_device();
-  omp_set_default_device(nodeRank % deviceCount);
-#elif __HIP__
-  hipGetDeviceCount(&deviceCount);
-  hipSetDevice(nodeRank % deviceCount);
-#endif
-```
-
-
-# GPU-GPU communication through MPI
-
-* GPU-aware (CUDA/ROCm aware) MPI libraries support direct GPU-GPU transfers
-    * Can take a pointer to device buffer (avoids host/device data copies)
-* Unfortunately, currently no GPU support for custom MPI data types (must use a
-  datatype representing a contiguous block of memory)
-    * Data packing/unpacking must be implemented application-side on GPU
-* ROCm aware MPI libraries are still new and there may be problems
-    * It is a good idea to have a fallback option to use pinned host staging
-      buffers
-
-# MPI communication with GPU-aware MPI
-
-* With HIP+MPI, one can simply pass a device pointer to GPU-aware MPI
-   * In OpenMP this can be achieved using `use_device_ptr` clause as follows:
-
-```cpp
-/* MPI_Send with GPU-aware MPI */
-#pragma omp target data use_device_ptr(data)
-{
-    MPI_Send(data, N, MPI_DOUBLE, to, MPI_ANY_TAG, MPI_COMM_WORLD);
-}
-
-/* MPI_Recv with GPU-aware MPI */
-#pragma omp target data use_device_ptr(data)
-{
-    MPI_Recv(data, N, MPI_DOUBLE, from, MPI_ANY_TAG, MPI_COMM_WORLD,
-             MPI_STATUS_IGNORE);
-}
-```
+<div class="column">
+![](img/parallel_regions.png){width=99%}
+</div>
 
 
 # Summary
@@ -341,7 +313,5 @@ MPI_Comm_rank(commNode, &nodeRank);
    * In OpenMP, `device()`-directive can also be used to select the target device
 * If you have an MPI program, it is often best to use one GPU per process, and
   let MPI handle data transfers between GPUs
-* There is still little experience of ROCm aware MPIs, there may be issues
-    * Note that a GPU-aware MPI is only required when passing device
-      pointers to MPI, passing host pointers does not require any
-      GPU awareness
+* GPU-aware MPI is required when passing device pointers to MPI
+  * Using host pointers does not require any GPU awareness

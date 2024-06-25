@@ -1,6 +1,6 @@
 ---
 title:  OpenMP library routines and data sharing
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -71,7 +71,7 @@ lang:   en
 -->
 
 <div class=column>
-```fortran
+```fortranfree
 program hello
   use omp_lib
   integer :: omp_rank

@@ -1,6 +1,6 @@
 ---
 title:  Working in supercomputers
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -9,17 +9,20 @@ lang:   en
 - Connecting to supercomputers
 - Directory structure in CSC supercomputers
 - Module system
-- Building applications with `make`
+- Building applications
 - Running applications via batch job system
 
 <br>
 Some information provided here is specific to LUMI, Mahti, and Puhti, some more general
 
+# Anatomy of supercomputer
+ ![](images/cluster_diagram.jpeg){.center width=80%}
+ 
 # Connecting to supercomputers
 
 - `ssh` is used to connect to all CSC supercomputers
 ```
-ssh <my_user_id>@lumi.csc.fi
+ssh -i <path-to-ssh-key> <my_user_id>@lumi.csc.fi
 ```
 - With **ssh keys** one can login without password
     - Automatically setup for LUMI
@@ -101,14 +104,21 @@ ssh-copy-id <my_user_id>@mahti.csc.fi
 ![](images/building.svg){.center}
 </div>
 
-# Compiling and linking: possible problems
+# Compiling and linking
 
-- Programs should usually be separated into several files
+Single file source code:
+
+```bash
+cc main.c -o main
+```
+
+- In practice programs are separated into several files
   <br>$\Rightarrow$ complicated dependency structures
 - Building large programs takes time
     - could we just rebuild the parts that changed?
 - Having different options when building
     - debug versions, enabling/disabling features, etc.
+
 
 # Make
 
@@ -209,7 +219,6 @@ CCFLAGS=-O3
     - Describe how you want to run the job and what resources you need
     - Add a command that launches your program
     - Submit your job to a queue
-- This is done with a batch job script
 
 
 # Example SLURM batch job script
@@ -218,7 +227,7 @@ CCFLAGS=-O3
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=<project_id>
-#SBATCH –-partition=debug
+#SBATCH –-partition=small
 #SBATCH –-time=00:10:00
 #SBATCH –-nodes=2
 #SBATCH –-ntasks-per-nodes=128
@@ -252,6 +261,27 @@ srun myprog
   ```bash
   sacct jobid
   ```
+  
+# Interactive jobs
+
+Alternatively to `sbatch` one can submit a job to the queue using `srun`
+
+```bash
+srun --account=<...> –-partition=<...> –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
+```
+
+In this case the output will be shown on the terminal  (job will fail if the connection is lost). 
+
+When debugging or doing performance analisys the user needs to interact with the application.
+
+```bash
+salloc --account=<project_id> –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00
+```
+Once the allocation is made, this command will start a shell on the login node.
+
+```bash
+srun --ntasks=32 --cpus-per-task=8 ./my_interactive_prog
+```
 
 # Useful Slurm environment variables
 
@@ -283,3 +313,4 @@ Following variables override the corresponding variables in the batch script
 - `SBATCH_PARTITION` : `--partition`
 
 </small>
+

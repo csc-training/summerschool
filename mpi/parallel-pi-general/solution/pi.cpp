@@ -6,30 +6,30 @@ constexpr int n = 840;
 
 int main(int argc, char** argv)
 {
-   int myid, ntasks;
+   int rank, ntasks;
 
    MPI_Status status;
 
    MPI_Init(&argc, &argv);
    MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
-   MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-   if (0 == myid) {
+   if (0 == rank) {
       printf("Computing approximation to pi with N=%d\n", n);
       printf("Using %d MPI processes\n", ntasks);
    }
 
    int chunksize = n / ntasks;
-   int istart = myid * chunksize + 1;
-   int istop = (myid + 1) * chunksize;
+   int istart = rank * chunksize + 1;
+   int istop = (rank + 1) * chunksize;
 
    // Handle possible uneven division
    int remainder = n % ntasks;
    if (remainder > 0) {
-       if (myid < remainder) {
+       if (rank < remainder) {
           // Assign this task one element more
-          istart += myid;
-          istop += myid + 1;
+          istart += rank;
+          istop += rank + 1;
        } else {
           istart += remainder;
           istop += remainder;
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
    }
 
    // Reduction to rank 0
-   if (0 == myid) {
+   if (0 == rank) {
       double pi = localpi;
       for (int i=1; i < ntasks; i++) {
         MPI_Recv(&localpi, 1, MPI_DOUBLE, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);

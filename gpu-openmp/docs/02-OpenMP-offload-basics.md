@@ -1,6 +1,6 @@
 ---
 title:  "OpenMP offloading: <br>introduction"
-event:  CSC Summer School in High-Performance Computing 2023
+event:  CSC Summer School in High-Performance Computing 2024
 lang:   en
 ---
 
@@ -31,17 +31,17 @@ lang:   en
     - currently, OpenACC can provide better performance in NVIDIA GPUs
 
 
-# OpenACC support for AMD GPUs
+<!-- # OpenACC support for AMD GPUs -->
 
-- OpenACC support for AMD GPUs in GNU compilers under development
-- OpenACC support in general for Clang/Flang is under development
-- Cray compilers
-    - Fortran compiler supports OpenACC v2.7, support for latest OpenACC coming 
-    - C/C++ compiler does not support OpenACC
-- In LUMI, only Fortran is supported with OpenACC
-- For now, OpenACC is not a recommended approach for new codes targeting AMD
-  GPUs
-    - if a Fortran code already uses OpenACC, it may be possible to use it
+<!-- - OpenACC support for AMD GPUs in GNU compilers under development -->
+<!-- - OpenACC support in general for Clang/Flang is under development -->
+<!-- - Cray compilers -->
+<!--     - Fortran compiler supports OpenACC v2.7, support for latest OpenACC coming  -->
+<!--     - C/C++ compiler does not support OpenACC -->
+<!-- - In LUMI, only Fortran is supported with OpenACC -->
+<!-- - For now, OpenACC is not a recommended approach for new codes targeting AMD -->
+<!--   GPUs -->
+<!--     - if a Fortran code already uses OpenACC, it may be possible to use it -->
 
 
 # OpenMP vs. CUDA/HIP
@@ -189,7 +189,7 @@ cc -o my_exe test.c -fopenmp
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target
   ! code executed in device
 !$omp end target
@@ -270,7 +270,7 @@ cc -o my_exe test.c -fopenmp
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target
 !$omp teams
 !$omp parallel
@@ -312,7 +312,7 @@ for (int i = 0; i < N; i++)
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target
 !$omp teams
 !$omp distribute
@@ -368,7 +368,7 @@ for (int i = 0; i < N; i++) {
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target teams
 !$omp distribute parallel do
 do i = 1, N
@@ -398,7 +398,7 @@ for (int i = 0; i < N; i++) {
 </div>
 
 <div class=column>
-```fortran
+```fortranfree
 !$omp target
 !$omp loop
 do i = 1, N
@@ -426,19 +426,27 @@ end do
 
 # CRAY compiler
 
-- Different behaviour between C/C++ and Fortran
+- Different behaviour and flags between C/C++ and Fortran compilers
+- Optimization messages: compiler descibres optimizations in a `.lst` file 
+- Save temporaries (advanced): saves assembly files (`.s`) and others
+  - Offloading code: look for `*openmppost-llc.s` files
 
-<div class=column>
-`cc -fopenmp -fsave-loopmark`
-</div>
+<div align="center">
 
-<div class=column>
-`ftn -hmsgs -hlist=m  -fopenmp`
+|Diagnostics|`cc`|`ftn`|
+|-----------|----|-----|
+|Optimization messages |`-fsave-loopmark`| `-hmsgs`, `-hlist=m`|
+|Save temporaries |`-save-temps`|`-hkeepfiles`|
 
 </div>
 
 # CRAY compiler - Fortran
-- Provides full support and nice diagnostics in file `*.lst`
+
+```bash
+> ftn -hmsgs -hlist=m -fopenmp sum.F90
+```
+
+- Provides full support and nice Diagnostics in file `*.lst`
 - Example:
 ```bash
 ftn-6405 ftn: ACCEL VECTORSUM, File = sum.F90, Line = 17 
@@ -449,6 +457,11 @@ ftn-6823 ftn: THREAD VECTORSUM, File = sum.F90, Line = 17
 ```
 
 # CRAY compiler - C/C++
+
+```bash
+> cc -fsave-loopmark -fopenmp sum.c
+```
+
 - Provides support but limited diagnostics in file `*.lst`
 - Still possible to see what is happening during the runtime of the application by setting the environment variable `CRAY_ACC_DEBUG` and reading the stderr of the batch job
 - Less friendly to developer

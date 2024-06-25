@@ -1,16 +1,16 @@
-ifneq ($(PUHTI),1)
+ifneq ($(MAHTI),1)
 
 CC=cc
 FC=ftn
 LINKER=$(CC)
-FLAGS=-O2 -fopenmp
+FLAGS=-O2 -fopenmp -I/appl/lumi/SW/LUMI-22.08/L/EB/libpng/1.6.37-cpeCray-22.08/include -L/appl/lumi/SW/LUMI-22.08/L/EB/libpng/1.6.37-cpeCray-22.08/lib
 
 else
 
 CC=nvc
 FC=nvfortran
 LINKER=$(FC)
-FLAGS=-O2 -mp=gpu -gpu=cc70
+FLAGS=-O2 -mp=gpu -gpu=cc80 -Minfo=mp
 
 endif
 
