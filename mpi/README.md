@@ -1,8 +1,24 @@
-# MPI exercises and demo codes
+# MPI section
+
+## Learning objectives
+
+At the end of the MPI section, the student should be able to
+
+- Explain differences in communicating between processes/threads in a shared memory system vs a distributed memory system
+- Describe deadlocking communication patterns and approaches to avoid deadlocks
+- Contrast blocking and non-blocking communication
+- Write MPI programs in C, C++, or Fortran for:
+  - Communicating data between processes
+  - Using collective communication calls over a subset of processes
+- Compile and run MPI programs in supercomputers
+- Start exploring some advanced MPI features relevant for their use case
+
+
+## Demo codes
 
 See [demos](demos/) for demo codes referred to in the slides.
 
-## Wednesday
+## Wednesday exercises
 
 ### Introduction to MPI
 
@@ -25,7 +41,7 @@ See [demos](demos/) for demo codes referred to in the slides.
 - [Collective operations](collectives/)
 
 
-## Thursday
+## Thursday exercises
 
 ### Debugging
 
