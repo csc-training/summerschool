@@ -45,7 +45,7 @@ Because it makes (among other things)
 
 # Unit tests
 ::::::::: {.columns}
-:::::: {.column width="50%"}
+:::::: {.column width="60%"}
 ::: incremental
 A test is not a unit test if ^[Michael Feathers https://www.artima.com/weblogs/viewpost.jsp?thread=126923]:
 
@@ -56,7 +56,7 @@ A test is not a unit test if ^[Michael Feathers https://www.artima.com/weblogs/v
 - You have to do special things to your environment (such as editing config files) to run it
 :::
 ::::::
-:::::: {.column width="50%"}
+:::::: {.column width="40%"}
 <small>
 ```cpp
 struct Field {
@@ -93,7 +93,7 @@ Unit tests run **fast** so you can run them **often**
 
 # Integration tests
 ::::::::: {.columns}
-:::::: {.column width="50%"}
+:::::: {.column width="60%"}
 ::: incremental
 - Test integrated parts of the program for correctness
 - Can vary in size
@@ -104,7 +104,7 @@ Unit tests run **fast** so you can run them **often**
 - May take multiple seconds or minutes to complete
 :::
 ::::::
-:::::: {.column width="50%"}
+:::::: {.column width="40%"}
 <small>
 ```cpp
 std::tuple<int, int, std::vector<double>>
