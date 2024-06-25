@@ -1,6 +1,6 @@
 ## Simple scalability test
 
-1. Build three dimensional heat equation solver under [heat-equation-3d](heat-equation-3d)  with the provided [Makefile](Makefile).
+1. Build three dimensional heat equation solver under [heat-equation-3d](heat-equation-3d)  with the provided [Makefile](heat-equation-3d/Makefile).
 2. Run the program `heat_hip` with different number of GPUs (1, 2, 4, 8, 16) and 
    investigate scalability. You need to set the environment variable 
    ```
