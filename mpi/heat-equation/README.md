@@ -8,7 +8,9 @@ To parallelise the code, one needs to divide the grid into blocks of columns
 (in Fortran) or rows (in C/C++) and assign each block to one MPI task. Or in other
 words, share the work among the MPI tasks by doing a domain decomposition.
 
-![domain decomposition](img/domain-decomposition.svg)
+![domain decomposition C](img/domain-decomposition-c.svg)
+
+![domain decomposition Fortran](img/domain-decomposition-fortran.svg)
 
 The MPI tasks are able to update the grid independently everywhere else than
 on the boundaries -- there the communication of a single column (or row) with
