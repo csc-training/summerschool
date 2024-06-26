@@ -1,4 +1,4 @@
-CC=gcc
+CC=CC
 HIPCC=CC -xhip
 
 prog: prog.o util.o

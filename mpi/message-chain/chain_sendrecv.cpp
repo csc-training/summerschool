@@ -42,15 +42,12 @@ int main(int argc, char *argv[])
     MPI_Barrier(MPI_COMM_WORLD);
     t0 = MPI_Wtime();
 
-    // TODO: Send messages
-    MPI_Send(message.data(), size, MPI_INT, destination, 42, MPI_COMM_WORLD);
+    // TODO: Send and receive messages
+    MPI_Sendrecv(message.data(), size, MPI_INT, destination, rank + 1, receiveBuffer.data(), 
+                size, MPI_INT, source, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
     printf("\nSender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
            rank, size, rank + 1, destination);
-
-    // TODO: Receive messages
-    MPI_Recv(receiveBuffer.data(), size, MPI_INT, source, 42, MPI_COMM_WORLD, &status);
-    MPI_Get_count(&status, MPI_INT, &nrecv);
 
     printf("Receiver: %d. Received number of elements:%d. First element %d.\n",
            rank, nrecv, receiveBuffer[0]);
