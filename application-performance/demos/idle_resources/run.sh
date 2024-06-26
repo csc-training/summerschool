@@ -14,7 +14,7 @@ echo "Submitting cpu job"
 cpujobid=$(submit_job << "EOF"
 #!/bin/bash
 
-#SBATCH --account=project_462000007
+#SBATCH --account=project_465001194
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
@@ -44,7 +44,7 @@ echo "Submitting gpu job"
 gpujobid=$(submit_job << EOF
 #!/bin/bash
 
-#SBATCH --account=project_462000007
+#SBATCH --account=project_465001194
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
@@ -66,7 +66,7 @@ echo "Submitting gnuplot job with dependency on jobs $cpujobid and $gpujobid"
 sbatch --dependency afterok:$cpujobid:$gpujobid << EOF
 #!/bin/bash
 
-#SBATCH --account=project_462000007
+#SBATCH --account=project_465001194
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
