@@ -264,3 +264,7 @@ int fib(int n) {
 
 - OpenMP homepage: <http://openmp.org/>
 - Online tutorials: <http://openmp.org/wp/resources/#Tutorials>
+- Specifications and examples:
+  - <https://www.openmp.org/specifications/>
+    - [v5.2 API Specification](https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5-2.pdf)
+    - [v5.2.2 Examples document](https://www.openmp.org/wp-content/uploads/openmp-examples-5.2.2-final.pdf)
