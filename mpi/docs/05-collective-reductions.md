@@ -45,6 +45,10 @@ lang:   en
 MPI_Reduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `root`{.input}, `comm`{.input})
   : Combines values to the root process from all processes of the group
 
+<p>
+- Demo: `reduce.c`
+
+
 # Global reduction
 
 MPI_Allreduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `comm`{.input})
@@ -52,6 +56,9 @@ MPI_Allreduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`
 
 <p>
 - Similar to `MPI_Reduce` + `MPI_Bcast` but more efficient
+
+<p>
+- Demo: `reduce.c`
 
 
 # Allreduce example: parallel dot product
@@ -93,6 +100,9 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL, &
 `call mpi_allreduce(a, a, n, mpi_real,...`
     - One should employ `MPI_IN_PLACE` for this purpose
 - Replacing the send buffer with the `MPI_IN_PLACE` clause informs MPI that the buffers are the same
+<p>
+- Demo: `reduce.c`
+
 
 # Summary
 
