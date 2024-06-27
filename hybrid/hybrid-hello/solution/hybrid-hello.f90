@@ -5,11 +5,11 @@ program hello
     integer :: my_id, tid, rc
     integer :: provided, required=MPI_THREAD_FUNNELED
 
-    ! call MPI_Init_thread(required, provided, rc)
-    call mpi_init(rc)
-    call MPI_Comm_rank(MPI_COMM_WORLD, my_id, rc)
+    call MPI_Init_thread(required, provided, rc)
+    !call MPI_Init(rc)
+    !call MPI_Query_thread(provided, rc)
 
-    call MPI_Query_thread(provided, rc)
+    call MPI_Comm_rank(MPI_COMM_WORLD, my_id, rc)
 
     !$omp parallel private(tid)
     tid = omp_get_thread_num()
