@@ -9,6 +9,8 @@ int main(int argc, char* argv[]) {
     int coords[2] = {0};    /* Coordinates in the grid */
     int neighbors[4] = {0}; /* Neighbors in 2D grid */
     int period[2] = {1, 1};
+    int num_dims = 2;
+    int reorder = 0;
     MPI_Comm comm2d;
 
     MPI_Init(&argc, &argv);
@@ -36,16 +38,23 @@ int main(int argc, char* argv[]) {
 
     /* Create the 2D Cartesian communicator */
     /* TODO */
+    MPI_Cart_create(MPI_COMM_WORLD, num_dims, dims, period, reorder, &comm2d);
 
     /* Find out and store the neighboring ranks */
     /* TODO */
+    MPI_Cart_shift(comm2d, 0, 1, &neighbors[0], &neighbors[1]);  // up and down
+    MPI_Cart_shift(comm2d, 1, 1, &neighbors[2], &neighbors[3]);  // left and right
+
+    //MPI_Cart_shift(MPI_Comm comm, int direction, int disp,
+    //int *rank_source, int *rank_dest)
 
     /* Find out and store also the Cartesian coordinates of a rank */
     /* TODO */
+    MPI_Cart_coords(comm2d, rank, 2, coords);
 
     for (irank = 0; irank < ntasks; irank++) {
         if (rank == irank) {
-            printf("%3i = %2i %2i neighbors=%3i %3i %3i %3i\n",
+            printf("%3i = %2i %2i neighbors= up: %3i down: %3i left: %3i right: %3i\n",
                    rank, coords[0], coords[1], neighbors[0], neighbors[1],
                    neighbors[2], neighbors[3]);
         }

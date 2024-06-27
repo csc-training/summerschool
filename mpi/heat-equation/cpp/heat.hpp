@@ -8,19 +8,45 @@ struct ParallelData {
     int size;            // Number of MPI tasks
     int rank;
     int nup, ndown;      // Ranks of neighbouring MPI tasks
+    
+    MPI_Comm cart_comm;
 
     ParallelData() {      // Constructor
 
       // TODO start: query number of MPI tasks and store it in
       // the size attribute of the class
+      MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+      /*
       // Query MPI rank of this task and store it in the rank attribute
+      MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+      
       // Determine also up and down neighbours of this domain and store
       // them in nup and ndown attributes, remember to cope with
       // boundary domains appropriatly
+      if (rank==0){
+        nup = MPI_PROC_NULL;
+        ndown = rank+1;
+      }
+      else if (rank==size-1){
+        nup = rank-1;
+        ndown = MPI_PROC_NULL;
+      }
+      else{
+        nup = rank-1;
+        ndown = rank+1;
+      }
+      */
 
-      nup =
-      ndown =
+      const int num_dims = 1;
+      int dims[num_dims] = {size};      /* Dimensions of the domain decomposition grid */
+      int periods[num_dims] = {0};  // Not allowing periodicity.
+      int reorder = 1;
+      MPI_Dims_create(size, num_dims, dims); // Creates a division of processors in a Cartesian grid.
+      MPI_Cart_create(MPI_COMM_WORLD, num_dims, dims, periods, reorder, &cart_comm);
+      MPI_Comm_rank(cart_comm, &rank);
+
+      MPI_Cart_shift(cart_comm, 0, 1, &nup, &ndown);  // up and down
 
       // TODO end
 
@@ -60,6 +86,12 @@ void initialize(int argc, char *argv[], Field& current,
 void exchange(Field& field, const ParallelData parallel);
 
 void evolve(Field& curr, const Field& prev, const double a, const double dt);
+
+void exchange_evolve_non_block(Field& curr, Field& prev, const double a, const double dt, const ParallelData parallel);
+
+void evolve_inner(Field& curr, Field& prev, const double a, const double dt);
+
+void evolve_ghost_boundary(Field& curr, Field& prev, const double a, const double dt);
 
 void write_field(const Field& field, const int iter, const ParallelData parallel);
 

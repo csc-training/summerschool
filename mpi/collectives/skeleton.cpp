@@ -33,6 +33,28 @@ int main(int argc, char *argv[])
     /* TODO: use a single collective communication call
      *       (and maybe prepare some parameters for the call)
      */
+    
+    // Case 1
+    //int rank_bcast_root = 0;
+    //MPI_Bcast(sendbuf.data(), sendbuf.size(), MPI_INT, rank_bcast_root, MPI_COMM_WORLD);
+    //print_buffers(sendbuf);
+
+    // Case 2
+    //int rank_bcast_root = 0;
+    //int recvcount = 2;
+    //int num_elem_send_per_process = 2;  // Number of elements sent to each process.
+    //MPI_Scatter(sendbuf.data(), num_elem_send_per_process, MPI_INT, recvbuf.data(), recvcount, MPI_INT, rank_bcast_root, MPI_COMM_WORLD);
+
+    // Case 3
+    //const int recvcounts[] = {1,1,2,4};  // Contains the number of elements that are received from each process.
+    //const int displs[] = {0,1,2,4};
+    //int rank_bcast_root = 1;
+    //MPI_Gatherv(sendbuf.data(), recvcounts[rank], MPI_INT, recvbuf.data(), recvcounts, displs, MPI_INT, rank_bcast_root, MPI_COMM_WORLD);
+
+    // Case 4
+    int num_elem_send_per_process = 2;  // Number of elements to send/receive to/from each process.
+    MPI_Alltoall(sendbuf.data(), num_elem_send_per_process, MPI_INT, recvbuf.data(), num_elem_send_per_process, MPI_INT, MPI_COMM_WORLD);
+    
 
     /* Print data that was received */
     /* TODO: use correct buffer */
