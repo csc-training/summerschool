@@ -138,7 +138,7 @@ int main(int argc, char argv[]) {
 #include <omp.h>
 #include <unistd.h>
 
-int main(int argc, char argv[]) {
+int main(int argc, char* argv[]) {
   int omp_rank;
 #pragma omp parallel
   {
