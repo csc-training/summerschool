@@ -6,6 +6,11 @@ lang:   en
 
 # MPI-IO {.section}
 
+# I/O layers
+
+
+![](img/io-layers.png)
+
 # MPI-IO
 
 - MPI-IO stands for Message Passing Interface I/O.
