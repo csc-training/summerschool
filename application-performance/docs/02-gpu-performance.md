@@ -125,6 +125,17 @@ while (1) {
 
 Keep the data in faster memory
 
+<small>
+```cpp
+__global__ void tiled_mat_mul(float *a, float *b, float *c) {
+    __shared__ float tileA[64];
+    __shared__ float tileB[64];
+    // Load data from a and b to shared memory and compute c
+    // while reusing the shared memory by the threads in one block
+}
+```
+</small>
+
 :::
 ::: {.column width="70%"}
 
