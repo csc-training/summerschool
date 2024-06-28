@@ -10,5 +10,5 @@ If you traced the code do
 2. `tau_treemerge.pl`
 3. `tau_trace2json tau.trc tau.edf -chrome -ignoreatomic -o app.json`
 4. copy the app.json to your laptop (or use lumi.csc.fi)
-5. go to `ui.perfetto.dev`
+5. go to `https://ui.perfetto.dev`
 6. Open trace file `app.json`
