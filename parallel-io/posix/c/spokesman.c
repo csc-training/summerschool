@@ -50,9 +50,41 @@ void single_writer(int my_id, int *localvector, int localsize)
 {
     FILE *fp;
     int *fullvector;
+    MPI_Status status;
 
     /* TODO: Implement a function that will write the data to file so that
        a single process does the file io. Use rank WRITER_ID as the io rank */
+    
+    fullvector = (int *) malloc(DATASIZE * sizeof(int));
+    MPI_Gather(localvector, localsize, MPI_INT, fullvector, localsize, MPI_INT, WRITER_ID, MPI_COMM_WORLD);  // Gather localvector from all ranks to fullvector in rank WRITER_ID.
+
+    // Open and write to file
+    if (my_id == WRITER_ID) {
+        if ((fp = fopen("singlewriter.dat", "wb")) == NULL) {
+            fprintf(stderr, "Error: %d (%s)\n", errno, strerror(errno));
+            MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+        } else {
+            fwrite(fullvector, sizeof(int), DATASIZE, fp);
+            fclose(fp);
+            printf("Wrote %d elements to file singlewriter.dat\n", DATASIZE);
+        }
+    }
+
+    /*
+    if (my_id==WRITER_ID){
+        fullvector = localvector;
+        
+        MPI_Recv(localvector, localsize, MPI_INT, 0, 0,  MPI_COMM_WORLD, &status);
+        
+        // Write out the data to a file
+        std::ostringstream filename_stream;
+        filename_stream << "heat_" << std::setw(4) << std::setfill('0') << iter << ".png";
+        std::string filename = filename_stream.str();
+    }
+    else {
+        MPI_Send(localvector, localsize, MPI_INT, 0, 0,  MPI_COMM_WORLD, &status);
+    }
+    */
 
     free(fullvector);
 }

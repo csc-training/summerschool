@@ -43,13 +43,13 @@ int main(int argc, char *argv[])
     t0 = MPI_Wtime();
 
     // TODO: Send messages
-    MPI_Send(message.data(), size, MPI_INT, destination, 42, MPI_COMM_WORLD);
+    MPI_Send(message.data(), size, MPI_INT, destination, 42, MPI_COMM_WORLD);  // Current rank sends message to desination.
 
     printf("\nSender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
            rank, size, rank + 1, destination);
 
     // TODO: Receive messages
-    MPI_Recv(receiveBuffer.data(), size, MPI_INT, source, 42, MPI_COMM_WORLD, &status);
+    MPI_Recv(receiveBuffer.data(), size, MPI_INT, source, 42, MPI_COMM_WORLD, &status);  // Current rank receives message from source.
     MPI_Get_count(&status, MPI_INT, &nrecv);
 
     printf("Receiver: %d. Received number of elements:%d. First element %d.\n",

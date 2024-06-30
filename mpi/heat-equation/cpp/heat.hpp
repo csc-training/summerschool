@@ -42,7 +42,7 @@ struct ParallelData {
       int dims[num_dims] = {size};      /* Dimensions of the domain decomposition grid */
       int periods[num_dims] = {0};  // Not allowing periodicity.
       int reorder = 1;
-      MPI_Dims_create(size, num_dims, dims); // Creates a division of processors in a Cartesian grid.
+      MPI_Dims_create(size, num_dims, dims);  // Creates a division of processors in a Cartesian grid.
       MPI_Cart_create(MPI_COMM_WORLD, num_dims, dims, periods, reorder, &cart_comm);
       MPI_Comm_rank(cart_comm, &rank);
 

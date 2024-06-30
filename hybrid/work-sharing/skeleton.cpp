@@ -17,8 +17,15 @@ int main(void)
      *   vecC = vecA + vecB
      */
 
+    int i = 0;
+    #pragma omp parallel for shared(vecA, vecB, vecC) private(i)  // NX not included in the shared list because it is not a variable. Do not put reduction(+:vecC) here since each thread works on a separate chunk of the loop and accesses independent elements of vecC.
+    for (i=0; i < NX; i++) {
+        vecC[i] = vecA[i] + vecB[i];
+    }
+
     double sum = 0.0;
     /* Compute the check value */
+    #pragma omp parallel for shared(vecC) private(i) reduction(+:sum)
     for (int i = 0; i < NX; i++) {
         sum += vecC[i];
     }

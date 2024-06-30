@@ -12,7 +12,7 @@ void ordered_print(int, int, int *, int);
 
 int main(int argc, char *argv[])
 {
-    int my_id, ntasks, localsize;
+    int my_id, ntasks, localsize;  // my_id is the rank of the process
     int *localvector;
 
     MPI_Init(&argc, &argv);
@@ -52,6 +52,7 @@ void single_reader(int my_id, int *localvector, int localsize)
 
     /* TODO: Implement a function that will read the data from a file so that
        a single process does the file io. Use rank WRITER_ID as the io rank */
+
 
     free(fullvector);
 }

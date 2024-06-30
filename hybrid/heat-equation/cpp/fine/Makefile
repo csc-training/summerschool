@@ -2,7 +2,7 @@ ifeq ($(COMP),)
 COMP=lumi
 endif
 
-COMMONDIR=../common
+COMMONDIR=../../common
 
 ifeq ($(COMP),gnu)
 CXX=g++

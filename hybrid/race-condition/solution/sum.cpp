@@ -21,7 +21,10 @@ int main(void)
     /* Version with data race */
     #pragma omp parallel for default(shared) private(i)
     for (i = 0; i < NX; i++) {
-        sum += vecA[i];
+        #pragma omp critical  // A section that is executed by only one thread at a time.
+        {
+            sum += vecA[i];
+        }
     }
     printf("Sum with data race:                              %ld\n",
            sum);
