@@ -6,7 +6,7 @@ lang:   en
 
 # HIP
 
-- Heterogeneous-computing Interface for Portability
+- Heterogeneous-Computing Interface for Portability
     - AMD effort to offer a common programming interface that works on both
       CUDA and ROCm devices
 - HIP is a C++ runtime API and kernel programming language
