@@ -10,7 +10,7 @@ lang:   en
     - AMD effort to offer a common programming interface that works on both
       CUDA and ROCm devices
 - HIP is a C++ runtime API and kernel programming language
-    - standard C++ syntax, uses nvcc/hcc compiler in the background
+    - standard C++ syntax, uses nvcc/(amd clang) compiler in the background
     - almost a one-on-one clone of CUDA from the user perspective
     - allows one to write portable GPU codes
 - AMD offers also a wide set of optimised libraries and tools
