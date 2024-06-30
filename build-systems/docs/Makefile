@@ -1,4 +1,4 @@
-FACTORY=slidefactory.sif -t csc-2016-high-contrast
+FACTORY=slidefactory.sif
 OPTIONS=
 
 SRC=$(wildcard *.md)
