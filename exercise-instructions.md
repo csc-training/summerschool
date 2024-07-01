@@ -182,6 +182,12 @@ To compile your program, use:
 ```bash
 CC -xhip <source.cpp>
 ```
+HIP codes can be compiled as well using the `hipcc` AMD compiler:
+```
+hipcc --offload-arch=gfx90a streams.cpp
+```
+The flag `--offload-arch=gfx90a` indicates that we are targeting MI200 GPUs.
+
 #### HIPFORT
 The following modules are required:
 ```bash
