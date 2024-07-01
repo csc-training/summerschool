@@ -111,6 +111,7 @@ int main(void)
 
 <div class="column">
 ![](img/grid-threads.png)
+    
 <small>
 - Built-in variables to be used within a kernel:
     - `threadIdx`, `blockIDx`, `blockDim`, `gridDim`
