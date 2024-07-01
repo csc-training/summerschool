@@ -52,7 +52,7 @@ void read_field(Field& field, std::string filename)
     /* Read the actual data */
     for (int i = 0; i < nx; i++) {
         for (int j = 0; j < ny; j++) {
-                auto ind = (i + 1) * ny + j + 1;
+                auto ind = (i + 1) * (ny+2) + j + 1;
                 file >> field.temperature[ind];
         }
     }
