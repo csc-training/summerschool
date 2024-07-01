@@ -6,14 +6,16 @@
 #define USE_PINNED_HOST_MEM 1
 
 // GPU kernel definition 
-__global__ void kernel(float *a, int n_total)
+__global__ void kernel(float *a, int n)
 {
-  int i = threadIdx.x + blockIdx.x * blockDim.x;
-  if(i < n_total){
-    float x = (float)i;
+  int tid = threadIdx.x + blockIdx.x * blockDim.x;
+  int stride = gridDim.x * blockDim.x;
+
+  for (; tid < n; tid += stride) {
+    float x = (float)tid;
     float s = sinf(x); 
     float c = cosf(x);
-    a[i] = a[i] + sqrtf(s*s+c*c);
+    a[tid] = a[tid] + sqrtf(s*s+c*c);
   }
 }
 
@@ -180,15 +182,16 @@ void case_3(hipEvent_t *start_event, hipEvent_t *stop_event, hipStream_t *stream
   print_results("Case 3 - Duration for asynchronous transfers+kernels", timing, max_error(a, n_total), n_streams);
 }
 
-int main(){
-  
+int main()
+{
   // Problem size
-  constexpr int n_total = 131072; // pow(2, 17);
+  constexpr int n_total = 67108864; // 2**26
 
   // Device grid sizes
   constexpr int n_streams = 4;
   constexpr int blocksize = 256;
-  constexpr int gridsize = (n_total - 1 + blocksize) / blocksize;
+  // constexpr int gridsize = (n_total - 1 + blocksize) / blocksize;  // fails on LUMI with large n_total (July 2024)
+  constexpr int gridsize = 512;
 
   // Allocate host and device memory
   float *a, *d_a;
