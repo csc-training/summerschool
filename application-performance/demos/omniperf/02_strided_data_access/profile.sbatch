@@ -1,9 +1,9 @@
 #!/bin/bash -l
 
 #SBATCH --account=project_465001194
-#SBATCH --job-name=cpu_gpu_sync
-#SBATCH --output=cpu_gpu_sync.out%j
-#SBATCH --error=cpu_gpu_sync.err%j
+#SBATCH --job-name=02_row_col
+#SBATCH --output=02_row_col.out%j
+#SBATCH --error=02_row_col.err%j
 #SBATCH --partition=small-g
 #SBATCH --reservation=CSC_summer_school_gpu
 #SBATCH --nodes=1
@@ -20,4 +20,4 @@ ml rocm/5.4.6
 
 export PATH=/projappl/project_465001194/apps/omniperf/bin:$PATH
 
-srun omniperf profile -n cpu_gpu_sync -- ./a.out
+srun omniperf profile -n 02_row_col -- ./a.out
