@@ -1,5 +1,5 @@
 # Investigating streams and events
-
+**NOTE!** This code works only when compile with `hipcc --offload-arch=gfx90a streams.cpp`!
 This exercise demonstrates an asynchronous data transfer and computation. Three different asynchronous cases are created, and their timings are printed out. The timings are recorded with hipEvent calls.
 
 ## Instructions
