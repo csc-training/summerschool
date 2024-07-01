@@ -180,7 +180,7 @@ module load rocm/5.4.6
 
 To compile your program, use:
 ```bash
-CC -xhip --offload-arch=gfx90a <source.cpp>
+CC -xhip  <source.cpp>
 ```
 HIP codes can be compiled as well using the `hipcc` AMD compiler:
 ```
@@ -365,7 +365,7 @@ See [the MPI debugging exercise](mpi/debugging),
 [LUMI documentation](https://docs.lumi-supercomputer.eu/development/)
 for possible debugging options.
 
-## Performance analysis with TAU and Omniperf
+## Performance analysis with TAU and Omniperf  (**OUTDATED, check the [application-performance](/application-performance) folder!**)
 ```
 # Create installation directory
 mkdir -p .../appl/tau
@@ -376,7 +376,7 @@ wget https://www.cs.uoregon.edu/research/tau/tau_releases/tau-2.32.tar.gz
 tar xvf tau-2.32.tar.gz
 mv tau-2.32 2.32
 
-# Go to TAU directory (**OUTDATED, check the application-performance folder!**)
+# Go to TAU directory
 cd 2.32
 
 ./configure -bfd=download -otf=download -unwind=download -dwarf=download -iowrapper -cc=cc -c++=CC -fortran=ftn -pthread -mpi -phiprof -papi=/opt/cray/pe/papi/6.0.0.15/
