@@ -214,21 +214,23 @@ int main(){
   for (int i = 0; i < n_streams; ++i)
     hipStreamCreate(&stream[i]);
 
-  // Initialize memory and run case 0
-  memset(a, 0, bytes);
-  case_0(start_event, stop_event, stream, a, d_a, n_streams, gridsize, blocksize, n_total);
-  
-  // Initialize memory and run case 1
-  memset(a, 0, bytes);
-  case_1(start_event, stop_event, stream, a, d_a, n_streams, gridsize, blocksize, n_total);
-  
-  // Initialize memory and run case 2
-  memset(a, 0, bytes);
-  case_2(start_event, stop_event, stream, a, d_a, n_streams, gridsize, blocksize, n_total);
-  
-  // Initialize memory and run case 3
-  memset(a, 0, bytes);
-  case_3(start_event, stop_event, stream, a, d_a, n_streams, gridsize, blocksize, n_total);
+  for (int i = 0; i < 3; ++i){
+    // Initialize memory and run case 0
+    memset(a, 0, bytes);
+    case_0(start_event, stop_event, stream, a, d_a, n_streams, gridsize, blocksize, n_total);
+    
+    // Initialize memory and run case 1
+    memset(a, 0, bytes);
+    case_1(start_event, stop_event, stream, a, d_a, n_streams, gridsize, blocksize, n_total);
+    
+    // Initialize memory and run case 2
+    memset(a, 0, bytes);
+    case_2(start_event, stop_event, stream, a, d_a, n_streams, gridsize, blocksize, n_total);
+    
+    // Initialize memory and run case 3
+    memset(a, 0, bytes);
+    case_3(start_event, stop_event, stream, a, d_a, n_streams, gridsize, blocksize, n_total);
+  }
 
   // Destroy events
   for (int i = 0; i < n_streams + 1; ++i){
