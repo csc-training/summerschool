@@ -11,7 +11,7 @@ If you **profiled** the code you can either
 2. run `pprof` to use the cli interface
 
 or
-1. go to `www.lumi.csc.fi` on your browser
+1. go to [www.lumi.csc.fi] on your browser
 2. launch a desktop session
 3. open terminal on the session
 4. cd to the `tauprofile` dir
@@ -23,5 +23,5 @@ If you **traced** the code do
 2. `tau_treemerge.pl`
 3. `tau_trace2json tau.trc tau.edf -chrome -ignoreatomic -o app.json`
 4. copy the app.json to your laptop (or use lumi.csc.fi)
-5. go to `https://ui.perfetto.dev`
+5. go to [https://ui.perfetto.dev]
 6. Open trace file `app.json`
