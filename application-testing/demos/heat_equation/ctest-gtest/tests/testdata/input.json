@@ -1,0 +1,12 @@
+{
+    "rows": 2000,
+    "cols": 2000,
+    "nsteps": 2000,
+    "image_interval": 500,
+    "read_file": true,
+    "fname": "testdata/bottle.dat",
+    "png_name_prefix": "heat_",
+    "diffusion_constant": 0.5,
+    "grid_spacing_x": 0.01,
+    "grid_spacing_y": 0.01
+}
