@@ -29,4 +29,4 @@ export PROFILEDIR=tauprofile
 srun tau_exec \
     -T mpi,rocprofiler \
     -ebs \
-    src/hip/heat_hip 4000 4000 5000
+    src/hip/heat_hip 4000 4000 1000
