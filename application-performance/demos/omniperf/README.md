@@ -10,4 +10,4 @@ This directory contains two kernels of interest
 
 # More information
 
-See the [omniperf documentation](https://rocm.github.io/omniperf) for information on the omniperf metrics.
+See the [omniperf documentation](https://rocm.github.io/omniperf/performance_model.html) for information on the omniperf metrics.
