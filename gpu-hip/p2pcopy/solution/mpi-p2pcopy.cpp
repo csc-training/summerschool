@@ -4,6 +4,14 @@
 #include <mpi.h>
 #include <hip/hip_runtime.h>
 
+/*
+ * Try this code with
+ *   export HSA_ENABLE_SDMA=1
+ * and
+ *   export HSA_ENABLE_SDMA=0
+ * See https://rocm.docs.amd.com/en/latest/conceptual/gpu-memory.html
+ */
+
 inline void mpiMemcpy(int rank, int* dA, int N) {
     if (rank == 0) {
         MPI_Send(dA, N, MPI_INT, 1, 123, MPI_COMM_WORLD);
@@ -30,8 +38,10 @@ void copyP2P(int rank, int* dA, int N) {
     double time_s = std::chrono::duration_cast<std::chrono::nanoseconds>(tStop - tStart).count() / 1e9;
     double bandwidth = (double) N * sizeof(int) / (1024*1024*1024) / (time_s / M);
 
-    printf("MPI - Bandwith: %.3f (GB/s), Time: %.3f s\n",
-            bandwidth, time_s);
+    if (rank == 0) {
+        printf("MPI - Bandwith: %.3f (GB/s), Time: %.3f s\n",
+                bandwidth, time_s);
+    }
 }
 
 
@@ -54,26 +64,36 @@ int main(int argc, char *argv[])
     // Check that we have at least two GPUs
     int devcount;
     hipGetDeviceCount(&devcount);
-    if(devcount < 2) {
-        printf("Need at least two GPUs!\n");
-        MPI_Abort(MPI_COMM_WORLD, -1);
-    } else {
-        printf("Found %d GPU devices\n", devcount);
+    if (rank == 0) {
+        printf("Found %d GPU devices per node\n", devcount);
     }
 
     // Set device
-    hipSetDevice(rank % devcount);
+    if (rank == 0) {
+        hipSetDevice(0);
+    }
+    for (int dev = 0; dev < devcount; ++dev) {
+        if (rank == 1) {
+            hipSetDevice(dev);
+        }
 
-    // Allocate memory for both GPUs
-    int N = pow(2, 28);
-    int *dA;
-    hipMalloc((void**) &dA, sizeof(int) * N);
+        if (rank == 0) {
+            printf("Measuring from GPU 0 to GPU %d\n", dev);
+        }
 
-    // Memcopy
-    copyP2P(rank, dA, N);
+        // Allocate memory for both GPUs
+        int N = pow(2, 28);
+        int *dA;
+        hipMalloc(&dA, sizeof(int) * N);
+        hipDeviceSynchronize();
 
-    // Deallocate device memory
-    hipFree(dA);
+        // Memcopy
+        copyP2P(rank, dA, N);
+
+        // Deallocate device memory
+        hipFree(dA);
+        hipDeviceSynchronize();
+    }
 
     MPI_Finalize();
 }
