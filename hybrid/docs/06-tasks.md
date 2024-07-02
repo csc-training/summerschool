@@ -219,14 +219,15 @@ int fib(int n) {
 
 # OpenMP programming best practices
 
+- Explicitly declare variable privacy level (`shared`/`private`/`firstprivate`)
+    - Avoid `shared` variables if not explicitly needed
+    - *Default: `shared`!*
 - Maximise parallel regions
     - Reduce fork-join overhead, e.g. combine multiple parallel loops into one
       large parallel region
     - Potential for better cache re-usage
 - Parallelise outermost loops if possible
     - Move PARALLEL DO construct outside of inner loops
-- Reduce access to shared data
-    - Possibly make small arrays private
 - Use more tasks than threads
     - Too large number of tasks leads to performance loss
 
@@ -263,3 +264,7 @@ int fib(int n) {
 
 - OpenMP homepage: <http://openmp.org/>
 - Online tutorials: <http://openmp.org/wp/resources/#Tutorials>
+- Specifications and examples:
+  - <https://www.openmp.org/specifications/>
+    - [v5.2 API Specification](https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5-2.pdf)
+    - [v5.2.2 Examples document](https://www.openmp.org/wp-content/uploads/openmp-examples-5.2.2-final.pdf)

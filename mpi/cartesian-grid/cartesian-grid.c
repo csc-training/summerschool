@@ -9,7 +9,8 @@ int main(int argc, char* argv[]) {
     int coords[2] = {0};    /* Coordinates in the grid */
     int neighbors[4] = {0}; /* Neighbors in 2D grid */
     int period[2] = {1, 1};
-    MPI_Comm comm2d;
+    MPI_Comm comm2d;        /* Cartesian communicator */
+    int crank;              /* MPI rank in the Cartesian communicator */
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
@@ -44,12 +45,12 @@ int main(int argc, char* argv[]) {
     /* TODO */
 
     for (irank = 0; irank < ntasks; irank++) {
-        if (rank == irank) {
+        if (crank == irank) {
             printf("%3i = %2i %2i neighbors=%3i %3i %3i %3i\n",
-                   rank, coords[0], coords[1], neighbors[0], neighbors[1],
+                   crank, coords[0], coords[1], neighbors[0], neighbors[1],
                    neighbors[2], neighbors[3]);
         }
-        MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Barrier(comm2d);
     }
 
     MPI_Finalize();

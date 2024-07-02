@@ -10,7 +10,7 @@ target_link_libraries(heat_omp PRIVATE png)
 target_include_directories(heat_omp PUBLIC "../../../hybrid/heat-hybrid/common")
 
 if(OpenMP_CXX_FOUND)
-  target_link_libraries(heat_omp PUBLIC OpenMP::OpenMP_CXX)
+  target_link_libraries(heat_omp PUBLIC OpenMP::OpenMP_CXX "${OpenMP_CXX_FLAGS}")
 endif()
 
 

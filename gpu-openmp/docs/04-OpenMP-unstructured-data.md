@@ -105,6 +105,8 @@ void process_points() {
 
 <div class="column">
 ```c
+#pragma omp requires unified_shared_memory
+
 typedef struct points {
   double *x, *y;
   int n;
@@ -112,8 +114,6 @@ typedef struct points {
 
 void process_points() {
   points p;
-
-  #pragma omp requires unified_shared_memory
   p.size = n;
   p.x = (double) malloc(...
   p.y = (double) malloc(...

@@ -3,8 +3,8 @@
 ### Building and running CPU code
 
 1. Build the code in [cpu](cpu) with `make`. In LUMI the correct compiler command is
-  `cc`, modify [Makefile](cpu/Makefile) as needed.
-2. "Modify" one of the source files by `touch util.c`, run `make` again and observe 
+  `CC`, modify [Makefile](cpu/Makefile) as needed.
+2. "Modify" one of the source files by `touch util.cpp`, run `make` again and observe 
    the behaviour
 3. Try to run the resulting executable `prog` via batch system. A template batch job 
    scripts are provided in [../](../). Try different number of nodes and tasks per node.

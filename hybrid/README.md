@@ -21,8 +21,8 @@
 
 ### Heat equation
 
-- [Fine grain parallelization]()
-- [Coarse grain parallelization]()
+- [Fine grain parallelization](heat-equation/README_fine.md)
+- [Coarse grain parallelization](heat-equation/README_coarse.md)
 
 ### Hybrid MPI+OpenMP programming
 

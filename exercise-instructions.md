@@ -180,8 +180,22 @@ module load rocm/5.4.6
 
 To compile your program, use:
 ```bash
-CC -xhip <source.cpp>
+CC -xhip  <source.cpp>
 ```
+HIP codes can be compiled as well using the `hipcc` AMD compiler:
+```
+hipcc --offload-arch=gfx90a  `CC --cray-print-opts=cflags` <source>.cpp `CC --cray-print-opts=libs` 
+```
+The flag `--offload-arch=gfx90a` indicates that we are targeting MI200 GPUs. If the code uses some libraries we need extract from the `CC` wrapers. This is doen via the flags `CC --cray-print-opts=cflags` and  `CC --cray-print-opts=libs`.
+
+A more elegant solution would be to use:
+```
+export HIPCC_COMPILE_FLAGS_APPEND="--offload-arch=gfx90a $(CC --cray-print-opts=cflags)"
+export HIPCC_LINK_FLAGS_APPEND=$(CC --cray-print-opts=libs)
+
+hipcc <source.cpp>
+```
+This is helpful when using make.
 #### HIPFORT
 The following modules are required:
 ```bash
@@ -304,7 +318,7 @@ srun --job-name=example --account=project_465001194 --partition=small --reservat
 
 When running GPU programs, few changes need to made to the batch job
 script. The `partition` is are now different, and one must also request explicitly given number of GPUs per node with the
-`--gpus-per-node=8` option. As an example, in order to use a
+`--gpus-per-node=X` option. As an example, in order to use a
 single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
@@ -312,7 +326,7 @@ single GPU with single MPI task and a single thread use:
 #SBATCH --account=project_465001194
 #SBATCH --partition=small-g
 #SBATCH --reservation=CSC_summer_school_gpu
-#SBATCH --gpus-per-node=8
+#SBATCH --gpus-per-node=1
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --time=00:05:00
@@ -322,7 +336,7 @@ srun my_gpu_exe
 
 The same result can be achived using directly `srun`
 ```
-srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=8 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
+srun --job-name=example --account=project_465001194 --partition=small-g --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=8 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
 ```
 **Note!** Some programs require gpu-aware MPI to perform MPI operations using directly the GPU pointers (this avoiding some GPU-CPU trasnfers). This is enabled via:
 
@@ -351,7 +365,7 @@ See [the MPI debugging exercise](mpi/debugging),
 [LUMI documentation](https://docs.lumi-supercomputer.eu/development/)
 for possible debugging options.
 
-## Performance analysis with TAU and Omniperf
+## Performance analysis with TAU and Omniperf  (**OUTDATED, check the [application-performance](/application-performance) folder!**)
 ```
 # Create installation directory
 mkdir -p .../appl/tau

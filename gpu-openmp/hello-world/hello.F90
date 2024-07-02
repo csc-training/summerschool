@@ -10,7 +10,9 @@ program hello
   num_devices = omp_get_num_devices()
   print *, "Number of available devices", num_devices
 
-!$omp target
+  initial_device = .true.
+
+!$omp target map(from: initial_device)
     initial_device = omp_is_initial_device()
 !$omp end target
     if (initial_device) then

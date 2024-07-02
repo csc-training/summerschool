@@ -92,7 +92,7 @@ end program hello
 ```c
 #include <stdio.h>
 #include <omp.h>
-int main(int argc, char argv[]) {
+int main(int argc, char* argv[]) {
   int omp_rank;
 #pragma omp parallel
   {
@@ -138,7 +138,7 @@ int main(int argc, char argv[]) {
 #include <omp.h>
 #include <unistd.h>
 
-int main(int argc, char argv[]) {
+int main(int argc, char* argv[]) {
   int omp_rank;
 #pragma omp parallel
   {
@@ -195,7 +195,7 @@ int main(int argc, char argv[]) {
 #include <omp.h>
 #include <unistd.h>
 
-int main(int argc, char argv[]) {
+int main(int argc, char* argv[]) {
   int omp_rank;
 #pragma omp parallel private(omp_rank)
   {

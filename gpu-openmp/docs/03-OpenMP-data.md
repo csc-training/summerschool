@@ -101,6 +101,7 @@ double *data = (double *) malloc(N * sizeof(double));
 #pragma omp target map(tofrom:data[0:N])
 // do something ..
 ```
+NOTE! In Fortran, one must specify `data(first index : inclusive last index)` and in C `data[first index : size]`.
 
 
 # Motivation for optimizing data movement

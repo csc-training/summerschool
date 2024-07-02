@@ -1,0 +1,35 @@
+{
+    "mahti": {
+        "dst": "/users/juhanala/Code/",
+        "excluded": [
+            ".git/",
+            ".gitignore",
+            "compile_commands.json",
+            "paraview",
+            ".cache",
+            "build"
+        ]
+    },
+    "puhti": {
+        "dst": "/users/juhanala/Code/",
+        "excluded": [
+            ".git/",
+            ".gitignore",
+            "compile_commands.json",
+            "paraview",
+            ".cache",
+            "build"
+        ]
+    },
+    "lumi": {
+        "dst": "/users/juhanala/Code/",
+        "excluded": [
+            ".git/",
+            ".gitignore",
+            "compile_commands.json",
+            "paraview",
+            ".cache",
+            "build"
+        ]
+    }
+}

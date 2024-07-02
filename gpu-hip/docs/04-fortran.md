@@ -86,7 +86,6 @@ program saxpy
   integer(c_size_t), parameter :: Nbytes = N*bytes_per_element
   real, allocatable,target,dimension(:) :: x, y
   real, parameter ::  a=2.0
-  real :: x_d(N), y_d(N)
 
 ```
 </div>

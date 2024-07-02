@@ -6,6 +6,7 @@ program cartesian_grid
        rank,         & ! MPI rank of the task
        rc,           & ! return code
        comm2d,       & ! Cartesian communicator
+       crank,        & ! MPI rank in the Cartesian communicator
        neighbors(4), & ! neighbors in the 2D grid
        coord(0:1),   & ! coordinates in the grid
        dims(0:1)       ! dimensions of the grid
@@ -36,16 +37,17 @@ program cartesian_grid
 
   ! Create the 2D Cartesian communicator
   call mpi_cart_create(mpi_comm_world, 2, dims, period, .true., comm2d, rc)
+  call mpi_comm_rank(comm2d, crank, rc)
   ! Find out & store the neighboring ranks
   call mpi_cart_shift(comm2d, 0, 1, neighbors(1), neighbors(2), rc)
   call mpi_cart_shift(comm2d, 1, 1, neighbors(3), neighbors(4), rc)
   ! Find out & store also the Cartesian coordinates of a rank
-  call mpi_cart_coords(comm2d, rank, 2, coord, rc)
+  call mpi_cart_coords(comm2d, crank, 2, coord, rc)
 
   do irank = 0, ntask-1
-     if (rank == irank) print '(I3,A,2I2,A,4I3)', &
-          rank, '=', coord, ' neighbors=', neighbors(:)
-     call mpi_barrier(mpi_comm_world, rc)
+     if (crank == irank) print '(I3,A,2I2,A,4I3)', &
+          crank, '=', coord, ' neighbors=', neighbors(:)
+     call mpi_barrier(comm2d, rc)
   end do
 
   call mpi_finalize(rc)
