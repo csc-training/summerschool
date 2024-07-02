@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
         hipMalloc((void**)&dA[i], sizeof(double) * dec[i].len);
         hipMalloc((void**)&dB[i], sizeof(double) * dec[i].len);
         hipMalloc((void**)&dC[i], sizeof(double) * dec[i].len);
-        hipStreamCreate(&(strm[i]));
+        hipStreamCreate(&strm[i]);
     }
 
     // Start timing

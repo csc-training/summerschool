@@ -183,7 +183,7 @@ void case_3(hipEvent_t *start_event, hipEvent_t *stop_event, hipStream_t *stream
 int main(){
   
   // Problem size
-  constexpr int n_total = 131072; // pow(2, 17);
+  constexpr int n_total = 13107200; // pow(2, 17);
 
   // Device grid sizes
   constexpr int n_streams = 4;

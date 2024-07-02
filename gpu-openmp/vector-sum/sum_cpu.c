@@ -11,13 +11,11 @@ double wtime();
 int main(void)
 {
     double vecA[NX], vecB[NX], vecC[NX];
-    double start_clock;
 
     /* Initialization of the vectors */
-    #pragma omp target data map(alloc:vecA, vecB) map(from:vecC) // Offload to GPU device
-    {
-    #pragma omp target teams distribute parallel for // Create a league of teams. teams and parallel constructs create threads, however, all the threads are still executing the same code
-    // Distributes loop iterations over the teams.
+    #pragma omp target map(tofrom:vecA, vecB)  // Offload to GPU device
+    #pragma omp teams  // Create a league of teams. teams and parallel constructs create threads, however, all the threads are still executing the same code
+    #pragma omp distribute parallel for  // Distributes loop iterations over the teams.
     for (int i = 0; i < NX; i++) {
         vecA[i] = 1.0 / ((double) (NX - i));
         vecB[i] = vecA[i] * vecA[i];
@@ -27,15 +25,15 @@ int main(void)
     //       for computing it in the device
     
     //Get the start time stamp 
-    start_clock = wtime();
-    //#pragma omp target map(to:vecA, vecB) map(tofrom:vecC)  // Offload to GPU device
-    #pragma omp target teams  // Create a league of teams. teams and parallel constructs create threads, however, all the threads are still executing the same code
+    double start_clock = wtime();
+    #pragma omp target map(to:vecA, vecB) map(tofrom:vecC)  // Offload to GPU device
+    #pragma omp teams  // Create a league of teams. teams and parallel constructs create threads, however, all the threads are still executing the same code
     #pragma omp distribute parallel for  // Distributes loop iterations over the teams.
     //#pragma omp loop  //Leaves more freedom to the implementation to do the work division
     for (int i = 0; i < NX; i++) {
         vecC[i] = vecA[i] + vecB[i];
     }
-    }
+
     double stop_clock = wtime();
     printf("Vector sum calculation took %f seconds.\n", (stop_clock - start_clock));
 

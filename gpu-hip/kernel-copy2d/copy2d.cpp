@@ -4,6 +4,9 @@
 
 // TODO: add a device kernel that copies all elements of a vector
 //       using GPU threads in a 2D grid
+__global__ vec_ele_cpy_(int n, int m, double* x, double* y){
+    int thread_xid = 
+}
 
 
 int main(void)

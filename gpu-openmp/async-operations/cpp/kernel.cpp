@@ -2,6 +2,7 @@
 
 // TODO make mandelbrot a device function
 
+#pragma omp declare target
 int kernel(int xi, int yi) {
   double x0 = xmin + xi * dx;
   double y0 = ymin + yi * dy;
@@ -16,3 +17,4 @@ int kernel(int xi, int yi) {
   }
   return i;
 }
+#pragma omp end declare target

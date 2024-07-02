@@ -23,7 +23,7 @@ void Field::generate() {
     for (int i = 0; i < nx + 2; i++) {
         for (int j = 0; j < ny + 2; j++) {
             // Distance of point i, j from the origin 
-            auto dx = i - nx / 2 + 1;
+            auto dx = i - nx / 2 + 1;  // Defined inside the parallel region and is thus private to each thread.
             auto dy = j - ny / 2 + 1;
             if (dx * dx + dy * dy < radius * radius) {
                 temperature(i, j) = 5.0;
@@ -33,6 +33,7 @@ void Field::generate() {
         }
     }
     }
+
 
     // Boundary conditions
     #pragma omp parallel for

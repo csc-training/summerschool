@@ -27,27 +27,47 @@ int main(){
   hipMalloc((void**)&d_a, bytes);   // device pinned
 
   // Create events
-  #error create the required timing events here
+  //#error create the required timing events here
+  hipEvent_t start_kernel_event, start_d2h_event, stop_event;
+  hipEventCreate(&start_kernel_event);
+  hipEventCreate(&start_d2h_event);
+  hipEventCreate(&stop_event);
 
   // Create stream
   hipStream_t stream;
   hipStreamCreate(&stream);
 
   // Start timed GPU kernel and device-to-host copy
-  #error record the events somewhere across the below lines of code
-  #error such that you can get the timing for the kernel, the
-  #error memory copy, and the total combined time of these
+
+  // #error record the events somewhere across the below lines of code
+  // #error such that you can get the timing for the kernel, the
+  // #error memory copy, and the total combined time of these
+
+  // Start timed GPU kernel
   clock_t start_kernel_clock = clock();
-  kernel<<<gridsize, blocksize, 0, stream>>>(d_a, n_total);
+  hipEventRecord(start_kernel_event, stream);  // Capture in event the contents of stream at the time of this call.
+  kernel<<<gridsize, blocksize, 0, stream>>>(d_a, n_total);  // Launch kernel.
 
+  // Start timed device-to-host memcopy
   clock_t start_d2h_clock = clock();
-  hipMemcpyAsync(a, d_a, bytes, hipMemcpyDeviceToHost, stream);
+  hipEventRecord(start_d2h_event, stream);
+  hipMemcpyAsync(a, d_a, bytes, hipMemcpyDeviceToHost, stream);  // Asynchronous D2H copy (d_a to a) on stream. The host can now perform tasks independently of D2H copy.
+  //hipMemcpy(a, d_a, bytes, hipMemcpyDeviceToHost);  // D2H copy (d_a to a) on stream.
 
+  // Stop timing
   clock_t stop_clock = clock();
-  hipStreamSynchronize(stream);
+  hipEventRecord(stop_event, stream);
+  hipEventSynchronize(stop_event);  // Wait for event to complete
+  
+  //hipStreamSynchronize(stream);  // Synchronize stream
+
 
   // Exctract elapsed timings from event recordings
-  #error get the elapsed time from the timing events
+  // #error get the elapsed time from the timing events
+  float time_kernel, time_d2h, time_total;
+  hipEventElapsedTime(&time_kernel, start_kernel_event, start_d2h_event);  // Compute the elapsed time (start_d2h_event-start_kernel_event) in milliseconds and store it in time_kernel.
+  hipEventElapsedTime(&time_d2h, start_d2h_event, stop_event);
+  hipEventElapsedTime(&time_total, start_kernel_event, stop_event);
 
   // Check that the results are right
   int error = 0;
@@ -64,7 +84,10 @@ int main(){
 
   // Print event timings
   printf("Event timings:\n");
-  #error print event timings here
+  // #error print event timings here
+  printf("  %.3f ms - kernel\n", time_kernel);
+  printf("  %.3f ms - device to host copy\n", time_d2h);
+  printf("  %.3f ms - total time\n\n", time_total);
 
   // Print clock timings
   printf("clock_t timings:\n");
@@ -76,7 +99,10 @@ int main(){
   hipStreamDestroy(stream);
 
   // Destroy events
-  #error destroy events here
+  // #error destroy events here
+  hipEventDestroy(start_kernel_event);  //Destroy event object
+  hipEventDestroy(start_d2h_event);  //Destroy event object
+  hipEventDestroy(stop_event);  //Destroy event object
 
   // Deallocations
   hipFree(d_a); // Device

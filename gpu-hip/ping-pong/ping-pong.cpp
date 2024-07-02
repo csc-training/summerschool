@@ -63,6 +63,9 @@ void GPUtoGPUviaHost(int rank, double *hA, double *dA, int N, double &timer)
 {
     double start, stop;
     start = MPI_Wtime();
+    int dest_rank, source_rank;
+    int tag01 = 42;
+    int tag10 = 43;
 
     // TODO: Implement a GPU-to-GPU ping-pong that communicates via the host,
     //       but uses the GPU to increment the vector elements. Copy data from
@@ -71,11 +74,33 @@ void GPUtoGPUviaHost(int rank, double *hA, double *dA, int N, double &timer)
     //       sending them back to rank 0.
     if (rank == 0) {
         // TODO: Copy vector to host and send it to rank 1
+        hipMemcpy(hA, dA, sizeof(double)*N, hipMemcpyDeviceToHost);
+        dest_rank = 1;
+        MPI_Send(hA, N, MPI_DOUBLE, dest_rank, tag01, MPI_COMM_WORLD);
+
         // TODO: Receive vector from rank 1 and copy it to the device
+        source_rank = 1;
+        MPI_Recv(hA, N, MPI_DOUBLE, source_rank, tag10, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        hipMemcpy(dA, hA, sizeof(double)*N, hipMemcpyHostToDevice);
+
     } else if (rank == 1) {
         // TODO: Receive vector from rank 0 and copy it to the device
+        source_rank = 0;
+        MPI_Recv(hA, N, MPI_DOUBLE, source_rank, tag01, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        hipMemcpy(dA, hA, sizeof(double)*N, hipMemcpyHostToDevice);
+
         // TODO: Launch kernel to increment values on the GPU
+        int n_threads = 128;  // Specifies the number of threads per block.
+        int n_blocks = (N - 1 + n_threads) / n_threads;  // Calculates the number of blocks needed to cover all N elements.
+                                                         // The -1 ensures that any remaining elements are covered by an 
+                                                         // additional block.
+        add_kernel<<<n_blocks, n_threads, 0, 0>>>(dA, N);
+
         // TODO: Copy vector to host and send it to rank 0
+        dest_rank = 0;
+        hipMemcpy(hA, dA, sizeof(double)*N, hipMemcpyDeviceToHost);  // Implicit hipDeviceSynchronize(). Will wait for all 
+                                                                     // threads of the GPU to be idle before starting to copy.
+        MPI_Send(hA, N, MPI_DOUBLE, dest_rank, tag10, MPI_COMM_WORLD);
     }
 
     stop = MPI_Wtime();
@@ -88,16 +113,36 @@ void GPUtoGPUdirect(int rank, double *dA, int N, double &timer)
 {
     double start, stop;
     start = MPI_Wtime();
+    int dest_rank, source_rank;
+    int tag01 = 42;
+    int tag10 = 43;
 
     // TODO: Implement a GPU-to-GPU ping-pong that communicates directly
     //       from GPU memory using HIP-aware MPI.
     if (rank == 0) {
         // TODO: Send vector to rank 1
+        dest_rank = 1;
+        MPI_Send(dA, N, MPI_DOUBLE, dest_rank, tag01, MPI_COMM_WORLD);
+
         // TODO: Receive vector from rank 1
+        source_rank = 1;
+        MPI_Recv(dA, N, MPI_DOUBLE, source_rank, tag10, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
     } else if (rank == 1) {
         // TODO: Receive vector from rank 0
+        source_rank = 0;
+        MPI_Recv(dA, N, MPI_DOUBLE, source_rank, tag01, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
         // TODO: Launch kernel to increment values on the GPU
+        int n_threads = 128;  // Specifies the number of threads per block.
+        int n_blocks = (N - 1 + n_threads) / n_threads;  // Calculates the number of blocks needed to cover all N elements.
+        add_kernel<<<n_blocks, n_threads, 0, 0>>>(dA, N);  // Asynchronous by default.
+        hipStreamSynchronize(0);  // Wait for all commands in stream 0 to complete. Without this, MPI_Send 
+                                  // (executed by host) may start sending dA before add_kernel has finished.
+        
         // TODO: Send vector to rank 0
+        dest_rank = 0;
+        MPI_Send(dA, N, MPI_DOUBLE, dest_rank, tag10, MPI_COMM_WORLD);
     }
 
     stop = MPI_Wtime();
@@ -166,8 +211,8 @@ int main(int argc, char *argv[])
 
     // GPU-to-GPU test, direct communication with HIP-aware MPI
     GPUtoGPUdirect(rank, dA, N, GPUtime);
-    hipMemcpy(hA, dA, sizeof(double) * N, hipMemcpyDeviceToHost);
     if (rank == 0) {
+        hipMemcpy(hA, dA, sizeof(double) * N, hipMemcpyDeviceToHost);
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
             errorsum += hA[i] - 2.0;
@@ -184,7 +229,7 @@ int main(int argc, char *argv[])
 
     // GPU-to-GPU test, communication via host
     GPUtoGPUviaHost(rank, hA, dA, N, GPUtime);
-    hipMemcpy(hA, dA, sizeof(double) * N, hipMemcpyDeviceToHost);
+    hipMemcpy(hA, dA, sizeof(double) * N, hipMemcpyDeviceToHost);  // Only need to be executed by rank 0, which does the checking. However, it does not matter in this case.
     if (rank == 0) {
         double errorsum = 0;
         for (int i = 0; i < N; ++i)
