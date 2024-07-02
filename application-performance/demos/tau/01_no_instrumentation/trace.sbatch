@@ -29,4 +29,4 @@ export TRACEDIR=tautrace
 srun tau_exec \
     -rocm \
     -T mpi,roctracer \
-    src/hip/heat_hip 4000 4000 1000
+    src/hip/heat_hip 4000 4000 3000
