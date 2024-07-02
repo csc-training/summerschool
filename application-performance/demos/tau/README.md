@@ -25,3 +25,6 @@ If you **traced** the code do
 4. copy the app.json to your laptop (or use https://www.lumi.csc.fi)
 5. go to https://ui.perfetto.dev
 6. Open trace file `app.json`
+
+# More information
+See the [TAU documentation](https://www.cs.uoregon.edu/research/tau/docs.php) for more information on using TAU.
