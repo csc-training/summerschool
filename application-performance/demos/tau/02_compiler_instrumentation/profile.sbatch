@@ -26,4 +26,4 @@ export TAU_PROFILE=1
 export PROFILEDIR=tauprofile
 [ -d $PROFILEDIR ] || mkdir $PROFILEDIR
 
-srun src/hip/heat_hip 4000 4000 1000
+srun src/hip/heat_hip 4000 4000 3000
