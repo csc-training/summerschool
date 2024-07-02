@@ -5,6 +5,7 @@
 3. Use `./build.sh` to build the code on a login node
 4. `sbatch profile.sbatch` to profile the code or `sbatch trace.sbatch` to trace the code
 
+# Analyze
 If you **profiled** the code you can either
 1. cd `tauprofile`
 2. run `pprof` to use the cli interface
