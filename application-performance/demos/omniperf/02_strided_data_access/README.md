@@ -13,7 +13,7 @@ Run with `sbatch profile.sbatch`
 3. Launch a terminal on the desktop session
 4. cd to this directory
 5. Do `. ../sourceme.sh`
-6. run `omniperf analyze -p workloads/01_three_kernels/mi200/ --gui`
+6. run `omniperf analyze -p workloads/02_row_col/mi200/ --gui`
 7. Open Firefox
 8. Go to address `localhost:8050`
 9. Analyze
