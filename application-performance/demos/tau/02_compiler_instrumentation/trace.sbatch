@@ -26,4 +26,4 @@ export TAU_TRACE=1
 export TRACEDIR=tautrace
 [ -d $TRACEDIR ] || mkdir $TRACEDIR
 
-srun src/hip/heat_hip 4000 4000 5000
+srun tau_exes -rocm src/hip/heat_hip 4000 4000 1000
