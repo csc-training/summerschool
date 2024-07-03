@@ -16,14 +16,14 @@ void copyP2P(int p2p, int gpu0, int gpu1, int* dA_0, int* dA_1, int N) {
     }
 
     // Do a dummy copy without timing to remove the impact of the first one
-    hipMemcpy(dA_0, dA_1, N, hipMemcpyDefault);
+    hipMemcpy(dA_0, dA_1, sizeof(int)*N, hipMemcpyDefault);
     hipDeviceSynchronize();
 
     // Do a series of timed P2P memory copies
     int M = 10;
     auto tStart = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < M; ++i) {
-        hipMemcpy(dA_0, dA_1, N, hipMemcpyDefault);
+        hipMemcpy(dA_0, dA_1, sizeof(int)*N, hipMemcpyDefault);
     }
     hipDeviceSynchronize();
     auto tStop = std::chrono::high_resolution_clock::now();
