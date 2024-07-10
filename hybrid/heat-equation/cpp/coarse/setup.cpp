@@ -55,9 +55,13 @@ void initialize(int argc, char *argv[], Field& current,
     }
 
     if (read_file) {
-        std::cout << "Reading input from " + input_file << std::endl;
-        read_field(current, input_file);
+        #pragma omp single
+        {
+            std::cout << "Reading input from " + input_file << std::endl;
+            read_field(current, input_file);
+        }
     } else {
+        #pragma omp single
         current.setup(rows, cols);
 
         current.generate();
