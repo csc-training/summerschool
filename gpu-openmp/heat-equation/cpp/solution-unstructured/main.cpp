@@ -44,6 +44,7 @@ int main(int argc, char **argv)
     for (int iter = 1; iter <= nsteps; iter++) {
         evolve(current, previous, a, dt);
         if (iter % image_interval == 0) {
+            update_host(current);
             write_field(current, iter);
         }
         // Swap current field so that it will be used
