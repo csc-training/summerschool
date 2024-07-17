@@ -64,7 +64,7 @@ contains
     currdata => curr%data
     prevdata => prev%data
 
-    !$omp target teams distribute parallel do private(i,j) collapse(2)
+    !$omp target teams distribute parallel do collapse(2)
     do j = 1, ny
        do i = 1, nx
           currdata(i, j) = prevdata(i, j) + a * dt * &

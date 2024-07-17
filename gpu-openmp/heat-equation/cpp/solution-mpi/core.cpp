@@ -50,13 +50,11 @@ void evolve(Field& curr, Field& prev, const double a, const double dt)
 
   int nx = curr.nx;
   int ny = curr.ny;
-  int field_size = (nx + 2) * (ny + 2);
 
   // Determine the temperature field at next time step
   // As we have fixed boundary conditions, the outermost gridpoints
   // are not updated.
-  #pragma omp target teams distribute parallel for collapse(2) \
-   map(tofrom:currdata[0:field_size], prevdata[0:field_size])
+  #pragma omp target teams distribute parallel for collapse(2)
   for (int i = 1; i < nx + 1; i++) {
     for (int j = 1; j < ny + 1; j++) {
       int ind = i * (ny + 2) + j;

@@ -32,7 +32,7 @@ contains
     ! fixed boundary conditions, the outermost gridpoints are not
     ! updated.
 
-!$omp target teams distribute parallel do map(tofrom:prevdata, currdata)
+    !$omp target teams distribute parallel do collapse(2)
     do j = 1, ny
        do i = 1, nx
           currdata(i, j) = prevdata(i, j) + a * dt * &
@@ -42,8 +42,8 @@ contains
                &   prevdata(i, j+1)) / dy**2)
        end do
     end do
-!$omp end target teams distribute parallel do 
-    
+    !$omp end target teams distribute parallel do
+
   end subroutine evolve
 
   ! Start a data region and copy temperature fields to the device
