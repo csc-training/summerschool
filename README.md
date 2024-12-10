@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: CSC Training <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # CSC Summer School in High-Performance Computing 2024
 
 This is the material repository for the High-Performance Computing Summer School organized by [CSC - IT Center for Science](https://csc.fi/en/).
