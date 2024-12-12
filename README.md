@@ -1,4 +1,5 @@
 <!--
+SPDX-FileCopyrightText: 2016 CSC - IT Center for Science Ltd. <www.csc.fi>
 SPDX-FileCopyrightText: CSC Training <www.csc.fi>
 
 SPDX-License-Identifier: CC-BY-4.0
