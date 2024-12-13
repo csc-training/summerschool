@@ -98,12 +98,13 @@ Please review the C++ section below how this same C code could look like in C++.
 
 ## C++
 
-Here is an example C++ code `test.cpp` containing elements that are expected to be familiar.
+Here is an example C++ code `test.cpp` containing elements that are expected to be familiar (except elements marked "bonus").
 Note that the function is "C style" (same as above in C section) to demonstrace interfacing C++ standard library containers (array and vector) with C interface.
 
 ```cpp
 #include <array>
 #include <cstdio>
+#include <numeric>
 #include <vector>
 
 // C style function definition
@@ -119,6 +120,13 @@ double calculate_sum(int n, const double *array)
 
     // Return sum
     return sum;
+}
+
+// Bonus: C++ style templated function definition
+template <typename T>
+T calculate_sum_vector(const std::vector<T> &vector)
+{
+    return std::accumulate(begin(vector), end(vector), static_cast<T>(0));
 }
 
 // Main function
@@ -156,6 +164,10 @@ int main(int argc, char *argv[])
     // Call a function; use b.data() to get a raw pointer
     sum = calculate_sum(size(b), b.data());
     printf("Sum of b is %f\n", sum);
+
+    // Call a templated function
+    sum = calculate_sum_vector(b);
+    printf("Sum of b is %f again\n", sum);
 
     return 0;
 }
