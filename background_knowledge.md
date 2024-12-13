@@ -23,7 +23,7 @@ If you are not familiar with these commands, please check [Linux tutorial](https
 
 Here is an example C code `test.c` containing elements that are expected to be familiar.
 
-```c
+```cpp
 #include <stdio.h>
 #include <stdlib.h>
 
