@@ -188,7 +188,74 @@ Please review the C section above how this same C++ code could look like in C.
 
 Here is an example Fortran code `test.f90` containing elements that are expected to be familiar.
 
-TODO
+```fortran
+! Module definition
+module demo
+  use iso_fortran_env, only : real64
+  implicit none
+
+contains
+
+  ! Module procedure definition
+  function calculate_sum(array) result(ret_sum)
+    real(real64), intent(in), dimension(:) :: array
+    real(real64) :: ret_sum
+
+    ret_sum = sum(array)
+  end function calculate_sum
+
+end module demo
+
+program demoprogram
+  use demo
+  implicit none
+
+  ! Declare variables
+  integer, parameter :: n = 4
+  integer :: i
+  real(real64), dimension(4) :: a
+  real(real64), dimension(:), allocatable :: b
+  real(real64) :: sum_value
+
+  ! Print
+  write(*,'(a,i0)') 'Hello n=', n
+
+  ! Initialize array
+  a = [1.1_real64, 2.2_real64, 3.3_real64, 4.4_real64]
+
+  ! Call a function
+  sum_value = calculate_sum(a)
+
+  ! Control statement
+  if (sum_value > 10.0_real64) then
+     write(*,*) 'Sum is large'
+  else
+     write(*,*) 'Sum is small'
+  end if
+
+  ! Allocate array
+  allocate(b(n))
+
+  ! Set values
+  b = [(1.1_real64 * real(i, real64), i=0, n-1)]
+
+  ! Call function
+  sum_value = calculate_sum(b)
+  write(*,'(a,f5.3)') 'Sum of b is ', sum_value
+
+  ! Free memory
+  deallocate(b)
+
+end program demoprogram
+```fortran
+
+Compile the code:
+
+    gfortran test.f90 -o test.x
+
+Execute the binary:
+
+    ./test.x
 
 In addition to Fortran, it is beneficial to have some knowledge on C/C++ languages as the GPU programming languages are mostly based on these languages.
 Please review the C and C++ sections above how this same Fortran code could look like in C and/or C++.
