@@ -188,7 +188,7 @@ Please review the C section above how this same C++ code could look like in C.
 
 Here is an example Fortran code `test.f90` containing elements that are expected to be familiar.
 
-```fortran
+```f90
 ! Module definition
 module demo
   use iso_fortran_env, only : real64
@@ -247,7 +247,7 @@ program demoprogram
   deallocate(b)
 
 end program demoprogram
-```fortran
+```
 
 Compile the code:
 
