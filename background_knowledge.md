@@ -59,6 +59,13 @@ int main(int argc, char *argv[])
     sum = calculate_sum(4, a);
     printf("Sum of a is %f\n", sum);
 
+    // Control statement
+    if (sum > 10) {
+        printf("Sum is large\n");
+    } else {
+        printf("Sum is small\n");
+    }
+
     // Allocate a dynamic array
     double *b = (double*)malloc(sizeof(double) * n);
 
@@ -128,6 +135,13 @@ int main(int argc, char *argv[])
     // Call a function; use a.data() to get a raw pointer
     sum = calculate_sum(size(a), a.data());
     printf("Sum of a is %f\n", sum);
+
+    // Control statement
+    if (sum > 10) {
+        printf("Sum is large\n");
+    } else {
+        printf("Sum is small\n");
+    }
 
     // Allocate a dynamic array
     std::vector<double> b(n);
