@@ -80,6 +80,8 @@ int main(int argc, char *argv[])
 
     // Free memory allocation
     free(b);
+
+    return 0;
 }
 ```
 
@@ -154,6 +156,8 @@ int main(int argc, char *argv[])
     // Call a function; use b.data() to get a raw pointer
     sum = calculate_sum(size(b), b.data());
     printf("Sum of b is %f\n", sum);
+
+    return 0;
 }
 ```
 
