@@ -1,7 +1,9 @@
-# Background knowledge
+# Background knowledge material
 
-To get most of the summer school, we expect basic working knowledge on Linux and C, C++, or Fortran.
+To get most of the summer school, it is expected to have basic working knowledge on Linux and C, C++, or Fortran.
 You can use this document to check the expected knowledge and prepare before the summer school starts.
+
+Feel free to contact the course organizers if you have any questions.
 
 ## Linux and command line shell
 
@@ -22,6 +24,8 @@ If you are not familiar with these commands, please check [Linux tutorial](https
 ## C
 
 Here is an example C code `test.c` containing elements that are expected to be familiar.
+
+If you want to refresh your C knowledge, please check, for example, [this C tutorial](https://www.w3schools.com/c/).
 
 ```cpp
 #include <stdio.h>
@@ -85,21 +89,31 @@ int main(int argc, char *argv[])
 }
 ```
 
-Compile the code:
+Compile the code on Linux command line:
 
     gcc test.c -o test.x
 
-Execute the binary:
+Execute the binary on Linux command line:
 
     ./test.x
 
-In addition to C, it is beneficial to have knowledge on C++ as we will use some C++ features such as standard library containers (array and vector) in some code examples and exercises.
+This gives the following output:
+
+    Hello n=4
+    Sum of a is 11.000000
+    Sum is large
+    Sum of b is 6.600000
+
+
+In addition to C, it is beneficial to have some knowledge on C++ as we will use C++ standard library containers (array and vector) in some code examples and exercises.
 Please review the C++ section below how this same C code could look like in C++.
 
 ## C++
 
 Here is an example C++ code `test.cpp` containing elements that are expected to be familiar (except elements marked "bonus").
 Note that the function is "C style" (same as above in C section) to demonstrace interfacing C++ standard library containers (array and vector) with C interface.
+
+If you want to refresh your C++ knowledge, please check, for example, [this C++ tutorial](https://www.w3schools.com/cpp/).
 
 ```cpp
 #include <array>
@@ -173,13 +187,21 @@ int main(int argc, char *argv[])
 }
 ```
 
-Compile the code:
+Compile the code on Linux command line:
 
     g++ test.cpp -o test.x
 
-Execute the binary:
+Execute the binary on Linux command line:
 
     ./test.x
+
+This gives the following output:
+
+    Hello n=4
+    Sum of a is 11.000000
+    Sum is large
+    Sum of b is 6.600000
+    Sum of b is 6.600000 again
 
 In addition to C++, it is beneficial to have knowledge on C as we will use libraries with C interface (via raw pointers like above) and the GPU programming frameworks are often based on explicit memory management (like `malloc()` and `free()` in C).
 Please review the C section above how this same C++ code could look like in C.
@@ -187,6 +209,8 @@ Please review the C section above how this same C++ code could look like in C.
 ## Fortran
 
 Here is an example Fortran code `test.f90` containing elements that are expected to be familiar.
+
+If you want to refresh your Fortran knowledge, please check, for example, [this Fortran tutorial](https://fortran-lang.org/en/learn/quickstart/).
 
 ```f90
 ! Module definition
@@ -225,6 +249,7 @@ program demoprogram
 
   ! Call a function
   sum_value = calculate_sum(a)
+  write(*,'(a,f8.3)') 'Sum of a is ', sum_value
 
   ! Control statement
   if (sum_value > 10.0_real64) then
@@ -241,7 +266,7 @@ program demoprogram
 
   ! Call function
   sum_value = calculate_sum(b)
-  write(*,'(a,f5.3)') 'Sum of b is ', sum_value
+  write(*,'(a,f8.3)') 'Sum of b is ', sum_value
 
   ! Free memory
   deallocate(b)
@@ -249,13 +274,20 @@ program demoprogram
 end program demoprogram
 ```
 
-Compile the code:
+Compile the code on Linux command line:
 
     gfortran test.f90 -o test.x
 
-Execute the binary:
+Execute the binary on Linux command line:
 
     ./test.x
+
+This gives the following output:
+
+    Hello n=4
+    Sum of a is   11.000
+     Sum is large
+    Sum of b is    6.600
 
 In addition to Fortran, it is beneficial to have some knowledge on C/C++ languages as the GPU programming languages are mostly based on these languages.
 Please review the C and C++ sections above how this same Fortran code could look like in C and/or C++.
