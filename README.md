@@ -5,17 +5,17 @@ SPDX-FileCopyrightText: CSC Training <www.csc.fi>
 SPDX-License-Identifier: CC-BY-4.0
 -->
 
-# CSC Summer School in High-Performance Computing 2024
+# CSC Summer School in High-Performance Computing 2025
 
 This is the material repository for the High-Performance Computing Summer School organized by [CSC - IT Center for Science](https://csc.fi/en/).
 
 Feel free to fork this repository to work through the exercises.
 
-Versions from previous years can be found in tags.
+Material from previous years can be found in [releases](https://github.com/csc-training/summerschool/releases).
 
 ## Presentation slides
 
-The slides are available [here](https://github.com/csc-training/summerschool/releases/).
+The slides are available [here](https://csc-training.github.io/summerschool/).
 
 ## Exercises
 
