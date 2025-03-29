@@ -22,7 +22,7 @@ CC -xhip ping-pong.cpp
 ```
 and run with
 ```
-srun --account=XXXXXX --partition=dev-g -N1 -n2 --cpus-per-task=1 --gpus-per-task=2 --time=00:15:00 ./a.out
+srun --account=XXXXXX --partition=dev-g -N1 -tasks-per-node=2 --cpus-per-task=1 --gpus-per-node=2 --time=00:15:00 ./a.out
 ```
 
 On **Puhti**, compile the MPI example with
