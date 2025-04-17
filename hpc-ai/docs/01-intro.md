@@ -42,8 +42,11 @@ class SimpleMLP(nn.Module):
 </div>
 
 <div class="column"width=30%>
+ lol
 </div>
-Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between. Final result is given by softmax operation.
+
+Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between. Final result is given by softmax operation. 
+$y(\mathbf(z)=\frac{e^[{z_j}{\Sigma_k e^{z_k}$
 
 # Learning as an Optimization Problem
 
