@@ -23,7 +23,7 @@ lang:   en
 
 # Pytorch Example
 
-<div class="column"  style="width:55%">
+<div class="column"  style="width:75%">
 ```python
 class SimpleMLP(nn.Module):
     def __init__(self):
@@ -40,8 +40,8 @@ class SimpleMLP(nn.Module):
 ```
 </div>
 
-<div class="column"  style="width:43%">
-![](img/forward_pass.png){height=33%}
+<div class="column"  style="width:23%">
+![](img/forward_pass.png){height=5%}
 </div>
 
 Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between. Final result is given by softmax operation. 
