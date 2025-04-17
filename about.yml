@@ -8,6 +8,7 @@ modules:
   - hybrid
   - gpu-openmp
   - gpu-hip
+  - hpc-ai
   - application-performance
   - application-testing
   - build-systems
