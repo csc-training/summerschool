@@ -11,7 +11,7 @@ lang:   en
 
   **The unreasonable effectiveness of data in machine learning!**
 
-# Overfitting, Generalization, Regularization
+# Generalization, Overfitting, Regularization
 
 - quality of a model is measured on new, unseen samples
 - models with too many parameters can overfit to training data
