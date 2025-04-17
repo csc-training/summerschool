@@ -6,4 +6,6 @@ lang:   en
 
 # Machine Learning
 
+- algorithms that learn patterns from data to make predictions on unseen data
+
 # Summary
