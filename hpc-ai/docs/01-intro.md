@@ -26,19 +26,20 @@ lang:   en
 Example of a neuronal network model
  
 ```
-class Net(nn.Module):
-	def __init__(self):
-   		super().__init__()
-   		self.layers = nn.Sequential(
-        		nn.Linear(784, 128),
-			nn.ReLU(),
-        		nn.Linear(128, 20),
-			nn.ReLU(),
-			nn.Linear(20, 10)
-         		nn.Softmax(dim=1)
-		)
- 	def forward(self, x):
-    		return self.layers(x)
+class SimpleMLP(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layers = nn.Sequential(
+            nn.Linear(784, 128),
+            nn.ReLU(),
+            nn.Linear(128, 20),
+            nn.ReLU(),
+            nn.Linear(20, 10)
+            nn.Softmax(dim=1)
+        )
+
+    def forward(self, x):
+        return self.layers(x)
 ```
 Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between (one with 128 neurons, and one with 20 neurons). 
 
