@@ -45,8 +45,7 @@ class SimpleMLP(nn.Module):
 ![](img/forward_pass.png){width=31%}
 </div>
 
-Final result is given by softmax operation. 
-$y(\mathbf{z})=\frac{e^{z_j}}{\Sigma_k e^{z_k}}$
+Final result is given by softmax operation: $y(\mathbf{z})=\frac{e^{z_j}}{\Sigma_k e^{z_k}}$
 
 # Learning as an Optimization Problem
 
