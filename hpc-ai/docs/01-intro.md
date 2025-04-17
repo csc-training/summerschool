@@ -34,10 +34,9 @@ class SimpleMLP(nn.Module):
             nn.ReLU(),
             nn.Linear(128, 20),
             nn.ReLU(),
-            nn.Linear(20, 10)
+            nn.Linear(20, 10),
             nn.Softmax(dim=1)
         )
-
     def forward(self, x):
         return self.layers(x)
 ```
