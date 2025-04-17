@@ -22,7 +22,7 @@ lang:   en
 # Neural Networks
 
 # Pytorch Example
-
+Example of a model with 3 layers. 
 <div class="column"  style="width:75%">
 ```python
 class SimpleMLP(nn.Module):
@@ -45,7 +45,7 @@ class SimpleMLP(nn.Module):
 ![](img/forward_pass.png){width=31%}
 </div>
 
-Example of a model with 3 layers. Final result is given by softmax operation. 
+Final result is given by softmax operation. 
 $y(\mathbf{z})=\frac{e^{z_j}}{\Sigma_k e^{z_k}}$
 
 # Learning as an Optimization Problem
