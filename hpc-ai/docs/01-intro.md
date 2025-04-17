@@ -23,7 +23,7 @@ lang:   en
 
 # Pytorch Example
 
-<div class="column"  style="width:65%">
+<div class="column"  style="width:55%">
 ```python
 class SimpleMLP(nn.Module):
     def __init__(self):
@@ -41,7 +41,7 @@ class SimpleMLP(nn.Module):
 ```
 </div>
 
-<div class="column"  style="width:33%">
+<div class="column"  style="width:43%">
  lol. Why?
 </div>
 
