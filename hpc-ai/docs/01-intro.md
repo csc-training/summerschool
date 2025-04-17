@@ -23,8 +23,6 @@ lang:   en
 
 # Pytorch Example
 
-Example of a neuronal network model
-
 <div class="column" width=70%>
 ```
 class SimpleMLP(nn.Module):
@@ -45,7 +43,7 @@ class SimpleMLP(nn.Module):
 
 <div class="column"width=30%>
 </div>
-Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between. 
+Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between. Final result is given by softmax operation.
 
 # Learning as an Optimization Problem
 
