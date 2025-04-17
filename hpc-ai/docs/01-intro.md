@@ -41,7 +41,7 @@ class SimpleMLP(nn.Module):
 </div>
 
 <div class="column"  style="width:23%">
-![](img/forward_pass.png){height=5%}
+![](img/forward_pass.png){height=1%}
 </div>
 
 Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between. Final result is given by softmax operation. 
