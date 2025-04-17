@@ -24,7 +24,8 @@ lang:   en
 # Pytorch Example
 
 Example of a neuronal network model
- 
+
+<div class="column" width=70%>
 ```
 class SimpleMLP(nn.Module):
     def __init__(self):
@@ -40,7 +41,11 @@ class SimpleMLP(nn.Module):
     def forward(self, x):
         return self.layers(x)
 ```
-Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between (one with 128 neurons, and one with 20 neurons). 
+</div>
+
+<div class="column"width=30%>
+</div>
+Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between. 
 
 # Learning as an Optimization Problem
 
