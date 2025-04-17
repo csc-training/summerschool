@@ -34,7 +34,8 @@ class SimpleMLP(nn.Module):
             nn.Linear(128, 20),
             nn.ReLU(),
             nn.Linear(20, 10),
-            nn.Softmax(dim=1))
+            nn.Softmax(dim=1)
+        )
     def forward(self, x):
         return self.layers(x)
 ```
@@ -44,7 +45,7 @@ class SimpleMLP(nn.Module):
 ![](img/forward_pass.png){width=31%}
 </div>
 
-Input of the model is of size 728,  the output is 10 (classes), and there are two layers in between. Final result is given by softmax operation. 
+Example of a model with 3 layers. Final result is given by softmax operation. 
 $y(\mathbf{z})=\frac{e^{z_j}}{\Sigma_k e^{z_k}}$
 
 # Learning as an Optimization Problem
