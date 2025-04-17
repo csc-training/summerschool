@@ -18,11 +18,11 @@ lang:   en
 
 # Pytorch Example
 
-# Learning as Optimization
+# Learning as an Optimization Problem
 
-# Forward Propagation
+# Forward Pass
 
-# Back Propagation
+# Backward Pass
 
 
 # Summary
