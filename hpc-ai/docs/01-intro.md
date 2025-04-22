@@ -9,7 +9,7 @@ lang:   en
 
 - learn patterns from data to make predictions on unseen data
 
-<div style="text-align: center;">
+<div class="column"  style="width:99%; text-align: center;">
   <img src="img/ML_types.png" style="width: 61%;">
 </div>
 
