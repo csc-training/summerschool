@@ -10,7 +10,7 @@ lang:   en
 - learn patterns from data to make predictions on unseen data
 
 <div class="column"  style="width:99%; text-align: center;">
-  <img src="img/ML_types.png" style="width: 61%;">
+  ![]("img/ML_types.png"){width=61%}
 </div>
 
   **The unreasonable effectiveness of data in machine learning!**
