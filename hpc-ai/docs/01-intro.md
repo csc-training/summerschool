@@ -14,6 +14,18 @@ lang:   en
 
   **The unreasonable effectiveness of data in machine learning!**
 
+
+# Machine Learning
+
+- learn patterns from data to make predictions on unseen data
+
+<div style="text-align: center;">
+  <img src="img/ML_types.png" style="width: 57%;">
+</div>
+
+  **The unreasonable effectiveness of data in machine learning!**
+
+
 # Generalization, Overfitting, Regularization
 
 - quality of a model is measured on new, unseen samples
