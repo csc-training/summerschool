@@ -43,7 +43,7 @@ class SimpleMLP(nn.Module):
 </div>
 
 <div class="column"  style="width:23%">
-![](img/forward_pass.png){width=36%}
+![](img/forward_pass.png){width=39%}
 </div>
 
 Final result is given by softmax operation: $y(\mathbf{z})=\frac{e^{z_j}}{\Sigma_k e^{z_k}}$
