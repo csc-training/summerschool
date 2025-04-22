@@ -17,7 +17,7 @@ Some information provided here is specific to LUMI, Mahti, and Puhti, some more 
 
 # Anatomy of supercomputer
  ![](images/cluster_diagram.jpeg){.center width=80%}
- 
+
 # Connecting to supercomputers
 
 - `ssh` is used to connect to all CSC supercomputers
@@ -56,8 +56,8 @@ ssh-copy-id <my_user_id>@mahti.csc.fi
   user's environment
 - In this way, different compiler suites and application versions can be used
   more easily
-    * Changing compiler module loads automatically also correct versions of libraries 
-    * Loading a module for application sets up the correct environment with single 
+    * Changing compiler module loads automatically also correct versions of libraries
+    * Loading a module for application sets up the correct environment with single
       command
 
 
@@ -195,7 +195,7 @@ CCFLAGS=-O3
 
 # Build generators
 
-- In a large software projects, figuring out all the dependencies between 
+- In a large software projects, figuring out all the dependencies between
   software modules can be difficult
 - `Makefile` is not necessarily portable
 - In order to improve portability and make dependency handling easier, build generators
@@ -261,7 +261,7 @@ srun myprog
   ```bash
   sacct jobid
   ```
-  
+
 # Interactive jobs
 
 Alternatively to `sbatch` one can submit a job to the queue using `srun`
@@ -270,7 +270,7 @@ Alternatively to `sbatch` one can submit a job to the queue using `srun`
 srun --account=<...> –-partition=<...> –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
 ```
 
-In this case the output will be shown on the terminal  (job will fail if the connection is lost). 
+In this case the output will be shown on the terminal  (job will fail if the connection is lost).
 
 When debugging or doing performance analisys the user needs to interact with the application.
 
@@ -300,8 +300,8 @@ Following variables are available inside program launched by `srun`
 
 <small>
 
-- `SLURM_PROCID` : global id of process 
-- `SLURM_LOCALID` : node local id of process 
+- `SLURM_PROCID` : global id of process
+- `SLURM_LOCALID` : node local id of process
 
 </small>
 
@@ -314,3 +314,50 @@ Following variables override the corresponding variables in the batch script
 
 </small>
 
+
+#  File input/output (I/O) and Lustre {.section}
+
+# Parallel file systems
+
+- All large parallel computer systems provide a parallel file
+  system area
+    - Files can be accessed from all tasks
+    - Dedicated I/O nodes common on large systems
+- Some systems also provide a local disk area for temporary storage
+    - Only visible to tasks on the same node
+    - Results have to be copied after simulation
+
+- **Lustre** is a popular parallel file system in use on many HPC systems
+    - Supports all of the above features
+    - Used also at CSC (Puhti, Mahti, Lumi)
+
+
+# Lustre architecture
+
+<div class="column">
+- Files are chunked up and spread across multiple **storage servers** as **objects**
+- Dedicated **metadata server(s)** (MDS): file names, owners, permissions, ...
+- **Client**: HPC nodes that access the data
+</div>
+
+<div class="column">
+![](images/lustre-architecture.png)
+Clients interact with MDS once to gain OST access, then I/O to objects directly.
+
+- Allows for **very high, parallel I/O bandwidth!**
+
+</div>
+
+# Being nice to Lustre as an HPC user
+
+Every file lookup, file creation/deletion, permission change *etc.* is processed by the metadata server.
+
+- Metadata servers are shared by everyone using the supercomputer!
+- Commands like `ls` unresponsive? Servers may be under heavy load
+
+**Please be mindful of other users!**
+
+- Avoid saving/accessing large number of small files (*eg.* in scripts)
+- Avoid listing extended attributes (permissions, timestamps, ...) when not necessary
+  - Prefer `ls` over `ls -l` for file listing
+  - Prefer `lfs quota` over `du` for disk usage
