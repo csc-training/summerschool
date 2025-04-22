@@ -8,7 +8,7 @@ lang:   en
 
 - algorithms that learn patterns from data to make predictions on unseen data
 
-![](img/ML_types.png){width=71%}
+![](img/ML_types.png){width=65%}
 
   **The unreasonable effectiveness of data in machine learning!**
 
@@ -43,7 +43,7 @@ class SimpleMLP(nn.Module):
 </div>
 
 <div class="column"  style="width:23%">
-![](img/forward_pass.png){width=41%}
+![](img/forward_pass.png){width=36%}
 </div>
 
 Final result is given by softmax operation: $y(\mathbf{z})=\frac{e^{z_j}}{\Sigma_k e^{z_k}}$
