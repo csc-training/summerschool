@@ -9,7 +9,7 @@ lang:   en
 - learn patterns from data to make predictions on unseen data
 
 <div style="text-align: center;">
-  <img src="img/ML_types.png" style="width: 57%;">
+  <img src="img/ML_types.png" style="width: 59%;">
 </div>
 
   **The unreasonable effectiveness of data in machine learning!**
