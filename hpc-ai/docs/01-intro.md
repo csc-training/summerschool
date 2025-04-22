@@ -8,10 +8,9 @@ lang:   en
 
 - learn patterns from data to make predictions on unseen data
 
-\centering
+::: center
 ![](img/ML_types.png){width=57%}
-\raggedright
-\flushleft
+:::
 
   **The unreasonable effectiveness of data in machine learning!**
 
