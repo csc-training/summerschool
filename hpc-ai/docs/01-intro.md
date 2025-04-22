@@ -8,17 +8,6 @@ lang:   en
 
 - learn patterns from data to make predictions on unseen data
 
-::: center
-![](img/ML_types.png){width=57%}
-:::
-
-  **The unreasonable effectiveness of data in machine learning!**
-
-
-# Machine Learning
-
-- learn patterns from data to make predictions on unseen data
-
 <div style="text-align: center;">
   <img src="img/ML_types.png" style="width: 57%;">
 </div>
