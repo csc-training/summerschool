@@ -6,7 +6,7 @@ lang:   en
 
 # Machine Learning
 
-- algorithms that learn patterns from data to make predictions on unseen data
+- learn patterns from data to make predictions on unseen data
 
 ![](img/ML_types.png){width=57%}
 
