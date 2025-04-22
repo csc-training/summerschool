@@ -8,6 +8,7 @@ lang:   en
 
 - algorithms that learn patterns from data to make predictions on unseen data
 
+![](img/ML_types.png){width=31%}
 
   **The unreasonable effectiveness of data in machine learning!**
 
