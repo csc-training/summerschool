@@ -56,7 +56,7 @@ class SimpleMLP(nn.Module):
 ```
 </div>
 
-<div class="column"  style="width:23%">
+<div class="column"  style="width:23%; text-align: center;">
 ![](img/forward_pass.png){width=39%}
 </div>
 
