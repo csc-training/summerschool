@@ -20,13 +20,12 @@ lang:   en
 # Generalization, Overfitting, Regularization
 
 - quality of a model is measured on new, unseen samples
+- too simple models fail to describe the model
 - models with too many parameters can overfit to training data
 - overfitting can be prevented by regularization
 
 <div class="column"  style="width:99%; text-align: center;">
-  ![](img/Under_Over_fitting.png){width=61%}
-  
-  Too simple models fail to describe the model. Too complex models will model the noise.
+  ![](img/Under_Over_fitting.png){width=64%}
 </div>
 
 # Artificial Neurons
