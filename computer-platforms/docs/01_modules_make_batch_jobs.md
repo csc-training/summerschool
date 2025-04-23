@@ -315,22 +315,20 @@ Following variables override the corresponding variables in the batch script
 </small>
 
 
-#  File input/output (I/O) and Lustre {.section}
+#  HPC filesystems and Lustre {.section}
 
-# Parallel file systems
+# Filesystems on CSC supercomputers
 
-- All large parallel computer systems provide a parallel file
-  system area
-    - Files can be accessed from all tasks
-    - Dedicated I/O nodes common on large systems
-- Some systems also provide a local disk area for temporary storage
-    - Only visible to tasks on the same node
-    - Results have to be copied after simulation
+The filesystem used on CSC systems (Puhti, Mahti, Lumi) is called **Lustre**.
 
-- **Lustre** is a popular parallel file system in use on many HPC systems
-    - Supports all of the above features
-    - Used also at CSC (Puhti, Mahti, Lumi)
+- Parallel: data is distributed across many storage drives
+- Files can be accessed from all tasks (user permissions still apply)
+- Lustre is very common in HPC in general, not just at CSC
 
+Many systems also provide node-local disk area for temporary storage
+
+- `/tmp`, `$TMPDIR`, `$LOCAL_SCRATCH` *etc.* depending on the system
+- Sometimes the temporary storage may reside directly in memory (`/tmp` on Lumi compute nodes). Consult system docs
 
 # Lustre architecture
 
@@ -357,7 +355,16 @@ Every file lookup, file creation/deletion, permission change *etc.* is processed
 
 **Please be mindful of other users!**
 
-- Avoid saving/accessing large number of small files (*eg.* in scripts)
-- Avoid listing extended attributes (permissions, timestamps, ...) when not necessary
+- Lustre best practices in docs: <https://docs.csc.fi/computing/lustre/#best-practices>
+
+
+# Some Lustre best practices
+
+- Avoid creating/accessing small files in large quantities (*eg.* in scripts)
+- Avoid listing extended attributes (timestamps *etc.*) when not necessary
   - Prefer `ls` over `ls -l` for file listing
-  - Prefer `lfs quota` over `du` for disk usage
+  - Prefer `lfs quota` over `du` or `stat` for disk usage
+- Consider using local disk when compiling code: `$TMPDIR` or similar non-Lustre location
+- Be careful when installing Python packages with `Conda` or `pip`!
+  - These have the "many small files" problem, especially with dependencies
+  - See <https://docs.lumi-supercomputer.eu/software/installing/python/>
