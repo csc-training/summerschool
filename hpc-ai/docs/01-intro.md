@@ -31,7 +31,11 @@ lang:   en
 </div>
 
 # Artificial Neurons
+<div class="column"  style="width:99%; text-align: center;">
+  ![](img/Under_Over_fitting.png){width=64%}
 
+  <small>By Funcs [[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)], from Wikimedia Commons</small>
+</div>
 # Neural Networks
 
 # Pytorch Example
