@@ -31,6 +31,7 @@ lang:   en
 </div>
 
 # Artificial Neurons
+
 <div class="column"  style="width:99%; text-align: center;">
   ![](img/Under_Over_fitting.png){width=64%}
 
