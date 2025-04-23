@@ -12,7 +12,7 @@ lang:   en
 <div class="column"  style="width:99%; text-align: center;">
   ![](img/ML_types.png){width=61%}
   
-  **The unreasonable effectiveness of data in machine learning!**
+  <small>**The unreasonable effectiveness of data in machine learning!**</small>
 </div>
 
 
