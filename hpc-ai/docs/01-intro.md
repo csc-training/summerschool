@@ -27,7 +27,7 @@ lang:   en
 <div class="column"  style="width:99%; text-align: center;">
   ![](img/Under_Over_fitting.png){width=64%}
 
-  <small>By Chabacano [[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)], from Wikimedia Commons</small>
+  <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
 
 # Artificial Neurons
@@ -35,18 +35,14 @@ lang:   en
 <div class="column"  style="width:55%">
   ![](img/Neuron.png){width=94%}
 
-  <small>By Funcs [[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)],</small>
-  
-  <small> from Wikimedia Commons</small>
+  <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 
   $\Sigma=w_{0j}+x_1w_{1j}+x_2w_{2j}+...+x_nw_{nj}$
 </div>
 <div class="column"  style="width:34%">
   ![](img/activation_functions.png){width=64%}
 
-  <small>[[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)],</small>
-  
-  <small>from Wikimedia Commons</small>
+  <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
 
 
