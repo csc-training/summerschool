@@ -33,7 +33,7 @@ lang:   en
 # Artificial Neurons
 
 <div class="column"  style="width:55%">
-  ![](img/Neuron.png){width=94%}
+  ![](img/Neuron.png){width=99%}
 
   <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 
