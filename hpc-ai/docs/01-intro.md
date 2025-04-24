@@ -33,13 +33,10 @@ lang:   en
 # Artificial Neurons
 
 <div class="column"  style="width:55%">
-  ![](img/Neuron.png){width=89%}
+  ![](img/Neuron.png){width=94%}
 
   <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 
-  $\Sigma_j=w_{0j}+x_1w_{1j}+x_2w_{2j}+...+x_nw_{nj}$
-
-  $\boldsymbol{\phi}=f(\Sigma_j)$
 </div>
 <div class="column"  style="width:39%">
   ![](img/activation_functions.png){width=69%}
