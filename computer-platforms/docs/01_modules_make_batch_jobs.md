@@ -363,7 +363,7 @@ Every file lookup, file creation/deletion, permission change *etc.* is processed
 - Avoid creating/accessing small files in large quantities (*eg.* in scripts)
 - Avoid listing extended attributes (timestamps *etc.*) when not necessary
   - Prefer `ls` over `ls -l` for file listing
-  - Prefer `lfs quota` over `du` or `stat` for disk usage
+  - `LUE` tool for size queries: <https://docs.csc.fi/support/tutorials/lue/>
 - Consider using local disk when compiling code: `$TMPDIR` or similar non-Lustre location
 - Be careful when installing Python packages with `Conda` or `pip`!
   - These have the "many small files" problem, especially with dependencies
