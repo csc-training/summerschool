@@ -39,13 +39,17 @@ lang:   en
 
 </div>
 <div class="column"  style="width:39%; text-align: center;">
-  ![](img/activation_functions.png){width=65%}
+  ![](img/activation_functions.png){width=64%}
 
   <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
 
 
-# Neural Networks
+# Feed-Forward Neural Networks
+
+<div class="column"  style="width:99%; text-align: center;">
+  ![](img/NNetwork.png){width=64%}
+</div>
 
 # Pytorch Example
 Example of a model with 3 layers. 
