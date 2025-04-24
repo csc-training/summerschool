@@ -38,7 +38,7 @@ lang:   en
   <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 
 </div>
-<div class="column"  style="width:39%">
+<div class="column"  style="width:39%; text-align: center;">
   ![](img/activation_functions.png){width=69%}
 
   <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
