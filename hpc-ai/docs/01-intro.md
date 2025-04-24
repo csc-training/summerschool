@@ -39,7 +39,7 @@ lang:   en
   
   <small> from Wikimedia Commons</small>
 
-  $$\Sigma=w_{0j}+x_1w_{1j}+x_2w_{2j}+x_3w_{3j}+...+x_nw_{nj}$$
+  $\Sigma=w_{0j}+x_1w_{1j}+x_2w_{2j}+x_3w_{3j}+...+x_nw_{nj}$
 </div>
 <div class="column"  style="width:34%">
   ![](img/activation_functions.png){width=64%}
