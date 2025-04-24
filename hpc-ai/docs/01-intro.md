@@ -42,7 +42,7 @@ lang:   en
   $\boldsymbol{\phi}=f(\Sigma_j)$
 </div>
 <div class="column"  style="width:39%">
-  ![](img/activation_functions.png){w\Sigma_jidth=69%}
+  ![](img/activation_functions.png){width=69%}
 
   <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
