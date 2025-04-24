@@ -45,8 +45,6 @@ lang:   en
   <small>from Wikimedia Commons</small>
 </div>
 
-<small>[[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)],from Wikimedia Commons</small>
-
 
 # Neural Networks
 
