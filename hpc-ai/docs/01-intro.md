@@ -59,11 +59,11 @@ class SimpleMLP(nn.Module):
     def __init__(self):
         super().__init__()
         self.layers = nn.Sequential(
-            nn.Linear(784, 128),
+            nn.Linear(5, 4),
             nn.ReLU(),
-            nn.Linear(128, 20),
+            nn.Linear(4, 5),
             nn.ReLU(),
-            nn.Linear(20, 10),
+            nn.Linear(5, 3),
             nn.Softmax(dim=1)
         )
     def forward(self, x):
