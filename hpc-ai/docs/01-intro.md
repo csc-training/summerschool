@@ -55,7 +55,7 @@ lang:   en
   <small></small>
   - the inputs is  a vector of size $n$
   - the outputs is a vector of size $p$
-  - layer 1 is a matrix of size $n\timesl_1$
+  - layer 1 is a matrix of size $n\times l_1$
   - layer 2 is a matrix of size $l_1\times l_2$
   - layer 3 is a matrix of size $l_2\times p$
   - RELU and softmax are function operating on each value of the argument
