@@ -47,8 +47,12 @@ lang:   en
 
 # Feed-Forward Neural Networks
 
-<div class="column"  style="width:99%; text-align: center;">
+<div class="column"  style="width:55%">
   ![](img/NNetwork.png){width=64%}
+</div>
+
+<div class="column"  style="width:40%">
+  ![](img/NNetwork.png){width=24%}
 </div>
 
 # Pytorch Example
