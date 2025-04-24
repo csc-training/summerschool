@@ -53,7 +53,7 @@ lang:   en
 
 <div class="column"  style="width:40%">
 
-  - <small>the inputsand  outputs vectors </small>
+  - <small>the inputs and outputs are vectors </small>
   - <small>each layer $j$ is a matrix of size $l_{i}\times l_j$</small>
   - <small>RELU and softmax are function operating on each value of the argument</small>
 
