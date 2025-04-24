@@ -54,11 +54,11 @@ lang:   en
 <div class="column"  style="width:40%">
   - the inputs is represented by a vector of size $n$
   - the outputs is represented by a vector of size $p$
-  - layer 1 is a matrix of size $nxl_1$
-  - layer 2 is a matrix of size $l_1xl_2$
-  - layer 3 is a matrix of size $l_2xp$
+  - layer 1 is a matrix of size $n\timesl_1$
+  - layer 2 is a matrix of size $l_1\times l_2$
+  - layer 3 is a matrix of size $l_2\times p$
   - RELU and softmax are function operating on each value of the argument
-  - a prediction is comprised by a set off succesive vector-matrix multiplications, followed by the activation fucntion 
+  - a prediction is comprised of a sequence of vector-matrix multiplications, each followed by an activation function applied to the result
   
 </div>
 
