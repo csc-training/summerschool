@@ -48,7 +48,7 @@ lang:   en
 # Feed-Forward Neural Networks
 
 <div class="column"  style="width:55%">
-  ![](img/NNetwork.png){width=64%}
+  ![](img/NNetwork.png){width=70%}
 </div>
 
 <div class="column"  style="width:40%">
