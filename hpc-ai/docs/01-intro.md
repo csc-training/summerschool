@@ -52,7 +52,7 @@ lang:   en
 </div>
 
 <div class="column"  style="width:40%">
-  <small></small>
+  <small>
   - the inputs is  a vector of size $n$
   - the outputs is a vector of size $p$
   - layer 1 is a matrix of size $n\times l_1$
