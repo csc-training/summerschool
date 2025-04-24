@@ -55,7 +55,7 @@ lang:   en
 
   - <small>the inputs and outputs are vectors </small>
   - <small>each layer $j$ is a matrix of size $l_{i}\times l_j$</small>
-  - <small>RELU and softmax are function operating on each value of the argument</small>
+  - <small>RELU and softmax are functions operating on each value of the argument</small>
 
 </div>
 
