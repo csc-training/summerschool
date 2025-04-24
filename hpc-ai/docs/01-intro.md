@@ -60,8 +60,7 @@ lang:   en
   - layer 3 is a matrix of size $l_2\times p$
   - RELU and softmax are function operating on each value of the argument
   - a prediction is comprised of a sequence of vector-matrix multiplications, each followed by an activation function applied to the result
-</div>small
-  
+  </small>
 </div>
 
 # Pytorch Example
