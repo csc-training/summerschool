@@ -32,15 +32,17 @@ lang:   en
 
 # Artificial Neurons
 
-<div class="column"  style="width:65%">
+<div class="column"  style="width:55%">
   ![](img/Neuron.png){width=34%}
 
-  <small>By Funcs [[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)], from Wikimedia Commons</small>
+  <small>By Funcs [[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)],</small>
+  <small> from Wikimedia Commons</small>
 </div>
 <div class="column"  style="width:34%">
   ![](img/activation_functions.png){width=84%}
 
-  <small>[[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)], from Wikimedia Commons</small>
+  <small>[[GFDL](https://www.gnu.org/licenses/fdl-1.3.html) or [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)],</small>
+  <small>from Wikimedia Commons</small>
 </div>
 
 # Neural Networks
