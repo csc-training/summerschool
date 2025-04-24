@@ -57,7 +57,7 @@ lang:   en
   - <small>the outputs is a vector of size $p$</small>
   - <small>each layer $j$ is a matrix of size $l_{i}\times l_j$</small>
   - <small>RELU and softmax are function operating on each value of the argument</small>
-  - <small>a prediction is comprised of a sequence of vector-matrix multiplications, each followed by an activation function applied to the result</small>
+  - <small>a prediction is comprised of a sequence of vector-matrix multiplications, each followed by an activation function call</small>
 
 </div>
 
