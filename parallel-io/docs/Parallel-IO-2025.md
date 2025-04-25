@@ -150,11 +150,12 @@ MPI-IO = part of the MPI specification that deals with I/O
 
 - Simplifies simultaneous I/O from many MPI processes to one or more files, solving most common I/O complications
 - **Portable**: Specifics about the filesystem are abstracted away
-    - Can bypass POSIX restrictions for  performance (eg. noncontiguous access)
+    - Can bypass POSIX restrictions for better parallel performance
 
 - Implementation used by `OpenMPI` and `MPICH` is called `ROMIO`
     - Advanced users can configure the internals via "hints"
 
+API is rather similar to standard I/O programming. Consult MPI docs for details
 
 # MPI-IO example: collective write
 
