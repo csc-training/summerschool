@@ -1,5 +1,5 @@
 ---
-title:  Introduction to Machine Learning
+title:  Introduction to AI
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
@@ -45,7 +45,7 @@ lang:   en
 </div>
 
 
-# Feed-Forward Neural Networks
+#  Neural Networks
 
 <div class="column"  style="width:58%">
   ![](img/NNetwork.png){width=90%}
@@ -62,7 +62,7 @@ lang:   en
   - a prediction is comprised of a sequence of vector-matrix multiplications, each followed by an activation function call
 
     
-# Pytorch Example
+# Forward Pass. Pytorch Example
  
 <div class="column"  style="width:75%">
 ```python
@@ -91,6 +91,8 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 # Learning as an Optimization Problem
 
 # Backward Pass
+
+# Data
 
 
 # Summary
