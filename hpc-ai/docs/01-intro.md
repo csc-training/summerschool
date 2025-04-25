@@ -63,7 +63,7 @@ lang:   en
 
     
 # Pytorch Example
-Example of a model with 3 layers. 
+ 
 <div class="column"  style="width:75%">
 ```python
 class SimpleMLP(nn.Module):
