@@ -90,8 +90,6 @@ Final result is given by softmax operation: $y(\mathbf{z})=\frac{e^{z_j}}{\Sigma
 
 # Learning as an Optimization Problem
 
-# Forward Pass
-
 # Backward Pass
 
 
