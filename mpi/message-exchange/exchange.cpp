@@ -4,30 +4,45 @@
 
 int main(int argc, char *argv[])
 {
-    int rank, ntasks, nrecv;
     constexpr int arraysize = 100000;
     constexpr int msgsize = 100;
     std::vector<int> message(arraysize);
     std::vector<int> receiveBuffer(arraysize);
-    MPI_Status status;
 
+    int rank, ntasks;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+    if (ntasks < 2)
+    {
+        printf("Please run with at least 2 MPI processes\n");
+        MPI_Abort(MPI_COMM_WORLD, 1);
+    }
+
     // Initialize message and receive buffer
-    for (int i = 0; i < arraysize; i++) {
+    for (int i = 0; i < arraysize; i++)
+    {
         message[i] = rank;
         receiveBuffer[i] = -1;
     }
 
-    // TODO: Implement sending and receiving as defined in the assignment
-    // Send msgsize elements from the array "message", and receive into
-    // "receiveBuffer"
-    if (rank == 0) {
+    // TODO: Implement sending and receiving as defined in the assignment.
+    // Send msgsize elements from the array "message", and receive into "receiveBuffer".
+    // Also set 'nrecv' to match the number of received elements.
+    // You may hardcode the message passing to happen between ranks 0 and 1.
+
+    int nrecv = -1;
+
+    if (rank == 0)
+    {
+        // ... your code here ...
 
         printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
-    } else if (rank == 1) {
+    }
+    else if (rank == 1)
+    {
+        // .. your code here ...
 
         printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
     }

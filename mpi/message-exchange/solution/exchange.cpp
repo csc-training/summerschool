@@ -4,37 +4,69 @@
 
 int main(int argc, char *argv[])
 {
-    int rank, ntasks, nrecv;
     constexpr int arraysize = 100000;
     constexpr int msgsize = 100;
     std::vector<int> message(arraysize);
     std::vector<int> receiveBuffer(arraysize);
-    MPI_Status status;
 
+    int rank, ntasks;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+    if (ntasks < 2)
+    {
+        printf("Please run with at least 2 MPI processes\n");
+        MPI_Abort(MPI_COMM_WORLD, 1);
+    }
+
     // Initialize message and receive buffer
-    for (int i = 0; i < arraysize; i++) {
+    for (int i = 0; i < arraysize; i++)
+    {
         message[i] = rank;
         receiveBuffer[i] = -1;
     }
 
-    // Send and receive messages as defined in exercise
-    if (rank == 0) {
-        MPI_Send(message.data(), msgsize, MPI_INT, 1, 1, MPI_COMM_WORLD);
-        MPI_Recv(receiveBuffer.data(), arraysize, MPI_INT, 1, 2, MPI_COMM_WORLD,
-                 &status);
+    // Will hold the number of received elements
+    int nrecv = 1;
+
+    // Order of message passing is as follows:
+    // 1. rank 0 sends message to rank 1
+    // 2. rank 1 receives message from rank 0
+    // 3. rank 1 sends message to rank 0
+    // 4. rank 0 receives message from rank 1
+
+    // Trying to eg. do both sends before any receives may result in a deadlock
+    // depending on how the MPI implementation handles blocking routines.
+
+    if (rank == 0)
+    {
+        // Send total of 'msgsize' integers to rank 1.
+        // Message tag must be valid (>= 0), but we don't use it for anything in this exercise
+        int tag = 0;
+        MPI_Send(message.data(), msgsize, MPI_INT, 1, tag, MPI_COMM_WORLD);
+
+        MPI_Status status;
+        // Receive at most 'msgsize' integers from rank 1 and store info about the received message in 'status'
+        MPI_Recv(receiveBuffer.data(), msgsize, MPI_INT, 1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+
+        // Query the actual message size from 'status'
         MPI_Get_count(&status, MPI_INT, &nrecv);
-        printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
-    } else if (rank == 1) {
-        MPI_Recv(receiveBuffer.data(), arraysize, MPI_INT, 0, 1, MPI_COMM_WORLD,
-                 &status);
-        MPI_Send(message.data(), msgsize, MPI_INT, 0, 2, MPI_COMM_WORLD);
-        MPI_Get_count(&status, MPI_INT, &nrecv);
+
         printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
     }
+    else if (rank == 1)
+    {
+        MPI_Status status;
+        MPI_Recv(receiveBuffer.data(), msgsize, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        MPI_Get_count(&status, MPI_INT, &nrecv);
+
+        MPI_Send(message.data(), msgsize, MPI_INT, 0, 1, MPI_COMM_WORLD);
+
+        printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
+    }
+    // If ran with more than 2 processes, the leftover ranks do nothing
+
 
     MPI_Finalize();
     return 0;

@@ -15,8 +15,8 @@ program exchange
   receiveBuffer = -1
 
   ! TODO: Implement sending and receiving as defined in the assignment
-  ! Send msgsize elements from the array "message", and receive into
-  ! "receiveBuffer"
+  ! Send msgsize elements from the array "message", and receive into  "receiveBuffer".
+  ! Also set 'nrecv' to match the number of received elements.
   if (rank == 0) then
 
      write(*,'(A10,I3,A10,I3, A17, I3)') 'Rank: ', rank, &
