@@ -29,12 +29,16 @@ int main(int argc, char *argv[])
         receiveBuffer[i] = -1;
     }
 
-    // TODO: Implement sending and receiving as defined in the assignment.
+    // TODO: Implement sending and receiving as defined in the assignment,
+    // Using MPI_Send and MPI_Recv functions.
     // Send msgsize elements from the array "message", and receive into "receiveBuffer".
     // Also set 'nrecv' to match the number of received elements.
     // You may hardcode the message passing to happen between ranks 0 and 1.
 
     int nrecv = -1;
+
+    // HINT: MPI_Recv requires a status argument. What can you use it for?
+    MPI_Status status;
 
     if (rank == 0)
     {
