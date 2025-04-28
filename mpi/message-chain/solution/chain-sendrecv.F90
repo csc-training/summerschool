@@ -53,6 +53,16 @@ program basic
 
   call print_ordered(t1 - t0)
 
+  ! This mpi_sendrecv implementation of the message chain is more efficient
+  ! compared to separately doing mpi_send and mpi_recv.
+  ! This is because the other version does mpi_send (blocking) first from all ranks
+  ! except for the last one, so only the last process can proceed to the receive stage.
+  ! The messages are then received in reverse order, causing the chain to slowly unwind.
+  ! The first sender (rank 0) has to wait until all other receives have been processed.
+  ! In contrast, the mpi_sendrecv version allows rank 0 to receive and continue as soon as
+  ! rank 1 has finished its send, and so on.
+
+
   call mpi_finalize(rc)
 
 contains

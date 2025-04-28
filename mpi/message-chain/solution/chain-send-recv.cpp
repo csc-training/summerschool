@@ -6,56 +6,60 @@ void print_ordered(double t);
 
 int main(int argc, char *argv[])
 {
-    int i, rank, ntasks;
-    constexpr int size = 10000000;
-    std::vector<int> message(size);
-    std::vector<int> receiveBuffer(size);
+    constexpr int numElements = 10000000;
+    std::vector<int> message(numElements);
+    std::vector<int> receiveBuffer(numElements);
     MPI_Status status;
 
-    double t0, t1;
-
-    int source, destination;
-
     MPI_Init(&argc, &argv);
+
+    int rank, ntasks;
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     // Initialize buffers
-    for (i = 0; i < size; i++) {
+    for (int i = 0; i < numElements; i++)
+    {
         message[i] = rank;
         receiveBuffer[i] = -1;
     }
 
-    // Set source and destination ranks
-    if (rank < ntasks - 1) {
-        destination = rank + 1;
-    } else {
-        destination = MPI_PROC_NULL;
-    }
-    if (rank > 0) {
-        source = rank - 1;
-    } else {
+    // Set source and destination ranks, handling boundaries with MPI_PROC_NULL
+    int source = rank - 1;
+    int destination = rank + 1;
+
+    // First rank receives from no one
+    if (rank == 0)
+    {
         source = MPI_PROC_NULL;
     }
+    // Last rank sends to no one
+    if (rank >= ntasks - 1)
+    {
+        destination = MPI_PROC_NULL;
+    }
+
 
     // Start measuring the time spent in communication
     MPI_Barrier(MPI_COMM_WORLD);
-    t0 = MPI_Wtime();
+    double t0 = MPI_Wtime();
 
-    // Send messages
-    MPI_Send(message.data(), size, MPI_INT, destination, rank + 1,
-             MPI_COMM_WORLD);
+    // Send messages. Note that the send tag must be valid (>= 0) even if our destination is MPI_PROC_NULL
+    int sendTag = rank + 1;
+    MPI_Send(message.data(), numElements, MPI_INT, destination, sendTag, MPI_COMM_WORLD);
+
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
-           rank, size, rank + 1, destination);
+           rank, numElements, sendTag, destination);
 
     // Receive messages
-    MPI_Recv(receiveBuffer.data(), size, MPI_INT, source, rank,
-             MPI_COMM_WORLD, &status);
+    int recvTag = rank;
+    MPI_Recv(receiveBuffer.data(), numElements, MPI_INT, source, recvTag, MPI_COMM_WORLD, &status);
+
     printf("Receiver: %d. first element %d.\n",
            rank, receiveBuffer[0]);
 
     // Finalize measuring the time and print it out
-    t1 = MPI_Wtime();
+    double t1 = MPI_Wtime();
     MPI_Barrier(MPI_COMM_WORLD);
     fflush(stdout);
 
@@ -71,13 +75,17 @@ void print_ordered(double t)
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
 
-    if (rank == 0) {
+    if (rank == 0)
+    {
         printf("Time elapsed in rank %2d: %6.3f\n", rank, t);
-        for (i = 1; i < ntasks; i++) {
+        for (i = 1; i < ntasks; i++)
+        {
             MPI_Recv(&t, 1, MPI_DOUBLE, i, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             printf("Time elapsed in rank %2d: %6.3f\n", i, t);
         }
-    } else {
+    }
+    else
+    {
         MPI_Send(&t, 1, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD);
     }
 }

@@ -31,13 +31,16 @@ current task. Your program should work as follows:
    (e.g. 2, 4, 8, 16, ...), and pay attention especially to rank 0.
    Can you explain the behaviour?
 
-3. Use the status parameter to find out how much data was received,
+3. Bonus: Use the status parameter to find out how much data was received,
    and print out this piece of information for all receivers.
 
 ### Message chain with sendrecv
 
-4. Use combined `MPI_Sendrecv` instead of individual `MPI_Send`s or
-   `MPI_Recv`s. Investigate again the timings with different numbers of MPI tasks
+4. Modify your program to use combined `MPI_Sendrecv` instead of individual
+   `MPI_Send`s or `MPI_Recv`s. Keep a copy of the other version for comparison purposes.
+
+   Investigate again the timings with different numbers of MPI tasks
    (e.g. 2, 4, 8, 16, ...). Compare the results to the implementation with individual
    `MPI_Send`s or `MPI_Recv`s and pay attention especially to rank 0.
-   Can you explain the behaviour?
+   You should see significantly lower wait times for rank 0 in the `MPI_Sendrecv` version.
+   Can you explain why?
