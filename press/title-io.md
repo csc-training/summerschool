@@ -1,1 +1,0 @@
-# Parallel input/output {.section}
