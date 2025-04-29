@@ -3,8 +3,8 @@
 This exercise demonstrates the use of `MPI_Probe()` together with the `MPI_Status` structure
 to extract information about an incoming message. Have a look at the example program:
 
-    - C++: [probe.cpp](probe.cpp)
-    - Fortran: [probe.F90](probe.F90)
+- C++: [probe.cpp](probe.cpp)
+- Fortran: [probe.F90](probe.F90)
 
 This program is intended to be ran with (at least) 2 MPI processes. Process with rank 1
 generates a message of random length and sends it to rank 0. Rank 0 wants to receive this message,
