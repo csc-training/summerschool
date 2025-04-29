@@ -2,6 +2,7 @@
 
 This exercise demonstrates the use of `MPI_Probe()` together with the `MPI_Status` structure
 to extract information about an incoming message. Have a look at the example program:
+
     - C++: [probe.cpp](probe.cpp)
     - Fortran: [probe.F90](probe.F90)
 
