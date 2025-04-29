@@ -91,7 +91,7 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 # Learning as an Optimization Problem
 
 - **loss function** measures how good/bad a model’s predictions are compared to the actual results: $\mathrm{E}=\frac{1}{2}\sum_{\mathrm{j}}\left[\mathrm{T}_{\mathrm{j}}-\mathfrak{\varphi}_{\mathrm{oj}} \right]^2$
-- choose $\mathrm{w}_{\mathrm{i,j,l}}$ (weigt $j$ in neuron $i$ in layer $l$ that minimize the **loss function**, i.e.
+- choose $\mathrm{w}_{ \mathrm{i,j,l}}$ (weight $i$ in neuron $j$ in layer $l$) that minimize the **loss function**, i.e.
    $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}}}=0$
 - **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{i,j,l}}}{\partial t}=- \frac{\partial \mathrm{E}}{\partial \mathrm{w}_{\mathrm{i,j,l}}}$
   -  training is done using labeled/known data (&#x1F91E; the model works for new data)
@@ -101,7 +101,7 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 # Derivative for One Neuron
 
 - derivative of the loss function depends on weigths, input, and true value
-- forward pass is $\mathfrak{\varphi}_{\mathrm{oj}}=f_{\mathrm{1}}(w0j+\mathfrak{\Sigma}_{\mathrm{j}}{\mathrm{x}_j\mathrm{w}_{\mathrm{1,j}}})$
+- forward pass is $\mathfrak{\varphi}_{\mathrm{oj}}=f_{\mathrm{1}}(w01+\mathfrak{\Sigma}_{\mathrm{i}}{\mathrm{x}_i\mathrm{w}_{\mathrm{i,1}}})$
 - Apply the chain rule:
      - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}} = $\frac{\partial \mathrm{E}} {\partial \mathfrak{\varphi}_{\mathrm{oj}}} $
      - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}} = $\frac{\partial \mathrm{E}} {\partial \mathfrak{\varphi}_{\mathrm{oj}}} \times $\frac{\partial \mathfrak{\varphi}_{\mathrm{oj}}} {\partial \mathrm{w}_{\mathrm{i,j}}}$
