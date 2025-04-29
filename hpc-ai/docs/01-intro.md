@@ -101,9 +101,9 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 # Derivatives for One Layer 
 
 - derivative of the loss function depends on weigths, input, and true value
-- forward pass is $\mathfrak{\varphi}_{\mathrm{j}}=f_{\mathrm{1}}(w{\mathrm{01}}+\mathfrak{\Sigma}_{\mathrm{i}}{\mathrm{x}_i\mathrm{w}_{\mathrm{i,j,1}}})$
+- forward pass is $\mathfrak{\varphi}_{\mathrm{j}}=f_{\mathrm{1}}(w_{\mathrm{0j}}+\mathfrak{\Sigma}_{\mathrm{i}}{\mathrm{x}_i\mathrm{w}_{\mathrm{i,j,1}}})$
 - Apply the chain rule:
-     - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}}}=0$
+     - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}}}=\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}}}$
 
 
 # Derivatives for Two Layers. Weights in the Second Layer
