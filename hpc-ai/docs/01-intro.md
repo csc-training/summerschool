@@ -90,6 +90,10 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 
 # Learning as an Optimization Problem
 
+- **loss function** measures how good/bad a model’s predictions are compared to the actual results
+- $w_{i,j}$ should minimize the **loss function**
+- training 
+
 # Backward Pass
 
 # Data
