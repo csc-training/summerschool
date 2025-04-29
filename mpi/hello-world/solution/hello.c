@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <mpi.h>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+
     // Global MPI initialization, must be paired with MPI_Finalize at end of the program
     MPI_Init(&argc, &argv);
 
@@ -14,8 +14,7 @@ int main(int argc, char *argv[])
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         printf("In total there are %i tasks\n", ntasks);
     }
 

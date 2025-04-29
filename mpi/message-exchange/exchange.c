@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <mpi.h>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+
     int arraysize = 100000;
     int msgsize = 100;
 
@@ -12,8 +12,7 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (ntasks < 2)
-    {
+    if (ntasks < 2) {
         printf("Please run with at least 2 MPI processes\n");
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
@@ -23,8 +22,7 @@ int main(int argc, char *argv[])
     int* receiveBuffer = (int *)malloc(sizeof(int) * arraysize);
 
     // Initialize message and receive buffer
-    for (int i = 0; i < arraysize; i++)
-    {
+    for (int i = 0; i < arraysize; i++) {
         message[i] = rank;
         receiveBuffer[i] = -1;
     }
@@ -40,14 +38,14 @@ int main(int argc, char *argv[])
     // HINT: MPI_Recv requires a status argument. What can you use it for?
     MPI_Status status;
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
+
         // ... your code here ...
 
         printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
     }
-    else if (rank == 1)
-    {
+    else if (rank == 1) {
+
         // ... your code here ...
 
         printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
