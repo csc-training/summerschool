@@ -90,15 +90,19 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 
 # Learning as an Optimization Problem
 
-- **loss function** measures how good/bad a model’s predictions are compared to the actual results: $\mathrm{E}_\mathrm{t}=\frac{1}{2}\sum_{\mathrm{j}}\left[\mathrm{T}_{\mathrm{j}}-\mathfrak{\varphi}_{\mathrm{oj}} \right]^2$
+- **loss function** measures how good/bad a model’s predictions are compared to the actual results: $\mathrm{E}=\frac{1}{2}\sum_{\mathrm{j}}\left[\mathrm{T}_{\mathrm{j}}-\mathfrak{\varphi}_{\mathrm{oj}} \right]^2$
 - choose $\mathrm{w}_{\mathrm{i,j}}$ that minimize the **loss function**, i.e.
-   $\frac{\partial \mathrm{E}_{t}} {\partial \mathrm{w}_{\mathrm{i,j}}}=0$
-- **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{i,j}}}{\partial t}=- \frac{\partial \mathrm{E}_{t}}{\partial \mathrm{w}_{\mathrm{i,j}}}$
+   $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}}=0$
+- **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{i,j}}}{\partial t}=- \frac{\partial \mathrm{E}}{\partial \mathrm{w}_{\mathrm{i,j}}}$
   -  training is done using labeled/known data (&#x1F91E; the model works for new data)
   
 **Not guaranteed to find the true minima!**
 
-# Backward Pass for One Neuron
+# Derivative for One Neuron
+
+- Apply the chain rule:
+     - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}}=$\frac{\partial \mathrm{E}} {\partial \mathfrak{\varphi}_{\mathrm{oj}}}\times $\frac{\partial \mathfrak{\varphi}_{\mathrm{oj}}} {\partial \mathrm{w}_{\mathrm{i,j}}}$
+
 
 
 
