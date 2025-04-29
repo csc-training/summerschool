@@ -91,7 +91,7 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 # Learning as an Optimization Problem
 
 - **loss function** measures how good/bad a model’s predictions are compared to the actual results
-  $$E_{t}=\frac{1}{2}\sum_p\left[T_j-\phi_j \right]^2$$
+  $$E_{t}=\frac{1}{2}\sum_p\left[T_j-\varphi_j \right]^2$$
 - choose $w_{i,j}$ that minimize the **loss function**
 $$ \frac{\partial E_{t}}{\partial w_{i,j}}=0$$
 - training 
