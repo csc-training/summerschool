@@ -92,7 +92,7 @@ $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
 # Learning as an Optimization Problem
 
 - **loss function** measures how good/bad a model’s predictions are compared to the actual results:
-$\mathrm{E}=\frac{1}{2}\sum_j\left[ \mathrm{T}_\mathrm{j}- \varphi_{oj}\right]^2$
+$\mathrm{E}=\frac{1}{2}\sum_j\left[ \mathrm{T}_\mathrm{j}- \varphi_\mathrm{oj}\right]^2$
 - choose $\mathrm w_\mathrm{i,j,l}$ that minimize the **loss function**, i.e.
 $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}} }=0$
 - **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{i,j,l}}}{\partial t}=- \frac{\partial \mathrm{E}}{\partial \mathrm{w}_{\mathrm{i,j,l}}}$
