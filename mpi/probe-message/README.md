@@ -20,10 +20,10 @@ and store information about the message in an `MPI_Status` variable.
 
 ### Bonus technical information
 
-The (MPI specification)[https://www.mpi-forum.org/] for `MPI_Recv` states:
+The [MPI specification](https://www.mpi-forum.org/) for `MPI_Recv` states:
 
->"The receive buffer consists of the storage containing count consecutive elements of the
-type specified by datatype, starting at address buf. The length of the received message must
+>"The receive buffer consists of the storage containing `count` consecutive elements of the
+type specified by `datatype`, starting at address `buf`. The length of the received message must
 be less than or equal to the length of the receive buffer. An overflow error occurs if all
 incoming data does not fit, without truncation, into the receive buffer.
 If a message that is shorter than the receive buffer arrives, then only those locations
