@@ -4,8 +4,8 @@ modules:
   - intro-to-hpc
   - computer-platforms
   - mpi
+  - openmp
   - parallel-io
-  - hybrid
   - gpu
   - hpc-ai
   - application-performance

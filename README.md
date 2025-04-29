@@ -64,9 +64,9 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 08:00 | Breakfast
-| 09:00 | [OpenMP](hybrid)
+| 09:00 | [OpenMP](openmp)
 | 12:00 | Lunch
-| 13:00 | [MPI + OpenMP](hybrid)
+| 13:00 | [MPI + OpenMP](openmp)
 | 16:00 | Sports
 | 17:00 | Dinner
 | 18:00 | Exercises
