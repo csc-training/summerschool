@@ -94,7 +94,7 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 - choose $\mathrm{w}_{\mathrm{i,j}}$ that minimize the **loss function**, i.e.
    $\frac{\partial \mathrm{E}_{t}} {\partial \mathrm{w}_{\mathrm{i,j}}}=0$
 - **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{i,j}}}{\partial t}=- \frac{\partial \mathrm{E}_{t}}{\partial \mathrm{w}_{\mathrm{i,j}}}$
-  -  training is done using labeled/known data (:crossed_fingers: the model works for new data)
+  -  training is done using labeled/known data (&#x1F91E; the model works for new data)
   
 **Not guaranteed to find the true minima!**
 
