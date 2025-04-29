@@ -91,7 +91,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 08:00 | Breakfast
 | **10:00** | [GPU programming](gpu)
 | 12:00 | Lunch
-| 13:00 | GPU programming
+| 13:00 | [GPU programming](gpu)
 | 17:00 | Dinner
 | 18:00 | Trekking in Nuuksio
 | 19:30 | Snack & Free time at the hotel
@@ -101,9 +101,9 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 08:00 | Breakfast
-| 09:00 | GPU programming
+| 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
-| 13:00 | GPU programming
+| 13:00 | [GPU programming](gpu)
 | 16:00 | Sports
 | 17:00 | Dinner
 | 18:00 | Exercises
@@ -114,9 +114,9 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 08:00 | Breakfast
-| 09:00 | GPU programming
+| 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
-| 13:00 | MPI + GPUs
+| 13:00 | [MPI + GPUs](gpu)
 | 16:00 | Sports
 | 17:00 | Dinner
 | 18:00 | Exercises
