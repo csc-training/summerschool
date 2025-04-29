@@ -100,6 +100,8 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 
 # Derivative for One Neuron
 
+- derivative of the loss function depends on weigths, input, and true value
+- forward pass is $\mathfrak{\varphi}_{\mathrm{oj}}=f(w0j+\mathfrak{\Sigma}_{mathrm{j}}{\mathrm{x}_j\mathrm{w}_{\mathrm{1,j}}}$
 - Apply the chain rule:
      - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}} = $\frac{\partial \mathrm{E}} {\partial \mathfrak{\varphi}_{\mathrm{oj}}} $
      - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}} = $\frac{\partial \mathrm{E}} {\partial \mathfrak{\varphi}_{\mathrm{oj}}} \times $\frac{\partial \mathfrak{\varphi}_{\mathrm{oj}}} {\partial \mathrm{w}_{\mathrm{i,j}}}$
