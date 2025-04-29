@@ -92,8 +92,8 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 
 - **loss function** measures how good/bad a model’s predictions are compared to the actual results: $\mathrm{E}_\mathrm{t}=\frac{1}{2}\sum_j\left[\mathrm{T}_{\mathrm{j}}-\mathfrak{\varphi}_{\mathrm{oj}} \right]^2$
 - choose $\mathrm{w}_{\mathrm{i,j}}$ that minimize the **loss function**
-   $\frac{\partial \mathrm{E}_{t}}{\partial \mathrm{w}_{\mathrm{i,j}}}=0$
-- **training** is an interative process: $ \frac{\partial \mathrm{w}_{\mathrm{i,j}}}{{partial t}=- \frac{\partial \mathrm{E}_{t}}{\partial \mathrm{w}_{\mathrm{i,j}}}$
+   $\frac{\partial \mathrm{E}_{t}} {\partial \mathrm{w}_{\mathrm{i,j}}}=0$
+- **training** is an interative process: $\frac{\partial \mathrm{w}_{\mathrm{i,j}}}{partial t}=- \frac{\partial \mathrm{E}_{t}}{\partial \mathrm{w}_{\mathrm{i,j}}}$
 
 # Backward Pass for One Neuron
 
