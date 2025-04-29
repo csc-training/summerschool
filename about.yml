@@ -6,8 +6,7 @@ modules:
   - mpi
   - parallel-io
   - hybrid
-  - gpu-openmp
-  - gpu-hip
+  - gpu
   - hpc-ai
   - application-performance
   - application-testing
