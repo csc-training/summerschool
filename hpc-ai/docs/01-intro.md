@@ -94,8 +94,8 @@ $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
 - **loss function** measures how good/bad a model’s predictions are compared to the actual results:
 $\mathrm{E}=\frac{1}{2}\sum_j\left[ \mathrm{T}_\mathrm{j}- \varphi_\mathrm{oj}\right]^2$
 - choose $\mathrm w_\mathrm{ijl}$ that minimize the **loss function**, i.e.
-$\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}} }=0$
-- **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{i,j,l}}}{\partial t}=- \frac{\partial \mathrm{E}}{\partial \mathrm{w}_{\mathrm{i,j,l}}}$
+$\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{ijl}} }=0$
+- **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{ijl}}}{\partial t}=- \frac{\partial \mathrm{E}}{\partial \mathrm{w}_{\mathrm{ijl}}}$
   -  training is done using labeled/known data (&#x1F91E; the model works for new data)
   
 **Not guaranteed to find the true minima!**
@@ -105,7 +105,7 @@ $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}} }=0$
 - derivative of the loss function depends on weigths, input, and true value
 - forward pass is $\mathfrak{\varphi}_{\mathrm{oj}}=f_{\mathrm{1}}(w_{\mathrm{0j}}+\mathfrak{\Sigma}_{\mathrm{i}}{\mathrm{x}_i\mathrm{w}_{\mathrm{i,j,1}}})$
 - Apply the chain rule:
-     - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}}}=\frac{\partial \mathrm{E}}{\mathfrak{\varphi}_{\mathrm{oj}}}\times $
+     - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{ijl}}}=\frac{\partial \mathrm{E}}{\mathfrak{\varphi}_{\mathrm{oj}}}\times $
 
 
 # Derivatives for Two Layers. Weights in the Second Layer
