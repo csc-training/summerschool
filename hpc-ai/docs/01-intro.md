@@ -90,9 +90,11 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 
 # Learning as an Optimization Problem
 
-- **loss function** measures how good/bad a model’s predictions are compared to the actual results: $\mathrm{E}=\frac{1}{2}\sum_{\mathrm{j}}\left[\mathrm{T}_{\mathrm{j}}-\mathfrak{\varphi}_{\mathrm{oj}} \right]^2$
-- choose $\mathrm{w}_{ \mathrm{i,j,l}}$ that minimize the **loss function**, i.e.
-   $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}}}=0$
+- **loss function** measures how good/bad a model’s predictions are compared to the actual results:
+$\mathrm{E}=\frac{1}{2}\sum_\mathrm{j}\left[ \mathrm{T}_\mathrm{j}-\mathfrak{\varphi}_\mathrm{oj}\right]^2$
+- choose
+$\mathrm{w}_\mathrm{i,j,l} $ that minimize the **loss function**, i.e.
+$\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j,l}}}=0$
 - **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{i,j,l}}}{\partial t}=- \frac{\partial \mathrm{E}}{\partial \mathrm{w}_{\mathrm{i,j,l}}}$
   -  training is done using labeled/known data (&#x1F91E; the model works for new data)
   
