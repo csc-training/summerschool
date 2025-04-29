@@ -101,8 +101,8 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
 # Derivative for One Neuron
 
 - Apply the chain rule:
+     - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}} = $\frac{\partial \mathrm{E}} {\partial \mathfrak{\varphi}_{\mathrm{oj}}} $
      - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}} = $\frac{\partial \mathrm{E}} {\partial \mathfrak{\varphi}_{\mathrm{oj}}} \times $\frac{\partial \mathfrak{\varphi}_{\mathrm{oj}}} {\partial \mathrm{w}_{\mathrm{i,j}}}$
-     - 
 
 
 
