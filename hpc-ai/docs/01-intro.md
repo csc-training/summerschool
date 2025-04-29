@@ -98,15 +98,17 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
   
 **Not guaranteed to find the true minima!**
 
-# Derivative for one Layer with One Neuron
+# Derivative for One Layer with One Neuron
 
 - derivative of the loss function depends on weigths, input, and true value
 - forward pass is $\mathfrak{\varphi}_{\mathrm{1}}=f_{\mathrm{1}}(w{\mathrm{01}}+\mathfrak{\Sigma}_{\mathrm{i}}{\mathrm{x}_i\mathrm{w}_{\mathrm{i,1}}})$
 - Apply the chain rule:
-     - $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{i,j}}} = $
+     - $\frac{\partial \mathrm{E}}{\partial \mathrm{w}_{\mathrm{i,j}}} = $
 
 
 
+
+# Derivative for Two Layers with One Neuron. Weights in the Second Layer
 
 
 # Data
