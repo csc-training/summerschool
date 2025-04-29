@@ -95,6 +95,8 @@ Final result is given by softmax operation: $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sig
    $\frac{\partial \mathrm{E}_{t}} {\partial \mathrm{w}_{\mathrm{i,j}}}=0$
 - **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{i,j}}}{\partial t}=- \frac{\partial \mathrm{E}_{t}}{\partial \mathrm{w}_{\mathrm{i,j}}}$
 
+**Not guaranteed to find the true minima!**
+
 # Backward Pass for One Neuron
 
 
