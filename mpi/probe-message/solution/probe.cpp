@@ -20,6 +20,9 @@ int main(int argc, char *argv[]) {
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
 
+    // just some tag for the message
+    const int tag = 123;
+
     if (rank == 1) {
 
         // Generate random message size in rank 1 only. Other ranks do not know the size
@@ -31,10 +34,10 @@ int main(int argc, char *argv[]) {
             message[i] = i;
         }
 
-        // Send the test message to rank 0 (tag = 0)
+        // Send the test message to rank 0
         printf("Rank 1: Sending %d integers to rank 0\n", messageLength);
         fflush(stdout);
-        MPI_Send(message.data(), message.size(), MPI_INT, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(message.data(), message.size(), MPI_INT, 0, tag, MPI_COMM_WORLD);
     }
 
     if (rank == 0) {
@@ -49,7 +52,7 @@ int main(int argc, char *argv[]) {
         // Info about the message is stored into the MPI_Status variable.
         MPI_Status status;
 
-        MPI_Probe(sourceRank, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        MPI_Probe(sourceRank, tag, MPI_COMM_WORLD, &status);
 
         // Find the number of integers contained in the message that we probed,
         // and store in 'messageLength'
@@ -59,7 +62,7 @@ int main(int argc, char *argv[]) {
         receiveBuffer.resize(messageLength);
 
         MPI_Recv(receiveBuffer.data(), messageLength, MPI_INT,
-            sourceRank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE
+            sourceRank, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE
         );
 
         printf("Rank 0: Received %d integers from rank 1.\n", messageLength);
@@ -68,6 +71,27 @@ int main(int argc, char *argv[]) {
             printf("receiveBuffer[%d] : %d\n", i, receiveBuffer[i]);
         }
 
+        // For Approach 2, we are told that the maximum 'messageLength' is 10.
+        // Therefore the following would work (note the 'count' argument to MPI_Recv):
+
+        /*
+        const int maxLength = 10;
+        receiveBuffer.resize(maxLength);
+        MPI_Status status;
+        MPI_Recv(receiveBuffer.data(), maxLength, MPI_INT,
+            sourceRank, tag, MPI_COMM_WORLD, &status
+        );
+        MPI_Get_count(&status, MPI_INT, &messageLength);
+        */
+
+        // This is OK for MPI because the receive buffer is always large enough to hold the incoming message.
+        // However, this approach potentially wastes memory, and necessitates that we have information about how large the messages can be.
+        // Real programs may benefit from a combination of both approaches:
+        //  1. Allocate a reusable receive buffer to some initial size
+        //  2. Use MPI_Probe to check that the message can fit; if not, reallocate the buffer
+        //  3. Receive and wait for the next message
+        // This approach can minimize the number of mallocs/frees required for repeated message receiving.
+        // Whether it's a good fit for your program depends entirely on the use case.
     }
 
     MPI_Finalize();

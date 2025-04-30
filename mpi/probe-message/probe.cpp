@@ -20,6 +20,9 @@ int main(int argc, char *argv[]) {
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
 
+    // just some tag for the message
+    const int tag = 123;
+
     if (rank == 1) {
 
         // Generate random message size in rank 1 only. Other ranks do not know the size
@@ -31,10 +34,10 @@ int main(int argc, char *argv[]) {
             message[i] = i;
         }
 
-        // Send the test message to rank 0 (tag = 0)
+        // Send the test message to rank 0
         printf("Rank 1: Sending %d integers to rank 0\n", messageLength);
         fflush(stdout);
-        MPI_Send(message.data(), message.size(), MPI_INT, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(message.data(), message.size(), MPI_INT, 0, tag, MPI_COMM_WORLD);
     }
 
     if (rank == 0) {
@@ -53,7 +56,7 @@ int main(int argc, char *argv[]) {
 
         // Receive the message. Will error with MPI_ERR_TRUNCATE if the buffer is too small for the incoming message
         MPI_Recv(receiveBuffer.data(), messageLength, MPI_INT,
-            sourceRank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE
+            sourceRank, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE
         );
 
         printf("Rank 0: Received %d integers from rank 1.\n", messageLength);

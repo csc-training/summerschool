@@ -12,11 +12,28 @@ however it does *not know how much memory it needs to allocate for the message*.
 
 If you compile and run the example program, you should see the `MPI_Recv` fail
 with an error message like `*** MPI_ERR_TRUNCATE: message truncated`,
-because the receive buffer was too small to hold the full message. Your task is to fix this:
+because the receive buffer was too small to hold the full message.
+Your task is to fix this.
+
+Do this exercise using the following two approaches.
+
+### Approach 1
+
 - Use `MPI_Probe` to probe for the incoming message without receiving it,
 and store information about the message in an `MPI_Status` variable.
 - Use `MPI_Get_count` to find the incoming message size.
 - Reallocate the receive buffer accordingly and receive the message.
+
+### Approach 2
+
+- The maximum message size used by this program is 10 integers. Using this information,
+allocate a large enough receive buffer and receive the message *without* using `MPI_Probe` at any point.
+- When receiving, pass a `MPI_Status` object to `MPI_Recv` directly.
+Afterwards, use `MPI_Get_count` to obtain the actual message length and print it out.
+- The example program still prints out the full receive buffer.
+Run the program a few times and investigate the last few entries of the receive buffer.
+
+Think about the benefits and downsides of both approaches.
 
 
 ### Bonus technical information

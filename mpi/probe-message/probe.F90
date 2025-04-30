@@ -3,6 +3,8 @@ program probe
     implicit none
     integer :: rc, rank, ntasks, i
     integer :: messageLength = 1
+    ! Just some tag for the message
+    integer :: tag = 123
     integer, allocatable :: message(:), receiveBuffer(:)
     type(mpi_status) :: status
 
@@ -28,10 +30,10 @@ program probe
             message(i) = i
         end do
 
-        ! Send the test message to rank 0 (tag = 0)
+        ! Send the test message to rank 0
         print *, "Rank 1: Sending", messageLength, "integers to rank 0"
 
-        call mpi_send(message, messageLength, MPI_INTEGER, 0, 0, MPI_COMM_WORLD, rc)
+        call mpi_send(message, messageLength, MPI_INTEGER, 0, tag, MPI_COMM_WORLD, rc)
 
     else if (rank == 0) then
 
@@ -47,10 +49,10 @@ program probe
 
         ! Receive the message. Will error with MPI_ERR_TRUNCATE if the buffer is too small for the incoming message
         call mpi_recv(receiveBuffer, messageLength, MPI_INTEGER, 1, &
-            MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
+            tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
 
         print *, "Rank 0: Received", messageLength, "integers from rank 1"
-        do i = 1, messageLength
+        do i = 1, size(receiveBuffer)
             print *, 'receiveBuffer(', i, ') : ', receiveBuffer(i)
         end do
 
