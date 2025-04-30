@@ -10,27 +10,21 @@ lang:   en
 - Write full state of the simulation, eg. for visualization or as a checkpoint for continuing later
 - Read configuration files, input parameters, earlier checkpoint files...
 
-**I/O can easily become a bottleneck if not properly planned for!**
+**Heavy I/O can become a bottleneck if not properly planned for!**
 
 - Mahti peak I/O has been measured at 1.5 GB/s per compute node
-- Example: Climate simulation code `ICON` produces ~2TB of data per simulated month.
-
-    - 30-year model: 700TB at a rate of 100MB/s
+- Example: Run of the climate simulation code `ICON` produces 700 TB of data, at rate of 100 MB/s (30-year model)
 
 <!-- ICON numbers obtained from JE. They correspond to a "recent" (2025) simulation for `ClimateDT` using 5km resolution.
 Mahti numbers are from https://docs.csc.fi/computing/lustre/ -->
 
 
-# Considerations for good I/O implementation
+# What is covered on these slides
 
-Large-scale parallel I/O requires understanding of parallel filesystems...
-
-- Lustre striping (controls file chunking)
-
-... and familiarity with I/O libraries
-
-- Stuff
-
+- Common strategies for parallel I/O and their pitfalls
+- Using file I/O routines included in MPI
+- Controlling file striping for better I/O performance in Lustre
+- Short introduction to the HDF5 file format
 
 
 # I/O layers in HPC
