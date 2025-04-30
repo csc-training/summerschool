@@ -16,7 +16,7 @@ current task. Your program should work as follows:
 - Each receiver prints out their `rank` and the first element in the
   received array.
 
-### Message chain with send and recv
+### Case A: Message chain with send and recv
 
 1. Implement the program described above using `MPI_Send` and `MPI_Recv`. Utilize
    `MPI_PROC_NULL` when treating the special cases of
@@ -31,10 +31,7 @@ current task. Your program should work as follows:
    (e.g. 2, 4, 8, 16, ...), and pay attention especially to rank 0.
    Can you explain the behaviour?
 
-3. Bonus: Use the status parameter to find out how much data was received,
-   and print out this piece of information for all receivers.
-
-### Message chain with sendrecv
+### Case B: Message chain with sendrecv
 
 4. Modify your program to use combined `MPI_Sendrecv` instead of individual
    `MPI_Send`s or `MPI_Recv`s. Keep a copy of the other version for comparison purposes.
@@ -44,3 +41,12 @@ current task. Your program should work as follows:
    `MPI_Send`s or `MPI_Recv`s and pay attention especially to rank 0.
    You should see significantly lower wait times for rank 0 in the `MPI_Sendrecv` version.
    Can you explain why?
+
+
+### Bonus: Case C: Alternating send and recv
+
+5. Repeat the exercise using `MPI_Send` and `MPI_Recv`, but this time so that
+   tasks (0, 2, 4, ...) send the message first, then receive. Meanwhile, processes
+   (1, 3, 5, ...) should receive first, then send.
+
+   What happens to the wait times now?

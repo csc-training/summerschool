@@ -18,7 +18,9 @@ program hello
   endif
 
   ! Bonus: find name of the processor (node) that this rank is running on.
-  ! Docs: https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/MPI_Get_processor_name.3.html.
+  ! As stated in the docs for MPI_Get_processor_name,
+  ! we must allocate a char array of at least length MPI_MAX_PROCESSOR_NAME.
+
   call mpi_get_processor_name(procname, namelen, rc)
 
   write(*,*) 'Hello from rank ', rank, 'in node ', procname(:namelen)

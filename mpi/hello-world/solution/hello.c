@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
     }
 
     // Bonus: find name of the processor (node) that this rank is running on.
-    // Docs: https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/MPI_Get_processor_name.3.html.
-    // As stated in the docs, we must allocate a char array of at least length MPI_MAX_PROCESSOR_NAME.
+    // As stated in the docs for MPI_Get_processor_name,
+    // we must allocate a char array of at least length MPI_MAX_PROCESSOR_NAME.
 
     char processor_name[MPI_MAX_PROCESSOR_NAME];
     // Will hold the actual length of the processor name (filled in by MPI)
