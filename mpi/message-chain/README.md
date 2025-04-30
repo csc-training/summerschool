@@ -46,7 +46,7 @@ current task. Your program should work as follows:
 ### Bonus: Case C: Alternating send and recv
 
 5. Repeat the exercise using `MPI_Send` and `MPI_Recv`, but this time so that
-   tasks (0, 2, 4, ...) send the message first, then receive. Meanwhile, processes
+   tasks (0, 2, 4, ...) send the message first, then receive. Meanwhile, tasks
    (1, 3, 5, ...) should receive first, then send.
 
    What happens to the wait times now?
