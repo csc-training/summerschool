@@ -1,6 +1,6 @@
 ## Message exchange
 
-In this exercise we practice basic message (data) passing between MPI processes.
+In this exercise we practice message (data) passing between MPI processes.
 Your task is to write a program where two processes send and receive a message to/from
 each other using `MPI_Send` and `MPI_Recv`. You may assume that the program
 is always ran as two MPI processes (`ntasks` is 2) and implement the message
