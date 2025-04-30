@@ -51,20 +51,14 @@ int main(int argc, char *argv[])
         // Receive at most 'msgsize' integers from rank 1 and store info about the received message in 'status'
         MPI_Recv(receiveBuffer, msgsize, MPI_INT, 1, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
-        // Query the actual message size from 'status'
-        MPI_Get_count(&status, MPI_INT, &nrecv);
-
-        printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
+        printf("Rank %i received %i elements, first %i\n", rank, msgsize, receiveBuffer[0]);
     }
     else if (rank == 1)
     {
-        MPI_Status status;
-        MPI_Recv(receiveBuffer, msgsize, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        MPI_Get_count(&status, MPI_INT, &nrecv);
-
+        MPI_Recv(receiveBuffer, msgsize, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         MPI_Send(message, msgsize, MPI_INT, 0, 1, MPI_COMM_WORLD);
 
-        printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
+        printf("Rank %i received %i elements, first %i\n", rank, msgsize, receiveBuffer[0]);
     }
     // If ran with more than 2 processes, the leftover ranks do nothing
 

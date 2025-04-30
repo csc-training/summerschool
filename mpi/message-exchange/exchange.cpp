@@ -26,27 +26,22 @@ int main(int argc, char *argv[]) {
     }
 
     // TODO: Implement sending and receiving as defined in the assignment,
-    // Using MPI_Send and MPI_Recv functions.
-    // Send msgsize elements from the array "message", and receive into "receiveBuffer".
-    // Also set 'nrecv' to match the number of received elements.
+    // using MPI_Send and MPI_Recv functions.
+    // Send 'msgsize' integers from the array "message",
+    // and receive the same number of integers into "receiveBuffer".
     // You may hardcode the message passing to happen between ranks 0 and 1.
-
-    int nrecv = -1;
-
-    // HINT: MPI_Recv requires a status argument. What can you use it for?
-    MPI_Status status;
 
     if (rank == 0) {
 
         // ... your code here ...
 
-        printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
+        printf("Rank %i received %i elements, first %i\n", rank, msgsize, receiveBuffer[0]);
     }
     else if (rank == 1) {
 
         // .. your code here ...
 
-        printf("Rank %i received %i elements, first %i\n", rank, nrecv, receiveBuffer[0]);
+        printf("Rank %i received %i elements, first %i\n", rank, msgsize, receiveBuffer[0]);
     }
 
     MPI_Finalize();
