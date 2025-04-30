@@ -8,7 +8,7 @@ to extract information about an incoming message. Have a look at the example pro
 
 This program is intended to be ran with (at least) 2 MPI processes. Process with rank 1
 generates a message of random length and sends it to rank 0. Rank 0 wants to receive this message,
-however it does *not know much memory it needs to allocate for the message*.
+however it does *not know how much memory it needs to allocate for the message*.
 
 If you compile and run the example program, you should see the `MPI_Recv` fail
 with an error message like `*** MPI_ERR_TRUNCATE: message truncated`,
