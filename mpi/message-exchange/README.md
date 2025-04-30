@@ -11,9 +11,10 @@ initialised to the rank of the process. After receiving a message, each
 process should print out its own rank and the first element in the received array.
 
 You may start from scratch or use one of the following as a starting point:
-    - C: [exchange.c](exchange.c)
-    - C++: [exchange.cpp](exchange.cpp)
-    - Fortran: [exchange.F90](exchange.F90)
+
+- C: [exchange.c](exchange.c)
+- C++: [exchange.cpp](exchange.cpp)
+- Fortran: [exchange.F90](exchange.F90)
 
 Try increasing the message size (e.g. to 100000), recompile and run. Ensure your program still works;
 if not, read the comment about deadlocks below.
@@ -47,7 +48,7 @@ in the sense that once this function call returns, the send buffer is safe to be
 without changing the outgoing message. This means that implementations (`OpenMPI`, `MPICH`, ...)
 are allowed allowed to choose the communication mode
 on a case-by-case basis in an attempt to obtain better performance, and may choose to
-eg. copy the message in a new buffer and send it via a nonblocking send.
+eg. copy a small message in a new buffer and send it via a nonblocking send.
 
 As MPI users we should *never* rely on internal, implementation-specific details
 when programming message passing logic for our programs. In case of blocking communications,
