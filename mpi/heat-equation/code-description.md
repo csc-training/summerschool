@@ -98,9 +98,9 @@ ghost-layers that contain the boundary data of the neighbouring tasks. As the
 system is aperiodic, the outermost ranks communicate with only one neighbour,
 and the inner ranks with two neighbours.
 
-![domain decomposition C](img/domain-decomposition-c.svg)
+![domain decomposition C](img/domain-decomposition-c.png)
 
-![domain decomposition Fortran](img/domain-decomposition-fortran.svg)
+![domain decomposition Fortran](img/domain-decomposition-fortran.png)
 
 
 ### Code
