@@ -128,7 +128,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 
 - apply the chain rule to the the previous result:
-     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot \frac{\partial \varphi_{j1}}{\partial w_{ij1}$;
+     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot \frac{\partial \varphi_{j1}}{\partial w_{ij1}}$;
 
 # Data
 
