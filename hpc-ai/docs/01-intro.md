@@ -118,7 +118,8 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - forward pass: 
      - 1: $\varphi_{j1}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+ x_1 \cdot w_{1j1}+ x_2 \cdot w_{2j1}+ x_{31} \cdot w_{3j1}+...$
      - 2: $\varphi_{oj}=f_{2}( \Sigma_{j2}); \Sigma_{j2}= w_{0j2}+\varphi_{11} \cdot w_{1j2}+\varphi_{21} \cdot w_{2j2}+\varphi_{31} \cdot w_{3j2}+...$
-- apply the chain rule
+- apply the chain rule:
+     - $\frac{\partial \Sigma_{j2}}{\partial w_{0j2}}=1$ or $\frac{\partial \Sigma_{j2}}{\partial w_{ij2}}=\varphi_{i1}; i\neq 0$
 - final result:
      - $\frac{\partial w_{0j2}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot 1$
      - $\frac{\partial w_{ij2}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot \varphi_{i1}$; $i\neq 0$
@@ -128,7 +129,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 
 - apply the chain rule to the the previous result:
-     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot \varphi_{i1} \cdot \frac{\partial \Sigma_{j2}}{\partial w_{ij1}}$;
+     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_2}{\partial \Sigma_{j2}} \cdot \frac{\partial \Sigma_{j2}}{\partial w_{ij1}}$;
      -  $\frac{\partial \varphi_{j1}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
      - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
 - final result:
