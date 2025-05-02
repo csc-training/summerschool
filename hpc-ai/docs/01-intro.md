@@ -91,11 +91,10 @@ $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
 
 # Learning as an Optimization Problem
 
-- **loss function** measures how good/bad a model’s predictions are compared to the actual results:
-$\mathrm{E}=\frac{1}{2}\sum_j\left[ \mathrm{T}_\mathrm{j}- \varphi_\mathrm{oj}\right]^2$
-- choose $\mathrm w_\mathrm{ijl}$ that minimize the **loss function**, i.e.
-$\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{ijl}} }=0$
-- **training** is an interative **gradient descent** process: $\frac{\partial \mathrm{w}_{\mathrm{ijl}}}{\partial t}=- \frac{\partial \mathrm{E}}{\partial \mathrm{w}_{\mathrm{ijl}}}$
+- **loss function** measures how good/bad a model’s predictions are compared to the actual results: $E=\frac{1}{2}\sum_j\left[ T_j- \varphi_oj\right]^2$
+- choose $w_{ijl}$ that minimize the **loss function**, i.e.
+$\frac{\partial E} {\partial w_{ijl} }=0$
+- **training** is an interative **gradient descent** process: $\frac{\partial w_{ijl}}{\partial t}=- \frac{\partial E}{\partial w_{ijl}}$
   -  training is done using labeled/known data (&#x1F91E; the model works for new data)
   
 **Not guaranteed to find the true minima!**
@@ -103,9 +102,9 @@ $\frac{\partial \mathrm{E}} {\partial \mathrm{w}_{\mathrm{ijl}} }=0$
 # Derivatives for One Layer 
 
 - derivative of the loss function depends on weigths, input, and true value
-- forward pass is $\mathfrak \varphi_{oj}=f_{l}( w_{0j}+\mathfrak{\Sigma}_{i}{x_iw_{{ijl}});l=1$
+- forward pass is $\varphi_{oj}=f_{l}( w_{0j}+\Sigma_{i}{x_iw_{ijl});l=1$
 - Apply the chain rule:
-     - $ \frac{\partial \mathrm{E}}{\partial w_{ijl}}=\frac{\partial E}{\partial w_{ijl}}$
+     - $\frac{\partial E}{\partial w_{ijl}}=\frac{\partial E}{\partial w_{ijl}}$
 
 
 # Derivatives for Two Layers. Weights in the Second Layer
