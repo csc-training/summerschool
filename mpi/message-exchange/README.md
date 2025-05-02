@@ -26,7 +26,7 @@ Hints:
 2. `MPI_Recv` requires a `status` argument, which can be used to obtain 'metadata'
 about the incoming message. This is not necessary in this exercise,
 and you may ignore the status altogether by passing `MPI_STATUS_IGNORE`.
-The `status` argument is investigated further in a later exercise ([Probe message](../probe-message/)).
+The `status` argument is investigated further in a later exercise ([Message length](../message-length/)).
 
 
 ### Extra comment about deadlocking
