@@ -110,7 +110,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
      - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
 - final result:
      - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_{j1}}\times 1$
-     - $\frac{\partial w_{ij1}}{\partial w_{ij1}}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_{j1}}\times x_i$; $i\neq 0$
+     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_{j1}}\times x_i$; $i\neq 0$
 
 
 # Derivatives for Two Layers. Weights in the Second Layer
