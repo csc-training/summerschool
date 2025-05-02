@@ -109,8 +109,8 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
      - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{k}( T_k-\varphi_{ok})$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
      - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
 - final result:
-     - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_j-\varphi_{ok})]\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot 1$
-     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_j-\varphi_{ok})]\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot x_i$; $i\neq 0$
+     - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot 1$
+     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot x_i$; $i\neq 0$
 
 
 # Derivatives for Two Layers. Weights in the Second Layer
@@ -121,20 +121,20 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - apply the chain rule:
      - $\frac{\partial \Sigma_{j2}}{\partial w_{0j2}}=1$ or $\frac{\partial \Sigma_{j2}}{\partial w_{ij2}}=\varphi_{i1}; i\neq 0$
 - final result:
-     - $\frac{\partial w_{0j2}}{\partial t}=[\Sigma_{k}( T_j-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot 1$
-     - $\frac{\partial w_{ij2}}{\partial t}=[\Sigma_{k}( T_j-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot \varphi_{i1}$; $i\neq 0$
+     - $\frac{\partial w_{0j2}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot 1$
+     - $\frac{\partial w_{ij2}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot \varphi_{i1}$; $i\neq 0$
        
 
 # Derivatives for Two Layers. Weights in the First Layer
 
 
-- apply the chain rule to the the previous result:
+- continue the chain rule from the previous result:
      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}} \cdot \frac{\partial \Sigma_{j2}}{\partial w_{ij1}}$;
      -  $\frac{\partial \varphi_{j1}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
      - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
 - final result:
-     - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot 1$
-     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot x_i$; $i\neq 0$
+     - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot 1$
+     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot x_i$; $i\neq 0$
 
 # Data
 
