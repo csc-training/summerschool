@@ -102,8 +102,8 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 # Derivatives for One Layer 
 
-- derivative of the loss function depends on weigths, input, and true value
-     - forward pass: $\varphi_{oj}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+ x_1 \cdot w_{1j1}+ x_2 \cdot w_{2j1}+ x_2 \cdot w_{2j1}+ x_3 \cdot w_{3j1}+...$
+- forward pass:
+     - layer1: $\varphi_{oj}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+ x_1 \cdot w_{1j1}+ x_2 \cdot w_{2j1}+ x_2 \cdot w_{2j1}+ x_3 \cdot w_{3j1}+...$
 - apply the chain rule:
      - $\frac{\partial E}{\partial w_{ij1}}=\frac{\partial E}{\partial \varphi_{oj}}\frac{\partial \varphi_{oj}}{\partial w_{ij1}}$
      - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{i}( T_j-\varphi_{oj})$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
@@ -129,6 +129,11 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 - apply the chain rule to the the previous result:
      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot \frac{\partial \varphi_{j1}}{\partial w_{ij1}}$;
+     -  $\frac{\partial \varphi_{j1}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
+     - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
+- final result:
+     - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot 1$
+     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot x_i$; $i\neq 0$
 
 # Data
 
