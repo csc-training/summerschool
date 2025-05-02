@@ -333,9 +333,11 @@ Many systems also provide node-local disk area for temporary storage
 # Lustre architecture
 
 <div class="column">
+
 - Files are chunked up and spread across multiple **storage servers** as **objects**
 - Dedicated **metadata server(s)** (MDS): file names, owners, permissions, ...
 - **Client**: HPC nodes that access the data
+
 </div>
 
 <div class="column">
