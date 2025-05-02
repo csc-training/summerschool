@@ -107,7 +107,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - apply the chain rule:
      - $\frac{\partial E}{\partial w_{ij1}}=\frac{\partial E}{\partial \varphi_{oj}}\frac{\partial \varphi_{oj}}{\partial w_{ij1}}$
      - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{i}( T_j-\varphi_{oj})$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_j}\frac{\partial \Sigma_j}{\partial w_{ij1}}$
-     - $\frac{\partial f_1}{\partial w_{0j1}}=1$ or $\frac{\partial f_1}{\partial w_{ij1}}=x_i; i\neq 0$
+     - $\frac{\partial \Sigma_j}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_j}{\partial w_{ij1}}=x_i; i\neq 0$
 - final result:
      - $\frac{\partial E}{\partial w_{0j1}}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_j}\times 1$
      -  $\frac{\partial E}{\partial w_{ij1}}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_j}\times x_i$; $i\neq 0$
