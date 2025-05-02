@@ -31,7 +31,8 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 12:00 | Lunch
 | 13:00 | [Introduction to supercomputing](computer-platforms)
 | 17:00 | Dinner
-| 18:00 | Get together & Lightning talks
+| 18:00 | Exercises
+| 19:00 | Get together & Lightning talks
 
 ### Day 2, Wed 25.6.
 
@@ -41,9 +42,9 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [MPI](mpi)
 | 12:00 | Lunch
 | 13:00 | [MPI](mpi)
-| **15:00** | Sports: Nuuksio Olympic Games
-| 17:00 | Dinner
-| 18:00 | Exercises
+| **15:30** | Sports: Nuuksio Olympic Games
+| **17:15** | Dinner
+| **18:15** | Exercises
 | 19:30 | Snack & Saunas at the lake
 
 ### Day 3, Thu 26.6.
@@ -55,8 +56,8 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 12:00 | Lunch
 | 13:00 | [MPI](mpi)
 | **16:00** | Sports
-| 17:00 | Dinner
-| 18:00 | Exercises
+| **17:00** | Dinner
+| **18:00** | Exercises
 | 19:30 | Snack & Free time at the hotel
 
 ### Day 4, Fri 27.6.
