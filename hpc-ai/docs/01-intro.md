@@ -133,7 +133,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
      -  $\frac{\partial \varphi_{j1}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
      - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
 - final result:
-     - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}{\partial \Sigma_{j1}}\cdot 1$
+     - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot 1$
      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\frac{\partial f_1}{\partial \Sigma_{j1}}\cdot x_i$; $i\neq 0$
 
 # Data
