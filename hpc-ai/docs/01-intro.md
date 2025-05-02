@@ -117,7 +117,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 - forward pass: 
      - layer 1: $\varphi_{j1}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+\Sigma_{k} x_k \times w_{kj1}$
-     - layer 2: $\varphi_{oj}=f_{2}( \Sigma_{j2}); \Sigma_{j2}= w_{0j2}+\Sigma_{k} $\varphi_{k1} \times w_{kj2}$
+     - layer 2: $\varphi_{oj}=f_{2}( \Sigma_{j2}); \Sigma_{j2}= w_{0j2}+\Sigma_{k} \varphi_{k1} \times w_{kj2}$
 
 # Derivatives for Two Layers. Weights in the First Layer
 
