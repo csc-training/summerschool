@@ -31,7 +31,7 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 ### MPI programming practices
 
-- [Probe message](probe-message/)
+- [Message length](message-length/)
 - [Message chain](message-chain/)
 - [Heat equation solver](heat-equation/): Tasks 1-2
 - [(Bonus) Parallel pi with any number of processes](parallel-pi-general/)
