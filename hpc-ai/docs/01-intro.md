@@ -104,8 +104,10 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 - derivative of the loss function depends on weigths, input, and true value
      - forward pass is $\varphi_{oj}=f_{1}( w_{0j1}+\Sigma_{i} x_i \times w_{ij1})$
-- Apply the chain rule:
-     - $\frac{\partial E}{\partial w_{ijl}}=\frac{\partial E}{\partial w_{ijl}}$
+- apply the chain rule:
+     - $\frac{\partial E}{\partial w_{ij1}}=\frac{\partial E}{\varphi_{oj}}\frac{\varphi_{oj}}{\partial w_{ij1}}$
+     - $\frac{\partial E}{\varphi_{oj}}=-\Sigma_{i}\large( T_j-\varphi_{oj}\large)$
+     - 
 
 
 # Derivatives for Two Layers. Weights in the Second Layer
