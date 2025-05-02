@@ -103,11 +103,11 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 # Derivatives for One Layer 
 
 - derivative of the loss function depends on weigths, input, and true value
-     - forward pass is $\varphi_{oj}=f_{1}( \Sigma_{j1}); \Sigma_j= w_{0j1}+\Sigma_{k} x_k \times w_{kj1}$
+     - forward pass is $\varphi_{oj}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+\Sigma_{k} x_k \times w_{kj1}$
 - apply the chain rule:
      - $\frac{\partial E}{\partial w_{ij1}}=\frac{\partial E}{\partial \varphi_{oj}}\frac{\partial \varphi_{oj}}{\partial w_{ij1}}$
-     - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{i}( T_j-\varphi_{oj})$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_j}\frac{\partial \Sigma_j}{\partial w_{ij1}}$
-     - $\frac{\partial \Sigma_j}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_j}{\partial w_{ij1}}=x_i; i\neq 0$
+     - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{i}( T_j-\varphi_{oj})$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
+     - $\frac{\partial \Sigma_{j1}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_j}{\partial w_{ij1}}=x_i; i\neq 0$
 - final result:
      - $\frac{\partial E}{\partial w_{0j1}}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_j}\times 1$
      -  $\frac{\partial E}{\partial w_{ij1}}=[\Sigma_{i}( T_j-\varphi_{oj})]\frac{\partial f_1}{\partial \Sigma_j}\times x_i$; $i\neq 0$
@@ -115,7 +115,9 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 # Derivatives for Two Layers. Weights in the Second Layer
 
-
+- forward pass: 
+     - layer 1: $\varphi_{j1}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+\Sigma_{k} x_k \times w_{kj1}$
+     - layer 2: $\varphi_{oj}=f_{2}( \Sigma_{j2}); \Sigma_{j2}= $\varphi_{01}+\Sigma_{k} $\varphi_{k1} \times w_{kj2}$
 
 # Derivatives for Two Layers. Weights in the First Layer
 
