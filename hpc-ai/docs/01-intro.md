@@ -34,16 +34,17 @@ lang:   en
 
 <div class="column"  style="width:57%">
   ![](img/Neuron.png){width=125%}
-
-  <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
-
 </div>
 <div class="column"  style="width:39%; text-align: center;">
-  ![](img/activation_functions.png){width=64%}
+  ![](img/activation_functions.png){width=65%}
+</div>
+
+
+
+<div class="column"  style="width:99%; text-align: center;">
 
   <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
-
 
 #  Neural Networks
 
@@ -102,7 +103,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 # Derivatives for One Layer 
 
 - derivative of the loss function depends on weigths, input, and true value
-     - forward pass is $\varphi_{oj}=f_{l}( w_{0jl}+\Sigma_{i} x_i \times w_{ijl});l=1$
+     - forward pass is $\varphi_{oj}=f_{1}( w_{0j1}+\Sigma_{i} x_i \times w_{ij1})$
 - Apply the chain rule:
      - $\frac{\partial E}{\partial w_{ijl}}=\frac{\partial E}{\partial w_{ijl}}$
 
