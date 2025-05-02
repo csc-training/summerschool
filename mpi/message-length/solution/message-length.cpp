@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
         // Resize the receive buffer so that the full message fits in
         receiveBuffer.resize(messageLength);
 
-        MPI_Recv(receiveBuffer.data(), messageLength, MPI_INT,
+        MPI_Recv(receiveBuffer.data(), receiveBuffer.size(), MPI_INT,
             sourceRank, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE
         );
 
