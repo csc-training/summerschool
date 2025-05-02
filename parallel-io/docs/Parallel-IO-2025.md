@@ -21,57 +21,42 @@ Mahti numbers are from https://docs.csc.fi/computing/lustre/ -->
 
 # What is covered on these slides
 
-- Common strategies for parallel I/O and their pitfalls
-- Using file I/O routines included in MPI
-- Controlling file striping for better I/O performance in Lustre
+- Common strategies for parallel I/O and their limitations
+- Using file I/O routines included in MPI (MPI-IO)
+- Controlling file striping in Lustre for better I/O performance
 - Short introduction to the HDF5 file format
-
-
-# A comment on POSIX I/O
-
-
-
-TODO: FIX THIS
-
-
-![](img/io-layers.png)
-
-# A comment on terminology...
-
-You are probably familiar with so-called "standard library" I/O routines
-
-- **C**: `fread`, `fwrite` etc. from `stdio.h`
-- **fortran**: TODO
-
-These are usually implemented through operating system `syscalls`;\
-`POSIX`-routines in most Linux distros.
-
-- Most programs should ***never*** need to call POSIX directly! Use standard libs or dedicated I/O libs instead
-- HPC texts sometimes use the term "POSIX I/O" analogously with any non-parallel I/O library. Try not to get confused :)
-
 
 # Common I/O strategies in HPC {.section}
 
-# Approaches to I/O in a parallel program
+# I/O and POSIX (Portable Operating System Interface)
+
+Most Linux systems follow the POSIX standard:
+
+- File I/O happens through POSIX syscalls `read()`, `write()` etc.
+- Standard library routines `fread()`, `fwrite()` call POSIX under the hood
+    - Can call POSIX directly in C (header `unistd.h`), but this is rarely needed
+
+However, **strict POSIX semantics are not well suited for parallel I/O!**
+
+- Eg. "global consistency": writes must be immediately visible to all processes
+- Lustre is POSIX compliant. Parallel applications must work around the I/O limitations through smart implementations (MPI-IO)
+
+# Old school parallel I/O
 
 Small programs _can_ manage with standard I/O routines:
 
 - Do all I/O from one process, using MPI to gather/scatter the data (**"spokesperson"**)
 - Use separate I/O file(s) for each process (**"file-per-process"**)
 - Coordinated I/O to one file from many processes, eg. `fseek` based on MPI rank
-    - **Do not** do this; see slides on MPI-IO instead
 
-In practice, consider using libraries designed for parallel I/O
-
-- **MPI-IO**, **HDF5**, **NetCDF**, ...
-
+None of these are ideal for I/O heavy applications! But it is still useful to understand the logic
 
 # Spokesperson strategy: One I/O process
 
 <div class="column">
 - One process takes care of all I/O using standard, serial routines (`fprintf`, `fwrite`, ...)
 - Usually requires a lot of MPI communication
-- Can be a good option for small files (eg. input
+- Can be a good option for small files (eg. reading input
     files)
 - Does not scale, single writer is a bottleneck!
 </div>
@@ -136,19 +121,21 @@ The "standard" I/O streams `stdout`, `stdin`, `stderr` are effectively **serial*
 - Avoid excessive debug prints in production runs
     - Separate "Debug" and "Release" builds if needed
 - **Do not** rely on standard streams for heavy I/O operations. Code for direct file I/O instead
-    - *Eg*: `fprintf` instead of "`printf`
+    - *Eg*: `fprintf` instead of `printf`
 
 # Parallel I/O with MPI-IO {.section}
 
 # MPI parallel I/O interface (MPI-IO)
 
-MPI-IO = part of the MPI specification that deals with I/O
+MPI-IO = part of the MPI specification that deals with I/O.
 
-- Simplifies simultaneous I/O from many MPI processes to one or more files, solving most common I/O complications
+- Provides built-in solutions for parallel I/O involving many MPI processes
+
+- Modern replacement for the "old school" I/O strategies discussed earlier
+
 - **Portable**: Specifics about the filesystem are abstracted away
-    - Can bypass POSIX restrictions for better parallel performance
 
-- Implementation used by `OpenMPI` and `MPICH` is called `ROMIO`
+- Implementations: (both in `MPICH` and `OpenMPI`) and `OMPIO` (`OpenMPI` only)
     - Advanced users can configure the internals via "hints"
 
 API is rather similar to standard I/O programming. Consult MPI docs for details
@@ -159,7 +146,8 @@ API is rather similar to standard I/O programming. Consult MPI docs for details
 // Remember to "#include <mpi.h>"
 
 MPI_File file;
-// Creates file called "stuff.out" and opens it in write-only mode
+// Creates file called "stuff.out" and opens it in write-only mode.
+// The "info" parameter can be used for implementation-specific hints.
 MPI_File_open(MPI_COMM_WORLD, "stuff.out",
     MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &file);
 
@@ -171,24 +159,31 @@ MPI_File_open(MPI_COMM_WORLD, "stuff.out",
 MPI_Offset offset = (MPI_Offset) (rank * N * sizeof(int));
 MPI_File_write_at_all(file, offset, data_ptr, N, MPI_INT, MPI_STATUS_IGNORE);
 
-// Don't ignore the status and MPI return codes in a real program :)
-
 MPI_File_close(&file);
 ```
 
-# Lustre I/O considerations {.section}
+# MPI collective I/O details
 
+- TODO: figure here, eg. from https://docs.csc.fi/support/tutorials/lustre_performance/
+- Note the "spokesperson"-like implementation
 
-TODO: Brief recap of Lustre architecture
+# Lustre file striping {.section}
 
-- We've introduced MPI-IO, so can talk about striping and how it can improve performance when using parallel I/O
-- After Lustre, we start considering file formats for storing data efficiently and conveniently. Since MPI-IO doesn't have anything to say about this, we get a natural link to HDF5
+# Lustre filesystem recap
 
-# Lustre file striping
+![](../../computer-platforms/docs/images/lustre-architecture.svg){.center width=100%}
+
+Striping = how the file is distributed across OSTs
+
+# File striping
+
+With striping, many OSTs can participate in single-file I/O
+
+- Can have simultaneous read/write by many physical disks!
 
 ![](img/lustre-striping.png)
 
-# Lustre file striping
+# Controlling Lustre striping
 
 - Striping pattern of a file/directory can be queried or set with the
   `lfs` command
@@ -198,7 +193,8 @@ TODO: Brief recap of Lustre architecture
     - All the new files within the directory will have the specified
     striping
     - Also stripe size can be specified, see *man lfs* for details
-- Proper striping can enhance I/O performance a lot
+
+- Default stripe count on Puhti/Mahti/Lumi is 1, *ie.* no striping
 
 # Lustre file striping in C codes
 
@@ -209,7 +205,7 @@ TODO working example with MPI-IO + lustre API
 ```c
 ...
 #include <lustre/lustreapi.h>
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
  int fd;
  char fname[]="lfile";
  unsigned long long stripe_size;
@@ -231,8 +227,8 @@ int main(int argc, char **argv){
 Most popular high-level I/O libraries in HPC are **`HDF5`** and **`netCDF`**.
 
 - Both define hierarchical file formats for storing large binary data
-- Format is very versatile. Mental model: "Database in a single file"
 - Both can be compiled with parallel support, using MPI-IO under the hood
+- Format is very versatile. Mental model: "Database in a single file"
 - Modern `netCDF` is actually a layer built upon `HDF5`
 
 # File format of HDF5 (Hierarchical Data Format)
@@ -274,6 +270,6 @@ Exercises: `hdf5-write-read` and `hdf5-writerank`
 - Built-in metadata support: data and its description stored in same file
     - You are still responsible for writing useful metadata :)
 
-- Probably a better choice over direct MPI-IO for programs with demanding I/O needs
+- Parallel scalability thanks to built-in MPI-IO support (at least for `HDF5`, `netCDF`)
 
-High-level libraries always aim to make development easier by abstracting out low-level design choices. **The same applies here!**
+High-level libraries always aim to make development easier by abstracting away low-level details. **The same applies here!**
