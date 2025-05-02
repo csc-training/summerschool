@@ -130,7 +130,8 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 - continue the chain rule from the previous result:
      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}} \cdot \frac{\partial \Sigma_{j2}}{\partial w_{ij1}}$;
-     - $\frac{\partial \Sigma_{j2}}{\partial w_{ij1}}= w_{1j2}\frac{\varphi_{11}}{\partial w_{1j1}}+w_{2j2}\frac{\varphi_{21}}{\partial w_{2j1}}+w_{3j2}\frac{\varphi_{i3}}{\partial w_{3j1}}+...$
+     - $\frac{\partial \Sigma_{j2}}{\partial w_{ij1}}= w_{ij2}\frac{\varphi_{i1}}{\partial w_{ij1}}$
+     - $\frac{\varphi_{i1}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
      - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
 - final result:
      - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2}{\partial \Sigma_{j2}}\cdot 1$
