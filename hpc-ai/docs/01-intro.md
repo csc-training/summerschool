@@ -106,7 +106,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
      - forward pass is $\varphi_{oj}=f_{1}( w_{0j1}+\Sigma_{k} x_k \times w_{kj1})$
 - apply the chain rule:
      - $\frac{\partial E}{\partial w_{ij1}}=\frac{\partial E}{\partial \varphi_{oj}}\frac{\partial \varphi_{oj}}{\partial w_{ij1}}$
-     - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{i}\large( T_j-\varphi_{oj}\large)$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial w_{ij1}}$
+     - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{i}( T_j-\varphi_{oj})$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1}{\partial w_{ij1}}$
      - $\frac{\partial f_1}{\partial w_{0j1}}=1$ or $\frac{\partial f_1}{\partial w_{ij1}}=x_i; i\neq 0$
      - 
 
