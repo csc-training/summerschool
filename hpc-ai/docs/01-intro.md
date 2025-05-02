@@ -102,7 +102,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 # Derivatives for One Layer 
 
 - derivative of the loss function depends on weigths, input, and true value
-- forward pass is $\varphi_{oj}=f_{l}( w_{0j}+\Sigma_{i} x_i \times w_{ijl});l=1$
+     - forward pass is $\varphi_{oj}=f_{l}( w_{0j}+\Sigma_{i} x_i \times w_{ijl});l=1$
 - Apply the chain rule:
      - $\frac{\partial E}{\partial w_{ijl}}=\frac{\partial E}{\partial w_{ijl}}$
 
