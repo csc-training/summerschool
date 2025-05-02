@@ -5,10 +5,11 @@
 An approximation to the value of π can be calculated from the following
 expression
 
+$$\frac{\pi}{4} = \int_0^1 \frac{dx}{1+x^2} \approx \frac{1}{N} \sum_{i=1}^N \frac{1}{1+\left( \frac{i-\frac{1}{2}}{N}\right)^2}$$
+
 <!--
 \frac{\pi}{4} = \int_0^1 \frac{dx}{1+x^2} \approx \frac{1}{N} \sum_{i=1}^N \frac{1}{1+\left( \frac{i-\frac{1}{2}}{N}\right)^2}
 -->
-![img](img/eq1.png)
 
 where the answer becomes more accurate with increasing N. As each term is independent,
 the summation over i can be parallelized nearly trivially.

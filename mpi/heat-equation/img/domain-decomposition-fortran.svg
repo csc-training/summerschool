@@ -6,8 +6,8 @@
    height="201.28285mm"
    width="206.375mm"
    sodipodi:docname="domain-decomposition-fortran.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-   inkscape:export-filename="/home/trossi/work/csc-training/domain-decomposition-fortran.png"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="domain-decomposition-fortran.svg"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -29,14 +29,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.9305576"
-     inkscape:cx="383.10364"
-     inkscape:cy="307.34261"
-     inkscape:window-width="1920"
-     inkscape:window-height="979"
+     inkscape:cx="371.82008"
+     inkscape:cy="308.95455"
+     inkscape:window-width="3374"
+     inkscape:window-height="1371"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8"
+     inkscape:current-layer="layer3"
      showguides="false"
      inkscape:pageshadow="2"
      fit-margin-top="2.1"
@@ -56,6 +56,19 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Background">
+    <rect
+       style="fill:#ffffff;stroke-width:0.264583"
+       id="rect735"
+       width="206.23976"
+       height="200.71759"
+       x="0.261004"
+       y="0.41427439"
+       ry="0.98483068" />
+  </g>
   <rect
      style="fill:#ffce44;fill-opacity:0.5;stroke:none;stroke-width:0.2"
      id="rect2282"
