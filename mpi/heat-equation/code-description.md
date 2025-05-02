@@ -76,7 +76,7 @@ This equation expresses that the time evolution of the temperature
 field at a particular location depends on the value of the field at
 the previous step at the same location *and* four adjacent locations:
 
-![img](img/stencil.png)
+![img](img/stencil.svg)
 
 ### Parallelization
 
@@ -98,9 +98,9 @@ ghost-layers that contain the boundary data of the neighbouring tasks. As the
 system is aperiodic, the outermost ranks communicate with only one neighbour,
 and the inner ranks with two neighbours.
 
-![domain decomposition C](img/domain-decomposition-c.png)
+![domain decomposition C](img/domain-decomposition-c.svg)
 
-![domain decomposition Fortran](img/domain-decomposition-fortran.png)
+![domain decomposition Fortran](img/domain-decomposition-fortran.svg)
 
 
 ### Code
