@@ -4,10 +4,9 @@ program basic
 
   implicit none
   integer, parameter :: size = 10000000
-  integer :: rc, rank, ntasks
+  integer :: rc, rank, ntasks, sendTag, recvTag
   integer :: message(size)
   integer :: receiveBuffer(size)
-  type(mpi_status) :: status
 
   real(REAL64) :: t0, t1
 
@@ -32,21 +31,55 @@ program basic
      source = MPI_PROC_NULL
   end if
 
+  ! Note that the send tag must be valid (>= 0) even if our destination is MPI_PROC_NULL
+  sendTag = rank + 1
+  recvTag = rank
+
+  if (rank == 0) then
+      write(*,*) '#### Case A: Chain with MPI_Send and MPI_Recv ####'
+  endif
+
   ! Start measuring the time spent in communication
   call mpi_barrier(mpi_comm_world, rc)
   t0 = mpi_wtime()
 
   ! Send and receive messages
-  call mpi_sendrecv(message, size, MPI_INTEGER, destination, rank + 1, &
-       receiveBuffer, size, MPI_INTEGER, source, MPI_ANY_TAG, &
-       MPI_COMM_WORLD, status, rc)
+  call mpi_send(message, size, MPI_INTEGER, destination, sendTag, MPI_COMM_WORLD, rc)
+  call mpi_recv(receiveBuffer, size, MPI_INTEGER, source, recvTag, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
   write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', rank, &
           ' Sent elements: ', size, &
-          '. Tag: ', rank+1, '. Receiver: ', destination
-  write(*,'(A10,I3,A,I3)') 'Receiver: ', rank, &
-          ' First element: ', receiveBuffer(1)
+          ' Tag: ', sendTag, ' Receiver: ', destination
+  write(*,'(A10,I3,A,I3,A,I3)') 'Receiver: ', rank, &
+          ' Tag: ', recvTag, ' First element: ', receiveBuffer(1)
 
   ! Finalize measuring the time and print it out
+  t1 = mpi_wtime()
+  call mpi_barrier(mpi_comm_world, rc)
+  call flush(6)
+
+  call print_ordered(t1 - t0)
+
+  if (rank == 0) then
+    write(*,*) '#### End case A ####'
+  endif
+
+  if (rank == 0) then
+    write(*,*) '#### Case B: Chain with MPI_Sendrecv ####'
+  endif
+
+  call mpi_barrier(mpi_comm_world, rc)
+  t0 = mpi_wtime()
+
+  call mpi_sendrecv(message, size, MPI_INTEGER, destination, sendTag, &
+       receiveBuffer, size, MPI_INTEGER, source, recvTag, &
+       MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
+
+  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', rank, &
+    ' Sent elements: ', size, &
+    ' Tag: ', sendTag, ' Receiver: ', destination
+  write(*,'(A10,I3,A,I3,A,I3)') 'Receiver: ', rank, &
+    ' Tag: ', recvTag, ' First element: ', receiveBuffer(1)
+
   t1 = mpi_wtime()
   call mpi_barrier(mpi_comm_world, rc)
   call flush(6)
@@ -61,6 +94,42 @@ program basic
   ! The first sender (rank 0) has to wait until all other receives have been processed.
   ! In contrast, the mpi_sendrecv version allows rank 0 to receive and continue as soon as
   ! rank 1 has finished its send, and so on.
+
+  if (rank == 0) then
+    write(*,*) '#### End case B ####'
+  endif
+
+  if (rank == 0) then
+    write(*,*) '#### Case C: Chain with alternating send and receive ####'
+  endif
+
+  call mpi_barrier(mpi_comm_world, rc)
+  t0 = mpi_wtime()
+
+  if (modulo(rank, 2) == 0) then
+    call mpi_send(message, size, MPI_INTEGER, destination, sendTag, MPI_COMM_WORLD, rc)
+    call mpi_recv(receiveBuffer, size, MPI_INTEGER, source, recvTag, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
+  else
+    call mpi_recv(receiveBuffer, size, MPI_INTEGER, source, recvTag, MPI_COMM_WORLD, MPI_STATUS_IGNORE, rc)
+    call mpi_send(message, size, MPI_INTEGER, destination, sendTag, MPI_COMM_WORLD, rc)
+  endif
+
+  write(*,'(A10,I3,A20,I8,A,I3,A,I3)') 'Sender: ', rank, &
+    ' Sent elements: ', size, &
+    ' Tag: ', sendTag, ' Receiver: ', destination
+  write(*,'(A10,I3,A,I3,A,I3)') 'Receiver: ', rank, &
+    ' Tag: ', recvTag, ' First element: ', receiveBuffer(1)
+
+  t1 = mpi_wtime()
+  call mpi_barrier(mpi_comm_world, rc)
+  call flush(6)
+
+  call print_ordered(t1 - t0)
+
+  if (rank == 0) then
+  write(*,*) '#### End case C ####'
+  endif
+
 
 
   call mpi_finalize(rc)
