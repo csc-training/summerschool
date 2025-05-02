@@ -12,8 +12,8 @@ lang:   en
 
 **Heavy I/O can become a bottleneck if not properly planned for!**
 
-- Mahti peak I/O has been measured at 1.5 GB/s per compute node
 - Example: Run of the climate simulation code `ICON` produces 700 TB of data, at rate of 100 MB/s (30-year model)
+- Mahti peak I/O has been measured at 1.5 GB/s per compute node
 
 <!-- ICON numbers obtained from JE. They correspond to a "recent" (2025) simulation for `ClimateDT` using 5km resolution.
 Mahti numbers are from https://docs.csc.fi/computing/lustre/ -->
@@ -27,7 +27,9 @@ Mahti numbers are from https://docs.csc.fi/computing/lustre/ -->
 - Short introduction to the HDF5 file format
 
 
-# I/O layers in HPC
+# A comment on POSIX I/O
+
+
 
 TODO: FIX THIS
 
