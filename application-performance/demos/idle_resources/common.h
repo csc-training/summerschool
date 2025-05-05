@@ -80,14 +80,14 @@ template <typename T, typename... Args> void run_and_measure(Args... args) {
     constexpr size_t max_n = *std::max_element(ns.begin(), ns.end());
 
     T t(max_n, allocate, deallocate, args...);
-    loop(max_n, t, [](T &t, size_t i) { T::init(t, i); });
+    loop(max_n, t, [](T &t, size_t i) { t.init(i); });
 
     for (size_t n : ns) {
         constexpr auto n_iter = 20;
         size_t avg = 0;
         for (auto iteration = 0; iteration < n_iter; iteration++) {
             const auto start = std::chrono::high_resolution_clock::now();
-            loop(max_n, t, [](T &t, size_t i) { T::compute(t, i); });
+            loop(n, t, [](T &t, size_t i) { t.compute(i); });
             const auto end = std::chrono::high_resolution_clock::now();
             const std::chrono::duration<double, std::nano> dur = end - start;
             avg += iteration == 0 ? 0 : dur.count();

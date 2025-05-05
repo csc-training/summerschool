@@ -23,13 +23,11 @@ template <typename T> struct Axpy {
         deallocate(static_cast<void *>(r));
     }
 
-    DEVICE static void init(Axpy<T> &axpy, size_t i) {
-        axpy.x[i] = sin(static_cast<T>(i));
-        axpy.y[i] = cos(static_cast<T>(i));
-        axpy.r[i] = 0.0;
+    DEVICE void init(size_t i) {
+        x[i] = sin(static_cast<T>(i));
+        y[i] = cos(static_cast<T>(i));
+        r[i] = 0.0;
     }
 
-    DEVICE static void compute(Axpy<T> &axpy, size_t i) {
-        axpy.r[i] = axpy.a * axpy.x[i] + axpy.y[i];
-    }
+    DEVICE void compute(size_t i) { r[i] = a * x[i] + y[i]; }
 };
