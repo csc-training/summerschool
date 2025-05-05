@@ -75,8 +75,10 @@ inline void deallocate(void *p) {
 }
 
 template <typename T, typename... Args> void run_and_measure(Args... args) {
-    constexpr std::array ns{1 << 6,  1 << 9,  1 << 12, 1 << 15, 1 << 18,
-                            1 << 21, 1 << 24, 1 << 27, 1 << 30};
+    constexpr std::array ns{
+        1 << 6,  1 << 9,  1 << 12, 1 << 15, 1 << 18,
+        1 << 21, 1 << 24, 1 << 27, 1 << 30,
+    };
     constexpr size_t max_n = *std::max_element(ns.begin(), ns.end());
 
     T t(max_n, allocate, deallocate, args...);
