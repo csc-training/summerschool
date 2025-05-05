@@ -24,8 +24,8 @@ template <typename T> struct Axpy {
     }
 
     DEVICE void init(size_t i) {
-        x[i] = sin(static_cast<T>(i));
-        y[i] = cos(static_cast<T>(i));
+        x[i] = 1.13 * sin(static_cast<T>(i));
+        y[i] = -0.67 * cos(static_cast<T>(i));
         r[i] = 0.0;
     }
 
