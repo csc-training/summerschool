@@ -26,31 +26,28 @@
 #include <hip/hip_runtime.h>
 
 template <typename T>
-__global__ void kernel(size_t n, T t, void (T::*f)(size_t)) {
+__global__ void kernel(size_t n, T t, void (*f)(T &, size_t)) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     const size_t stride = blockDim.x * gridDim.x;
 
     for (size_t i = tid; i < n; i += stride) {
-        (t.*f)(i);
+        f(t, i);
     }
 }
 
 #endif
 
-template <typename T>
-void loop(size_t n, T &t, void (T::*f)(size_t)) {
+template <typename T> void loop(size_t n, T &t, void (*f)(T &, size_t)) {
 #if defined(RUN_ON_THE_DEVICE)
-    std::printf("Running on the device\n");
     static constexpr dim3 blocks(1024);
     static constexpr dim3 threads(1024);
     kernel<T><<<threads, blocks>>>(n, t, f);
     [[maybe_unused]] const auto result = hipDeviceSynchronize();
 #else
-    std::printf("Running on the host\n");
     // clang-format off
     #pragma omp parallel for
     for (size_t i = 0; i < n; i++) {
-        (t.*f)(i);
+        f(t, i);
     }
     // clang-format on
 #endif
@@ -82,14 +79,14 @@ template <typename T, typename... Args> void run_and_measure(Args... args) {
     constexpr size_t max_n = *std::max_element(ns.begin(), ns.end());
 
     T t(max_n, allocate, deallocate, args...);
-    loop(max_n, t, &T::init);
+    loop(max_n, t, T::init);
 
     for (size_t n : ns) {
         constexpr auto n_iter = 20;
         size_t avg = 0;
         for (auto iteration = 0; iteration < n_iter; iteration++) {
             const auto start = std::chrono::high_resolution_clock::now();
-            loop(n, t, &T::compute);
+            loop(n, t, T::compute);
             const auto end = std::chrono::high_resolution_clock::now();
             const std::chrono::duration<double, std::nano> dur = end - start;
             avg += iteration == 0 ? 0 : dur.count();
