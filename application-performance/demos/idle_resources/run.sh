@@ -32,7 +32,9 @@ srun ./serial > "serial.dat"
 
 export OMP_PROC_BIND=close
 export OMP_PLACES=cores
-export OMP_NUM_THREADS=64 srun ./omp > "omp.dat"
+export OMP_NUM_THREADS=64
+
+srun ./omp > "omp.dat"
 EOF
 )
 

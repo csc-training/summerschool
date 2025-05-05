@@ -9,8 +9,6 @@
 
 #include "definitions.h"
 
-// clang-format off
-
 /* 
  * The Loop functor
  * calls a function f
@@ -38,20 +36,23 @@ __global__ void kernel(size_t n, T t, void (T::*f)(size_t)) {
 }
 
 #endif
-// clang-format on
 
 template <typename T>
 void loop(size_t n, T &t, void (T::*f)(size_t)) {
 #if defined(RUN_ON_THE_DEVICE)
+    std::printf("Running on the device\n");
     static constexpr dim3 blocks(1024);
     static constexpr dim3 threads(1024);
     kernel<T><<<threads, blocks>>>(n, t, f);
     [[maybe_unused]] const auto result = hipDeviceSynchronize();
 #else
+    std::printf("Running on the host\n");
+    // clang-format off
     #pragma omp parallel for
     for (size_t i = 0; i < n; i++) {
         (t.*f)(i);
     }
+    // clang-format on
 #endif
 }
 
