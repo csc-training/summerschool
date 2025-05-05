@@ -4,8 +4,8 @@
 
 constexpr int n = 840;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
+
    int rank, ntasks;
 
    MPI_Status status;

@@ -19,16 +19,16 @@ with diffusivity α can be modelled via the partial differential equation
 <!-- Equation
 \frac{\partial u}{\partial t} = \alpha \nabla^2 u
 -->
-![img](img/eq1.png)
+$$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$$
 
 where ∇ is the Laplacian operator, which describes how
 the temperature field varies with the spatial dimensions *x* and
 *y*. When those are continuous variables, that looks like
 
 <!-- Equation
-   \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial x^2}\right)
+   \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)
 -->
-![img](img/no-nabla.png)
+$$\frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)$$
 
 Because computers are finite devices, we often need to solve such
 equations numerically, rather than analytically.
@@ -43,7 +43,12 @@ In this mini-app we will discretize all three dimensions *x*, *y*, and
  &+ \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}
 \end{align*}
 -->
-![img](img/eq2.png)
+```math
+\begin{align*}
+\nabla^2 u  &= \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2} \\
+ &+ \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}
+\end{align*}
+```
 
 where *u(i,j)* refers to the temperature at location with
 integer index *i* within the domain of *x* spaced by ∆x and location
@@ -58,20 +63,20 @@ time evolution method:
 <!-- Equation
 u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)
 -->
-![img](img/eq3.png)
+$$u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)$$
 
 Note: The algorithm is stable only when
 
 <!-- Equation
 \Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2 (\Delta y)^2}
 -->
-![img](img/eq4.png)
+$$\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2 (\Delta y)^2}$$
 
 This equation expresses that the time evolution of the temperature
 field at a particular location depends on the value of the field at
 the previous step at the same location *and* four adjacent locations:
 
-![img](img/stencil.png)
+![img](img/stencil.svg)
 
 ### Parallelization
 
@@ -121,7 +126,7 @@ Examples on how to run the binary:
 The program will produce an image (PNG) of the temperature field after every
 500 iterations. You can change the frequency by modifying the parameter
 `image_interval` in [main.c](cpp/main.cpp) (or [main.F90](fortran/main.F90)).
-You can also visualize the images e.g. with 
+You can also visualize the images e.g. with
 `animate -resize 25% -delay 100 heat_*.png`
 or
 `eog heat_0100.png'

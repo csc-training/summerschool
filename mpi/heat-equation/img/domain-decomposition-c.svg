@@ -6,8 +6,8 @@
    height="216.45976mm"
    width="191.19342mm"
    sodipodi:docname="domain-decomposition-c.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-   inkscape:export-filename="/home/trossi/work/csc-training/domain-decomposition-c.png"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="domain-decomposition-c.svg"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -29,14 +29,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.9305576"
-     inkscape:cx="308.95455"
-     inkscape:cy="199.88016"
-     inkscape:window-width="1920"
-     inkscape:window-height="979"
+     inkscape:cx="297.67099"
+     inkscape:cy="287.46206"
+     inkscape:window-width="3374"
+     inkscape:window-height="1371"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8"
+     inkscape:current-layer="layer1"
      showguides="false"
      inkscape:pageshadow="2"
      fit-margin-top="2.1"
@@ -56,6 +56,19 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Background">
+    <rect
+       style="fill:#ffffff;stroke-width:0.264583"
+       id="rect369"
+       width="190.79167"
+       height="216.3412"
+       x="0.098848343"
+       y="0.46758586"
+       ry="0.98483068" />
+  </g>
   <rect
      style="fill:#ffce44;fill-opacity:0.5;stroke:none;stroke-width:0.2"
      id="rect2282"
