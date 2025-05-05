@@ -44,13 +44,17 @@ void loop(size_t n, T &t, Lambda lambda) {
     static constexpr dim3 threads(1024);
     kernel<<<threads, blocks>>>(n, t, lambda);
     [[maybe_unused]] const auto result = hipDeviceSynchronize();
-#else
+#elif defined(_OPENMP)
     // clang-format off
     #pragma omp parallel for
     for (size_t i = 0; i < n; i++) {
         lambda(t, i);
     }
     // clang-format on
+#else
+    for (size_t i = 0; i < n; i++) {
+        lambda(t, i);
+    }
 #endif
 }
 
