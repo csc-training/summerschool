@@ -30,4 +30,5 @@ template <typename T> struct Axpy {
     }
 
     DEVICE void compute(size_t i) { r[i] = a * x[i] + y[i]; }
+    DEVICE T operator[](size_t i) { return r[i]; }
 };

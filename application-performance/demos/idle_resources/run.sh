@@ -28,13 +28,13 @@ ml PrgEnv-cray
 (srun CC -fopenmp -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o omp main.cpp) || { echo "Failed to build openMP code"; exit 1; }
 (srun CC          -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o serial main.cpp) || { echo "Failed to build serial code"; exit 1; }
 
-srun ./serial > "serial.dat"
+srun ./serial 2> "serial.dat"
 
 export OMP_PROC_BIND=close
 export OMP_PLACES=cores
 export OMP_NUM_THREADS=64
 
-srun ./omp > "omp.dat"
+srun ./omp 2> "omp.dat"
 EOF
 )
 
@@ -56,7 +56,7 @@ ml craype-accel-amd-gfx90a
 ml rocm
 
 (srun CC -xhip -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o hip main.cpp) || { echo "Failed to build hip code"; exit 1; }
-srun ./hip > "hip.dat"
+srun ./hip 2> "hip.dat"
 EOF
 )
 

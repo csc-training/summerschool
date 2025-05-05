@@ -26,13 +26,17 @@
 #include <hip/hip_runtime.h>
 
 template <typename T, typename Lambda>
-__global__ void kernel(size_t n, T t, Lambda lambda) {
+__global__ void gpu_for(size_t n, T t, Lambda lambda) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     const size_t stride = blockDim.x * gridDim.x;
 
     for (size_t i = tid; i < n; i += stride) {
         lambda(t, i);
     }
+}
+
+template <typename T> __global__ void gpu_print(size_t i, T t) {
+    printf("%f\n", t[i]);
 }
 
 #endif
@@ -42,19 +46,15 @@ void loop(size_t n, T &t, Lambda lambda) {
 #if defined(RUN_ON_THE_DEVICE)
     static constexpr dim3 blocks(1024);
     static constexpr dim3 threads(1024);
-    kernel<<<threads, blocks>>>(n, t, lambda);
+    gpu_for<<<threads, blocks>>>(n, t, lambda);
     [[maybe_unused]] const auto result = hipDeviceSynchronize();
-#elif defined(_OPENMP)
+#else
     // clang-format off
     #pragma omp parallel for
     for (size_t i = 0; i < n; i++) {
         lambda(t, i);
     }
     // clang-format on
-#else
-    for (size_t i = 0; i < n; i++) {
-        lambda(t, i);
-    }
 #endif
 }
 
@@ -75,6 +75,23 @@ inline void deallocate(void *p) {
     [[maybe_unused]] const auto result = hipFree(p);
 #else
     std::free(p);
+#endif
+}
+
+template <typename T> inline void print(size_t n, T &t) {
+#if defined(RUN_ON_THE_DEVICE)
+    static constexpr dim3 blocks(1);
+    static constexpr dim3 threads(1);
+    gpu_print<<<threads, blocks>>>(0, t);
+    gpu_print<<<threads, blocks>>>(1, t);
+    gpu_print<<<threads, blocks>>>(n - 2, t);
+    gpu_print<<<threads, blocks>>>(n - 1, t);
+    [[maybe_unused]] const auto result = hipDeviceSynchronize();
+#else
+    printf("%f\n", t[0]);
+    printf("%f\n", t[1]);
+    printf("%f\n", t[n - 2]);
+    printf("%f\n", t[n - 1]);
 #endif
 }
 
@@ -99,6 +116,7 @@ template <typename T, typename... Args> void run_and_measure(Args... args) {
             avg += iteration == 0 ? 0 : dur.count();
         }
 
-        std::printf("%ld, %ld\n", n, avg / (n_iter - 1));
+        print(n, t);
+        std::fprintf(stderr, "%ld, %ld\n", n, avg / (n_iter - 1));
     }
 }
