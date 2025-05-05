@@ -14,7 +14,7 @@ echo "Submitting cpu job"
 cpujobid=$(submit_job << "EOF"
 #!/bin/bash
 
-#SBATCH --account=project_465001194
+#SBATCH --account=project_462000007
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
@@ -25,18 +25,14 @@ cpujobid=$(submit_job << "EOF"
 
 ml PrgEnv-cray
 
-(srun CC -std=c++17 -O3 -fopenmp -Wall -Wextra -Wpedantic -pedantic-errors -o omp omp_saxpy.cpp) || { echo "Failed to build openMP code"; exit 1; }
-(srun CC -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o serial serial_saxpy.cpp) || { echo "Failed to build serial code"; exit 1; }
+(srun CC -fopenmp -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o omp main.cpp) || { echo "Failed to build openMP code"; exit 1; }
+(srun CC          -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o serial main.cpp) || { echo "Failed to build serial code"; exit 1; }
 
 srun ./serial > "serial.dat"
 
 export OMP_PROC_BIND=close
 export OMP_PLACES=cores
-
-for nthreads in 2 64
-do
-    OMP_NUM_THREADS=$nthreads srun ./omp > "omp$nthreads.dat"
-done
+export OMP_NUM_THREADS=64 srun ./omp > "omp.dat"
 EOF
 )
 
@@ -44,7 +40,7 @@ echo "Submitting gpu job"
 gpujobid=$(submit_job << EOF
 #!/bin/bash
 
-#SBATCH --account=project_465001194
+#SBATCH --account=project_462000007
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
@@ -57,7 +53,7 @@ ml PrgEnv-cray
 ml craype-accel-amd-gfx90a
 ml rocm
 
-(srun CC -std=c++17 -xhip -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o hip hip_saxpy.cpp) || { echo "Failed to build hip code"; exit 1; }
+(srun CC -xhip -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o hip main.cpp) || { echo "Failed to build hip code"; exit 1; }
 srun ./hip > "hip.dat"
 EOF
 )
@@ -66,7 +62,7 @@ echo "Submitting gnuplot job with dependency on jobs $cpujobid and $gpujobid"
 sbatch --dependency afterok:$cpujobid:$gpujobid << EOF
 #!/bin/bash
 
-#SBATCH --account=project_465001194
+#SBATCH --account=project_462000007
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
@@ -74,9 +70,9 @@ sbatch --dependency afterok:$cpujobid:$gpujobid << EOF
 #SBATCH --partition=debug
 
 echo "Loading modules"
-ml LUMI/23.09
+ml LUMI/24.03
 ml partition/C
-ml gnuplot/5.4.8-cpeGNU-23.09
+ml gnuplot/5.4.10-cpeGNU-24.03
 
 echo "Plotting problem size vs runtimes "
 gnuplot -e "\
@@ -92,8 +88,7 @@ gnuplot -e "\
     set grid; \
     set xrange [10:10000000000]; \
     plot \"serial.dat\" title \"serial\" lw 2.5, \
-        \"omp2.dat\" title \"OpenMP 2 threads\" lw 2.5, \
-        \"omp64.dat\" title \"OpenMP 64 threads\" lw 2.5, \
+        \"omp.dat\" title \"OpenMP 64 threads\" lw 2.5, \
         \"hip.dat\" title \"gpu\" lw 2.5; \
     " 
 EOF

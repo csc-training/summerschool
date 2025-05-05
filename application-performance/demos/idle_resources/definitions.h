@@ -6,6 +6,7 @@
     defined(__HIPCC__)
     #define HOST __host__
     #define DEVICE __device__
+    #define RUN_ON_THE_DEVICE
 #else
     #define HOST
     #define DEVICE
