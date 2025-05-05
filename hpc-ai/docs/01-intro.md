@@ -129,7 +129,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 
 - continue the chain rule from the previous result:
-     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot \frac{\partial \Sigma_{12}}{\partial w_{ij1}}+\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}} \cdot \frac{\partial \Sigma_{22}}{\partial w_{ij1}}++\frac{\partial f_2( \Sigma_{32})}{\partial \Sigma_{32}} \cdot \frac{\partial \Sigma_{32}}{\partial w_{ij1}}+...]$;
+     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot \frac{\partial \Sigma_{12}}{\partial w_{ij1}}+\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}} \cdot \frac{\partial \Sigma_{22}}{\partial w_{ij1}}+\frac{\partial f_2( \Sigma_{32})}{\partial \Sigma_{32}} \cdot \frac{\partial \Sigma_{32}}{\partial w_{ij1}}+...]$
      - $\frac{\partial \Sigma_{l2}}{\partial w_{ij1}}= w_{jl2}\frac{\varphi_{j1}}{\partial w_{ij1}}$?
      - $\frac{\varphi_{j1}}{\partial w_{ij1}}=\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
      - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
