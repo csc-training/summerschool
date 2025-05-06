@@ -73,7 +73,7 @@ inline void deallocate(void *p) {
 #endif
 }
 
-static volatile void *dummy = nullptr;
+static volatile int dummy = 0;
 
 template <typename T, typename... Args> void run_and_measure(Args... args) {
     constexpr std::array ns{
@@ -98,7 +98,9 @@ template <typename T, typename... Args> void run_and_measure(Args... args) {
             // To force the compiler to do the computation even for the serial
             // version. Without this, it optimizes the unused computation away,
             // yielding constant results for time.
-            dummy = t.r;
+#if !defined(RUN_ON_THE_DEVICE)
+            dummy = t.r[0];
+#endif
         }
 
         std::fprintf(stdout, "%ld, %ld\n", n, avg / (n_iter - 1));
