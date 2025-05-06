@@ -17,7 +17,7 @@ submit_job() {
 }
 
 echo "Submitting cpu job"
-cpujobid=$(submit_job << "EOF"
+cpujobid=$(submit_job << EOF
 #!/bin/bash
 
 #SBATCH --account=project_462000007
