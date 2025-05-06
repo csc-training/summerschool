@@ -34,11 +34,6 @@ __global__ void gpu_for(size_t n, T t, Lambda lambda) {
         lambda(t, i);
     }
 }
-
-template <typename T> __global__ void gpu_print(size_t i, T t) {
-    printf("%f\n", t[i]);
-}
-
 #endif
 
 template <typename T, typename Lambda>
@@ -78,22 +73,7 @@ inline void deallocate(void *p) {
 #endif
 }
 
-template <typename T> inline void print(size_t n, T &t) {
-#if defined(RUN_ON_THE_DEVICE)
-    static constexpr dim3 blocks(1);
-    static constexpr dim3 threads(1);
-    gpu_print<<<threads, blocks>>>(0, t);
-    gpu_print<<<threads, blocks>>>(1, t);
-    gpu_print<<<threads, blocks>>>(n - 2, t);
-    gpu_print<<<threads, blocks>>>(n - 1, t);
-    [[maybe_unused]] const auto result = hipDeviceSynchronize();
-#else
-    printf("%f\n", t[0]);
-    printf("%f\n", t[1]);
-    printf("%f\n", t[n - 2]);
-    printf("%f\n", t[n - 1]);
-#endif
-}
+static volatile void *dummy = nullptr;
 
 template <typename T, typename... Args> void run_and_measure(Args... args) {
     constexpr std::array ns{
@@ -114,9 +94,13 @@ template <typename T, typename... Args> void run_and_measure(Args... args) {
             const auto end = std::chrono::high_resolution_clock::now();
             const std::chrono::duration<double, std::nano> dur = end - start;
             avg += iteration == 0 ? 0 : dur.count();
+
+            // To force the compiler to do the computation even for the serial
+            // version. Without this, it optimizes the unused computation away,
+            // yielding constant results for time.
+            dummy = t.r;
         }
 
-        print(n, t);
-        std::fprintf(stderr, "%ld, %ld\n", n, avg / (n_iter - 1));
+        std::fprintf(stdout, "%ld, %ld\n", n, avg / (n_iter - 1));
     }
 }
