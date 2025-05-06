@@ -78,19 +78,21 @@ ml gnuplot/5.4.10-cpeGNU-24.03
 
 echo "Plotting problem size vs runtimes "
 gnuplot -e "\
-    set terminal png size 1000,1000; \
+    set terminal png size 2000,2000 font \"default,50\"; \
     set output \"runtimes.png\"; \
     set style data linespoints; \
     set key left top; \
     set logscale x; \
     set logscale y; \
-    set title \"Runtime of Ax + y with different implementation strategies\"; \
+    set title \"Maclaurin series e^x, n = 0:6\"; \
     set xlabel \"problem size\"; \
     set ylabel \"time [ns]\"; \
     set grid; \
     set xrange [10:10000000000]; \
-    plot \"serial.dat\" title \"serial\" lw 2.5, \
-        \"omp.dat\" title \"OpenMP 64 threads\" lw 2.5, \
-        \"hip.dat\" title \"gpu\" lw 2.5; \
-    " 
+    set yrange [10:10000000000]; \
+    set xtics rotate by 45 right; \
+    plot \"serial.dat\" title \"serial\"            lw 4.0 pt 5 ps 5, \
+         \"omp.dat\"    title \"OpenMP 64 threads\" lw 4.0 pt 7 ps 5, \
+         \"hip.dat\"    title \"gpu\"               lw 4.0 pt 9 ps 5; \
+    "
 EOF
