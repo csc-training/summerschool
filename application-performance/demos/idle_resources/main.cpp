@@ -100,8 +100,8 @@ void handle_input(int argc, char **argv) {
 
 int main(int argc, char **argv) {
     // handle_input(argc, argv);
-    run_and_measure<Taylor<float>>(1.0, 10.0, 15);
-    // run_and_measure<Axpy<float>>(1.2);
+    // run_and_measure<Taylor<float>>(1.0, 10.0, 15);
+    run_and_measure<Axpy<float>>(1.2);
 
     return 0;
 }

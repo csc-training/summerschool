@@ -90,7 +90,7 @@ gnuplot -e "\
     set key left top; \
     set logscale x; \
     set logscale y; \
-    set title \"Runtime of Taylor expansion e^x, n = 0:15\"; \
+    set title \"Runtime of ax + y\"; \
     set xlabel \"problem size\"; \
     set ylabel \"time [ns]\"; \
     set grid; \
