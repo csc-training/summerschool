@@ -1,11 +1,12 @@
 #include <charconv>
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 
 #include "common.h"
 #include "taylor.h"
 
-int main(int argc, char **argv) {
+size_t get_num_iters(int argc, char **argv) {
     if (argc != 2) {
         std::fprintf(
             stderr,
@@ -27,7 +28,23 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    return num_iters;
+}
+
+void check_for_correctness(size_t num_iters) {
+    Taylor<float> taylor(10, std::malloc, std::free, 1.0f, 10.0f, num_iters);
+    for (size_t i = 0; i < taylor.size; i++) {
+        taylor.init(i);
+        taylor.compute(i);
+        std::printf("%f, %f, %f\n", taylor.x[i], taylor.y[i],
+                    taylor.y[i] - exp(taylor.x[i]));
+    }
+}
+
+int main(int argc, char **argv) {
+    const size_t num_iters = get_num_iters(argc, argv);
     run_and_measure<Taylor<float>>(1.0f, 10.0f, num_iters);
+    // check_for_correctness(num_iters);
 
     return 0;
 }

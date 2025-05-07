@@ -76,6 +76,7 @@ inline void deallocate(void *p) {
 static volatile int dummy = 0;
 
 template <typename T, typename... Args> void run_and_measure(Args... args) {
+    // Run for these vector sizes
     constexpr std::array ns{
         1 << 6,  1 << 9,  1 << 12, 1 << 15, 1 << 18,
         1 << 21, 1 << 24, 1 << 27, 1 << 30,
@@ -90,16 +91,20 @@ template <typename T, typename... Args> void run_and_measure(Args... args) {
         size_t avg = 0;
         for (auto iteration = 0; iteration < n_iter; iteration++) {
             const auto start = std::chrono::high_resolution_clock::now();
+
+            // Perform the computation in a loop
             loop(n, t, [](T &t, size_t i) { t.compute(i); });
+
             const auto end = std::chrono::high_resolution_clock::now();
             const std::chrono::duration<double, std::nano> dur = end - start;
+
             avg += iteration == 0 ? 0 : dur.count();
 
+#if !defined(RUN_ON_THE_DEVICE)
             // To force the compiler to do the computation even for the serial
             // version. Without this, it optimizes the unused computation away,
             // yielding constant results for time.
-#if !defined(RUN_ON_THE_DEVICE)
-            dummy = t.r[0];
+            dummy = t.y[0];
 #endif
         }
 

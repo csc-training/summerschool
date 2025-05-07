@@ -10,44 +10,44 @@ template <typename T> struct Taylor {
     // with x in [minimum, maximum]
 
     T *x = nullptr;
-    T *r = nullptr;
+    T *y = nullptr;
     void (*deallocate)(void *);
     const T minimum;
     const T maximum;
     const size_t size;
-    const size_t num_iters;
+    const size_t N;
 
     Taylor(size_t size, void *(*allocate)(size_t), void (*deallocate)(void *),
-           T minimum, T maximum, size_t num_iters)
+           T minimum, T maximum, size_t N)
         : x(static_cast<T *>(allocate(sizeof(T) * size))),
-          r(static_cast<T *>(allocate(sizeof(T) * size))),
+          y(static_cast<T *>(allocate(sizeof(T) * size))),
           deallocate(deallocate), minimum(minimum), maximum(maximum),
-          size(size), num_iters(num_iters) {
+          size(size), N(N) {
         assert(maximum > minimum);
     }
 
     ~Taylor() {
         deallocate(static_cast<void *>(x));
-        deallocate(static_cast<void *>(r));
+        deallocate(static_cast<void *>(y));
     }
 
     DEVICE void init(size_t i) {
         const T width = maximum - minimum;
-        x[i] = minimum + i / size * width;
-        r[i] = 0.0;
+        x[i] = minimum + i * width / size;
+        y[i] = 0.0;
     }
 
     DEVICE void compute(size_t i) {
         const T xi = x[i];
-        T sum = 1.0;
-        T xe = 1.0;
+        T sum = 0.0;
+        T xn = 1.0 / xi;
         T factorial = 1.0;
 
-        for (size_t j = 1; j < num_iters; j++) {
-            xe *= xi;
-            factorial *= static_cast<T>(j);
-            sum += xe / factorial;
+        for (size_t n = 0; n <= N; n++) {
+            xn *= xi;
+            factorial *= std::max(static_cast<T>(n), static_cast<T>(1.0));
+            sum += xn / factorial;
         }
-        r[i] = sum;
+        y[i] = sum;
     }
 };
