@@ -31,13 +31,13 @@ template <typename T> struct Taylor {
         deallocate(static_cast<void *>(y));
     }
 
-    DEVICE void init(size_t i) {
+    HOST DEVICE void init(size_t i) {
         const T width = maximum - minimum;
         x[i] = minimum + i * width / size;
         y[i] = 0.0;
     }
 
-    DEVICE void compute(size_t i) {
+    HOST DEVICE void compute(size_t i) {
         const T xi = x[i];
         T sum = 0.0;
         T xn = 1.0 / xi;
