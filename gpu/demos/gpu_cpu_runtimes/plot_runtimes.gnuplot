@@ -1,8 +1,8 @@
 # Common settings
 
-set terminal png size 3840,2160 font "default,50";
+set terminal png size 3840,2160 font "default,90";
 set style data linespoints;
-set rmargin 25;
+set rmargin 21;
 set key rmargin;
 set grid;
 
