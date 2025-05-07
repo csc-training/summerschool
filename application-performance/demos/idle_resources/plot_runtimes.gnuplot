@@ -1,8 +1,9 @@
 # Common settings
 
-set terminal png size 2000,2000 font "default,50";
+set terminal png size 3840,2160 font "default,50";
 set style data linespoints;
-set key left top;
+set rmargin 25;
+set key rmargin;
 set grid;
 
 set logscale x;
@@ -10,7 +11,7 @@ set logscale y;
 set xlabel "problem size";
 set ylabel "time [ns]";
 set xrange [10:10000000000];
-set yrange [10:10000000000];
+set yrange [10:100000000000];
 set xtics rotate by 45 right;
 
 # Plot all
