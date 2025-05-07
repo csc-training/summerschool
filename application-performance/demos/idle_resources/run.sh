@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if [ $# -eq 0 ] || [ "$1" != "axpy" -a "$1" != "taylor" ]
-then
-    echo "Give \"axpy\" or \"taylor\" as argument"
-    exit 1
-fi
+#if [ $# -eq 0 ] || [ "$1" != "axpy" -a "$1" != "taylor" ]
+#then
+#    echo "Give \"axpy\" or \"taylor\" as argument"
+#    exit 1
+#fi
 
 submit_job() {
   sub="$(sbatch "$@")"
@@ -34,13 +34,13 @@ ml PrgEnv-cray
 (srun CC -fopenmp -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o omp main.cpp) || { echo "Failed to build openMP code"; exit 1; }
 (srun CC          -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o serial main.cpp) || { echo "Failed to build serial code"; exit 1; }
 
-srun ./serial "$@" > "serial.dat"
+srun ./serial > "serial.dat"
 
 export OMP_PROC_BIND=close
 export OMP_PLACES=cores
 export OMP_NUM_THREADS=64
 
-srun ./omp "$@" > "omp.dat"
+srun ./omp > "omp.dat"
 EOF
 )
 
@@ -62,7 +62,7 @@ ml craype-accel-amd-gfx90a
 ml rocm
 
 (srun CC -xhip -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o hip main.cpp) || { echo "Failed to build hip code"; exit 1; }
-srun ./hip "$@" > "hip.dat"
+srun ./hip > "hip.dat"
 EOF
 )
 
@@ -90,7 +90,7 @@ gnuplot -e "\
     set key left top; \
     set logscale x; \
     set logscale y; \
-    set title \"Maclaurin series e^x, n = 0:6\"; \
+    set title \"Runtime of Taylor expansion e^x, n = 0:15\"; \
     set xlabel \"problem size\"; \
     set ylabel \"time [ns]\"; \
     set grid; \

@@ -1,36 +1,63 @@
-#include "common.h"
-#include <array>
 #include <charconv>
 #include <iostream>
+#include <map>
 #include <string_view>
+#include <vector>
 
 #include "axpy.h"
+#include "common.h"
 #include "taylor.h"
 
+template <typename T> void get_arg(const char *arg, T &value) {
+    auto [ptr, ec] = std::from_chars(arg, arg + sizeof(arg), value);
+    assert(ec == std::errc() && "Failed to read argument");
+};
+
+std::vector<std::string_view> split(std::string_view str,
+                                    std::string_view sep) {
+    std::vector<std::string_view> out;
+    while (1) {
+        const auto pos = str.find(sep);
+        out.push_back(str.substr(0, pos));
+        if (pos == str.npos) {
+            break;
+        }
+        str = str.substr(pos + 1);
+    }
+
+    return out;
+}
+
 void handle_input(int argc, char **argv) {
-    static constexpr std::array<std::string_view, 2> arguments = {
-        "axpy a",
-        "taylor range_min range_max num_iters",
+    const std::map<std::string_view, std::vector<std::string_view>> subprogs = {
+        {"axpy", {"a"}},
+        {"taylor", {"x_min", "x_max", "num_iters"}},
     };
 
     if (argc <= 1) {
-        std::cerr << "Usage:";
-        for (size_t i = 0; i < arguments.size() - 1; i++) {
-            std::cerr << "\n\t" << argv[0] << " " << arguments[i] << " or";
+        std::cerr << "Use one of the following commands:";
+        for (const auto &[key, values] : subprogs) {
+            std::cerr << "\n\t" << argv[0] << " " << key;
+            for (const auto &value : values) {
+                std::cerr << ":" << value;
+            }
         }
-        std::cerr << "\n\t" << argv[0] << " " << arguments[arguments.size() - 1]
-                  << std::endl;
+        std::cerr << std::endl;
     } else {
-        std::string input(argv[1]);
+        // TODO figure out this cluster fck
+        const std::vector<std::string_view> args = split(argv[1], ":");
+        // const std::vector<std::string_view> arguments = subprogs[args[0]];
+
         auto n = 0;
-        for (auto &arg : arguments) {
-            auto substr = arg.substr(0, arg.find(' '));
-            if (0 == input.compare(substr)) {
-                auto get_arg = [](const char *arg, auto &value) {
-                    auto [ptr, ec] =
-                        std::from_chars(arg, arg + sizeof(arg), value);
-                    assert(ec == std::errc() && "Failed to read argument");
-                };
+
+        for (const auto &[subprog, subprog_args] : subprogs) {
+            if (0 == subprog.compare(args[0])) {
+                if (subprog_args.size() != args.size() - 1) {
+                    std::cerr << "Incorrect number of arguments for subprogram "
+                              << subprog << std::endl;
+                    std::cerr << "Given arguments: " << argv[1];
+                    return;
+                }
 
                 switch (n) {
                 case 0: {
@@ -72,7 +99,9 @@ void handle_input(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
-    handle_input(argc, argv);
+    // handle_input(argc, argv);
+    run_and_measure<Taylor<float>>(1.0, 10.0, 15);
+    // run_and_measure<Axpy<float>>(1.2);
 
     return 0;
 }
