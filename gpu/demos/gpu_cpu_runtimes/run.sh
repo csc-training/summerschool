@@ -32,7 +32,7 @@ export OMP_PROC_BIND=close
 export OMP_PLACES=cores
 export OMP_NUM_THREADS=64
 
-for i in {0..16..4} 
+for i in {0..16..8} 
 do
     srun ./serial $i > "serial_$i.dat"
     srun ./omp $i > "omp_$i.dat"
@@ -60,7 +60,7 @@ ml rocm
 
 (srun CC -xhip -std=c++17 -O3 -Wall -Wextra -Wpedantic -pedantic-errors -o hip main.cpp) || { echo "Failed to build hip code"; exit 1; }
 
-for i in {0..16..4} 
+for i in {0..16..8} 
 do
     srun ./hip $i > "hip_$i.dat"
 done
