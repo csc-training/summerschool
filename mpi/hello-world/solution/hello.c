@@ -14,10 +14,6 @@ int main(int argc, char *argv[]) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (rank == 0) {
-        printf("In total there are %i tasks\n", ntasks);
-    }
-
     // Bonus: find name of the processor (node) that this rank is running on.
     // As stated in the docs for MPI_Get_processor_name,
     // we must allocate a char array of at least length MPI_MAX_PROCESSOR_NAME.
@@ -29,6 +25,16 @@ int main(int argc, char *argv[]) {
     MPI_Get_processor_name(processor_name, &processor_name_length);
 
     printf("Hello from rank %i in node %s\n", rank, processor_name);
+
+    if (rank == 0) {
+        printf("In total there are %i tasks\n", ntasks);
+    }
+    if (rank == ntasks - 1) {
+        printf("I'm the last but not least\n");
+    }
+    if (rank == 42) {
+        printf("I'm the Answer to the Ultimate Question of Life, the Universe, and Everything!\n");
+    }
 
     MPI_Finalize();
 }

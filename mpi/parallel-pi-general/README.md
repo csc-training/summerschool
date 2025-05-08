@@ -11,7 +11,7 @@ that performs the calculation parallel with any number of processes.
 
 2. All tasks calculate their own partial sums
 
-3. Once finished with the calculation, all ranks expect rank 0 send their partial sum to rank 0,
+3. Once finished with the calculation, all ranks except rank 0 send their partial sum to rank 0,
    which then calculates the final result and prints it out.
 
 4. Run the code with different number of processes, do you get **exactly** the same

@@ -1,6 +1,6 @@
 ---
 title:  "Extra: Persistent communication"
-event:  CSC Summer School in High-Performance Computing 2024
+event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
