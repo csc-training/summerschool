@@ -8,20 +8,20 @@ lang:   en
 
 - MPI is an application programming interface (API) for distributed parallel computing
 - MPI programs are portable and scalable
-    - the same program can run on different types of computers, from
-      laptops to supercomputers
+  - The same program can run on different types of computers, from laptops to supercomputers or even across different computers
 - MPI is flexible and comprehensive
-    - large (hundreds of procedures)
-    - concise (only 10-20 procedures are typically needed)
+  - Large (hundreds of procedures)
+  - Concise (a few procedures is enough to get a functional code)
+
 
 # MPI standard and implementations
 
 - MPI is a standard, first version (1.0) published in 1994, latest (4.1) in 2023
-    - <https://www.mpi-forum.org/docs/>
+  - <https://www.mpi-forum.org/docs/>
 - The MPI standard is implemented by different MPI implementations
-    - [OpenMPI](http://www.open-mpi.org/)
-    - [MPICH](https://www.mpich.org/)
-    - [Intel MPI](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/mpi-library.html)
+  - [OpenMPI](http://www.open-mpi.org/)
+  - [MPICH](https://www.mpich.org/)
+  - [Intel MPI](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/mpi-library.html)
 
 
 # Processes and threads
@@ -42,77 +42,27 @@ lang:   en
 **Thread**
 
 - A single process may contain multiple threads
-- Have their own state information, but *share* the *same memory*
-  address space
+- Have their own state information, but *share* the *same memory* address space
 
 </div>
-
 
 
 # Execution model in MPI
 
-- Normally, parallel program is launched as a set of *independent*, *identical
-  processes*
-    - execute the *same program code* and instructions
-    - processes can reside in different nodes (or even in different computers)
-- The way to launch parallel program depends on the computing system
-    - **`mpiexec`**, **`mpirun`**, **`srun`**, **`aprun`**, ...
-    - **`srun`** on LUMI, Mahti, and Puhti
-- MPI supports also dynamic spawning of processes and launching *different*
-  programs communicating with each other
-    - not covered here
+- MPI program is launched as a set of *independent processes*
+- Typically, every process executes the *same program executable (code)*, but they have a *different state*
+  - Each process has a unique *rank* (an index ranging from 0 to N-1)
+  - Processes can perform different tasks and handle different data based on their rank
+- MPI supports also dynamic spawning of processes and launching *different* programs communicating with each other
+  - Not covered here
 
-# MPI ranks
 
-<div class="column">
-- MPI runtime assigns each process a unique rank (index)
-    - identification of the processes
-    - ranks range from 0 to N-1
-- Processes can perform different tasks and handle different data based
-  on their rank
-</div>
-<div class="column">
-```c
-double a;
-if (rank == 0) {
-   a = 1.0;
-   ...
-}
-else if (rank == 1) {
-   a = 0.7;
-   ...
-}
-...
-```
-</div>
-
-# Data model
+# Data model in MPI
 
 - All variables and data structures are local to the process
-- Processes can exchange data by sending and receiving messages
+- Processes exchange data explicitly by sending and receiving messages
 
 ![](img/data-model.png){.center width=100%}
-
-
-# MPI library
-
-- Information about the communication framework
-    - the number of processes
-    - the rank of the process
-- Communication between processes
-    - sending and receiving messages between two or several processes
-- Synchronization between processes
-- Advanced features
-    - Communicator manipulation, user defined datatypes, one-sided communication, ...
-
-
-# MPI communicator
-
-- Communicator is an object connecting a group of processes
-    - It defines the communication framework
-- Most MPI functions require a communicator as an argument
-- Initially, there is always a communicator **`MPI_COMM_WORLD`** which contains all the processes
-- Users can define custom communicators
 
 
 # Interlude
@@ -122,29 +72,25 @@ Message passing game
 
 # Programming MPI
 
-- The MPI standard defines interfaces to C and Fortran programming languages
-    - No C++ bindings in the standard, C++ programs use the C interface
-    - There are unofficial bindings to Python, Rust, R, ...
-- Call convention in C (*case sensitive*):<br>
-`error_code = MPI_Xxxx(parameter, ...)`
-    - Return value is the error code (e.g., `MPI_SUCCESS`)
-    - Some arguments have to be passed as pointers
-- Call convention in Fortran (*case insensitive*):<br>
-`call mpi_xxxx(parameter, ..., error_code)`
-    - Error code in the last argument
+- The MPI standard defines interfaces to C and Fortran
+  - No C++ bindings in the standard, C++ programs use the C interface
+  - There are unofficial bindings to Python, Rust, R, ...
+- The standard defines three different Fortran interfaces
+  - The modern way: `use mpi_f08` (used here)
+  - Older interfaces: `use mpi` or `include 'mpif.h'` (deprecated in MPI-4.1)
+  - See a warning later
 
 
-# Writing an MPI program
+# Minimal MPI program
 
 <div class="column">
-## C:
+**C**
 
-```c
+```c++
 // Include MPI header file
 #include <mpi.h>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     // Start by calling MPI_Init()
     MPI_Init(&argc, &argv);
 
@@ -159,71 +105,76 @@ int main(int argc, char *argv[])
 </div>
 
 <div class="column">
-## Fortran 2008:
+**Fortran 2008**
 
 ```fortranfree
 program my_prog
   ! Use MPI module
-  use mpi_f08
+  use mpi_f08    ! Modern Fortran !
   implicit none
-  integer :: rc
 
   ! Start by calling mpi_init()
-  call mpi_init(rc)
+  call mpi_init()
 
   ... ! program code
 
   ! Call mpi_finalize() before exiting
-  call mpi_finalize(rc)
+  call mpi_finalize()
 end program my_prog
 ```
 </div>
+- Mandatory: wrap the MPI program inside `MPI_Init()` and `MPI_Finalize()`!
+
+
+# MPI function/procedure call convention
+
+<div class="column">
+**C**
+
+```c++
+error_code = MPI_Xxxx(parameter, ...);
+```
+- Case-sensitive
+- Return value is the error code
+</div>
+<div class="column">
+**Fortran 2008**
+
+```fortranfree
+call mpi_xxxx(parameter, ..., error_code)
+```
+- Case-insensitive
+- Last argument is the error code (optional with `mpi_f08`)
+</div>
+
+
+# Warning on old Fortran codes!
 
 - Older Fortran codes might have `use mpi` or `include 'mpif.h'`
+- No argument checking (or only partial checking)
+- Last error code argument is **mandatory**!
+  - Forgetting the error code argument ~~can~~ <u>will</u> cause hard-to-find bugs!
+- Use modern `mpi_f08` for any new code
 
-# Compiling an MPI program
 
-- MPI is a library (+ runtime system)
-- In principle, MPI programs can be built with standard compilers
-  (`gcc` / `g++` / `gfortran`) with the appropriate `-I` / `-L` / `-l`
-  options
-- Most MPI implementations provide convenience wrappers, typically
-  `mpicc` / `mpicxx` / `mpif90`, for easier building
-    - MPI-related options are automatically included
+# MPI function syntax on the slides
 
-```bash
-mpicc -o my_mpi_prog my_mpi_code.c
-mpicxx -o my_mpi_prog my_mpi_code.cpp
-mpif90 -o my_mpi_prog my_mpi_code.F90
-```
+MPI_Function(`input_arg`{.input}, `output_arg`{.output})
+  : Input arguments are in **`red`{.input}** and output arguments in **`blue`{.output}**
 
-# Compiling an MPI program on LUMI
-
-- On LUMI (HPE Cray EX), there are `cc` / `CC` / `ftn` compiler wrappers
-  invoking the correct compiler
-  - Use these instead of the `mpi*` wrappers
-
-```bash
-cc -o my_mpi_prog my_mpi_code.c
-CC -o my_mpi_prog my_mpi_code.cpp
-ftn -o my_mpi_prog my_mpi_code.F90
-```
-
-# MPI functions
-
-- Syntax on slides: **`MPI_Function(` `input_arg`{.input} `, ` `output_arg`{.output} `)`**
-  - Input arguments in `red`{.input} and output arguments in `blue`{.output}
-- Note that in C the output arguments are always pointers!
-- See references of MPI implementations for detailed function definitions:
+<p>
+- In C the output arguments are always pointers!
+- See MPI implementation references for detailed function definitions:
   - <https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/index.html>
   - <https://www.mpich.org/static/docs/v4.2.x/>
   - `man MPI_Function` on LUMI (e.g., `man MPI_Init`)
 
 
-# First five MPI commands: Initialization and finalization
+# First two MPI functions: Initializing and finalizing
 
 MPI_Init(...)
   : Initializes the MPI execution environment
+  : Note! C interface include command line arguments
 
 MPI_Finalize()
   : Terminates the MPI execution environment
@@ -231,7 +182,55 @@ MPI_Finalize()
 <p>
 - Demo: `hello.c`
 
-# First five MPI commands: Information about the communicator
+
+# Compiling an MPI program
+
+Use MPI compiler wrappers for easy compiling:
+
+```bash
+mpicc  -o my_mpi_prog my_mpi_code.c
+mpicxx -o my_mpi_prog my_mpi_code.cpp
+mpif90 -o my_mpi_prog my_mpi_code.F90
+```
+
+- MPI-related options are automatically included
+  - For example with GCC and OpenMPI on Debian, `mpicc` is equivalent to<br>`gcc -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -I/usr/lib/x86_64-linux-gnu/openmpi/include -pthread -L/usr/lib/x86_64-linux-gnu/openmpi/lib -lmpi`
+
+
+# Compiling an MPI program on LUMI
+
+On LUMI, Cray compiler wrappers replace `mpi*` wrappers:
+
+```bash
+cc  -o my_mpi_prog my_mpi_code.c
+CC  -o my_mpi_prog my_mpi_code.cpp
+ftn -o my_mpi_prog my_mpi_code.F90
+```
+
+- Use these on LUMI instead of the `mpi*` wrappers!
+- Cray wrappers will pick the correct compiler and compilation options based on the loaded modules
+
+
+# Launching an MPI program
+
+- MPI program is launched with a special process launcher command: `mpiexec` (or `mpirun`)
+  - This launches the requested number of processes, initializes their state (e.g., rank), and the MPI communication framework
+- On LUMI and Mahti, use `srun` command instead
+  - This integrates with SLURM (understands allocated resources, knows where and how to distribute the processes, ...)
+- In general, the launcher command to use changes from supercomputer to supercomputer
+  - Check the user documentation of your system
+
+
+# MPI Communicator
+
+- An object connecting a group of processes
+- Specifies the communication context
+- A special communicator `MPI_COMM_WORLD` contains all the processes
+- A process can belong to multiple communicators
+  - Custom communicators can be defined
+
+
+# Information about the MPI communicator
 
 MPI_Comm_size(`comm`{.input}, `size`{.output})
   : Determines the size of the group associated with a communicator
@@ -242,30 +241,10 @@ MPI_Comm_rank(`comm`{.input}, `rank`{.output})
 <p>
 - Demo: `hello_rank.c`
 
-# First five MPI commands: Synchronization
-
-MPI_Barrier(`comm`{.input})
-  : Waits until all ranks within the communicator reaches the call
-
-<p>
-- Demo: `barrier.c`
 
 # Summary
 
 - In parallel programming with MPI, the key concept is a set of independent processes
 - Data is always local to the process
 - Processes can exchange data by sending and receiving messages
-- MPI defines functions for communication and synchronization between processes
-
-# Web resources
-
-- List of MPI functions with detailed descriptions
-    - <https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/index.html>
-    - <https://www.mpich.org/static/docs/v4.2.x/>
-    - <https://rookiehpc.org/mpi/docs/>
-- Good online MPI tutorials
-    - <https://hpc-tutorials.llnl.gov/mpi/>
-    - <http://mpitutorial.com/tutorials/>
-    - <https://www.youtube.com/watch?v=BPSgXQ9aUXY>
-- MPI coding game in C
-    - <https://www.codingame.com/playgrounds/47058/have-fun-with-mpi-in-c/lets-start-to-have-fun-with-mpi>
+- MPI defines procedures for communication and synchronization between processes
