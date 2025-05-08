@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <mpi.h>
 
-int main(int argc, char *argv[])
-{
-  int size, rank;
+int main(int argc, char *argv[]) {
   MPI_Init(&argc, &argv);
+
+  int size, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -19,8 +19,7 @@ int main(int argc, char *argv[])
   } else if (rank == 1) {
     // Receive with rank 1
     double data;
-    MPI_Status status;
-    MPI_Recv(&data, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
+    MPI_Recv(&data, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     printf("Rank %d received %f\n", rank, data);
 
   }
