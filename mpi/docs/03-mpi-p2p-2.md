@@ -269,6 +269,7 @@ MPI_Send(message, msgsize, MPI_INT, dst, 42, MPI_COMM_WORLD);
 MPI_Recv(recvbuf, bufsize, MPI_INT, src, 42, MPI_COMM_WORLD, &status);
 ```
 
+# Summary {.section}
 
 # Summary
 
