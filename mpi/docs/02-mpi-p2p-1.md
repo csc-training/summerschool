@@ -7,7 +7,7 @@ lang:   en
 # Outline
 
 - Point-to-point communication in MPI
-- Blocking routines in MPI
+- Blocking communication in MPI
 
 
 # Point-to-point communication in MPI {.section}
@@ -183,7 +183,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 </div>
 
 
-# Blocking routines in MPI {.section}
+# Blocking communication in MPI {.section}
 
 # Blocking routines and deadlocks
 
