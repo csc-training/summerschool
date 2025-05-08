@@ -211,7 +211,7 @@ It takes time to
 
 So is it faster to use the CPU or the GPU?
 
-# Runtimes of Taylor expansion
+# Runtimes of Taylor expansion, memory bound
 ::: notes
 In this graph we have a plot of problem size (horizontal axis) vs runtime (vertical axis).
 
@@ -221,13 +221,13 @@ The legend tells us there are three different versions of the computation:
 3. OpenMP with 64 threads
 4. GPU
 
-The serial part runs fastest, if we have less than $10^4$ elements.
+The serial part runs fastest, if we have less than $2000$ elements.
 
-Then we see the OpenMP version with 64 threads dominate, if the number of elements is between $10^4$ and $3 \times 10^7$.
+Then we see the OpenMP version with 64 threads dominate, if the number of elements is between $2000$ and $300 000$.
 
-Finally, once the problem size is larger than $3 \times 10^7$, the GPU version starts to dominate.
+Finally, once the problem size is larger than $300 000$, the GPU version starts to dominate.
 
-We can also see the GPU and OMP64 versions having a constant runtime, when the number of elements is $< 3 \times 10^7$, even if the problem size increases.
+We can also see the GPU and OMP64 versions having a roughly constant runtime, when the number of elements is $< 300 000$, even if the problem size increases.
 
 This indicates that the problem is too small to actually use all the available resources: scaling up the problem doesn't cost anything extra, because there are an abundance of free units for doing the work.
 
@@ -256,7 +256,12 @@ $$\vec{y} \approx \sum_{n = 0}^{N} \frac{\vec{x}^n}{n!}$$
 ::::::
 :::::::::
 
-# Runtimes of Taylor expansion
+# Runtimes of Taylor expansion, compute bound
+
+::: notes
+When we have more computation per element, we start to see the serial version lose to the multithreaded one already at
+$200$ elements, while the GPU takes the lead already between $30000$ - $40000$ elements.
+:::
 
 ::::::::: {.columns}
 :::::: {.column width="20%"}
@@ -274,6 +279,19 @@ $$\vec{y} \approx \sum_{n = 0}^{N} \frac{\vec{x}^n}{n!}$$
 :::::::::
 
 # Runtimes of Taylor expansion
+
+::: notes
+In this final plot we have three different amounts of computation for the three different implementations.
+
+One interesting thing to note is that there's no qualitative difference between any of the GPU versions,
+while there's some cache behaviour visible in the CPU versions.
+
+This highlights the difference between the CPU and the GPU:
+the GPU concentrates on hiding the memory access latency by having thousands of threads doing work at
+the same time. That's why it's impossible to infer the size of GPU caches from high level plots like these,
+while it's possible to make some educated guesses about the CPU cache sizes, due to the qualitative
+difference in the plots.
+:::
 
 ::::::::: {.columns}
 :::::: {.column width="20%"}
@@ -431,14 +449,43 @@ inline __m256 mul8(const float* p1, const float* p2)
 
 # Who controls the vector units?
 
-TODO: some exposition here why this is not a good model
+::: notes
+Again, we must update our model.
 
-![](img/not_gpu_as_vector_units.png){width=50%}
+The GPU isn't just a bunch of independent vector units.
+:::
+
+:::::: {.columns}
+::: {.column width="50%"}
+![](img/gpu_as_vector_units.png){width=100%}
+:::
+::: {.column width="50%"}
+Is this realistic?
+:::
+::::::
+
+# Who controls the vector units?
+
+::: notes
+Again, we must update our model.
+
+The GPU isn't just a bunch of independent vector units.
+:::
+
+:::::: {.columns}
+::: {.column width="50%"}
+![](img/not_gpu_as_vector_units.png){width=100%}
+:::
+::: {.column width="50%"}
+No
+:::
+::::::
+
 
 # GPU as a collection of processors
 
 ::: notes
-An even better model of a GPU is a collection of independent and very simple processors, which contain vector units.
+Better model of a GPU is a collection of independent and very simple processors, which contain vector units.
 
 AMD calls these processors Compute Units (CU), Nvidia calls them Streaming Multiprocessors (SM) and Intel has many names for them, one of which is Execution Unit (EU).
 
