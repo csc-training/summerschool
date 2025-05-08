@@ -1,13 +1,14 @@
 ## Hello World with MPI
 
-1. Write a parallel program that prints out something (e.g. "Hello
-   world!") from multiple processes. Include the MPI headers (C) or use the
-   MPI module (Fortran) and call appropriate initialisation and finalisation
-   routines.
+1. Write a parallel program that prints "Hello world!" from all processes.
+   Include the MPI headers (C) or use the MPI module (Fortran) and call appropriate MPI initialisation and finalisation routines.
 
-2. Modify the program so that each process prints out also its rank and so
-   that the process with rank 0 prints out the total number of MPI processes
-   as well.
+2. Update the program so that each process performs a different task according to its rank:
+   - Every process prints its rank
+   - Process with rank 0 prints the total number of MPI processes
+   - Process with rank N-1 prints "I'm the last but not least"
+   - Process with rank 42 prints ["I'm the Answer to the Ultimate Question of Life, the Universe, and Everything!"](https://simple.wikipedia.org/wiki/42_(answer))
+   Run the program with 0, 4, 42, and 64 processes and observe the output.
 
 3. (Bonus) Sometimes it is convenient to find out in which nodes the different MPI
    processes are running. MPI has a function `MPI_Get_processor_name` for querying the
