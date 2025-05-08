@@ -4,6 +4,15 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
+# Outline
+
+- The idea of Message Passing Interface (MPI)
+- MPI in practice: Creating, compiling, and running an MPI program
+- MPI communicator
+
+
+# Introduction to MPI {.section}
+
 # Message Passing Interface (MPI)
 
 - MPI is an application programming interface (API) for distributed parallel computing
@@ -69,6 +78,8 @@ lang:   en
 
 Message passing game
 
+
+# MPI in practice {.section}
 
 # Programming MPI
 
@@ -220,8 +231,9 @@ ftn -o my_mpi_prog my_mpi_code.F90
 - In general, the launcher command to use changes from supercomputer to supercomputer
   - Check the user documentation of your system
 
+# MPI communicator {.section}
 
-# MPI Communicator
+# MPI communicator
 
 - An object connecting a group of processes
 - Specifies the communication context
@@ -241,6 +253,8 @@ MPI_Comm_rank(`comm`{.input}, `rank`{.output})
 <p>
 - Demo: `hello_rank.c`
 
+
+# Summary {.section}
 
 # Summary
 

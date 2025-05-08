@@ -4,7 +4,15 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
-# Status parameter in receiving {.section}
+# Outline
+
+- MPI Status parameter
+- Common communication patterns
+- MPI programming practices
+- "Special" parameter values in MPI
+
+
+# MPI Status parameter {.section}
 
 
 # MPI point-to-point operations (recap)
@@ -272,7 +280,7 @@ MPI_Recv(recvbuf, bufsize, MPI_INT, src, 42, MPI_COMM_WORLD, &status);
 - When there is always both sending and receiving, `MPI_Sendrecv` can prevent deadlocks and serialization of communication
 
 
-# Summary of special values {.section}
+# Summary of special parameter values {.section}
 
 # Special parameter values
 
