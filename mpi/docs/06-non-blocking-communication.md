@@ -128,22 +128,10 @@ MPI_Iprobe(`source`{.input}, `tag`{.input}, `comm`{.input}, `flag`{.output}, `st
 
 <p>
 - Flag is true if there is a message that matches the pattern and can be received
-- `MPI_ANY_SOURCE` can be used for source
-- `MPI_ANY_TAG` can be used for tag
+- A non-blocking version of `MPI_Probe`
 
 <p>
 - Demo: `send_and_recv_nonblocking_probing.c`
-
-
-# Message probing
-
-MPI_Probe(`source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
-: Blocking test for a message without receiving it
-
-<p>
-- `MPI_Probe` is blocking version of `MPI_Iprobe`
-- The call returns only after a matching message has been found
-
 
 
 # Non-blocking collectives {.section}
