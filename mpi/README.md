@@ -78,3 +78,16 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 - [Heat equation solver](heat-equation/): Remaining tasks
 
+
+## Web resources
+
+- List of MPI functions with detailed descriptions
+  - <https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/index.html>
+  - <https://www.mpich.org/static/docs/v4.2.x/>
+  - <https://rookiehpc.org/mpi/docs/>
+- Online MPI tutorials
+  - <https://hpc-tutorials.llnl.gov/mpi/>
+  - <http://mpitutorial.com/tutorials/>
+  - <https://www.youtube.com/watch?v=BPSgXQ9aUXY>
+- MPI coding game in C
+  - <https://www.codingame.com/playgrounds/47058/have-fun-with-mpi-in-c/lets-start-to-have-fun-with-mpi>
