@@ -1,5 +1,5 @@
 ---
-title:  Point-to-point communication
+title:  Point-to-point communication I
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
@@ -26,50 +26,37 @@ lang:   en
 
 # MPI point-to-point operations
 
-- One process *sends* a message to another process that *receives* it with **`MPI_Send`** and **`MPI_Recv`** routines
+- One process *sends* a message to another process that *receives* it with `MPI_Send` and `MPI_Recv` routines
 - Sends and receives in a program should match – one receive per send
-- Each message (envelope) contains
-    - The actual *data* (buffer) that is to be sent
-    - The *number of elements* in the data
-    - The *datatype* of each element of the data
+- Each message contains
+  - Data
+    - A *buffer*, the *datatype* of the data elements, and the *number* of the data elements
+  - Envelope
     - The ranks of the *source* and *destination* processes
     - An identification number for the message (*tag*)
-
+    - Used *communicator*
 
 # MPI point-to-point operations
 
 MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input})
   : Performs a blocking send
-  : Note: `count` parameter is the number of elements to send
+  : **Note!** The `count` parameter is the number of elements to send
 
 MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
   : Performs a blocking receive
-  : Note: `count` parameter is the **maximum** number of elements to receive
+  : **Note!** The `count` parameter is the **maximum** number of elements to receive
+  : The `status` parameter is discussed later; use special `MPI_STATUS_IGNORE` for now
 
 <p>
 - Demo: `send_and_recv.c`
 
 
-# Status parameter
-
-- The status parameter in `MPI_Recv` contains information about the received data after the call has completed
-  - The number of received elements
-    - Use the function **`MPI_Get_count`(`status`{.input}, `datatype`{.input}, `count`{.output})**
-    - Note: `count` parameter of `MPI_Recv` is the **maximum** number of elements to receive
-  - The tag of the received message
-    - C: `status.MPI_TAG`
-    - Fortran 2008: `status%mpi_tag` (old Fortran `status(MPI_TAG)`)
-  - The rank of the sender
-    - C: `status.MPI_SOURCE`
-    - Fortran 2008: `status%mpi_source` (old Fortran `status(MPI_SOURCE)`)
-
-
 # Buffers in MPI
 
 - The `buffer` arguments are memory addresses
-- MPI assumes contiguous chunk of memory
-    - `count` elements are send starting from the address
-    - received elements are stored starting from the address
+- MPI assumes a contiguous chunk of memory
+    - The `count` elements are send starting from the address
+    - The received elements are stored starting from the address
 - In C/C++ `buffer` is pointer
     - For C++ `<array>` and `<vector>` containers, use `array.data()` or `&array[i]`
 - In Fortran arguments are passed by reference and variables can be passed as such to MPI calls
@@ -188,23 +175,21 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 </div>
 
 
-
 # Blocking routines and deadlocks
 
-- `MPI_Send` and `MPI_Recv` are blocking routines
-    - `MPI_Send` exits once the send buffer can be safely read and written to
-    - `MPI_Recv` exits once it has received the message in the receive buffer
-- Completion depends on other processes → risk for *deadlocks*
-    - For example, all processes are waiting in `MPI_Recv` but no-one is sending <br>
-      → the program is stuck forever (deadlock)
-
+- `MPI_Send` and `MPI_Recv` are *blocking* routines
+- `MPI_Send` returns once the send buffer can be safely read and written to
+  - **Note!** This does not necessarily mean that the communication has taken place when `MPI_Send` returns <br>
+    → See exercise
+- `MPI_Recv` returns once it has received the message in the receive buffer
+- In general, the completion may depend on other processes → risk for *deadlocks*
+  - For example, all processes are waiting in `MPI_Recv` but no-one is sending <br>
+    → the program is stuck forever (deadlock)
 
 # Summary
 
 - Point-to-point communication = messages are sent between two MPI processes
-- Point-to-point operations enable any parallel communication pattern (in principle)
-  - `MPI_Send` and `MPI_Recv`
-- Status parameter of `MPI_Recv` contains information about the message after the receive is completed
+- Point-to-point operations enable any parallel communication pattern
+  - `MPI_Send` and `MPI_Recv` would be (in principle) enough
 - `MPI_Send` and `MPI_Recv` are blocking routines
   - Beware of deadlocks
-
