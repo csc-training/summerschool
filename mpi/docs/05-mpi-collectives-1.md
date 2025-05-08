@@ -1,8 +1,15 @@
 ---
-title:  Collective communication
+title:  Collective communication I
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
+
+# Outline
+
+- Collective communication in MPI
+- Collective MPI operations
+
+# Collective communication in MPI {.section}
 
 # Introduction
 
@@ -52,6 +59,9 @@ the task 0 to all other tasks
 - Amount of sent and received data must match
 - No tag arguments
     - Order of execution must coincide across processes
+
+
+# Collective MPI operations {.section}
 
 # Broadcasting
 
