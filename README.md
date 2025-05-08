@@ -90,7 +90,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 08:00 | Breakfast
-| **10:00** | [GPU programming](gpu)
+| 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
 | 13:00 | [GPU programming](gpu)
 | 17:00 | Dinner
