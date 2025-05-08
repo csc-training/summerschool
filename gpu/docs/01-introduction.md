@@ -429,6 +429,12 @@ inline __m256 mul8(const float* p1, const float* p2)
 ::::::
 :::::::::
 
+# Who controls the vector units?
+
+TODO: some exposition here why this is not a good model
+
+![](img/not_gpu_as_vector_units.png){width=50%}
+
 # GPU as a collection of processors
 
 ::: notes
@@ -573,6 +579,7 @@ The GPU gets it computational power from tens or hundreds of simple processors c
 - consists of tens or hundreds of simple processors, with multiple vector units per processor
 - 1-2 orders of magnitude more instruction per cycle compared to CPUs
 :::
+
 # Part 3: Programming GPUs {.section}
 
 # Programming GPUs
@@ -719,7 +726,6 @@ A block of threads can be 1D, 2D or 3D
 
 :::::: {.columns}
 ::: {.column width="50%"}
-<small>
 ```cpp
 // This struct is defined elsewhere by the API
 struct dim3 {
@@ -728,19 +734,13 @@ struct dim3 {
 	int32_t z;
 };
 
-// -----------------------------------------------
-// In our program we define the size of the block:
-
-// 1D block of 128 threads (128 x 1 x 1 = 128)
-dim3 block(128, 1, 1);
-
-// 2D block of 1024 threads (32 x 32 = 1024)
-dim3 block(32, 32, 1);
-
-// 3D block of 1024 threads (16 x 8 x 8 = 1024)
-dim3 block(16, 8, 8);
+// ------------------------
+// In our program we define
+// the size of the block:
+dim3 block(1024, 1, 1); // 1D
+dim3 block(128, 3, 1);  // 2D
+dim3 block(256, 2, 3);  // 3D
 ```
-</small>
 :::
 ::: {.column width="50%"}
 ![](img/oned_block.png){width=80%}
@@ -760,8 +760,7 @@ Likewise, the dimensions multiplied together tell how many blocks there are in a
 A grid of blocks can be 1D, 2D or 3D
 
 :::::: {.columns}
-::: {.column width="30%"}
-<small>
+::: {.column width="50%"}
 ```cpp
 // The same struct is used for
 // block size and grid size
@@ -774,18 +773,15 @@ struct dim3 {
 // ------------------------
 // In our program we define
 // the size of the grid:
-
-// 1D grid of 4 blocks (4 x 1 x 1 = 4)
-dim3 grid(4, 1, 1);
-
-// 2D grid of 4 blocks (2 x 2 x 1 = 4)
-dim3 grid(2, 2, 1);
+dim3 grid(4, 1, 1); // 1D
+dim3 grid(4, 2, 1); // 2D
+dim3 grid(4, 2, 4); // 3D
 ```
-</small>
 :::
-::: {.column width="70%"}
-![](img/oned_grid.png){width=40%}
-![](img/twod_grid.png){width=55%}
+::: {.column width="50%"}
+![](img/oned_grid.png){width=80%}
+![](img/twod_grid.png){width=45%}
+![](img/threed_grid.png){width=45%}
 :::
 ::::::
 
@@ -799,23 +795,39 @@ To run some code on the GPU, we give it a grid. The device performs the given co
 ::::::::: {.columns}
 :::::: {.column width="50%"}
 ```cpp
-dim3 block(8, 128, 1);
-dim3 grid(4, 1, 1);
-// Num threads = 8 x 128 x 4 = 4096
+dim3 block(128, 4, 1);
+dim3 grid(32, 32, 1);
+// Num threads = 4096 x 128 x 1 = 524288
 
 // The code in "someKernel" is run
-// with 4096 threads
+// with 524288 threads
 someKernel<<<grid, block>>>(arguments);
 // We'll cover this^ special syntax later
 ```
 ::::::
 :::::: {.column width="50%"}
 ::: incremental
+
 - threads/grid = threads/block $\times$ blocks/grid
 - device always operates over grids
+
 :::
 ::::::
 :::::::::
+
+# Example grids 1
+
+![](img/oned_block_oned_grid.png){width=100%}
+
+# Example grids 2
+
+![](img/oned_block_twod_grid.png){width=80%}
+
+# Example grids 3
+
+![](img/twod_block_oned_grid.png){width=80%}
+
+# Part 4: Software - Hardware mapping {.section}
 
 # Grid - Device
 
@@ -831,7 +843,7 @@ The grid maps to a single device (GPU): we're telling a single device to run som
 ::: notes
 Each block of threads in the grid gets mapped to a single CU/SM.
 :::
-![](img/block_sm_cu.png){.center width=100%}
+![](img/block_sm_cu.png){.center width=70%}
 
 # Blocks - SM/CU, cont.
 
@@ -852,6 +864,8 @@ However, the reverse is not possible. One block always maps to a single CU/SM, n
 # Warps, wavefronts
 
 ::: notes
+TODO: Image of warps being mapped to SMSPs
+
 At the SM/CU, the blocks of threads are further broken down to warps of 32 threads (Nvidia), or wavefronts of 64 threads (AMD)
 
 Each warp/wavefront consists of consecutive 32/64 threads.
@@ -880,7 +894,7 @@ A 1D block of 256x1 threads gets partitioned to
 | w7                | 224-255            | -               |
 </small>
 
-# Warp/Wavefront - SM/CU
+# Warp/Wavefront - SMSP/SIMD
 
 ::: notes
 Then, the SM/CU maps each of these warps/wavefronts to a particular SMSP/SIMD unit
@@ -900,14 +914,7 @@ Finally, each thread of a warp/wavefront is mapped to a single lane of a SIMD un
 Let's do a review.
 
 The GPU is a massively parallel processor with its own memory space. The processing power of the GPU comes from tens or hundreds of simple processors (CU/SM) working independently and concurrently. These simple processors contain multiple vector units, which perform a single instruction for multiple pieces of data per cycle.
-
-To do some work on the GPU, we write some code from the perspective of a single thread and define a grid of threads using two levels of hierarchy defined by the API: a grid of blocks and a block of threads. We then ask the GPU to run our code for each thread in the grid.
-
-The device maps the grid of threads to its hardware components: all the threads run on the same GPU. The blocks of the grid are mapped to the CUs/SMs. These then break down the blocks to warps or wavefronts of 32/64 consecutive threads and map each warp/wavefront to a SIMD unit or SMSP.
-Each SIMD unit/SMSP executes a single instruction per cycle, doing this for all the lanes in the unit.
 :::
-
-<small>
 
 ::: incremental
 - massively parallel processor
@@ -915,6 +922,20 @@ Each SIMD unit/SMSP executes a single instruction per cycle, doing this for all 
 - useful when you have a lot of data
 - consists of tens or hundreds of simple processors, with multiple vector units per processor
 - 1-2 orders of magnitude more instruction per cycle compared to CPUs
+:::
+
+# Recap, cont.
+
+::: notes
+Let's do a review.
+
+To do some work on the GPU, we write some code from the perspective of a single thread and define a grid of threads using two levels of hierarchy defined by the API: a grid of blocks and a block of threads. We then ask the GPU to run our code for each thread in the grid.
+
+The device maps the grid of threads to its hardware components: all the threads run on the same GPU. The blocks of the grid are mapped to the CUs/SMs. These then break down the blocks to warps or wavefronts of 32/64 consecutive threads and map each warp/wavefront to a SIMD unit or SMSP.
+Each SIMD unit/SMSP executes a single instruction per cycle, doing this for all the lanes in the unit.
+:::
+
+::: incremental
 - point of view of a single thread
 - a grid of (blocks of) threads
 - grid <--> device
@@ -922,7 +943,6 @@ Each SIMD unit/SMSP executes a single instruction per cycle, doing this for all 
 - warp/wavefront <--> SMSP/SIMD
 - thread <--> lane
 :::
-</small>
 
 # What have we learned?
 
