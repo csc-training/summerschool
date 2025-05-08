@@ -24,23 +24,21 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 - [Hello world](hello-world/)
 
-### Point-to-point communication
+### Point-to-point communication I
 
 - [Message exchange](message-exchange/)
 - [Parallel pi with two processes](parallel-pi-two-procs/)
 
-### MPI programming practices
+### Point-to-point communication II
 
 - [Message length](message-length/)
 - [Message chain](message-chain/)
+- [Parallel pi with any number of processes](parallel-pi-general/)
 - [Heat equation solver](heat-equation/): Tasks 1-2
-- [(Bonus) Parallel pi with any number of processes](parallel-pi-general/)
-- [(Bonus) Broadcast and scatter](broadcast-scatter/)
 
-### Collective operations
+### Non-blocking communication
 
-- [Collective operations](collectives/)
-
+- [Non-blocking message chain](message-chain-non-blocking/)
 
 ## Thursday exercises
 
@@ -48,14 +46,15 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 - [Debugging](debugging/)
 
+### Collective operations
+
+- [Broadcast and scatter](broadcast-scatter/) TODO: Compare timing real broadcast vs Send-Recv implementation
+- [(Bonus) Collective operations](collectives/)
+
 ### Collective reductions
 
-- [Heat equation solver](heat-equation/): Task 3
-
-### Non-blocking communication
-
-- [Non-blocking message chain](message-chain-non-blocking/)
-- [Heat equation solver](heat-equation/): Task 4
+- TODO: add parallel pi with collective reduction
+- [Heat equation solver](heat-equation/): Tasks 3-4
 
 ### User-defined communicators
 
