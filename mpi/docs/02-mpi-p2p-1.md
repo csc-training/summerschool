@@ -4,6 +4,14 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
+# Outline
+
+- Point-to-point communication in MPI
+- Blocking routines in MPI
+
+
+# Point-to-point communication in MPI {.section}
+
 # Communication in MPI
 
 <div class="column">
@@ -55,23 +63,23 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 - The `buffer` arguments are memory addresses
 - MPI assumes a contiguous chunk of memory
-    - The `count` elements are send starting from the address
-    - The received elements are stored starting from the address
+  - The `count` elements are send starting from the address
+  - The received elements are stored starting from the address
 - In C/C++ `buffer` is pointer
-    - For C++ `<array>` and `<vector>` containers, use `array.data()` or `&array[i]`
+  - For C++ `<array>` and `<vector>` containers, use `array.data()` or `&array[i]`
 - In Fortran arguments are passed by reference and variables can be passed as such to MPI calls
-    - Note: be careful if passing non-contiguous array segmens such as <br>`a(1, 1:N)`
+  - Note: be careful if passing non-contiguous array segmens such as <br>`a(1, 1:N)`
 
 
 # MPI datatypes
 
 - On a low level, MPI sends and receives stream of bytes
 - MPI datatypes specify how the bytes should be interpreted
-    - Allows data conversions in heterogenous environments (*e.g.* little endian to big endian)
+  - Allows data conversions in heterogenous environments (*e.g.* little endian to big endian)
 - MPI has a number of predefined basic datatypes corresponding to C or Fortran datatypes
-    - Listed in the next slides
+  - Listed in the next slides
 - Datatype `MPI_BYTE` for raw bytes is available both in C and Fortran
-    - Portability can be an issue when using `MPI_BYTE` - be careful
+  - Portability can be an issue when using `MPI_BYTE` - be careful
 - One can also define custom datatypes for communicating complex data
 
 
@@ -175,6 +183,8 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 </div>
 
 
+# Blocking routines in MPI {.section}
+
 # Blocking routines and deadlocks
 
 - `MPI_Send` and `MPI_Recv` are *blocking* routines
@@ -185,6 +195,9 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - In general, the completion may depend on other processes → risk for *deadlocks*
   - For example, all processes are waiting in `MPI_Recv` but no-one is sending <br>
     → the program is stuck forever (deadlock)
+
+
+# Summary {.section}
 
 # Summary
 
