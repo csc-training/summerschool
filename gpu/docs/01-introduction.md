@@ -31,12 +31,12 @@ On the right we have the GPU with it's dedicated memory
 # How do I use the GPU?
 
 :::::: {.columns}
-::: {.column width="50%"}
+::: {.column width="40%"}
 To use it, you have to
 
 1. Copy memory from CPU to GPU
 :::
-::: {.column width="50%"}
+::: {.column width="60%"}
 ![](img/copy_h2d.png){.center width=100%}
 :::
 ::::::
@@ -44,13 +44,13 @@ To use it, you have to
 # How do I use the GPU?
 
 :::::: {.columns}
-::: {.column width="50%"}
+::: {.column width="40%"}
 To use it, you have to
 
 1. Copy memory from CPU to GPU
 2. Tell the GPU what to do with that data
 :::
-::: {.column width="50%"}
+::: {.column width="60%"}
 ![](img/do_this_computation.png){.center width=100%}
 :::
 ::::::
@@ -58,14 +58,14 @@ To use it, you have to
 # How do I use the GPU?
 
 :::::: {.columns}
-::: {.column width="50%"}
+::: {.column width="40%"}
 To use it, you have to
 
 1. Copy memory from CPU to GPU
 2. Tell the GPU what to do with that data
 3. Wait for the GPU to finish doing what you told it to do
 :::
-::: {.column width="50%"}
+::: {.column width="60%"}
 ![](img/cpu_waits_on_gpu.png){.center width=100%}
 :::
 ::::::
@@ -73,7 +73,7 @@ To use it, you have to
 # How do I use the GPU?
 
 :::::: {.columns}
-::: {.column width="50%"}
+::: {.column width="40%"}
 To use it, you have to
 
 1. Copy memory from CPU to GPU
@@ -81,7 +81,7 @@ To use it, you have to
 3. Wait for the GPU to finish doing what you told it to do
 4. Copy memory from GPU back to the CPU
 :::
-::: {.column width="50%"}
+::: {.column width="60%"}
 ![](img/copy_d2h.png){.center width=100%}
 :::
 ::::::
@@ -499,7 +499,7 @@ MI250X from AMD, as found on LUMI and A100 from Nvidia, as found on Mahti.
 :::::: {.columns}
 ::: {.column width="50%"}
 ![](img/gpu_as_cus_sms_eus.png){width=100%}
-Tens or hundreds of simple processors
+Tens or hundreds of simple processors (this model has 8)
 :::
 ::: {.column width="50%"}
 ![](img/cu_sm_eu.png){width=100%}
@@ -883,6 +883,7 @@ So we've defined our grid and written some code. How do these software construct
 
 The grid maps to a single device (GPU): we're telling a single device to run some code over a grid that we've defined.
 :::
+
 ![](img/grid_gpu.png){.center width=100%}
 
 # Block - SM/CU
@@ -890,42 +891,39 @@ The grid maps to a single device (GPU): we're telling a single device to run som
 ::: notes
 Each block of threads in the grid gets mapped to a single CU/SM.
 :::
-![](img/block_sm_cu.png){.center width=70%}
 
-# Blocks - SM/CU, cont.
+![](img/blocks_to_sm_cus.png){.center width=100%}
+
+# Blocks - SM/CU
 
 ::: notes
 Side note: Many blocks (from a single or multiple grids) may map to the same CU/SM.
 
 However, the reverse is not possible. One block always maps to a single CU/SM, never to multiple.
 :::
-::::::::: {.columns}
-:::::: {.column width="50%"}
-![](img/many_blocks_to_one_sm.png){.center width=80%}
-::::::
-:::::: {.column width="50%"}
-![](img/no_block_to_many_sm.png){.center width=100%}
-::::::
-:::::::::
+
+![](img/many_blocks_to_one_sm.png){.center width=100%}
+
+# Block - SM/CU
+
+::: notes
+Each block of threads in the grid gets mapped to a single CU/SM.
+:::
+
+![](img/block_sm_cu.png){.center width=100%}
 
 # Warps, wavefronts
 
-::: notes
-TODO: Image of warps being mapped to SMSPs
+:::::: {.columns}
+::: {.column width="50%"}
 
-At the SM/CU, the blocks of threads are further broken down to warps of 32 threads (Nvidia), or wavefronts of 64 threads (AMD)
-
-Each warp/wavefront consists of consecutive 32/64 threads.
-:::
 SM/CU breaks blocks of threads to
 
 - *warps* of 32 consecutive threads (Nvidia), or
 - *wavefronts* of 64 consecutive threads (AMD)
 
-Then, the SM/CU maps each of these warps/wavefronts to a particular SMSP/SIMD unit
-
-# Warps, wavefronts, cont.
-
+:::
+::: {.column width="50%"}
 <small>
 A 1D block of 256x1 threads gets partitioned to
 
@@ -940,20 +938,35 @@ A 1D block of 256x1 threads gets partitioned to
 | w6                | 192-223            | -               |
 | w7                | 224-255            | -               |
 </small>
+:::
+::::::
+
+# Warps, wavefronts
+
+::: notes
+At the SM/CU, the blocks of threads are further broken down to warps of 32 threads (Nvidia), or wavefronts of 64 threads (AMD)
+
+Each warp/wavefront consists of consecutive 32/64 threads.
+:::
+
+![](img/block_to_warps.png){.center width=100%}
+
 
 # Warp/Wavefront - SMSP/SIMD
 
 ::: notes
 Then, the SM/CU maps each of these warps/wavefronts to a particular SMSP/SIMD unit
 :::
-![](img/warp_wavefron_smsp_simd.png){.center width=80%}
+
+![](img/warps_to_simds.png){.center width=100%}
 
 # Thread - lane
 
 ::: notes
 Finally, each thread of a warp/wavefront is mapped to a single lane of a SIMD unit or to a single core of the SMSP.
 :::
-![](img/thread_lane.png){.center width=80%}
+
+![](img/warp_wavefront_smsp_simd.png){.center width=100%}
 
 # Recap
 
@@ -971,7 +984,7 @@ The GPU is a massively parallel processor with its own memory space. The process
 - 1-2 orders of magnitude more instruction per cycle compared to CPUs
 :::
 
-# Recap, cont.
+# Recap
 
 ::: notes
 Let's do a review.
@@ -990,17 +1003,5 @@ Each SIMD unit/SMSP executes a single instruction per cycle, doing this for all 
 - warp/wavefront <--> SMSP/SIMD
 - thread <--> lane
 :::
-
-# What have we learned?
-
-::: notes
-Let's see if we've learned something.
-
-Say, we have the following GPU.
-:::
-
-https://siili.rahtiapp.fi/s/gpmWnLY8q#
-
-![](img/model_gpu.png){.center width=65%}
 
 # Questions?
