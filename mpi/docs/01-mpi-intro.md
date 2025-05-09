@@ -224,9 +224,9 @@ ftn -o my_mpi_prog my_mpi_code.F90
 
 # Launching an MPI program
 
-- MPI program is launched with a special process launcher command: `mpiexec` (or `mpirun`)
+- MPI program needs to be launched with a process launcher (typically `mpiexec` or `mpirun` in a standalone MPI installation)
   - This launches the requested number of processes, initializes their state (e.g., rank), and the MPI communication framework
-- On LUMI and Mahti, use `srun` command instead
+- On LUMI and Mahti, use the `srun` launcher command instead
   - This integrates with SLURM (understands allocated resources, knows where and how to distribute the processes, ...)
 - In general, the launcher command to use changes from supercomputer to supercomputer
   - Check the user documentation of your system
