@@ -22,9 +22,9 @@ GPU is a processor with a dedicated memory area
 
 ::: notes
 
-On the left we have the CPU with it's dedicated memory
+On the left we have the CPU with its dedicated memory
 
-On the right we have the GPU with it's dedicated memory
+On the right we have the GPU with its dedicated memory
 
 :::
 
