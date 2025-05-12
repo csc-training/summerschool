@@ -3,9 +3,9 @@
 Consider the following example GPU.
 
 
-![](../../../docs/img/gpu_as_cus_sms_eus.png){width=100%}
+![](../../../docs/img/gpu_as_cus_sms_eus.png)
 
-![](../../../docs/img/cu_sm_eu.png){width=100%}
+![](../../../docs/img/cu_sm_eu.png)
 
 
 Think about the following questions and try to come up with an answer
@@ -30,21 +30,21 @@ While answering these, consider the example GPU and SM/CU given at the beginning
 ### Grids, blocks, warps, threads
 
 1. How many grids does it take, at least, to saturate the entire GPU?
-- What hardware component does a grid of blocks map to?
-- How many of them are there?
+    - What hardware component does a grid of blocks map to?
+    - How many of them are there?
 
 2. How many blocks does it take, at least, to saturate the entire GPU?
-- What hardware component does a block of threads map to?
-- How many of them are there?
+    - What hardware component does a block of threads map to?
+    - How many of them are there?
 
 3. What is the minimum amount of threads in a block to saturate an entire CU/SM?
-- What is the warp size?
-- What hardware component does a warp map to?
-- How many of these components are there in a single CU/SM?
+    - What is the warp size?
+    - What hardware component does a warp map to?
+    - How many of these components are there in a single CU/SM?
 
 4. How many threads does it take, in total, to saturate the entire GPU?
-- How many threads to sature a CU/SM (See question 3)?
-- How many blocks to saturate the entire GPU (see question 2)?
+    - How many threads to sature a CU/SM (See question 3)?
+    - How many blocks to saturate the entire GPU (see question 2)?
 
 ### Miscellaneous
 
