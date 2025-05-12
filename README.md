@@ -9,6 +9,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This is the material repository for the High-Performance Computing Summer School organized by [CSC - IT Center for Science](https://csc.fi/en/).
 
+## Practical information
+
+The practical information is in the [wiki](../../wiki).
+
 ## Presentation slides
 
 The slides are available [here](https://csc-training.github.io/summerschool/).
