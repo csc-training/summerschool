@@ -8,9 +8,14 @@ to solve some more advanced cases.
 It's **highly** recommended to complete the basic exercise on the given topic
 before moving to the advanced ones.
 
+## Introduction to GPUs
+
+- [Mental model](exercises/basics/01-introduction)
+
 ## Basics of HIP programming
 
-- [Lorem ipsum](exercises/basics/lorem)
+- [Basic exercises](exercises/basics/02-kernels)
+- [Advanced exercises](exercises/advanced/lorem)
 
 ## Streams, events, and synchronization
 
