@@ -7,9 +7,17 @@ __global__ void hello(int32_t num_blocks, int32_t num_threads) {
 }
 
 int main() {
-    // TODO: See how the output changes when you change these to different
-    // numbers. Once you've experimented with some numbers like 2, 8, 16, try
-    // setting num_threads to 1025. What happens?
+    // TODO 1:
+    // - compile and run the code
+
+    // TODO 2:
+    // - change num_blocks and/or num_threads to different numbers
+    // - use small numbers to make some sense of the output
+
+    // TODO 3:
+    // - change num_threads to 1025. What happens?
+    // - Move on to the next exercise to find out more.
+
     const int32_t num_blocks = 1;
     const int32_t num_threads = 1;
 
