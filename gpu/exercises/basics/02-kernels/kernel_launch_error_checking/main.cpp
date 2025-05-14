@@ -4,11 +4,8 @@
 #include <vector>
 
 __global__ void fill(size_t n, float a, float *arr) {
-    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-    const size_t stride = blockDim.x * gridDim.y;
-
-    assert(tid < blockDim.x && "Thread id must be < blockDim.x * gridDim.x");
-    assert(stride > tid && "Stride must be larger than any thread id");
+    const size_t tid = threadIdx.x + blockDim.y * blockDim.x;
+    const size_t stride = blockDim.x * gridDim.z;
 
     assert(threadIdx.y == 0 &&
            "This kernel should be run with a 1D configuration");
@@ -18,6 +15,13 @@ __global__ void fill(size_t n, float a, float *arr) {
            "This kernel should be run with a 1D configuration");
     assert(blockIdx.z == 0 &&
            "This kernel should be run with a 1D configuration");
+
+    assert(tid < blockDim.x * gridDim.x && "tid !< total number of threads");
+    assert(blockIdx.x * blockDim.x <= tid &&
+           "tid !>= num threads before this block");
+    assert(tid < blockIdx.x * blockDim.x + blockDim.x &&
+           "tid !< num threads before this block + num threads in this block");
+    assert(stride > tid && "stride !> tid");
 
     for (size_t i = tid; i < n; i += stride) {
         arr[i] = a;
