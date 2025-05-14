@@ -5,7 +5,19 @@
 
 __global__ void fill(size_t n, float a, float *arr) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-    const size_t stride = blockDim.x * gridDim.x;
+    const size_t stride = blockDim.x * gridDim.y;
+
+    assert(tid < blockDim.x && "Thread id must be < blockDim.x * gridDim.x");
+    assert(stride > tid && "Stride must be larger than any thread id");
+
+    assert(threadIdx.y == 0 &&
+           "This kernel should be run with a 1D configuration");
+    assert(threadIdx.z == 0 &&
+           "This kernel should be run with a 1D configuration");
+    assert(blockIdx.y == 0 &&
+           "This kernel should be run with a 1D configuration");
+    assert(blockIdx.z == 0 &&
+           "This kernel should be run with a 1D configuration");
 
     for (size_t i = tid; i < n; i += stride) {
         arr[i] = a;
@@ -70,8 +82,8 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
     // Helper lambda for printing out stuff to stderr and exiting
     auto print_and_exit = [&](auto msg_lambda) {
         std::fprintf(stderr,
-                     "Bad launch parameter for %s at %s:%d:", kernel_name, file,
-                     line);
+                     "Bad launch parameter for %s at %s:%d: ", kernel_name,
+                     file, line);
         msg_lambda();
         exit(EXIT_FAILURE);
     };
@@ -105,10 +117,11 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
 
         if (not(dim.x * dim.y * dim.z <= max_total)) {
             print_and_exit([&]() {
-                std::fprintf(
-                    stderr,
-                    "Total size of dim3 (%d) larger than maximum (%d)\n",
-                    dim.x * dim.y * dim.z, max_total);
+                std::fprintf(stderr,
+                             "Total size of dim3 (%d * %d * %d = %d) larger "
+                             "than maximum (%d)\n",
+                             dim.x, dim.y, dim.z, dim.x * dim.y * dim.z,
+                             max_total);
             });
         }
     };
