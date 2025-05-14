@@ -1,34 +1,61 @@
 # GPU programming exercises
 
 There are two types of exercises in this directory.
-The [basic](exercises/basics) exercises teach and show how to use the API.
-In the [advanced](exercises/advanced) exercises you need to apply the API
-to solve some more advanced cases.
+First you should go over the [fundamentals](exercises/fundamentals) of GPU programming.
 
-It's **highly** recommended to complete the basic exercise on the given topic
-before moving to the advanced ones.
+After that, in the [bonus](exercises/bonus) exercises you need to apply the fundamental
+concepts to solve some more advanced cases.
 
 ## Introduction to GPUs
 
-- [Mental model](exercises/basics/01-introduction)
+- [Mental model](exercises/fundamentals/01-introduction)
 
 ## Basics of HIP programming
 
-- [Basic exercises](exercises/basics/02-kernels)
-- [Advanced exercises](exercises/advanced/lorem)
+### Fundamentals
+
+- [Hello API](exercises/bonus/02-kernels/hello_api)
+
+### Bonus exercises
+
+- [Debugging & fixing errors](exercises/bonus/02-kernels/kernel_errors)
 
 ## Streams, events, and synchronization
 
-- [Lorem ipsum](exercises/basics/lorem)
+### Fundamentals
+
+- [Lorem ipsum](exercises/fundamentals/lorem)
+
+### Bonus exercises
+
+- [Lorem ipsum](exercises/bonus/lorem)
 
 ## Memory management
 
-- [Lorem ipsum](exercises/basics/lorem)
+### Fundamentals
+
+- [Lorem ipsum](exercises/fundamentals/lorem)
+
+### Bonus exercises
+
+- [Lorem ipsum](exercises/bonus/lorem)
 
 ## Kernel optimizations
 
-- [Lorem ipsum](exercises/basics/lorem)
+### Fundamentals
+
+- [Lorem ipsum](exercises/fundamentals/lorem)
+
+### Bonus exercises
+
+- [Lorem ipsum](exercises/bonus/lorem)
 
 ## Multi-GPU programming
 
-- [Lorem ipsum](exercises/basics/lorem)
+### Fundamentals
+
+- [Lorem ipsum](exercises/fundamentals/lorem)
+
+### Bonus exercises
+
+- [Lorem ipsum](exercises/bonus/lorem)
