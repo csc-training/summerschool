@@ -89,46 +89,45 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
     };
 
     // Helper lambda for asserting dim3 launch variable is within allowed limits
-    auto assert_dim_within_limits = [&](dim3 dim, dim3 min, dim3 max,
-                                        int32_t max_total) {
+#define ASSERT_DIM_WITHIN_LIMITS(dim, ...)                                     \
+    assert_dim_within_limits(#dim, dim, __VA_ARGS__)
+    auto assert_dim_within_limits = [&](const char *dim_name, dim3 dim,
+                                        dim3 min, dim3 max, int32_t max_total) {
         if (not(min.x <= dim.x && dim.x <= max.x)) {
             print_and_exit([&]() {
-                std::fprintf(stderr,
-                             "Dimension x (%d) not within limits [%d, %d]\n",
-                             dim.x, min.x, max.x);
+                std::fprintf(stderr, "%s.x (%d) not within limits [%d, %d]\n",
+                             dim_name, dim.x, min.x, max.x);
             });
         }
 
         if (not(min.y <= dim.y && dim.y <= max.y)) {
             print_and_exit([&]() {
-                std::fprintf(stderr,
-                             "Dimension y (%d) not within limits [%d, %d]\n",
-                             dim.y, min.y, max.y);
+                std::fprintf(stderr, "%s.y (%d) not within limits [%d, %d]\n",
+                             dim_name, dim.y, min.y, max.y);
             });
         }
 
         if (not(min.z <= dim.z && dim.z <= max.z)) {
             print_and_exit([&]() {
-                std::fprintf(stderr,
-                             "Dimension z (%d) not within limits [%d, %d]\n",
-                             dim.z, min.z, max.z);
+                std::fprintf(stderr, "%s.z (%d) not within limits [%d, %d]\n",
+                             dim_name, dim.z, min.z, max.z);
             });
         }
 
         if (not(dim.x * dim.y * dim.z <= max_total)) {
             print_and_exit([&]() {
                 std::fprintf(stderr,
-                             "Total size of dim3 (%d * %d * %d = %d) larger "
+                             "Total size of %s (%d * %d * %d = %d) larger "
                              "than maximum (%d)\n",
-                             dim.x, dim.y, dim.z, dim.x * dim.y * dim.z,
-                             max_total);
+                             dim_name, dim.x, dim.y, dim.z,
+                             dim.x * dim.y * dim.z, max_total);
             });
         }
     };
 
-    assert_dim_within_limits(threads, dim3(1, 1, 1), max_threads,
+    ASSERT_DIM_WITHIN_LIMITS(threads, dim3(1, 1, 1), max_threads,
                              max_threads_per_block);
-    assert_dim_within_limits(blocks, dim3(1, 1, 1), max_blocks,
+    ASSERT_DIM_WITHIN_LIMITS(blocks, dim3(1, 1, 1), max_blocks,
                              std::numeric_limits<int32_t>::max());
 
     // Requested amount of shared memory must be below the limit queried above
@@ -165,8 +164,8 @@ int main() {
     void *d_arr = nullptr;
     HIP_ERRCHK(hipMalloc(&d_arr, num_bytes));
 
-    dim3 blocks(0, 0, 0);
-    dim3 threads(1025, 1, 1);
+    dim3 blocks(0, 2, 0);
+    dim3 threads(1025, 1, 32);
 
     LAUNCH_KERNEL(fill, blocks, threads, 0, 0, n, a,
                   static_cast<float *>(d_arr));
