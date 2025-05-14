@@ -1,8 +1,7 @@
 #include <hip/hip_runtime.h>
 
 __global__ void hello() {
-    printf("Hello world, this is thread %d from block %d!\n", threadIdx.x,
-           blockIdx.x);
+    printf("Hello world, this is kernel speaking!\n");
 }
 
 int main() {
