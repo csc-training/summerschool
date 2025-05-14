@@ -3,7 +3,10 @@
 #include <math.h>
 #include <vector>
 
-#include "error_checking.hpp"
+// If you interested in what the LAUNCH_KERNEL macro
+// does, check out this file. You don't need to,
+// but it may be interesting/educational.
+#include "../error_checking.hpp"
 
 __global__ void fill(size_t n, float a, float *arr) {
     const size_t tid = threadIdx.x + blockDim.y * blockDim.x;

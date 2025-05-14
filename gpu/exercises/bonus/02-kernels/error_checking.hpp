@@ -1,3 +1,9 @@
+/*
+ * This header includes error checking functions and macros
+ * that can be used in the exercises here.
+ * Just #include this file.
+ * */
+
 #include <hip/hip_runtime.h>
 
 #define HIP_ERRCHK(result) hip_errchk(result, __FILE__, __LINE__)
