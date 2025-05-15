@@ -142,6 +142,19 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - final result:
      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot  w_{j12}+w_{j22} \cdot\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}}+...]\cdot\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\cdot\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
        
+# Data in Machine Learning
+
+- Computers only know about numbers
+- Data types in ML:
+    - **Numeric data**: array of numbers &rArr; `[1.0, 2.1, 3.4]`, `[4, 8, 15, 16, 23, 42]`
+    - **Image data**: pixels &rArr; $[R G B]$
+    - **Text data**: "Hello world"  &rArr; `[101, 7592]` (token IDs)
+- Neural networks are defined by parameters: 
+    - weights and biases, $w_{ijl}$ = weight $i$ in neuron $j$ in layer $l$
+    - GPT-4.5 $\approx$ 1.8 trillion parameter:
+         - 3.6 TB of memory
+         - 10.8 ms per per token or 10 s to generate 1-page response on a LUMI GPU
+         - for learning the requirements are much larger
 
 # Summary
 
