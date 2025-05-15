@@ -142,13 +142,6 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - final result:
      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot  w_{j12}+w_{j22} \cdot\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}}+...]\cdot\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\cdot\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
        
-# Summary
-
-- Deep Learning is a type of supervised Machine Learning
-      - consists of layers of Artificial Neurons + non-linearities (via activation functions)
-      - number of parameters can be on the order of thousands of billions
-      - supercomputers are needed to be able to train and run large models
-      - quality and amount of data is critical to get good models
 
 # Summary
 
