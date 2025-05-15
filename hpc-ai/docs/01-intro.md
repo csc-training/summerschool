@@ -1,3 +1,4 @@
+---
 title:  Introduction to Artificial Inteligence, Machine Learning, Deep Learning
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
