@@ -142,7 +142,12 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - final result:
      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot  w_{j12}+w_{j22} \cdot\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}}+...]\cdot\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\cdot\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
        
-# Data
+# Data in Machine Learning
 
+- Computers only know about numbers
+- Data types in ML:
+    - **Numeric data**: array of numbers &rArr; `[1.0, 2.1, 42]`
+    - **Image data**: pixels &rArr; $[R G B]$
+    - **Text data**: "Hello world"  &rArr;  `["Hello", "world"]`
 
 # Summary
