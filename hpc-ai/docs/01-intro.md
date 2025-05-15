@@ -163,3 +163,11 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
       - number of parameters can be on the order of thousands of billions
       - supercomputers are needed to be able to train and run large models
       - quality and amount of data is critical to get good models
+
+# Summary
+
+- **Deep Learning** is a subset of **Supervised Machine Learning**
+  - Composed of multiple layers of *artificial neurons* with non-linear *activation functions*
+  - Models can have **billions to trillions of parameters**
+  - **Supercomputers** are essential for training and deploying large-scale models
+  - **High-quality** and **large amounts of data** are critical for good performance
