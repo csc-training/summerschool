@@ -151,13 +151,8 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - **Text data**: "Hello world"  &rArr; `[101, 7592]` (token IDs)
 - Neural networks are defined by parameters: 
     - weights and biases, $w_{ijl}$ = weight $i$ in neuron $j$ in layer $l$
-    - LLMs/GPT: **hundreds/thousands of billions** of parameters
-         - GPT-4.5 $\approx$ 1.8 trillion parameter:
-          
-                 - 3.6 TB of memory
-           
-                 - 10.8ms per per token
-
-
-
+    - GPT-4.5 $\approx$ 1.8 trillion parameter:
+         - 3.6 TB of memory
+         - 10.8ms per per token
+      
 # Summary
