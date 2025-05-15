@@ -153,6 +153,6 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - weights and biases, $w_{ijl}$ = weight $i$ in neuron $j$ in layer $l$
     - GPT-4.5 $\approx$ 1.8 trillion parameter:
          - 3.6 TB of memory
-         - 10.8ms per per token
+         - 10.8 ms per per token or 10 s to generate 1-page response on a LUMI GPU
       
 # Summary
