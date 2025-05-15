@@ -155,6 +155,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - LLMs/GPT: **hundreds/thousands of billions** of parameters
          - GPT-4.5 $\approx$ 1.8 trillion parameter: 
                  - 3.6 TB of memory
+           
                  - 10.8ms per per token
 
 
