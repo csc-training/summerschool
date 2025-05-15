@@ -154,5 +154,12 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - GPT-4.5 $\approx$ 1.8 trillion parameter:
          - 3.6 TB of memory
          - 10.8 ms per per token or 10 s to generate 1-page response on a LUMI GPU
+         - for learning the requirements are much larger
       
 # Summary
+
+- Deep Learning is a type of supervised Machine Learning
+      - consists of layers of Artificial Neurons + non-linearities (via activation functions)
+      - number of parameters can be on the order of thousands of billions
+      - supercomputers are needed to be able to train and run large models
+      - quality and amount of data is critical to get good models
