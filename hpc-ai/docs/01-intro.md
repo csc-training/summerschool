@@ -7,7 +7,7 @@ lang:   en
 # AI vs. ML vs. DL
 
 <div class="column"  style="width:99%; text-align: center;">
-  ![](img/AI_ML_DL.png){width=61%}
+  ![](img/AI_ML_DL_differences.png){width=61%}
   
   <small>From Introduction to Deep Learning lecture, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
