@@ -167,7 +167,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 # Summary
 
 - **Deep Learning** is a subset of **Supervised Machine Learning**
-  - Composed of multiple layers of *artificial neurons* with non-linear *activation functions*
-  - Models can have **billions to trillions of parameters**
-  - **Supercomputers** are essential for training and deploying large-scale models
-  - **High-quality** and **large amounts of data** are critical for good performance
+  - composed of multiple layers of *artificial neurons* with non-linear *activation functions*
+  - models can have **billions to trillions of parameters**
+  - **supercomputers** are essential for training and deploying large-scale models
+  - **high-quality** and **large amounts of data** are critical for good performance
