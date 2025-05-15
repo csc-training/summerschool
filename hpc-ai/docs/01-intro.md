@@ -148,7 +148,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - Data types in ML:
     - **Numeric data**: array of numbers &rArr; `[1.0, 2.1, 3.4]`, `[4, 8, 15, 16, 23, 42]`
     - **Image data**: pixels &rArr; $[R G B]$
-    - **Text data**: "Hello world"  &rArr;  `["Hello", "world"]`  &rArr; `[101, 7592, 2088, 102]` (token IDs)
+    - **Text data**: "Hello world"  &rArr; `[101, 7592]` (token IDs)
 - Neural networks are defined by parameters: 
     - weights and biases, $w_{ijl}$ = weight $i$ in neuron $j$ in layer $l$
     - Convolution Neural Networks: **millions** of parameters
