@@ -1,9 +1,15 @@
----
-title:  Introduction to AI
+title:  Introduction to Artificial Inteligence, Machine Learning, Deep Learning
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
+# AI vs. ML vs. DL
+
+<div class="column"  style="width:99%; text-align: center;">
+  ![](img/AI_ML_DL.png){width=61%}
+  
+  <small>From Introduction to Deep Learning lecture, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
+</div>
 
 # Machine Learning
 
