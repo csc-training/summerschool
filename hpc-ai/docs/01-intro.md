@@ -153,7 +153,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - $w_{ijl}$ (weight $i$ in neuron $j$ in layer $l$)
     - GPT-4 $\approx$ 1.8 trillion parameters:
          - 3.6 TB of memory
-         - $2\times N_{active param}$ **FLOP** per token ($\approx 2\times 280 \times 10^{9}$)
+         - $2\times N_{\textnormal{active param}}$ **FLOP** per token ($\approx 2\times 280 10^{9}$)
          - for learning the requirements are much larger ($\approx 10^{25}$ **FLOP** and 13 trilion tokens)
 
 # Summary
