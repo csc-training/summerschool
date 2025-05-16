@@ -58,7 +58,7 @@ lang:   en
 # C++ Refresher
 
 
-<div class="column"  style="width:48%;">
+<div class="column"  style="width:28%;">
 
 - Namespaces
 - Placeholder type `auto`
@@ -72,7 +72,7 @@ lang:   en
 </div>
 
 
-<div class="column"  style="width:48%;">
+<div class="column"  style="width:68%;">
 ```cpp
 #include <sycl/sycl.hpp>
 using namespace sycl;
