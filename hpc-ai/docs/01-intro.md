@@ -153,7 +153,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - weights and biases, $w_{ijl}$ = weight $i$ in neuron $j$ in layer $l$
     - GPT-4.5 $\approx$ 1.8 trillion parameter:
          - 3.6 TB of memory
-         - $6\times N_{active_param}$ **FLOPS** per token ($\approx 6\times 280 \times 10^9$ **FLOPS**
+         - $6\times N_{active param}$ **FLOPS** per token ($\approx 6\times 280 \times 10^9$ **FLOPS**
          - for learning the requirements are much larger, min. 10 data objects per weight
 
 # Summary
