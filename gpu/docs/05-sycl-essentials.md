@@ -5,7 +5,7 @@ lang:   en
 ---
 
 
-# SYCL Essentials {.section}
+# Introduction {.section}
 
 
 
