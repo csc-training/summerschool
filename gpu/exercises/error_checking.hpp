@@ -23,10 +23,77 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
                    void (*kernel)(Args...), dim3 blocks, dim3 threads,
                    size_t num_bytes_shared_mem, hipStream_t stream,
                    Args... args) {
+#if !NDEBUG
+    // Helper lambda for querying device attributes
+    auto get_device_attribute = [](hipDeviceAttribute_t attribute) {
+        int32_t device = 0;
+        int32_t value = 0;
+
+        HIP_ERRCHK(hipGetDevice(&device));
+        HIP_ERRCHK(hipDeviceGetAttribute(&value, attribute, device));
+
+        return value;
+    };
+
+    // Get maximum allowed size of block for each dimension
+    const dim3 max_threads(
+        get_device_attribute(
+            hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimX),
+        get_device_attribute(
+            hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimY),
+        get_device_attribute(
+            hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimZ));
+
+    // Get maximum allowed size of grid for each dimension
+    const dim3 max_blocks(
+        get_device_attribute(
+            hipDeviceAttribute_t::hipDeviceAttributeMaxGridDimX),
+        get_device_attribute(
+            hipDeviceAttribute_t::hipDeviceAttributeMaxGridDimY),
+        get_device_attribute(
+            hipDeviceAttribute_t::hipDeviceAttributeMaxGridDimZ));
+
+    // Maximum threads per block in total (i.e. x * y * z)
+    const int32_t max_threads_per_block = get_device_attribute(
+        hipDeviceAttribute_t::hipDeviceAttributeMaxThreadsPerBlock);
+
+    // Maximum number of bytes of shared memory per block
+    const int32_t max_shared_memory_per_block = get_device_attribute(
+        hipDeviceAttribute_t::hipDeviceAttributeMaxSharedMemoryPerBlock);
+
+    // Helper lambda for asserting dim3 launch variable is within allowed limits
+    auto assert_within_limits = [](const char *name, int32_t value, int32_t min,
+                                   int32_t max) {
+        if (not(min <= value && value <= max)) {
+            std::fprintf(stderr, "%s (%d) not within limits [%d, %d]\n", name,
+                         value, min, max);
+            exit(EXIT_FAILURE);
+        }
+    };
+
+    assert_within_limits("threads.x", threads.x, 1, max_threads.x);
+    assert_within_limits("threads.y", threads.y, 1, max_threads.y);
+    assert_within_limits("threads.z", threads.z, 1, max_threads.z);
+    assert_within_limits("blocks.x", blocks.x, 1, max_blocks.x);
+    assert_within_limits("blocks.y", blocks.y, 1, max_blocks.y);
+    assert_within_limits("blocks.z", blocks.z, 1, max_blocks.z);
+    assert_within_limits("block size", threads.x * threads.y * threads.z, 1,
+                         max_threads_per_block);
+
+    // Requested amount of shared memory must be below the limit queried above
+    if (num_bytes_shared_mem > max_shared_memory_per_block) {
+        std::fprintf(stderr, "Shared memory request too large: %ld > %d\n",
+                     num_bytes_shared_mem, max_shared_memory_per_block);
+        exit(EXIT_FAILURE);
+    }
+
     // Reset the error variable to success
     [[maybe_unused]] auto result = hipGetLastError();
+#endif
+
     kernel<<<blocks, threads, num_bytes_shared_mem, stream>>>(args...);
 
+#if !NDEBUG
     // Quoting from HIP documentation
     // (https://rocm.docs.amd.com/projects/HIP/en/latest/how-to/hip_runtime_api/error_handling.html)
     //
@@ -47,10 +114,8 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
     // one must not synchronize first, if using ROCm < 7.0, or the errors will
     // be overwritten.
 
-#if !NDEBUG
-    #if defined(__NVCC__) || (defined(__clang__) && defined(__CUDA__))
+#if defined(__NVCC__) || (defined(__clang__) && defined(__CUDA__))
     [[maybe_unused]] result = hipDeviceSynchronize();
-#endif
 #endif
     result = hipGetLastError();
     if (result != hipSuccess) {
@@ -59,4 +124,5 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
                hipGetErrorString(result));
         exit(EXIT_FAILURE);
     }
+#endif
 }
