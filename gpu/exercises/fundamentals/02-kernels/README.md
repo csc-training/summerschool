@@ -103,7 +103,7 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
     // A call to hipGetLastError() resets the error variable to hipSuccess.
     // We call it before launching the kernel, so we don't get any false errors
     // from earlier API calls.
-    [[maybe_unused]] auto result = hipGetLastError();
+    auto result = hipGetLastError();
 
     // Next we launch the kernel with the given argument
     kernel<<<blocks, threads, num_bytes_shared_mem, stream>>>(args...);
@@ -216,12 +216,12 @@ A few useful attributes we're interested in at this point are
 To query information from the API, we first choose the device we wish to query the information from,
 then we call `hipDeviceGetAttribute`:
 ```cpp
-int32_t device = 0;
-int32_t value = 0;
-
 // Get the current device
-auto result = hipGetDevice(&device));
+int32_t device = 0;
+auto result = hipGetDevice(&device);
+
 // Get the value for attribute from device
+int32_t value = 0;
 result = hipDeviceGetAttribute(&value, hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimX, device);
 ```
 
@@ -234,24 +234,133 @@ if (threads.x > value) {
 }
 ```
 
+Since we're going to do a few attribute queries, it's helpful to make a little lambda out of it:
+```cpp
+int32_t device = 0;
+const auto result = hipGetDevice(&device);
+
+// Helper lambda for querying device attributes
+auto get_device_attribute = [&device](hipDeviceAttribute_t attribute) {
+    int32_t value = 0;
+    const auto result = hipDeviceGetAttribute(&value, attribute, device);
+    return value;
+};
+```
+
+This way it's easy to query different attributes:
+```cpp
+const dim3 max_threads(
+    get_device_attribute(
+        hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimX),
+    get_device_attribute(
+        hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimY),
+    get_device_attribute(
+        hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimZ));
+```
+
 A full list of attributes can be found in the [HIP runtime API documentation](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/global_defines_enums_structs_files/global_enum_and_defines.html#_CPPv420hipDeviceAttribute_t).
+
+Ok, again, enough with the talk, let's get coding! Head over to [the next exercise](04_api_queries) and follow the [instructions](04_api_queries/README.md) there.
 
 ### TODO
 
 Make the exercise.
-Don't use the exactly same, hardcode the dim3 sizes to better showcase the problem.
-Add stuff to the previous kernel launch macro.
-
+Provide a skeleton of the finished kernel launch macro/function.
+Clearly annotate parts that the student should fill in.
+Hardcode the dim3 sizes in the main file to better showcase the problem (the same error with different problems vs manual query & print).
 
 ## Exercise: Errors from API calls
 
-Similar to the kernel launch, we can check errors of the API calls.
-In this doc, tell that API returns error codes (as was briefly mentioned in the kernel wrapping).
-Showcase manual checking with multiple ifs.
+In the previous exercise we learned to query values from the API: `const auto result = hipDeviceGetAttribute(&value, attribute, device);`.
+The API gives us the value for the attribute we query through a reference: `&value`. Why doesn't it just return it?
+Because it returns something else, and we chose to call it `result`.
 
-Then introduce a wrapper macro.
+Many of the API calls actually return an error code of type [`hipError_t`](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/global_defines_enums_structs_files/global_enum_and_defines.html#group___global_defs_1ga6742b54e2b83c1a5d6861ede4825aafe).
 
-Ask the user to fix the errors in the code by wrapping the API methods with the macro.
+We already encountered this earlier when we discussed catching errors
+from kernel launches in a [previous exercise](03_kernel_launch_wrapper).
+
+It's very useful to catch errors from the API calls.
+This can save you *a lot* of debugging time later on.
+
+So how to do it? It's very similar to the way we did it at kernel launch:
+```cpp
+auto result = hipDeviceGetAttribute(&value, attribute, device);
+if (result != hipSuccess) {
+    printf("Error in %s at line %d\n%s: %s\n",
+           __FILE__,
+           __LINE__,
+           hipGetErrorName(result),
+           hipGetErrorString(result));
+    exit(EXIT_FAILURE);
+}
+```
+
+This is one way to do it, but it can get tedious when you call the API multiple times.
+Also, it makes the source code very annoying to read, when the important lines are hidden
+in the error checking clutter.
+```cpp
+result = hipDeviceGetAttribute(&value, attribute1, device);
+if (result != hipSuccess) {
+    printf("Error in %s at line %d\n%s: %s\n",
+           __FILE__,
+           __LINE__,
+           hipGetErrorName(result),
+           hipGetErrorString(result));
+    exit(EXIT_FAILURE);
+}
+
+result = hipDeviceGetAttribute(&value, attribute2, device);
+if (result != hipSuccess) {
+    printf("Error in %s at line %d\n%s: %s\n",
+           __FILE__,
+           __LINE__,
+           hipGetErrorName(result),
+           hipGetErrorString(result));
+    exit(EXIT_FAILURE);
+}
+
+result = hipDeviceGetAttribute(&value, attribute3, device);
+if (result != hipSuccess) {
+    printf("Error in %s at line %d\n%s: %s\n",
+           __FILE__,
+           __LINE__,
+           hipGetErrorName(result),
+           hipGetErrorString(result));
+    exit(EXIT_FAILURE);
+}
+```
+
+Due to these reasons, it's recommended and very common to wrap the error checking in a macro,
+and, like with kernel calls, wrap the API call with the macro:
+```cpp
+HIP_ERRCHK(hipDeviceGetAttribute(&value, attribute1, device));
+HIP_ERRCHK(hipDeviceGetAttribute(&value, attribute2, device));
+HIP_ERRCHK(hipDeviceGetAttribute(&value, attribute3, device));
+```
+
+with
+```cpp
+#define HIP_ERRCHK(result) hip_errchk(result, __FILE__, __LINE__)
+
+static inline void hip_errchk(hipError_t result, const char *file,
+                              int32_t line) {
+    if (result != hipSuccess) {
+        printf("Error in %s at line %d\n%s: %s\n",
+            file,
+            line,
+            hipGetErrorName(result),
+            hipGetErrorString(result));
+        exit(EXIT_FAILURE);
+    }
+}
+```
+
+This way the error checking is out of the way, but it's still there.
+
+In the [next exercise](05_api_errors) there are a bunch of problems with API calls.
+Check the [instructions](05_api_errors/README.md) and fix the errors!
+
 
 ### TODO
 
