@@ -1,142 +1,65 @@
 ---
-title:  Fortran and HIP
-event:  CSC Summer School in High-Performance Computing 2024
+title:  SYCL Essentials
+event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
 
-# Fortran and HIP {.section}
-
-# Fortran
-<small>
-    
-* No native GPU support in Fortran:
-    - HIP functions are callable from C, using `extern C`, compile hipcc
-    - interoperability with Fortran via `iso_c_binding` 
-* Fortran + HIP:
-    - link with  hipcc or Fortran
-    - needs wrappers and interfaces for all HIP calls
-* Hipfort:
-    - link with hipcc or fortran
-    - Fortran Interface for GPU Kernel Libraries
-      - HIP: HIP runtime, hipBLAS, hipSPARSE, hipFFT, hipRAND, hipSOLVER
-      - ROCm: rocBLAS, rocSPARSE, rocFFT, rocRAND, rocSOLVER
-      - memory management: `hipMalloc`, `hipMemcpy`
-    
-</small>
+# SYCL Essentials {.section}
 
 
-# HIPFort for SAXPY (`Y=Y+a*X`). HIP code
-<div class="column">
-```cpp
-#include <hip/hip_runtime.h>
-#include <cstdio>
 
-__global__ void saxpy(float *y, float *x, 
-                      float a, int n)
-{
-    int i = blockDim.x*blockIdx.x+threadIdx.x;
-    if (i < n) {
-      y[i] = y[i] + a*x[i];
-    }
-}
-``` 
+# What is SYCL?
 
-</div>
+ - C++ abstraction layer that can target various heterogeneous platforms in a single application
+ - single source, high-level programming model
+ - open source, royalty-free
+ - developed by the Khronos Group 
+    - 1.2 (2014), final (2015) revise 1.2.1 (2017)
+    - 2.2 (2016), never finalized, C++14 and OpenCL 2.2
+    - 2020 (2021), revision 9 (2024), C++17 and OpenCL 3.0
+ - focused on 3P (Productivity, Portability, Performance)
 
-<div class="column">
-``` cpp
-extern "C"{
-void launch(float *dout, float *da, 
-            float db, int N)
-  {
-     dim3 tBlock(256,1,1);
-     dim3 grid(ceil((float)N/tBlock.x),1,1);
-    
-    saxpy<<<grid, tBlock>>>(dout, da, db, N);
-  }
-}
-```
-</div>
 
-# HIPFort for SAXPY (`Y=Y+a*X`). Fortran Code
-<small>
-<div class="column" width=45%>>
-```cpp
-program saxpy
-  use iso_c_binding
-  use hipfort
-  use hipfort_check
+# Productivity, Portability, Performance
 
-  implicit none
-  interface
-     subroutine launch(y,x,b,N) bind(c)
-       use iso_c_binding
-       implicit none
-       type(c_ptr),value :: y,x
-       integer, value :: N
-       real, value :: b
-     end subroutine
-  end interface
+ - **Productivity**: uses generic programming with templates and generic lambda functions.
 
-  type(c_ptr) :: dx = c_null_ptr
-  type(c_ptr) :: dy = c_null_ptr
-  integer, parameter :: N = 400000000
-  integer, parameter :: bytes_per_element = 4
-  integer(c_size_t), parameter :: Nbytes = N*bytes_per_element
-  real, allocatable,target,dimension(:) :: x, y
-  real, parameter ::  a=2.0
 
-```
-</div>
+ - **Portability**: it is a standard.
 
-<div class="column" width=53%>>
-```cpp
-  call hipCheck(hipMalloc(dx,Nbytes))
-  call hipCheck(hipMalloc(dy,Nbytes))
 
-  allocate(x(N));allocate(y(N))
+ - **Performance**: implementations aim to optimize SYCL for specific hardware platforms
 
-  x = 1.0;y = 2.0
+# SYCL implementation
 
-  call hipCheck(hipMemcpy(dx, c_loc(x), Nbytes, hipMemcpyHostToDevice))
-  call hipCheck(hipMemcpy(dy, c_loc(y), Nbytes, hipMemcpyHostToDevice))
 
-  call launch(dy, dx, a, N)
+  - specific  adaptation of the SYCL programming model
+    - **compilers**:  translate the SYCL code into machine code that can run on various hardware accelerators
+    - **runtime library**: manages the execution of SYCL applications, handling  memory management, task scheduling, and synchronization across different devices
+    - **backend support**: interface for various backends such as OpenCL, CUDA, HIP,  Level Zero, OpenMP
+    - **standard template library**: interface for accesing functionalities and optimizations specific to SYCL
+    - **development tools**: debuggers, profilers, etc.
 
-  call hipCheck(hipDeviceSynchronize())
 
-  call hipCheck(hipMemcpy(c_loc(y), dy, Nbytes, hipMemcpyDeviceToHost))
+# SYCL ecosystem
 
-  write(*,*) "Max error: ", maxval(abs(y-4.0))
+![https://www.khronos.org/blog/sycl-2020-what-do-you-need-to-know](img/2020-blog-sycl-03.jpg){.center width=75%}
 
-  call hipCheck(hipFree(dx));call hipCheck(hipFree(dy))
 
-  deallocate(x);deallocate(y)
+# SYCL Implementations on Mahti and LUMI
 
-end program testSaxpy
-```
-</div>
-</small>
+**Intel One API** + CodePlay Plug-ins for Nvidia and AMD:
 
-# GPUFort
-    
-![](img/gpufort.png){.center width=73%}
+  - CPUs, Intel GPUs, Intel FPGAs (via OpenCL or Level Zero)
+  - Nvidia GPUs (via CUDA), AMD GPUs (via ROCM)
 
-<small>
-    
-1. Fortran+OpenACC and CUDA Fortran -> Fortran + OpenMP 4.5+
-2. Fortran+OpenACC and CUDA Fortran -> Fortran + [GCC/AOMP OpenACC/MP runtime calls] + HIP C++
-    
-</small>
-    
+**AdaptiveCpp** (former OpenSYCL, hipSYCL):
+
+  - CPUs (via OpenMP)
+  - Intel GPUs (via Level Zero)
+  - Nvidia GPUs (via CUDA), AMD GPUs (via ROCM)
+
 
 
 # Summary
-
-* No native GPU support in Fortran
-* HIP functions are callable from C, using `extern C`
-  - `iso_c_binding` 
-  - GPU objects are of type `c_ptr` in Fortran
-* Hipfort provides Fortran interfaces for GPU libraries
-* GPUFort 
