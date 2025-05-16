@@ -4,11 +4,6 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
-
-# Introduction {.section}
-
-
-
 # What is SYCL?
 
  - C++ abstraction layer that can target various heterogeneous platforms in a single application
