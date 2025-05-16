@@ -35,7 +35,7 @@ lang:   en
 
 
   - specific  adaptation of the SYCL programming model
-    - **SYCL template-based interface**: interface for accesing functionalities and optimizations specific to SYCL
+    - **SYCL specific template-based interface**: interface for accesing functionalities and optimizations specific to SYCL
     - **compilers**:  translate the SYCL code into machine code that can run on various hardware accelerators
     - **backend support**: interface for various backends such as OpenCL, CUDA, HIP,  Level Zero, OpenMP
     - **runtime library**: manages the execution of SYCL applications, handling  memory management, task scheduling, and synchronization across different devices
