@@ -58,8 +58,7 @@ lang:   en
 # C++ Refresher
 
 
-<div class="column"  style="width:39
-8%;">
+<div class="column"  style="width:37%;">
 
 - Namespaces
 - Placeholder type `auto`
