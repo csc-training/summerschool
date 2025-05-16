@@ -149,11 +149,10 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - **Numeric data**: array of numbers &rArr; `[1.0, 2.1, 3.4]`, `[4, 8, 15, 16, 23, 42]`
     - **Image data**: pixels &rArr; $[R G B]$
     - **Text data**: "Hello world"  &rArr; `[101, 7592]` (token IDs)
-- Neural networks are defined by parameters: 
-    - weights and biases, $w_{ijl}$ = weight $i$ in neuron $j$ in layer $l$
+- Neural networks are defined by parameters $w_{ijl}$ (weight $i$ in neuron $j$ in layer $l$)
     - GPT-4.5 $\approx$ 1.8 trillion parameter:
          - 3.6 TB of memory
-         - $6\times N_{active param}$ **FLOPS** per token ($\approx 6\times 280 \times 10^9$ **FLOPS**
+         - $2\times N_{active param}$ **FLOPS** per token ($\approx 2\times 1.5 \times 10^12$ **FLOPS**
          - for learning the requirements are much larger ($\approx 10^25$ **FLOPS** trained on 13 trilion tokens)
 
 # Summary
