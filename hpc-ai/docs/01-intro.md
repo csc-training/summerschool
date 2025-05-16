@@ -163,7 +163,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - **Machine Learning**: learn from data without explicit instructions
   - **Unsupervised**, **Supervised**, **Reinforcement**, ... 
 - **Deep Learning** is a subset of **Supervised Machine Learning**
-  - composed of multiple layers of *artificial neurons* with non-linear *activation functions*
+  - multiple layers of *artificial neurons* with non-linear *activation functions*
   - **GPT** models can have **billions to trillions of parameters**
   - **supercomputers** are essential for training and deploying large-scale models
   - **high-quality** and **large amounts of data** are critical for good performance
