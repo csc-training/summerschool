@@ -55,6 +55,44 @@ lang:   en
   - Intel GPUs (via Level Zero)
   - Nvidia GPUs (via CUDA), AMD GPUs (via ROCM)
 
+# C++ Refresher
 
+
+<div class="column"  style="width:48%;">
+
+- Namespaces
+- Placeholder type `auto`
+- Templates
+- Pointers and references
+- Containers
+- Classes
+- Function objects, Lambda expressions
+- Error handling
+ 
+</div>
+
+
+<div class="column"  style="width:48%; text-align: center;">
+```cpp
+#include <sycl/sycl.hpp>
+using namespace sycl;
+
+template <typename T>
+void axpy(queue &q, const T &a, const std::vector<T> &x, std::vector<T> &y) {
+  range<1> N{x.size()};
+  buffer x_buf(x.data(), N); buffer y_buf(y.data(), N);
+
+  q.submit([&](handler &h) {
+    accessor x{x_buf, h, read_only};
+    accessor y{y_buf, h, read_write};
+
+    h.parallel_for(N, [=](id<1> i) {
+      y[i] += a * x[i];
+    });
+  });
+  q.wait_and_throw();
+}
+```
+</div>
 
 # Summary
