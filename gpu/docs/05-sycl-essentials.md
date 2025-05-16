@@ -82,7 +82,7 @@ void axpy(queue &q, const T &a, const std::vector<T> &x, std::vector<T> &y) {
   range<1> N{x.size()};
   buffer x_buf(x.data(), N); buffer y_buf(y.data(), N);
 
-  q.submit([&](handler &h) {
+  auto e=q.submit([&](handler &h) {
     accessor x{x_buf, h, read_only};
     accessor y{y_buf, h, read_write};
 
