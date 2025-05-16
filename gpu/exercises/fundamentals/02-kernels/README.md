@@ -298,7 +298,7 @@ if (result != hipSuccess) {
 
 This is one way to do it, but it can get tedious when you call the API multiple times.
 Also, it makes the source code very annoying to read, when the important lines are hidden
-in the error checking clutter.
+in the error checking clutter:
 ```cpp
 result = hipDeviceGetAttribute(&value, attribute1, device);
 if (result != hipSuccess) {
@@ -360,7 +360,6 @@ This way the error checking is out of the way, but it's still there.
 
 In the [next exercise](05_api_errors) there are a bunch of problems with API calls.
 Check the [instructions](05_api_errors/README.md) and fix the errors!
-
 
 ### TODO
 

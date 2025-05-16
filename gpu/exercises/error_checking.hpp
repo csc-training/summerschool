@@ -24,14 +24,13 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
                    size_t num_bytes_shared_mem, hipStream_t stream,
                    Args... args) {
 #if !NDEBUG
+    int32_t device = 0;
+    HIP_ERRCHK(hipGetDevice(&device));
+
     // Helper lambda for querying device attributes
-    auto get_device_attribute = [](hipDeviceAttribute_t attribute) {
-        int32_t device = 0;
+    auto get_device_attribute = [&device](hipDeviceAttribute_t attribute) {
         int32_t value = 0;
-
-        HIP_ERRCHK(hipGetDevice(&device));
         HIP_ERRCHK(hipDeviceGetAttribute(&value, attribute, device));
-
         return value;
     };
 
