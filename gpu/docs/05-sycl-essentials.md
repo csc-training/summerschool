@@ -4,11 +4,6 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
-
-# SYCL Essentials {.section}
-
-
-
 # What is SYCL?
 
  - C++ abstraction layer that can target various heterogeneous platforms in a single application
@@ -35,7 +30,7 @@ lang:   en
 
 
   - specific  adaptation of the SYCL programming model
-    - **SYCL template-based interface**: interface for accesing functionalities and optimizations specific to SYCL
+    - **SYCL specific template-based interface**: interface for accesing functionalities and optimizations specific to SYCL
     - **compilers**:  translate the SYCL code into machine code that can run on various hardware accelerators
     - **backend support**: interface for various backends such as OpenCL, CUDA, HIP,  Level Zero, OpenMP
     - **runtime library**: manages the execution of SYCL applications, handling  memory management, task scheduling, and synchronization across different devices
@@ -60,6 +55,44 @@ lang:   en
   - Intel GPUs (via Level Zero)
   - Nvidia GPUs (via CUDA), AMD GPUs (via ROCM)
 
+# C++ Refresher
 
+
+<div class="column"  style="width:48%;">
+
+- Namespaces
+- Placeholder type `auto`
+- Templates
+- Pointers and references
+- Containers
+- Classes
+- Function objects, Lambda expressions
+- Error handling
+ 
+</div>
+
+
+<div class="column"  style="width:48%; text-align: center;">
+```cpp
+#include <sycl/sycl.hpp>
+using namespace sycl;
+
+template <typename T>
+void axpy(queue &q, const T &a, const std::vector<T> &x, std::vector<T> &y) {
+  range<1> N{x.size()};
+  buffer x_buf(x.data(), N); buffer y_buf(y.data(), N);
+
+  q.submit([&](handler &h) {
+    accessor x{x_buf, h, read_only};
+    accessor y{y_buf, h, read_write};
+
+    h.parallel_for(N, [=](id<1> i) {
+      y[i] += a * x[i];
+    });
+  });
+  q.wait_and_throw();
+}
+```
+</div>
 
 # Summary
