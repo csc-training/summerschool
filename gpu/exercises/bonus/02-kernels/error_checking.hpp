@@ -54,8 +54,9 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
 #endif
     result = hipGetLastError();
     if (result != hipSuccess) {
-        printf("Error with kernel \"%s\" in %s at line %d\n%s: %s\n", kernel,
-               file, line, hipGetErrorName(result), hipGetErrorString(result));
+        printf("Error with kernel \"%s\" in %s at line %d\n%s: %s\n",
+               kernel_name, file, line, hipGetErrorName(result),
+               hipGetErrorString(result));
         exit(EXIT_FAILURE);
     }
 }
