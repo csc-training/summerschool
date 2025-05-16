@@ -183,7 +183,6 @@ auto Q = queue { custom_selector {} };
   - **Utilities**: `is_empty()`,  `get_device()`, `get_context()`
   - **Synchronizations**: `wait()`, `wait_and_throw()`
 
-# Command Groups{.section}
 
 # Command Groups
 
@@ -206,7 +205,6 @@ auto Q = queue { custom_selector {} };
 ```
 </small>
 
-#  Kernels{.section} 
 
 # Kernels
  - code to be executed in parallel
@@ -243,8 +241,6 @@ private:
 ```
 </small>
 
-
-#  Launching Kernels{.section}
 
 # Grid of Work-Items
 
@@ -573,7 +569,6 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
     - put the buffers in a scope
       - when a buffer goes out of scope program  wait for all actions that use it to complete
 
-# Basic Profiling{.section}
 
 #  Profiling with Events I
 
@@ -593,8 +588,6 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
     - **info::event_profiling::command_start** : timestamp when the command group started executionexecuting 
     - **info::event_profiling::command_end**: timestamp when the command group  finished execution
   - all results are in nanoseconds
-
-# Error Handling {.section}
 
 # Synchronous exceptions vs. Asynchronous exceptions
 
