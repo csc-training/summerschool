@@ -58,7 +58,7 @@ lang:   en
 # C++ Refresher
 
 
-<div class="column"  style="width:28%;">
+<div class="column"  style="width:35%;">
 
 - Namespaces
 - Placeholder type `auto`
@@ -72,13 +72,14 @@ lang:   en
 </div>
 
 
-<div class="column"  style="width:68%;">
+<div class="column"  style="width:63%;">
 ```cpp
 #include <sycl/sycl.hpp>
 using namespace sycl;
 
 template <typename T>
-void axpy(queue &q, const T &a, const std::vector<T> &x, std::vector<T> &y) {
+void axpy(queue &q, const T &a, const std::vector<T> &x, 
+          std::vector<T> &y) {
   range<1> N{x.size()};
   buffer x_buf(x.data(), N); buffer y_buf(y.data(), N);
 
