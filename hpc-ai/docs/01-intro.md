@@ -1,5 +1,5 @@
 ---
-title:  Introduction to Artificial Inteligence, Machine Learning, Deep Learning
+title:  Introduction to AI
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
@@ -153,13 +153,17 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - weights and biases, $w_{ijl}$ = weight $i$ in neuron $j$ in layer $l$
     - GPT-4.5 $\approx$ 1.8 trillion parameter:
          - 3.6 TB of memory
-         - 10.8 ms per per token or 10 s to generate 1-page response on a LUMI GPU
-         - for learning the requirements are much larger
+         - $6\times N_{active param}$ **FLOPS** per token ($\approx 6\times 280 \times 10^9$ **FLOPS**
+         - for learning the requirements are much larger ($\approx 10^25$ **FLOPS** trained on 13 trilion tokens)
 
 # Summary
 
+- **Artificial intelligence**: capability of computational systems to act like a human
+        - learning, reasoning, problem-solving, perception, and decision-making
+- **Machine Learning**: learn from data without explicit instructions
+        - **Unsupervised**, **Supervised**, **Reinforcement**, ... 
 - **Deep Learning** is a subset of **Supervised Machine Learning**
   - composed of multiple layers of *artificial neurons* with non-linear *activation functions*
-  - models can have **billions to trillions of parameters**
+  - **GPT** models can have **billions to trillions of parameters**
   - **supercomputers** are essential for training and deploying large-scale models
   - **high-quality** and **large amounts of data** are critical for good performance
