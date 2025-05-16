@@ -127,10 +127,10 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
 If you're confused by the C macro and C++ template function, don't worry.
 You don't need to understand it at this point, you can just copy paste it and use it.
 
-If you're interested, you can read more about [variable arguments](https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html)
- (`...` and `__VA_ARGS__`) in C macros
+If you're interested, you can read more about [variadic macros](https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html)
+ (`...` and `__VA_ARGS__`) in C
 and [parameter packs](https://en.cppreference.com/w/cpp/language/pack)
-(`typename... Args`, `Args... args` and `args...`) in C++ templates.
+(`typename... Args`, `Args... args` and `args...`) in C++.
 
 Ok, enough exposition. Head over to the [next exercise](03_kernel_launch_wrapper) and follow the
 [instructions](03_kernel_launch_wrapper/README.md) there.
