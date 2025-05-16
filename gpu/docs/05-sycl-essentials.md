@@ -61,11 +61,11 @@ lang:   en
 <div class="column"  style="width:39%;">
 
 - Namespaces
-- Placeholder type `auto`
 - Templates
-- Pointers and references
-- Containers
+- Pointers and References
 - Classes
+- Containers
+- Placeholder type `auto`
 - Function objects, Lambdas
 - Error handling
  
