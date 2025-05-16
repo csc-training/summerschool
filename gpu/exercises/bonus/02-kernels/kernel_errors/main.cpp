@@ -77,7 +77,7 @@ int main() {
         printf("Hooray, you fixed it \\o/!\n");
     } else {
         printf("Something's wrong, error for fill should be exactly 0.0f. "
-               "Maybe compile without the '-DNEDBUG' flag and try again?\n");
+               "Maybe compile without the '-DNDEBUG' flag and try again?\n");
     }
 
     return 0;

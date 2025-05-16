@@ -7,3 +7,5 @@
 5. error check: malloc liian suurella muistin määrällä
 6. 1D fill kernel, ilman looppia
 7. 1D fill kernel, for loop
+
+
