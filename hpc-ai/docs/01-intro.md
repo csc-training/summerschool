@@ -157,7 +157,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 
 # Summary
 
-- **Artificial intelligence**: capability of computational systems to act like a human
+- **Artificial intelligence**: capability of machine to act like a human
   - learning, reasoning, problem-solving, perception, and decision-making
 - **Machine Learning**: learn from data without explicit instructions
   - **Unsupervised**, **Supervised**, **Reinforcement**, ... 
