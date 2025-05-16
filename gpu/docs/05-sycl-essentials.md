@@ -58,7 +58,7 @@ lang:   en
 # C++ Refresher
 
 
-<div class="column"  style="width:35%;">
+<div class="column"  style="width:39%;">
 
 - Namespaces
 - Placeholder type `auto`
@@ -72,7 +72,7 @@ lang:   en
 </div>
 
 
-<div class="column"  style="width:63%;">
+<div class="column"  style="width:60%;">
 ```cpp
 #include <sycl/sycl.hpp>
 using namespace sycl;
@@ -87,9 +87,7 @@ void axpy(queue &q, const T &a, const std::vector<T> &x,
     accessor x{x_buf, h, read_only};
     accessor y{y_buf, h, read_write};
 
-    h.parallel_for(N, [=](id<1> i) {
-      y[i] += a * x[i];
-    });
+    h.parallel_for(N, [=](id<1> i) {y[i] += a * x[i];});
   });
   q.wait_and_throw();
 }
