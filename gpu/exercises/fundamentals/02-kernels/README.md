@@ -262,6 +262,37 @@ A full list of attributes can be found in the [HIP runtime API documentation](ht
 
 Ok, again, enough with the talk, let's get coding! Head over to [the next exercise](04_api_queries) and follow the [instructions](04_api_queries/README.md) there.
 
+---------------------------------------------------
+
+One final note before we move to the next exercise. Error checking is always useful, but it's also often not so efficient.
+Usually the release versions of codes want to run as fast as possible, while debug versions want to be helpful for just that, debugging.
+Since we've wrapped our kernel calls with a debug macro, we might be worried about possible performance hits.
+
+Luckily, there's a very easy fix for this: wrap the debug code in a `#if` preprocessor directive!
+One common way to do it is to check for `NDEBUG`, which is commonly defined in release builds and **not** defined in debug builds:
+```cpp
+template <typename... Args>
+void launch_kernel(const char *kernel_name, const char *file, int32_t line,
+                   void (*kernel)(Args...), dim3 blocks, dim3 threads,
+                   size_t num_bytes_shared_mem, hipStream_t stream,
+                   Args... args) {
+#if !NDEBUG
+    // All the pre launch debug checks go here!
+#endif
+
+    // We launch the kernel regardless of the build type
+    kernel<<<blocks, threads, num_bytes_shared_mem, stream>>>(args...);
+
+#if !NDEBUG
+    // All the post launch debug checks go here!
+#endif
+}
+```
+
+Alternatively, you may use a custom define and pass it to the compiler manually: `CC -DMY_CUSTOM_DEFINE ...`, `#if MY_CUSTOM_DEFINE ...`.
+
+Ok, let's move on.
+
 ### TODO
 
 Make the exercise.
@@ -331,8 +362,8 @@ if (result != hipSuccess) {
 }
 ```
 
-Due to these reasons, it's recommended and very common to wrap the error checking in a macro,
-and, like with kernel calls, wrap the API call with the macro:
+Due to these reasons, it's recommended and very common to handle the error checking with a function,
+and, like with kernel calls, wrap the API call with a macro:
 ```cpp
 HIP_ERRCHK(hipDeviceGetAttribute(&value, attribute1, device));
 HIP_ERRCHK(hipDeviceGetAttribute(&value, attribute2, device));
@@ -368,11 +399,117 @@ first by wrapping the calls with the macro, then by figuring out the meaning of 
 
 ## Exercise: Kernel for filling a 1D array with a value
 
-Something useful finally: create a kernel for filling GPU memory with a given value.
+So far we've mostly concerned ourselves with checking for errors. Can we finally do something more interesting?
+Yes!
 
-## Exercise: For loops in 1D kernels
+Many times in simulation loops we want to reset some arrays to a specific value before other computation.
+So let's do that! Implement a kernel that fills an array with a single value.
 
-Re-use threads in a 1D kernel using a for loop.
+To do that we need a few things:
+- an array of values on the GPU memory
+- a value which the elements of the array will be set to
+- a kernel that does that
+
+We also need to launch the kernel with enough threads to go over the entire array.
+But we've learned that the maximum number of threads per block is 1024. Yes, indeed,
+but the limit on the maximum number of blocks per grid is much higher! So we should be able to
+easily launch enough *threads per grid* to fill the entire array.
+
+Head over to the [next exercise](06_fill) to figure out the rest of the details.
+
+### TODO
+
+A skeleton of a 1D fill kernel
+
+## Exercise: Re-use threads in a 1D kernel with a for loop
+
+Finally we did something other than just check for errors!
+
+In the previous exercise we discussed the limits on the number of threads per block and blocks per grid.
+The strategy used in the previous exercise was to couple the size of data to the launch parameters of the kernel.
+It can be a good strategy for some situations, but other times it's better to reuse the threads and process
+multiple values per thread.
+
+If you're used to manually multithreaded CPU code, an obvious way to do it
+is to divide the array among the threads, such that each thread processes consecutive values:
+```cpp
+__global__ void fill_for(size_t n, float *arr, float value) {
+    // Global thread id, i.e. over the entire grid
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+    // How many threads in total in the entire grid
+    const size_t num_threads = blockDim.x * gridDim.x;
+
+    // How many elements per thread
+    size_t num_per_thread = n / num_threads;
+    
+    // Process num_per_thread consecutive elements
+    for (size_t i = 0; i < num_per_thread; i++) {
+        // tid      elems
+        //   0      [0, num_per_thread - 1]
+        //   1      [num_per_thread, 2 * num_per_thread - 1]
+        //   2      [2 * num_per_thread, 3 * num_per_thread - 1]
+        //   and so on...
+        arr[tid * num_per_thread + i] = value;
+    }
+
+    // How many are left over
+    const size_t left_over = n - num_per_thread * num_threads;
+
+    // The first threads will process one more, so the left over values
+    // are also processed
+    if (tid < left_over) {
+        // tid      elem
+        //   0      num_per_thread * num_threads
+        //   1      num_per_thread * num_threads + 1
+        //   2      num_per_thread * num_threads + 2
+        //   and so on...
+        arr[num_per_thread * num_threads + tid] = value;
+    }
+}
+```
+
+With GPUs, however, this is a very slow strategy! Remember that threads proceed in lock step,
+in warps/wavefronts of 32/64 (Nvidia)/(AMD) threads. We will learn much more about memory accesses,
+but for now it's enough to say that the slowup is roughly 10-100x, compared to the non-looped
+version of the [previous exercise](06_fill).
+
+A much faster way to achieve the same thing is to use a "strided for loop":
+```cpp
+__global__ void fill_for(size_t n, float *arr, float value) {
+    // Global thread id, i.e. over the entire grid
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+    // How many threads in total in the entire grid
+    const size_t stride = blockDim.x * gridDim.x;
+
+    // Every thread processes a single element, then
+    // jumps forward 'stride' elements, as long as
+    // i < n
+    for (size_t i = tid; i < n; i+= stride) {
+        // tid      elems
+        //   0      [0, stride,     2 * stride,     ...]
+        //   1      [1, stride + 1, 2 * stride + 1, ...]
+        //   2      [2, stride + 2, 2 * stride + 2, ...]
+        //   3      [3, stride + 3, 2 * stride + 3, ...]
+        //   and so on...
+        arr[i] = value;
+    }
+}
+```
+
+With this strategy, the consecutive threads in a warp/wavefront process consecutive elements
+in the array, then jump forward together and againe process consecutive elements in the array,
+until some or all of them jump out of the limit of the array.
+Note that there's no chance of out-of-bounds memory access here: if a threads has `i >= n`, 
+it doesn't execute the loop but just exits early. Some threads in the warp/wavefront with
+a smaller `tid` may still execute the loop for a single iteration, but they'll also
+end up with an `i` larger than `n` for the next iteration and then exit the loop.
+
+### TODO
+
+Make the exercise.
+Maybe give two versions, the slow and the strided, then ask to use unix command `time` to measure the time?
 
 ## Bonus exercises
 
