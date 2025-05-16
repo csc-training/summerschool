@@ -63,8 +63,9 @@ the kernel is not launched at all. It just silently fails.
 
 Kernel launches don't return anything, so you also don't get an error code. But there are ways to catch errors.
 
-HIP API has a function called `hipGetLastError()`[^1]. It returns the previous error code from any HIP API call,
-including kernel launches.
+HIP API has a function called
+[`hipGetLastError()`](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/modules/error_handling.html)[^1].
+It returns the previous error code from any HIP API call, including kernel launches.
 
 It's useful to wrap kernel launches with a function that checks for any errors from the kernel.
 They you get automatic error reporting from kernel launches. To add information about the location of the error,
@@ -124,8 +125,51 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
 }
 ```
 
+The arguments to the `LAUNCH_KERNEL` macro are
+- the kernel to launch (examples: `foo`, `kernel_name`, `fill1D`)
+- number of blocks per grid (examples: `128`, `dim3(32, 32, 1)`)
+- number of threads per block (examples: `128`, `dim3(32, 32, 1)`)
+- number of bytes of dynamic shared memory (examples: `0`, `128`, `32 * sizeof(float)`)
+- stream to launch the kernel on (examples: `0`, `stream`)
+- all the arguments to the kernel (examples: `a, 1.0, n, 16`, `n, d_arr`)
+
+### Examples
+
+```cpp
+// Kernels
+__global__ void foo();
+__global__ void bar(int n);
+__global__ void baz(int n, float *arr);
+
+// Launching them
+
+LAUNCH_KERNEL(foo, 1, 1, 0, 0);
+// launch kernel 'foo' with
+// - 1 block
+// - 1 thread
+// - 0 bytes of dynamic shared memory
+// - on stream 0
+// - and without any arguments
+
+LAUNCH_KERNEL(bar, dim3(32, 1, 1), 128, 0, 0, 16);
+// launch kernel 'bar' with
+// - 32 blocks
+// - 128 threads per block
+// - 0 bytes of dynamic shared memory
+// - on stream 0
+// - argument n = 16
+
+LAUNCH_KERNEL(baz, dim3(1, 1, 1), dim3(128, 1, 8), 0, 0, 16, d_arr);
+// launch kernel 'bar' with
+// - 1 block
+// - 1024 threads per block (128 in x & 8 in z dimension)
+// - 0 bytes of dynamic shared memory
+// - on stream 0
+// - argument n = 16, arr = d_arr
+```
+
 If you're confused by the C macro and C++ template function, don't worry.
-You don't need to understand it at this point, you can just copy paste it and use it.
+You don't need to understand it at this point, there's a ready made implementation which you can just use.
 
 If you're interested, you can read more about [variadic macros](https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html)
  (`...` and `__VA_ARGS__`) in C
@@ -148,11 +192,49 @@ The segway to the next exercise: The error reporting isn't very useful. It's ver
 
 ## Exercise: Better error reporting by querying limits
 
-1. We can do better, the information isn't very useful. Something went wrong, but what?
-2. Query the API for thread size limits: check against x, y and z
-3. We can do more: query the API for max total block size
-4. We can do more: query the API for grid size limits.
-5. We can do more: query the API for shared memory limit. (Gloss over what is shared memory at this point)
+Ok, so you got an error report from the API. But it's not very helpful is it?
+It tells you *something* went wrong, but not *what*. If you give incorrect arguments for threads and blocks,
+you get the exact same error, even if you fix one of them. With some manual work we can do much better.
+
+Different devices might have different hardware limits. We can query these limits from the API with a function call
+[`hipDeviceGetAttribute`](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/modules/device_management.html#_CPPv421hipDeviceGetAttributePi20hipDeviceAttribute_ti).
+
+A few useful attributes we're interested in at this point are
+- Maximum number of threads per block in each dimension
+    - `hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimX`
+    - `hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimY`
+    - `hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimZ`
+- Maximum number of threads per block in total, i.e. `x * y * z`
+    - `hipDeviceAttribute_t::hipDeviceAttributeMaxThreadsPerBlock`
+- Maximum number of blocks per grid in each dimension
+    - `hipDeviceAttribute_t::hipDeviceAttributeMaxGridDimX`
+    - `hipDeviceAttribute_t::hipDeviceAttributeMaxGridDimY`
+    - `hipDeviceAttribute_t::hipDeviceAttributeMaxGridDimZ`
+- Maximum amount of shared memory in bytes
+    - `hipDeviceAttribute_t::hipDeviceAttributeMaxSharedMemoryPerBlock`
+
+To query information from the API, we first choose the device we wish to query the information from,
+then we call `hipDeviceGetAttribute`:
+```cpp
+int32_t device = 0;
+int32_t value = 0;
+
+// Get the current device
+auto result = hipGetDevice(&device));
+// Get the value for attribute from device
+result = hipDeviceGetAttribute(&value, hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimX, device);
+```
+
+Once we have the value for the attribute from the device, we can use it to check that the value used to launch the kernel
+is not larger that the maximum:
+```cpp
+if (threads.x > value) {
+    // The x dimension of the threads per block is larger that the limit for this device
+    // We should print out a helpful message and exit
+}
+```
+
+A full list of attributes can be found in the [HIP runtime API documentation](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/global_defines_enums_structs_files/global_enum_and_defines.html#_CPPv420hipDeviceAttribute_t).
 
 ### TODO
 
