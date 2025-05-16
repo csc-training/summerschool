@@ -99,7 +99,7 @@ void axpy(queue &q, const T &a, const std::vector<T> &x,
 # GPU Programming model 
 
  - Program runs on the CPU (host)
- - CPU initializes the GPUs (devices), allocates the memory, and stages the -GPU transfers
+ - CPU initializes the GPUs (devices), allocates the memory, and stages the GPU transfers
     - **Note!** CPU can also be a device
  - CPU launched the parallel code (kernel) ito be executed on a device by several threads
  - Code is written from the point of view of a single thread
