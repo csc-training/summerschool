@@ -66,13 +66,13 @@ lang:   en
 - Pointers and references
 - Containers
 - Classes
-- Function objects, Lambda expressions
+- Function objects, Lambdas
 - Error handling
  
 </div>
 
 
-<div class="column"  style="width:48%; text-align: center;">
+<div class="column"  style="width:48%;">
 ```cpp
 #include <sycl/sycl.hpp>
 using namespace sycl;
