@@ -196,8 +196,8 @@ auto Q = queue { custom_selector {} };
 <small>
 ```cpp  
   q.submit([&](handler &cgh) {
-    auto x = x_buf.get_access<access::mode::read>(h);        
-    auto y = y_buf.get_access<access::mode::read_write>(h);  
+    accessor x(x_buf, h, read_only);
+    accessor y(y_buf, h, read_write); 
 
     h.parallel_for(N, [=](id<1> i) {
       y[i] += a * x[i];
