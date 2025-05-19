@@ -371,7 +371,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 
 # Unified Shared Memory (USM) I
 
-- pointer-based approach to C/C++/CUDA/HIP
+- pointer-based approach similar  to C/CUDA C/HIP C
 - explicit allocation and  freeing of memory
 - explicit dependencies
 - explicit host-device transfers (unless using managaged)
