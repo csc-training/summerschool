@@ -355,16 +355,16 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
   std::vector<int> y(N, 1);
  {
     // Create buffers for data 
-    buffer<int, 1> a_buf(y.data(), range<1>(N));
+    sycl::buffer<int, 1> a_buf(y.data(), range<1>(N));
     q.submit([&](handler& cgh) {
-      accessor y_acc{a_buf, cgh, read_write};
+      sycl::accessor y_acc{a_buf, cgh, sycl::read_write};
       cgh.parallel_for(range<1>(N), [=](id<1> id) {
         y_acc[id] +=1;
       });
     });
-    host_accessor result{a_buf}; // host can access data also directly after buffer destruction
+    sycl::host_accessor h_result{a_buf}; // host can access data also directly after buffer destruction
     for (int i = 0; i < N; i++) {
-      assert(result[i] == 2);
+      assert(h_result[i] == 2);
     }
  }
 ``` 
@@ -422,11 +422,22 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 
 # Set Dependencies
 
-  - **buffers and accessors**: automatic dependencies based on data and order of submission
   - **in-order** queues: implicit dependence depending on the order of submission
+  - **buffers and accessors**: automatic dependencies based on data and order of submission
   - **event based**: manual dependencies, most control
 
+# Order of Execution in Queues
 
+ - two flavors of queues:
+    - **out-of-order**
+        - default behaviour
+        - a task/kernel can start execution at any time
+        - dependencies and order need to be set in other ways
+    - **in-order**: 
+        - `queue q{property::queue::in_order()};`
+        - creates a linear task graph
+        - a task/kernel  will start execution only when the preceeding is completed
+        - no conncurrent execution
 
 # Dependencies via Buffer and Accessors API
 
@@ -435,8 +446,8 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 ```cpp
     std::vector<float> Xhost(N),Yhost(N);
     {
-      buffer<float, 1> Xbuff(Xhost.data(), sycl::range<1>(N)); 
-      buffer<float, 1> Ybuff(Yhost.data(), sycl::range<1>(N)); 
+      sycl::buffer<float, 1> Xbuff(Xhost.data(), sycl::range<1>(N)); 
+      sycl::buffer<float, 1> Ybuff(Yhost.data(), sycl::range<1>(N)); 
       // Launch kernel 1 Initialize X
       q.submit([&](sycl::handler& h) {
         sycl::accessor accX{Xbuff, h, sycl::write_only};
@@ -479,21 +490,8 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 </small>
 
 </div>
- - kernel 1 and kernel 2 are independent
- - kernel 3 waits for the completion of kernel 1 and 2 
-
-# Order of Execution in Queues
-
- - two flavors of queues:
-    - **out-of-order**
-        - default behaviour
-        - a task/kernel can start execution at any time
-        - dependencies and order need to be set in other ways
-    - **in-order**: 
-        - `queue q{property::queue::in_order()};`
-        - creates a linear task graph
-        - a task/kernel  will start execution only when the preceeding is completed
-        - no conncurrent execution
+ - the queue **q** is **out-order**
+ - kernel 1 and kernel 2 are independent; kernel 3 waits for kernel 1 and 2 
 
 # Event Based Dependencies I
  - most flexible way to force specific order of execution
