@@ -439,14 +439,14 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
       buffer<float, 1> Ybuff(Yhost.data(), sycl::range<1>(N)); 
       // Launch kernel 1 Initialize X
       q.submit([&](sycl::handler& h) {
-        auto accX = Xbuff.get_access<sycl::access::mode::write>(h);
+        sycl::accessor accX{Xbuff, h, sycl::write_only};
         h.parallel_for(N, [=](sycl::id<1> i) {
             accX[i] = static_cast<float>(i); // Initialize X = 0, 1, 2, ...
         });
       });
       // Launch kernel 2: Initialize Y
       q.submit([&](sycl::handler& h) {
-        auto accY = Ybuff.get_access<sycl::access::mode::write>(h);
+        sycl::accessor accY{Ybuff, h, sycl::write_only};
         h.parallel_for(N, [=](sycl::id<1> i) {
             accY[i] = static_cast<float>(2 * i); // Initialize Y = 0, 2, 4, 6, ...
         });
@@ -462,17 +462,17 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 ```cpp      
       // Launch kernel 3: Perform Y = Y + a * X
       q.submit([&](sycl::handler& h) {
-        auto accX = Xbuff.get_access<sycl::access::mode::read>(h);
-        auto accY = Ybuff.get_access<sycl::access::mode::write>(h);
+        sycl::accessor accX{Xbuff, h, sycl::read_only};
+        sycl::accessor accY{Ybuff, h, sycl::read_write};
         h.parallel_for(N, [=](sycl::id<1> i) {
             accY[i] += a * accX[i]; // Y = Y + a * X
         });
       });
       // Use host_accessor to read back the results from Ybuff
-      host_accessor accY(Ybuff, sycl::read_only); // Read back data after kernel execution
+      host_accessor h_accY(Ybuff, sycl::read_only); // Read back data after kernel execution
       std::cout << "First few elements of Y after operation:" << std::endl;
       for (size_t i = 0; i < 10; ++i) {
-        std::cout << "Y[" << i << "] = " << accY[i] << std::endl;
+        std::cout << "Y[" << i << "] = " << h_accY[i] << std::endl;
       }
     }
 ``` 
