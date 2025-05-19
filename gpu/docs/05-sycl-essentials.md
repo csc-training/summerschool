@@ -123,7 +123,8 @@ void axpy(queue &q, const T &a, const std::vector<T> &x,
     - `queue q(default_selector_v);` targets the best device 
     - `queue q(cpu_selector_v);` targets the best CPU
     - `queue q(gpu_selector_v);` targets the best GPU
-    - `queue q(accelerator_selector_v);` targets the best accelerator
+    - `queue q(accelerator_selector_v);` targets the best accelerator   
+  - Custom selectors
 
 # Custom Selector
 
@@ -334,10 +335,9 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 # SYCL Memory Models
 
  - three memory-management abstractions in the SYCL standard:
-
-      - **buffer and accessor API**: a buffer encapsulate the data and accessors describe how you access that data
-      - **unified shared memory**: pointer-based approach to C/C++/CUDA/HIP
-      - **images**: similar API to buffer types, but with extra functionality tailored for image processing (will not be discussed here)
+     - **buffer and accessor API**: a buffer encapsulate the data and accessors describe how you access that data
+     - **unified shared memory**: pointer-based approach to C/C++/CUDA/HIP
+     - **images**: similar API to buffer types, but with extra functionality tailored for image processing (will not be discussed here)
 
 # Buffers and Accesors I
  -  a **buffer** provides a high level abstract view of memory 
