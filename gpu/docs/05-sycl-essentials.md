@@ -114,7 +114,7 @@ void axpy(queue &q, const T &a, const std::vector<T> &x,
  - enable asynchronous execution
  - has an error-handling mechanism via an optional `exception_handler`
  - are **out-of-order** (default) or **in-order** (`{property::queue::in_order()}`)
- - encapsulates operations (e.g., kernel execution or memory transfers) using **command groups**
+ - encapsulates operations (e.g., kernel execution or memory operations) using **command groups**
 
 # Choosing the Device
 
@@ -125,39 +125,6 @@ void axpy(queue &q, const T &a, const std::vector<T> &x,
     - `queue q(gpu_selector_v);` targets the best GPU
     - `queue q(accelerator_selector_v);` targets the best accelerator   
   - Custom selectors
-
-# Custom Selector
-
-<small>
-```cpp
-using namespace sycl;
-class custom_selector : public device_selector
-{
-public:
-  int operator()(const device &dev) const override
-  {
-    int score = -1;
-    if (dev.is_gpu()) {
-      auto vendor = dev.get_info<info::device::vendor>();
-      if (vendor.find("NVIDIA") != std::string::npos) score += 75;
-      if (vendor.find("Intel") != std::string::npos) score += 50;
-      if (vendor.find("AMD") != std::string::npos) score += 100;
-    }
-    if (dev.is_host()) score += 25; // Give host device points so it is used if no GPU is available.
-
-    return score;
-  }
-};
-``` 
-```cpp
-auto Q = queue { custom_selector {} };
-
-  std::cout << "we are running on: "
-            << Q.get_device().get_info<info::device::vendor>() << " "
-            << Q.get_device().get_info<info::device::name>() << std::endl;
-```
-</small>
-
 # Explicit Way
  - using `get_platforms()` and/or `get_devices` 
 ```cpp
