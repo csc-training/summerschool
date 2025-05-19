@@ -40,7 +40,7 @@ lang:   en
 # SYCL ecosystem
 
 ![https://www.khronos.org/blog/sycl-2020-what-do-you-need-to-know](img/2020-blog-sycl-03.jpg){.center width=75%}
---!>
+-->
 
 # SYCL Implementations on Mahti and LUMI
 
