@@ -546,8 +546,8 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
  - wait for the task to complete:
     - `e.wait();` (could be also other ways)
  - extract the time:
-   - ` t_submit = e.get_profiling_info<info::event_profiling::command_submit>();`
-   -  **event_profiling::command_start**, **event_profiling::command_end**
+   - `t_submit = e.get_profiling_info<info::event_profiling::command_submit>();`
+   -  `event_profiling::command_start`, `event_profiling::command_end`
    -  all results are in nanoseconds
 
 # Synchronous exceptions vs. Asynchronous exceptions
