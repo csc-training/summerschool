@@ -125,6 +125,8 @@ void axpy(queue &q, const T &a, const std::vector<T> &x,
     - `queue q(gpu_selector_v);` targets the best GPU
     - `queue q(accelerator_selector_v);` targets the best accelerator   
   - Custom selectors
+
+
 # Explicit Way
  - using `get_platforms()` and/or `get_devices` 
 ```cpp
