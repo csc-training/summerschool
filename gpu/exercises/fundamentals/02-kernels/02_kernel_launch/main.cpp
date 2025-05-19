@@ -1,26 +1,23 @@
 #include <hip/hip_runtime.h>
 
 __global__ void hello(int32_t num_blocks, int32_t num_threads) {
+    assert(num_blocks != 2);
+
     printf("Hello world, this is kernel speaking!\n %d * %d = %d threads are "
            "printing this message\n",
            num_blocks, num_threads, num_blocks * num_threads);
 }
 
-int main() {
-    // TODO 1:
-    // - compile and run the code
+int main(int argc, char **argv) {
+    if (argc != 3) {
+        printf("Give number of blocks and number of threads as arguments\n");
+        printf("For example \"%s 1 8\"\n", argv[0]);
+    }
+    const int32_t num_blocks = std::atoi(argv[1]);
+    const int32_t num_threads = std::atoi(argv[2]);
 
-    // TODO 2:
-    // - change num_blocks and/or num_threads to different numbers
-    // - use small numbers to make some sense of the output
-
-    // TODO 3:
-    // - change num_threads to 1025. What happens?
-    // - Move on to the next exercise to find out more.
-
-    const int32_t num_blocks = 1;
-    const int32_t num_threads = 1;
-
+    printf("Launching with %d blocks and %d threads\n", num_blocks,
+           num_threads);
     hello<<<num_blocks, num_threads>>>(num_blocks, num_threads);
 
     return 0;

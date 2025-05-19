@@ -47,14 +47,8 @@ and follow the [instructions](02_kernel_launch/README.md) there, then come back 
 If you followed the instructions, you should've seen some prints, some asserts, and possibly something
 surprising.
 
-Did you launch the program with 1025 threads and 10 blocks? What happened?
+Did you launch the program with 1025 threads? What happened?
 To find out more, let's move on to the next exercise.
-
-### TODO
-
-Change the exercise so it takes two integer parameters from the user:
-- num threads
-- num blocks
 
 ## Exercise: Error reporting from kernel launch
 

@@ -1,12 +1,14 @@
-Compile the code and run it.
+After compiling the code, run it by giving it two arguments:
+- number of blocks
+- number of threads
 
-Next, change
-- the number of threads and/or
-- the number of blocks
+For example
+- `./a.out 1 1` runs the code with 1 block and 1 thread
+- `./a.out 1 8` runs the code with 1 block and 8 threads
+- `./a.out 10 1024` runs the code with 10 blocks and 1024 threads
 
-and recompile & run to see what the output looks like.
+First try to run it with a small number of blocks and threads to make sense of the output.
 
-Use smallish numbers for threads & blocks to make some sense of the output.
+What does the output look like, if your input is 2 blocks and 2 threads?
 
-Finally, change `num_threads` to 1025 and see what happens.
-Then move on to the next exercise to find out more.
+Finally, try running it with 1025 threads. What happens? Is the output as expected?
