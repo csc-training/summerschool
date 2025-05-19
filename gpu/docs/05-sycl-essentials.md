@@ -66,7 +66,7 @@ lang:   en
 - Classes
 - Containers
 - Placeholder type `auto`
-- Function objects, Lambdas
+- Functors, Lambdas
 - Error handling
  
 </div>
