@@ -578,6 +578,8 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
     - `e.wait();` (could be also other ways)
  - extract the time:
    - ` t_submit = e.get_profiling_info<info::event_profiling::command_submit>();`
+   -  **::command_start**, **::command_end**
+   -  all results are in nanoseconds
 
 # Profiling with Events II
 
