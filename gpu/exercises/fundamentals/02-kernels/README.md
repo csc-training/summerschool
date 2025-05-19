@@ -53,9 +53,10 @@ To find out more, let's move on to the next exercise.
 ## Exercise: Error reporting from kernel launch
 
 If a kernel launch configuration parameter (number of threads/blocks or the amount of shared memory) is incorrect,
-the kernel is not launched at all. It just silently fails.
+the kernel is not launched at all. It just silently fails. For many devices, 1024 is the maximum number of threads
+per block, which is why the kernel failed to launch.
 
-Kernel launches don't return anything, so you also don't get an error code. But there are ways to catch errors.
+Kernel launches don't return anything, so you don't get an error code. But there are ways to catch errors.
 
 HIP API has a function called
 [`hipGetLastError()`](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/modules/error_handling.html)[^1].
