@@ -1,152 +1,41 @@
 ---
-title:  Synchronization, streams, and asynchronous operations
-event:  CSC Summer School in High-Performance Computing 2024
-lang:   en
+title:    Streams, events, and synchronization
+subtitle: CSC Summer School in High-Performance Computing 
+author:   CSC Training
+date:     2025-03
+lang:     en
 ---
 
-# OpenMP asynchronous operations {.section}
+# Outline
 
-# Motivation
+* Streams 
+* Events
+* Synchronization
 
-- By default, the host thread will wait until OpenMP `target` compute or data
-  construct has completed its execution, *i.e.* there is an implicit
-  barrier at the end of the `target`
-- Potential parallelism in overlapping compute, data transfers, MPI,
-  etc.
+# Outline
 
-![](img/synchronous.png){.center}
-
-
-# Asynchronous execution: nowait and taskwait
-
-- `target` construct creates an implicit OpenMP task
-- Similar to OpenMP explicit task constructs (`task`, `taskloop`), `target`
-  has a `nowait` clause
-    - removes the implicit barrier
-- Completion can be ensured with the `taskwait` construct
-- Work on host (concurrent to accelerator) can be parallelized with
-  OpenMP tasks
-
-
-# OpenMP and asynchronous execution
-
-![](img/synchronous-asynchronous.png){.center}
-
-
-# OpenMP and asynchronous execution
-
-<div class=column>
-```c
-#pragma omp target nowait
-process_in_device();
-
-process_in_host();
-#pragma omp taskwait
-```
-</div>
-
-<div class=column>
-```fortranfree
- !$omp target nowait
- call process_in_device();
- !$omp end target
-
- call process_in_host();
- !$omp taskwait
-```
-</div>
-
-
-# Task dependencies
-
-- OpenMP tasks support data flow model, where a task can have input
-  and output dependencies
-
-<div class=column>
-```c
-// The two tasks can be 
-// executed concurrently
-#pragma omp task
-{do something}
-
-#pragma omp task
-{do something else}
-```
-</div>
-
-<div class=column>
-```c
-// The two tasks cannot be 
-// executed concurrently
-#pragma omp task depend(out:a)
-{do something which produces a}
-
-#pragma omp task depend(in:a)
-{do something which uses a as input}
-```
-</div>
-
-- Also `target` tasks support dependencies
-
-
-# Task dependencies
-
-<div class=column>
-<small>
-```c
-#pragma omp task depend(out: A)
- {Code A}
-#pragma omp target depend(in: A) depend(out: B) \
- nowait
- {Code B}
-#pragma omp target depend(in: B) depend(out: C) \
- nowait
- {Code C}
-#pragma omp target depend(in: B) depend(out: D) \
- nowait
- {Code D}
-#pragma omp task depend(in: A) depend(out: E)
-  {Code E}
-#pragma omp task depend(in: C,D,E)
-  {Code F}
-```
-</div>
-</small>
-
-<div class=column>
-![](img/target-dependencies.png){.center width=80%}
-</div>
-
-
-# Task dependencies
-
-- Dependencies may be specified also for a part of an array
-
-```c
-// Preocessing array in blocks
-for (int ib = 0; ib < n; ib += bf) {
-  #pragma omp ... depend(out:A[ib*bf]) nowait
-  {Processing step 1}
-  #pragma omp ... depend(in:A[ib*bf]) nowait
-  {Processing step 2}
-}
-```
-
-
-# OpenMP asynchronous operations summary
-
-- `target` construct creates an implicit OpenMP task
-- OpenMP task functionalities (`nowait`, `taskwait`, `depend`) can
-  be used for asynchronous execution on accelerators
-- May enable better performance by overlapping different operations
-    - Performance depends heavily on the underlying implementation
-
-# Streams, events, and synchronization in HIP {.section}
+:::{.fragment}
+- Streams
+  - Kernels in different streams are asynchronous
+  - Kernels in same stream are executed in first-in-first-out order
+  - Execute Host-to-Device and Device-to-Host transfers concurrently with kernels
+:::
+:::{.fragment}
+- Events 
+  - Synchronize across streams and host
+  - Measure time
+:::
+:::{.fragment}
+- Synchronization
+  - host ⇔ stream, host ⇔ event,  host ⇔ device
+  - stream ⇔ event
+  - threads in block
+:::
 
 # What is a stream?
 
-* A sequence of operations that are executed in order on the GPU
-* Operations in different streams may run concurrently if sufficient resources are available
+* A sequence of operations that execute in order on the GPU
+* Operations in different streams may run concurrently
 
 <small>
 <div class="column">
@@ -163,49 +52,44 @@ for (int ib = 0; ib < n; ib += bf) {
 </div>
 </small>
 
-# Asynchronous functions and the default stream
+::: {.notes}
+- Big kernels: 1 kernel in device at time
+- But moving data while kernel is computing ok
+- No data dependencies. HD2 does not depent on DH1.
+:::
 
-* The functions without `Async`-postfix run on the default stream, and are synchronizing with host
+# Asynchronous funtions and the default stream
 
-<small>
+- API functions operate on default stream: `hipMalloc, hipMemcpy, hipFree, ...`
+- Append `Async` to name and add `hipStream_t` as last argument for asynchronous version: 
+  - `hipMalloc(...)` ⟶ `hipMallocAsync(..., hipStream_t stream)`
+- The stream is supplied to the kernel invocation:
+  - `my_kernel<<<grid, block, 0, stream>>>(...)`
+  - `hipLaunchKernelGGL(my_kernel, grid, block, 0, stream, ...)`
+  - Default stream: `my_kernel<<<grid, block, 0, 0>>>(...)`
 
-  ```cpp
-  ​hipError_t hipMalloc ( void** devPtr, size_t size )
-  ​hipError_t hipMemcpy ( void* dst, const void* src, size_t count, hipMemcpyKind kind )
-  ​hipError_t hipFree ( void* devPtr ) 
-  ```
+::: {.notes}
+- `hipStream_t stream` must be created as well (later)
+:::
 
-  </small>
+# Memory caveat: 
 
-* When using non-default streams, functions with `Async`-postfix are needed
-  * These functions take the stream as an additional argument (`0` denotes the default stream)
+- Host memory needs to be page-locked, otherwise memory copies are synchronous
+```cpp
+hipError_t hipHostMalloc(void **ptr, size_t size);
+hipError_t hipHostFree(void *ptr);
+```
 
-<small>
+ 
+---
 
-  ```cpp
-  hipError_t hipMallocAsync ( void** devPtr, size_t size, hipStream_t stream ) 
-  hipError_t hipMemcpyAsync ( void* dst, const void* src, size_t count, 
-                              hipMemcpyKind kind, hipStream_t stream ) 
-  hipError_t hipFreeAsync ( void* devPtr, hipStream_t stream ) 
-  ```
-</small>
+## Async memory copy with regular vs page-locked memory
 
-# Asynchronous functions and the page-locked memory
+![](./img/regular_mem_async.png)
 
- * Asynchronous memory copies require page-locked host memory (more in Memory lectures)
-   * Allocate with `hipHostMalloc()` instead of `malloc()`:
-  ```cpp
-  ​hipError_t hipHostMalloc ( void** pHost, size_t size, unsigned int  flags ) 
-  ```
-  
-   * Deallocate with `hipFreeHost()`:
-  ```cpp
-  ​hipError_t hipFreeHost ( void* ptr ) 
-  ```
+![](./img/pinned_mem_async.png)
 
 # Asynchronisity and kernels
-
-
 
 * Kernels are always asynchronous with host, and require explicit synchronization
   * If no stream is specified in the kernel launch, the default stream is used
@@ -215,191 +99,185 @@ for (int ib = 0; ib < n; ib += bf) {
 
 <small>
 
-  ```cpp
-  // Use the default stream
-  hipkernel<<<grid, block>>>(args);
-  // Use the default stream
-  hipkernel<<<grid, block, bytes, 0>>>(args);
-  // Use the stream strm[i]
-  hipkernel<<<grid, block, bytes, strm[i]>>>(args);
-  ```
+```cpp
+// Use the default stream
+hipkernel<<<grid, block>>>(args);
+// Use the default stream
+hipkernel<<<grid, block, bytes, 0>>>(args);
+// Use the stream strm[i]
+hipkernel<<<grid, block, bytes, strm[i]>>>(args);
+```
 </small>
 
 # Stream creation, synchronization, and destruction
 
 * Declare a stream variable
-  ```cpp
-  hipStream_t stream
-  ```
+```cpp
+hipStream_t stream
+```
 
 * Create `stream`
-  ```cpp
-  hipError_t hipStreamCreate ( hipStream_t* stream ) 
-  ```
+```cpp
+hipError_t hipStreamCreate ( hipStream_t* stream ) 
+```
 
 * Synchronize `stream`
-  ```cpp
-  ​hipError_t hipStreamSynchronize ( hipStream_t stream ) 
-  ``` 
+```cpp
+hipError_t hipStreamSynchronize ( hipStream_t stream ) 
+``` 
 
 * Destroy `stream`
-  ```cpp
-  ​hipError_t hipStreamDestroy ( hipStream_t stream ) 
-  ```
+```cpp
+hipError_t hipStreamDestroy ( hipStream_t stream ) 
+```
 
 # Stream example
 
-<small>
-<div class="column">
-```cpp
-// Declare an array of 3 streams
-hipStream_t stream[3];
 
-// Create streams and schedule work
-for (int i = 0; i < 3; ++i){
+::::::{.columns}
+:::{.column width="50%"}
+
+```cpp
+hipStream_t stream[3];
+for (int i = 0; i<3; ++i) 
   hipStreamCreate(&stream[i]);
 
-  // Each streams copies data from host to device
+for (int i = 0; i < 3; ++i) {
   hipMemcpyAsync(d_data[i], h_data[i], bytes, 
-      hipMemcpyHostToDevice, stream[i]);
+    hipMemcpyHostToDevice, stream[i]);
 
-  // Each streams runs a kernel
-  hipkernel<<<grid, block, 0, stream[i]>>>(d_data[i]);
+  hipkernel<<<grid, block, 0, stream[i]>>>
+    (d_data[i], i);
 
-  // Each streams copies data from device to host
   hipMemcpyAsync(h_data[i], d_data[i],  bytes, 
-      hipMemcpyDeviceToHost, stream[i]);
+    hipMemcpyDeviceToHost, stream[i]);
 }
 
-// Synchronize and destroy streams
-for (int i = 0; i < 3; ++i){
+for(int i = 0; i<3; ++i) {
   hipStreamSynchronize(stream[i]);
-  hipStreamDestroy(stream[i]);
-}
+  hipStreamDestroy(stream[i]); }
 ```
-</div>
 
-<div class="column">
-![](./img/streams-example-2.png){height=400px}
-</div>
+:::
+:::{.column width="49%"}
+![](./img/stream-example.svg){width=100%}
+:::
 
-</small>
+::::::
+
+:::{.notes}
+- host-device is bidirectional
+:::
+
 
 # Events
 
-<small>
+- Synchronize other streams/host with events
+- Measure time between events
+- [HIP API Documentation](https://rocm.docs.amd.com/projects/HIP/en/docs-6.0.0/doxygen/html/group___event.html)
 
-* Events provide a mechanism to signal when operations have occurred
-in a stream
+
+# Why events?
+
+* Cut stream to fragments
   * Useful for inter-stream synchronization and timing asynchronous events
 * Events have a boolean state: occurred / not occurred
-  * Important: the default state = occurred
+  * Query with `hipError_t hipEventQuery(hipEvent_t event)`: `hipSuccess`/`hipErrorNotReady`
 
-<div class="column">
+::::::{.columns}
+:::{.column}
+:::{.fragment}
 
+<small>
+Measure how fast host places tasks to stream:
 ```cpp
   // Start timed GPU kernel
   clock_t start_kernel_clock = clock();
-  kernel<<<gridsize,blocksize,0,strm>>>(d_a,n_total);
+  kernel<<<gridsize, blocksize, 0, stream>>>(d_a, n_total);
 
   // Start timed device-to-host memcopy
   clock_t start_d2h_clock = clock();
-  hipMemcpyAsync(a,d_a,bytes,hipMemcpyDeviceToHost,strm);
+  hipMemcpyAsync(a, d_a, bytes, hipMemcpyDeviceToHost, stream);
 
   // Stop timing
   clock_t stop_clock = clock();
-  hipStreamSynchronize(strm);
+  hipStreamSynchronize(stream);
 ```
-
-* This code snippet can measure how quick the CPU is throwing asynchronous tasks into a queue for the GPU
-
-</div>
-<div class="column">
-
+</small>
+:::
+:::
+:::{.column }
+:::{.fragment}
+<small>
+Measure duration of tasks on GPU:
 ```cpp
   // Start timed GPU kernel
-  hipEventRecord(start_kernel_event, strm);
-  kernel<<<gridsize,blocksize,0,strm>>>(d_a,n_total);
+  hipEventRecord(start_kernel_event, stream);
+  kernel<<<gridsize, blocksize, 0, stream>>>(d_a, n_total);
 
   // Start timed device-to-host memcopy
-  hipEventRecord(start_d2h_event, strm);
-  hipMemcpyAsync(a,d_a,bytes,hipMemcpyDeviceToHost,strm);
+  hipEventRecord(start_d2h_event, stream);
+  hipMemcpyAsync(a, d_a, bytes, hipMemcpyDeviceToHost, stream);
 
   // Stop timing
-  hipEventRecord(stop_event, strm);
+  hipEventRecord(stop_event, stream);
   hipEventSynchronize(stop_event);
 ```
-
-* This code snippet can measure the duration of each asynchronous task on the GPU
-
-</div>
 </small>
+:::
+:::
+::::::
 
-# Event usage
+::: {.notes}
+- Note that with events the event is complete when the last hipMemcpy is complete
+- 
+:::
+
+# Events: Central API calls
 
 <small>
 
-* Create `event` object
-  ```cpp
-  ​hipError_t hipEventCreate ( hipEvent_t* event ) 
-  ```
+| *Description* | API call |
+|-|-|
+| Initialize `event` object  | `hipEventCreate(hipEvent_t* event)` |
+| Record an `event` in the `stream` | `hipEventRecord(hipEvent_t event, hipStream_t stream)`  |
+| Elapsed time (ms) between `start` and `end` | `hipEventElapsedTime(float* ms, hipEvent_t start, hipEvent_t end)`  |
+| Make `stream` wait for `event` | `hipStreamWaitEvent(hipStream_t stream, hipEvent_t event, unsigned int  flags = 0)` |
+| Wait for `event` to complete | `hipEventSynchronize(hipEvent_t event)` |
+| Destroy `event` object | `hipEventDestroy(hipEvent_t event)` |
 
-* Capture in `event` the contents of `stream` at the time of this call
-  ```cpp
-  hipError_t hipEventRecord ( hipEvent_t event, hipStream_t stream ) 
-  ``` 
-
-* Compute the elapsed time in milliseconds between `start` and `end` events
-  ```cpp
-  hipError_t hipEventElapsedTime ( float* ms, hipEvent_t start, hipEvent_t end ) 
-  ``` 
-
-* Make all future work submitted to `stream` wait for all work captured in `event`
-  ```cpp
-​ hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int flags = 0 ) 
-  ```
-
-* Wait for `event` to complete
-  ```cpp
-  hipError_t hipEventSynchronize ( hipEvent_t event ) 
-  ``` 
-
-* Destroy `event` object
-  ```cpp
-  hipError_t hipEventDestroy ( hipEvent_t event ) 
-  ```
+- All of the above return `hipError_t`
 
 </small>
 
-
-# Synchronization
+# Central synchronization API calls 
 
 <small>
 
 * Synchronize the host with a specific stream
-  ```cpp
-  ​hipError_t hipStreamSynchronize ( hipStream_t stream ) 
-  ``` 
+```cpp
+​hipError_t hipStreamSynchronize ( hipStream_t stream ) 
+``` 
 
 * Synchronize the host with a specific event
-  ```cpp
-  ​hipError_t hipEventSynchronize ( hipEvent_t event )
-  ``` 
+```cpp
+​hipError_t hipEventSynchronize ( hipEvent_t event )
+``` 
 
 * Synchronize a specific stream with a specific event (the event can be in another stream) 
-  ```cpp
-​  hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int  flags = 0 ) 
-  ``` 
+```cpp
+​hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int  flags = 0 ) 
+``` 
 
 * Synchronize the host with the whole device (wait until all device tasks are finished)
-  ```cpp
-  hipError_t hipDeviceSynchronize ( void ) 
-  ``` 
+```cpp
+hipError_t hipDeviceSynchronize ( void ) 
+``` 
 
 * In-kernel blockwise synchronization across threads (not between host/device)
-  ```cpp
-  __syncthreads()
-  ```
+```cpp
+__syncthreads()
+```
 
 </small>
 
@@ -418,21 +296,24 @@ __global__ void reverse(double *d_a) {
     s_a[tid] = d_a[tid];              /* each thread fills one entry */
     __syncthreads();                  /* all threads in a block must reach this point before 
                                          any thread in that block is allowed to continue. */
-    d_a[tid] = s_a[BLOCKSIZE-tid];    /* safe to write out array in reverse order */
+    d_a[tid] = s_a[BLOCKSIZE-tid-1];    /* safe to write out array in reverse order */
 }
 ```
 
 * A simple kernel example for reversing the order of the entries of a block-sized array
 </small>
 
-# HIP streams, events, and synchronization summary
+# Summary
 
+
+::: incremental
 * Streams provide a mechanism to evaluate tasks on the GPU concurrently and asynchronously with the host
   * Asynchronous functions requiring a stream argument are required
   * Kernels are always asynchronous with the host
-  * Default stream is denoted by `0` (no stream creation required)
+  * Default stream is by `0` (no stream creation required)
 * Events provide a mechanism to signal when operations have occurred
 in a stream
-  * Good for inter-stream synchronization and timing events
+  * Good for inter-stream sychronization and timing events
 * Many host/device synchronizations functions for different purposes
   * The device function `__syncthreads()` is only for in-kernel synchronization between threads in a same block (does not synch threads across blocks)
+:::
