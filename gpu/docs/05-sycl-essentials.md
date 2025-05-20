@@ -613,3 +613,9 @@ auto exception_handler = [] (exception_list exceptions) {
 
 
 # Summary
+ - single source, high-level, standard C++ programming model
+ - can target various heterogenous platforms in a single application
+ - Portability, Productivity, Performance
+ - **queues**, **command groups**
+ - **buffers and accesors API**, **unified shared memory**
+ - various ways to enforce dedpendencies, basic profiling, error handling
