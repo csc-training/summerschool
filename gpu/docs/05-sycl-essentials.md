@@ -618,4 +618,4 @@ auto exception_handler = [] (exception_list exceptions) {
  - Portability, Productivity, Performance
  - **queues**, **command groups**
  - **buffers and accesors API**, **unified shared memory**
- - various ways to enforce dedpendencies, basic profiling, error handling
+ - various ways to enforce dependencies, basic profiling, error handling
