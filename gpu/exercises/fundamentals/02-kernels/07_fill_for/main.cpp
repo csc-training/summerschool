@@ -4,15 +4,29 @@
 // This file include macros for checking the API and kernel launch errors
 #include "../../../error_checking.hpp"
 
-__global__ void fill(float *arr, float a, size_t num_values) {
+__device__ __host__ float taylor(float x) {
+    float sum = 0.0;
+    float xn = 1.0 / x;
+    float factorial = 1.0;
+
+    static constexpr size_t num_iters = 20ul;
+    for (size_t n = 0; n < num_iters; n++) {
+        xn *= x;
+        factorial *= std::max(static_cast<float>(n), 1.0f);
+        sum += xn / factorial;
+    }
+    return sum;
+}
+
+__global__ void taylor_no_reuse(float *x, float *y, size_t num_values) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     if (tid < num_values)
     {
-        arr[tid] = a;
+        y[tid] = taylor(x[tid]);
     }
 }
 
-__global__ void fill_for_cpu_style(float *arr, float a, size_t num_values) {
+__global__ void taylor_for_cpu_style(float *x, float *y, size_t num_values) {
     // Global thread id, i.e. over the entire grid
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
 
@@ -29,7 +43,8 @@ __global__ void fill_for_cpu_style(float *arr, float a, size_t num_values) {
         //   1      [num_per_thread, 2 * num_per_thread - 1]
         //   2      [2 * num_per_thread, 3 * num_per_thread - 1]
         //   and so on...
-        arr[tid * num_per_thread + i] = a;
+        const size_t j = tid * num_per_thread + i;
+        y[j] = taylor(x[j]);
     }
 
     // How many are left over
@@ -43,11 +58,12 @@ __global__ void fill_for_cpu_style(float *arr, float a, size_t num_values) {
         //   1      num_per_thread * num_threads + 1
         //   2      num_per_thread * num_threads + 2
         //   and so on...
-        arr[num_per_thread * num_threads + tid] = a;
+        const size_t j = num_per_thread * num_threads + tid;
+        y[j] = taylor(x[j]);
     }
 }
 
-__global__ void fill_for(float *arr, float a, size_t num_values) {
+__global__ void taylor_for_gpu_style(float *x, float *y, size_t num_values) {
     // Global thread id, i.e. over the entire grid
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
 
@@ -64,22 +80,41 @@ __global__ void fill_for(float *arr, float a, size_t num_values) {
         //   2      [2, stride + 2, 2 * stride + 2, ...]
         //   3      [3, stride + 3, 2 * stride + 3, ...]
         //   and so on...
-        arr[i] = a;
+        y[i] = taylor(x[i]);
     }
 }
 
-void run_and_measure(void (*kernel)(float *, float, size_t), int32_t blocks,
-                     int32_t threads, float *d_arr, float a,
-                     size_t num_values) {
+void run_and_measure(const char *style_name,
+                     void (*kernel)(float *, float *, size_t), int32_t blocks,
+                     int32_t threads, size_t num_values) {
     const size_t num_bytes = sizeof(float) * num_values;
-    float *h_arr = static_cast<float *>(std::malloc(num_bytes));
 
+    // Allocate host memory for x and y
+    float *h_x = static_cast<float *>(std::malloc(num_bytes));
+    float *h_y = static_cast<float *>(std::malloc(num_bytes));
+
+    // Initialize host x with some values
+    for (size_t i = 0; i < num_values; i++) {
+        h_x[i] = static_cast<float>(i) / num_values;
+    }
+
+    // Allocate device memory for x and y
+    float *d_x = nullptr;
+    float *d_y = nullptr;
+    HIP_ERRCHK(hipMalloc(&d_x, num_bytes));
+    HIP_ERRCHK(hipMalloc(&d_y, num_bytes));
+
+    // Copy host x to device x
+    HIP_ERRCHK(hipMemcpy(d_x, h_x, num_bytes, hipMemcpyDefault));
+
+    // Run the kernel 20 times and compute the average runtime of the last 19
+    // runs
     constexpr auto n_iter = 20;
     size_t avg = 0;
     for (auto iteration = 0; iteration < n_iter; iteration++) {
         const auto start = std::chrono::high_resolution_clock::now();
 
-        LAUNCH_KERNEL(kernel, blocks, threads, 0, 0, d_arr, a, num_values);
+        LAUNCH_KERNEL(kernel, blocks, threads, 0, 0, d_x, d_y, num_values);
         HIP_ERRCHK(hipDeviceSynchronize());
 
         const auto end = std::chrono::high_resolution_clock::now();
@@ -87,40 +122,43 @@ void run_and_measure(void (*kernel)(float *, float, size_t), int32_t blocks,
 
         avg += iteration == 0 ? 0 : dur.count();
 
-        // Make sure we actually did the right thing in the kernel
-        HIP_ERRCHK(hipMemcpy(h_arr, d_arr, num_bytes, hipMemcpyDefault));
+        // Make sure we actually did the right thing in the kernel:
+        // Copy device y to host y, and check y is equal to the taylor
+        // computed with the corresponding host x
+        HIP_ERRCHK(hipMemcpy(h_y, d_y, num_bytes, hipMemcpyDefault));
         for (size_t i = 0; i < num_values; i++) {
-            assert(h_arr[i] == a && "The values are incorrect");
+            assert(h_y[i] == taylor(h_x[i]) && "The values are incorrect");
         }
     }
-    std::free(h_arr);
+    std::free(h_x);
+    std::free(h_y);
 
-    std::fprintf(stdout, "Average runtime in nanoseconds: %ld\n",
-                 avg / (n_iter - 1));
+    HIP_ERRCHK(hipFree(d_x));
+    HIP_ERRCHK(hipFree(d_y));
+
+    std::fprintf(stdout, "Average runtime in nanoseconds for %s: %ld\n",
+                 style_name, avg / (n_iter - 1));
 }
 
 int main() {
     static constexpr size_t num_values = 1000000;
-    static constexpr size_t num_bytes = sizeof(float) * num_values;
-    static constexpr float a = 3.4f;
-
-    float *d_arr = nullptr;
-    HIP_ERRCHK(hipMalloc(&d_arr, num_bytes));
 
     // Kernel with no thread re-use
     const int threads = 1024;
     int blocks = num_values / threads;
     blocks += blocks * threads < num_values ? 1 : 0;
-    run_and_measure(fill, blocks, threads, d_arr, a, num_values);
+    run_and_measure("no reuse", taylor_no_reuse, blocks, threads, num_values);
 
-    // Kernel with thread re-use, CPU style
+    // Kernels with thread re-use can use arbitrary grid size
     blocks = 128;
-    run_and_measure(fill_for_cpu_style, blocks, threads, d_arr, a, num_values);
 
-    // Kernel with thread re-use, GPU style
-    run_and_measure(fill_for, blocks, threads, d_arr, a, num_values);
+    // CPU style
+    run_and_measure("cpu style", taylor_for_cpu_style, blocks, threads,
+                    num_values);
 
-    HIP_ERRCHK(hipFree(d_arr));
+    // GPU style
+    run_and_measure("gpu style", taylor_for_gpu_style, blocks, threads,
+                    num_values);
 
     return 0;
 }
