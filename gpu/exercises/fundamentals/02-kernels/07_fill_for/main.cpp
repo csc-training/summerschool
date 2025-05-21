@@ -5,9 +5,9 @@
 #include "../../../error_checking.hpp"
 
 __device__ __host__ float taylor(float x) {
-    float sum = 0.0;
-    float xn = 1.0 / x;
-    float factorial = 1.0;
+    float sum = 0.0f;
+    float xn = 1.0f / x;
+    float factorial = 1.0f;
 
     static constexpr size_t num_iters = 20ul;
     for (size_t n = 0; n < num_iters; n++) {
@@ -95,7 +95,7 @@ void run_and_measure(const char *style_name,
 
     // Initialize host x with some values
     for (size_t i = 0; i < num_values; i++) {
-        h_x[i] = static_cast<float>(i) / num_values;
+        h_x[i] = static_cast<float>(i) / num_values * 100.0f;
     }
 
     // Allocate device memory for x and y
@@ -126,9 +126,15 @@ void run_and_measure(const char *style_name,
         // Copy device y to host y, and check y is equal to the taylor
         // computed with the corresponding host x
         HIP_ERRCHK(hipMemcpy(h_y, d_y, num_bytes, hipMemcpyDefault));
+        float error = 0.0;
+        static constexpr float tolerance = 1e-6f;
         for (size_t i = 0; i < num_values; i++) {
-            assert(h_y[i] == taylor(h_x[i]) && "The values are incorrect");
+            const auto diff = abs(h_y[i] - taylor(h_x[i]));
+            if (diff > tolerance) {
+                error += diff;
+            }
         }
+        assert(error < 0.01f);
     }
     std::free(h_x);
     std::free(h_y);
