@@ -219,7 +219,8 @@ if (threads.x > value) {
 }
 ```
 
-Since we're going to do a few attribute queries, it's helpful to make a little lambda out of it:
+Since we're going to do a few attribute queries, it's helpful to make a little lambda out of it
+(lambdas are pretty similar to functions):
 ```cpp
 int32_t device = 0;
 const auto result = hipGetDevice(&device);
@@ -245,7 +246,7 @@ const dim3 max_threads(
 
 A full list of attributes can be found in the [HIP runtime API documentation](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/global_defines_enums_structs_files/global_enum_and_defines.html#_CPPv420hipDeviceAttribute_t).
 
-Ok, again, enough with the talk, let's get coding! Head over to [the next exercise](04_api_queries) and follow the [instructions](04_api_queries/README.md) there.
+Ok, again, enough with the talk, let's get coding! Head over to [the exercise](04_api_queries) and follow the [instructions](04_api_queries/README.md) there.
 
 ---------------------------------------------------
 
