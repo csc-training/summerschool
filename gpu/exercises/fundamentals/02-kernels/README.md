@@ -250,8 +250,10 @@ Ok, again, enough with the talk, let's get coding! Head over to [the exercise](0
 
 ---------------------------------------------------
 
-One final note before we move to the next exercise. Error checking is always useful, but it's also often not so efficient.
-Usually the release versions of codes want to run as fast as possible, while debug versions want to be helpful for just that, debugging.
+One final note before we move to the next exercise. Error checking is always useful,
+but it's often not efficient.
+Usually the release versions of codes should run as fast as possible,
+while debug versions should be helpful for debugging.
 Since we've wrapped our kernel calls with a debug macro, we might be worried about possible performance hits.
 
 Luckily, there's a very easy fix for this: wrap the debug code in a `#if` preprocessor directive!
@@ -278,13 +280,6 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
 Alternatively, you may use a custom define and pass it to the compiler manually: `CC -DMY_CUSTOM_DEFINE ...`, `#if MY_CUSTOM_DEFINE ...`.
 
 Ok, let's move on.
-
-### TODO
-
-Make the exercise.
-Provide a skeleton of the finished kernel launch macro/function.
-Clearly annotate parts that the student should fill in.
-Hardcode the dim3 sizes in the main file to better showcase the problem (the same error with different problems vs manual query & print).
 
 ## Exercise: Errors from API calls
 
@@ -375,13 +370,8 @@ static inline void hip_errchk(hipError_t result, const char *file,
 
 This way the error checking is out of the way, but it's still there.
 
-In the [next exercise](05_api_errors) there are a bunch of problems with API calls.
+In [this exercise](05_api_errors) there are a bunch of problems with API calls.
 Check the [instructions](05_api_errors/README.md) and fix the errors!
-
-### TODO
-
-The exercise should have some API calls that cause errors. The user should then fix those calls,
-first by wrapping the calls with the macro, then by figuring out the meaning of the message.
 
 ## Exercise: Kernel for filling a 1D array with a value
 
