@@ -34,7 +34,7 @@ __global__ void taylor_for_cpu_style(float *x, float *y, size_t num_values) {
     const size_t num_threads = blockDim.x * gridDim.x;
 
     // How many elements per thread
-    size_t num_per_thread = num_values / num_threads;
+    const size_t num_per_thread = num_values / num_threads;
 
     // Process num_per_thread consecutive elements
     for (size_t i = 0; i < num_per_thread; i++) {
