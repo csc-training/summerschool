@@ -9,7 +9,7 @@ __device__ __host__ float taylor(float x) {
     float xn = 1.0f / x;
     float factorial = 1.0f;
 
-    static constexpr size_t num_iters = 20ul;
+    static constexpr size_t num_iters = 30ul;
     for (size_t n = 0; n < num_iters; n++) {
         xn *= x;
         factorial *= std::max(static_cast<float>(n), 1.0f);
@@ -155,8 +155,9 @@ int main() {
     blocks += blocks * threads < num_values ? 1 : 0;
     run_and_measure("no reuse", taylor_no_reuse, blocks, threads, num_values);
 
-    // Kernels with thread re-use can use arbitrary grid size
-    blocks = 128;
+    // Kernels with thread re-use can use arbitrary grid size. It should be
+    // large enough to utilize all the availabe CUs of the GPU, however.
+    blocks = 1024;
 
     // CPU style
     run_and_measure("cpu style", taylor_for_cpu_style, blocks, threads,
