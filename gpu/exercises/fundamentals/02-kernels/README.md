@@ -402,83 +402,11 @@ The strategy used in the previous exercise was to couple the size of data to the
 It can be a good strategy for some situations, but other times it's better to reuse the threads and process
 multiple values per thread.
 
-If you're used to manually multithreaded CPU code, an obvious way to do it
-is to divide the array among the threads, such that each thread processes consecutive values:
-```cpp
-__global__ void fill_for(size_t n, float *arr, float value) {
-    // Global thread id, i.e. over the entire grid
-    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+In this exercise we'll be computing the Taylor expansion of y = e^x for a vector of values x.
 
-    // How many threads in total in the entire grid
-    const size_t num_threads = blockDim.x * gridDim.x;
+TODO: write more stuff here.
 
-    // How many elements per thread
-    size_t num_per_thread = n / num_threads;
-    
-    // Process num_per_thread consecutive elements
-    for (size_t i = 0; i < num_per_thread; i++) {
-        // tid      elems
-        //   0      [0, num_per_thread - 1]
-        //   1      [num_per_thread, 2 * num_per_thread - 1]
-        //   2      [2 * num_per_thread, 3 * num_per_thread - 1]
-        //   and so on...
-        arr[tid * num_per_thread + i] = value;
-    }
-
-    // How many are left over
-    const size_t left_over = n - num_per_thread * num_threads;
-
-    // The first threads will process one more, so the left over values
-    // are also processed
-    if (tid < left_over) {
-        // tid      elem
-        //   0      num_per_thread * num_threads
-        //   1      num_per_thread * num_threads + 1
-        //   2      num_per_thread * num_threads + 2
-        //   and so on...
-        arr[num_per_thread * num_threads + tid] = value;
-    }
-}
-```
-
-With GPUs, however, this is a very slow strategy! Remember that threads proceed in lock step,
-in warps/wavefronts of 32/64 (Nvidia)/(AMD) threads. We will learn much more about memory accesses,
-but for now it's enough to say that the slowup is roughly 10-100x, compared to the non-looped
-version of the [previous exercise](06_fill).
-
-A much faster way to achieve the same thing is to use a "strided for loop":
-```cpp
-__global__ void fill_for(size_t n, float *arr, float value) {
-    // Global thread id, i.e. over the entire grid
-    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-
-    // How many threads in total in the entire grid
-    const size_t stride = blockDim.x * gridDim.x;
-
-    // Every thread processes a single element, then
-    // jumps forward 'stride' elements, as long as
-    // i < n
-    for (size_t i = tid; i < n; i+= stride) {
-        // tid      elems
-        //   0      [0, stride,     2 * stride,     ...]
-        //   1      [1, stride + 1, 2 * stride + 1, ...]
-        //   2      [2, stride + 2, 2 * stride + 2, ...]
-        //   3      [3, stride + 3, 2 * stride + 3, ...]
-        //   and so on...
-        arr[i] = value;
-    }
-}
-```
-
-With this strategy, the consecutive threads in a warp/wavefront process consecutive elements
-in the array, then jump forward together and again process consecutive elements in the array,
-until some or all of them jump out of the limit of the array.
-Note that there's no chance of out-of-bounds memory access here: if a thread has `i >= n`, 
-it doesn't execute the loop but just exits early. Some threads in the warp/wavefront with
-a smaller `tid` may still execute the loop for a single iteration, but they'll also
-end up with an `i` larger than `n` for the next iteration and then exit the loop.
-
-Head over to the [exercise](07_fill_for) and follow the [instructions](07_fill_for/README.md) there.
+Head over to the [exercise](07_taylor_for) and follow the [instructions](07_taylor_for/README.md) there.
 
 ## Bonus exercises
 
