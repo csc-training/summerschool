@@ -1,9 +1,10 @@
 ---
 title:  Memory allocations, access, and unified memory
-subtitle: GPU programming with HIP
+subtitle: CSC Summer School in High-Performance Computing 
 author:   CSC Training
 date:     2025-03
 lang:     en
+pdfSeparateFragments: false
 ---
 
 
@@ -58,7 +59,7 @@ Memory management can be *Explicit* or *Implicit*.
 :::{.incremental}
 - *Explicit*: User manually manages data movement between host and device. Host memory can be allocated with GPU-unaware allocators (`malloc`/`free` etc).
 - *Implicit*: The runtime manages data movement between host and device. Host memory needs to be allocated with special allocators.
-  - **Unified memory** (managed memory): Page faults will initiate data movement.
+  - **Managed memory** (unified shared memory): Page faults will initiate data movement.
   - **Page-locked** (pinned) host allocations: Data moves to device with kernel invocations and is not stored there.
 :::
 

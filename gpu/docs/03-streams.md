@@ -4,6 +4,7 @@ subtitle: CSC Summer School in High-Performance Computing
 author:   CSC Training
 date:     2025-03
 lang:     en
+pdfSeparateFragments: false
 ---
 
 # Outline
