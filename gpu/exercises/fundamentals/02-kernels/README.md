@@ -471,17 +471,14 @@ __global__ void fill_for(size_t n, float *arr, float value) {
 ```
 
 With this strategy, the consecutive threads in a warp/wavefront process consecutive elements
-in the array, then jump forward together and againe process consecutive elements in the array,
+in the array, then jump forward together and again process consecutive elements in the array,
 until some or all of them jump out of the limit of the array.
-Note that there's no chance of out-of-bounds memory access here: if a threads has `i >= n`, 
+Note that there's no chance of out-of-bounds memory access here: if a thread has `i >= n`, 
 it doesn't execute the loop but just exits early. Some threads in the warp/wavefront with
 a smaller `tid` may still execute the loop for a single iteration, but they'll also
 end up with an `i` larger than `n` for the next iteration and then exit the loop.
 
-### TODO
-
-Make the exercise.
-Maybe give two versions, the slow and the strided, then ask to use unix command `time` to measure the time?
+Head over to the [exercise](07_fill_for) and follow the [instructions](07_fill_for/README.md) there.
 
 ## Bonus exercises
 
