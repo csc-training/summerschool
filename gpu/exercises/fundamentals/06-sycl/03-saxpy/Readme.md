@@ -24,7 +24,7 @@ Start by defining a **queue**  and selecting the appropriate device selector. SY
 Next, create buffers to encapsulate the data. For a one-dimensional array of integers of length `N`, with pointer `P`, a buffer can be constructed as follows:
 
 ```cpp
-    sycl::buffer<int, 1> a_buf(P, sycl::range<1>(N));
+    sycl::buffer<int, 1> x_buf(P, sycl::range<1>(N));
 ```
 Use the appropriate data type. For this exercise single precision floats are used. 
 
@@ -33,7 +33,7 @@ Use the appropriate data type. For this exercise single precision floats are use
 Accessors provide a mechanism to access data inside the buffers. Accessors on the device must be created within command groups. There are two ways to create accessors. Using the `sycl::accessor` class constructor
 
 ```cpp
-   sycl::accessor a_acc{a_buf, h, read_write};
+   sycl::accessor x_acc{x_buf, h, read_write};
 ```
 or  
 ```cpp
@@ -50,12 +50,12 @@ Once accessors are ready, submit the task to the device using the `.parallel_for
 
 ```cpp
    h.parallel_for(sycl::range{N}, [=](sycl::id<1> idx) {
-        c_acc[idx] = a_acc[idx] + b_acc[idx];
+        y_acc[idx] = y_acc[idx] + a*x_acc[idx];
       });
 ```  
 Here: 
  - `sycl::range{N}` or `sycl::range(N)` specify number of work-items be launched 
  - `sycl::id<1>` represents the index used within the kernel.
 
-***Optional**: use **item** class instead of **id**. Modify the lambda function to use the  **sycl::item** class instead of the **sycl::::id** class. In this case the index `idx` is obtained from the `.get_id()` member.
+**Optional**: use **item** class instead of **id**. Modify the lambda function to use the  **sycl::item** class instead of the **sycl::::id** class. In this case the index `idx` is obtained from the `.get_id()` member.
 
