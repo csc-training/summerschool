@@ -379,7 +379,7 @@ So far we've mostly concerned ourselves with checking for errors. Can we finally
 Yes!
 
 Many times in simulation loops we want to reset some arrays to a specific value before other computation.
-So let's do that! Implement a kernel that fills an array with a single value.
+So let's do that! You'll implement a kernel that fills an array with a single value.
 
 To do that we need a few things:
 - an array of values on the GPU memory
@@ -391,11 +391,7 @@ But we've learned that the maximum number of threads per block is 1024. Yes, ind
 but the limit on the maximum number of blocks per grid is much higher! So we should be able to
 easily launch enough *threads per grid* to fill the entire array.
 
-Head over to the [next exercise](06_fill) to figure out the rest of the details.
-
-### TODO
-
-A skeleton of a 1D fill kernel
+Head over to the [exercise](06_fill) to figure out the rest of the details.
 
 ## Exercise: Re-use threads in a 1D kernel with a for loop
 
