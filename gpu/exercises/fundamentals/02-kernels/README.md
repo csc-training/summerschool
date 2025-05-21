@@ -63,10 +63,10 @@ HIP API has a function called
 It returns the previous error code from any HIP API call, including kernel launches.
 
 It's useful to wrap kernel launches with a function that checks for any errors from the kernel.
-They you get automatic error reporting from kernel launches. To add information about the location of the error,
-it's also useful to wrap the function call in a macro that adds the preprocessor definitions `__FILE__` and `__LINE__`
-to the call. Those expand to the filename and line of code, respectively, of the call. This helps you find the
-erroneous kernel launch easier.
+Then you get automatic error reporting from kernel launches. To add information about the location of the error,
+it's also useful to wrap the function call in a macro that adds the preprocessor definitions
+`__FILE__` and `__LINE__` to the call. Those expand to the filename and line of code, respectively, of the call.
+This helps you find the erroneous kernel launch easier.
 
 ### Example
 
@@ -171,19 +171,9 @@ If you're interested, you can read more about [variadic macros](https://gcc.gnu.
 and [parameter packs](https://en.cppreference.com/w/cpp/language/pack)
 (`typename... Args`, `Args... args` and `args...`) in C++.
 
-Ok, enough exposition. Head over to the [next exercise](03_kernel_launch_wrapper) and follow the
+Ok, enough exposition. Head over to the [exercise](03_kernel_launch_wrapper) and follow the
 [instructions](03_kernel_launch_wrapper/README.md) there.
 
-
-### TODO
-
-Make an exercise for this.
-It can be the same code as before, but we `#include` a header file that has already implemented the thing above.
-The task of the student is to
-- wrap the kernel launch with the macro
-- run the code with different thread/block sizes
-
-The segway to the next exercise: The error reporting isn't very useful. It's very generic. You can use the API for more.
 
 ## Exercise: Better error reporting by querying limits
 
