@@ -35,11 +35,27 @@ Accessors provide a mechanism to access data inside the buffers. Accessors on th
 ```cpp
    sycl::accessor a_acc{a_buf, h, read_write};
 ```
-or  using the buffer `.getaccess<...>(h)`  member function:
+or  
 ```cpp
-   auto a = a_buf.get_access<sycl::access::mode::read_write>(h);
+   auto a_acc = sycl::accessor{a_buf, h, sycl::read_write};
 ```
 **Important**  Use appropriate access modes for your data:
  - **Input Buffers:** Use `sycl::read_only` / `sycl::access::mode::read` to avoid unnecessary device-to-host data transfers.
  - **Output Buffers:** Use `sycl::write_only`/ `sycl::access::mode::write` to avoid unnecessary host-to-device data transfers.
- - **Input/Ouput Buffers:** Use `sycl::read_write` / `sycl::access::mode::read_write` for the variables that are input, but they also get modified during the computaions.
+ - **Input/Ouput Buffers:** Use `sycl::read_write` / `sycl::access::mode::read_write` for the variables that are input, but they also get modified during the computations.
+
+
+### Step 4: Submit the Task using Basic Submission
+Once accessors are ready, submit the task to the device using the `.parallel_for()` member function. The basic submission:
+
+```cpp
+   h.parallel_for(sycl::range{N}, [=](sycl::id<1> idx) {
+        c_acc[idx] = a_acc[idx] + b_acc[idx];
+      });
+```  
+Here: 
+ - `sycl::range{N}` or `sycl::range(N)` specify number of work-items be launched 
+ - `sycl::id<1>` represents the index used within the kernel.
+
+***Optional**: use **item** class instead of **id**. Modify the lambda function to use the  **sycl::item** class instead of the **sycl::::id** class. In this case the index `idx` is obtained from the `.get_id()` member.
+
