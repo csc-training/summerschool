@@ -33,14 +33,12 @@ int main(int argc, char **argv) {
 
     result = hipSetDevice(2);
 
-    result = hipMalloc(nullptr, 16);
-
     void *ptr = nullptr;
-    result = hipMalloc(&ptr, 999999999999);
+    result = hipMalloc(nullptr, 999999999);
 
-    int value = 0;
-    result = hipDeviceGetAttribute(
-        &value, hipDeviceAttribute_t::hipDeviceAttributeMaxGridDimX, 2);
+    result = hipMemset(ptr, 0, 8);
+
+    result = hipFree(ptr);
 
     return 0;
 }
