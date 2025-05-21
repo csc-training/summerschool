@@ -46,7 +46,7 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
     // the maximum.
     const int max_threads_x = get_device_attribute(
         hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimX);
-    if (0 < threads.x || threads.x <= max_threads_x) {
+    if (threads.x <= 0 || max_threads_x < threads.x) {
         // TODO
         // The given threads.x is not within the correct limits.
         // Print error message and exit.
