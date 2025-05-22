@@ -65,4 +65,18 @@ Here:
 **Optional**: use **item** class instead of **id**. Modify the lambda function to use the  **sycl::item** class instead of the **sycl::id** class. In this case the index `idx` is obtained from the `.get_id()` member.
 
 ### Step 5: Check the results using `host_accessor`
-When a buffer is destroyr
+When a buffer is destroyed the host can access again the data to which the buffer encapsulates. However sometimes there might be a need to check the results of some operations and still the buffer for further calculations. In this case host accessors can be used:
+```
+   // Use host_accessor to read back the results from Ybuff
+      {
+          host_accessor h_accY(Ybuff, sycl::read_only); // Read back data after kernel execution
+          std::cout << "First few elements of Y after operation:" << std::endl;
+          for (size_t i = 0; i < 10; ++i) {
+            std::cout << "Y[" << i << "] = " << h_accY[i] << std::endl;
+          }
+      }
+```
+As long a host accessor is valid the data can not be accessed by other means. When they are destroyed the program can proceed with further calculations on host or devices.
+## II. Memory management using Buffer and Accesors and `ns_range" Launching
+
+      
