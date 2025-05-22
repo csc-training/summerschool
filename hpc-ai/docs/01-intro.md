@@ -27,7 +27,7 @@ lang:   en
 # Generalization, Overfitting, Regularization
 
 - quality of a model is measured on new, unseen samples
-- too simple models fail to describe the model
+- too simple models fail to describe the data
 - models with too many parameters can overfit to training data
 - overfitting can be prevented by regularization
 
@@ -103,7 +103,7 @@ $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
 - choose $w_{ijl}$ that minimize the **loss function**, i.e.
 $\frac{\partial E} {\partial w_{ijl} }=0$
 - **training** is an interative **gradient descent** process: $\frac{\partial w_{ijl}}{\partial t}=- \frac{\partial E}{\partial w_{ijl}}$
-  -  training is done using labeled/known data (&#x1F91E; the model works for new data)
+  -  training is done using labelled/known data (&#x1F91E; the model works for new data)
   
 **Not guaranteed to find the true minima!**
 
@@ -154,7 +154,7 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - GPT-4 $\approx$ 1.8 trillion parameters:
          - 3.6 TB of memory
          - $2\times N_{\textnormal{active param}}$ **FLOP** per token ($\approx 2\times 280 \times 10^{9}$)
-         - for learning the requirements are much larger ($\approx 10^{25}$ **FLOP** and 13 trilion tokens)
+         - for learning the requirements are much larger ($\approx 10^{25}$ **FLOP** and 13 trillion tokens)
 
 # Summary
 
