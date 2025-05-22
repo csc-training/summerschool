@@ -77,6 +77,21 @@ When a buffer is destroyed the host can access again the data to which the buffe
       }
 ```
 As long a host accessor is valid the data can not be accessed by other means. When they are destroyed the program can proceed with further calculations on host or devices.
-## II. Memory management using Buffer and Accesors and `ns_range" Launching
+## II. Memory management using Buffer and Accesors and `nd_range" Launching
+In the previous taks it was used a basic, simple way to launch kernels. This could be enough for many applications, but the `range` class is quite limited. It does not allow to use lower level features, like local share memory, in-work-grgoup  synchronizations or use the in-work-rgoup local index. In many cases (like matrix-matrix multiplication) more control is needed.  
+
+The axpy calculation does not need notions of locality within the kernel, but for its simplicity is a good exercise to familiarize with the syntax.
+
+
+Starting from the solution of the task I change the way the kernel is launched following:
+
+```cpp
+   h.parallel_for(sycl::nd_range<1>(sycl::range<1>(((N+local_size-1)/local_size)*local_size), sycl::range<1>(local_size)), [=](sycl::nd_item<1> item) {
+        auto idx=item.get_global_id(0);
+        y_acc[idx] = y_acc[idx] + a*x_acc[idx];
+      });
+```
+In the launching the programmer can define not only the number of work-items to execute the kernel, but also the size of the work-group. Both global and local coordinates of the work-item can be now obtained from the nd_item object (via `get_global_id()`, `get_global_linear_id()` and `get_local_id(()`, `get_local_linear_id` methods).
+**Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. 
 
       
