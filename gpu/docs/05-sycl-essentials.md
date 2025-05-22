@@ -26,11 +26,11 @@ lang:   en
 
  - **Performance**: implementations aim to optimize SYCL for specific hardware platforms
 
-# SYCL implementation
+# SYCL Implementation
 
 
   - specific  adaptation of the SYCL programming model
-    - **SYCL specific template-based interface**: interface for accesing functionalities and optimizations specific to SYCL
+    - **SYCL specific template-based interface**: interface for accessing functionalities and optimizations specific to SYCL
     - **compilers**:  translate the SYCL code into machine code that can run on various hardware accelerators
     - **backend support**: interface for various backends such as OpenCL, CUDA, HIP,  Level Zero, OpenMP
     - **runtime library**: manages the execution of SYCL applications, handling  memory management, task scheduling, and synchronization across different devices
@@ -161,7 +161,7 @@ void axpy(queue &q, const T &a, const std::vector<T> &x,
  - give more control over executions than:
     - `q.parallel_for(N, [=](id<1> i) { y[i] += a * x[i];});`
  - can have dependencies for ensuring desired order
- - are executed *asynchronous* within specific **context** and **queue**
+ - are executed *asynchronously* within specific **context** and **queue**
 <small>
 ```cpp  
   q.submit([&](handler &cgh) {
@@ -230,7 +230,7 @@ private:
 </div>
 
  - a grid of work-items is created on a specific device to perform the work. 
- - each work-item executes the same kernel
+ - each work-item executes the same kernel.
  - each work-item typically processes different elements of the data. 
  - there is no global synchronization or data exchange.
 
@@ -238,7 +238,7 @@ private:
 
 <div class="column">
 
- - **range** class to prescribe the span off iterations 
+ - **range** class to prescribe the span of iterations 
  - **id** class to index an instance of a kernel
  - **item** class gives additional functions 
 
@@ -279,7 +279,7 @@ cgh.parallel_for(range<1>(N), [=](item<1> item){
  - **nd_range** sets the global range and the local range 
  - iteration space is divided into work-groups
  - work-items within a work-group are scheduled on a single compute unit
- - **nd_item** enables to querying for work-group range and index.
+ - **nd_item** enables querying for work-group range and index.
 
 ```cpp
 cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
@@ -295,8 +295,8 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
         - faster to access than global memory
         - can be used as programmable cache
     - group-level *barriers* and *fences* to synchronize work-items within a group
-        - *barriers* force all work-items to reach a speciffic point before continuing
-        - *fences* ensures writes are visible to all work-items before proceeding
+        - *barriers* force all work-items to reach a specific point before continuing
+        - *fences* ensure writes are visible to all work-items before proceeding
     - group-level collectives, for communication, e.g. broadcasting, or computation, e.g. scans
         - useful for reductions at group-level
  
@@ -308,17 +308,17 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
      - **unified shared memory**: pointer-based approach to C/C++/CUDA/HIP
      - **images**: similar API to buffer types, but with extra functionality tailored for image processing (will not be discussed here)
 
-# Buffers and Accesors I
+# Buffers and Accessors I
  -  a **buffer** provides a high level abstract view of memory 
- - support 1-, 2-, or 3-dimensional data
- - dependencies between multiple kernels are implicitly handled
- - does not own the memory, it’s only a *constrained view* into it
+     - supports 1-, 2-, or 3-dimensional data
+     - dependencies between multiple kernels are implicitly handled
+     - does not own the memory, it’s only a *constrained view* into it
  - **accessor** objects are used to access the data
- - various access modes, *read_write*, *read_only*, or *write_only*
- - can target local memory, **local_accessor**
- - can have also **host_accessor**s
+     - various access modes, *read_write*, *read_only*, or *write_only*
+     - can target local memory, **local_accessor**
+     - can have also **host_accessor**s
 
-# Buffers and Accesors II
+# Buffers and Accessors II
  
 ```cpp
   std::vector<int> y(N, 1);
@@ -343,7 +343,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 - pointer-based approach similar  to C/CUDA C/HIP C
 - explicit allocation and  freeing of memory
 - explicit dependencies
-- explicit host-device transfers (unless using managaged)
+- explicit host-device transfers (unless using managed)
 - explicit host-device synchronization 
 
 # Unified Shared Memory II
@@ -405,8 +405,8 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
     - **in-order**: 
         - `queue q{property::queue::in_order()};`
         - creates a linear task graph
-        - a task/kernel  will start execution only when the preceeding is completed
-        - no conncurrent execution
+        - a task/kernel  will start execution only when the preceding is completed
+        - no concurrent execution
 
 # Dependencies via Buffer and Accessors API
 
@@ -462,14 +462,14 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
  - the queue **q** is **out-order**
  - kernel 1 and kernel 2 are independent; kernel 3 waits for kernel 1 and 2 
 
-# Event Based Dependencies I
+# Event-Based Dependencies I
  - most flexible way to force specific order of execution
  - methods on the **handler** class or on the **queue** class return  **event** class objects
       - `event e = q.submit(...)` or `event e = q.parallel_for(...)` 
  - en event or an array of events can  be passed to the **depends_on** method on a handler or to **parallel_for** invocations
       - `cgh.depends_on(e)`  or `q.parallel_for(range { N }, e, [=]...)` 
 
-# Event based dependencies II
+# Event-Based Dependencies II
 
 <div class="column">
 <small>
@@ -528,7 +528,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 # Synchronization with Host
 
  - `q.wait();` pauses the execution until all operations in a queue completed
-    - coarse synchonizations, not beneficial if only the results of some kernels are needed at the moment
+    - coarse synchronizations, not beneficial if only the results of some kernels are needed at the moment
  - synchronize on events,  `e.wait();` or `event::wait({e1, e2});`
     - fine control
  - use buffers features:
@@ -555,7 +555,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
   - in C++ errors are handled through exceptions:
     - **synchronous exceptions**:
         - thrown immediately when something fails (caught by `try..catch` blocks)
-  - SYCL kernels are executed asychronous:
+  - SYCL kernels are executed asychronously:
     - **asynchronous exceptions**:
         - caused by a "future" failure 
         - saved into an object 
@@ -614,8 +614,8 @@ auto exception_handler = [] (exception_list exceptions) {
 
 # Summary
  - single source, high-level, standard C++ programming model
- - can target various heterogenous platforms in a single application
+ - can target various heterogeneous platforms in a single application
  - Portability, Productivity, Performance
  - **queues**, **command groups**
- - **buffers and accesors API**, **unified shared memory**
+ - **buffers and accessors API**, **unified shared memory**
  - various ways to enforce dependencies, basic profiling, error handling
