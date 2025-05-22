@@ -78,7 +78,7 @@ When a buffer is destroyed the host can access again the data to which the buffe
 ```
 As long a host accessor is valid the data can not be accessed by other means. When they are destroyed the program can proceed with further calculations on host or devices.
 ## II. Memory management using Buffer and Accesors and `nd_range" Launching
-In the previous taks it was used a basic, simple way to launch kernels. This could be enough for many applications, but the `range` class is quite limited. It does not allow to use lower level features, like local share memory, in-work-grgoup  synchronizations or use the in-work-rgoup local index. In many cases (like matrix-matrix multiplication) more control is needed.  
+In the previous task a basic, simple way was used to launch kernels. This could be enough for many applications, but the `range` class is quite limited. It does not allow to use lower level features, like local share memory, in-work-grgoup  synchronizations or use the in-work-rgoup local index. In many cases (like matrix-matrix multiplication) more control is needed.  
 
 The axpy calculation does not need notions of locality within the kernel, but for its simplicity is a good exercise to familiarize with the syntax.
 
