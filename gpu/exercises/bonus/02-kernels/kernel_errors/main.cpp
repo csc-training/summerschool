@@ -3,10 +3,7 @@
 #include <math.h>
 #include <vector>
 
-// If you interested in what the LAUNCH_KERNEL macro
-// does, check out this file. You don't need to,
-// but it may be interesting/educational.
-#include "../error_checking.hpp"
+#include "../../../error_checking.hpp"
 
 __global__ void fill(size_t n, float a, float *arr) {
     const size_t tid = threadIdx.x + blockDim.y * blockDim.x;
@@ -77,7 +74,7 @@ int main() {
         printf("Hooray, you fixed it \\o/!\n");
     } else {
         printf("Something's wrong, error for fill should be exactly 0.0f. "
-               "Maybe compile without the '-DNEDBUG' flag and try again?\n");
+               "Maybe compile without the '-DNDEBUG' flag and try again?\n");
     }
 
     return 0;

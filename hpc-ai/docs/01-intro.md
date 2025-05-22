@@ -4,6 +4,13 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
+# AI vs. ML vs. DL
+
+<div class="column"  style="width:99%; text-align: center;">
+  ![](img/AI_ML_DL_differences.png){width=41%}
+  
+  <small>From [Introduction to Deep Learning](AI_ML_DL_differences.png) ENCCS training, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
+</div>
 
 # Machine Learning
 
@@ -135,7 +142,28 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
 - final result:
      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot  w_{j12}+w_{j22} \cdot\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}}+...]\cdot\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\cdot\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
        
-# Data
+# Data in Machine Learning
 
+- Computers only know about numbers
+- Data types in ML:
+    - **Numeric data**: array of numbers &rArr; `[1.0, 2.1, 3.4]`, `[4, 8, 15, 16, 23, 42]`
+    - **Image data**: pixels &rArr; $[R G B]$
+    - **Text data**: "Hello world"  &rArr; `[101, 7592]` (token IDs)
+- Neural Networks  are defined by parameters:
+    - $w_{ijl}$ -- weight $i$ in neuron $j$ in layer $l$
+    - GPT-4 $\approx$ 1.8 trillion parameters:
+         - 3.6 TB of memory
+         - $2\times N_{\textnormal{active param}}$ **FLOP** per token ($\approx 2\times 280 \times 10^{9}$)
+         - for learning the requirements are much larger ($\approx 10^{25}$ **FLOP** and 13 trilion tokens)
 
 # Summary
+
+- **Artificial intelligence**: capability of machine to act like a human
+  - learning, reasoning, problem-solving, perception, and decision-making
+- **Machine Learning**: learn from data without explicit instructions
+  - **Unsupervised**, **Supervised**, **Reinforcement**, ... 
+- **Deep Learning** is a subset of **Supervised Machine Learning**
+  - multiple layers of *artificial neurons* with non-linear *activation functions*
+  - **GPT** models can have **billions to trillions of parameters**
+  - **supercomputers** are essential for training and deploying large-scale models
+  - **high-quality** and **large amounts of data** are critical for good performance

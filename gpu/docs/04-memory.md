@@ -1,112 +1,78 @@
 ---
 title:  Memory allocations, access, and unified memory
-event:  CSC Summer School in High-Performance Computing 2022
-lang:   en
+subtitle: CSC Summer School in High-Performance Computing 
+author:   CSC Training
+date:     2025-03
+lang:     en
+pdfSeparateFragments: false
 ---
 
-
-# Memory allocations, access, and unified memory {.section}
 
 # Outline
 
 * Memory model and hierarchy
 * Memory management strategies
 * Page-locked memory
-* Coalesced memory access in device kernels
+* Asynchronous memory allocation
+
+# Memory model and hierarchy
+
+::::::{.columns}
+:::{.column width="60%"}
+::: {.fragment}
+- Registers (*VGPR, SGPR*)
+  - Compiler assigns automatically
+:::
+::: {.fragment}
+- Shared memory (*Local data share, LDS*)
+  - User controlled
+  - Shared by threads in a block
+:::
+::: {.fragment}
+- Local memory (*Scratch*)
+  - Automatically used when registers run out
+:::
+::: {.fragment}
+- Global device memory
+:::
+::: {.fragment}
+- Host memory
+:::
+:::
+::: {.column width="40%"}
+![](img/memory-hierarchy.png){width=100%}
+:::
+::::::
+
+::: {.notes}
+Extra: 
+- Not covered: texture memory, constant memory
+- Could be considered only when lower hanging optimisation tricks are covered
+- This lecture: host ⇄ global device memory
+:::
 
 
-# Memory model
+# Memory management strategies
 
-* Host and device have separate physical memories
-* It is generally not possible to call malloc() to allocate memory and access
-  the data from the GPU
-* Memory management can be
-    * Explicit (user manages the movement of the data and makes sure CPU and
-      GPU pointers are not mixed)
-    * Automatic, using Unified Memory (data movement is managed in the
-      background by the Unified Memory driver)
+Memory management can be *Explicit* or *Implicit*.
 
+:::{.incremental}
+- *Explicit*: User manually manages data movement between host and device. Host memory can be allocated with GPU-unaware allocators (`malloc`/`free` etc).
+- *Implicit*: The runtime manages data movement between host and device. Host memory needs to be allocated with special allocators.
+  - **Managed memory** (unified shared memory): Page faults will initiate data movement.
+  - **Page-locked** (pinned) host allocations: Data moves to device with kernel invocations and is not stored there.
+:::
 
-# Data movement
+* [HIP API documentation on memory](https://rocm.docs.amd.com/projects/HIP/en/docs-6.0.2/doxygen/html/group___memory_m.html)
 
-* Data copies between host and device are slow
-* To achieve best performance, the host-device data traffic should be minimized 
-    * Initialize arrays on the GPU
-    * Even if some pieces of the algorithm are better suited to the CPU, execute on the GPU to avoid moving data.
-* Not copying data back and forth between CPU and GPU every step or iteration can have a large performance impact!
-* When working with different data consider use a single malloc for worst case and reuse the same area: malloc is way slower than memcpy.
+# Memory management strategies
 
+::::::{.columns}
+:::{.column}
 
-# Device memory hierarchy
-
-<div class="column">
-- Registers (per-thread-access)
-- Local memory (per-thread-access)
-- Shared memory (per-block-access)
-- Global memory (global access)
-</div>
-
-<div class="column">
-![](img/memlayout.png){width=80%}
-</div>
-
-
-# Device memory hierarchy
-
-<div class="column">
-- Registers (per-thread-access)
-    - Used automatically
-    - Size on the order of kilobytes
-    - Very fast access
-- Local memory (per-thread-access)
-    - Used automatically if all registers are reserved
-    - Local memory resides in global memory
-    - Very slow access
-    - Cached (but very small if compared to cpu cache!)
-</div>
-
-<div class="column">
-- Shared memory (per-block-access)
-    - Usage must be explicitly programmed
-    - Size on the order of kilobytes
-    - Fast access
-- Global memory (per-device-access)
-    - Managed by the host through HIP API
-    - Size on the order of gigabytes
-    - Very slow access
-</div>
-
-
-# Device memory hierarchy (advanced)
-
-- There are more details in the memory hierarchy, some of which are
-  architecture-dependent, e.g.,
-    - Texture memory
-    - Constant memory
-- Complicates implementation
-- Should be considered only when a very high level of optimization is
-  desirable
-- Match particular compute patterns
-
-
-# Important memory operations
-
-```cpp
-// Allocate pinned device memory
-hipError_t hipMalloc(void **devPtr, size_t size)
-
-// Allocate Unified Memory; The data is moved automatically between host/device
-hipError_t hipMallocManaged(void **devPtr, size_t size)
-
-// Deallocate pinned device memory and Unified Memory
-hipError_t hipFree(void *devPtr)
-
-// Copy data (host-host, host-device, device-host, device-device)
-hipError_t hipMemcpy(void *dst, const void *src, size_t count, enum hipMemcpyKind kind)
-```
-
-# Example of explicit memory management
-
+:::{.fragment}
+<small>
+Explicit memory management
 ```cpp
 int main() {
  int *A, *d_A;
@@ -115,197 +81,237 @@ int main() {
  ...
  /* Copy data to GPU and launch kernel */
  hipMemcpy(d_A, A, N*sizeof(int), hipMemcpyHostToDevice);
- hipLaunchKernelGGL(...);
- ...
+ kernel<<<...>>>(d_A);
  hipMemcpy(A, d_A, N*sizeof(int), hipMemcpyDeviceToHost);
  hipFree(d_A);
- printf("A[0]: %d\n", A[0]);
+ // result is in A
  free(A);
- return 0;
 }
 ```
+</small>
+:::
+:::
+:::{.column}
 
-
-# Example of Unified Memory
-
+:::{.fragment}
+<small>
+Unified Memory management
 ```cpp
 int main() {
  int *A;
  hipMallocManaged((void**)&A, N*sizeof(int));
  ...
  /* Launch GPU kernel */
- hipLaunchKernelGGL(...);
+ kernel<<<...>>>(A);
  hipStreamSynchronize(0);
- ...
- printf("A[0]: %d\n", A[0]);
+ // result is in A
  hipFree(A);
- return 0;
 }
 ```
+:::
 
-# Unified Memory pros
+:::{.fragment}
+Host-pinned, automatic copy
+```cpp
+int main() {
+  int *A;
+  hipHostMalloc((void**) &A, N*sizeof(int));
+  kernel<<<...>>>(A)
+  hipStreamSynchronize(0);
+  // result is in A
+  hipHostFree(A);
+}
+```
+:::
 
-- Allows incremental development
-- Can increase developer productivity significantly
-    - Especially large codebases with complex data structures
-- Supported by the latest NVIDIA + AMD architectures
+</small>
+
+:::
+::::::
+
+
+# Unified Memory pros & cons
+
+::::::{.columns}
+:::{.column}
+**Pros**
+
+- Incremental development
+- Increased developer productivity
+  - Especially large codebases with complex data structures
 - Allows oversubscribing GPU memory on some architectures
+- Data transfer can be optimized later
+  - With prefetches and hints
 
-# Unified Memory cons
+:::
+:::{.column}
+**Cons**
 
-- Data transfers between host and device are initially slower, but can be
-  optimized once the code works
-    - Through prefetches
-    - Through hints
-- Must still obey concurrency & coherency rules, not foolproof
-- Easier to overlook optimization possibilities
+- Data access in device code is initially slower <br>⇒ Must be optimized with prefetches and hints
+- Externalize memory management to library
 
-
-# Unified Memory workflow for GPU offloading
-
-1. Allocate memory for the arrays accessed by the GPU with
-   `hipMallocManaged()` instead of `malloc()`
-    - It is a good idea to have a wrapper function and use conditional compilation
-      for memory allocations
-2. Offload compute kernels to GPUs
-3. Check profiler backtrace for GPU->CPU Unified Memory page-faults (NVIDIA
-   Visual Profiler, Nsight Systems, AMD omniperf, rocprof)
-    - This indicates where the data residing on the GPU is accessed by the CPU
-      (very useful for large codebases, especially if the developer is new to
-      the code)
-
-
-# Unified Memory workflow for GPU offloading
-
-4.  Move operations from CPU to GPU if possible, or use hints / prefetching
-    (`hipMemAdvice()` / `hipMemPrefetchAsync()`)
-    -  It is not necessary to eliminate all page faults, but eliminating the
-       most frequently occurring ones can provide significant performance
-       improvements
-5.  Allocating GPU memory can have a much higher overhead than allocating
-    standard host memory
-    - If GPU memory is allocated and deallocated in a loop, consider using a
-      GPU memory pool allocator for better performance
-
-
-# Virtual Memory addressing
-
-<div class="column">
-- Modern operating systems utilize virtual memory
-    - Memory is organized to memory pages
-    - Memory pages can reside on swap area on the disk (or on the GPU with
-      Unified Memory)
-</div>
-
-<div class="column">
-![](img/virtual_memory_addressing.png){width=50%}
-</div>
+:::
+::::::
 
 # Page-locked (or pinned) memory
 
-- Normal `malloc()` allows swapping and page faults
-- User can page-lock an allocated memory block to a particular physical memory
-  location
-- Enables Direct Memory Access (DMA)
-- Higher transfer speeds between host and device
-- Copying can be interleaved with kernel execution
-- Page-locking too much memory can degrade system performance due to paging
-  problems
+:::{.fragment}
+- Normal `malloc` allows swapping, page migration and page faults
+- `hipHostMalloc` page-locks the allocation to a physical memory location
+  - Deallocate with `hipFreeHost()`
 
-# Allocating page-locked memory on host
+Benefits of page-locking:
+:::
 
-- Allocated with `hipHostMalloc()` function instead of `malloc()`
-- The allocation can be mapped to the device address space for device access
-  (slow)
-    - On some architectures, the host pointer to device-mapped allocation can
-      be directly used in device code (i.e. it works similarly to Unified
-      Memory pointer, but the access from the device is slow)
-- Deallocated using `hipHostFree()`
+:::{.incremental}
+
+1. ***Allow actually asynchronous memory copies***
+2. (possibly) Higher transfer speeds between host and device via direct memory access (DMA)
+3. Access host memory from GPU without explicit `hipMemCpy`. Useful in sporadic access pattern, *very slow*
+
+:::
+
+:::{.notes}
+- having too much page-locked allocs is almost never a problem
+:::
+
+---
+
+## Async memory copy with regular vs page-locked memory
+
+![](./img/regular_mem_async.png)
+
+![](./img/pinned_mem_async.png)
 
 # Asynchronous memcopies
 
-- Normal `hipMemcpy()` calls are blocking (i.e. synchronizing)
+- Normal `hipMemcpy()` calls are blocking (ie, synchronizing)
     - The execution of host code is blocked until copying is finished
 - To overlap copying and program execution, asynchronous functions are required
-    - Such functions have *Async* suffix, e.g. `hipMemcpyAsync()`
+    - Such functions have Async suffix, eg, `hipMemcpyAsync()`
 - User has to synchronize the program execution
-- Requires page-locked memory
+- Concurrency with memory copy and computation requires page-locked host allocations
 
-# Asynchronous Malloc
+# Explicit memory API calls
 
-- `hipMallocAsync()` and `hipFreeAsync()` allow the developer to:
-	- treat memory allocation and free as asynchronous operations
-	- use memory pool (i.e. subsequent alloc/frees are less expensive)
+- Allocate device memory
+  ```cpp
+  hipError_t hipMalloc(void **devPtr, size_t size)
+  ```
 
-# Global memory access in device code
+- Copy data
+  ```cpp
+  hipError_t hipMemcpy(void *dst, const void *src, size_t count, enum hipMemcpyKind kind)
+  ```
+  Where `kind`:
+    - **`hipMemcpyDefault`**, *or* <br> `hipMemcpyDeviceToHost`, `hipMemcpyHostToDevice`, <br>`hipMemcpyHostToHost`, `hipMemcpyDeviceToDevice`
 
-- Global memory access from the device is slow
-- Threads are executed in warps, memory operations are grouped in a similar
-  fashion
-- Memory access is optimized for coalesced access where threads read from and
-  write to successive memory locations
-- Exact alignment rules and performance issues depend on the architecture
+- Deallocate device memory
+  ```cpp
+  hipError_t hipFree(void *devPtr)
+  ```
 
-# Coalesced memory access
+# Explicit memory API calls
+
+Page-locked host memory
+
+- Allocate/free page-locked host memory
+  ```cpp 
+    hipHostMalloc(void **ptr, size_t size);
+    hipHostFree(void *ptr);
+  ```
+- Memory copy functions are the same as with normally allocated memory
+
+# Unified memory API calls
+
+Also known as [*Managed memory*](https://rocm.docs.amd.com/projects/HIP/en/docs-6.0.2/doxygen/html/group___memory_m.html)
+
+- Allocate Unified Memory
+  ```cpp
+  hipError_t hipMallocManaged(void **devPtr, size_t size)
+  ```
+- Deallocate unified memory (same as explicitly managed memory)
+  ```cpp
+  hipError_t hipFree(void *devPtr)
+  ```
+- Prefetch (asynchronously):
+  ```cpp
+  hipError_t hipMemPrefetchAsync( void *dev_ptr, size_t size, int device, hipStream_t stream)
+  ```
+- Advise about memory access (more in [HIP API Documentation](https://rocm.docs.amd.com/projects/HIP/en/docs-6.0.2/doxygen/html/group___global_defs.html#ga2757323c1ac94b1d71f699fcbd5bdc2f))
+  ```cpp
+  hipError_t hipMemAdvise(void *dev_ptr, size_t size, hipMemoryAdvise advise, int device)
+  ```
+
+# Asynchronous allocation: The stream-ordered memory allocator and memory pools 
+
+- Benefit of asynchronous memory management: allocate/free memory from/to a pool
+- By default the pool is only deallocated when the stream is synchronized and latest call is `hipFreeAsync`
+
+<small>
+
+| Description | API call |
+|--|--|
+| Allocate memory from pool. If pool is too small, assign more memory to it. | `hipMallocAsync(void** devPtr, size_t size, hipStream_t hStream)` |
+| Free memory to the pool in the specific stream | `hipFreeAsync(void* devPtr, hipStream_t hStream)` |
+
+</small>
+
+:::{.notes}
+**Extra:**
+- Modify default behaviour: resize pool down to value when synchronizing (`hipDeviceGetDefaultMemPool`, `hipMemPoolSetAttribute`, `hipMemPoolAttrReleaseThreshold`)
+- beta version
+:::
+
+# Memory pools - Example
+<small>
 
 <div class="column">
-- The global memory loads and stores consist of transactions of a certain size
-  (e.g. 32 bytes)
-- If the threads within a warp access data within such a block of 32 bytes,
-  only one global memory transaction is needed
+Example 1 - slow
+```cpp
+for (int i = 0; i < 100; i++) {
+  // Allocate memory here (slow)
+  hipMalloc(&ptr, size); 
+  // Run GPU kernel
+  kernel<<<..., stream>>>(ptr);
+  // Deallocate memory here
+  hipFree(ptr); 
+}
+// Synchronize the default stream (no influence to memory allocations)
+hipStreamSynchronize(0); 
+```
+* Allocating and deallocating memory in a loop is slow, and can have a significant impact on the performance
 </div>
-
 <div class="column">
-- Now, 32 threads within a warp can each read a different 4-byte integer value
-  with just 4 transactions
-- When the stride between each 4-byte integer is increased, more transactions
-  are required (up to 32 for the worst case)!
-</div>
-
-# Coalesced memory access example
-
-<div class="column" style="width:49%;">
-<small>
-<p>
-```
-__global__ void memAccess(float *out, float *in)
-{
- int tid = blockIdx.x*blockDim.x + threadIdx.x;
- if(tid != 12) out[tid + 16] = in[tid + 16];
+Example 2 - fast
+```cpp
+for (int i = 0; i < 100; i++) {
+  // Obtain unused memory from the current memory pool, 
+  // more memory is allocated for the pool if needed
+  hipMallocAsync(&ptr, size, stream); 
+  // Run GPU kernel
+  kernel<<<..., stream>>>(ptr);
+  // Return memory to the current memory pool
+  hipFreeAsync(ptr, stream); 
 }
+// Synchronize and deallocate all memory from the 
+// current memory pool (default behavior)
+hipStreamSynchronize(stream); 
 ```
-</p>
-</small>
-<p>
-![](img/coalesced_access_4.png){width=80%}
-</p>
-</div>
+* Recurring memory allocation and deallocation does not occur anymore, because the memory is obtained from the memory pool and only deallocated during the synchronization (default behavior)
 
-<div class="column" style="width:49%">
-<small>
-<p>
-```
-__global__ void memAccess(float *out, float *in)
-{
- int tid = blockIdx.x*blockDim.x + threadIdx.x;
- out[tid + 1] = in[tid + 1];
-}
-```
-</p>
-</small>
-<p>
-![](img/coalesced_access_3.png){width=80%}
-</p>
 </div>
+</small>
 
+:::{.notes}
+- ROCm has memory leak bug related to mallocasync and freeasync
+:::
 
 # Summary
 
 - Host and device have separate physical memories
-- Using Unified Memory can improve developer productivity and result in a
-  cleaner implementation
-- The number of data copies between CPU and GPU should be minimized
-    - With Unified Memory, if data transfer cannot be avoided, using hints or
-      prefetching to mitigate page faults is beneficial
-- Coalesced memory access in the device code is recommended for better
-  performance
+  - The data copies between CPU and GPU should be minimized
+- Explicit or implicit memory management
+  - Page-locked host allocation: async memory copies, DMA and kernel access to host memory 
+  - Unified Memory: improve productivity and cleaner implementation
+- Asynchronous allocation and deallocation: memory pools
