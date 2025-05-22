@@ -17,10 +17,11 @@ Use the skeleton provided in `saxpy_buffer_simple.cpp`. Look for the **//TODO** 
 
 ### Step 1: Define a Queue
 Start by defining a **queue**  and selecting the appropriate device selector. SYCL provides predefined selectors, such as: default, gpu, cpu, accelerator:
-    - `queue q(default_selector_v);` targets the best device 
-    - `queue q(cpu_selector_v);` targets the best CPU
-    - `queue q(gpu_selector_v);` targets the best GPU
-    - `queue q(accelerator_selector_v);` targets the best accelerator
+
+- `queue q(default_selector_v);` targets the best device
+-  `queue q(cpu_selector_v);` targets the best CPU
+-  `queue q(gpu_selector_v);` targets the best GPU
+-  `queue q(accelerator_selector_v);` targets the best accelerator
     
 Alternatively it is possible to use the procedure from the [previous exercise](../01-info/enumerate_device.cpp). This the recommended way when the application can detect than one GPU and needs to assign specific devices accordingley to the MPI rank or (CPU) OpenMP thread index.
 
