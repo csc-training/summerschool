@@ -1,4 +1,4 @@
-# SAXPY with SYCL
+# AXPY with SYCL
 
 In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise will will be used to exemplify all the SYCL concepts presented in the lecture.
 
@@ -26,7 +26,7 @@ Next, create buffers to encapsulate the data. For a one-dimensional array of int
 ```cpp
     sycl::buffer<int, 1> x_buf(P, sycl::range<1>(N));
 ```
-Use the appropriate data type. For this exercise single precision floats are used. 
+Use the appropriate data type. 
 
 
 ### Step 3: Create Accessors
