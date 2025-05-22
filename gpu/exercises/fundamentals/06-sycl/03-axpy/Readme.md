@@ -88,10 +88,13 @@ Starting from the solution of the task I change the way the kernel is launched f
 ```cpp
    h.parallel_for(sycl::nd_range<1>(sycl::range<1>(((N+local_size-1)/local_size)*local_size), sycl::range<1>(local_size)), [=](sycl::nd_item<1> item) {
         auto idx=item.get_global_id(0);
-        y_acc[idx] = y_acc[idx] + a*x_acc[idx];
+        if(idx<N){ //to avoid out of bounds access
+          y_acc[idx] = y_acc[idx] + a*x_acc[idx];
+        }
       });
 ```
 In the launching the programmer can define not only the number of work-items to execute the kernel, but also the size of the work-group. Both global and local coordinates of the work-item can be now obtained from the nd_item object (via `get_global_id()`, `get_global_linear_id()` and `get_local_id(()`, `get_local_linear_id` methods).
-**Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. 
+
+**Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. Asumming `local_size` for the work-group, `(N+local_size-1)/local_size)*local_size)` need work-items to be created. This number can be larger than `N`is `N`is not divisible by `local_size`.
 
       
