@@ -1,11 +1,12 @@
 
 /*
  * This code uses default stream
- * Task is 
- * - to place kernel_{a,b,c} to separate streams and execute kernels asynchronously
- * - validate that kernels execute concurrently with `srun ... rocprof --hip-trace ./02-asynckernel.cpp`
- *   - look for file "results.json"
+ * Task:
+ * - Place kernel_{a,b,c} in separate streams and execute them asynchronously
+ * - Validate that concurrency with `srun ... rocprof --hip-trace ./02-asynckernel.cpp`
+ *   - Open chromium url chrome://tracing or https://ui.perfetto.dev, open file "results.json"
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../error_checking.hpp"
