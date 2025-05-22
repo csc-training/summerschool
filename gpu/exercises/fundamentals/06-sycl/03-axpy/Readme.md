@@ -1,4 +1,4 @@
-# SAXPY with SYCL
+# AXPY with SYCL
 
 In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise will will be used to exemplify all the SYCL concepts presented in the lecture.
 
@@ -16,8 +16,14 @@ In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise w
 Use the skeleton provided in `saxpy_buffer_simple.cpp`. Look for the **//TODO** lines.
 
 ### Step 1: Define a Queue
-Start by defining a **queue**  and selecting the appropriate device selector. SYCL provides predefined selectors, such as: default, gpu, cpu, accelerator or you can use the procedure from the [previous exercise](../01-info/enumerate_device.cpp).
+Start by defining a **queue**  and selecting the appropriate device selector. SYCL provides predefined selectors, such as: default, gpu, cpu, accelerator:
 
+- `queue q(default_selector_v);` targets the best device
+-  `queue q(cpu_selector_v);` targets the best CPU
+-  `queue q(gpu_selector_v);` targets the best GPU
+-  `queue q(accelerator_selector_v);` targets the best accelerator
+    
+Alternatively it is possible to use the procedure from the [previous exercise](../01-info/enumerate_device.cpp). This the recommended way when the application can detect than one GPU and needs to assign specific devices accordingly to the MPI rank or (CPU) OpenMP thread index.
 
 
 ### Step 2: Create Buffers
@@ -26,7 +32,7 @@ Next, create buffers to encapsulate the data. For a one-dimensional array of int
 ```cpp
     sycl::buffer<int, 1> x_buf(P, sycl::range<1>(N));
 ```
-Use the appropriate data type. For this exercise single precision floats are used. 
+Use the appropriate data type. 
 
 
 ### Step 3: Create Accessors
@@ -52,10 +58,11 @@ Once accessors are ready, submit the task to the device using the `.parallel_for
    h.parallel_for(sycl::range{N}, [=](sycl::id<1> idx) {
         y_acc[idx] = y_acc[idx] + a*x_acc[idx];
       });
-```  
+```
 Here: 
  - `sycl::range{N}` or `sycl::range(N)` specify number of work-items be launched 
  - `sycl::id<1>` represents the index used within the kernel.
+**Optional**: use **item** class instead of **id**. Modify the lambda function to use the  **sycl::item** class instead of the **sycl::id** class. In this case the index `idx` is obtained from the `.get_id()` member.
 
-**Optional**: use **item** class instead of **id**. Modify the lambda function to use the  **sycl::item** class instead of the **sycl::::id** class. In this case the index `idx` is obtained from the `.get_id()` member.
-
+### Step 5: Check the results using `host_accessor`
+When a buffer is destroyr
