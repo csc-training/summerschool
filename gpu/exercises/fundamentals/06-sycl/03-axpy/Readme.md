@@ -64,3 +64,5 @@ Here:
  - `sycl::id<1>` represents the index used within the kernel.
 **Optional**: use **item** class instead of **id**. Modify the lambda function to use the  **sycl::item** class instead of the **sycl::::id** class. In this case the index `idx` is obtained from the `.get_id()` member.
 
+### Step 5: Check the results using `host_accessor`
+
