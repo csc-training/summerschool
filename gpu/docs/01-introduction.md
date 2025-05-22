@@ -252,7 +252,7 @@ $$\vec{y} \approx \sum_{n = 0}^{N} \frac{\vec{x}^n}{n!}$$
 
 ::::::
 :::::: {.column width="80%"}
-![](img/runtimes_0.png){.center width=100%}
+![](img/runtimes_0.png){.center width=120%}
 ::::::
 :::::::::
 
@@ -274,7 +274,7 @@ $$\vec{y} \approx \sum_{n = 0}^{N} \frac{\vec{x}^n}{n!}$$
 
 ::::::
 :::::: {.column width="80%"}
-![](img/runtimes_16.png){.center width=100%}
+![](img/runtimes_16.png){.center width=120%}
 ::::::
 :::::::::
 
@@ -304,7 +304,7 @@ $$\vec{y} \approx \sum_{n = 0}^{N} \frac{\vec{x}^n}{n!}$$
 
 ::::::
 :::::: {.column width="80%"}
-![](img/runtimes_all.png){.center width=100%}
+![](img/runtimes_all.png){.center width=120%}
 ::::::
 :::::::::
 
@@ -653,7 +653,7 @@ The point of view of a single thread is "I'm going to take this single value fro
 :::
 ::::::::: {.columns}
 :::::: {.column width="40%"}
-- Context: Execute some code over the size of the arrays using a douple loop
+- Context: Execute some code over the size of the arrays using a double loop
 - Single thread point of view: Perform addition of two elements $c_{ij} = a_{ij} + b_{ij}$
 ::::::
 :::::: {.column width="60%"}
@@ -874,9 +874,9 @@ someKernel<<<grid, block>>>(arguments);
 
 ![](img/twod_block_oned_grid.png){width=80%}
 
-# Part 4: Software - Hardware mapping {.section}
+# Part 4: Software – Hardware mapping {.section}
 
-# Grid - Device
+# Grid – Device
 
 ::: notes
 So we've defined our grid and written some code. How do these software constructs (thread, block, grid) map to the hardware?
@@ -886,7 +886,7 @@ The grid maps to a single device (GPU): we're telling a single device to run som
 
 ![](img/grid_gpu.png){.center width=100%}
 
-# Block - SM/CU
+# Block – SM/CU
 
 ::: notes
 Each block of threads in the grid gets mapped to a single CU/SM.
@@ -894,7 +894,7 @@ Each block of threads in the grid gets mapped to a single CU/SM.
 
 ![](img/blocks_to_sm_cus.png){.center width=100%}
 
-# Blocks - SM/CU
+# Blocks – SM/CU
 
 ::: notes
 Side note: Many blocks (from a single or multiple grids) may map to the same CU/SM.
@@ -904,7 +904,7 @@ However, the reverse is not possible. One block always maps to a single CU/SM, n
 
 ![](img/many_blocks_to_one_sm.png){.center width=100%}
 
-# Block - SM/CU
+# Block – SM/CU
 
 ::: notes
 Each block of threads in the grid gets mapped to a single CU/SM.
