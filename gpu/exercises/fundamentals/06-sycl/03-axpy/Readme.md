@@ -23,7 +23,7 @@ Start by defining a **queue**  and selecting the appropriate device selector. SY
 -  `queue q(gpu_selector_v);` targets the best GPU
 -  `queue q(accelerator_selector_v);` targets the best accelerator
     
-Alternatively it is possible to use the procedure from the [previous exercise](../01-info/enumerate_device.cpp). This the recommended way when the application can detect than one GPU and needs to assign specific devices accordingley to the MPI rank or (CPU) OpenMP thread index.
+Alternatively it is possible to use the procedure from the [previous exercise](../01-info/enumerate_device.cpp). This the recommended way when the application can detect than one GPU and needs to assign specific devices accordingly to the MPI rank or (CPU) OpenMP thread index.
 
 
 ### Step 2: Create Buffers
