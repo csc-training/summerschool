@@ -117,23 +117,29 @@ The memory on the device is allocate C style using `malloc_device` function:
 
 
 ### Step 3: Copy data from host to device
-The transffer of the data is subimtted to a specific queue and it is asynchronous. Hence `.wait()` 
+The transfer of the data is submitted to a specific queue:
+```cpp
+   q.memcpy(x_dev, x.data(), sizeof(int) * N).wait();
+```
+The `memcopy()`is used. The first argument is the destination pointer, the second the source pointer, and finally the size of the data in bytes. This operation is asynchronous. Hence `.wait()`. This method pauses the program execution until the operation is completed. Otherwise a subsequent operation submitted to the same queue might start before the data is transfered to the GPU.
+
+### Step 4: Submit the Task using Basic Submission
+This is done similarly to taks I
+```cpp
+    q.submit([&](handler& h) {
+
+       h.parallel_for(sycl::range{N}, [=](sycl::id<1> idx) {
+        y_acc[idx] = y_acc[idx] + a*x_acc[idx];
+      });
+    }).wait();
+``` 
+In this case `.wait()`  method pauses the prorgam until the the operation is 
+### Step 5: Access the results on host
+When using USM and `malloc_device` the transfer from device to host needs to be explicitely coded. The same method `memcopy()` is used:
 
 ```cpp
    q.memcpy(x_dev, x.data(), sizeof(int) * N).wait();
 ```
-or  
-```cpp
-   auto a_acc = sycl::accessor{a_buf, h, sycl::read_write};
-```
-### Step 4: Submit the Task using Basic Submission
-
-Same as task I
-
-### Step 5: Access the results on host
-
-
-
-
+Now the destination is the host pointer (first argument), while the 
 
 
