@@ -155,7 +155,7 @@ LAUNCH_KERNEL(bar, dim3(32, 1, 1), 128, 0, 0, 16);
 // - argument n = 16
 
 LAUNCH_KERNEL(baz, dim3(1, 1, 1), dim3(128, 1, 8), 0, 0, 16, d_arr);
-// launch kernel 'bar' with
+// launch kernel 'baz' with
 // - 1 block
 // - 1024 threads per block (128 in x & 8 in z dimension)
 // - 0 bytes of dynamic shared memory
@@ -402,9 +402,69 @@ The strategy used in the previous exercise was to couple the size of data to the
 It can be a good strategy for some situations, but other times it's better to reuse the threads and process
 multiple values per thread.
 
-In this exercise we'll be computing the Taylor expansion of y = e^x for a vector of values x.
+In this exercise we'll be computing the Taylor expansion of
+$$\vec{y} = e^{\vec{x}} \approx \sum_{n = 0}^{N} \frac{\vec{x}^n}{n!}$$
+for a vector of values x and for different values of $N$.
 
-TODO: write more stuff here.
+If you're familiar with multithreaded CPU code, you might do something like:
+- Split the data of size $M$ equally between $T$ threads (assuming $M$ divides by $T$)
+- Each thread processes $M/T$ consecutive values:
+    - thread 0 processes `data[0], data[1], ..., data[M/T - 1]`
+    - thread 1 processes `data[M/T], data[M/T + 1], ..., data[2 * M/T - 1]`
+    - and so on
+
+As a kernel, it would look like this:
+```cpp
+__global__ void taylor_for_consecutive(float *x, float *y, size_t num_values,
+                                       size_t num_iters) {
+    // Global thread id, i.e. over the entire grid
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+    // How many threads in total in the entire grid
+    const size_t num_threads = blockDim.x * gridDim.x;
+
+    // How many elements per thread
+    const size_t num_per_thread = num_values / num_threads;
+
+    // Process num_per_thread consecutive elements
+    for (size_t i = 0; i < num_per_thread; i++) {
+        // tid      elems
+        //   0      [0, num_per_thread - 1]
+        //   1      [num_per_thread, 2 * num_per_thread - 1]
+        //   2      [2 * num_per_thread, 3 * num_per_thread - 1]
+        //   and so on...
+        const size_t j = tid * num_per_thread + i;
+        y[j] = taylor(x[j], num_iters);
+    }
+
+    // How many are left over
+    const size_t left_over = num_values - num_per_thread * num_threads;
+
+    // The first threads will process one more, so the left over values
+    // are also processed
+    if (tid < left_over) {
+        // tid      elem
+        //   0      num_per_thread * num_threads
+        //   1      num_per_thread * num_threads + 1
+        //   2      num_per_thread * num_threads + 2
+        //   and so on...
+        const size_t j = num_per_thread * num_threads + tid;
+        y[j] = taylor(x[j], num_iters);
+    }
+}
+```
+
+In CPU code this is a valid strategy, but for GPUs it can be tens of times slower
+than just launching a large enough grid such that each thread processes a single element.
+The reason is related to how GPUs access memory. We will learn much more about that later.
+
+A significantly more GPU friendly way of doing the same is to use a 'strided loop':
+- Consecutive threads process consecutive elements
+- Then all threads jump forward a constant amount (usually the total number of threads participating in the loop)
+- Repeat
+
+This way the threads of a warp always access memory close to each other: the memory needs of the warp can be
+served with fewer memory accesses.
 
 Head over to the [exercise](07_taylor_for) and follow the [instructions](07_taylor_for/README.md) there.
 
@@ -412,6 +472,7 @@ Head over to the [exercise](07_taylor_for) and follow the [instructions](07_tayl
 
 If you've reached this far, congratulations! You've learned the very basics of launching kernels
 on the GPU, calling the HIP API and finding out about and fixing errors related to the kernels & API.
+You also learned something about re-using threads.
 
 If you're hungry for more, you can find more exercises applying the learned topics in the
 [bonus](../../bonus/02-kernels) diretory.

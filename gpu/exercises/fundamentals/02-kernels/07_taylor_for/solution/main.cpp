@@ -3,7 +3,7 @@
 #include <hip/hip_runtime.h>
 
 // This file include macros for checking the API and kernel launch errors
-#include "../../../error_checking.hpp"
+#include "../../../../error_checking.hpp"
 
 __device__ __host__ float taylor(float x, size_t N) {
     float sum = 1.0f;
@@ -21,6 +21,26 @@ __global__ void taylor_base(float *x, float *y, size_t num_values,
     if (tid < num_values)
     {
         y[tid] = taylor(x[tid], num_iters);
+    }
+}
+
+__global__ void taylor_vec(float *x, float *y, size_t num_values,
+                           size_t num_iters) {
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    float4 *xv = reinterpret_cast<float4 *>(x);
+    float4 *yv = reinterpret_cast<float4 *>(y);
+
+    if (tid < num_values >> 2) {
+        const float4 xs = xv[tid];
+        const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
+                        taylor(xs.z, num_iters), taylor(xs.w, num_iters));
+
+        yv[tid] = ys;
+    }
+
+    const size_t index = num_values - num_values & 3 + tid;
+    if (index < num_values) {
+        y[index] = taylor(x[index], num_iters);
     }
 }
 
@@ -64,12 +84,31 @@ __global__ void taylor_for_consecutive(float *x, float *y, size_t num_values,
 
 __global__ void taylor_for_strided(float *x, float *y, size_t num_values,
                                    size_t num_iters) {
-    // TODO: Fill in this kernel
-    // Check the lecture slides for HIP kernels for an example on how to do a
-    // strided for loop
-
-    for (size_t i;; /*TODO: fill me in*/) {
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    const size_t stride = blockDim.x * gridDim.x;
+    for (size_t i = tid; i < num_values; i += stride) {
         y[i] = taylor(x[i], num_iters);
+    }
+}
+
+__global__ void taylor_for_vec(float *x, float *y, size_t num_values,
+                               size_t num_iters) {
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    const size_t stride = blockDim.x * gridDim.x;
+
+    float4 *xv = reinterpret_cast<float4 *>(x);
+    float4 *yv = reinterpret_cast<float4 *>(y);
+    for (size_t i = tid; i < num_values / 4; i += stride) {
+        const float4 xs = xv[i];
+        const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
+                        taylor(xs.z, num_iters), taylor(xs.w, num_iters));
+
+        yv[i] = ys;
+    }
+
+    const size_t index = num_values - num_values & 3 + tid;
+    if (index < num_values) {
+        y[index] = taylor(x[index], num_iters);
     }
 }
 
@@ -167,6 +206,15 @@ int main(int argc, char **argv) {
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Base result incorrect");
 
+    // Using float4s to load and process 4 values at a time: reduce the number
+    // of blocks by 4
+    blocks /= 4;
+    blocks += 4 * threads * blocks < num_values ? 1 : 0;
+    const auto vec_runtime = run_and_measure(taylor_vec, blocks, threads,
+                                             num_values, num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Vectorized result incorrect");
+
     // Kernels with thread re-use can use arbitrary grid size. It should be
     // large enough to utilize all the availabe CUs of the GPU, however.
     blocks = 1024;
@@ -184,11 +232,17 @@ int main(int argc, char **argv) {
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Strided result incorrect");
 
-    std::printf("Base runtime in microseconds, relative runtimes for strided & "
-                "consecutive loops\n");
-    std::printf("%ld, %f, %f\n", base_runtime,
+    // Vectorized loads in loop
+    const auto vec_for_runtime = run_and_measure(
+        taylor_for_vec, blocks, threads, num_values, num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Vec for result incorrect");
+
+    std::printf("%ld, %f, %f, %f, %f\n", base_runtime,
+                static_cast<float>(vec_runtime) / base_runtime,
                 static_cast<float>(strided_runtime) / base_runtime,
-                static_cast<float>(consecutive_runtime) / base_runtime);
+                static_cast<float>(consecutive_runtime) / base_runtime,
+                static_cast<float>(vec_for_runtime) / base_runtime);
 
     std::free(h_x);
     std::free(h_y);

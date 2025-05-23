@@ -13,6 +13,9 @@
 #
 #ml PrgEnv-amd
 #
+#export HIPCC_COMPILE_FLAGS_APPEND="--offload-arch=gfx90a $(CC --cray-print-opts=cflags)"
+#export HIPCC_LINK_FLAGS_APPEND=$(CC --cray-print-opts=libs)
+#
 #hipcc -O3 main.cpp
 
 echo "nti, vs, us, vec, strided, consecutive, vec_for" > runtimes.dat
