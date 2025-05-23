@@ -1,4 +1,4 @@
-# AXPY with SYCL
+# AXPY with SYCL using essentials
 
 In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise will will be used to exemplify all the SYCL concepts presented in the lecture.
 
@@ -9,6 +9,7 @@ In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise w
   1. transfer the necesary data from CPU to device (not needed when the problem is initialized on the device)
   1. do the final `axpy` computation in a separate kernel 
   1. copy data to host to check the results
+
 
 ## I. Memory management using Buffer and Accesors and Basic Kernel Launching
 
@@ -101,4 +102,38 @@ In the launching the programmer can define not only the number of work-items to 
 The task is to write a code performing an `AXPY` operation, but this time the memory management is done using the Unified Shared Memory (USM). The structure of the code is practically the same. 
 
 Start from the skeleton code  [`saxpy.cpp`](saxpy.cpp). Look for the **//TODO** lines.
-  
+
+
+### Step 1: Define a Queue
+Same as in task I
+
+### Step 2: Allocate device memory using USM
+The memory on the device is allocate C style using `malloc_device` function:
+
+```cpp
+    int* x_dev = sycl::malloc_device<int>(N, q);
+```
+**Note** how the device pointers are associated with a specific queue.
+
+
+### Step 3: Copy data from host to device
+The transffer of the data is subimtted to a specific queue and it is asynchronous. Hence `.wait()` 
+
+```cpp
+   q.memcpy(x_dev, x.data(), sizeof(int) * N).wait();
+```
+or  
+```cpp
+   auto a_acc = sycl::accessor{a_buf, h, sycl::read_write};
+```
+### Step 4: Submit the Task using Basic Submission
+
+Same as task I
+
+### Step 5: Access the results on host
+
+
+
+
+
+
