@@ -129,7 +129,7 @@ This is done similarly to taks I
     q.submit([&](handler& h) {
 
        h.parallel_for(sycl::range{N}, [=](sycl::id<1> idx) {
-        y_ddev[idx] = y_dev[idx] + a*x_dev[idx];
+        y_dev[idx] = y_dev[idx] + a*x_dev[idx];
       });
     }).wait();
 ``` 
@@ -140,9 +140,12 @@ When using USM and `malloc_device` the transfer from device to host needs to be 
 ```cpp
    q.memcpy(x.data(), x_dev, sizeof(int) * N).wait();
 ```
-Now the destination is the host pointer (first argument), while the source argument is the device pointer.
-Again the `.wait()` method is needed to pause the prorgam execution. This way it is guaranteed that the next step is not executed before all data from device is transfered.
+Now the destination is the host pointer (first argument), while the source (second argument) is the device pointer.
+Again the `.wait()` method is needed to pause the program execution. This way it is guaranteed that the next step is not executed before all data from device is transfered.
 
+##  IV 
+## Task V (Optional) USM with 
+The `malloc_device()`  function allocates memory on the devices which is pinned to the device. There can be no migration to host and furthermore the host can not access in anyway this data. In order to simplify the progrgammer's life SYCL provides also mechanims allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encoutered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device.
 
 
 
