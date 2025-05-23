@@ -278,9 +278,27 @@ HIP_ERRCHK(hipMalloc(&ptr, bytes));
 
 ```
 
-# TODO: Error checking kernel launch
+# Error checking kernel launch
 
-Add here an example of error checking a kernel launch with bad parameters
+- kernel launches may fail due to bad conf param: catch with macro!
+
+```cpp
+#define LAUNCH_KERNEL(kernel, ...) launch_kernel(#kernel, __FILE__, __LINE__, kernel, __VA_ARGS__)
+template <typename... Args>
+void launch_kernel(const char *kernel_name, const char *file, int32_t line,
+                   void (*kernel)(Args...), dim3 blocks, dim3 threads,
+                   size_t num_bytes_shared_mem, hipStream_t stream, Args... args) {
+    auto result = hipGetLastError();
+    kernel<<<blocks, threads, num_bytes_shared_mem, stream>>>(args...);
+    result = hipGetLastError();
+    if (result != hipSuccess) {
+        printf("Error with kernel \"%s\" in %s at line %d\n%s: %s\n",
+               kernel_name, file, line, hipGetErrorName(result),
+               hipGetErrorString(result));
+        exit(EXIT_FAILURE);
+    }
+}
+```
 
 # Example: fill (complete device code and launch)
 
@@ -288,6 +306,7 @@ Add here an example of error checking a kernel launch with bad parameters
 #include <hip/hip_runtime.h>
 #include <stdio.h>
 #include <vector>
+#include <error_checking.hpp>
 
 __global__ void fill(int n, double a, double *x) {
     const int tid = threadIdx.x + blockIdx.x * blockDim.x;
@@ -295,13 +314,6 @@ __global__ void fill(int n, double a, double *x) {
 
     for (int i = tid; i < n; i += stride)
         x[i] = a;
-}
-#define HIP_ERRCHK(result) hip_errchk(result, __FILE__, __LINE__)
-static inline void hip_errchk(hipError_t result, const char *file, int line) {
-    if (result != hipSuccess) {
-        printf("\n\n%s in %s at line %d\n", hipGetErrorString(result), file, line);
-        exit(EXIT_FAILURE);
-    }
 }
 ```
 
@@ -313,15 +325,15 @@ int main() {
     static constexpr size_t num_bytes = n * sizeof(double);
     static constexpr double a = 3.4;
 
-    void *d_x = nullptr;
+    double *d_x = nullptr;
     HIP_ERRCHK(hipMalloc(&d_x, num_bytes));
 
     const int threads = 256;
     const int blocks = 32;
-    fill<<<blocks, threads>>>(n, a, static_cast<double *>(d_x));
+    LAUNCH_KERNEL(fill, blocks, threads, 0, 0, n, a, d_x));
 
     std::vector<double> x(n);
-    HIP_ERRCHK(hipMemcpy(static_cast<void *>(x.data()), d_x, num_bytes, hipMemcpyDefault));
+    HIP_ERRCHK(hipMemcpy(x.data(), d_x, num_bytes, hipMemcpyDefault));
 
     printf("%f %f %f %f ... %f %f\n", x[0], x[1], x[2], x[3], x[n-2], x[n-1]);
 }
