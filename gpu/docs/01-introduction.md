@@ -8,9 +8,19 @@ lang:     en
 
 # Overview
 
-We are going to construct a mental model of a GPU
+- What is a GPU
+- GPU hardware
+- Programming GPUs
+- Software - hardware mapping
 
-We will start simple and slowly add accuracy and complexity
+# Learning objectives
+
+After this lecture you will know
+
+- when to use GPUs over CPUs
+- where the performance of GPUs come from
+- what the GPU hardware looks like on a high level
+- how the software maps to hardware
 
 # Part 1: What is a GPU? {.section}
 
