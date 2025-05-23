@@ -129,7 +129,7 @@ This is done similarly to taks I
     q.submit([&](handler& h) {
 
        h.parallel_for(sycl::range{N}, [=](sycl::id<1> idx) {
-        y_acc[idx] = y_acc[idx] + a*x_acc[idx];
+        y_ddev[idx] = y_dev[idx] + a*x_dev[idx];
       });
     }).wait();
 ``` 
@@ -138,8 +138,11 @@ In this case `.wait()`  method pauses the prorgam until the the operation is
 When using USM and `malloc_device` the transfer from device to host needs to be explicitely coded. The same method `memcopy()` is used:
 
 ```cpp
-   q.memcpy(x_dev, x.data(), sizeof(int) * N).wait();
+   q.memcpy(x.data(), x_dev, sizeof(int) * N).wait();
 ```
-Now the destination is the host pointer (first argument), while the 
+Now the destination is the host pointer (first argument), while the source argument is the device pointer.
+Again the `.wait()` method is needed to pause the prorgam execution. This way it is guaranteed that the next step is not executed before all data from device is transfered.
+
+
 
 
