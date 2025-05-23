@@ -98,7 +98,7 @@ In the launching the programmer can define not only the number of work-items to 
 
 **Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. Asumming `local_size` for the work-group, `(N+local_size-1)/local_size)*local_size)` need work-items to be created. When `N`is not divisible by `local_size` the numebr of work-items is larger than `N`.
 
-## III. Memory management with Unified Shared Memory
+## III. Memory management with Unified Shared Memory (`malloc_device()`) and Simple Launching
 The task is to write a code performing an `AXPY` operation, but this time the memory management is done using the Unified Shared Memory (USM). The structure of the code is practically the same. 
 
 Start from the skeleton code  [`saxpy.cpp`](saxpy.cpp). Look for the **//TODO** lines.
@@ -143,8 +143,11 @@ When using USM and `malloc_device` the transfer from device to host needs to be 
 Now the destination is the host pointer (first argument), while the source (second argument) is the device pointer.
 Again the `.wait()` method is needed to pause the program execution. This way it is guaranteed that the next step is not executed before all data from device is transfered.
 
-##  IV 
-## Task V (Optional) USM with 
+##  IV. Memory management with Unified Shared Memory (`malloc_device()`) and `nd_range` Launching
+
+Starting from the code of the previous task change the kernel launching to use `nd_range`, similar to task II.
+
+## V. Memory management with Unified Shared Memory (`malloc_shared()`) and `simple` Launching
 The `malloc_device()`  function allocates memory on the devices which is pinned to the device. There can be no migration to host and furthermore the host can not access in anyway this data. In order to simplify the progrgammer's life SYCL provides also mechanims allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encoutered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device.
 
 
