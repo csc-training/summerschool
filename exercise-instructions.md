@@ -1,6 +1,6 @@
 # General exercise instructions
 
-## Working with the summerschool repository
+## Working with the summer school repository
 
 The repository of the summer school can be cloned via:
 ```
@@ -27,7 +27,7 @@ carrying out the exercises.
 
 ## Using supercomputers
 
-Exercises can be carried out using the [LUMI](https://docs.lumi-supercomputer.eu/)  supercomputer.
+Exercises can be carried out using the [LUMI](https://docs.lumi-supercomputer.eu/) supercomputer.
 
 LUMI can be accessed via ssh using the provided username and ssh key pair:
 ```
@@ -37,15 +37,15 @@ ssh -i <path-to-private-key> <username>@lumi.csc.fi
 #### Working with git (OPTIONAL)
 
 In order to push code to your own fork, you need to **add your SSH public key in LUMI** (created on LUMI, **not** the used to log into LUMI)
-your github account. The SSH key can be added to your github account using a browser . In you github profile go to  "Settings"->"SSH and GPG keys"->"New SSH key" and  copy-paste output of the following command:
+to your github account. The SSH key can be added to your github account using a browser. In your github profile go to "Settings"->"SSH and GPG keys"->"New SSH key" and copy-paste output of the following command:
 ```
 cat $HOME/.ssh/id_rsa.pub
 ```
 
-Once succesfull, make sure you in your personal workspace in **scratch** area `/scratch/project_465000536/$USER`, clone the repository, and a create a branch:
+Once succesful, make sure you are in your personal workspace in the **scratch** area `/scratch/project_465000536/$USER`, clone the repository, and create a branch:
 ```
 git clone git@github.com:<my-github-id>/summerschool.git
-git checkout -b hpcss24
+git checkout -b hpcss25
 ```
 
 If you haven't used git before in LUMI, you need to add also your identity:
@@ -54,11 +54,12 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 ```
 
-Default editor for commit messages is *vim*, if you prefer something else you can add
+The default editor for commit messages is *vim*, if you prefer something else you can add
 to the file `$HOME/.bashrc` *e.g.*
 ```
 export EDITOR=nano
 ```
+
 #### Disk areas
 
 All the exercises in the supercomputers should be carried out in the
@@ -73,17 +74,17 @@ cd /scratch/project_465001194/$USER
 
 #### Editors
 
-For editing program source files you can use e.g. *nano* editor:
+For editing program source files you can use e.g. the *nano* editor:
 
 ```
 nano prog.f90
 ```
-(`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save file and exit editor press `Ctrl+X`)
-Also other popular editors such as emacs and vim are available.
+(`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save the file and exit the editor press `Ctrl+X`)
+Also other popular editors such as *emacs* and *vim* are available.
 
 ## Compilation
 
-LUMI has several programming environments. For summerschool, we recommend that you use cray tools.
+LUMI has several programming environments. For the summer school, we recommend that you use the Cray tools.
 
 For CPU programming use:
 ```
@@ -135,7 +136,7 @@ or
 ftn -o my_exe test.f90 -fopenmp
 ```
 
-When code uses also MPI, the wrapper commands include automatically all the flags needed for
+When the code also uses MPI, the wrapper commands include automatically all the flags needed for
 building MPI programs.
 
 #### HDF5
@@ -148,7 +149,7 @@ module load cray-hdf5-parallel
 
 No special flags are needed for compiling and linking, the compiler wrappers take care of them automatically.
 
-Usage in local workstation may vary.
+Usage in your local workstation may vary.
 
 #### OpenMP offloading
 
@@ -165,7 +166,7 @@ On **Lumi**, to compile your program, use
 ```bash
 CC -fopenmp <source.cpp>
 ```
-**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L` or `partition/C` is loaded it will use compiling options for creating code for multi-core cpus. If  `partition/G` is loaded it will use compiling options to create code for offloading on gpus.
+**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L` or `partition/C` is loaded it will use compiling options for creating code for multi-core cpus. If `partition/G` is loaded it will use compiling options to create code for offloading on GPUs.
 
 #### HIP
 
@@ -186,7 +187,7 @@ HIP codes can be compiled as well using the `hipcc` AMD compiler:
 ```
 hipcc --offload-arch=gfx90a  `CC --cray-print-opts=cflags` <source>.cpp `CC --cray-print-opts=libs` 
 ```
-The flag `--offload-arch=gfx90a` indicates that we are targeting MI200 GPUs. If the code uses some libraries we need extract from the `CC` wrapers. This is doen via the flags `CC --cray-print-opts=cflags` and  `CC --cray-print-opts=libs`.
+The flag `--offload-arch=gfx90a` indicates that we are targeting MI200 GPUs. If the code uses some libraries we need to extract them from the `CC` wrappers. This is done via the flags `CC --cray-print-opts=cflags` and  `CC --cray-print-opts=libs`.
 
 A more elegant solution would be to use:
 ```
@@ -199,14 +200,13 @@ This is helpful when using make.
 #### HIPFORT
 The following modules are required:
 ```bash
-
 module load PrgEnv-cray/8.4.0
 module load LUMI/23.09
 module load partition/G
 module load rocm/5.4.6
 ```
 
-Because the default `HIPFORT` installation only supports gfortran,  we use a custom installation  prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of hipfort with the Fortran Cray Compiler wrapper (ftn).
+Because the default `HIPFORT` installation only supports `gfortran`, we use a custom installation prepared in the summer school project. This package provide Fortran modules compatible with the Cray Fortran compiler as well as direct use of `hipfort` with the Fortran Cray Compiler wrapper (`ftn`).
 
 The package was installed via:
 ```bash
@@ -235,7 +235,7 @@ This option gives enough flexibility for calling HIP libraries from Fortran or f
 
 #### Pure MPI
 
-Programs need to be executed via the batch job system. Simple job running with 4 MPI tasks can be submitted with the following batch job script:
+Programs need to be executed via the batch job system. A simple job running with 4 MPI tasks can be submitted with the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
@@ -251,19 +251,17 @@ srun my_mpi_exe
 ```
 
 Save the script *e.g.* as `job.sh` and submit it with `sbatch job.sh`.
-The output of job will be in file `slurm-xxxxx.out`. You can check the status of your jobs with `squeue -u $USER` and kill possible hanging applications with
-`scancel JOBID`.
+The output of the job will be in the file `slurm-xxxxx.out`. You can check the status of your jobs with `squeue -u $USER` and kill possible hanging applications with `scancel JOBID`.
 
-The reservation `summerschool` is available during the course days and it
-is accessible only with the training user accounts.
+The reservation `summerschool` is available during the course days and it is accessible only with the training user accounts.
 
-The same result can be achived using directly `srun`
+The same result can be achieved using directly `srun`
 ```
 srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=4 --cpus-per-task=1  my_mpi_exe
 ```
 #### Pure OpenMP
 
-For pure OpenMP programs one should use only one node and one MPI task per nodesingle tasks and specify the number of cores reserved
+For pure OpenMP programs one should use only one node and one MPI task per node and specify the number of cores reserved
 for threading with `--cpus-per-task`:
 ```
 #!/bin/bash
@@ -281,19 +279,19 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun my_omp_exe
 ```
 
-The same result can be achived using directly `srun`
+The same result can be achieved using directly `srun`
 ```
 srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=1 --cpus-per-task=4   my_omp_exe
 ```
 #### Hybrid MPI+OpenMP
 
-For hybrid MPI+OpenMP programs it is recommended to specify explicitly number of nodes, number of
+For hybrid MPI+OpenMP programs it is recommended to specify explicitly the number of nodes, the number of
 MPI tasks per node (pure OpenMP programs as special case with one node and one task per node),
-and number of cores reserved for threading. The number of nodes is specified with `--nodes`
-(for most of the exercises you should use only a single node), number of MPI tasks **per node**
-with `--ntasks-per-node`, and number of cores reserved for threading with `--cpus-per-task`.
-The actual number of threads is specified with `OMP_NUM_THREADS` environment variable.
-Simple job running with 4 MPI tasks and 4 OpenMP threads per MPI task can be submitted with
+and the number of cores reserved for threading. The number of nodes is specified with `--nodes`
+(for most of the exercises you should use only a single node), the number of MPI tasks **per node**
+with `--ntasks-per-node`, and the number of cores reserved for threading with `--cpus-per-task`.
+The actual number of threads is specified with the `OMP_NUM_THREADS` environment variable.
+A simple job running with 32 MPI tasks and 4 OpenMP threads per MPI task can be submitted with
 the following batch job script:
 ```
 #!/bin/bash
@@ -310,14 +308,14 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 srun my_exe
 ```
 
-The same result can be achived using directly `srun`
+The same result can be achieved using directly `srun`
 ```
 srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=2 --ntasks-per-node=32 --cpus-per-task=4   my_omp_exe
 ```
 #### GPU programs
 
 When running GPU programs, few changes need to made to the batch job
-script. The `partition` is are now different, and one must also request explicitly given number of GPUs per node with the
+script. The `partition` is now different, and one must also request explicitly a given number of GPUs per node with the
 `--gpus-per-node=X` option. As an example, in order to use a
 single GPU with single MPI task and a single thread use:
 ```
@@ -334,11 +332,11 @@ single GPU with single MPI task and a single thread use:
 srun my_gpu_exe
 ```
 
-The same result can be achived using directly `srun`
+The same result can be achieved using directly `srun`
 ```
-srun --job-name=example --account=project_465001194 --partition=small-g --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=8 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
+srun --job-name=example --account=project_465001194 --partition=small-g --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=1 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
 ```
-**Note!** Some programs require gpu-aware MPI to perform MPI operations using directly the GPU pointers (this avoiding some GPU-CPU trasnfers). This is enabled via:
+**Note!** Some programs require GPU-aware MPI to perform MPI operations using directly the GPU pointers (this is avoiding some GPU-CPU transfers). This is enabled via:
 
 ```
 export MPICH_GPU_SUPPORT_ENABLED=1
@@ -347,7 +345,7 @@ export MPICH_GPU_SUPPORT_ENABLED=1
 #### Interactive jobs
 
 
-When debugging or doing performance analysys the user needs to interact with application on the compute nodes.
+When debugging or doing performance analysis the user needs to interact with the application on the compute nodes.
 
 ```bash
 salloc --account=<project_id> –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00

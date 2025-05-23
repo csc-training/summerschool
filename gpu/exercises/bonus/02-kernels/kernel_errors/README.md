@@ -6,7 +6,7 @@ module load rocm
 
 CC -xhip -DNDEBUG -O3 main.cpp -o main
 ```
-then run it with srun.
+then run it with `srun`.
 
 You should get errors and a suggestion to remove the `-DNDEBUG` flag.
 

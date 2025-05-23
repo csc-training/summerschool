@@ -8,7 +8,7 @@ Write a device kernel that performs the double precision BLAS operation
 - Allocate memory for `x` and `y` on the device
 - Copy the host `x` to the device `x`
 - Perform the operation on the device using a 2D kernel
-    - Hint: it's easier to implement the kernel first without looping. i.e. such that each thread copies a single element from input to output.
+    - Hint: it's easier to implement the kernel first without looping, i.e. such that each thread copies a single element from input to output.
     - Once you get that working, you can implement a double for loop in the kernel so it works for arbitrary sized 2D arrays
 - Copy device `y` to host `y`
 - Compare host `x` to host `y`

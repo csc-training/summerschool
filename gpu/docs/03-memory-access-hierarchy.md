@@ -1,6 +1,6 @@
 ---
 title:    Memory Hierarchy and Memory Accesses in GPUs
-author:   CSC Training
+author:   CSC Summer School in High-Performance Computing 2025
 date:     2025-06
 lang:     en
 ---
@@ -19,7 +19,7 @@ lang:     en
 # Global memory
 
 - Accessible by all threads in a grid
-- Slow, latency of eg. 600-700 cycles
+- Slow, latency of eg. 600–700 cycles
     - Still, high bandwidth compared to CPU memory (1600 GB/s for a single GCD of AMD MI250X)
 - Can be controlled by host (via pointer operations)
 - Lifetime of the program
@@ -27,7 +27,7 @@ lang:     en
 # Local shared memory
 
 - Accessible by all threads in a block (local to the CU)
-- Very fast memory, latency of eg. 6 cycles
+- Very fast memory, latency of *e.g.* 6 cycles
 - User programmable cache
     - Load frequently used values once from global memory, store in local memory
     - Useful when touching the same memory multiple times inside a block

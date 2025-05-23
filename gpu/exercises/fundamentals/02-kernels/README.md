@@ -100,7 +100,7 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
     // from earlier API calls.
     auto result = hipGetLastError();
 
-    // Next we launch the kernel with the given argument
+    // Next we launch the kernel with the given arguments
     kernel<<<blocks, threads, num_bytes_shared_mem, stream>>>(args...);
 
     // Now we get the actual error returned by the kernel launch
