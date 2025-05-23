@@ -2,7 +2,6 @@
 
 In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise will will be used to exemplify all the SYCL concepts presented in the lecture.
 
-
 **Structure of the Code**:
   1. define a SYCL  queue (choose device, specify the options)
   1. declare  the variables
@@ -13,7 +12,7 @@ In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise w
 
 ## I. Memory management using Buffer and Accesors and Basic Kernel Launching
 
-Use the skeleton provided in `saxpy_buffer_simple.cpp`. Look for the **//TODO** lines.
+Use the skeleton provided in [`saxpy.cpp`](saxpy.cpp). Look for the **//TODO** lines.
 
 ### Step 1: Define a Queue
 Start by defining a **queue**  and selecting the appropriate device selector. SYCL provides predefined selectors, such as: default, gpu, cpu, accelerator:
@@ -77,6 +76,7 @@ When a buffer is destroyed the host can access again the data to which the buffe
       }
 ```
 As long a host accessor is valid the data can not be accessed by other means. When they are destroyed the program can proceed with further calculations on host or devices.
+
 ## II. Memory management using Buffer and Accesors and `nd_range" Launching
 In the previous task a basic, simple way was used to launch kernels. This could be enough for many applications, but the `range` class is quite limited. It does not allow to use lower level features, like local share memory, in-work-grgoup  synchronizations or use the in-work-rgoup local index. In many cases (like matrix-matrix multiplication) more control is needed.  
 
@@ -97,4 +97,8 @@ In the launching the programmer can define not only the number of work-items to 
 
 **Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. Asumming `local_size` for the work-group, `(N+local_size-1)/local_size)*local_size)` need work-items to be created. When `N`is not divisible by `local_size` the numebr of work-items is larger than `N`.
 
-      
+## III. Memory management with Unified Shared Memory
+The task is to write a code performing an `AXPY` operation, but this time the memory management is done using the Unified Shared Memory (USM). The structure of the code is practically the same. 
+
+Start from the skeleton code  [`saxpy.cpp`](saxpy.cpp). Look for the **//TODO** lines.
+  
