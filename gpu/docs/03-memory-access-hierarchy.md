@@ -1,83 +1,37 @@
 ---
-title:    Memory Hierarchy and Memory Accesses in GPUs 
-subtitle: High-Level GPU Programming 
-date:     November 2024
+title:    Memory Hierarchy and Memory Accesses in GPUs
+author:   CSC Training
+date:     2025-06
 lang:     en
 ---
 
-# Memory hierarchy and memory accesses in GPUs{.section}
+# Memory hierarchy{.section}
 
-# Host memory and device memory
+# Memory hierarchy
 
-![](img/gpu-bws.png){.center width=65%}
-
-- In most GPUs, the global GPU memory is physically distinct from the host (CPU) memory
-- Data used by GPU kernels has to be copied from host to device (and back if data is needed also in CPU)
-- Host-device bus (typically PCIe) has often low bandwidth
-    - Can become performance bottleneck
-- Memory copies can be done asynchronously with computations
-
-# Unified/managed memory 
-
-- Unified/managed memory is a single memory address space accessible from any processor in a system 
-- GPU runtime and hardware automatically migrate memory pages to the memory of the accessing processor
-- Makes programming easier
-- Implicit memory copies may create performance issues
-    - Memory copies should be profiled when using unified/managed memory 
+| type          | size          | latency           | accessibility             |
+|---------------|---------------|-------------------|---------------------------|
+| host          | 10-100 GB     | >10k cycles       | host (sometimes device)   |
+| device global | 10-100 GB     | 100-1000 cycles   | entire device (grid)      |
+| device local  | 10-100 kB     | 1-10 cycles       | CU (block)                |
+| registers     | 10-100 kB     | 1 cycle           | SIMD (warp/wavefront)     |
 
 # Global memory
 
-<div class="column" style=width:68%>
 - Accessible by all threads in a grid
 - Slow, latency of eg. 600-700 cycles
     - Still, high bandwidth compared to CPU memory (1600 GB/s for a single GCD of AMD MI250X)
 - Can be controlled by host (via pointer operations)
 - Lifetime of the program
-</div>
 
-<div class="column" style=width:30%>
-![](img/Grid_threads.png){.center width=80%}
-</div>
-
-# Coalesced memory access
-
-<div class="column" style=width:68%>
-- GPUs can typically access global memory via 32-, 64-, or 128-byte transactions
-- When threads in a warp/wavefront operate on aligned elements close to each other, 
-  memory loads and stores can be *coalesced*
-- Local shared memory can be used to improve the memory accesses
-</div>
-
-<div class="column" style=width:30%>
-![](img/sub_group.png){.center width=65%}
-</div>
-
-# Coalesced vs non-coalesced memory access
-
-Parallel GPU code of `y=y+a*x`:
-
-- Instances of the same function, **kernel**, running for different index `id`
-
-```cpp
-GPU_K void axpy_(int n, double a, double *x, double *y, int id)
-{
-        y[id] += a * x[id]; // Coalesced 
-        y[id] += a * x[id*stride]; // Strided Non-Coalesced 
-        y[id] += a * x[id+shift]; // Shifted (non-aligned) Non-Coalesced 
-}
-
-```
 # Local shared memory
 
-<div class="column">
-- Accessible by all threads in a block
+- Accessible by all threads in a block (local to the CU)
 - Very fast memory, latency of eg. 6 cycles
 - User programmable cache
+    - Load frequently used values once from global memory, store in local memory
+    - Useful when touching the same memory multiple times inside a block
 - Lifetime of the thread block
-</div>
-<div class="column">
-![](img/work_group.png){.center width=25%}
-</div>
 
 # Registers
 
@@ -88,6 +42,39 @@ GPU_K void axpy_(int n, double a, double *x, double *y, int id)
 - Lifetime of the kernel
 - Not directly controllable by user
 - When all registers are used, there is spilling of the local variables into the global memory.
+
+# Memory access patterns{.section}
+
+# Coalesced memory access
+
+- GPUs can typically access global memory via 32-, 64-, or 128-byte transactions
+- When threads in a warp/wavefront operate on aligned elements close to each other, 
+  memory loads and stores can be *coalesced*
+    - Coalesced: multiple threads are served by a single memory operation
+    - Non-coalesced: multiple memory accesses needed to serve multiple threads
+
+# Coalesced vs non-coalesced memory access
+
+```cpp
+// Linear index across the entire grid
+const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+coalesced[tid] = 2.0f;          // 2 x 128 byte transactions for 64 threads
+non_coalesced[4 * tid] = 2.0f;  // 8 x 128 byte transactions for 64 threads
+```
+```
+Coalesced
+    tid      0   1   2   3 
+    maps to  |   |   |   | 
+    address [0] [1] [2] [3]
+
+Non-coalesced
+    tid      0   1   2   3_____________________________________
+    maps     |   |   |_______________________                  |
+    to       |   |___________                |                 |
+             |               |               |                 |
+    address [0] [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15]
+```
 
 # Summary
 
