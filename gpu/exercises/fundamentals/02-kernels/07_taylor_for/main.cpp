@@ -15,8 +15,8 @@ __device__ __host__ float taylor(float x, size_t N) {
     return sum;
 }
 
-__global__ void taylor_no_reuse(float *x, float *y, size_t num_values,
-                                size_t num_iters) {
+__global__ void taylor_base(float *x, float *y, size_t num_values,
+                            size_t num_iters) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     if (tid < num_values)
     {
@@ -24,8 +24,28 @@ __global__ void taylor_no_reuse(float *x, float *y, size_t num_values,
     }
 }
 
-__global__ void taylor_for_cpu(float *x, float *y, size_t num_values,
-                               size_t num_iters) {
+__global__ void taylor_vec(float *x, float *y, size_t num_values,
+                           size_t num_iters) {
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    float4 *xv = reinterpret_cast<float4 *>(x);
+    float4 *yv = reinterpret_cast<float4 *>(y);
+
+    if (tid < num_values >> 2) {
+        const float4 xs = xv[tid];
+        const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
+                        taylor(xs.z, num_iters), taylor(xs.w, num_iters));
+
+        yv[tid] = ys;
+    }
+
+    const size_t index = num_values - num_values & 3 + tid;
+    if (index < num_values) {
+        y[index] = taylor(x[index], num_iters);
+    }
+}
+
+__global__ void taylor_for_consecutive(float *x, float *y, size_t num_values,
+                                       size_t num_iters) {
     // Global thread id, i.e. over the entire grid
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
 
@@ -62,8 +82,8 @@ __global__ void taylor_for_cpu(float *x, float *y, size_t num_values,
     }
 }
 
-__global__ void taylor_for_gpu(float *x, float *y, size_t num_values,
-                               size_t num_iters) {
+__global__ void taylor_for_strided(float *x, float *y, size_t num_values,
+                                   size_t num_iters) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     const size_t stride = blockDim.x * gridDim.x;
     for (size_t i = tid; i < num_values; i += stride) {
@@ -94,29 +114,7 @@ __global__ void taylor_for_vec(float *x, float *y, size_t num_values,
 
 size_t run_and_measure(void (*kernel)(float *, float *, size_t, size_t),
                        int32_t blocks, int32_t threads, size_t num_values,
-                       size_t num_iters) {
-    const size_t num_bytes = sizeof(float) * num_values;
-
-    // Allocate host memory for x and y
-    float *h_x = static_cast<float *>(std::malloc(num_bytes));
-    float *h_y = static_cast<float *>(std::malloc(num_bytes));
-    float *reference = static_cast<float *>(std::malloc(num_bytes));
-
-    // Initialize host x with some values
-    for (size_t i = 0; i < num_values; i++) {
-        h_x[i] = static_cast<float>(i) / num_values * 3.14159265f;
-        reference[i] = taylor(h_x[i], num_iters);
-    }
-
-    // Allocate device memory for x and y
-    float *d_x = nullptr;
-    float *d_y = nullptr;
-    HIP_ERRCHK(hipMalloc(&d_x, num_bytes));
-    HIP_ERRCHK(hipMalloc(&d_y, num_bytes));
-
-    // Copy host x to device x
-    HIP_ERRCHK(hipMemcpy(d_x, h_x, num_bytes, hipMemcpyDefault));
-
+                       size_t num_iters, float *d_x, float *d_y) {
     // Run the kernel N times and compute the average runtime
     // Don't count the first run, as it may contain extra time unrelated to the
     // computation (GPU init etc.)
@@ -133,30 +131,48 @@ size_t run_and_measure(void (*kernel)(float *, float *, size_t, size_t),
         const std::chrono::duration<double, std::micro> dur = end - start;
 
         average_runtime += i == 0 ? 0 : dur.count();
-
-        // Make sure we actually did the right thing in the kernel:
-        // Copy device y to host y, and check y is equal to the taylor
-        // computed with the corresponding host x
-        HIP_ERRCHK(hipMemcpy(h_y, d_y, num_bytes, hipMemcpyDefault));
-        float error = 0.0;
-        static constexpr float tolerance = 1e-5f;
-        for (size_t i = 0; i < num_values; i++) {
-            const auto diff = abs(h_y[i] - reference[i]);
-            if (diff > tolerance) {
-                error += diff;
-            }
-        }
-
-        assert(error < 0.01f);
     }
-    std::free(h_x);
-    std::free(h_y);
-    std::free(reference);
-
-    HIP_ERRCHK(hipFree(d_x));
-    HIP_ERRCHK(hipFree(d_y));
 
     return average_runtime / (num_measurements - 1);
+}
+
+bool validate_result(float *h_y, float *d_y, float *reference,
+                     size_t num_values) {
+    HIP_ERRCHK(
+        hipMemcpy(h_y, d_y, num_values * sizeof(float), hipMemcpyDefault));
+
+    float error = 0.0;
+    static constexpr float tolerance = 1e-5f;
+    for (size_t i = 0; i < num_values; i++) {
+        const auto diff = abs(h_y[i] - reference[i]);
+        if (diff > tolerance) {
+            error += diff;
+        }
+    }
+
+    return error < 0.01f;
+}
+
+void initialize(float **h_x, float **h_y, float **reference, float **d_x,
+                float **d_y, size_t num_values, size_t num_iters) {
+    const size_t num_bytes = sizeof(float) * num_values;
+    // Allocate host memory for x and y
+    *h_x = static_cast<float *>(std::malloc(num_bytes));
+    *h_y = static_cast<float *>(std::malloc(num_bytes));
+    *reference = static_cast<float *>(std::malloc(num_bytes));
+
+    // Initialize host x with some values
+    for (size_t i = 0; i < num_values; i++) {
+        (*h_x)[i] = static_cast<float>(i) / num_values * 3.14159265f;
+        (*reference)[i] = taylor((*h_x)[i], num_iters);
+    }
+
+    // Allocate device memory for x and y
+    HIP_ERRCHK(hipMalloc(d_x, num_bytes));
+    HIP_ERRCHK(hipMalloc(d_y, num_bytes));
+
+    // Copy host x to device x
+    HIP_ERRCHK(hipMemcpy(*d_x, *h_x, num_bytes, hipMemcpyDefault));
 }
 
 int main(int argc, char **argv) {
@@ -173,33 +189,67 @@ int main(int argc, char **argv) {
     assert(num_values > 0 && num_values <= 100000000 &&
            "Use values up to 100'000'000");
 
-    // Kernel with no thread re-use
+    float *h_x = nullptr;
+    float *h_y = nullptr;
+    float *reference = nullptr;
+    float *d_x = nullptr;
+    float *d_y = nullptr;
+
+    initialize(&h_x, &h_y, &reference, &d_x, &d_y, num_values, num_iters);
+
+    // Base kernel with nothing fancy
     const int threads = 1024;
     int blocks = num_values / threads;
     blocks += blocks * threads < num_values ? 1 : 0;
-    const auto no_reuse_runtime = run_and_measure(
-        taylor_no_reuse, blocks, threads, num_values, num_iters);
+    const auto base_runtime = run_and_measure(taylor_base, blocks, threads,
+                                              num_values, num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Base result incorrect");
+
+    // Using float4s to load and process 4 values at a time: reduce the number
+    // of blocks by 4
+    blocks /= 4;
+    blocks += 4 * threads * blocks < num_values ? 1 : 0;
+    const auto vec_runtime = run_and_measure(taylor_vec, blocks, threads,
+                                             num_values, num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Vectorized result incorrect");
 
     // Kernels with thread re-use can use arbitrary grid size. It should be
     // large enough to utilize all the availabe CUs of the GPU, however.
     blocks = 1024;
 
-    // CPU style
-    const auto cpu_runtime =
-        run_and_measure(taylor_for_cpu, blocks, threads, num_values, num_iters);
+    // Consecutive N per thread
+    const auto consecutive_runtime =
+        run_and_measure(taylor_for_consecutive, blocks, threads, num_values,
+                        num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Consecutive result incorrect");
 
-    // GPU style
-    const auto gpu_runtime =
-        run_and_measure(taylor_for_gpu, blocks, threads, num_values, num_iters);
+    // Strided access
+    const auto strided_runtime = run_and_measure(
+        taylor_for_strided, blocks, threads, num_values, num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Strided result incorrect");
 
-    // Vectorized loads style
-    const auto vec_runtime =
-        run_and_measure(taylor_for_vec, blocks, threads, num_values, num_iters);
+    // Vectorized loads in loop
+    const auto vec_for_runtime = run_and_measure(
+        taylor_for_vec, blocks, threads, num_values, num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Vec for result incorrect");
 
-    std::printf("%ld, 1.0, %f, %f, %f\n", no_reuse_runtime,
-                static_cast<float>(gpu_runtime) / no_reuse_runtime,
-                static_cast<float>(cpu_runtime) / no_reuse_runtime,
-                static_cast<float>(vec_runtime) / no_reuse_runtime);
+    std::printf("%ld, %f, %f, %f, %f\n", base_runtime,
+                static_cast<float>(vec_runtime) / base_runtime,
+                static_cast<float>(strided_runtime) / base_runtime,
+                static_cast<float>(consecutive_runtime) / base_runtime,
+                static_cast<float>(vec_for_runtime) / base_runtime);
+
+    std::free(h_x);
+    std::free(h_y);
+    std::free(reference);
+
+    HIP_ERRCHK(hipFree(d_x));
+    HIP_ERRCHK(hipFree(d_y));
 
     return 0;
 }

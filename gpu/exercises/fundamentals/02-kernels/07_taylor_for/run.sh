@@ -15,7 +15,7 @@
 #
 #hipcc -O3 main.cpp
 
-echo "nti, vs, us, no, gpu, cpu, vec" > runtimes.dat
+echo "nti, vs, us, vec, strided, consecutive, vec_for" > runtimes.dat
 
 for i in {0..5}
 do
