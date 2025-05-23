@@ -60,7 +60,7 @@ Once accessors are ready, submit the task to the device using the `.parallel_for
       });
 ```
 Here: 
- - `sycl::range{N}` or `sycl::range(N)` specify number of work-items be launched 
+ - `sycl::range{N}` specifies number of work-items be launched 
  - `sycl::id<1>` represents the index used within the kernel.
 **Optional**: use **item** class instead of **id**. Modify the lambda function to use the  **sycl::item** class instead of the **sycl::id** class. In this case the index `idx` is obtained from the `.get_id()` member.
 
@@ -95,6 +95,6 @@ Starting from the solution of the task I change the way the kernel is launched f
 ```
 In the launching the programmer can define not only the number of work-items to execute the kernel, but also the size of the work-group. Both global and local coordinates of the work-item can be now obtained from the nd_item object (via `get_global_id()`, `get_global_linear_id()` and `get_local_id()`, `get_local_linear_id` methods).
 
-**Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. Asumming `local_size` for the work-group, `(N+local_size-1)/local_size)*local_size)` need work-items to be created. This number can be larger than `N`if `N`is not divisible by `local_size`.
+**Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. Asumming `local_size` for the work-group, `(N+local_size-1)/local_size)*local_size)` need work-items to be created. When `N`is not divisible by `local_size` the numebr of work-items is larger than `N`.
 
       

@@ -16,19 +16,11 @@ lang:   en
 
 # OpenMP execution model
 
-- Host-directed execution with an attached accelerator
-  - large part of the program is usually executed by the host
-  - computationally intensive parts are *offloaded* to the accelerator
-- Accelerator can have a separate memory
-  - OpenMP exposes the separate memories through *data environment*
-    that defines the memory management and needed copy operations
-
-# OpenMP execution model
-
 <div class="column">
 - Program runs on the host CPU
 - Host offloads regions of code (*kernels*) and related data to the GPU
 - Offloaded regions are executed by the GPU
+- Compare to HIP/CUDA: kernels are implicit
 </div>
 
 <div class="column">
@@ -38,63 +30,27 @@ lang:   en
 
 # OpenMP data model in offloading
 
-<div class="column">
-- If host memory is separate from device memory
-    - host manages memory of the device
-    - host copies data to/from the device
+- Host variables are mirrored on device 
+- Data is moved to/from host with directives 
+  - `map(...)`
+  - `enter/exit data map...`)
+- Device allocations/deallocations with map clause directives
+  - `map(alloc/dealloc:...)`
 - When memories are not separate, no copies are needed (difference is
   transparent to the user)
-</div>
-
-<div class="column">
-![](img/data-movement.png)
-</div>
-
 
 # Compiling an OpenMP program for GPU offloading
 
-- In addition to normal OpenMP options (*i.e.* `-fopenmp`), one needs
-  to typically specify offload target (NVIDIA GPU, AMD GPU, ...)
+On LUMI compiling OpenMP offload is enabled with
 
-| Compiler |  Options for offload                     |
-| -------- | ---------------------------------------- |
-| NVIDIA   | `-mp=gpu` (`-gpu=ccNN`)                  |
-| Cray     | `-fopenmp-targets=xx -Xopenmp-target=xx` |
-| Clang    | `-fopenmp-targets=xx`                    |
-| GCC      | `-foffload=yy`                           |
-
-- Without these options a regular CPU version is compiled!
-
-
-# Compiling an OpenMP program for GPU offloading
-
-- Conditional compilation with `_OPENMP` macro:
-
-```c
-#ifdef _OPENMP
-device specific code
-#else
-host code
-#endif
-```
-
-- Example: Compiling with CCE 15.0.1 in Lumi
-	- Compiler wrapper will take care to set most of the correct flags for offloading (such as the `-fopenmp-targets=xx`) if you load the correct modules
-	- Required modules are at least `LUMI/23.03 partition/G rocm cpeCray`
-
-```bash
-cc -o my_exe test.c -fopenmp
-```
-
-
-# OpenMP internal control variables
-
-- OpenMP has internal control variables
-    - `OMP_DEFAULT_DEVICE` controls which accelerator is used.
-- During runtime, values can be modified or queried with
-  `omp_<set|get>_default_device`
-- Values are always re-read before a kernel is launched and can be
-  different for different kernels
+- `-fopenmp` flag and
+- Modules
+  ```bash
+  module load LUMI/24.03 partition/G PrgEnv-cray
+  ```
+- Nvidia compilers (nvfortran/nvcc) use `-mp=gpu` flag
+- OpenMP defines `_OPENMP` preprocessor macro if it is enabled. Useful in
+  conditional compilation.
 
 
 # Runtime API functions
@@ -108,6 +64,15 @@ cc -o my_exe test.c -fopenmp
     - C/C++ header file `omp.h`
     - `omp_lib` Fortran module
 
+# OpenMP internal control variables
+
+- OpenMP has internal control variables (ICV)
+    - Environment variable `OMP_DEFAULT_DEVICE`: which device to use
+- During runtime, default device can be modified/queried with
+  - `omp_`**`set`**`_default_device`
+  - `omp_`**`get`**`_default_device`
+- Values are always re-read before a kernel is launched and can be
+  different for different kernels
 
 # Useful API functions
 
@@ -157,6 +122,7 @@ cc -o my_exe test.c -fopenmp
 # OpenMP offloading: worksharing {.section}
 
 # Teams construct
+
 <div class=column>
 - Target construct does not create any parallelism, so additional
   constructs are needed
