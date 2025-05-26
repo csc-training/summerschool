@@ -94,22 +94,6 @@ queue queue q{gpu_devices[0]};
 auto device = q.get_device();
 ```
 
-
-# Device Selection and Management
-
- - return the number of gpu devices:
-   
-`hipGetDeviceCount(&c);` `c=omp_get_device_num();` 
-
-`g_d= device::get_devices(info::device_type::gpu);`
- - set the current device (ids from 0)
- - `hipSetDevice(i)`
- - return the current device 
- - `hipGetDevice(&i);`
- - reset current device resources 
- - `hipDeviceReset();`
-
-
 # Querying Device Properties
 
 * one can query the properties of different devices in the system using
