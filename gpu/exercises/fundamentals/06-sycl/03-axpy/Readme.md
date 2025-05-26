@@ -96,7 +96,7 @@ Starting from the solution of the task I change the way the kernel is launched f
 ```
 In the launching the programmer can define not only the number of work-items to execute the kernel, but also the size of the work-group. Both global and local coordinates of the work-item can be now obtained from the nd_item object (via `get_global_id()`, `get_global_linear_id()` and `get_local_id()`, `get_local_linear_id` methods).
 
-**Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. Asumming `local_size` for the work-group, `(N+local_size-1)/local_size)*local_size)` need work-items to be created. When `N`is not divisible by `local_size` the numebr of work-items is larger than `N`.
+**Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. Asumming `local_size` for the work-group, `(N+local_size-1)/local_size)*local_size)` need work-items to be created. When `N`is not divisible by `local_size` the number of work-items is larger than `N`.
 
 ## III. Memory management with Unified Shared Memory (`malloc_device()`) and Simple Launching
 The task is to write a code performing an `AXPY` operation, but this time the memory management is done using the Unified Shared Memory (USM). The structure of the code is practically the same. 
