@@ -101,7 +101,7 @@ In the launching the programmer can define not only the number of work-items to 
 ## III. Memory management with Unified Shared Memory (`malloc_device()`) and Simple Launching
 The task is to write a code performing an `AXPY` operation, but this time the memory management is done using the Unified Shared Memory (USM). The structure of the code is practically the same. 
 
-Start from the skeleton code  [`saxpy.cpp`](saxpy.cpp). Look for the **//TODO** lines.
+Start from the skeleton code  [`axpy.cpp`](axpy.cpp). Look for the **//TODO** lines.
 
 
 ### Step 1: Define a Queue
