@@ -1,1 +1,1 @@
-# SAXPY using SYCL
+# SYCL Essential Exercises
