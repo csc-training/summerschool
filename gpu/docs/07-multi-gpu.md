@@ -92,8 +92,8 @@ count=omp_get_device_num()(&count);
 gpu_devices= device::get_devices(info::device_type::gpu);
 ```
 </div>
-- GPU device numbering starting from 0
-- set device as the current device for the calling host thread
+
+- set device as the current device (starts from 0) for the calling host thread
 ```cpp
 hipError_t hipSetDevice(int device)
 ```
