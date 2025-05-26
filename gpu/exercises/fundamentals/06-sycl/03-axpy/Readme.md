@@ -148,7 +148,7 @@ Again the `.wait()` method is needed to pause the program execution. This way it
 Starting from the code of the previous task change the kernel launching to use `nd_range`, similar to task II.
 
 ## V. Memory management with Unified Shared Memory (`malloc_shared()`) and `simple` Launching
-The `malloc_device()` function allocates memory on the devices which is pinned to the device. There can be no migration to host. Furthermore the host can not access in any direct this data. In order to simplify the progrgammer's life SYCL provides also mechanisms (similar to `hipMallocManaged()`)  to allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encountered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device.
+The `malloc_device()` function allocates memory on the devices which is pinned to the device. There can be no migration to host. Furthermore the host can not access in any direct this data. In order to simplify the progrgammer's life SYCL provides also mechanisms (similar to `hipMallocManaged()`)  to allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encountered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device and similarly on the host, between two operations subsequent using the data no migration occurs.
 
 Start from the solution of task III or task IV. Remove the host pointers `x(N),y(N);` and the device pointers `x_dev,y_dev`. Remove as all the lines code used to transfer data from host to device and from device to host.
 
@@ -158,7 +158,7 @@ Declare new pointers using `malloc_shared()` such as:
 ```
 Then initialize the `x_shared` and `y_shared` using host. **Note** the STL functions will not work. 
 
-The data is first touched on the host which means that the pointers will reside on the host memory. When the kernel executed a pagge fault will occured and it will trigger a migration to the device allowing ot execute the kernel on the device.  In this case the `.wait()`  is still needed to be sure that the host code wich will access the results at the end will now be executed before the kernel is completed.
+The data is first touched on the host which means that the pointers will reside on the host memory. When the kernel is executed a page fault will occured and it will trigger a migration to the device allowing ot execute the kernel on the device.  In this case the `.wait()`  is still needed to be sure that the host code wich will access the results at the end will now be executed before the kernel is completed.
 
 # SYCL Dependencies with AXPY
 
