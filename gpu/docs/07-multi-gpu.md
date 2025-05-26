@@ -85,7 +85,7 @@ hipGetDeviceCount(&count);
 
 <div class="column"  style="width:30%;">
 ```cpp
-count=omp_get_device_num()(&count);
+count=omp_get_device_num();
 ```
 </div>
 
