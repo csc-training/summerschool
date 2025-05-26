@@ -14,12 +14,13 @@ int main() {
   std::fill(y.begin(), y.end(), 2);
 
   {
-   // Create buffers for the host data
+   // Create buffers for the host data or allocate memory usinggUSM
+   // If USM + malloc_device() is used add the copy operations
    // TODO
 
     // Submit the kernel to the queue
     q.submit([&](handler& h) {
-      // Create accessors
+      // Create accessors if necessary
       //TODO
 
       h.parallel_for(
@@ -31,8 +32,12 @@ int main() {
       //TODO after the submission works
       //Checking the result inside the scope of the buffers using host_accessors
   }
-
+  // If USM + malloc_device() is used add the copy operations 
+  // TODO
   // Check that all outputs match expected value
+
+  // If USM is used free the device memory
+  // TODO
   bool passed = std::all_of(y.begin(), y.end(),
                             [](int i) { return (i == 1+a*2); });
   std::cout << ((passed) ? "SUCCESS" : "FAILURE")
