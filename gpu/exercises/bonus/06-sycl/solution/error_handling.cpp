@@ -18,8 +18,8 @@ int main() {
   sycl::queue queue(sycl::default_selector_v, exception_handler);
 
   constexpr size_t N = 10000; // Array size
-  constexpr size_t wg_size = 1024; // Work-group size (intentionally too large)
-  constexpr size_t grid_size = 512 ; //((N+wg_size-1)/wg_size)*wg_size; // Grid size (smaller than work-group size)
+  constexpr size_t wg_size = 1024; 
+  constexpr size_t grid_size = ((N+wg_size-1)/wg_size)*wg_size; 
   
   // Allocate USM memory for array Y on the device
   int* y = sycl::malloc_device<int>(N, queue);
@@ -34,8 +34,7 @@ int main() {
     auto range = sycl::nd_range<1>(sycl::range<1>(grid_size), sycl::range<1>(wg_size));
     cgh.parallel_for<class erroneous_kernel>(range, [=](sycl::nd_item<1> item) {
       size_t idx = item.get_global_id(0);
-      // Intentional out-of-bounds access
-      y[N + idx]++; 
+      y[idx]++; 
     });
   });
 
