@@ -75,7 +75,7 @@ A GPU context is an execution environment that manages resources such as memory 
 
 # Device Selection and Management
 
-- return the number of hip capable devices by `count`
+- return the number of gpu devices
 
 <div class="column"  style="width:20%;">
 ```cpp
