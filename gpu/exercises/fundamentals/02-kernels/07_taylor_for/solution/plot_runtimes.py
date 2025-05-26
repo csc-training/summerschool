@@ -54,28 +54,38 @@ def plot(data, kernel_index, title):
     fig.axes[2].tick_params(labelsize=30)
     fig.axes[3].tick_params(labelsize=30)
 
-    norm = colors.Normalize(vmin=np.min(kernel / base), vmax=np.max(kernel / base))
+    norm = colors.Normalize(vmin=np.min(kernel), vmax=np.max(kernel))
     images = []
     for nti in np.arange(num_taylor_iters):
         start = nti * data_stride
         stop = (nti + 1) * data_stride
 
-        base_data = base[start:stop]
         kernel_data = kernel[start:stop]
 
-        data = (kernel_data / base_data).reshape(num_vec_sizes, num_block_sizes)
+        relative_data = (base / kernel) - 1.0
+        relative_data /= np.max(np.abs(relative_data))
+        relative_data = relative_data[start:stop]
+        twod_data = kernel_data.reshape(num_vec_sizes, num_block_sizes)
 
         fig.axes[nti].set_title("N = " + str(int(1 << nti)), fontsize=30)
-        images.append(fig.axes[nti].imshow(data, cmap='RdBu', origin='lower', norm=norm))
+        images.append(fig.axes[nti].imshow(twod_data, cmap='RdBu', origin='lower', norm=norm))
+        xx, yy = np.meshgrid(np.arange(len(xticks)), np.arange(len(yticks)))
+        fig.axes[nti].quiver(xx,
+                             yy,
+                             np.zeros_like(relative_data),
+                             relative_data,
+                             pivot='mid',
+                             scale=len(xticks),
+                             scale_units='width')
 
     cb = plt.colorbar(images[0], ax=fig.axes, aspect=80)
-    cb.set_label("relative runtime", fontsize=30)
+    cb.set_label(r"$\mu s$", fontsize=30)
     cb.ax.tick_params(labelsize=30)
 
     fig.get_layout_engine().set(w_pad=0.1, h_pad=0.1, hspace=0, wspace=0)
 
-    plt.savefig(title.lower().replace(' ', '_') + ".svg")
-    #plt.show()
+    #plt.savefig(title.lower().replace(' ', '_') + ".svg")
+    plt.show()
 
 def plot_runtimes_new(filename):
     data = np.loadtxt(filename, delimiter=',', skiprows=1)
