@@ -1,5 +1,5 @@
 ---
-title:  Multi-GPU programming and HIP/OpenMP + MPI
+title:  Multi-GPU programming and HIP/OpenMP/SYCL + MPI
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
@@ -77,19 +77,19 @@ A GPU context is an execution environment that manages resources such as memory 
 
 - return the number of hip capable devices by `count`
 
-<div class="column"  style="width:28%;">
+<div class="column"  style="width:20%;">
 ```cpp
 hipGetDeviceCount(&count);
 ```
 </div>
 
-<div class="column"  style="width:33%;">
+<div class="column"  style="width:30%;">
 ```cpp
 count=omp_get_device_num()(&count);
 ```
 </div>
 
-<div class="column"  style="width:37%;">
+<div class="column"  style="width:30%;">
 ```cpp
 gpu_devices= device::get_devices(info::device_type::gpu);
 ```
