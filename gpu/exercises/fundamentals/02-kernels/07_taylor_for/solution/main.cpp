@@ -30,7 +30,7 @@ __global__ void taylor_vec(float *x, float *y, size_t num_values,
     float4 *xv = reinterpret_cast<float4 *>(x);
     float4 *yv = reinterpret_cast<float4 *>(y);
 
-    if (tid < num_values >> 2) {
+    if (tid < (num_values >> 2) + 3) {
         const float4 xs = xv[tid];
         const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
                         taylor(xs.z, num_iters), taylor(xs.w, num_iters));
@@ -86,6 +86,7 @@ __global__ void taylor_for_strided(float *x, float *y, size_t num_values,
                                    size_t num_iters) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     const size_t stride = blockDim.x * gridDim.x;
+
     for (size_t i = tid; i < num_values; i += stride) {
         y[i] = taylor(x[i], num_iters);
     }
@@ -98,6 +99,7 @@ __global__ void taylor_for_vec(float *x, float *y, size_t num_values,
 
     float4 *xv = reinterpret_cast<float4 *>(x);
     float4 *yv = reinterpret_cast<float4 *>(y);
+
     for (size_t i = tid; i < num_values / 4; i += stride) {
         const float4 xs = xv[i];
         const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
@@ -176,18 +178,20 @@ void initialize(float **h_x, float **h_y, float **reference, float **d_x,
 }
 
 int main(int argc, char **argv) {
-    if (argc != 3) {
+    if (argc != 4) {
         std::printf(
-            "Give two arguments: number of Taylor's expansion iterations "
-            "and size of vector\n");
-        std::printf("E.g. %s 20 100000000\n", argv[0]);
+            "Give three arguments: number of Taylor's expansion iterations,"
+            " size of vector and size of block\n");
+        std::printf("E.g. %s 20 100000000 256\n", argv[0]);
         exit(EXIT_FAILURE);
     }
     const size_t num_iters = std::atol(argv[1]);
     const size_t num_values = std::atol(argv[2]);
+    const size_t threads = std::atol(argv[3]);
     assert(num_iters > 0 && num_iters <= 50 && "Use values up to 50");
     assert(num_values > 0 && num_values <= 100000000 &&
            "Use values up to 100'000'000");
+    assert(threads > 0 && threads <= 1024 && "Use values up to 1024");
 
     float *h_x = nullptr;
     float *h_y = nullptr;
@@ -198,7 +202,6 @@ int main(int argc, char **argv) {
     initialize(&h_x, &h_y, &reference, &d_x, &d_y, num_values, num_iters);
 
     // Base kernel with nothing fancy
-    const int threads = 1024;
     int blocks = num_values / threads;
     blocks += blocks * threads < num_values ? 1 : 0;
     const auto base_runtime = run_and_measure(taylor_base, blocks, threads,
@@ -238,11 +241,10 @@ int main(int argc, char **argv) {
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Vec for result incorrect");
 
-    std::printf("%ld, %f, %f, %f, %f\n", base_runtime,
-                static_cast<float>(vec_runtime) / base_runtime,
-                static_cast<float>(strided_runtime) / base_runtime,
-                static_cast<float>(consecutive_runtime) / base_runtime,
-                static_cast<float>(vec_for_runtime) / base_runtime);
+    std::printf("%ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld\n", num_iters,
+                2 * sizeof(float) * num_values, threads, base_runtime,
+                vec_runtime, strided_runtime, consecutive_runtime,
+                vec_for_runtime);
 
     std::free(h_x);
     std::free(h_y);

@@ -18,15 +18,21 @@
 #
 #hipcc -O3 main.cpp
 
-echo "nti, vs, us, vec, strided, consecutive, vec_for" > runtimes.dat
+echo "Taylor N, bytes, block size, base, vec, strided, consecutive, vec_for" > runtimes.dat
 
-for i in {0..5}
+for i in {0..3}
 do
+    # 1, 2, 4, 8
     num_taylor_iters=$((1 << $i))
     for j in {0..6}
     do
+        # 1e6, 2e6, 4e6, 8e6, 16e6, 32e6, 64e6
         vec_size=$(((1 << $j) * 1000000))
-        echo -n "$num_taylor_iters, $vec_size, " >> runtimes.dat
-        srun ./a.out $num_taylor_iters $vec_size >> runtimes.dat
+        for k in {0..12}
+        do
+            # 256, 320, 384, ..., 1024
+            block_size=$((256 + $k * 64))
+            srun ./a.out $num_taylor_iters $vec_size $block_size >> runtimes.dat
+        done
     done
 done
