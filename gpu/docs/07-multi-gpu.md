@@ -78,21 +78,15 @@ A GPU context is an execution environment that manages resources such as memory 
 - return the number of gpu devices
 
 <div class="column"  style="width:20%;">
-```cpp
-hipGetDeviceCount(&count);
-```
+`hipGetDeviceCount(&count);`
 </div>
 
 <div class="column"  style="width:30%;">
-```cpp
-count=omp_get_device_num();
-```
+`count=omp_get_device_num()`
 </div>
 
 <div class="column"  style="width:30%;">
-```cpp
-gpu_devices= device::get_devices(info::device_type::gpu);
-```
+`gpu_devices= device::get_devices(info::device_type::gpu);`
 </div>
 
 - set device as the current device (GPU ids start from 0) 
