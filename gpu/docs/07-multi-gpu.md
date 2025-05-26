@@ -76,9 +76,9 @@ A GPU context is an execution environment that manages resources such as memory 
 # Device Selection and Management
 
 
-<div class="column"  style="width:29%;">
+<div class="column"  style="width:99%;">
  - return the number of gpu devices
- - `hipGetDeviceCount(&c);`
+ - `hipGetDeviceCount(&c);`, `count=omp_get_device_num();`,  `gpu_devices= device::get_devices(info::device_type::gpu);`
  - set the current device (ids from 0)
  - `hipSetDevice(i)`
  - return the current device 
@@ -86,15 +86,6 @@ A GPU context is an execution environment that manages resources such as memory 
  - reset current device resources 
  - `hipDeviceReset();`
 </div>
-
-<div class="column"  style="width:29%;">
- - `count=omp_get_device_num()`
-</div>
-
-<div class="column"  style="width:40%;">
- - `gpu_devices= device::get_devices(info::device_type::gpu);`
-</div>
-
 
 
 # Querying Device Properties
