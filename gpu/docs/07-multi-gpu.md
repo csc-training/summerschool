@@ -79,12 +79,12 @@ A GPU context is an execution environment that manages resources such as memory 
 <div class="column"  style="width:20%;">
  - return the number of gpu devices
  - `hipGetDeviceCount(&count);`
- - set the current device 
+ - set the current device (ids from 0)
  - `hipSetDevice(n)`
- - return the current device for the calling host thread by `device`
- - `hipError_t hipGetDevice(int *device)`
+ - return the current device 
+ - `hipGetDevice(&n);`
  - reset and destroy all current device resources 
- - `hipDeviceReset(void);`
+ - `hipDeviceReset();`
 </div>
 
 <div class="column"  style="width:30%;">
