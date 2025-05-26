@@ -134,7 +134,7 @@ This is done similarly to taks I
     }).wait();
 ``` 
 In this case `.wait()`  method pauses the prorgam until the the operation is 
-### Step 5: Access the results on host
+### Step 5: Access the results on the host
 When using USM and `malloc_device` the transfer from device to host needs to be explicitely coded. The same method `memcopy()` is used:
 
 ```cpp
@@ -143,12 +143,23 @@ When using USM and `malloc_device` the transfer from device to host needs to be 
 Now the destination is the host pointer (first argument), while the source (second argument) is the device pointer.
 Again the `.wait()` method is needed to pause the program execution. This way it is guaranteed that the next step is not executed before all data from device is transfered.
 
-##  IV. Memory management with Unified Shared Memory (`malloc_device()`) and `nd_range` Launching
+## IV. Memory management with Unified Shared Memory (`malloc_device()`) and `nd_range` Launching
 
 Starting from the code of the previous task change the kernel launching to use `nd_range`, similar to task II.
 
 ## V. Memory management with Unified Shared Memory (`malloc_shared()`) and `simple` Launching
-The `malloc_device()`  function allocates memory on the devices which is pinned to the device. There can be no migration to host and furthermore the host can not access in anyway this data. In order to simplify the progrgammer's life SYCL provides also mechanims allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encoutered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device.
+The `malloc_device()` function allocates memory on the devices which is pinned to the device. There can be no migration to host. Furthermore the host can not access in any direct this data. In order to simplify the progrgammer's life SYCL provides also mechanisms (similar to `hipMallocManaged()`)  to allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encountered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device.
 
+Start from the solution of task III or task IV. Remove the host pointers `x(N),y(N);` and the device pointers `x_dev,y_dev`. Remove as all the lines code used to transfer data from host to device and from device to host.
+
+Declare new pointers using `malloc_shared()` such as:
+```cpp
+    int* x_shared = sycl::malloc_device<int>(N, q);
+```
+Then initialize the `x_shared` and `y_shared` using host. **Note** the STL functions will not work. 
+
+The data is first touched on the host which means that the pointers will reside on the host memory. When the kernel executed a pagge fault will occured and it will trigger a migration to the device allowing ot execute the kernel on the device.  In this case the `.wait()`  is still needed to be sure that the host code wich will access the results at the end will now be executed before the kernel is completed.
+
+# SYCL Dependencies with AXPY
 
 
