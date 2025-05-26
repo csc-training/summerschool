@@ -177,7 +177,7 @@ Start from the solution of task III, IV, or V. Similarly to task VI remove the i
 ```
 sycl::queue queue(sycl::default_selector{}, sycl::property::queue::in_order{});
 ```
-## VII. Dependencies when Using USM  and events
+## VIII. Dependencies when Using USM  and events
 Start from task VIII. Change the definition the queue to make it out-of-order again. **Out-of-order** queues can use `sycl::events` to explicitly set the order of execution. Each kernel submission returns an event, which can be used to ensure that subsequent tasks wait for the completion of preceding tasks. 
 
 Initialize arrays `X` and `Y` on the device using two separate kernels. Capture the events from these kernel submissions:
@@ -203,4 +203,25 @@ or
     h.parallel_for(range{N},{event_x, event_y}, [=](id<1> idx) { Y[idx] += a * X[idx]; });
 ```
 As an exercise you can synchrhonize the host with the event `sycl::event::wait({event_a, event_b});`. Finally copy the result back to the host for validation.
+
+# Other SYCL features
+
+## IX. Basic Profiling using events
+Start from the solution of task VIII. First modify the **queue** definition and enable profiling
+```cpp
+queue q{property::queue::enable_profiling{}};
+```
+Next set-up `sycl::event` object the same way is done in the task VIII. Compute the execution time of the kernel by taking the difference between the end of the execution of the kernel and the start of the execution.
+```
+e.get_profiling_info<info::event_profiling::command_end>() - e.get_profiling_info<info::event_profiling::command_start>();
+```
+**Note** Before computing the time you will have first to synchronize the host and the device (`e.wait()`)!
+
+## X. Error Handling
+
+In this exercise you are given a code with errors. SYCL provides mechanisms to catch both synchonous and asynchronous expections. However the behaiviour dependends a lot on the hardware capabilities, runtime and, drivers. 
+
+lready has in place the constructs to catch both synchonous and asynchronous expections. The task is to fix the code using the error messages given by the code.
+
+
 
