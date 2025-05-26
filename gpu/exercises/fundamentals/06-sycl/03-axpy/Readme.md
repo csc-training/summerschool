@@ -148,7 +148,7 @@ Again the `.wait()` method is needed to pause the program execution. This way it
 Starting from the code of the previous task change the kernel launching to use `nd_range`, similar to task II.
 
 ## V. Memory management with Unified Shared Memory (`malloc_shared()`) and `simple` Launching
-The `malloc_device()` function allocates memory on the devices which is pinned to the device. There can be no migration to host. Furthermore the host can not access in any direct this data. In order to simplify the progrgammer's life SYCL provides also mechanisms (similar to `hipMallocManaged()`)  to allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encountered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device and similarly on the host, between two operations subsequent using the data no migration occurs.
+The `malloc_device()` function allocates memory on the devices which is pinned to the device. There can be no migration to host. Furthermore the host can not access in any direct this data. In order to simplify the programmer's life SYCL provides also mechanisms (similar to `hipMallocManaged()`)  to allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encountered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device and similarly on the host, between two operations subsequent using the data no migration occurs.
 
 Start from the solution of task III or task IV. Remove the host pointers `x(N),y(N);` and the device pointers `x_dev,y_dev`. Remove as all the lines code used to transfer data from host to device and from device to host.
 
@@ -161,5 +161,46 @@ Then initialize the `x_shared` and `y_shared` using host. **Note** the STL funct
 The data is first touched on the host which means that the pointers will reside on the host memory. When the kernel is executed a page fault will occured and it will trigger a migration to the device allowing ot execute the kernel on the device.  In this case the `.wait()`  is still needed to be sure that the host code wich will access the results at the end will now be executed before the kernel is completed.
 
 # SYCL Dependencies with AXPY
+Many application have independent parts that can be executed in any order. An application in which all operations are exececuted in the order of submission will always give the correct results, but it can result in an ineficient use of the resources. If some kernels can be executed in any order the runtime can schedule them in such a way that the devices are occupied as much as possible. 
 
+The AXPY operation can be use as an test case to implement some basic dedendencies. First `X` and `Y` arrays can be initialized independentely of each other. Then the operation can be performed. Dependencies can be enforce in many ways depending on the memory model used. 
+
+When using buffer and accessor model the dependencies are automatically satisified, because data in the buffers can be accessed only via accessors which block any other access until they are destroyed. W
+
+When using USM the programmer needs to specify the dependencies explicitely. The kernels launch is asynchronous and there is no warranty that they are executed in the order of submission. The worst way to program is to use an out-of-order queue and use `.wait()` for each operation. It is the worst becuase the program will pause and wait for each operation before conitnued to the next submission. Lots of synchronization between host and device are costly and also results in  lots of idle time in the device. A slighly better approach is to enforce an order of execution to be the the order of submission. This means that the `.wait()` can be removed from almost all submissions to the queue. It is possible to use in-order queues .  But this would be inefficient in some cases becuase it does not allow for concurrency. Finally we can have dependencies specified via sycl events. Each submission to a queue returns a variable event. If operation B dependends on operation A, it is possible to specify a dependency off the operation B of the event returned by operation A. 
+
+## VI. Dependencies via Buffers
+Start from the solution of task I or II. It is ok to remove the initialization of the variables `X`and `Y`. Write separate kernel initializing each one separately. Keep in mind that in this case the data from the host is not needed.
+## VII. Dependencies when Using USM  and `in-order` queues
+Start from the solution of task III, IV, or V. Similarly to task VI remove the initialization on the host and write separate kernel initializing for each variablre separately. Chane ge also the queue definition. An in-orde queue is defined using:
+
+```
+sycl::queue queue(sycl::default_selector{}, sycl::property::queue::in_order{});
+```
+## VII. Dependencies when Using USM  and events
+Start from task VIII. Change the definition the queue to make it out-of-order again. **Out-of-order** queues can use `sycl::events` to explicitly set the order of execution. Each kernel submission returns an event, which can be used to ensure that subsequent tasks wait for the completion of preceding tasks. 
+
+Initialize arrays `X` and `Y` on the device using two separate kernels. Capture the events from these kernel submissions:
+```cpp
+auto event_x = queue.submit([&](sycl::handler &h) {
+    h.parallel_for(range{N}, [=](id<1> idx) { X[idx] = 1; });
+});
+auto event_b = queue.submit([&](sycl::handler &h) {
+    h.parallel_for(range{N}, [=](id<1> idx) { Y[idx] = 2; });
+});
+```
+Nexrt submit the `axpy` kernel with an explicit dependency on the two initialization events
+ ```cpp
+ queue.submit([&](sycl::handler &h) {
+    h.depends_on({event_x, event_y});
+    h.parallel_for(range{N}, [=](id<1> idx) { Y[idx] += a * X[idx]; });
+});
+```
+or 
+
+ ```cpp
+ queue.
+    h.parallel_for(range{N},{event_x, event_y}, [=](id<1> idx) { Y[idx] += a * X[idx]; });
+```
+As an exercise you can synchrhonize the host with the event `sycl::event::wait({event_a, event_b});`. Finally copy the final result back to the host for validation.
 
