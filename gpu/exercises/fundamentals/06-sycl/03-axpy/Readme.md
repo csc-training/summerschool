@@ -189,7 +189,7 @@ auto event_b = queue.submit([&](sycl::handler &h) {
     h.parallel_for(range{N}, [=](id<1> idx) { Y[idx] = 2; });
 });
 ```
-Nexrt submit the `axpy` kernel with an explicit dependency on the two initialization events
+Next submit the `axpy` kernel with an explicit dependency on the two initialization events
  ```cpp
  queue.submit([&](sycl::handler &h) {
     h.depends_on({event_x, event_y});
@@ -202,5 +202,5 @@ or
  queue.
     h.parallel_for(range{N},{event_x, event_y}, [=](id<1> idx) { Y[idx] += a * X[idx]; });
 ```
-As an exercise you can synchrhonize the host with the event `sycl::event::wait({event_a, event_b});`. Finally copy the final result back to the host for validation.
+As an exercise you can synchrhonize the host with the event `sycl::event::wait({event_a, event_b});`. Finally copy the result back to the host for validation.
 
