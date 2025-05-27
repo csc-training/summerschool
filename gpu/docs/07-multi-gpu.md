@@ -155,6 +155,19 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
     * streams and events
 * asynchronous function calls are required to overlap work
 
+
+# Many GPUs per process
+
+* Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions 
+   * OpenMP has also `device()`-directive to offload work to a specific device
+* After selecting the default device, operations such as the following are effective only
+  on the selected GPU:
+    * Memory operations
+    * Kernel execution
+    * Streams and events (HIP)
+* Asynchronous function calls (HIP) or `nowait` clause (OpenMP) are required to overlap work
+
+
 # Many GPUs per Process: Code Example
 
 ```cpp
@@ -169,6 +182,39 @@ for(unsigned n = 0; n < num_devices; n++) {
   hipStreamSynchronize(stream[n]);
 }
 ```
+
+
+
+# Many GPUs per process, code example
+
+<small>
+
+* HIP example
+```cpp
+// Launch kernels (HIP)
+for(unsigned n = 0; n < num_devices; n++) {
+  hipSetDevice(n);
+  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
+}
+//Synchronize all kernels with host (HIP)
+for(unsigned n = 0; n < num_devices; n++) {
+  hipSetDevice(n);
+  hipStreamSynchronize(stream[n]);
+}
+```
+* OpenMP example
+```cpp
+// Launch kernels (OpenMP)
+for(int n = 0; n < num_devices; n++) {
+  omp_set_default_device(n);
+  #pragma omp target teams distribute parallel for nowait
+  for (unsigned i = 0; i < size[n]; i++)
+    // Do something
+}
+#pragma omp taskwait //Synchronize all kernels with host (OpenMP)
+```
+</small>
+
 
 # Many GPUs per Process, One GPU per Thread
 
@@ -391,47 +437,6 @@ hipSetDevice(nodeRank % deviceCount);
 
 # Many GPUs per process{.section}
 
-# Many GPUs per process
-
-* Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions 
-   * OpenMP has also `device()`-directive to offload work to a specific device
-* After selecting the default device, operations such as the following are effective only
-  on the selected GPU:
-    * Memory operations
-    * Kernel execution
-    * Streams and events (HIP)
-* Asynchronous function calls (HIP) or `nowait` clause (OpenMP) are required to overlap work
-
-
-# Many GPUs per process, code example
-
-<small>
-
-* HIP example
-```cpp
-// Launch kernels (HIP)
-for(unsigned n = 0; n < num_devices; n++) {
-  hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
-}
-//Synchronize all kernels with host (HIP)
-for(unsigned n = 0; n < num_devices; n++) {
-  hipSetDevice(n);
-  hipStreamSynchronize(stream[n]);
-}
-```
-* OpenMP example
-```cpp
-// Launch kernels (OpenMP)
-for(int n = 0; n < num_devices; n++) {
-  omp_set_default_device(n);
-  #pragma omp target teams distribute parallel for nowait
-  for (unsigned i = 0; i < size[n]; i++)
-    // Do something
-}
-#pragma omp taskwait //Synchronize all kernels with host (OpenMP)
-```
-</small>
 
 # One GPU per thread{.section}
 
