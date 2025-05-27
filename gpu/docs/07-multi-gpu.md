@@ -80,7 +80,7 @@ A GPU context is an execution environment that manages resources such as memory 
 // HIP
 int count, device;
 hipGetDeviceCount(&count);
-hipSetDevice(evice);
+hipSetDevice(device);
 hipGetDevice(&device);
 hipDeviceReset();
 
