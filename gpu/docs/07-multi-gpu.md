@@ -78,14 +78,16 @@ A GPU context is an execution environment that manages resources such as memory 
 
 ```cpp
 // HIP
+int count, device;
 hipGetDeviceCount(&count);
 hipSetDevice(evice);
 hipGetDevice(&device);
+hipDeviceReset();
 
 // OpenMP
-count = omp_get_num_devices();
+int count = omp_get_num_devices();
 omp_set_default_device(device);
-device=omp_get_default_device();
+int device=omp_get_default_device();
 
 //SYCL
 auto gpu_devices= sycl::device::get_devices(sycl::info::device_type::gpu);
