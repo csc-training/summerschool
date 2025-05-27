@@ -92,8 +92,8 @@ int device=omp_get_default_device();
 //SYCL
 auto gpu_devices= sycl::device::get_devices(sycl::info::device_type::gpu);
 auto count = size(gpu_devices);
-queue q{gpu_devices[0]};
-auto device = q.get_device();
+queue q{gpu_devices[device]};
+auto dev = q.get_device();
 ```
 
 # Querying Device Properties
