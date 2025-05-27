@@ -154,10 +154,11 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
     * kernel execution
     * streams and events (HIP)
 * asynchronous function calls (HIP)/`nowait` (OpenMP) for overlapping work
-* for SYCL each device has a different queue and all calls are asynchronous
+* in SYCL each device has a different queue and all calls are asynchronous
 
 # Many GPUs per Process: Code Example HIP/OpenMP
 
+ <div class="column" width=60%>
 <small>
 
 * HIP example
@@ -185,6 +186,7 @@ for(int n = 0; n < num_devices; n++) {
 #pragma omp taskwait //Synchronize all kernels with host (OpenMP)
 ```
 </small>
+</div>
 
 # Many GPUs per Process: Code Example SYCL
 
