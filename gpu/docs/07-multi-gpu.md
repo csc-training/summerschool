@@ -1,5 +1,5 @@
 ---
-title:  Multi-GPU programming and HIP/OpenMP + MPI
+title:  Multi-GPU programming and HIP/OpenMP/SYCL + MPI
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
@@ -73,24 +73,25 @@ lang:   en
 A GPU context is an execution environment that manages resources such as memory allocations, streams, and kernel execution for a specific GPU. It acts as an interface between the application and the GPU, ensuring that operations like memory management and kernel launches are handled correctly.
 :::
 
-# Device Selection and Management
 
-- return the number of hip capable devices by `count`
+# Device management
+
 ```cpp
-hipError_t hipGetDeviceCount(int *count)
-```
-- GPU device numbering starting from 0
-- set device as the current device for the calling host thread
-```cpp
-hipError_t hipSetDevice(int device)
-```
-- return the current device for the calling host thread by `device`
-```cpp
-hipError_t hipGetDevice(int *device)
-```
-- reset and destroy all current device resources
-```cpp
-hipError_t hipDeviceReset(void)
+// HIP
+hipGetDeviceCount(&count);
+hipSetDevice(evice);
+hipGetDevice(&device);
+
+// OpenMP
+count = omp_get_num_devices();
+omp_set_default_device(device);
+device=omp_get_default_device();
+
+//SYCL
+auto gpu_devices= sycl::device::get_devices(sycl::info::device_type::gpu);
+auto count = size(gpu_devices);
+queue queue q{gpu_devices[0]};
+auto device = q.get_device();
 ```
 
 # Querying Device Properties
