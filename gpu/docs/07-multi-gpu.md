@@ -158,7 +158,39 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
 
 # Many GPUs per Process: Code Example HIP/OpenMP
 
- <div class="column" width=60%>
+ <div class="column" width=49%>
+<small>
+
+* HIP example
+```cpp
+// Launch kernels (HIP)
+for(unsigned n = 0; n < num_devices; n++) {
+  hipSetDevice(n);
+  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
+}
+//Synchronize all kernels with host (HIP)
+for(unsigned n = 0; n < num_devices; n++) {
+  hipSetDevice(n);
+  hipStreamSynchronize(stream[n]);
+}
+```
+* OpenMP example
+```cpp
+// Launch kernels (OpenMP)
+for(int n = 0; n < num_devices; n++) {
+  omp_set_default_device(n);
+  #pragma omp target teams distribute parallel for nowait
+  for (unsigned i = 0; i < size[n]; i++)
+    // Do something
+}
+#pragma omp taskwait //Synchronize all kernels with host (OpenMP)
+```
+</small>
+</div>
+
+
+
+ <div class="column" width=49%>
 <small>
 
 * HIP example
