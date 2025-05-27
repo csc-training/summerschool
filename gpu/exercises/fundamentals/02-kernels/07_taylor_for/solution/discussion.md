@@ -5,7 +5,7 @@
 This is what the kernels are computing.
 The number of iterations, `N` is varied.
 
-$$\vec{y} = e^{\vec{x}} \approx \sum_{n = 0}^{N} \frac{x^n}{n!}$$
+$$\vec{y} = e^{\vec{x}} \approx \sum_{n = 0}^{N} \frac{\vec{x}^n}{n!}$$
 
 ```cpp
 __device__ __host__ float taylor(float x, size_t N) {
