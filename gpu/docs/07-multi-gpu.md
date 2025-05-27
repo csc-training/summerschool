@@ -152,41 +152,11 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
   on the selected GPU:
     * memory operations
     * kernel execution
-    * streams and events
+    * streams and events (HIP)
 * asynchronous function calls (HIP)/`nowait` (OpenMP) for overlapping work
-* for SYCL each device has a different queue and all calls are asynchronous 
+* for SYCL each device has a different queue and all calls are asynchronous
 
-
-# Many GPUs per process
-
-* Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions 
-   * OpenMP has also `device()`-directive to offload work to a specific device
-* After selecting the default device, operations such as the following are effective only
-  on the selected GPU:
-    * Memory operations
-    * Kernel execution
-    * Streams and events (HIP)
-* Asynchronous function calls (HIP) or `nowait` clause (OpenMP) are required to overlap work
-
-
-# Many GPUs per Process: Code Example
-
-```cpp
-// Launch kernels
-for(unsigned n = 0; n < num_devices; n++) {
-  hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
-}
-//Synchronize all kernels with host
-for(unsigned n = 0; n < num_devices; n++) {
-  hipSetDevice(n);
-  hipStreamSynchronize(stream[n]);
-}
-```
-
-
-
-# Many GPUs per process, code example
+# Many GPUs per Process: Code Example HIP/OpenMP
 
 <small>
 
@@ -216,6 +186,7 @@ for(int n = 0; n < num_devices; n++) {
 ```
 </small>
 
+# Many GPUs per Process: Code Example SYCL
 
 # Many GPUs per Process, One GPU per Thread
 
