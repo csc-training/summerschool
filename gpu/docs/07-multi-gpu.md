@@ -103,8 +103,6 @@ auto dev = q.get_device();
     * provides e.g. name, amount of memory, warp size, support for unified
       virtual addressing, etc.
     * useful for code portability
-
-Return the properties of a HIP capable device by `prop`
 ```
 // HIP - get device properties as struct
 hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
