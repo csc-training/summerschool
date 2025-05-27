@@ -107,7 +107,31 @@ auto dev = q.get_device();
 
 Return the properties of a HIP capable device by `prop`
 ```
-hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
+// HIP - get device properties as struct
+hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
+
+// OpenMP - use `requires` clause to verify the device properties, e.g.
+#pragma omp requires unified_shared_memory
+
+//SYCL
+auto p_name = device.get_platform().get_info<info::platform::name>();
+auto max_work_group = device.get_info<info::device::max_work_group_size>();
+```
+
+
+# Querying or verifying device properties
+
+* One can query or verify the properties of different devices in the system
+    * Properties include name, amount of memory, warp size, support for unified virtual addressing, etc.
+    * Useful for code portability
+
+In HIP, the function returns the device properties in struct `prop`
+```cpp
+// HIP - get device properties as struct
+hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
+
+// OpenMP - use `requires` clause to verify the device properties, e.g.
+#pragma omp requires unified_shared_memory
 ```
 
 
@@ -295,56 +319,6 @@ hipSetDevice(nodeRank % deviceCount);
     * Allows sharing (and saving) resources (disks, power units, etc.)
     * More GPU resources per node, better per-node-performance
 
-
-# GPU Context
-
-* A context is established implicitly on the current device when the first task requiring an active context is evaluated (HIP and OpenMP)
-* Several processes can create contexts for a single device
-    * The device resources are allocated per context
-* By default, one context per device per process in HIP
-    * Threads of the same process share the primary context (for each device)
-* HIP supports explicit context management whereas OpenMP does not
-
-# Selecting device
-
-* Driver associates a number for each available GPU device starting from 0
-* The functions `hipSetDevice()` and `omp_set_default_device()` are used for selecting the desired device for HIP and OpenMP, respectively
-  * Furthermore, in OpenMP, the `device()`-directive can be used to offload targets to specific devices without changing the default device
-
-
-# Device management
-
-```cpp
-// HIP
-hipError_t hipGetDeviceCount(int *count)
-hipError_t hipSetDevice(int device)
-hipError_t hipGetDevice(int *device)
-
-// OpenMP
-int omp_get_num_devices(void)
-void omp_set_default_device(int device)
-int omp_get_default_device(void)
-```
-
-* Demos: `device_management_hip.cpp`, `device_management_omp.cpp`
-
-
-# Querying or verifying device properties
-
-* One can query or verify the properties of different devices in the system
-    * Properties include name, amount of memory, warp size, support for unified virtual addressing, etc.
-    * Useful for code portability
-
-In HIP, the function returns the device properties in struct `prop`
-```cpp
-// HIP - get device properties as struct
-hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
-
-// OpenMP - use `requires` clause to verify the device properties, e.g.
-#pragma omp requires unified_shared_memory
-```
-
-* Demo: `device_properties_hip.cpp`
 
 
 # Multi-GPU programming models
