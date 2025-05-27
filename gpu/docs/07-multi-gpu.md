@@ -147,13 +147,14 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
 
 # Many GPUs per Process
 
-* process switches the active GPU using `hipSetDevice()` function 
+* process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP)
 * after selecting the default device, operations such as the following are effective only
   on the selected GPU:
     * memory operations
     * kernel execution
     * streams and events
-* asynchronous function calls are required to overlap work
+* asynchronous function calls (HIP)/`nowait` (OpenMP) for overlapping work
+* for SYCL each device has a different queue and all calls are asynchronous 
 
 
 # Many GPUs per process
