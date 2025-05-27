@@ -98,8 +98,7 @@ auto dev = q.get_device();
 
 # Querying Device Properties
 
-* one can query the properties of different devices in the system using
-  `hipGetDeviceProperties()` function
+* one can query the properties of different devices in the system
     * no context needed
     * provides e.g. name, amount of memory, warp size, support for unified
       virtual addressing, etc.
