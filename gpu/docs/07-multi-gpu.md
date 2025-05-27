@@ -158,7 +158,7 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
 
 # Many GPUs per Process: Code Example HIP/OpenMP
 
- <div class="column" width=49%>
+ <div class="column" width=60%>
 <small>
 
 * HIP example
@@ -190,7 +190,7 @@ for(int n = 0; n < num_devices; n++) {
 
 
 
- <div class="column" width=49%>
+ <div class="column" width=39%>
 <small>
 
 * HIP example
