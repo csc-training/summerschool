@@ -116,22 +116,6 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
 ```
 
 
-# Querying or verifying device properties
-
-* One can query or verify the properties of different devices in the system
-    * Properties include name, amount of memory, warp size, support for unified virtual addressing, etc.
-    * Useful for code portability
-
-In HIP, the function returns the device properties in struct `prop`
-```cpp
-// HIP - get device properties as struct
-hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
-
-// OpenMP - use `requires` clause to verify the device properties, e.g.
-#pragma omp requires unified_shared_memory
-```
-
-
 # Multi-GPU Programming Models
 
 <div class="column">
