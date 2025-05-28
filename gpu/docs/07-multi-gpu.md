@@ -229,7 +229,8 @@ for(unsigned n = 0; n < num_devices; n++) {
 
 * HIP 
 ```cpp
-// Launch and synchronize kernels from parallel CPU threads using HIP
+// Launch and synchronize kernels
+// from parallel CPU threads using HIP
 #pragma omp parallel num_threads(num_devices)
 {
   unsigned n = omp_get_thread_num();
@@ -240,7 +241,8 @@ for(unsigned n = 0; n < num_devices; n++) {
 ```
 * OpenMP 
 ```cpp
-// Launch and synchronize kernels from parallel CPU threads using OpenMP
+// Launch and synchronize kernels
+// from parallel CPU threads using OpenMP
 #pragma omp parallel num_threads(num_devices)
 {
   unsigned n = omp_get_thread_num();
@@ -259,7 +261,8 @@ for(unsigned n = 0; n < num_devices; n++) {
 
 * SYCL 
 ```cpp
-// Launch kernels (SYCL)
+//Launch and synchronize kernels
+// from parallel CPU threads using SYCL
 #pragma omp parallel num_threads(num_devices)
 {
   unsigned n = omp_get_thread_num();
