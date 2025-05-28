@@ -163,7 +163,13 @@ compared to non-vectorized loads. The red regions in the top right corners for c
 be explained by the slowness of the base kernel with those configurations. See the deviation plot for the base kernel:
 there's a similar pattern.
 
-For compute bound problem (`N = 8`) vectorized loads only hurt performance.
+For compute bound problem (`N = 8`) vectorized loads only hurt performance. This repeats for the strided and
+strided vectorized cases as well. Without more detailed measurement it's difficult to say why,
+but my hypothesis is that the "lead time" to computation is larger for these three kernels compared to
+the base kernel. In other words, the longer it takes until the "actual" computation can start
+(due to extra memory transactions in the vectorized case and extra computation
+in the strided loop case), the longer it takes to complete the actual work. But this is a hypothesis,
+and may aswell be entirely wrong.
 
 #### Consecutive values for loop
 
