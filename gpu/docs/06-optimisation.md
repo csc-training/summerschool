@@ -259,10 +259,10 @@ double val = global_array[tid];
 
 
 <div class="column">
-![](img/NoBankConflicts.jpeg){width=100%}
+<! [](img/NoBankConflicts.jpeg){width=100%}>
 </div>
 <div class="column">
-![](img/BankConflicts.jpeg){width=100%}
+<! [](img/BankConflicts.jpeg){width=100%}>
 </div>
 
 
