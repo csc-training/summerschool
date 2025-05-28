@@ -214,7 +214,7 @@ Smallest block size performs the best overall, whether the problem is compute or
 ![Deviation from row average for vectorized kernel](deviation_vectorized.svg "Deviation from row average for vectorized kernel")
 
 Pretty similar observations as above. One thing to note is the smaller deviations from average overall.
-The maximums are smaller and there're are fewer of them.
+The peaks and valleys are smaller and there are fewer of them.
 
 #### Consecutive values for loop
 
@@ -227,27 +227,28 @@ How many bytes does one thread ask for? The total byte size takes into account b
 but these are different memory addresses and thus served by different memory transactions, so we must
 divide the data size by 2 to get bytes per memory transaction.
 
-For the $$256 thread/block$$ case the bytes per thread is
+For the 256 thread/block case the bytes per thread is
 
-$$\frac{32 / 2 \times 1024 \times 1024 B}{256 thread/block \times 1024 block/grid \times 1 grid} = 64 B/t$$
+$$\frac{32 / 2 \times 1024 \times 1024 B}{256 tpb \times 1024 bpg \times 1 g} = 64 Bpt$$
 
-while for the $$1024 thread/block$$ case it's
+while for the 1024 thread/block case it's
 
-$$\frac{32 / 2 \times 1024 \times 1024 B}{1024 thread/block \times 1024 block/grid \times 1 grid} = 16 B/t$$.
+$$\frac{32 / 2 \times 1024 \times 1024 B}{1024 tpb \times 1024 bpg \times 1 g} = 16 Bpt$$.
 
 If the size of global memory transaction is 64 bytes, exactly one thread can be served by a single memory transaction.
 This means there's 64 memory transactions required to fulfill the needs of one wavefront. One step down on the grid
 (256 thread/block, 16 MiB case) means two threads can be served by one 64 byte transaction. Likewise, four steps right
 (512 thread/block, 32 MiB case) means two threads can be served by one 64 byte transaction.
 
-Going up, each thread requires two 64 byte memory transactions, but each thread can already start doing work with the
-first memory transaction while waiting for the second one to be fulfilled. In other words, the number of memory transactions
-before useful work can even begin stays constant at 64.
+Going up one step (256 thread/block, 64 MiB), each thread requires two 64 byte memory transactions,
+but each thread can already start doing work with the first memory transaction while waiting for
+the second one to be fulfilled. In other words, the number of memory transactions before useful work can
+begin stays constant at 64.
 
 In summary, the number of 64 byte memory transactions that need to happen before the wavefront can start working
 increases upwards and to the left, while it reaches it's peak at the 256 thread/block, 32 MiB case. After this it's at
 it's maximum value of 64 (i.e. one memory transaction per thread in the wavefront). The total number of required
-memory transactions before all work is finished keeps increasing as the total probles size increases in the up direction,
+memory transactions before all work is finished keeps increasing as the total problem size increases upwards,
 but the wavefronts can do some work with the old data, thus hiding some of the latency.
 
 #### Strided for loop
@@ -260,3 +261,6 @@ The kernel performs best with the largest block size, whether the problem is mem
 #### Vectorized loads, strided for loop
 
 ![Deviation from row average for vectorized strided kernel](deviation_strided_vectorized.svg "Deviation from row average for vectorized strided kernel")
+
+Interestingly, the best configuration is on the bottom left - top right diagonal. This is somewhat visible on the
+strided version as well, but more pronounced here.
