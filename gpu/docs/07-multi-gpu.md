@@ -311,14 +311,12 @@ hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t c
 # Compiling MPI+HIP Code
 
 
-* trying to compile code with any HIP calls with other than the `hipcc`
-  compiler can result in errors
-* either set MPI compiler to use `hipcc`, eg for OpenMPI:
-```bash
-OMPI_CXXFLAGS='' OMPI_CXX='hipcc'
-```
+* trying to compile code with any HIP calls with other than the `hipcc` compiler can result in errors
+* either single source code (MPI + GPU), set MPI compiler to use `gpucc`:
+         * OpenMPI: `OMPI_CXXFLAGS='' OMPI_CXX='hipcc'` or `'mpicxx --showme:compile' 'mpicxx --showme:link' <ggpu_mpi_code>.cpp`
+         * `'CC --cray-print-opts=cflags' <gpu_mpi_code>.cpp 'CC --cray-print-opts=libs'
 * or separate HIP and MPI code in different compilation units compiled with
-  `mpicxx` and `hipcc`
+  `mpicxx` and `gpucc`
     * Link object files in a separate step using `mpicxx` or `hipcc`
 * **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP**
 
@@ -352,8 +350,8 @@ hipSetDevice(nodeRank % deviceCount);
 # Summary
 
 - there are various options to write a multi-GPU program
-- use `hipSetDevice()` to select the device, and the subsequent HIP calls
-  operate on that device
+- in HIP/OpenMP a device is set, and the subsequent calls operate on that device
+- in SYCL each device has a separate queue
 - often best to use one GPU per process, and let MPI handle data transfers between GPUs 
 - GPU-aware MPI is required when passing device pointers to MPI
 
@@ -464,8 +462,6 @@ hipSetDevice(nodeRank % deviceCount);
 
 
 
-
-# Direct peer to peer access {.section}
 
 # Direct peer to peer access (HIP)
 
