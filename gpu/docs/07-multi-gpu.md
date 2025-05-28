@@ -309,7 +309,8 @@ hipMemcpyPeer(dst, dstDev, src, srcDev, size);
 omp_target_memcpy(dst, src, size, dstOffset, srcOffset, dstDev, srcDev);
 ```
 * when direct p-t-p  is missing the copying is done through the host memory 
-* no equivalent `hipMemcpyPeer`in SYCL, behaviour is implementation dependent 
+* no equivalent `hipMemcpyPeer` in SYCL
+     * implementation dependent behaviour
 
 
 
