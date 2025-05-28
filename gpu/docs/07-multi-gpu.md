@@ -310,7 +310,7 @@ int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
                       size_t srcOffset, int dstDev, int dstDev)
 ```
 * a copy through host memory is donw when direct p-t-p  is missing
-* in SYCL there is no equivalent to `hipMemcpyPeer`, with buffers is implementation dependent 
+* no equivalent `hipMemcpyPeer`in SYCL, with buffers is implementation dependent 
 
 
 
