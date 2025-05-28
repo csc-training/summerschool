@@ -198,7 +198,7 @@ for(int n = 0; n < num_devices; n++) {
 for(unsigned n = 0; n < num_devices; n++) {
   q[n].parallel_for(size[n], [=](id<1> i) { ...});
 }
-//Synchronize all kernels with host (HIP)
+//Synchronize all kernels with host (SYCL)
 for(unsigned n = 0; n < num_devices; n++) {
   q[n].wait();
 }
@@ -207,11 +207,11 @@ for(unsigned n = 0; n < num_devices; n++) {
 </div>
 
 
-# Many GPUs per Process, One GPU per Thread
+# One GPU per (CPU) Thread
 
 * one GPU per CPU thread
     * e.g. one OpenMP CPU thread per GPU being used
-* HIP is threadsafe
+* HIP and SYCL APIs are threadsafe
     * multiple threads can call the functions at the same time
 * each thread can create its own context on a different GPU
     * `hipSetDevice()` sets the device and create a context per thread
@@ -220,8 +220,10 @@ for(unsigned n = 0; n < num_devices; n++) {
 * communication between threads still not trivial
 
 
-# Many GPUs per Process, One GPU per Thread: Code Example
+# One GPU per (CPU) Thread: Code Example
 
+
+ <div class="column" width=85%>
 ```cpp
 // Launch and synchronize kernels from parallel CPU threads using HIP
 #pragma omp parallel num_threads(num_devices)
@@ -232,6 +234,7 @@ for(unsigned n = 0; n < num_devices; n++) {
   hipStreamSynchronize(stream[n]);
 }
 ```
+  </div>
 
 # Direct Peer to Peer Access
 
