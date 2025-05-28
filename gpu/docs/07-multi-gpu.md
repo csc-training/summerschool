@@ -158,7 +158,7 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
 
 # Many GPUs per Process: Code Example HIP/OpenMP
 
- <div class="column" width=60%>
+ <div class="column" width=65%>
 <small>
 
 * HIP example
@@ -189,36 +189,24 @@ for(int n = 0; n < num_devices; n++) {
 </div>
 
 
-
- <div class="column" width=39%>
+ <div class="column" width=34%>
 <small>
 
-* HIP example
+* SYCL example
 ```cpp
-// Launch kernels (HIP)
+// Launch kernels (SYCL)
 for(unsigned n = 0; n < num_devices; n++) {
-  hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
+  q[n].parallel_for(size[n], [=](id<1> i) { ...});
 }
 //Synchronize all kernels with host (HIP)
 for(unsigned n = 0; n < num_devices; n++) {
-  hipSetDevice(n);
-  hipStreamSynchronize(stream[n]);
+  q[n].wait();
 }
-```
-* OpenMP example
-```cpp
-// Launch kernels (OpenMP)
-for(int n = 0; n < num_devices; n++) {
-  omp_set_default_device(n);
-  #pragma omp target teams distribute parallel for nowait
-  for (unsigned i = 0; i < size[n]; i++)
-    // Do something
-}
-#pragma omp taskwait //Synchronize all kernels with host (OpenMP)
 ```
 </small>
 </div>
+
+
 
 # Many GPUs per Process: Code Example SYCL
 
