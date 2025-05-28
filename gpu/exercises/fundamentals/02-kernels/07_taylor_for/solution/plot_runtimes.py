@@ -43,19 +43,22 @@ def make_fig(byte_sizes, block_sizes, titles, ki):
 
     return fig
 
-def plot_data(title, subplot_titles, data, fig, colorbar_title, norm_center):
-    data_max_distance_from_center = np.maximum(
-            np.abs(np.abs(np.min(data)) - norm_center),
-            np.abs(np.abs(np.max(data)) - norm_center))
-    vmin = norm_center - data_max_distance_from_center
-    vmax = norm_center + data_max_distance_from_center
+def plot_data(title, subplot_titles, data, fig, colorbar_title, center):
+    # set up the minimum & maximum for the colorbar:
+    # very large outliers are clipped, but they don't dominate the whole plot
+    average_deviation = np.average(np.abs(data - center))
+    std_deviation = np.std(np.abs(data - center))
+    deviation = average_deviation + 2.5 * std_deviation
+    vmin = center - deviation
+    vmax = center + deviation
+
     norm = colors.Normalize(vmin=vmin, vmax=vmax)
     images = []
     for page_index in np.arange(data.shape[0]):
         fig.axes[page_index].set_title(subplot_titles[page_index], fontsize=30)
         images.append(fig.axes[page_index].imshow(data[page_index], cmap='RdBu', origin='lower', norm=norm))
 
-    cb = plt.colorbar(images[0], ax=fig.axes, aspect=80)
+    cb = plt.colorbar(images[0], ax=fig.axes, aspect=80, extend='both')
     cb.set_label(colorbar_title, fontsize=30)
     cb.ax.tick_params(labelsize=30)
 
@@ -74,6 +77,7 @@ def plot_relative_runtimes(taylor_iters, byte_sizes, block_sizes, runtimes, titl
 
         kernel = runtimes[ki]
         relative_cube = kernel / base
+
         plot_data("runtime_" + titles[ki], subplot_titles, relative_cube, fig, colorbar_title, 1.0)
 
     colorbar_title = "relative deviation from row average"
@@ -82,6 +86,7 @@ def plot_relative_runtimes(taylor_iters, byte_sizes, block_sizes, runtimes, titl
         kernel = runtimes[ki]
         averages = np.average(kernel, axis=2).reshape((kernel.shape[0], kernel.shape[1], 1))
         deviations = (kernel - averages) / averages
+
         plot_data("deviation_" + titles[ki], subplot_titles, deviations, fig, colorbar_title, 0.0)
 
 def main():

@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
 
     // Kernels with thread re-use can use arbitrary grid size. It should be
     // large enough to utilize all the availabe CUs of the GPU, however.
-    blocks = 1024;
+    blocks = 880;
 
     // Consecutive N per thread
     const auto consecutive_runtime =
