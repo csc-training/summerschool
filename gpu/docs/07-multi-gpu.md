@@ -214,7 +214,7 @@ for(unsigned n = 0; n < num_devices; n++) {
 * HIP and SYCL APIs are threadsafe
     * multiple threads can call the functions at the same time
 * each thread can create its own context on a different GPU
-    * `hipSetDevice()` sets the device and create a context per thread
+    * when setting the device a context per thread is created
     * easy device management with no changing of device
 * from the point of view of a single thread, the implementation closer to a single-GPU case
 * communication between threads still not trivial
@@ -395,8 +395,6 @@ hipSetDevice(nodeRank % deviceCount);
 ![](img/single_proc_thread_gpu.png){width=50%}
 </div>
 
-
-# One GPU per process with MPI{.section}
 
 # One GPU per process
 
