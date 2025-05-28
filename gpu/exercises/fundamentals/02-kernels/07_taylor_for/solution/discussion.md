@@ -1,5 +1,7 @@
 ## Codes
 
+The [full source code](main.cpp) is in the same directory.
+
 ### The computation
 
 This is what the kernels are computing.
@@ -21,7 +23,7 @@ __device__ __host__ float taylor(float x, size_t N) {
 
 ### The base kernel
 
-This is launched with different block sizes and always enough grids such that
+This is launched with different block sizes and always enough blocks such that
 `threads per grid >= num_values`.
 
 Other kernels are compared to this.
@@ -49,7 +51,7 @@ __global__ void taylor_vec(float *x, float *y, size_t num_values,
     float4 *xv = reinterpret_cast<float4 *>(x);
     float4 *yv = reinterpret_cast<float4 *>(y);
 
-    if (tid < (num_values >> 2) + 3) {
+    if (tid < num_values >> 2) {
         const float4 xs = xv[tid];
         const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
                         taylor(xs.z, num_iters), taylor(xs.w, num_iters));
@@ -154,7 +156,7 @@ is true for values greater than one.
 
 #### Vectorized loads
 
-![Relative runtime for vectorized kernel](runtime_vec.svg "Relative runtime vectorized")
+![Relative runtime for vectorized kernel](runtime_vectorized.svg "Relative runtime vectorized")
 
 #### Consecutive values for loop
 
@@ -166,7 +168,7 @@ is true for values greater than one.
 
 #### Vectorized loads, strided for loop
 
-![Relative runtime for vectorized strided kernel](runtime_vec_for.svg "Relative runtime vectorized strided")
+![Relative runtime for vectorized strided kernel](runtime_strided_vectorized.svg "Relative runtime vectorized strided")
 
 ### Deviations from row average
 
@@ -189,7 +191,7 @@ Block size doesn't matter for the smallest problem size with the most memory bou
 
 Pretty similar observations as above.
 
-![Deviation from row average for vectorized kernel](deviation_vec.svg "Deviation from row average for vectorized kernel")
+![Deviation from row average for vectorized kernel](deviation_vectorized.svg "Deviation from row average for vectorized kernel")
 
 #### Consecutive values for loop
 
@@ -203,4 +205,4 @@ The deviations are much larger than for the other kernels.
 
 #### Vectorized loads, strided for loop
 
-![Deviation from row average for vectorized strided kernel](deviation_vec_for.svg "Deviation from row average for vectorized strided kernel")
+![Deviation from row average for vectorized strided kernel](deviation_strided_vectorized.svg "Deviation from row average for vectorized strided kernel")

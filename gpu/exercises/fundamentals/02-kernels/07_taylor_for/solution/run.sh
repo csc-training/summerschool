@@ -1,24 +1,24 @@
-##!/bin/bash
-#
-##SBATCH --job-name=taylor_measurement
-##SBATCH --account=project_462000007
-##SBATCH --partition=standard-g
-##SBATCH --time=00:10:00
-##SBATCH --tasks=1
-##SBATCH --nodes=1
-##SBATCH --gpus-per-node=1
-##SBATCH --cpus-per-task=1
-##SBATCH --mem=0
-##SBATCH --exclusive
-#
-#ml PrgEnv-amd
-#
-#export HIPCC_COMPILE_FLAGS_APPEND="--offload-arch=gfx90a $(CC --cray-print-opts=cflags)"
-#export HIPCC_LINK_FLAGS_APPEND=$(CC --cray-print-opts=libs)
-#
-#hipcc -O3 main.cpp
+#!/bin/bash
 
-echo "Taylor N, bytes, block size, base, vec, strided, consecutive, vec_for" > runtimes.dat
+#SBATCH --job-name=taylor_measurement
+#SBATCH --account=project_462000956
+#SBATCH --partition=standard-g
+#SBATCH --time=00:20:00
+#SBATCH --tasks=1
+#SBATCH --nodes=1
+#SBATCH --gpus-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=0
+#SBATCH --exclusive
+
+ml PrgEnv-amd
+
+export HIPCC_COMPILE_FLAGS_APPEND="--offload-arch=gfx90a $(CC --cray-print-opts=cflags)"
+export HIPCC_LINK_FLAGS_APPEND=$(CC --cray-print-opts=libs)
+
+hipcc -O3 main.cpp
+
+echo "Taylor N, bytes, block size, Base, Vectorized, Strided, Consecutive, Strided vectorized" > runtimes.dat
 
 for i in {0..3}
 do
@@ -33,6 +33,12 @@ do
             # 256, 320, 384, ..., 1024
             block_size=$((256 + $k * 64))
             srun ./a.out $num_taylor_iters $vec_size $block_size >> runtimes.dat
+
+            if [ $? -ne 0 ]
+            then
+                echo "Error with srunning application"
+                exit 1
+            fi
         done
     done
 done

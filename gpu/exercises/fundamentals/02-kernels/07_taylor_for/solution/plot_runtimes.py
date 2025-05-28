@@ -43,8 +43,13 @@ def make_fig(byte_sizes, block_sizes, titles, ki):
 
     return fig
 
-def plot_data(title, subplot_titles, data, fig, colorbar_title):
-    norm = colors.Normalize(vmin=np.min(data), vmax=np.max(data))
+def plot_data(title, subplot_titles, data, fig, colorbar_title, norm_center):
+    data_max_distance_from_center = np.maximum(
+            np.abs(np.abs(np.min(data)) - norm_center),
+            np.abs(np.abs(np.max(data)) - norm_center))
+    vmin = norm_center - data_max_distance_from_center
+    vmax = norm_center + data_max_distance_from_center
+    norm = colors.Normalize(vmin=vmin, vmax=vmax)
     images = []
     for page_index in np.arange(data.shape[0]):
         fig.axes[page_index].set_title(subplot_titles[page_index], fontsize=30)
@@ -69,7 +74,7 @@ def plot_relative_runtimes(taylor_iters, byte_sizes, block_sizes, runtimes, titl
 
         kernel = runtimes[ki]
         relative_cube = kernel / base
-        plot_data("runtime_" + titles[ki], subplot_titles, relative_cube, fig, colorbar_title)
+        plot_data("runtime_" + titles[ki], subplot_titles, relative_cube, fig, colorbar_title, 1.0)
 
     colorbar_title = "relative deviation from row average"
     for ki in np.arange(runtimes.shape[0]):
@@ -77,7 +82,7 @@ def plot_relative_runtimes(taylor_iters, byte_sizes, block_sizes, runtimes, titl
         kernel = runtimes[ki]
         averages = np.average(kernel, axis=2).reshape((kernel.shape[0], kernel.shape[1], 1))
         deviations = (kernel - averages) / averages
-        plot_data("deviation_" + titles[ki], subplot_titles, deviations, fig, colorbar_title)
+        plot_data("deviation_" + titles[ki], subplot_titles, deviations, fig, colorbar_title, 0.0)
 
 def main():
     filename = "runtimes.dat"

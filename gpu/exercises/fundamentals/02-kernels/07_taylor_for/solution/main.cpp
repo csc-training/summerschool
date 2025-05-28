@@ -30,7 +30,7 @@ __global__ void taylor_vec(float *x, float *y, size_t num_values,
     float4 *xv = reinterpret_cast<float4 *>(x);
     float4 *yv = reinterpret_cast<float4 *>(y);
 
-    if (tid < (num_values >> 2) + 3) {
+    if (tid < num_values >> 2) {
         const float4 xs = xv[tid];
         const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
                         taylor(xs.z, num_iters), taylor(xs.w, num_iters));
@@ -46,37 +46,16 @@ __global__ void taylor_vec(float *x, float *y, size_t num_values,
 
 __global__ void taylor_for_consecutive(float *x, float *y, size_t num_values,
                                        size_t num_iters) {
-    // Global thread id, i.e. over the entire grid
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-
-    // How many threads in total in the entire grid
     const size_t num_threads = blockDim.x * gridDim.x;
-
-    // How many elements per thread
     const size_t num_per_thread = num_values / num_threads;
-
-    // Process num_per_thread consecutive elements
     for (size_t i = 0; i < num_per_thread; i++) {
-        // tid      elems
-        //   0      [0, num_per_thread - 1]
-        //   1      [num_per_thread, 2 * num_per_thread - 1]
-        //   2      [2 * num_per_thread, 3 * num_per_thread - 1]
-        //   and so on...
         const size_t j = tid * num_per_thread + i;
         y[j] = taylor(x[j], num_iters);
     }
 
-    // How many are left over
     const size_t left_over = num_values - num_per_thread * num_threads;
-
-    // The first threads will process one more, so the left over values
-    // are also processed
     if (tid < left_over) {
-        // tid      elem
-        //   0      num_per_thread * num_threads
-        //   1      num_per_thread * num_threads + 1
-        //   2      num_per_thread * num_threads + 2
-        //   and so on...
         const size_t j = num_per_thread * num_threads + tid;
         y[j] = taylor(x[j], num_iters);
     }
