@@ -156,9 +156,9 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
 * asynchronous function calls (HIP)/`nowait` (OpenMP) for overlapping work
 * in SYCL each device has a different queue and all calls are asynchronous
 
-# Many GPUs per Process: Code Example HIP/OpenMP
+# Many GPUs per Process: Code Example 
 
- <div class="column" width=65%>
+ <div class="column" width=71%>
 <small>
 
 * HIP example
@@ -189,7 +189,7 @@ for(int n = 0; n < num_devices; n++) {
 </div>
 
 
- <div class="column" width=34%>
+ <div class="column" width=28%>
 <small>
 
 * SYCL example
