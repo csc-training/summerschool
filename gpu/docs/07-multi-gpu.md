@@ -253,6 +253,23 @@ for(unsigned n = 0; n < num_devices; n++) {
 
  </div>
 
+ 
+ <div class="column" width=14%>
+<small>
+
+* SYCL example
+```cpp
+// Launch kernels (SYCL)
+#pragma omp parallel num_threads(num_devices)
+{
+  unsigned n = omp_get_thread_num();
+  q[n].parallel_for(size[n], [=](id<1> i) { ...});
+  q[n].wait();
+}
+```
+</small>
+</div>
+
 # Direct Peer to Peer Access
 
 * access peer GPU memory directly from another GPU
