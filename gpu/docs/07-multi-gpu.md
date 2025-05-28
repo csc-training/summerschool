@@ -207,9 +207,6 @@ for(unsigned n = 0; n < num_devices; n++) {
 </div>
 
 
-
-# Many GPUs per Process: Code Example SYCL
-
 # Many GPUs per Process, One GPU per Thread
 
 * one GPU per CPU thread
