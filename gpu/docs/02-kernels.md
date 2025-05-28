@@ -1,6 +1,6 @@
 ---
 title:    HIP, CUDA and GPU kernels
-author:   CSC Training
+author:   CSC Summer School in High-Performance Computing 2025
 date:     2025-06
 lang:     en
 ---
@@ -101,7 +101,7 @@ lang:     en
 # GPU programming considerations
 
 ::: incremental
-- parallel nature of GPUs requires many similar tasks that can be executed simultaneously
+- the parallel nature of GPUs requires many similar tasks that can be executed simultaneously
     - one usage is to replace iterations of loop with a GPU kernel call
 - need to adapt CPU code to run on the GPU
     - algorithmic changes to fit the parallel execution model

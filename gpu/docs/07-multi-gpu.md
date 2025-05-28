@@ -67,7 +67,7 @@ lang:   en
     * the device resources are allocated per context
 * by default, one context per device per process in HIP
     * (CPU) threads of the same process share the primary context (for each device)
-* HIP ans SYCL support explicit context management, OpenMP does not
+* HIP and SYCL support explicit context management, OpenMP does not
 
 ::: notes
 A GPU context is an execution environment that manages resources such as memory allocations, streams, and kernel execution for a specific GPU. It acts as an interface between the application and the GPU, ensuring that operations like memory management and kernel launches are handled correctly.
@@ -104,9 +104,10 @@ auto dev = q.get_device();
       virtual addressing, etc.
     * useful for code portability
   
-```
+```cpp
 // HIP - get device properties as struct
-hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
+hipDeviceProp prop;
+hipGetDeviceProperties(&prop, device)
 
 // OpenMP - use `requires` clause to verify the device properties, e.g.
 #pragma omp requires unified_shared_memory
@@ -295,31 +296,36 @@ hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 # Peer to Peer Communication
 
 * devices have separate memories
-* with devices supporting unified virtual addressing, `hipMemCpy()` with
-  `kind=hipMemcpyDefault`, works:
+* memcopies between different devices can be done as follows:
+
 ```cpp
-hipError_t hipMemcpy(void* dst, void* src, size_t count, hipMemcpyKind kind)
+// HIP: First option that requires unified virtual addressing (use "hipMemcpyDefault" for "kind")
+hipMemcpy(dst, src, size, hipMemcpyDefault);
+
+// HIP: Second option does not require unified virtual addressing
+hipMemcpyPeer(dst, dstDev, src, srcDev, size);
+
+// OpenMP
+omp_target_memcpy(dst, src, size, dstOffset, srcOffset, dstDev, srcDev);
 ```
-* other option which does not require unified virtual addressing
-```cpp
-hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t count)
-```
-* falls back to a normal copy through host memory when direct peer to peer access is not available
+* when direct p-t-p  is missing the copying is through host memory 
+* no equivalent `hipMemcpyPeer` in SYCL
+     * implementation dependent behaviour
 
 
 
-# Compiling MPI+HIP Code
+# Compiling MPI+GPU Code
 
 
 * trying to compile code with any HIP calls with other than the `hipcc` compiler can result in errors
 * either single source code (MPI + GPU), set MPI compiler to use `gpucc`:
  
     * OpenMPI: `OMPI_CXXFLAGS='' OMPI_CXX='hipcc'`
-    * on LUMI `'CC --cray-print-opts=cflags' <gpu_mpi_code>.cpp 'CC --cray-print-opts=libs'`
+    * on LUMI: `'CC --cray-print-opts=cflags' <gpu_mpi_code>.cpp 'CC --cray-print-opts=libs'`
 * or separate HIP and MPI code in different compilation units compiled with
   `mpicxx` and `gpucc`
     * Link object files in a separate step using `mpicxx` or `hipcc`
-* **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP**
+* **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP/OpenMP**
 
 # Selecting the Correct GPU
 
@@ -459,50 +465,6 @@ hipSetDevice(nodeRank % deviceCount);
    * In OpenMP this can be achieved using `use_device_ptr` clause
 <p>
 * Demos: `mpi_send_and_recv_hip.cpp`, `mpi_send_and_recv_omp.cpp`
-
-
-
-
-
-# Direct peer to peer access (HIP)
-
-* Access peer GPU memory directly from another GPU
-    * Pass a pointer to data on GPU 1 to a kernel running on GPU 0
-    * Transfer data between GPUs without going through host memory
-    * Lower latency, higher bandwidth
-
-```cpp
-// Check peer accessibility
-hipError_t hipDeviceCanAccessPeer(int* canAccessPeer, int device, int peerDevice)
-
-// Enable peer access
-hipError_t hipDeviceEnablePeerAccess(int peerDevice, unsigned int flags)
-
-// Disable peer access
-hipError_t hipDeviceDisablePeerAccess(int peerDevice)
-```
-* Between AMD GPUs, the peer access is always enabled (if supported)
-
-
-# Peer to peer communication
-
-* Devices have separate memories
-* Memcopies between different devices can be done as follows:
-
-```cpp
-// HIP: First option that requires unified virtual addressing (use "hipMemcpyDefault" for "kind")
-hipError_t hipMemcpy(void* dst, void* src, size_t size, hipMemcpyKind kind=hipMemcpyDefault)
-
-// HIP: Second option does not require unified virtual addressing
-hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t size)
-
-// OpenMP
-int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
-                      size_t srcOffset, int dstDev, int dstDev)
-```
-
-* If direct peer to peer access is not available or implemented, the functions should fall back to a normal copy through host memory
-
 
 # Summary {.section}
 
