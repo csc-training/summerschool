@@ -60,6 +60,7 @@ lang:   en
 
 </div>
 
+<!---
 # GPU Context
 
 * a context is established implicitly on the current device when the first HIP function requiring an active context is evaluated 
@@ -72,29 +73,7 @@ lang:   en
 ::: notes
 A GPU context is an execution environment that manages resources such as memory allocations, streams, and kernel execution for a specific GPU. It acts as an interface between the application and the GPU, ensuring that operations like memory management and kernel launches are handled correctly.
 :::
-
-
-# Device management
-
-```cpp
-// HIP
-int count, device;
-hipGetDeviceCount(&count);
-hipSetDevice(device);
-hipGetDevice(&device);
-hipDeviceReset();
-
-// OpenMP
-int count = omp_get_num_devices();
-omp_set_default_device(device);
-int device=omp_get_default_device();
-
-//SYCL
-auto gpu_devices= sycl::device::get_devices(sycl::info::device_type::gpu);
-auto count = size(gpu_devices);
-queue q{gpu_devices[device]};
-auto dev = q.get_device();
-```
+-->
 
 # Querying Device Properties
 
@@ -321,6 +300,29 @@ omp_target_memcpy(dst, src, size, dstOffset, srcOffset, dstDev, srcDev);
 * on LUMI, enable on runtime by `export MPICH_GPU_SUPPORT_ENABLED=1`
 * having a fallback for pinned host staging buffers is a good idea.
 
+
+
+# Device management
+
+```cpp
+// HIP
+int count, device;
+hipGetDeviceCount(&count);
+hipSetDevice(device);
+hipGetDevice(&device);
+hipDeviceReset();
+
+// OpenMP
+int count = omp_get_num_devices();
+omp_set_default_device(device);
+int device=omp_get_default_device();
+
+//SYCL
+auto gpu_devices= sycl::device::get_devices(sycl::info::device_type::gpu);
+auto count = size(gpu_devices);
+queue q{gpu_devices[device]};
+auto dev = q.get_device();
+```
 
 # Selecting the Correct GPU
 
