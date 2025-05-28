@@ -8,10 +8,46 @@ lang:     en
 # CUDA
 
 ::: incremental
-- CUDA is a C++ runtime API **and** a kernel programming language
+- Software stack offering tools for programming Nvidia GPUs
+- CUDA includes C++ runtime API **and** a kernel programming language
 - standard C++ syntax, `nvcc` compiler driver is used to compile code
-- Nvidia offers many libraries optimizied for GPU code
+    - nvcc uses a CPU compiler, e.g. `g++` in the background for compiling CPU code
 :::
+
+# CUDA libraries
+
+:::::: {.columns}
+::: {.column width="40%"}
+- Nvidia offers many libraries optimized for GPU code
+- https://developer.nvidia.com/gpu-accelerated-libraries
+- not covered during this lecture
+:::
+::: {.column width="60%"}
+![](img/cuda_math_libraries.png){.center width=100%}
+:::
+::::::
+
+# ROCm
+
+::: incremental
+- Software stack offering tools for programming AMD GPUs
+- ROCm provides the tools for HIP, OpenCL and OpenMP
+    - compilers, libraries for high-level functions, debuggers, profilers and runtimes
+- ROCm is **not** a programming language
+:::
+
+# ROCm libraries
+
+:::::: {.columns}
+::: {.column width="40%"}
+- AMD offers also a wide set of optimised libraries and tools
+- https://www.amd.com/en/products/software/rocm/hpc.html
+- not covered during this lecture
+:::
+::: {.column width="60%"}
+![](img/rocm_libraries.png){.center width=100%}
+:::
+::::::
 
 # HIP
 
@@ -20,9 +56,9 @@ lang:     en
 - AMD effort to offer a common programming interface that works on both
       Nvidia and AMD devices
 - almost a one-to-one clone of CUDA from the user perspective
-- standard C++ syntax, `nvcc`/`clang++` compilers for compiling
-- allows one to write portable GPU codes
-- AMD offers also a wide set of optimised libraries and tools
+- standard C++ syntax, `hipcc` wrapper for compiling
+    - uses `nvcc`/`clang++` compilers behind the scenes
+- allows one to write portable GPU code
 :::
 
 # GPU terminology
@@ -32,7 +68,7 @@ lang:     en
     - a simple processor on a GPU
     - contains multiple independent vector units
 - kernel
-    - parallel code executed on the GPU
+    - parallel function executed on the GPU
 - thread
     - individual worker of a wavefront/warp (AMD/Nvidia)
 :::
@@ -41,13 +77,13 @@ lang:     en
 
 ::: incremental
 - wavefront/warp (AMD/Nvidia)
-    - collection of threads that execute in lockstep and execute the same
-      instructions
-    - each wavefront has fixed number of threads (AMD: 64, NVIDIA 32)
-    - the number of threads, and thus implicitly the number of wavefronts/warps, per workgroup/block is chosen at kernel launch (AMD/Nvidia)
+    - collection of threads: execute the same instruction in lockstep
+    - fixed number of threads (AMD: 64, NVIDIA 32)
+    - threads per block is chosen at kernel launch
+        - wavefronts per block = threads per block / 64
 - workgroup/block of threads (AMD/Nvidia)
-    - group of threads that are on the GPU at the same time and
-      execute on the same CU/SM (AMD/Nvidia)
+    - group of threads partitioned to wavefronts/warps
+    - execute on the same CU/SM (AMD/Nvidia)
     - can synchronise together and communicate through memory in the CU/SM (AMD/Nvidia)
 :::
 
@@ -134,6 +170,7 @@ Code on the GPU from the point of view of a single thread
 
 # Kernel example: axpy
 
+$$\vec{y} = \alpha \vec{x} + \vec{y}$$
 ```cpp
 __global__ void axpy(int n, double a, double *x, double *y)
 {
@@ -253,7 +290,8 @@ hipMemcpy(x, dx, num_bytes, hipMemcpyDeviceToHost);
 
 // Implicit copy direction, runtime figures it out
 // from the virtual address of the pointer.
-// Recommended: less error prone.
+// Recommended: dst and src pointers that do not match
+// the hipMemcpyKind results in undefined behavior.
 hipMemcpy(dx, x, num_bytes, hipMemcpyDefault);
 hipMemcpy(x, dx, num_bytes, hipMemcpyDefault);
 ```
@@ -343,7 +381,8 @@ int main() {
 
 ::: incremental
 - CUDA and HIP are low level GPU programming APIs
-- HIP supports both AMD and NVIDIA GPUs
+- ROCm is a software stack providing the tools for programming AMD GPUs
+- HIP supports both AMD and NVIDIA devices
 - CUDA and HIP consist of an API and a kernel language
     - API controls the larger context
     - kernel language for single thread point of view GPU code

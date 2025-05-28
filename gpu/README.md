@@ -14,13 +14,13 @@ concepts to solve some more advanced cases.
 
 ### Fundamentals
 
-- [Hello API](exercises/fundamentals/02-kernels/01_hello_api)
-- [Kernel launch](exercises/fundamentals/02-kernels/02_kernel_launch)
-- [Kernel launch wrapper](exercises/fundamentals/02-kernels/03_kernel_launch_wrapper)
-- [API queries](exercises/fundamentals/02-kernels/04_api_queries)
-- [API errors](exercises/fundamentals/02-kernels/05_api_errors)
-- [Fill](exercises/fundamentals/02-kernels/06_fill)
-- [Taylor for](exercises/fundamentals/02-kernels/07_taylor_for)
+- [Hello API](exercises/fundamentals/02-kernels/README.md#hello-api)
+- [Kernel launch](exercises/fundamentals/02-kernels/README.md#kernel-launch)
+- [Kernel launch wrapper](exercises/fundamentals/02-kernels/README.md#kernel-launch-wrapper)
+- [API queries](exercises/fundamentals/02-kernels/README.md#api-queries)
+- [API errors](exercises/fundamentals/02-kernels/README.md#api-errors)
+- [Fill](exercises/fundamentals/02-kernels/README.md#fill)
+- [Taylor for](exercises/fundamentals/02-kernels/README.md#taylor-for)
 
 ### Bonus exercises
 
