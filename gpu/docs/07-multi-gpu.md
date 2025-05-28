@@ -73,7 +73,6 @@ lang:   en
 ::: notes
 A GPU context is an execution environment that manages resources such as memory allocations, streams, and kernel execution for a specific GPU. It acts as an interface between the application and the GPU, ensuring that operations like memory management and kernel launches are handled correctly.
 :::
--->
 
 # Querying Device Properties
 
@@ -96,6 +95,7 @@ auto p_name = device.get_platform().get_info<info::platform::name>();
 auto max_work_group = device.get_info<info::device::max_work_group_size>();
 ```
 
+-->
 
 # Multi-GPU Programming Models
 
