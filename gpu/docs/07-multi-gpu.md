@@ -161,12 +161,12 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
  <div class="column" width=85%>
 <small>
 
-* HIP example
+* HIP
 ```cpp
 // Launch kernels (HIP)
 for(unsigned n = 0; n < num_devices; n++) {
   hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
+  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(args[n], size[n]);
 }
 //Synchronize all kernels with host (HIP)
 for(unsigned n = 0; n < num_devices; n++) {
@@ -174,7 +174,7 @@ for(unsigned n = 0; n < num_devices; n++) {
   hipStreamSynchronize(stream[n]);
 }
 ```
-* OpenMP example
+* OpenMP
 ```cpp
 // Launch kernels (OpenMP)
 for(int n = 0; n < num_devices; n++) {
@@ -192,7 +192,7 @@ for(int n = 0; n < num_devices; n++) {
  <div class="column" width=14%>
 <small>
 
-* SYCL example
+* SYCL 
 ```cpp
 // Launch kernels (SYCL)
 for(unsigned n = 0; n < num_devices; n++) {
@@ -227,18 +227,18 @@ for(unsigned n = 0; n < num_devices; n++) {
 
 <small>
 
-* HIP example
+* HIP 
 ```cpp
 // Launch and synchronize kernels from parallel CPU threads using HIP
 #pragma omp parallel num_threads(num_devices)
 {
   unsigned n = omp_get_thread_num();
   hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
+  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(args[n], size[n]);
   hipStreamSynchronize(stream[n]);
 }
 ```
-* OpenMP example
+* OpenMP 
 ```cpp
 // Launch and synchronize kernels from parallel CPU threads using OpenMP
 #pragma omp parallel num_threads(num_devices)
@@ -257,7 +257,7 @@ for(unsigned n = 0; n < num_devices; n++) {
  <div class="column" width=14%>
 <small>
 
-* SYCL example
+* SYCL 
 ```cpp
 // Launch kernels (SYCL)
 #pragma omp parallel num_threads(num_devices)
