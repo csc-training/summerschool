@@ -1,4 +1,4 @@
-# Kernel exercises {#kernel}
+# Kernel exercises
 
 Hello! Welcome to the first of many GPU exercises!
 
@@ -10,14 +10,14 @@ The exercises will be in separate directories, and you will be pointed to them.
 
 Let's get started!
 
-## Exercise: Compiling HIP code {#hello-api}
+## Exercise: Compiling HIP code
 
 The first exercise teaches you how to compile HIP code.
 
 You can head over to [01_hello_api](01_hello_api) and follow the [instructions](01_hello_api/README.md) there.
 Once you've successfully compiled and run the code, come back to this document and we can continue.
 
-## Exercise: Launching a kernel {#kernel-launch}
+## Exercise: Launching a kernel
 
 Now you know how to compile HIP code. Great!
 
@@ -50,7 +50,7 @@ surprising.
 Did you launch the program with 1025 threads? What happened?
 To find out more, let's move on to the next exercise.
 
-## Exercise: Error reporting from kernel launch {#kernel-launch-wrapper}
+## Exercise: Error reporting from kernel launch
 
 If a kernel launch configuration parameter (number of threads/blocks or the amount of shared memory) is incorrect,
 the kernel is not launched at all. It just silently fails. For many devices, 1024 is the maximum number of threads
@@ -175,7 +175,7 @@ Ok, enough exposition. Head over to the [exercise](03_kernel_launch_wrapper) and
 [instructions](03_kernel_launch_wrapper/README.md) there.
 
 
-## Exercise: Better error reporting by querying limits {#api-queries}
+## Exercise: Better error reporting by querying limits
 
 Ok, so you got an error report from the API. But it's not very helpful is it?
 It tells you *something* went wrong, but not *what*. If you give incorrect arguments for threads and blocks,
@@ -281,7 +281,7 @@ Alternatively, you may use a custom define and pass it to the compiler manually:
 
 Ok, let's move on.
 
-## Exercise: Errors from API calls {#api-errors}
+## Exercise: Errors from API calls
 
 In the previous exercise we learned to query values from the API: `const auto result = hipDeviceGetAttribute(&value, attribute, device);`.
 The API gives us the value for the attribute we query through a reference: `&value`. Why doesn't it just return it?
@@ -373,7 +373,7 @@ This way the error checking is out of the way, but it's still there.
 In [this exercise](05_api_errors) there are a bunch of problems with API calls.
 Check the [instructions](05_api_errors/README.md) and fix the errors!
 
-## Exercise: Kernel for filling a 1D array with a value {#fill}
+## Exercise: Kernel for filling a 1D array with a value
 
 So far we've mostly concerned ourselves with checking for errors. Can we finally do something more interesting?
 Yes!
@@ -393,7 +393,7 @@ easily launch enough *threads per grid* to fill the entire array.
 
 Head over to the [exercise](06_fill) to figure out the rest of the details.
 
-## Exercise: Re-use threads in a 1D kernel with a for loop {#taylor-for}
+## Exercise: Re-use threads in a 1D kernel with a for loop
 
 Finally we did something other than just check for errors!
 

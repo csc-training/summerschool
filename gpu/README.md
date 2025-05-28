@@ -14,13 +14,13 @@ concepts to solve some more advanced cases.
 
 ### Fundamentals
 
-- [Hello API](exercises/fundamentals/02-kernels/README.md#hello-api)
-- [Kernel launch](exercises/fundamentals/02-kernels/README.md#kernel-launch)
-- [Kernel launch wrapper](exercises/fundamentals/02-kernels/README.md#kernel-launch-wrapper)
-- [API queries](exercises/fundamentals/02-kernels/README.md#api-queries)
-- [API errors](exercises/fundamentals/02-kernels/README.md#api-errors)
-- [Fill](exercises/fundamentals/02-kernels/README.md#fill)
-- [Taylor for](exercises/fundamentals/02-kernels/README.md#taylor-for)
+- [Hello API](exercises/fundamentals/02-kernels/README.md#exercise-compiling-hip-code)
+- [Kernel launch](exercises/fundamentals/02-kernels/README.md#exercise-launching-a-kernel)
+- [Kernel launch wrapper](exercises/fundamentals/02-kernels/README.md#exercise-error-reporting-from-kernel-launch)
+- [API queries](exercises/fundamentals/02-kernels/README.md#exercise-better-error-reporting-by-querying-limits)
+- [API errors](exercises/fundamentals/02-kernels/README.md#exercise-errors-from-api-calls)
+- [Fill](exercises/fundamentals/02-kernels/README.md#exercise-kernel-for-filling-a-1d-array-with-a-value)
+- [Taylor for](exercises/fundamentals/02-kernels/README.md#exercise-re-use-threads-in-a-1d-kernel-with-a-for-loop)
 
 ### Bonus exercises
 
