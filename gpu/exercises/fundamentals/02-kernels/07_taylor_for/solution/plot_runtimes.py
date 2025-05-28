@@ -15,7 +15,7 @@ def make_fig(byte_sizes, block_sizes, titles, ki):
     fig.suptitle(titles[ki], fontsize=40)
 
     xticks = [str(int(i)) for i in block_sizes]
-    yticks = [str(int(i / 1e6)) + "MB" for i in byte_sizes]
+    yticks = [str(int(i / 1024 / 1024)) + "MiB" for i in byte_sizes]
 
     # Remove x ticks from top row
     fig.axes[0].tick_params(axis='x', which='both', bottom=False, top=False)
