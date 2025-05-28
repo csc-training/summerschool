@@ -67,7 +67,7 @@ lang:   en
     * the device resources are allocated per context
 * by default, one context per device per process in HIP
     * (CPU) threads of the same process share the primary context (for each device)
-* HIP ans SYCL support explicit context management, OpenMP does not
+* HIP and SYCL support explicit context management, OpenMP does not
 
 ::: notes
 A GPU context is an execution environment that manages resources such as memory allocations, streams, and kernel execution for a specific GPU. It acts as an interface between the application and the GPU, ensuring that operations like memory management and kernel launches are handled correctly.
