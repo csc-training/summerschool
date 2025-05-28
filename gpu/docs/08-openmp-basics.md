@@ -117,8 +117,15 @@ for(size_t k = 0; k<N; ++k) {
 
 ![ <span style=" font-size:0.5em;"></span> ](img/league_of_teams.svg){width=90%}
 
-<br>
-*Still not enough parallelism!*
+```cpp
+#pragma omp target 
+#pragma omp teams
+{
+// Not enough parallelism!
+// Only one thread per team!
+}
+```
+
 :::
 ::::::
 
@@ -128,7 +135,7 @@ for(size_t k = 0; k<N; ++k) {
 :::{.column width=70%}
 - Create threads within teams with `parallel` construct:
 - `omp target teams parallel`
-- Now comparing HIP/CUDA:
+- Comparing HIP/CUDA:<br><br>
 
   | OMP | HIP |
   | --- | --- | 
@@ -141,178 +148,43 @@ for(size_t k = 0; k<N; ++k) {
 
 ![ <span style=" font-size:0.5em;"></span> ](img/league_of_parallel_teams.svg){width=90%}
 
-:::
-::::::
-
-# Mimicking HIP/CUDA with OpenMP offloading
-
-# OpenMP data model in offloading
-
-- Host variables are mirrored on device 
-- Data is moved to/from host with directives 
-  - `target data map(...)`: mapping is valid inside region
-  - `target enter/exit data map(...)`: mapping is valid after/before statement
-- Device allocations/deallocations with map clause directives (target 
-  - `map(alloc/dealloc:...)`
-
-# Compiling an OpenMP program for GPU offloading
-
-On LUMI compiling OpenMP offload is enabled with
-
-- Modules `module load LUMI/24.03 partition/G PrgEnv-cray`
-- and `-fopenmp` flag.
-- Note: Compiling HIP and OpenMP offload code in same source unit is not supported (at least on LUMI).
-
-::::::{.columns}
-:::{.column}
-C/C++
-```
-CC -fopenmp code.cpp -o code
-```
-:::
-:::{.column}
-Fortran
-```
-ftn -fopenmp code.f90 -o code
-```
-:::
-::::::
-
-# Useful runtime API functions
-
-Function definitions are in header file `omp.h` (C/C++) or `omp_lib` (fortran)
-<br>  <br>
-<small>
-
-| Description | function name |
-|---|---|
-| query the number of devices in the system | `int omp_get_num_devices()`|
-| select the device to use | `omp_set_default_device(int)`|
-| get id of default device | `int omp_get_default_device()`|
-| get device pointer | `omp_get_mapped_ptr(void* host_ptr, int device_num)` |
-
-</small>
-
-# OpenMP internal control variables
-
-- OpenMP has internal control variables (ICV)
-    - Environment variable `OMP_DEFAULT_DEVICE`: which device to use
-- During runtime, default device can be modified/queried with
-  - `omp_`**`set`**`_default_device`
-  - `omp_`**`get`**`_default_device`
-- Values are always re-read before a kernel is launched and can be
-  different for different kernels
-
-# Useful API functions
-
-`omp_is_initial_device()`
-  : returns True when called in host, False otherwise
-
-`omp_get_num_devices()`
-  : number of devices available
-
-`omp_get_device_num()`
-  : number of device where the function is called
-
-`omp_get_default_device()`
-  : default device
-
-`omp_set_default_device(n)`
-  : set the default device
-
-
-
-
-
-# OpenMP offloading: worksharing {.section}
-
-# Teams construct
-
-<div class=column>
-- Target construct does not create any parallelism, so additional
-  constructs are needed
-- `teams` creates a league of teams
-    - number of teams is implementation dependent
-    - initially, a single thread in each team executes the following
-      structured block
-
-</div>
-
-<div class=column>
-
-![ <span style=" font-size:0.5em;"></span> ](img/league2.png){width=65%}
-</div>
-
-# Teams construct
-
-<div class=column>
-- No synchronization between teams is possible
-- Probable mapping: team corresponds to a "thread block" /
-  "workgroup" and runs within streaming multiprocessor / compute unit
-
-</div>
-
-<div class=column>
-
-![ <span style=" font-size:0.5em;"></span> ](img/team.png){width=65%}
-</div>
-
-# Creating threads within a team
-
-- Just having a league of teams is typically not enough to leverage all the
-  parallelism available in the accelerator
-- A `parallel` or a `simd` construct within a `teams` region creates threads
-  within each team
-    - number of threads per team is implementation dependent
-    - with N teams and M threads per team there will be N x M threads in
-      total
-
-
-# Creating threads within a team
-
-<div class=column>
-- Threads within a team can synchronize
-- Number of teams and threads can be queried with the following API functions:
-	- `omp_get_num_teams()`
-	- `omp_get_num_threads()`
-
-</div>
-
-<div class=column>
-
-![ <span style=" font-size:0.5em;"></span> ](img/thread.png){width=65%}
-</div>
-
-# Creating teams and threads
-
-<div class=column>
-```c++
-#pragma omp target
-#pragma omp teams
+```cpp
+#pragma omp target 
+#pragma omp teams 
 #pragma omp parallel
 {
-  // code executed in device
+// Many threads execute 
+// this code block!
 }
 ```
-</div>
-
-<div class=column>
-```fortranfree
-!$omp target
-!$omp teams
-!$omp parallel
-  ! code executed in device
-!$omp end parallel
-!$omp end teams
-!$omp end target
-```
-</div>
-
+:::
+::::::
 
 # League of multi-threaded teams
 
 ![](img/teams.png){.center width=80%}
 
+# Mimicking HIP/CUDA with OpenMP offloading
+
+```cpp
+#pragma omp target teams parallel
+{
+  const int tid = omp_get_team_num() * omp_get_num_threads() + omp_get_thread_num();
+  const int stride = omp_get_num_teams()*omp_get_num_threads();
+
+  for (size_t k = tid; k<N; k += stride) 
+    c[k] = a[k] + b[k];
+}
+```
+```cpp
+__global__ void sum_vecs(float* a, float* b, float* c, size_t n) {
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    const size_t stride = blockDim.x * gridDim.x;
+
+    for (size_t k = tid; k < n; k += stride) 
+      c[k] = a[k] +  b[k];
+}
+```
 
 # Worksharing in the accelerator
 
@@ -320,9 +192,16 @@ Function definitions are in header file `omp.h` (C/C++) or `omp_lib` (fortran)
   threads are still executing the same code
 - `distribute` construct distributes loop iterations over the teams
 - `for` / `do` construct can also be used within a parallel region
-
+- `distribute` and `for`/`do` can be combined for one loop:
+```cpp
+#pragma omp target teams distribute parallel for
+for (size_t k = 0; k<N; ++k)
+  c[k] = a[k] + b[k];
+```
 
 # Worksharing in the accelerator
+
+- It is not required to combine `distribute` and `for`/`do`.
 
 <div class=column>
 ```c++
@@ -359,6 +238,109 @@ end do
 </div>
 
 
+# OpenMP data model in offloading
+
+- Host variables are mirrored on device, but dynamically allocated data is *not*.
+- Data is moved to/from host with directives 
+  - `target data map(...)`: mapping is valid inside region
+  - `target enter/exit data map(...)`: mapping is valid after/before statement
+- Device allocations/deallocations with map clause directives (target 
+  - `map(alloc/dealloc:...)`
+
+# `target data` clause (TODO: TEST THIS)
+
+- TODO: explain `map`
+- The data is available in the following code block
+```cpp
+#pragma omp target map(b[:N]) map(from:c[:N]) map(tofrom: a[:N])
+{
+  #pragma omp teams distribute parallel for
+  for (size_t k = 0; k<N; ++k) {
+    a[k] += 1.0;
+    c[k] = a[k] + b[k];
+  }
+}
+```
+
+# `target enter/exit` clause (TODO: TEST THIS)
+
+- The data is available on the device after `enter` and on host after `exit`
+
+```cpp
+#pragma omp target enter data map(to:a[:N])
+//do host calculations
+#pragma omp target map(from: c[:N]) map(to: b[:N])
+{
+  #pragma omp teams distribute parallel for
+  for (size_t k = 0; k<N; ++k) {
+      a[k] += 1.0;
+      c[k] = a[k] + b[k];
+    }
+}
+// Do host calculations
+#pragma omp target exit data map(from: a[:N])
+```
+
+# `target update` clause (TODO: TEST THIS)
+
+- Update host/device data region
+```cpp
+#pragma omp target update to(a) // sends data in host array a to mapped device array
+#pragma omp target update from(a) // sends data in device array a to mapped host array
+```
+
+# Compiling an OpenMP program for GPU offloading
+
+On LUMI compiling OpenMP offload is enabled with
+
+- Modules `module load LUMI/24.03 partition/G PrgEnv-cray`
+- and `-fopenmp` flag.
+- Note: Compiling HIP and OpenMP offload code in same source unit is not supported (at least on LUMI).
+
+::::::{.columns}
+:::{.column}
+C/C++
+```
+CC -fopenmp code.cpp -o code
+```
+:::
+:::{.column}
+Fortran
+```
+ftn -fopenmp code.f90 -o code
+```
+:::
+::::::
+
+# Useful runtime API functions
+
+Function definitions are in header file `omp.h` (C/C++) or `omp_lib` (fortran)
+<br>  <br>
+<small>
+
+| Description | function name |
+|---|---|
+| query the number of devices in the system | `int omp_get_num_devices()`|
+| select the device to use | `omp_set_default_device(int)`|
+| get id of default device | `int omp_get_default_device()`|
+| get device pointer | `omp_get_mapped_ptr(void* host_ptr, int device_num)` |
+| return true if called from host | `omp_is_initial_device()` |
+| number of devices available | `omp_get_num_devices()`
+| number of device where the function is called | `omp_get_device_num()` |
+  
+
+</small>
+
+# OpenMP internal control variables
+
+- OpenMP has internal control variables (ICV)
+    - Environment variable `OMP_DEFAULT_DEVICE`: which device to use
+- During runtime, default device can be modified/queried with
+  - `omp_`**`set`**`_default_device`
+  - `omp_`**`get`**`_default_device`
+- Values are always re-read before a kernel is launched and can be
+  different for different kernels
+
 # Controlling number of teams and threads
 
 - By default, the number of teams and the number of threads is up to
@@ -377,7 +359,6 @@ end do
   // code executed in device
 }
 ```
-
 
 # Composite directives
 
