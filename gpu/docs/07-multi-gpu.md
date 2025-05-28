@@ -308,24 +308,21 @@ hipMemcpyPeer(dst, dstDev, src, srcDev, size);
 // OpenMP
 omp_target_memcpy(dst, src, size, dstOffset, srcOffset, dstDev, srcDev);
 ```
-* when direct p-t-p  is missing the copying is through host memory 
+* when p-t-p  is missing the copying is done through host memory 
 * no equivalent `hipMemcpyPeer` in SYCL
      * implementation dependent behaviour
 
 
+# GPU-GPU Communication through MPI
 
-# Compiling MPI+GPU Code
+* CUDA/ROCm aware MPI libraries support direct GPU-GPU transfers
+    * can take a pointer to device buffer (avoids host/device data copies)
+* currently no GPU support for custom MPI datatypes (must use a
+  datatype representing a contiguous block of memory)
+    * data packing/unpacking must be implemented application-side on GPU
+* on LUMI, enable on runtime by `export MPICH_GPU_SUPPORT_ENABLED=1`
+* having a fallback for pinned host staging buffers is a good idea.
 
-
-* trying to compile code with any HIP calls with other than the `hipcc` compiler can result in errors
-* either single source code (MPI + GPU), set MPI compiler to use `gpucc`:
- 
-    * OpenMPI: `OMPI_CXXFLAGS='' OMPI_CXX='hipcc'`
-    * on LUMI: `'CC --cray-print-opts=cflags' <gpu_mpi_code>.cpp 'CC --cray-print-opts=libs'`
-* or separate HIP and MPI code in different compilation units compiled with
-  `mpicxx` and `gpucc`
-    * Link object files in a separate step using `mpicxx` or `hipcc`
-* **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP/OpenMP**
 
 # Selecting the Correct GPU
 
@@ -344,15 +341,18 @@ hipSetDevice(nodeRank % deviceCount);
 * Can be done from slurm using `ROCR_VISIBLE_DEVICES` or `CUDA_VISIBLE_DEVICES`
 :::
 
-# GPU-GPU Communication through MPI
+# Compiling MPI+GPU Code
 
-* CUDA/ROCm aware MPI libraries support direct GPU-GPU transfers
-    * can take a pointer to device buffer (avoids host/device data copies)
-* currently no GPU support for custom MPI datatypes (must use a
-  datatype representing a contiguous block of memory)
-    * data packing/unpacking must be implemented application-side on GPU
-* on LUMI, enable on runtime by `export MPICH_GPU_SUPPORT_ENABLED=1`
-* having a fallback for pinned host staging buffers is a good idea.
+
+* trying to compile code with any HIP calls with other than the `hipcc` compiler can result in errors
+* either single source code (MPI + GPU), set MPI compiler to use `gpucc`:
+ 
+    * OpenMPI: `OMPI_CXXFLAGS='' OMPI_CXX='hipcc'`
+    * on LUMI: `'CC --cray-print-opts=cflags' <gpu_mpi_code>.cpp 'CC --cray-print-opts=libs'`
+* or separate HIP and MPI code in different compilation units compiled with
+  `mpicxx` and `gpucc`
+    * Link object files in a separate step using `mpicxx` or `hipcc`
+* **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP/OpenMP**
 
 # Summary
 
