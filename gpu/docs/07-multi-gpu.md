@@ -308,18 +308,18 @@ hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t c
 
 
 
-# Compiling MPI+HIP Code
+# Compiling MPI+GPU Code
 
 
 * trying to compile code with any HIP calls with other than the `hipcc` compiler can result in errors
 * either single source code (MPI + GPU), set MPI compiler to use `gpucc`:
  
     * OpenMPI: `OMPI_CXXFLAGS='' OMPI_CXX='hipcc'`
-    * on LUMI `'CC --cray-print-opts=cflags' <gpu_mpi_code>.cpp 'CC --cray-print-opts=libs'`
+    * on LUMI: `'CC --cray-print-opts=cflags' <gpu_mpi_code>.cpp 'CC --cray-print-opts=libs'`
 * or separate HIP and MPI code in different compilation units compiled with
   `mpicxx` and `gpucc`
     * Link object files in a separate step using `mpicxx` or `hipcc`
-* **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP**
+* **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP/OpenMP offloading**
 
 # Selecting the Correct GPU
 
