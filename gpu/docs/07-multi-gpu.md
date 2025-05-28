@@ -298,7 +298,7 @@ omp_target_memcpy(dst, src, size, dstOffset, srcOffset, dstDev, srcDev);
   datatype representing a contiguous block of memory)
     * data packing/unpacking must be implemented application-side on GPU
 * on LUMI, enable on runtime by `export MPICH_GPU_SUPPORT_ENABLED=1`
-* having a fallback for pinned host staging buffers is a good idea.
+* having a fallback for pinned host staging pointers is a good idea.
 
 
 
