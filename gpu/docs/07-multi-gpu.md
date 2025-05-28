@@ -300,17 +300,16 @@ hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 
 ```cpp
 // HIP: First option that requires unified virtual addressing (use "hipMemcpyDefault" for "kind")
-hipError_t hipMemcpy(void* dst, void* src, size_t size, hipMemcpyKind kind=hipMemcpyDefault)
+hipMemcpy(dst, src, size, hipMemcpyDefault);
 
 // HIP: Second option does not require unified virtual addressing
-hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t size)
+hipMemcpyPeer(dst, dstDev, src, srcDev, size);
 
 // OpenMP
-int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
-                      size_t srcOffset, int dstDev, int dstDev)
+omp_target_memcpy(dst, src, size, dstOffset, srcOffset, dstDev, srcDev);
 ```
 * a copy through host memory is donw when direct p-t-p  is missing
-* no equivalent `hipMemcpyPeer`in SYCL, with buffers is implementation dependent 
+* no equivalent `hipMemcpyPeer`in SYCL, behaiviour is implementation dependent 
 
 
 
