@@ -293,18 +293,6 @@ hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 ```
 * between AMD GPUs, the peer access is always enabled (if supported)
 
-
-
-# GPU-GPU Communication through MPI
-
-* CUDA/ROCm aware MPI libraries support direct GPU-GPU transfers
-    * can take a pointer to device buffer (avoids host/device data copies)
-* currently no GPU support for custom MPI datatypes (must use a
-  datatype representing a contiguous block of memory)
-    * data packing/unpacking must be implemented application-side on GPU
-* on LUMI, enable on runtime by `export MPICH_GPU_SUPPORT_ENABLED=1`
-* having a fallback for pinned host staging buffers is a good idea.
-
 # Peer to Peer Communication
 
 * devices have separate memories
@@ -320,10 +308,20 @@ hipMemcpyPeer(dst, dstDev, src, srcDev, size);
 // OpenMP
 omp_target_memcpy(dst, src, size, dstOffset, srcOffset, dstDev, srcDev);
 ```
-* when direct p-t-p  is missing the copying is through host memory 
+* when p-t-p  is missing the copying is done through host memory 
 * no equivalent `hipMemcpyPeer` in SYCL
      * implementation dependent behaviour
 
+
+# GPU-GPU Communication through MPI
+
+* CUDA/ROCm aware MPI libraries support direct GPU-GPU transfers
+    * can take a pointer to device buffer (avoids host/device data copies)
+* currently no GPU support for custom MPI datatypes (must use a
+  datatype representing a contiguous block of memory)
+    * data packing/unpacking must be implemented application-side on GPU
+* on LUMI, enable on runtime by `export MPICH_GPU_SUPPORT_ENABLED=1`
+* having a fallback for pinned host staging buffers is a good idea.
 
 
 # Selecting the Correct GPU
