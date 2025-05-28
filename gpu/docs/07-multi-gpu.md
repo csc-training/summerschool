@@ -225,7 +225,6 @@ for(unsigned n = 0; n < num_devices; n++) {
 
 
 <div class="column" width=85%>
-
 <small>
 
 * HIP 
@@ -253,8 +252,7 @@ for(unsigned n = 0; n < num_devices; n++) {
 }
 ```
 </small>
-
- </div>
+</div>
 
  
  <div class="column" width=14%>
@@ -359,7 +357,8 @@ hipSetDevice(nodeRank % deviceCount);
 - there are various options to write a multi-GPU program
 - in HIP/OpenMP a device is set, and the subsequent calls operate on that device
 - in SYCL each device has a separate queue
-- often best to use one GPU per process, and let MPI handle data transfers between GPUs 
+- often best to use one GPU per process + MPI for communications
+- use direct peer to peer transfers when available in multithreaded cases
 - GPU-aware MPI is required when passing device pointers to MPI
 
      * Using host pointers does not require any GPU awareness
