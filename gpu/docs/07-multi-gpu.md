@@ -158,7 +158,7 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
 
 # Many GPUs per Process: Code Example 
 
- <div class="column" width=71%>
+ <div class="column" width=75%>
 <small>
 
 * HIP example
@@ -189,7 +189,7 @@ for(int n = 0; n < num_devices; n++) {
 </div>
 
 
- <div class="column" width=28%>
+ <div class="column" width=24%>
 <small>
 
 * SYCL example
