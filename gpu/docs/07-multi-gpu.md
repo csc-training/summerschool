@@ -67,7 +67,7 @@ lang:   en
     * the device resources are allocated per context
 * by default, one context per device per process in HIP
     * (CPU) threads of the same process share the primary context (for each device)
-* HIP supports explicit context management 
+* HIP ans SYCL support explicit context management, OpenMP does not
 
 ::: notes
 A GPU context is an execution environment that manages resources such as memory allocations, streams, and kernel execution for a specific GPU. It acts as an interface between the application and the GPU, ensuring that operations like memory management and kernel launches are handled correctly.
@@ -78,34 +78,42 @@ A GPU context is an execution environment that manages resources such as memory 
 
 ```cpp
 // HIP
+int count, device;
 hipGetDeviceCount(&count);
-hipSetDevice(evice);
+hipSetDevice(device);
 hipGetDevice(&device);
+hipDeviceReset();
 
 // OpenMP
-count = omp_get_num_devices();
+int count = omp_get_num_devices();
 omp_set_default_device(device);
-device=omp_get_default_device();
+int device=omp_get_default_device();
 
 //SYCL
 auto gpu_devices= sycl::device::get_devices(sycl::info::device_type::gpu);
 auto count = size(gpu_devices);
-queue queue q{gpu_devices[0]};
-auto device = q.get_device();
+queue q{gpu_devices[device]};
+auto dev = q.get_device();
 ```
 
 # Querying Device Properties
 
-* one can query the properties of different devices in the system using
-  `hipGetDeviceProperties()` function
+* one can query the properties of different devices in the system
     * no context needed
     * provides e.g. name, amount of memory, warp size, support for unified
       virtual addressing, etc.
     * useful for code portability
-
-Return the properties of a HIP capable device by `prop`
+  
 ```
-hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
+// HIP - get device properties as struct
+hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
+
+// OpenMP - use `requires` clause to verify the device properties, e.g.
+#pragma omp requires unified_shared_memory
+
+//SYCL
+auto p_name = device.get_platform().get_info<info::platform::name>();
+auto max_work_group = device.get_info<info::device::max_work_group_size>();
 ```
 
 
@@ -139,28 +147,68 @@ hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
 
 # Many GPUs per Process
 
-* process switches the active GPU using `hipSetDevice()` function 
+* process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP)
 * after selecting the default device, operations such as the following are effective only
   on the selected GPU:
     * memory operations
     * kernel execution
-    * streams and events
-* asynchronous function calls are required to overlap work
+    * streams and events (HIP)
+* asynchronous function calls (HIP)/`nowait` (OpenMP) for overlapping work
+* in SYCL each device has a different queue and all calls are asynchronous
 
-# Many GPUs per Process: Code Example
+# Many GPUs per Process: Code Example 
 
+ <div class="column" width=85%>
+<small>
+
+* HIP example
 ```cpp
-// Launch kernels
+// Launch kernels (HIP)
 for(unsigned n = 0; n < num_devices; n++) {
   hipSetDevice(n);
   kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
 }
-//Synchronize all kernels with host
+//Synchronize all kernels with host (HIP)
 for(unsigned n = 0; n < num_devices; n++) {
   hipSetDevice(n);
   hipStreamSynchronize(stream[n]);
 }
 ```
+* OpenMP example
+```cpp
+// Launch kernels (OpenMP)
+for(int n = 0; n < num_devices; n++) {
+  omp_set_default_device(n);
+  #pragma omp target teams distribute parallel for nowait
+  for (unsigned i = 0; i < size[n]; i++)
+    // Do something
+}
+#pragma omp taskwait //Synchronize all kernels with host (OpenMP)
+```
+</small>
+</div>
+
+
+ <div class="column" width=14%>
+<small>
+
+* SYCL example
+```cpp
+// Launch kernels (SYCL)
+for(unsigned n = 0; n < num_devices; n++) {
+  q[n].parallel_for(size[n], [=](id<1> i) { ...});
+}
+//Synchronize all kernels with host (HIP)
+for(unsigned n = 0; n < num_devices; n++) {
+  q[n].wait();
+}
+```
+</small>
+</div>
+
+
+
+# Many GPUs per Process: Code Example SYCL
 
 # Many GPUs per Process, One GPU per Thread
 
@@ -294,56 +342,6 @@ hipSetDevice(nodeRank % deviceCount);
     * More GPU resources per node, better per-node-performance
 
 
-# GPU Context
-
-* A context is established implicitly on the current device when the first task requiring an active context is evaluated (HIP and OpenMP)
-* Several processes can create contexts for a single device
-    * The device resources are allocated per context
-* By default, one context per device per process in HIP
-    * Threads of the same process share the primary context (for each device)
-* HIP supports explicit context management whereas OpenMP does not
-
-# Selecting device
-
-* Driver associates a number for each available GPU device starting from 0
-* The functions `hipSetDevice()` and `omp_set_default_device()` are used for selecting the desired device for HIP and OpenMP, respectively
-  * Furthermore, in OpenMP, the `device()`-directive can be used to offload targets to specific devices without changing the default device
-
-
-# Device management
-
-```cpp
-// HIP
-hipError_t hipGetDeviceCount(int *count)
-hipError_t hipSetDevice(int device)
-hipError_t hipGetDevice(int *device)
-
-// OpenMP
-int omp_get_num_devices(void)
-void omp_set_default_device(int device)
-int omp_get_default_device(void)
-```
-
-* Demos: `device_management_hip.cpp`, `device_management_omp.cpp`
-
-
-# Querying or verifying device properties
-
-* One can query or verify the properties of different devices in the system
-    * Properties include name, amount of memory, warp size, support for unified virtual addressing, etc.
-    * Useful for code portability
-
-In HIP, the function returns the device properties in struct `prop`
-```cpp
-// HIP - get device properties as struct
-hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
-
-// OpenMP - use `requires` clause to verify the device properties, e.g.
-#pragma omp requires unified_shared_memory
-```
-
-* Demo: `device_properties_hip.cpp`
-
 
 # Multi-GPU programming models
 
@@ -433,47 +431,6 @@ hipError_t hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
 
 # Many GPUs per process{.section}
 
-# Many GPUs per process
-
-* Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP) functions 
-   * OpenMP has also `device()`-directive to offload work to a specific device
-* After selecting the default device, operations such as the following are effective only
-  on the selected GPU:
-    * Memory operations
-    * Kernel execution
-    * Streams and events (HIP)
-* Asynchronous function calls (HIP) or `nowait` clause (OpenMP) are required to overlap work
-
-
-# Many GPUs per process, code example
-
-<small>
-
-* HIP example
-```cpp
-// Launch kernels (HIP)
-for(unsigned n = 0; n < num_devices; n++) {
-  hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
-}
-//Synchronize all kernels with host (HIP)
-for(unsigned n = 0; n < num_devices; n++) {
-  hipSetDevice(n);
-  hipStreamSynchronize(stream[n]);
-}
-```
-* OpenMP example
-```cpp
-// Launch kernels (OpenMP)
-for(int n = 0; n < num_devices; n++) {
-  omp_set_default_device(n);
-  #pragma omp target teams distribute parallel for nowait
-  for (unsigned i = 0; i < size[n]; i++)
-    // Do something
-}
-#pragma omp taskwait //Synchronize all kernels with host (OpenMP)
-```
-</small>
 
 # One GPU per thread{.section}
 

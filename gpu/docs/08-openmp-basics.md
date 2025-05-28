@@ -12,57 +12,186 @@ lang:   en
   - e.g. CPU+GPU
 - Code regions are offloaded from the host (CPU) to be 
   computed on a device (GPU)
-- Similar to OpenACC
 
-# OpenMP execution model
+# OpenMP execution model vs HIP/CUDA
 
-<div class="column">
-- Program runs on the host CPU
-- Host offloads regions of code (*kernels*) and related data to the GPU
-- Offloaded regions are executed by the GPU
-- Compare to HIP/CUDA: kernels are implicit
+:::::: {.columns}
+:::{.column}
+HIP
+<small>
+```cpp
+__global__ void add(float* a, float* b, size_t N) {
+  size_t tid = blockDim.x*blockId.x + threadId.x;
+  if(tid > N) { 
+    a[tid] *= 1.25; 
+    a[tid] += b[tid];
+  }
+}
+
+int main() {
+  // Host side definitions and computations ...
+  for (size_t k = 0; k < N; ++k) {
+    a[k] = k;
+    b[k] = k/2.0;
+  }
+
+  // Device allocations for d_a, d_b ...
+  hipMemcpy(d_a, a, N_bytes, hipMemcpyDefault);
+  hipMemcpy(d_b, b, N_bytes, hipMemcpyDefault);
+  add<<<griddim, blockdim>>(d_a,d_b)
+  hipMemcpy(a, d_a, N_bytes, hipMemcpyDefault);
+  // added value is in a
+}
+```
+</small>
+:::
+:::{.column}
+OpenMP offload
+<small>
+
+```cpp
+int main() {
+
+size_t N = 100;
+float* a = (float*)malloc(N*sizeof(float));
+float* b = (float*)malloc(N*sizeof(float));
+
+// Host side computations
+for (size_t k = 0; k < N; ++k) {
+  a[k] = k;
+  b[k] = k/2.0;
+}
+
+#pragma omp target data map(tofrom:a[:N]) map(to:b[:N])
+#pragma omp target teams distribute parallel for
+for(size_t k = 0; k<N; ++k) {
+  a[k] = a[k]*1.25;
+  a[k] += b[k];
+}
+// added value is in a
+}
+```
+
+</small>
+:::
+::::::
+
+# Target construct
+
+- OpenMP `target` construct specifies a region to be executed on GPU
+    - initially, runs with a single thread
+- By default, execution in the host continues only after target region
+  is finished
+- May trigger implicit data movements between the host and the device
+
+<div class=column>
+```c++
+#pragma omp target
+{
+  // code executed in device
+}
+```
 </div>
 
-<div class="column">
-![](img/execution-model.png)
+<div class=column>
+```fortranfree
+!$omp target
+  ! code executed in device
+!$omp end target
+```
 </div>
 
+# Teams construct
+
+::::::{.columns}
+:::{.column width=70%}
+- Target construct does not create any parallelism, so additional
+  constructs are needed
+- `omp target teams` creates a league of teams
+    - number of teams is implementation dependent
+    - initially, a single thread in each team executes the following
+      structured block
+
+:::
+:::{.column}
+
+![ <span style=" font-size:0.5em;"></span> ](img/league_of_teams.svg){width=90%}
+
+<br>
+*Still not enough parallelism!*
+:::
+::::::
+
+# Teams parallel construct
+
+::::::{.columns}
+:::{.column width=70%}
+- Create threads within teams with `parallel` construct:
+- `omp target teams parallel`
+- Now comparing HIP/CUDA:
+
+  | OMP | HIP |
+  | --- | --- | 
+  | League of teams | Grid |
+  | Team | Block |
+  | Thread in team | thread in block |
+
+:::
+:::{.column}
+
+![ <span style=" font-size:0.5em;"></span> ](img/league_of_parallel_teams.svg){width=90%}
+
+:::
+::::::
+
+# Mimicking HIP/CUDA with OpenMP offloading
 
 # OpenMP data model in offloading
 
 - Host variables are mirrored on device 
 - Data is moved to/from host with directives 
-  - `map(...)`
-  - `enter/exit data map...`)
-- Device allocations/deallocations with map clause directives
+  - `target data map(...)`: mapping is valid inside region
+  - `target enter/exit data map(...)`: mapping is valid after/before statement
+- Device allocations/deallocations with map clause directives (target 
   - `map(alloc/dealloc:...)`
-- When memories are not separate, no copies are needed (difference is
-  transparent to the user)
 
 # Compiling an OpenMP program for GPU offloading
 
 On LUMI compiling OpenMP offload is enabled with
 
-- `-fopenmp` flag and
-- Modules
-  ```bash
-  module load LUMI/24.03 partition/G PrgEnv-cray
-  ```
-- Nvidia compilers (nvfortran/nvcc) use `-mp=gpu` flag
-- OpenMP defines `_OPENMP` preprocessor macro if it is enabled. Useful in
-  conditional compilation.
+- Modules `module load LUMI/24.03 partition/G PrgEnv-cray`
+- and `-fopenmp` flag.
+- Note: Compiling HIP and OpenMP offload code in same source unit is not supported (at least on LUMI).
 
+::::::{.columns}
+:::{.column}
+C/C++
+```
+CC -fopenmp code.cpp -o code
+```
+:::
+:::{.column}
+Fortran
+```
+ftn -fopenmp code.f90 -o code
+```
+:::
+::::::
 
-# Runtime API functions
+# Useful runtime API functions
 
-- Low-level runtime API functions can be used to
-    - query the number of devices in the system
-    - select the device to use
-    - allocate/deallocate memory on the device(s)
-    - transfer data to/from the device(s)
--  Function definitions are in
-    - C/C++ header file `omp.h`
-    - `omp_lib` Fortran module
+Function definitions are in header file `omp.h` (C/C++) or `omp_lib` (fortran)
+<br>  <br>
+<small>
+
+| Description | function name |
+|---|---|
+| query the number of devices in the system | `int omp_get_num_devices()`|
+| select the device to use | `omp_set_default_device(int)`|
+| get id of default device | `int omp_get_default_device()`|
+| get device pointer | `omp_get_mapped_ptr(void* host_ptr, int device_num)` |
+
+</small>
 
 # OpenMP internal control variables
 
@@ -92,30 +221,6 @@ On LUMI compiling OpenMP offload is enabled with
   : set the default device
 
 
-# Target construct
-
-- OpenMP `target` construct specifies a region to be executed on GPU
-    - initially, runs with a single thread
-- By default, execution in the host continues only after target region
-  is finished
-- May trigger implicit data movements between the host and the device
-
-<div class=column>
-```c++
-#pragma omp target
-{
-  // code executed in device
-}
-```
-</div>
-
-<div class=column>
-```fortranfree
-!$omp target
-  ! code executed in device
-!$omp end target
-```
-</div>
 
 
 
