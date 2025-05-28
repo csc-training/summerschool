@@ -235,7 +235,8 @@ while for the 1024 thread/block case it's
 
 $$\frac{32 / 2 \times 1024 \times 1024 B}{1024 tpb \times 1024 bpg \times 1 g} = 16 Bpt$$.
 
-If the size of global memory transaction is 64 bytes, exactly one thread can be served by a single memory transaction.
+If the size of global memory transaction is 64 bytes, exactly one thread can be served by a single memory transaction
+for the 256 thread/block, 32 MiB case.
 This means there's 64 memory transactions required to fulfill the needs of one wavefront. One step down on the grid
 (256 thread/block, 16 MiB case) means two threads can be served by one 64 byte transaction. Likewise, four steps right
 (512 thread/block, 32 MiB case) means two threads can be served by one 64 byte transaction.
