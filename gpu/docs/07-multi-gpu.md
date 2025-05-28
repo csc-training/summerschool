@@ -104,9 +104,10 @@ auto dev = q.get_device();
       virtual addressing, etc.
     * useful for code portability
   
-```
+```cpp
 // HIP - get device properties as struct
-hipGetDeviceProperties(struct hipDeviceProp *prop, int device)
+hipDeviceProp prop;
+hipGetDeviceProperties(&prop, device)
 
 // OpenMP - use `requires` clause to verify the device properties, e.g.
 #pragma omp requires unified_shared_memory
