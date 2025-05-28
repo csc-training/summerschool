@@ -309,8 +309,8 @@ hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t s
 int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
                       size_t srcOffset, int dstDev, int dstDev)
 ```
-* falls back to acopy through host memory when direct p-t-p  is not available
-* in SYCL there is no equivalent to `hipMemcpyPeer`
+* a copy through host memory is donw when direct p-t-p  is missing
+* in SYCL there is no equivalent to `hipMemcpyPeer`, with buffers is implementation dependent 
 
 
 
