@@ -161,12 +161,12 @@ auto max_work_group = device.get_info<info::device::max_work_group_size>();
  <div class="column" width=85%>
 <small>
 
-* HIP example
+* HIP
 ```cpp
 // Launch kernels (HIP)
 for(unsigned n = 0; n < num_devices; n++) {
   hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
+  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(args[n], size[n]);
 }
 //Synchronize all kernels with host (HIP)
 for(unsigned n = 0; n < num_devices; n++) {
@@ -174,7 +174,7 @@ for(unsigned n = 0; n < num_devices; n++) {
   hipStreamSynchronize(stream[n]);
 }
 ```
-* OpenMP example
+* OpenMP
 ```cpp
 // Launch kernels (OpenMP)
 for(int n = 0; n < num_devices; n++) {
@@ -192,13 +192,13 @@ for(int n = 0; n < num_devices; n++) {
  <div class="column" width=14%>
 <small>
 
-* SYCL example
+* SYCL 
 ```cpp
 // Launch kernels (SYCL)
 for(unsigned n = 0; n < num_devices; n++) {
   q[n].parallel_for(size[n], [=](id<1> i) { ...});
 }
-//Synchronize all kernels with host (HIP)
+//Synchronize all kernels with host (SYCL)
 for(unsigned n = 0; n < num_devices; n++) {
   q[n].wait();
 }
@@ -207,34 +207,71 @@ for(unsigned n = 0; n < num_devices; n++) {
 </div>
 
 
-
-# Many GPUs per Process: Code Example SYCL
-
-# Many GPUs per Process, One GPU per Thread
+# One GPU per (CPU) Thread
 
 * one GPU per CPU thread
     * e.g. one OpenMP CPU thread per GPU being used
-* HIP is threadsafe
+* HIP and SYCL APIs are threadsafe
     * multiple threads can call the functions at the same time
 * each thread can create its own context on a different GPU
-    * `hipSetDevice()` sets the device and create a context per thread
+    * when setting the device a context per thread is created
     * easy device management with no changing of device
 * from the point of view of a single thread, the implementation closer to a single-GPU case
 * communication between threads still not trivial
 
 
-# Many GPUs per Process, One GPU per Thread: Code Example
+# One GPU per (CPU) Thread: Code Example
 
+
+<div class="column" width=85%>
+
+<small>
+
+* HIP 
 ```cpp
-// Launch and synchronize kernels from parallel CPU threads using HIP
+// Launch and synchronize kernels
+// from parallel CPU threads using HIP
 #pragma omp parallel num_threads(num_devices)
 {
   unsigned n = omp_get_thread_num();
   hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
+  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(args[n], size[n]);
   hipStreamSynchronize(stream[n]);
 }
 ```
+* OpenMP 
+```cpp
+// Launch and synchronize kernels
+// from parallel CPU threads using OpenMP
+#pragma omp parallel num_threads(num_devices)
+{
+  unsigned n = omp_get_thread_num();
+  #pragma omp target teams distribute parallel for device(n)
+  for (unsigned i = 0; i < size[n]; i++)
+    // Do something
+}
+```
+</small>
+
+ </div>
+
+ 
+ <div class="column" width=14%>
+<small>
+
+* SYCL 
+```cpp
+//Launch and synchronize kernels
+// from parallel CPU threads using SYCL
+#pragma omp parallel num_threads(num_devices)
+{
+  unsigned n = omp_get_thread_num();
+  q[n].parallel_for(size[n], [=](id<1> i) { ...});
+  q[n].wait();
+}
+```
+</small>
+</div>
 
 # Direct Peer to Peer Access
 
@@ -274,14 +311,13 @@ hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t c
 # Compiling MPI+HIP Code
 
 
-* trying to compile code with any HIP calls with other than the `hipcc`
-  compiler can result in errors
-* either set MPI compiler to use `hipcc`, eg for OpenMPI:
-```bash
-OMPI_CXXFLAGS='' OMPI_CXX='hipcc'
-```
+* trying to compile code with any HIP calls with other than the `hipcc` compiler can result in errors
+* either single source code (MPI + GPU), set MPI compiler to use `gpucc`:
+* 
+    * OpenMPI: `OMPI_CXXFLAGS='' OMPI_CXX='hipcc'` or `'mpicxx --showme:compile' 'mpicxx --showme:link' <gpu_mpi_code>.cpp`
+    * `'CC --cray-print-opts=cflags' <gpu_mpi_code>.cpp 'CC --cray-print-opts=libs'
 * or separate HIP and MPI code in different compilation units compiled with
-  `mpicxx` and `hipcc`
+  `mpicxx` and `gpucc`
     * Link object files in a separate step using `mpicxx` or `hipcc`
 * **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP**
 
@@ -315,8 +351,8 @@ hipSetDevice(nodeRank % deviceCount);
 # Summary
 
 - there are various options to write a multi-GPU program
-- use `hipSetDevice()` to select the device, and the subsequent HIP calls
-  operate on that device
+- in HIP/OpenMP a device is set, and the subsequent calls operate on that device
+- in SYCL each device has a separate queue
 - often best to use one GPU per process, and let MPI handle data transfers between GPUs 
 - GPU-aware MPI is required when passing device pointers to MPI
 
@@ -341,8 +377,6 @@ hipSetDevice(nodeRank % deviceCount);
     * Allows sharing (and saving) resources (disks, power units, etc.)
     * More GPU resources per node, better per-node-performance
 
-
-
 # Multi-GPU programming models
 
 <div class="column">
@@ -360,8 +394,6 @@ hipSetDevice(nodeRank % deviceCount);
 ![](img/single_proc_thread_gpu.png){width=50%}
 </div>
 
-
-# One GPU per process with MPI{.section}
 
 # One GPU per process
 
@@ -429,53 +461,8 @@ hipSetDevice(nodeRank % deviceCount);
 * Demos: `mpi_send_and_recv_hip.cpp`, `mpi_send_and_recv_omp.cpp`
 
 
-# Many GPUs per process{.section}
 
 
-# One GPU per thread{.section}
-
-# One GPU per thread
-
-* One GPU per CPU thread
-    * E.g. one OpenMP CPU thread per GPU being used
-* HIP and OpenMP APIs are threadsafe
-    * Multiple threads can call the functions at the same time
-* Each thread can create its own context on a different GPU
-    * `hipSetDevice()` (HIP) or `device()`-directive (OpenMP) determine the device and create a context per thread
-* From the point of view of a single thread, the implementation closer to a single-GPU case
-* Communication between threads still not trivial
-
-
-# One GPU per thread, code example
-
-<small>
-
-* HIP example
-```cpp
-// Launch and synchronize kernels from parallel CPU threads using HIP
-#pragma omp parallel num_threads(num_devices)
-{
-  unsigned n = omp_get_thread_num();
-  hipSetDevice(n);
-  kernel<<<blocks[n],threads[n], 0, stream[n]>>>(arg1[n], arg2[n], size[n]);
-  hipStreamSynchronize(stream[n]);
-}
-```
-* OpenMP example
-```cpp
-// Launch and synchronize kernels from parallel CPU threads using OpenMP
-#pragma omp parallel num_threads(num_devices)
-{
-  unsigned n = omp_get_thread_num();
-  #pragma omp target teams distribute parallel for device(n)
-  for (unsigned i = 0; i < size[n]; i++)
-    // Do something
-}
-```
-</small>
-
-
-# Direct peer to peer access {.section}
 
 # Direct peer to peer access (HIP)
 
