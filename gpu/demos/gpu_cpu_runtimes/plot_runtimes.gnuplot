@@ -8,7 +8,7 @@ set grid;
 
 set logscale x;
 set logscale y;
-set xlabel "problem size";
+set xlabel "vector size";
 set ylabel "time [ns]";
 set xrange [10:10000000000];
 set yrange [10:100000000000];
