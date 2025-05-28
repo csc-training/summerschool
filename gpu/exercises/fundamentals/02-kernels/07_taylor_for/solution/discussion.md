@@ -257,7 +257,6 @@ but the wavefronts can do some work with the old data, thus hiding some of the l
 
 ![Deviation from row average for strided kernel](deviation_strided.svg "Deviation from row average for strided kernel")
 
-For some reason, and uniquely for this kernel, 320 threads seems to be a bad choice for block size.
 The kernel performs best with the largest block size, whether the problem is memory or compute bound.
 
 #### Vectorized loads, strided for loop
