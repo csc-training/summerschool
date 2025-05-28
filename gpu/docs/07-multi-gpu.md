@@ -296,16 +296,21 @@ hipError_t hipDeviceDisablePeerAccess(int peerDevice)
 # Peer to Peer Communication
 
 * devices have separate memories
-* with devices supporting unified virtual addressing, `hipMemCpy()` with
-  `kind=hipMemcpyDefault`, works:
+* memcopies between different devices can be done as follows:
+
 ```cpp
-hipError_t hipMemcpy(void* dst, void* src, size_t count, hipMemcpyKind kind)
+// HIP: First option that requires unified virtual addressing (use "hipMemcpyDefault" for "kind")
+hipError_t hipMemcpy(void* dst, void* src, size_t size, hipMemcpyKind kind=hipMemcpyDefault)
+
+// HIP: Second option does not require unified virtual addressing
+hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t size)
+
+// OpenMP
+int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
+                      size_t srcOffset, int dstDev, int dstDev)
 ```
-* other option which does not require unified virtual addressing
-```cpp
-hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t count)
-```
-* falls back to a normal copy through host memory when direct peer to peer access is not available
+* falls back to acopy through host memory when direct p-t-p  is not available
+* in SYCL there is no equivalent to `hipMemcpyPeer`
 
 
 
@@ -320,7 +325,7 @@ hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t c
 * or separate HIP and MPI code in different compilation units compiled with
   `mpicxx` and `gpucc`
     * Link object files in a separate step using `mpicxx` or `hipcc`
-* **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP/OpenMP offloading**
+* **on LUMI, `cc` and `CC` wrappers know about both MPI and HIP/OpenMP**
 
 # Selecting the Correct GPU
 
@@ -460,50 +465,6 @@ hipSetDevice(nodeRank % deviceCount);
    * In OpenMP this can be achieved using `use_device_ptr` clause
 <p>
 * Demos: `mpi_send_and_recv_hip.cpp`, `mpi_send_and_recv_omp.cpp`
-
-
-
-
-
-# Direct peer to peer access (HIP)
-
-* Access peer GPU memory directly from another GPU
-    * Pass a pointer to data on GPU 1 to a kernel running on GPU 0
-    * Transfer data between GPUs without going through host memory
-    * Lower latency, higher bandwidth
-
-```cpp
-// Check peer accessibility
-hipError_t hipDeviceCanAccessPeer(int* canAccessPeer, int device, int peerDevice)
-
-// Enable peer access
-hipError_t hipDeviceEnablePeerAccess(int peerDevice, unsigned int flags)
-
-// Disable peer access
-hipError_t hipDeviceDisablePeerAccess(int peerDevice)
-```
-* Between AMD GPUs, the peer access is always enabled (if supported)
-
-
-# Peer to peer communication
-
-* Devices have separate memories
-* Memcopies between different devices can be done as follows:
-
-```cpp
-// HIP: First option that requires unified virtual addressing (use "hipMemcpyDefault" for "kind")
-hipError_t hipMemcpy(void* dst, void* src, size_t size, hipMemcpyKind kind=hipMemcpyDefault)
-
-// HIP: Second option does not require unified virtual addressing
-hipError_t hipMemcpyPeer(void* dst, int  dstDev, void* src, int srcDev, size_t size)
-
-// OpenMP
-int omp_target_memcpy(void *dst, const void *src, size_t size, size_t dstOffset,
-                      size_t srcOffset, int dstDev, int dstDev)
-```
-
-* If direct peer to peer access is not available or implemented, the functions should fall back to a normal copy through host memory
-
 
 # Summary {.section}
 
