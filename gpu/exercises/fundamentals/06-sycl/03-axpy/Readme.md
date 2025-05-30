@@ -13,7 +13,7 @@ In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise w
 
 ## I. Memory management using Buffer and Accesors and Basic Kernel Launching
 
-Use the skeleton provided in [`saxpy.cpp`](saxpy.cpp). Look for the **//TODO** lines.
+Use the skeleton provided in [`axpy.cpp`](axpy.cpp). Look for the **//TODO** lines.
 
 ### Step 1: Define a Queue
 Start by defining a **queue**  and selecting the appropriate device selector. SYCL provides predefined selectors, such as: default, gpu, cpu, accelerator:
