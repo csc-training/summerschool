@@ -166,14 +166,14 @@ Many application have independent parts that can be executed in any order. An ap
 
 The AXPY operation can be use as an test case to implement some basic dedendencies. First `X` and `Y` arrays can be initialized independentely of each other. Then the operation can be performed. Dependencies can be enforce in many ways depending on the memory model used. 
 
-When using buffer and accessor model the dependencies are automatically satisified, because data in the buffers can be accessed only via accessors which block any other access until they are destroyed. W
+When using buffer and accessor model the dependencies are automatically satisified, because data in the buffers can be accessed only via accessors which block any other access until they are destroyed. 
 
 When using USM the programmer needs to specify the dependencies explicitely. The kernels launch is asynchronous and there is no warranty that they are executed in the order of submission. The worst way to program is to use an out-of-order queue and use `.wait()` for each operation. It is the worst becuase the program will pause and wait for each operation before conitnued to the next submission. Lots of synchronization between host and device are costly and also results in  lots of idle time in the device. A slighly better approach is to enforce an order of execution to be the the order of submission. This means that the `.wait()` can be removed from almost all submissions to the queue. It is possible to use in-order queues .  But this would be inefficient in some cases becuase it does not allow for concurrency. Finally we can have dependencies specified via sycl events. Each submission to a queue returns a variable event. If operation B dependends on operation A, it is possible to specify a dependency off the operation B of the event returned by operation A. 
 
 ## VII. Dependencies via Buffers
 Start from the solution of [task I](solution/axpy_buffer_simplek.cpp) or [task II](solution/axpy_buffer_ndrange.cpp). Remove the initialization on the host of the variables `X`and `Y`. Write separate kernel initializing each one separately. Keep in mind that in this case the data from the host is not needed.
 ## VIII. Dependencies when Using USM  and `in-order` queues
-Start from the solution of [task III](solution/axpy_usm_device_simplek.cpp), [task IV](solution/axpy_usm_device_ndrange.cpp), [task V](solution/axpy_usm_shared_simplek.cpp), or [task VI](solution/axpy_usm_shared_ndrange.cpp). Similarly to task VI remove the initialization on the host and write separate kernel initializing for each variablre separately. Change also the queue definition. An in-orde queue is defined using:
+Start from the solution of [task III](solution/axpy_usm_device_simplek.cpp), [task IV](solution/axpy_usm_device_ndrange.cpp), [task V](solution/axpy_usm_shared_simplek.cpp), or [task VI](solution/axpy_usm_shared_ndrange.cpp). Similarly to task VII remove the initialization on the host and write separate kernel initializing for each variablre separately. Change also the queue definition. An in-orde queue is defined using:
 
 ```
 sycl::queue queue(sycl::default_selector{}, sycl::property::queue::in_order{});
