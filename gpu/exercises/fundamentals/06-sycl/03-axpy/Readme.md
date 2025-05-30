@@ -18,7 +18,7 @@ Use the skeleton provided in [`axpy.cpp`](axpy.cpp). Look for the **//TODO** lin
 ### Step 1: Define a Queue
 Start by defining a **queue**  and selecting the appropriate device selector. SYCL provides predefined selectors, such as: default, gpu, cpu, accelerator:
 
-- `queue q(default_selector_v);` targets the best device
+- `queue q(default_selector_v);`  or `queue q;` targets the best device
 -  `queue q(cpu_selector_v);` targets the best CPU
 -  `queue q(gpu_selector_v);` targets the best GPU
 -  `queue q(accelerator_selector_v);` targets the best accelerator
@@ -121,7 +121,7 @@ The transfer of the data is submitted to a specific queue:
 ```cpp
    q.memcpy(x_dev, x.data(), sizeof(int) * N).wait();
 ```
-The `memcopy()`is used. The first argument is the destination pointer, the second the source pointer, and finally the size of the data in bytes. This operation is asynchronous. Hence `.wait()`. This method pauses the program execution until the operation is completed. Otherwise a subsequent operation submitted to the same queue might start before the data is transfered to the GPU.
+The `memcpy()` method is needed to transfer data from host to device. The first argument is the destination pointer, the second the source pointer, and finally the size of the data in bytes. This operation is asynchronous. Hence `.wait()`. This method pauses the program execution until the operation is completed. Otherwise a subsequent operation submitted to the same queue might start before the data is transfered to the GPU.
 
 ### Step 4: Submit the Task using Basic Submission
 This is done similarly to taks I
@@ -145,7 +145,7 @@ Again the `.wait()` method is needed to pause the program execution. This way it
 
 ## IV. Memory management with Unified Shared Memory (`malloc_device()`) and `nd_range` Launching
 
-Starting from the code of the previous task change the kernel launching to use `nd_range`, similar to task II.
+Starting from the [solution of the previous task](solution/axpy_usm_device_simplek.cpp) change the kernel launching to use `nd_range`, similar to task II.
 
 ## V. Memory management with Unified Shared Memory (`malloc_shared()`) and `simple` Launching
 The `malloc_device()` function allocates memory on the devices which is pinned to the device. There can be no migration to host. Furthermore the host can not access in any direct this data. In order to simplify the programmer's life SYCL provides also mechanisms (similar to `hipMallocManaged()`)  to allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encountered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device and similarly on the host, between two operations subsequent using the data no migration occurs.
