@@ -1,7 +1,7 @@
 # Other SYCL Features
 
 ## X. Basic Profiling using events
-Start from the solution of task VIII. First modify the **queue** definition and enable profiling
+Start from the solution of [Task IX](../../exercises/fundamentals/06-sycl/03-axpy/solution/axpy_dependencies_usm_device_events.cpp). First modify the **queue** definition and enable profiling
 ```cpp
 queue q{property::queue::enable_profiling{}};
 ```
