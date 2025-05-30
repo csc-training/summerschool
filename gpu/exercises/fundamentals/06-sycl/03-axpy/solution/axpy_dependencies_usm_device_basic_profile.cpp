@@ -8,7 +8,7 @@ using namespace sycl;
 int main() {
   // Create an out-of-order queue on any available device
   //queue q(default_selector_v);
-  queue q{default_selector_v, {}, property::queue::enable_profiling{}};
+  queue q{default_selector_v, property::queue::enable_profiling{}};
 
   constexpr size_t N = 25600;
   std::vector<int> x(N), y(N);
