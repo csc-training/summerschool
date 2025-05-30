@@ -84,7 +84,7 @@ In the previous task a basic, simple way was used to launch kernels. This could 
 The axpy calculation does not need notions of locality within the kernel, but for its simplicity is a good exercise to familiarize with the syntax.
 
 
-Starting from the solution of the task I change the way the kernel is launched following:
+Starting from the [solution of the task I](solution/axpy_buffer_simplek.cpp) change the way the kernel is launched following:
 
 ```cpp
    h.parallel_for(sycl::nd_range<1>(sycl::range<1>(((N+local_size-1)/local_size)*local_size), sycl::range<1>(local_size)), [=](sycl::nd_item<1> item) {
