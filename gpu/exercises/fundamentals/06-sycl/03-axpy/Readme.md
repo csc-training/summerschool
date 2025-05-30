@@ -173,7 +173,7 @@ When using USM the programmer needs to specify the dependencies explicitely. The
 ## VII. Dependencies via Buffers
 Start from the solution of [task I](solution/axpy_buffer_simplek.cpp) or [task II](solution/axpy_buffer_ndrange.cpp). Remove the initialization on the host of the variables `X`and `Y`. Write separate kernel initializing each one separately. Keep in mind that in this case the data from the host is not needed.
 ## VIII. Dependencies when Using USM  and `in-order` queues
-Start from the solution of [task III](solution/axpy_usm_device_simplek.cpp), [task IV](solution/axpy_usm_device_ndrange.cpp), [task V](solution/axpy_usm_shared_simplek.cpp), or [task VI](solution/axpy_usm_shared_ndrange.cpp). Similarly to task VI remove the initialization on the host and write separate kernel initializing for each variablre separately. Chane ge also the queue definition. An in-orde queue is defined using:
+Start from the solution of [task III](solution/axpy_usm_device_simplek.cpp), [task IV](solution/axpy_usm_device_ndrange.cpp), [task V](solution/axpy_usm_shared_simplek.cpp), or [task VI](solution/axpy_usm_shared_ndrange.cpp). Similarly to task VI remove the initialization on the host and write separate kernel initializing for each variablre separately. Change also the queue definition. An in-orde queue is defined using:
 
 ```
 sycl::queue queue(sycl::default_selector{}, sycl::property::queue::in_order{});
