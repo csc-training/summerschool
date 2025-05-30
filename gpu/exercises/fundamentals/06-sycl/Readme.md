@@ -1,1 +1,1 @@
-# SYCL Essential Exercises
+# SYCL Exercises
