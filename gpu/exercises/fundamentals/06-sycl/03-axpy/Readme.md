@@ -3,11 +3,11 @@
 In this exercise, you will solve the `axpy` problem (`Y=Y+a*X`). This exercise will will be used to exemplify all the SYCL concepts presented in the lecture.
 
 **Structure of the Code**:
-  1. define a SYCL  queue (choose device, specify the options)
+  1. define a SYCL  queue (choose device and specify the options)
   1. declare  the variables
   1. initialize the input variables (on CPU or on device using a separate kernels for each array)
   1. transfer the necesary data from CPU to device (not needed when the problem is initialized on the device)
-  1. do the final `axpy` computation in a separate kernel 
+  1. do the `axpy` computation in a separate kernel 
   1. copy data to host to check the results
 
 
@@ -18,16 +18,16 @@ Use the skeleton provided in [`axpy.cpp`](axpy.cpp). Look for the **//TODO** lin
 ### Step 1: Define a Queue
 Start by defining a **queue**  and selecting the appropriate device selector. SYCL provides predefined selectors, such as: default, gpu, cpu, accelerator:
 
-- `queue q(default_selector_v);`  or `queue q;` targets the best device
+- `queue q(default_selector_v);`  or `queue q;` targets the best available device
 -  `queue q(cpu_selector_v);` targets the best CPU
 -  `queue q(gpu_selector_v);` targets the best GPU
 -  `queue q(accelerator_selector_v);` targets the best accelerator
     
-Alternatively it is possible to use the procedure from the [previous exercise](../01-info/enumerate_device.cpp). This the recommended way when the application can detect than one GPU and needs to assign specific devices accordingly to the MPI rank or (CPU) OpenMP thread index.
+Alternatively it is possible to use the procedure from the [previous exercise](../01-info/enumerate_device.cpp). This the recommended when the application needs to detect multiple GPUs and assign devices according to MPI rank or OpenMP thread index.
 
 
 ### Step 2: Create Buffers
-Next, create buffers to encapsulate the data. For a one-dimensional array of integers of length `N`, with pointer `P`, a buffer can be constructed as follows:
+Create buffers to encapsulate the data. For a one-dimensional array of integers of length `N`, with pointer `P`, a buffer can be constructed as follows:
 
 ```cpp
     sycl::buffer<int, 1> x_buf(P, sycl::range<1>(N));
@@ -36,7 +36,9 @@ Use the appropriate data type.
 
 
 ### Step 3: Create Accessors
-Accessors provide a mechanism to access data inside the buffers. Accessors on the device must be created within command groups. There are two ways to create accessors. Using the `sycl::accessor` class constructor
+Accessors provide access to buffer data and must be created inside command groups on the device.
+
+Two ways to create accessors:
 
 ```cpp
    sycl::accessor x_acc{x_buf, h, read_write};
@@ -48,14 +50,25 @@ or
 **Important**  Use appropriate access modes for your data:
  - **Input Buffers:** Use `sycl::read_only` / `sycl::access::mode::read` to avoid unnecessary device-to-host data transfers.
  - **Output Buffers:** Use `sycl::write_only`/ `sycl::access::mode::write` to avoid unnecessary host-to-device data transfers.
- - **Input/Ouput Buffers:** Use `sycl::read_write` / `sycl::access::mode::read_write` for the variables that are input, but they also get modified during the computations.
+ - **Input/Ouput Buffers:** Use `sycl::read_write` / `sycl::access::mode::read_write`  for data both read and modified during computation.
 
 
 ### Step 4: Submit the Task using Basic Submission
-Once accessors are ready, submit the task to the device using the `.parallel_for()` member function. The basic submission:
-
+Once accessors are ready, submit the task to the device using .parallel_for():
 ```cpp
-   h.parallel_for(sycl::range{N}, [=](sycl::id<1> idx) {
+q.submit([&](handler& h) {
+      // Create accessors
+      accessor x_acc(x_buf, h, read_only);
+      accessor y_acc(y_buf, h, read_write);
+
+      h.parallel_for(range<1>(N), [=](id<1> i) {
+        y_acc[i] = a * x_acc[i] +  y_acc[i];
+      });
+    });
+```
+or
+```cpp
+   q.parallel_for(sycl::range{N}, [=](sycl::id<1> idx) {
         y_acc[idx] = y_acc[idx] + a*x_acc[idx];
       });
 ```
@@ -76,13 +89,12 @@ When a buffer is destroyed the host can access again the data to which the buffe
           }
       }
 ```
-As long a host accessor is valid the data can not be accessed by other means. When they are destroyed the program can proceed with further calculations on host or devices.
+As long as the host accessor is valid, the data cannot be accessed by other means. When destroyed, the program can proceed with further host or device computations.
 
 ## II. Memory management using Buffer and Accesors and `nd_range" Launching
-In the previous task a basic, simple way was used to launch kernels. This could be enough for many applications, but the `range` class is quite limited. It does not allow to use lower level features, like local share memory, in-work-grgoup  synchronizations or use the in-work-rgoup local index. In many cases (like matrix-matrix multiplication) more control is needed.  
+In the previous exercise was used a simple kernel launch with`range`, which lacks advanced features like local shared memory, in-work-group synchronization, or local indexing.
 
-The axpy calculation does not need notions of locality within the kernel, but for its simplicity is a good exercise to familiarize with the syntax.
-
+Although  `axpy` doesn’t require these features, it’s a good exercise to learn the syntax.
 
 Starting from the [solution of the task I](solution/axpy_buffer_simplek.cpp) change the way the kernel is launched following:
 
@@ -96,16 +108,16 @@ Starting from the [solution of the task I](solution/axpy_buffer_simplek.cpp) cha
 ```
 In the launching the programmer can define not only the number of work-items to execute the kernel, but also the size of the work-group. Both global and local coordinates of the work-item can be now obtained from the nd_item object (via `get_global_id()`, `get_global_linear_id()` and `get_local_id()`, `get_local_linear_id` methods).
 
-**Note** that nd_range requires that the total number of work-items to be divisible by the size of the work-group. Asumming `local_size` for the work-group, `(N+local_size-1)/local_size)*local_size)` need work-items to be created. When `N`is not divisible by `local_size` the number of work-items is larger than `N`.
+**Note** that `nd_range` requires that the total number of work-items to be divisible by the local size, so you may launch more work-items than `N`.
 
 ## III. Memory management with Unified Shared Memory (`malloc_device()`) and Simple Launching
-The task is to write a code performing an `AXPY` operation, but this time the memory management is done using the Unified Shared Memory (USM). The structure of the code is practically the same. 
+This task uses USM for memory management, keeping the overall structure similar.
 
 Start from the skeleton code  [`axpy.cpp`](axpy.cpp). Look for the **//TODO** lines.
 
 
 ### Step 1: Define a Queue
-Same as in task I
+Same as in Task I
 
 ### Step 2: Allocate device memory using USM
 The memory on the device is allocate C style using `malloc_device` function:
@@ -114,7 +126,6 @@ The memory on the device is allocate C style using `malloc_device` function:
     int* x_dev = sycl::malloc_device<int>(N, q);
 ```
 **Note** how the device pointers are associated with a specific queue.
-
 
 ### Step 3: Copy data from host to device
 The transfer of the data is submitted to a specific queue:
@@ -145,24 +156,26 @@ Again the `.wait()` method is needed to pause the program execution. This way it
 
 ## IV. Memory management with Unified Shared Memory (`malloc_device()`) and `nd_range` Launching
 
-Starting from the [solution of the previous task](solution/axpy_usm_device_simplek.cpp) change the kernel launching to use `nd_range`, similar to task II.
+Starting from the [solution of the previous task](solution/axpy_usm_device_simplek.cpp) change the kernel launching to use `nd_range`, similar to Task II.
 
 ## V & VI. Memory management with Unified Shared Memory (`malloc_shared()`) and `simple` Launching
-The `malloc_device()` function allocates memory on the devices which is pinned to the device. There can be no migration to host. Furthermore the host can not access in any direct this data. In order to simplify the programmer's life SYCL provides also mechanisms (similar to `hipMallocManaged()`)  to allocate memory which can be migrated between host and device as needed. When a block of code running on the host is encountered the memory is migrated automatically to the host, while if a kernel is executed the data will be on the device. Between two subsequent kernels the data stays on the device and similarly on the host, between two operations subsequent using the data no migration occurs.
+The `malloc_device()` function allocates memory pinned to the device, inaccessible to the host directly. To simplify programming, SYCL provides `malloc_shared()`, which allows automatic migration of memory between host and device.
 
-Start from the skeleton [`axpy.cpp`](axpy.cpp) the solution of [task III](solution/axpy_usm_device_simplek.cpp) or [task IV](solution
+Start from the skeleton [`axpy.cpp`](axpy.cpp), the solution of [Task III](solution/axpy_usm_device_simplek.cpp), or [Task IV](solution
 /axpy_usm_device_simplek.cpp). Remove the host pointers `x(N),y(N);` and the device pointers `x_dev,y_dev`. Remove as all the lines code used to transfer data from host to device and from device to host.
 
 Declare new pointers using `malloc_shared()` such as:
 ```cpp
     int* x_shared = sycl::malloc_device<int>(N, q);
 ```
-Then initialize the `x_shared` and `y_shared` using host. **Note** the STL functions will not work. 
+Then initialize the `x_shared` and `y_shared` using host. 
+
+**Note** the STL functions will not work. 
 
 The data is first touched on the host which means that the pointers will reside on the host memory. When the kernel is executed a page fault will occured and it will trigger a migration to the device allowing ot execute the kernel on the device.  In this case the `.wait()`  is still needed to be sure that the host code wich will access the results at the end will now be executed before the kernel is completed.
 
 # SYCL Dependencies with AXPY
-Many application have independent parts that can be executed in any order. An application in which all operations are exececuted in the order of submission will always give the correct results, but it can result in an ineficient use of the resources. If some kernels can be executed in any order the runtime can schedule them in such a way that the devices are occupied as much as possible. 
+Many application have independent parts that can be executed in any order.  Executing all operations sequentially guarantees correctness but can underutilize resources.
 
 The AXPY operation can be use as an test case to implement some basic dedendencies. First `X` and `Y` arrays can be initialized independentely of each other. Then the operation can be performed. Dependencies can be enforce in many ways depending on the memory model used. 
 
@@ -170,20 +183,28 @@ When using buffer and accessor model the dependencies are automatically satisifi
 
 When using USM the programmer needs to specify the dependencies explicitely. The kernels launch is asynchronous and there is no warranty that they are executed in the order of submission. The worst way to program is to use an out-of-order queue and use `.wait()` for each operation. It is the worst becuase the program will pause and wait for each operation before conitnued to the next submission. Lots of synchronization between host and device are costly and also results in  lots of idle time in the device. A slighly better approach is to enforce an order of execution to be the the order of submission. This means that the `.wait()` can be removed from almost all submissions to the queue. It is possible to use in-order queues .  But this would be inefficient in some cases becuase it does not allow for concurrency. Finally we can have dependencies specified via sycl events. Each submission to a queue returns a variable event. If operation B dependends on operation A, it is possible to specify a dependency off the operation B of the event returned by operation A. 
 
+A directed acyclic graph (DAG) can be constructed based on the dependencies in this program:
+
+Initialize x  |
+              |
+              | --> Perform AXPY --> transfer from GPU to host 
+              |
+Initialize y  |
+
 ## VII. Dependencies via Buffers
-Start from the solution of [task I](solution/axpy_buffer_simplek.cpp) or [task II](solution/axpy_buffer_ndrange.cpp). Remove the initialization on the host of the variables `X`and `Y`. Write separate kernel initializing each one separately. Keep in mind that in this case the data from the host is not needed.
+Start from the solution of [Task I](solution/axpy_buffer_simplek.cpp) or [Task II](solution/axpy_buffer_ndrange.cpp). Remove the initialization on the host of the variables `X`and `Y`. Write separate kernel initializing each one separately. Keep in mind that in this case the data from the host is not needed.
 ## VIII. Dependencies when Using USM  and `in-order` queues
-Start from the solution of [task III](solution/axpy_usm_device_simplek.cpp), [task IV](solution/axpy_usm_device_ndrange.cpp), [task V](solution/axpy_usm_shared_simplek.cpp), or [task VI](solution/axpy_usm_shared_ndrange.cpp). Similarly to task VII remove the initialization on the host and write separate kernel initializing for each variablre separately. Change also the queue definition. An in-orde queue is defined using:
+Start from the solution of [Task III](solution/axpy_usm_device_simplek.cpp), [Task IV](solution/axpy_usm_device_ndrange.cpp), [Task V](solution/axpy_usm_shared_simplek.cpp), or [Task VI](solution/axpy_usm_shared_ndrange.cpp). Similarly to task VII remove the initialization on the host and write separate kernel initializing for each variablre separately. Change also the queue definition. An in-orde queue is defined using:
 
 ```
 sycl::queue queue(sycl::default_selector{}, sycl::property::queue::in_order{});
 ```
 ## IX. Dependencies when Using USM  and events
-Start from task VIII. Change the definition the queue to make it out-of-order again. **Out-of-order** queues can use `sycl::events` to explicitly set the order of execution. Each kernel submission returns an event, which can be used to ensure that subsequent tasks wait for the completion of preceding tasks. 
+Start from the [solution of Task VIII](solution/axpy_dependencies_usm_device_in_order.cpp). Change the definition the queue to make it out-of-order again. **Out-of-order** queues can use `sycl::events` to explicitly set the order of execution. Each kernel submission returns an event, which can be used to ensure that subsequent tasks wait for the completion of preceding tasks. 
 
 Initialize arrays `X` and `Y` on the device using two separate kernels. Capture the events from these kernel submissions:
 ```cpp
-auto event_x = queue.submit([&](sycl::handler &h) {
+auto event_x = q.submit([&](sycl::handler &h) {
     h.parallel_for(range{N}, [=](id<1> idx) { X[idx] = 1; });
 });
 auto event_b = queue.submit([&](sycl::handler &h) {
@@ -192,7 +213,7 @@ auto event_b = queue.submit([&](sycl::handler &h) {
 ```
 Next submit the `axpy` kernel with an explicit dependency on the two initialization events
  ```cpp
- queue.submit([&](sycl::handler &h) {
+    auto event_axpy=q.submit([&](sycl::handler &h) {
     h.depends_on({event_x, event_y});
     h.parallel_for(range{N}, [=](id<1> idx) { Y[idx] += a * X[idx]; });
 });
@@ -200,9 +221,20 @@ Next submit the `axpy` kernel with an explicit dependency on the two initializat
 or 
 
  ```cpp
- queue.
-    h.parallel_for(range{N},{event_x, event_y}, [=](id<1> idx) { Y[idx] += a * X[idx]; });
+    auto event_axpy=q.parallel_for(range{N},{event_x, event_y}, [=](id<1> idx) { Y[idx] += a * X[idx]; });
 ```
-As an exercise you can synchrhonize the host with the event `sycl::event::wait({event_a, event_b});`. Finally copy the result back to the host for validation.
-
-
+When using `malloc_device()` a CPU to GPU tranfer is needed. This as well can depend on specific events:
+```
+auto memcpy_event = q.submit([&](handler& h) {
+  h.depends_on(event_axpy);   // Make memcpy wait for event_axpy
+  h.memcpy(y.data(), d_y, N * sizeof(int));
+});
+```
+or
+```
+auto memcpy_event = q.memcpy(y.data(), d_y, N * sizeof(int), {event_axpy});
+```
+Finally, wait for the last operation before accessing results on the host:
+```
+memcpy_event.wait();
+```
