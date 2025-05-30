@@ -1,6 +1,6 @@
 # Other SYCL Features
 
-## IX. Basic Profiling using events
+## X. Basic Profiling using events
 Start from the solution of task VIII. First modify the **queue** definition and enable profiling
 ```cpp
 queue q{property::queue::enable_profiling{}};
@@ -11,7 +11,7 @@ e.get_profiling_info<info::event_profiling::command_end>() - e.get_profiling_inf
 ```
 **Note** Before computing the time you will have first to synchronize the host and the device (`e.wait()`)!
 
-## X. Error Handling
+## XI. Error Handling
 
 In this exercise you are given a code with errors. SYCL provides mechanisms to catch both synchonous and asynchronous expections. However the behaiviour dependends a lot on the hardware capabilities, runtime and, drivers. 
 
