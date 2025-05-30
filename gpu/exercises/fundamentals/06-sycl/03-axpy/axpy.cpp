@@ -5,7 +5,7 @@ using namespace sycl;
 int main() {
   // Set up queue on any available device
   //TODO 
-
+  
   // Initialize input and output memory on the host
   constexpr size_t N = 25600;
   std::vector<int> x(N),y(N);
@@ -38,8 +38,9 @@ int main() {
 
   // If USM is used free the device memory
   // TODO
+  // Check that all outputs match expected value
   bool passed = std::all_of(y.begin(), y.end(),
-                            [a](int val) { return (val == 1+a*2); });
+                            [a](int val) { return val == a * 1 + 2; });
   std::cout << ((passed) ? "SUCCESS" : "FAILURE")
             << std::endl;
   return (passed) ? 0 : 1;
