@@ -39,7 +39,7 @@ int main() {
   // If USM is used free the device memory
   // TODO
   bool passed = std::all_of(y.begin(), y.end(),
-                            [](int i) { return (i == 1+a*2); });
+                            [a](int val) { return (val == 1+a*2); });
   std::cout << ((passed) ? "SUCCESS" : "FAILURE")
             << std::endl;
   return (passed) ? 0 : 1;
