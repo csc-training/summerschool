@@ -44,7 +44,6 @@ int main() {
     bool passed = std::all_of(y_acc.begin(), y_acc.end(),
                               [a](int val) { return val == a * 1 + 2; });
     std::cout << (passed ? "SUCCESS" : "FAILURE") << std::endl;
-    return passed ? 0 : 1;
   }
 
   // Check that all outputs match expected value
