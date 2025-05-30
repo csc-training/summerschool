@@ -94,10 +94,10 @@ module load partition/C
 ```
 For GPU programming use:
 ```
-module load PrgEnv-cray/8.4.0
-module load LUMI/23.09
+module load PrgEnv-cray
+module load LUMI/24.03
 module load partition/G
-module load rocm/5.4.6
+module load rocm/6.2.2
 ```
 
 #### MPI
