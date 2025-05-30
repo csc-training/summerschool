@@ -4,7 +4,7 @@ using namespace sycl;
 
 int main() {
   // Set up queue on any available device
-  //TODO 
+  queue q;
 
   // Initialize input and output memory on the host
   constexpr size_t N = 25600;
@@ -15,26 +15,30 @@ int main() {
 
   {
    // Create buffers for the host data
-   // TODO
+    buffer<int> x_buf(x.data(), range<1>(N));
+    buffer<int> y_buf(y.data(), range<1>(N));
 
-    // Submit the kernel to the queue
+// Submit the kernel to the queue
     q.submit([&](handler& h) {
       // Create accessors
-      //TODO
+      accessor x_acc(x_buf, h, read_only);
+      accessor y_acc(y_buf, h, read_write);
 
-      h.parallel_for(
-        //The kernel as a lambda
-        //TODO
-      );
+      h.parallel_for(range<1>(N), [=](id<1> i) {
+        y_acc[i] = a * x_acc[i] +  y_acc[i];
+      });
     });
-
-      //TODO after the submission works
-      //Checking the result inside the scope of the buffers using host_accessors
+    //Checking the result inside the scope of the buffers using host_accessors
+    host_accessor y_acc(y_buf, read_only);
+    bool passed = std::all_of(y_acc.begin(), y_acc.end(),
+                              [a](int val) { return val == 1 + a * 2; });
+    std::cout << (passed ? "SUCCESS" : "FAILURE") << std::endl;
+    return passed ? 0 : 1;
   }
 
   // Check that all outputs match expected value
   bool passed = std::all_of(y.begin(), y.end(),
-                            [](int i) { return (i == 1+a*2); });
+                            [a](int val) { return (val == 1+a*2); });
   std::cout << ((passed) ? "SUCCESS" : "FAILURE")
             << std::endl;
   return (passed) ? 0 : 1;
