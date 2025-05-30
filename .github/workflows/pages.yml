@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/csc-training/slidefactory:3.2.0-beta.1
+      image: ghcr.io/csc-training/slidefactory:3.3.0
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,6 +35,7 @@ jobs:
       - name: Build slides
         env:
           INCLUDE_PDF: ${{ inputs.include_pdf }}
+        shell: bash
         run: |
           git config --global --add safe.directory $PWD
           GIT_SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
