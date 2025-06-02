@@ -78,7 +78,7 @@ for(size_t k = 0; k<N; ++k) {
 
 # Target construct
 
-- OpenMP `target` construct specifies a region to be executed on GPU
+- OpenMP *`target`* construct specifies a region to be executed on GPU
     - initially, runs with a single thread
 - By default, execution in the host continues only after target region
   is finished
@@ -107,7 +107,7 @@ for(size_t k = 0; k<N; ++k) {
 :::{.column width=70%}
 - Target construct does not create any parallelism, so additional
   constructs are needed
-- `omp target teams` creates a league of teams
+- *`omp target teams`* creates a league of teams
     - number of teams is implementation dependent
     - initially, a single thread in each team executes the following
       structured block
@@ -133,8 +133,8 @@ for(size_t k = 0; k<N; ++k) {
 
 ::::::{.columns}
 :::{.column width=70%}
-- Create threads within teams with `parallel` construct:
-- `omp target teams parallel`
+- Create threads within teams with *`parallel`* construct:
+- *`omp target teams parallel`*
 - Comparing HIP/CUDA:<br><br>
 
   | OMP | HIP |
@@ -188,11 +188,11 @@ __global__ void sum_vecs(float* a, float* b, float* c, size_t n) {
 
 # Worksharing in the accelerator
 
-- `teams` and `parallel` constructs create threads, however, all the
+- *`teams`* and *`parallel`* constructs create threads, however, all the
   threads are still executing the same code
-- `distribute` construct distributes loop iterations over the teams
-- `for` / `do` construct can also be used within a parallel region
-- `distribute` and `for`/`do` can be combined for one loop:
+- *`distribute`* construct distributes loop iterations over the teams
+- *`for`* / *`do`* construct can also be used within a parallel region
+- *`distribute`* and *`for`*/*`do`* can be combined for one loop:
 ```cpp
 #pragma omp target teams distribute parallel for
 for (size_t k = 0; k<N; ++k)
@@ -201,7 +201,7 @@ for (size_t k = 0; k<N; ++k)
 
 # Worksharing in the accelerator
 
-- It is not required to combine `distribute` and `for`/`do`.
+- It is not required to combine *`distribute`* and *`for`*/*`do`*.
 
 <div class=column>
 ```c++
@@ -238,55 +238,93 @@ end do
 </div>
 
 
-# OpenMP data model in offloading
+# OpenMP data model in offloading: *`map`* clause
 
 - Host variables are mirrored on device, but dynamically allocated data is *not*.
-- Data is moved to/from host with directives 
-  - `target data map(...)`: mapping is valid inside region
-  - `target enter/exit data map(...)`: mapping is valid after/before statement
+- Data is moved to/from host with `map` clause: 
+  - *`target ... map(...)`* Mapping is valid within following scope device code.
+  - *`target data map(...)`* Mapping is valid inside scoped region. Scoped region may contain host code.
+  - *`target enter/exit data map(...)`* Mapping is valid after/before statement
 - Device allocations/deallocations with map clause directives (target 
-  - `map(alloc/dealloc:...)`
+  - *`map(alloc/delete:...)`*
 
-# `target data` clause (TODO: TEST THIS)
+# `map(to/from/tofrom)`
 
-- TODO: explain `map`
-- The data is available in the following code block
+- Assume that *`data_array`* is a host allocated array of size *`N`*.
+ 
+| Action | Syntax |
+|--|--|
+| Copy *`data_array`* to device at start of scope |  *`map(to:data_array[:N])`*|
+| Copy *`data_array`* to host after scope | *`map(from: data_array[:N])`*|
+| Copy *`data_array`* to device and after scope back to host | *`map(tofrom: data_array[:N])`*|
+
+- *`to/from/tofrom`* makes device allocation automatically if needed
+
+# `map(to/from/tofrom)` -- Example
+
 ```cpp
-#pragma omp target map(b[:N]) map(from:c[:N]) map(tofrom: a[:N])
-{
+  double* array_a = (double*) malloc(sizeof(double)*N);
+  double* array_b = (double*) malloc(sizeof(double)*N);
+  double* array_c = (double*) malloc(sizeof(double)*N);
+  
+  #pragma omp target map(tofrom: array_c[:N]) map(from: array_a[:N], array_b[:N])
+  {
+  // device code
   #pragma omp teams distribute parallel for
-  for (size_t k = 0; k<N; ++k) {
-    a[k] += 1.0;
-    c[k] = a[k] + b[k];
+  for (...) 
+  ...
   }
-}
 ```
 
-# `target enter/exit` clause (TODO: TEST THIS)
+---
 
-- The data is available on the device after `enter` and on host after `exit`
+# `target data` and `target enter/exit data`
 
+- *`target data`* and *`target enter/exit data`* do not create scopes where device code is executed
+- *`target data`* creates mapping region within the following scope
+- *`target enter data map(...)`* create mapping with host data.
+  - *Standalone*: no effect of following scope
+- *`target exit data map(...)`* unmap data (*`map(from/delete...)`*)
+  - *Standalone*
+- update data with host: *`target update map(to/from:...)`*
+
+---
+
+# `target data` example
 ```cpp
-#pragma omp target enter data map(to:a[:N])
-//do host calculations
-#pragma omp target map(from: c[:N]) map(to: b[:N])
+#pragma omp target data map(to: b[:N]) map(from:c[:N]) map(tofrom: a[:N])
 {
-  #pragma omp teams distribute parallel for
-  for (size_t k = 0; k<N; ++k) {
-      a[k] += 1.0;
-      c[k] = a[k] + b[k];
-    }
+  #pragma omp target teams distribute parallel for
+  for (size_t k = 0; k<N; ++k) c[k] = a[k] + b[k]; // Device code
+
+  #pragma omp target update from(a[:N])  // Copy device data to host
+
+  for (size_t k = 0; k<N; ++k) a[k] /= 2.0; // Host code
+
+  #pragma omp target update to(a[:N]) // Copy host data to device
+
+  #pragma omp target teams distribute parallel for
+  for (size_t k = 0; k<N; ++k) c[k] *= a[k]; // Device code
 }
-// Do host calculations
-#pragma omp target exit data map(from: a[:N])
 ```
 
-# `target update` clause (TODO: TEST THIS)
-
-- Update host/device data region
+# `target enter/exit data` example
 ```cpp
-#pragma omp target update to(a) // sends data in host array a to mapped device array
-#pragma omp target update from(a) // sends data in device array a to mapped host array
+#pragma omp target enter data map(to: b[:N], a[:N]) 
+
+#pragma omp target teams distribute parallel for
+for (size_t k = 0; k<N; ++k) c[k] = a[k] + b[k]; // Device code
+
+#pragma omp target update from(a[:N])  // Copy device data to host
+
+for (size_t k = 0; k<N; ++k) a[k] /= 2.0; // Host code
+
+#pragma omp target update to(a[:N]) // Copy host data to device
+
+#pragma omp target teams distribute parallel for
+for (size_t k = 0; k<N; ++k) c[k] *= a[k]; // Device code
+
+#pragma omp target exit data map(from:c[:N]) map(tofrom: a[:N])
 ```
 
 # Compiling an OpenMP program for GPU offloading
