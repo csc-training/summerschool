@@ -2,8 +2,7 @@
 #include <cstdlib>
 #include <hip/hip_runtime.h>
 
-// This file include macros for checking the API and kernel launch errors
-#include "../../../../error_checking.hpp"
+#include "../../../error_checking.hpp"
 
 __device__ __host__ float taylor(float x, size_t N) {
     float sum = 1.0f;
@@ -47,16 +46,16 @@ __global__ void taylor_vec(float *x, float *y, size_t num_values,
 __global__ void taylor_for_consecutive(float *x, float *y, size_t num_values,
                                        size_t num_iters) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-    const size_t num_threads = blockDim.x * gridDim.x;
-    const size_t num_per_thread = num_values / num_threads;
+    const size_t stride = blockDim.x * gridDim.x;
+    const size_t num_per_thread = num_values / stride;
     for (size_t i = 0; i < num_per_thread; i++) {
         const size_t j = tid * num_per_thread + i;
         y[j] = taylor(x[j], num_iters);
     }
 
-    const size_t left_over = num_values - num_per_thread * num_threads;
+    const size_t left_over = num_values - num_per_thread * stride;
     if (tid < left_over) {
-        const size_t j = num_per_thread * num_threads + tid;
+        const size_t j = num_per_thread * stride + tid;
         y[j] = taylor(x[j], num_iters);
     }
 }
@@ -94,27 +93,40 @@ __global__ void taylor_for_vec(float *x, float *y, size_t num_values,
 }
 
 size_t run_and_measure(void (*kernel)(float *, float *, size_t, size_t),
-                       int32_t blocks, int32_t threads, size_t num_values,
-                       size_t num_iters, float *d_x, float *d_y) {
+                       int32_t blocks, int32_t threads, hipStream_t stream,
+                       hipEvent_t gpu_start, hipEvent_t gpu_stop,
+                       size_t num_values, size_t num_iters, float *d_x,
+                       float *d_y) {
     // Run the kernel N times and compute the average runtime
     // Don't count the first run, as it may contain extra time unrelated to the
     // computation (GPU init etc.)
     static constexpr size_t num_measurements = 20ul;
-    size_t average_runtime = 0;
+    size_t average_runtime_cpu = 0;
+    size_t average_runtime_gpu = 0;
     for (size_t i = 0; i < num_measurements; i++) {
-        const auto start = std::chrono::high_resolution_clock::now();
+        const auto cpu_start = std::chrono::high_resolution_clock::now();
 
-        LAUNCH_KERNEL(kernel, blocks, threads, 0, 0, d_x, d_y, num_values,
+        HIP_ERRCHK(hipEventRecord(gpu_start, stream));
+        LAUNCH_KERNEL(kernel, blocks, threads, 0, stream, d_x, d_y, num_values,
                       num_iters);
-        HIP_ERRCHK(hipDeviceSynchronize());
+        HIP_ERRCHK(hipEventRecord(gpu_stop, stream));
+        HIP_ERRCHK(hipEventSynchronize(gpu_stop));
 
-        const auto end = std::chrono::high_resolution_clock::now();
-        const std::chrono::duration<double, std::micro> dur = end - start;
+        const auto cpu_end = std::chrono::high_resolution_clock::now();
+        const std::chrono::duration<double, std::micro> dur =
+            cpu_end - cpu_start;
 
-        average_runtime += i == 0 ? 0 : dur.count();
+        float elapsed = 0.0f;
+        HIP_ERRCHK(hipEventElapsedTime(&elapsed, gpu_start, gpu_stop));
+
+        average_runtime_cpu += i == 0 ? 0 : dur.count();
+        average_runtime_gpu += i == 0 ? 0 : elapsed * 1000.0f;
     }
 
-    return average_runtime / (num_measurements - 1);
+    std::fprintf(stderr, "%ld, %ld\n", average_runtime_cpu,
+                 average_runtime_gpu);
+
+    return average_runtime_cpu / (num_measurements - 1);
 }
 
 bool validate_result(float *h_y, float *d_y, float *reference,
@@ -186,11 +198,19 @@ int main(int argc, char **argv) {
 
     initialize(&h_x, &h_y, &reference, &d_x, &d_y, num_values, num_iters);
 
+    hipStream_t stream;
+    hipEvent_t gpu_start;
+    hipEvent_t gpu_stop;
+    HIP_ERRCHK(hipStreamCreate(&stream));
+    HIP_ERRCHK(hipEventCreate(&gpu_start));
+    HIP_ERRCHK(hipEventCreate(&gpu_stop));
+
     // Base kernel with nothing fancy
     int blocks = num_values / threads;
     blocks += blocks * threads < num_values ? 1 : 0;
-    const auto base_runtime = run_and_measure(taylor_base, blocks, threads,
-                                              num_values, num_iters, d_x, d_y);
+    const auto base_runtime =
+        run_and_measure(taylor_base, blocks, threads, stream, gpu_start,
+                        gpu_stop, num_values, num_iters, d_x, d_y);
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Base result incorrect");
 
@@ -198,8 +218,9 @@ int main(int argc, char **argv) {
     // of blocks by 4
     blocks /= 4;
     blocks += 4 * threads * blocks < num_values ? 1 : 0;
-    const auto vec_runtime = run_and_measure(taylor_vec, blocks, threads,
-                                             num_values, num_iters, d_x, d_y);
+    const auto vec_runtime =
+        run_and_measure(taylor_vec, blocks, threads, stream, gpu_start,
+                        gpu_stop, num_values, num_iters, d_x, d_y);
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Vectorized result incorrect");
 
@@ -209,20 +230,22 @@ int main(int argc, char **argv) {
 
     // Consecutive N per thread
     const auto consecutive_runtime =
-        run_and_measure(taylor_for_consecutive, blocks, threads, num_values,
-                        num_iters, d_x, d_y);
+        run_and_measure(taylor_for_consecutive, blocks, threads, stream,
+                        gpu_start, gpu_stop, num_values, num_iters, d_x, d_y);
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Consecutive result incorrect");
 
     // Strided access
-    const auto strided_runtime = run_and_measure(
-        taylor_for_strided, blocks, threads, num_values, num_iters, d_x, d_y);
+    const auto strided_runtime =
+        run_and_measure(taylor_for_strided, blocks, threads, stream, gpu_start,
+                        gpu_stop, num_values, num_iters, d_x, d_y);
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Strided result incorrect");
 
     // Vectorized loads in loop
-    const auto vec_for_runtime = run_and_measure(
-        taylor_for_vec, blocks, threads, num_values, num_iters, d_x, d_y);
+    const auto vec_for_runtime =
+        run_and_measure(taylor_for_vec, blocks, threads, stream, gpu_start,
+                        gpu_stop, num_values, num_iters, d_x, d_y);
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Vec for result incorrect");
 
@@ -237,6 +260,10 @@ int main(int argc, char **argv) {
 
     HIP_ERRCHK(hipFree(d_x));
     HIP_ERRCHK(hipFree(d_y));
+
+    HIP_ERRCHK(hipStreamDestroy(stream));
+    HIP_ERRCHK(hipEventDestroy(gpu_start));
+    HIP_ERRCHK(hipEventDestroy(gpu_stop));
 
     return 0;
 }
