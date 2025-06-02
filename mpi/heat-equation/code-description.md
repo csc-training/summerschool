@@ -12,15 +12,15 @@ with a variety of techniques.
 
 ### Theory
 
-The rate of change of the temperature field *u*(*x*, *y*, *t*) over two spatial
-dimensions *x* and *y* and time *t*
-with diffusivity α can be modelled via the partial differential equation
+The rate of change of the temperature field $u(x, y, t)$ over two spatial
+dimensions $x$ and $y$ and time $t$
+with diffusivity $\alpha$ can be modelled via the partial differential equation
 
 $$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$$
 
-where ∇ is the Laplacian operator, which describes how
-the temperature field varies with the spatial dimensions *x* and
-*y*. When those are continuous variables, that looks like
+where $\nabla^2$ is the Laplacian operator, which describes how
+the temperature field varies with the spatial dimensions $x$ and
+$y$. When those are continuous variables, that looks like
 
 $$\frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)$$
 
@@ -28,8 +28,8 @@ Because computers are finite devices, we often need to solve such
 equations numerically, rather than analytically.
 This often involves *discretization*, where spatial and temporal
 variables only take on specific values from a set.
-In this mini-app we will discretize all three dimensions *x*, *y*, and
-*t*, such that
+In this mini-app we will discretize all three dimensions $x$, $y$, and
+$t$, such that
 
 ```math
 \begin{align*}
@@ -37,13 +37,13 @@ In this mini-app we will discretize all three dimensions *x*, *y*, and
  &+ \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}
 \end{align*}
 ```
-where *u(i,j)* refers to the temperature at location with
-integer index *i* within the domain of *x* spaced by ∆x and location
+where $u(i,j)$ refers to the temperature at location with
+integer index $i$ within the domain of $x$ spaced by $\Delta x$ and location
 with integer index *j* within the
-domain of *y* spaced by ∆y.
+domain of $y$ spaced by $\Delta y$.
 
-Given an initial condition (*u*(t=0) = u0), one can follow the time
-dependence of the temperature field from state *m* to *m+1* over
+Given an initial condition ($u(t=0) = u^0$), one can follow the time
+dependence of the temperature field from state $m$ to $m+1$ over
 regular time steps ∆t with explicit
 time evolution method:
 

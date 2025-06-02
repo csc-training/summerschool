@@ -231,7 +231,7 @@ Temperature field $u(i,j)$
 
 # Time evolution
 
-- Explicit time evolution with time step Δt
+- Explicit time evolution with time step $\Delta t$
 
 $$u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)$$
 
