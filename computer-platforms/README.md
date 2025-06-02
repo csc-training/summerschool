@@ -6,4 +6,4 @@ discussed in [exercise instructions](../exercise-instructions.md)
 ## Exercises
 
 - [Building and running](building-running)
-- [Bonus: scalability testing](scalability-test)
+- [Scalability analysis](scalability)
