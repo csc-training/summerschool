@@ -1,5 +1,5 @@
 ---
-title:  Introduction to <br>High-Performance Computing
+title:  Introduction to <br>high-performance computing
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
@@ -13,7 +13,7 @@ lang:   en
 
 - Why to use supercomputers?
 - What are supercomputers?
-- Future of high-performance computing
+- Current trends in high-performance computing
 
 
 # Why to use supercomputers? {.section}
@@ -207,6 +207,40 @@ Image: [top500.org](https://top500.org/)
 
 # Future of high-performance computing {.section}
 
+# GPUs are becoming the norm
+
+<center>
+![](img/top500_nov21.svg){.center width=65%}
+
+- Top500 supercomputers grouped by the accelator type (Nov 2021 list)
+</center>
+
+# GPUs are becoming the norm
+
+<center>
+![](img/top500_nov22.svg){.center width=65%}
+
+- Top500 supercomputers grouped by the accelator type (Nov 2022 list)
+</center>
+
+# GPUs are becoming the norm
+
+<center>
+![](img/top500_nov24.svg){.center width=65%}
+
+- Top500 supercomputers grouped by the accelator type (Nov 2024 list)
+</center>
+
+
+# Post-exascale challenges
+
+- Performance of supercomputers has increased exponentially for a long time
+- However, there are still challenges in continuing onwards from exascale supercomputers ($> 1 \times 10^{18}$ Flop/s)
+  - Power consumption: the exascale supercomputers consume >20 MW
+  - Manufacturing: Transistor sizes being extremely small
+  - Application scalability: how to program for 100,000 GPUs / 100,000,000 CPU cores?
+
+
 # Cloud computing vs high-performance computing
 
 - Many similarities
@@ -232,21 +266,12 @@ Image: [top500.org](https://top500.org/)
 </div>
 
 
-# Post-exascale challenges
-
-- Performance of supercomputers has increased exponentially for a long time
-- However, there are still challenges in continuing onwards from exascale supercomputers ($> 1 \times 10^{18}$ Flop/s)
-  - Power consumption: the exascale supercomputers consume >20 MW
-  - Manufacturing: Transistor sizes being extremely small
-  - Application scalability: how to program for 100,000 GPUs / 100,000,000 CPU cores?
-
-
 # Summary {.section}
 
 # Utilizing HPC in scientific research
 
 <!-- Copyright CSC -->
- ![](img/sci.png){.center width=40%}
+![](img/sci.png){.center width=40%}
 
 - **Goal for this school: everyone is able to write and modify HPC applications!**
 
