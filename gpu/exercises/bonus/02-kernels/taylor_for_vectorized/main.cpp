@@ -3,7 +3,7 @@
 #include <hip/hip_runtime.h>
 
 // This file include macros for checking the API and kernel launch errors
-#include "../../../error_checking.hpp"
+#include "../../../../error_checking.hpp"
 
 __device__ __host__ float taylor(float x, size_t N) {
     float sum = 1.0f;
@@ -24,39 +24,38 @@ __global__ void taylor_base(float *x, float *y, size_t num_values,
     }
 }
 
+__global__ void taylor_vec(float *x, float *y, size_t num_values,
+                           size_t num_iters) {
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    float4 *xv = reinterpret_cast<float4 *>(x);
+    float4 *yv = reinterpret_cast<float4 *>(y);
+
+    if (tid < num_values >> 2) {
+        const float4 xs = xv[tid];
+        const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
+                        taylor(xs.z, num_iters), taylor(xs.w, num_iters));
+
+        yv[tid] = ys;
+    }
+
+    const size_t index = num_values - (num_values & 3) + tid;
+    if (index < num_values) {
+        y[index] = taylor(x[index], num_iters);
+    }
+}
+
 __global__ void taylor_for_consecutive(float *x, float *y, size_t num_values,
                                        size_t num_iters) {
-    // Global thread id, i.e. over the entire grid
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-
-    // How many threads in total in the entire grid
     const size_t num_threads = blockDim.x * gridDim.x;
-
-    // How many elements per thread
     const size_t num_per_thread = num_values / num_threads;
-
-    // Process num_per_thread consecutive elements
     for (size_t i = 0; i < num_per_thread; i++) {
-        // tid      elems
-        //   0      [0, num_per_thread - 1]
-        //   1      [num_per_thread, 2 * num_per_thread - 1]
-        //   2      [2 * num_per_thread, 3 * num_per_thread - 1]
-        //   and so on...
         const size_t j = tid * num_per_thread + i;
         y[j] = taylor(x[j], num_iters);
     }
 
-    // How many are left over
     const size_t left_over = num_values - num_per_thread * num_threads;
-
-    // The first threads will process one more, so the left over values
-    // are also processed
     if (tid < left_over) {
-        // tid      elem
-        //   0      num_per_thread * num_threads
-        //   1      num_per_thread * num_threads + 1
-        //   2      num_per_thread * num_threads + 2
-        //   and so on...
         const size_t j = num_per_thread * num_threads + tid;
         y[j] = taylor(x[j], num_iters);
     }
@@ -64,19 +63,39 @@ __global__ void taylor_for_consecutive(float *x, float *y, size_t num_values,
 
 __global__ void taylor_for_strided(float *x, float *y, size_t num_values,
                                    size_t num_iters) {
-    // TODO: Fill in this kernel
-    // Check the lecture slides for HIP kernels for an example on how to do a
-    // strided for loop
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    const size_t stride = blockDim.x * gridDim.x;
 
-    for (size_t i = ???; /*TODO: fill me in*/) {
+    for (size_t i = tid; i < num_values; i += stride) {
         y[i] = taylor(x[i], num_iters);
     }
 }
 
+__global__ void taylor_for_vec(float *x, float *y, size_t num_values,
+                               size_t num_iters) {
+    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
+    const size_t stride = blockDim.x * gridDim.x;
+
+    float4 *xv = reinterpret_cast<float4 *>(x);
+    float4 *yv = reinterpret_cast<float4 *>(y);
+
+    for (size_t i = tid; i < num_values / 4; i += stride) {
+        const float4 xs = xv[i];
+        const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
+                        taylor(xs.z, num_iters), taylor(xs.w, num_iters));
+
+        yv[i] = ys;
+    }
+
+    const size_t index = num_values - (num_values & 3) + tid;
+    if (index < num_values) {
+        y[index] = taylor(x[index], num_iters);
+    }
+}
+
 size_t run_and_measure(void (*kernel)(float *, float *, size_t, size_t),
-                       int32_t num_blocks, int32_t num_threads,
-                       size_t num_values, size_t num_iters, float *d_x,
-                       float *d_y) {
+                       int32_t blocks, int32_t threads, size_t num_values,
+                       size_t num_iters, float *d_x, float *d_y) {
     // Run the kernel N times and compute the average runtime
     // Don't count the first run, as it may contain extra time unrelated to the
     // computation (GPU init etc.)
@@ -85,8 +104,8 @@ size_t run_and_measure(void (*kernel)(float *, float *, size_t, size_t),
     for (size_t i = 0; i < num_measurements; i++) {
         const auto start = std::chrono::high_resolution_clock::now();
 
-        LAUNCH_KERNEL(kernel, num_blocks, num_threads, 0, 0, d_x, d_y,
-                      num_values, num_iters);
+        LAUNCH_KERNEL(kernel, blocks, threads, 0, 0, d_x, d_y, num_values,
+                      num_iters);
         HIP_ERRCHK(hipDeviceSynchronize());
 
         const auto end = std::chrono::high_resolution_clock::now();
@@ -146,18 +165,18 @@ void initialize(float **h_x, float **h_y, float **reference, float **d_x,
 int main(int argc, char **argv) {
     if (argc != 4) {
         std::printf(
-            "Give three arguments: number of Taylor's expansion iterations, "
-            "size of vector and number of threads\n");
-        std::printf("E.g. %s 20 100000000\n", argv[0]);
+            "Give three arguments: number of Taylor's expansion iterations,"
+            " size of vector and size of block\n");
+        std::printf("E.g. %s 20 100000000 256\n", argv[0]);
         exit(EXIT_FAILURE);
     }
     const size_t num_iters = std::atol(argv[1]);
     const size_t num_values = std::atol(argv[2]);
-    const size_t num_threads = std::atol(argv[3]);
+    const size_t threads = std::atol(argv[3]);
     assert(num_iters > 0 && num_iters <= 50 && "Use values up to 50");
     assert(num_values > 0 && num_values <= 100000000 &&
            "Use values up to 100'000'000");
-    assert(num_threads > 0 && num_threads <= 1024 && "Use values up to 1024");
+    assert(threads > 0 && threads <= 1024 && "Use values up to 1024");
 
     float *h_x = nullptr;
     float *h_y = nullptr;
@@ -168,36 +187,49 @@ int main(int argc, char **argv) {
     initialize(&h_x, &h_y, &reference, &d_x, &d_y, num_values, num_iters);
 
     // Base kernel with nothing fancy
-    int num_blocks = num_values / num_threads;
-    num_blocks += num_blocks * num_threads < num_values ? 1 : 0;
-    const auto base_runtime = run_and_measure(
-        taylor_base, num_blocks, num_threads, num_values, num_iters, d_x, d_y);
+    int blocks = num_values / threads;
+    blocks += blocks * threads < num_values ? 1 : 0;
+    const auto base_runtime = run_and_measure(taylor_base, blocks, threads,
+                                              num_values, num_iters, d_x, d_y);
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Base result incorrect");
 
+    // Using float4s to load and process 4 values at a time: reduce the number
+    // of blocks by 4
+    blocks /= 4;
+    blocks += 4 * threads * blocks < num_values ? 1 : 0;
+    const auto vec_runtime = run_and_measure(taylor_vec, blocks, threads,
+                                             num_values, num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Vectorized result incorrect");
+
     // Kernels with thread re-use can use arbitrary grid size. It should be
     // large enough to utilize all the availabe CUs of the GPU, however.
-    num_blocks = 1024;
+    blocks = 880;
 
     // Consecutive N per thread
     const auto consecutive_runtime =
-        run_and_measure(taylor_for_consecutive, num_blocks, num_threads,
-                        num_values, num_iters, d_x, d_y);
+        run_and_measure(taylor_for_consecutive, blocks, threads, num_values,
+                        num_iters, d_x, d_y);
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Consecutive result incorrect");
 
     // Strided access
-    const auto strided_runtime =
-        run_and_measure(taylor_for_strided, num_blocks, num_threads, num_values,
-                        num_iters, d_x, d_y);
+    const auto strided_runtime = run_and_measure(
+        taylor_for_strided, blocks, threads, num_values, num_iters, d_x, d_y);
     assert(validate_result(h_y, d_y, reference, num_values) &&
            "Strided result incorrect");
 
-    std::printf("Taylor N, vector size, number of threads, base[us], "
-                "strided[us], consecutive[us]\n");
-    std::printf("%ld, %ld, %ld, %ld, %ld, %ld\n", num_iters, num_values,
-                num_threads, base_runtime, strided_runtime,
-                consecutive_runtime);
+    // Vectorized loads in loop
+    const auto vec_for_runtime = run_and_measure(
+        taylor_for_vec, blocks, threads, num_values, num_iters, d_x, d_y);
+    assert(validate_result(h_y, d_y, reference, num_values) &&
+           "Vec for result incorrect");
+
+    std::printf("%ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld\n", num_iters,
+                2 * sizeof(float) * num_values, threads, base_runtime,
+                vec_runtime, strided_runtime, consecutive_runtime,
+                vec_for_runtime);
 
     std::free(h_x);
     std::free(h_y);
