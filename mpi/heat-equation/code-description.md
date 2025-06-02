@@ -86,7 +86,7 @@ decomposition. With shared memory computers the parallelization is
 relatively straightforward, however, with distributed memory
 parallelization with MPI some extra steps are needed.
 
-The most simple way to divide the work is with one dimensional decomposition. Due to different
+Here we describe one-dimensional domain decomposition. Due to different
 memory layout in Fortran and C/C++, the grid is divided into blocks of columns
 in Fortran or into rows in C/C++ and each block is assigned to one
 MPI task.

@@ -85,7 +85,7 @@ lang:   en
 ![](img/one-sided-epoch.png)
 </div>
 
-# Simple example: Put
+# Example: Put
 
 ```c
 int data;
