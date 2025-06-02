@@ -3,7 +3,6 @@
 1. Build three dimensional heat equation solver under [heat-equation-3d](heat-equation-3d) with the provided [Makefile](heat-equation-3d/Makefile).
 2. Run the program `heat_hip` with different number of GPUs / GCDs and investigate scalability by filling the table below.
 
-
 Note 1: You can use the provided example `job.sh`. The code uses GPU-aware MPI communication, so you need to set the environment variable
 ```bash
 export MPICH_GPU_SUPPORT_ENABLED=1
@@ -27,7 +26,6 @@ sbatch --job-name=n16 --nodes=2 --ntasks-per-node=8 --gpus-per-node=8 job.sh
 |   4  |             |                       |                                 |                             |         |                     |
 |   8  |             |                       |                                 |                             |         |                     |
 |  16  |             |                       |                                 |                             |         |                     |
-|  32  |             |                       |                                 |                             |         |                     |
 
 
 Speedup $S$ and efficiency $E$ are defined as
@@ -40,3 +38,6 @@ E = \frac{T_1}{n T_n}
 ```
 where $T_1$ is the runtime with a single GCD and $T_n$ is the runtime with $n$ GCDs.
 The resource cost is $n T_n$, that is, the GCD-seconds or GCD-hours consumed.
+
+As a rule of thumb, parallel efficiencies higher than 75% are usually considered reasonable.
+This corresponds to a speedup of 1.5 when doubling the number GCDs/cores/nodes or to a speedup of 3 when quadrupling.
