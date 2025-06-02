@@ -154,26 +154,22 @@ for iter:
 
 - Communication to computation ratio is important metric for scalability
     - If ratio increases, algorithm stops scaling with certain number of processors
-- Example: square grid with dimension $N$, $p$ processors
-    - Computational cost: $\frac{N^2}{p}$
+- Example: domain decomposition of square grid dimension $N^2$, $p$ processors
+    - Computational cost per process: $T_\text{comp} = \frac{N^2}{p}$
 
 <div class=column>
 One dimensional decomposition
-<small>
 
-- Communication of boundary has constant cost $N$
-- Ratio: $\frac{T_{comm}}{T_{comp}} = \frac{p}{N}$
+- Communication cost of boundary: $T_\text{comm} = N$
+- Ratio: $\frac{T_\text{comm}}{T_\text{comp}} = \frac{p}{N}$
 
-</small>
 </div>
 <div class=column>
 Two dimensional decomposition
-<small>
 
-- Communication of boundary has cost $\frac{N}{\sqrt{p}}$
-- Ratio: $\frac{T_{comm}}{T_{comp}} = \frac{\sqrt{p}}{N}$
+- Communication cost of boundary: $T_\text{comm} = 2\frac{N}{\sqrt{p}}$
+- Ratio: $\frac{T_\text{comm}}{T_\text{comp}} = \frac{\sqrt{p}}{2N}$
 
-</small>
 </div>
 
 # Reductions
