@@ -16,7 +16,7 @@ lang:   en
 Some information provided here is specific to LUMI, Mahti, and Puhti, some more general
 
 # Anatomy of supercomputer
- ![](images/cluster_diagram.jpeg){.center width=80%}
+ ![](img/cluster_diagram.jpeg){.center width=80%}
  
 # Connecting to supercomputers
 
@@ -101,7 +101,7 @@ ssh-copy-id <my_user_id>@mahti.csc.fi
 - Together, compiling and linking can be called building
 </div>
 <div class=column>
-![](images/building.svg){.center}
+![](img/building.svg){.center}
 </div>
 
 # Compiling and linking
@@ -127,7 +127,7 @@ cc main.c -o main
     - Building parts of a program and only rebuilding necessary parts
     - Building different version and configurations of a program
 
-![](images/depend.png){.center width=40%}
+![](img/depend.png){.center width=40%}
 
 # Make rules
 
@@ -141,7 +141,7 @@ cc main.c -o main
 
 <div class=column>
 _A make rule_
-![](images/rule.png){.center width=100%}
+![](img/rule.png){.center width=100%}
 </div>
 
 

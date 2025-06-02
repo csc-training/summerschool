@@ -33,7 +33,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 10:00 | Welcome to the Hotel Nuuksio
 | 10:30 | Introduction to the school
 | 12:00 | Lunch
-| 13:00 | [Introduction to supercomputing](computer-platforms)
+| 13:00 | [Introduction to supercomputing](intro-to-hpc)
 | 17:00 | Dinner
 | 18:00 | Exercises
 | 19:00 | Get together & Lightning talks
