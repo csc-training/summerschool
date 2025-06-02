@@ -62,6 +62,11 @@ the task 0 to all other tasks
 
 # Collective MPI operations {.section}
 
+# Barrier
+
+MPI_Barrier(`comm`{.input})
+: Waits until all ranks within the communicator reaches the call
+
 # Broadcasting
 
 - Replicate data from one process to all others
