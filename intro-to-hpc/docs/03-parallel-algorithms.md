@@ -229,9 +229,7 @@ Temperature field $u(i,j)$
  ![](img/t_field.png){.center width=45%}
 
 
-
 # Time evolution
-
 
 - Explicit time evolution with time step Δt
 
@@ -239,7 +237,7 @@ $$u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)$$
 
 - Note: algorithm is stable only when
 
-$$\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2} {(\Delta x)^2+ (\Delta y)^2} $$
+$$\Delta t \leq \frac{1}{2 \alpha} \left(\frac{1}{\Delta x^2} + \frac{1}{\Delta y^2}\right)^{-1} $$
 
 - Given the initial condition ($u(t=0) = u^0$) one can follow the time evolution of the temperature field
 

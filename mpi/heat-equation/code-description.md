@@ -16,18 +16,12 @@ The rate of change of the temperature field *u*(*x*, *y*, *t*) over two spatial
 dimensions *x* and *y* and time *t*
 with diffusivity α can be modelled via the partial differential equation
 
-<!-- Equation
-\frac{\partial u}{\partial t} = \alpha \nabla^2 u
--->
 $$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$$
 
 where ∇ is the Laplacian operator, which describes how
 the temperature field varies with the spatial dimensions *x* and
 *y*. When those are continuous variables, that looks like
 
-<!-- Equation
-   \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)
--->
 $$\frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)$$
 
 Because computers are finite devices, we often need to solve such
@@ -37,19 +31,12 @@ variables only take on specific values from a set.
 In this mini-app we will discretize all three dimensions *x*, *y*, and
 *t*, such that
 
-<!-- Equation
-\begin{align*}
-\nabla^2 u  &= \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2} \\
- &+ \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}
-\end{align*}
--->
 ```math
 \begin{align*}
 \nabla^2 u  &= \frac{u(i-1,j)-2u(i,j)+u(i+1,j)}{(\Delta x)^2} \\
  &+ \frac{u(i,j-1)-2u(i,j)+u(i,j+1)}{(\Delta y)^2}
 \end{align*}
 ```
-
 where *u(i,j)* refers to the temperature at location with
 integer index *i* within the domain of *x* spaced by ∆x and location
 with integer index *j* within the
@@ -60,17 +47,11 @@ dependence of the temperature field from state *m* to *m+1* over
 regular time steps ∆t with explicit
 time evolution method:
 
-<!-- Equation
-u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)
--->
 $$u^{m+1}(i,j) = u^m(i,j) + \Delta t \alpha \nabla^2 u^m(i,j)$$
 
 Note: The algorithm is stable only when
 
-<!-- Equation
-\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2 (\Delta y)^2}
--->
-$$\Delta t < \frac{1}{2 \alpha} \frac{(\Delta x \Delta y)^2}{(\Delta x)^2 (\Delta y)^2}$$
+$$\Delta t \leq \frac{1}{2 \alpha} \left(\frac{1}{\Delta x^2} + \frac{1}{\Delta y^2}\right)^{-1}$$
 
 This equation expresses that the time evolution of the temperature
 field at a particular location depends on the value of the field at
