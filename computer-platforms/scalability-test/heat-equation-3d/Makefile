@@ -16,14 +16,14 @@ LIBS=-lpng
 endif
 
 ifeq ($(COMP),lumi)
-LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12
+LIBPNG_DIR=/appl/lumi/SW/LUMI-24.03/G/EB/libpng/1.6.40-cpeCray-24.03
 CXX=CC
 CC=cc
 HIPCC=hipcc
 GPU_MEMORY=-DPINNED_MEMORY
-HIPFLAGS=$(GPU_MEMORY) -O3 -std=c++11 --rocm-path=${ROCM_PATH} --offload-arch=gfx90a -DUSE_STREAMS 
-CCFLAGS=-g -O3 -march=native -I$(COMMONDIR) -I$(LIBPNG_DIR)/include -DNDEBUG $(GPU_MEMORY) -D__HIP_PLATFORM_AMD__
-LDFLAGS=-L${ROCM_PATH}/lib -lamdhip64 -L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib
+HIPFLAGS=$(GPU_MEMORY) -O3 -std=c++11 --offload-arch=gfx90a -DUSE_STREAMS
+CCFLAGS=-g -O3 -I$(COMMONDIR) -I$(LIBPNG_DIR)/include -DNDEBUG $(GPU_MEMORY) -D__HIP_PLATFORM_AMD__
+LDFLAGS=-lamdhip64 -L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib
 LIBS=-lpng
 endif
 
