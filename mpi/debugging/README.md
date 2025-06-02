@@ -18,15 +18,15 @@ Launch a desktop session on a browser for smoother GUI performance
 * Login to https://www.lumi.csc.fi
 * Launch Desktop with 1 core on interactive partition
 * Open a terminal window in the desktop session
-* Bug fix: run `module reload` in the terminal
 * Follow the commands below
 
-Run DDT for a buggy program:
+Run DDT for a buggy program `buggy.x`:
 ```bash
-module load ARMForge
+# module load ARMForge  # buggy module
+export PATH=/appl/lumi/SW/system/EB/ARMForge/22.0.1/bin:$PATH
 export SLURM_OVERLAP=1
-salloc -A project_465001194 --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug
-ddt srun ./buggy.exe
+salloc -A project_462000956 --nodes=1 --ntasks-per-node=2 --time=00:30:00 --partition=debug
+ddt srun ./buggy.x
 ```
 
 Note: you can also skip the desktop session step and run DDT using X11 forwarding (might be slow).
@@ -40,12 +40,12 @@ Launch a desktop session on a browser for smoother GUI performance
 * Open a terminal window in the desktop session
 * Follow the commands below
 
-Run DDT for a buggy program:
+Run DDT for a buggy program `buggy.x`:
 ```bash
 module load ddt
 export SLURM_OVERLAP=1
 salloc -A project_2010554 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
-ddt srun ./buggy.exe
+ddt srun ./buggy.x
 ```
 
 Note: you can also skip the desktop session step and run DDT using X11 forwarding (might be slow).
@@ -61,8 +61,8 @@ Debug the [exchange.cpp](exchange.cpp) code similar to
 [the earlier exercise](../message-exchange/):
 ```bash
 ...
-CC -g exchange.cpp -o exchange.exe
-ddt srun ./exchange.exe
+CC -g exchange.cpp -o exchange.x
+ddt srun ./exchange.x
 ```
 
 The following will be demoed with DDT:
@@ -81,16 +81,16 @@ Debug the [collective.cpp](collective.cpp) code similar to
 [the earlier exercise](../collectives/):
 ```bash
 ...
-CC -g collective.cpp -o collective.exe
-ddt srun ./collective.exe
+CC -g collective.cpp -o collective.x
+ddt srun ./collective.x
 ```
 
 ### Memory debugging with sanitizer
 
 Memory debugging with sanitizer. On LUMI:
 ```bash
-CC -g -fsanitize=address collective.cpp -o collective.exe
-srun -A project_465001194 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug --label ./collective.exe
+CC -g -fsanitize=address collective.cpp -o collective.x
+srun -A project_462000956 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug --label ./collective.x
 ```
 
 Note the `--label` option that prepends task number to lines of stdout/err.
@@ -102,7 +102,7 @@ Memory debugging with valgrind4hpc. On LUMI:
 ```bash
 module load valgrind4hpc
 
-CC -g collective.cpp -o collective.exe
-valgrind4hpc --num-ranks=4 --launcher-args="-A project_465001194 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug" ./collective.exe
+CC -g collective.cpp -o collective.x
+valgrind4hpc --num-ranks=4 --launcher-args="-A project_462000956 --nodes=1 --ntasks-per-node=4 --time=00:05:00 --partition=debug" ./collective.x
 ```
 
