@@ -68,8 +68,8 @@ queried with the command `lumi-workspaces`. As the base directory is
 shared between members of the project, you should create your own
 directory:
 ```
-mkdir -p /scratch/project_465001194/$USER
-cd /scratch/project_465001194/$USER
+mkdir -p /scratch/project_465000956/$USER
+cd /scratch/project_465000956/$USER
 ```
 
 #### Editors
@@ -94,10 +94,10 @@ module load partition/C
 ```
 For GPU programming use:
 ```
-module load PrgEnv-cray/8.4.0
-module load LUMI/23.09
+module load PrgEnv-cray
+module load LUMI/24.03
 module load partition/G
-module load rocm/5.4.6
+module load rocm/6.2.2
 ```
 
 #### MPI
@@ -224,12 +224,44 @@ Where `<path-to>/ftn` can be obtain by running `which ftn`.
 
 We will use the Cray 'ftn' compiler wrapper as you would do to compile any fortran code plus some additional flags:
 ```bash
-export HIPFORT_HOME=/projappl/project_465001194/apps/HIPFORT
+export HIPFORT_HOME=/projappl/project_465000956/apps/HIPFORT
 ftn -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -c <fortran_code>.f90
 CC -xhip -c <hip_kernels>.cpp
 ftn  -I$HIPFORT_HOME/include/hipfort/amdgcn "-DHIPFORT_ARCH=\"amd\"" -L$HIPFORT_HOME/lib -lhipfort-amdgcn $LIB_FLAGS -o main <fortran_code>.o hip_kernels.o
 ```
 This option gives enough flexibility for calling HIP libraries from Fortran or for a mix of OpenMP/OpenACC offloading to GPUs and HIP kernels/libraries.
+
+### SYCL
+#### OneAPI + AMD Plug-in
+Set-up the modules and paths:
+```
+module load LUMI/24.03
+module load partition/G
+module load rocm/6.2.2
+source /projappl/project_462000956/apps/intel/oneapi/setvars.sh --include-intel-llvm
+export  HSA_XNACK=1 # enables managed memory
+export MPICH_GPU_SUPPORT_ENABLED=1                                # Needed for using GPU-aware MPI
+```
+Compile with:
+```
+icpx -fuse-ld=lld -std=c++20 -O3 -fsycl -fsycl-targets=amdgcn-amd-amdhsa,spir64_x86_64 -Xsycl-target-backend=amdgcn-amd-amdhsa --offload-arch=gfx90a <sycl_code>.cpp
+```
+#### AdaptiveCPP
+Set-up the modules and paths:
+```
+module load LUMI/24.03
+module load partition/G
+module load rocm/6.2.2
+export PATH=/projappl/project_462000956/apps/ACPP/bin/:$PATH
+export LD_LIBRARY_PATH=/appl/lumi/SW/LUMI-24.03/G/EB/Boost/1.83.0-cpeGNU-24.03/lib64/:$LD_LIBRARY_PATH
+export LD_PRELOAD=/appl/lumi/SW/LUMI-24.03/G/EB/rocm/6.2.2/llvm/lib/libomp.so
+export  HSA_XNACK=1 # enables managed memory
+export MPICH_GPU_SUPPORT_ENABLED=1                                # Needed for using GPU-aware MPI
+``` 
+Compile with:
+```
+acpp -O3 --acpp-targets="omp.accelerated;hip:gfx90a" <sycl_code>.cpp
+```
 
 ## Running in LUMI
 
@@ -239,7 +271,7 @@ Programs need to be executed via the batch job system. A simple job running with
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465001194
+#SBATCH --account=project_465000956
 #SBATCH --partition=small
 #SBATCH --reservation=CSC_summer_school_cpu
 #SBATCH --time=00:05:00
@@ -257,7 +289,7 @@ The reservation `summerschool` is available during the course days and it is acc
 
 The same result can be achieved using directly `srun`
 ```
-srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=4 --cpus-per-task=1  my_mpi_exe
+srun --job-name=example --account=project_465000956 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=4 --cpus-per-task=1  my_mpi_exe
 ```
 #### Pure OpenMP
 
@@ -266,7 +298,7 @@ for threading with `--cpus-per-task`:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465001194
+#SBATCH --account=project_465000956
 #SBATCH --partition=small
 #SBATCH --reservation=CSC_summer_school_cpu
 #SBATCH --time=00:05:00
@@ -281,7 +313,7 @@ srun my_omp_exe
 
 The same result can be achieved using directly `srun`
 ```
-srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=1 --cpus-per-task=4   my_omp_exe
+srun --job-name=example --account=project_465000956 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=1 --ntasks-per-node=1 --cpus-per-task=4   my_omp_exe
 ```
 #### Hybrid MPI+OpenMP
 
@@ -296,7 +328,7 @@ the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465001194
+#SBATCH --account=project_465000956
 #SBATCH --partition=small
 #SBATCH --reservation=CSC_summer_school_cpu
 #SBATCH --time=00:05:00
@@ -310,7 +342,7 @@ srun my_exe
 
 The same result can be achieved using directly `srun`
 ```
-srun --job-name=example --account=project_465001194 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=2 --ntasks-per-node=32 --cpus-per-task=4   my_omp_exe
+srun --job-name=example --account=project_465000956 --partition=small --reservation=CSC_summer_school_cpu --time=00:05:00 --nodes=2 --ntasks-per-node=32 --cpus-per-task=4   my_omp_exe
 ```
 #### GPU programs
 
@@ -321,7 +353,7 @@ single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_465001194
+#SBATCH --account=project_465000956
 #SBATCH --partition=small-g
 #SBATCH --reservation=CSC_summer_school_gpu
 #SBATCH --gpus-per-node=1
@@ -334,7 +366,7 @@ srun my_gpu_exe
 
 The same result can be achieved using directly `srun`
 ```
-srun --job-name=example --account=project_465001194 --partition=small-g --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=1 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
+srun --job-name=example --account=project_465000956 --partition=small-g --reservation=CSC_summer_school_gpu --time=00:05:00 --gpus-per-node=1 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1  my_gpu_exe
 ```
 **Note!** Some programs require GPU-aware MPI to perform MPI operations using directly the GPU pointers (this is avoiding some GPU-CPU transfers). This is enabled via:
 
@@ -395,7 +427,7 @@ export PATH=$TAU/bin:$PATH
 ```
 Profiling mpi code:
 ```
-srun --cpus-per-task=1 --account=project_465001194 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
+srun --cpus-per-task=1 --account=project_465000956 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
 ```
 In order to to see the `paraprof` in browser use `vnc`:
 ```
@@ -414,7 +446,7 @@ Tracing:
 
 ```
 export TAU_TRACE=1
-srun --cpus-per-task=1 --account=project_465001194 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
+srun --cpus-per-task=1 --account=project_465000956 --nodes=1 --ntasks-per-node=4 --partition=standard --time=00:05:00 --reservation=summerschool_standard tau_exec -ebs ./mandelbrot
 tau_treemerge.pl
 tau_trace2json tau.trc tau.edf -chrome -ignoreatomic -o app.json
 ```
@@ -427,7 +459,7 @@ In order to use omniperf load the following modules:
 module use <path-ro>/Omni/omniperf/modulefiles
 module load omniperf
 module load cray-python
-srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465001194 omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
+srun -p standard-g --gpus 1 -N 1 -n 1 -c 1 --time=00:30:00 --account=project_465000956 omniperf profile -n workload_xy --roof-only --kernel-names  -- ./heat_hip
 omniperf analyze -p workloads/workload_xy/mi200/ > analyse_xy.txt
 ```
 In additition to this one has to load the usual modules for running GPUs. Keep in mind the the above installation was done with `rocm/5.4.6`.

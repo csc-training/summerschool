@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   pages-pdf:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion != 'failure' }}
     uses: ./.github/workflows/pages.yml
     with:
       include_pdf: true

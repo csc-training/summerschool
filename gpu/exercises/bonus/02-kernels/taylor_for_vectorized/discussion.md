@@ -164,12 +164,7 @@ be explained by the slowness of the base kernel with those configurations. See t
 there's a similar pattern.
 
 For compute bound problem (`N = 8`) vectorized loads only hurt performance. This repeats for the strided and
-strided vectorized cases as well. Without more detailed measurement it's difficult to say why,
-but my hypothesis is that the "lead time" to computation is larger for these three kernels compared to
-the base kernel. In other words, the longer it takes until the "actual" computation can start
-(due to extra memory transactions in the vectorized case and extra computation
-in the strided loop case), the longer it takes to complete the actual work. But this is a hypothesis,
-and may aswell be entirely wrong.
+strided vectorized cases as well. More detailed measurement is needed to explain why.
 
 #### Consecutive values for loop
 
@@ -262,7 +257,6 @@ but the wavefronts can do some work with the old data, thus hiding some of the l
 
 ![Deviation from row average for strided kernel](deviation_strided.svg "Deviation from row average for strided kernel")
 
-For some reason, and uniquely for this kernel, 320 threads seems to be a bad choice for block size.
 The kernel performs best with the largest block size, whether the problem is memory or compute bound.
 
 #### Vectorized loads, strided for loop
