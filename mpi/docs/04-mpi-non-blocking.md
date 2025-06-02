@@ -1,5 +1,5 @@
 ---
-title:  Non-blocking point-to-point communication
+title:  Non-blocking communication
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
