@@ -9,7 +9,7 @@
 static constexpr size_t numElements = 32;
 
 // Enables or disables debug printing of file contents. Set to false if numElements is very large (>> 100)
-static constexpr bool doDebugPrint = false;
+static constexpr bool doDebugPrint = true;
 
 
 // Debugging helper, prints out file contents
