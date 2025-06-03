@@ -53,7 +53,7 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 ### Collective reductions
 
-- TODO: add parallel pi with collective reduction
+- [Parallel pi with reduction](parallel-pi-reduction/)
 - [Heat equation solver](heat-equation/): Tasks 3-4
 
 ### User-defined communicators
