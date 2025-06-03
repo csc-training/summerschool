@@ -39,6 +39,7 @@ See [demos](demos/) for demo codes referred to in the slides.
 ### Non-blocking communication
 
 - [Non-blocking message chain](message-chain-non-blocking/)
+- [Heat equation solver](heat-equation/): Task 3
 
 ## Thursday exercises
 
@@ -54,7 +55,7 @@ See [demos](demos/) for demo codes referred to in the slides.
 ### Collective reductions
 
 - [Parallel pi with reduction](parallel-pi-reduction/)
-- [Heat equation solver](heat-equation/): Tasks 3-4
+- [Heat equation solver](heat-equation/): Task 4
 
 ### User-defined communicators
 
