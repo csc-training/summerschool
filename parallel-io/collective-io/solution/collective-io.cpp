@@ -1,5 +1,4 @@
 #include <vector>
-#include <chrono> // for time measurements
 #include <string>
 
 // C-style headers
@@ -110,17 +109,28 @@ int main(int argc, char **argv) {
 
     if (argc < 2) {
         if (rank == 0) {
-            fprintf(stderr, "Usage: %s <num_elements_per_rank>\n", argv[0]);
+            fprintf(stderr, "Usage: %s <num_elements_to_write>\n", argv[0]);
+            fprintf(stderr, "The argument specifies how many integers will be written to disk. Must be divisible by the number of MPI processes.\n");
         }
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
 
-    // Parse the command line argument
-    const size_t numElementsPerRank = static_cast<size_t>(std::stoul(argv[1]));
+    // Parse and check the command line argument
+    const size_t numElements = static_cast<size_t>(std::stoul(argv[1]));
 
+    if (numElements % ntasks != 0) {
+        fprintf(stderr, "Number of elements %zu must be divisible by the number of MPI tasks (%d)\n", numElements, ntasks);
+    }
+
+    const size_t numElementsPerRank = numElements / ntasks;
+
+    // Decide if the file contents should be printed for easier debugging. For large files this becomes impractical
+    const bool shouldDebugPrint = (numElementsPerRank <= 10);
+
+    // Print some statistics
     if (rank == 0) {
-        printf("Writing %zu integers from each rank.\n", numElementsPerRank);
-        const size_t bytes = numElementsPerRank * ntasks * sizeof(int);
+        printf("Writing total of %zu integers, %zu from each rank.\n", numElements, numElementsPerRank);
+        const size_t bytes = numElements * sizeof(int);
         printf("Total bytes to write: %zu (%zu MB)\n", bytes, bytes / 1024 / 1024);
         fflush(stdout);
     }
@@ -128,43 +138,55 @@ int main(int argc, char **argv) {
     // Create data array, each element initialized to value 'rank'.
     std::vector<int> data(numElementsPerRank, rank);
 
+
+    // ########## "Spokesperson" write
     std::string filename = "single_writer.dat";
 
-    auto startTime = std::chrono::high_resolution_clock::now();
+    // Start time measurement. MPI_Wtime() has no built-in synchronization so we add manual barriers
+    MPI_Barrier(MPI_COMM_WORLD);
+    double startTime = MPI_Wtime();
 
     single_writer(data, filename.c_str());
 
-    auto endTime = std::chrono::high_resolution_clock::now();
-    double elapsedTime = std::chrono::duration<double>(endTime - startTime).count();
+    MPI_Barrier(MPI_COMM_WORLD);
+    double endTime = MPI_Wtime();
+    double elapsedTime = endTime - startTime;
 
     if (rank == 0) {
         printf("Time taken for 'single_writer': %g seconds\n", elapsedTime);
 
-        if (numElementsPerRank <= 10) {
+        if (shouldDebugPrint) {
             printf("File contents:\n");
             debug_read_file(filename.c_str());
         }
+        // Remove the file to avoid cluttering storage with unused stuff
         remove(filename.c_str());
     }
 
+    // ########## Collective write
+
     filename = "collective_write.dat";
 
-    startTime = std::chrono::high_resolution_clock::now();
+    MPI_Barrier(MPI_COMM_WORLD);
+    startTime = MPI_Wtime();
 
     collective_write(data, filename.c_str());
 
-    endTime = std::chrono::high_resolution_clock::now();
-    elapsedTime = std::chrono::duration<double>(endTime - startTime).count();
+    MPI_Barrier(MPI_COMM_WORLD);
+    endTime = MPI_Wtime();
+    elapsedTime = endTime - startTime;
 
     if (rank == 0) {
         printf("Time taken for 'collective_write': %g seconds\n", elapsedTime);
 
-        if (numElementsPerRank <= 10) {
+        if (shouldDebugPrint) {
             printf("File contents:\n");
             debug_read_file(filename.c_str());
         }
         remove(filename.c_str());
     }
+
+    //~
 
     MPI_Finalize();
     return 0;
