@@ -54,7 +54,7 @@ Run and compare the timings. Which implementation is faster?
 Then increase `numElements` to a larger value so that more data will be written. Recompile and run with varying number of MPI tasks.
 Try eg. the following combinations:
 - `numElements == 1024`, 2 and 4 MPI tasks
-- `numElements == 1048576` ($1024^2$), 2 and 4 MPI tasks
-- `numElements == 1073741824` ($1024^3$), 8 and 32 MPI tasks
+- `numElements == 1048576` ($1024^2$), 4 and 8 MPI tasks
+- `numElements == 1073741824` ($1024^2 * 100$), 8 and 16 MPI tasks
 
-You should find that the `collective_write()` method eventually becomes faster than the `single_writer()` routine once the data size if larger enough. Can you explain this behavior?
+You should find that the `collective_write()` method eventually becomes faster than `single_writer()` once the data size if larger enough. Can you explain this behavior?
