@@ -6,13 +6,13 @@
 
 
 // How many integers to write, total from all MPI processes
-static constexpr size_t numElements = 64;
+static constexpr size_t numElements = 32;
 
 // Enables or disables debug printing of file contents. Set this to false if numElements is very large (>> 100)
 static constexpr bool doDebugPrint = true;
 
 
-// Debugging helper, prints out file contents. You don't have to touch this
+// Debugging helper, prints out file contents. You don't have to modify this
 void debug_read_file(const char* filename);
 
 void single_writer(const std::vector<int>& localData, const char* filename) {
@@ -62,49 +62,21 @@ int main(int argc, char **argv) {
     // ########## "Spokesperson" write
     std::string filename = "single_writer.dat";
 
-    // Start time measurement. MPI_Wtime() has no built-in synchronization so we add manual barriers
-    MPI_Barrier(MPI_COMM_WORLD);
-    double startTime = MPI_Wtime();
-
     single_writer(localData, filename.c_str());
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    double endTime = MPI_Wtime();
-    double elapsedTime = endTime - startTime;
-
-    if (rank == 0) {
-        printf("\nTime taken for 'single_writer': %g seconds\n", elapsedTime);
-
-        if (doDebugPrint) {
-            printf("File contents:\n");
-            debug_read_file(filename.c_str());
-        }
-        // Remove the file to avoid cluttering storage with unused stuff
-        remove(filename.c_str());
+    if (rank == 0 && doDebugPrint) {
+        printf("[%s] file contents:\n", filename.c_str());
+        debug_read_file(filename.c_str());
     }
 
-
     // ########## Collective write
-
     filename = "collective_write.dat";
-
-    MPI_Barrier(MPI_COMM_WORLD);
-    startTime = MPI_Wtime();
 
     collective_write(localData, filename.c_str());
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    endTime = MPI_Wtime();
-    elapsedTime = endTime - startTime;
-
-    if (rank == 0) {
-        printf("\nTime taken for 'collective_write': %g seconds\n", elapsedTime);
-
-        if (doDebugPrint) {
-            printf("File contents:\n");
-            debug_read_file(filename.c_str());
-        }
-        remove(filename.c_str());
+    if (rank == 0 && doDebugPrint) {
+        printf("[%s] file contents:\n", filename.c_str());
+        debug_read_file(filename.c_str());
     }
 
     //~

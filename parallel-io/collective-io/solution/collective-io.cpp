@@ -6,10 +6,10 @@
 
 
 // How many integers to write, total from all MPI processes
-static constexpr size_t numElements = 64;
+static constexpr size_t numElements = 32;
 
 // Enables or disables debug printing of file contents. Set to false if numElements is very large (>> 100)
-static constexpr bool doDebugPrint = true;
+static constexpr bool doDebugPrint = false;
 
 
 // Debugging helper, prints out file contents
@@ -46,11 +46,11 @@ void single_writer(const std::vector<int>& localData, const char* filename) {
     // Standard C-style write from rank 0
     if (rank == 0) {
 
-        FILE *fileptr = fopen(filename, "wb");
+        FILE* fileptr = fopen(filename, "wb");
 
         if (fileptr == NULL) {
             // Failed to open file for whatever reason
-            fprintf(stderr, "Error: %d (%s)\n", errno, strerror(errno));
+            fprintf(stderr, "Error opening file [%s]\n", filename);
             MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
         }
 
@@ -78,7 +78,7 @@ void collective_write(const std::vector<int>& localData, const char* filename) {
     MPI_File_close(&file);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
 
     MPI_Init(&argc, &argv);
 
@@ -110,49 +110,51 @@ int main(int argc, char **argv) {
     // ########## "Spokesperson" write
     std::string filename = "single_writer.dat";
 
-    // Start time measurement. MPI_Wtime() has no built-in synchronization so we add manual barriers
-    MPI_Barrier(MPI_COMM_WORLD);
-    double startTime = MPI_Wtime();
+    // Repeat time measurements this many times
+    constexpr int repeatCount = 5;
 
-    single_writer(localData, filename.c_str());
+    for (int i = 0; i < repeatCount; i++) {
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    double endTime = MPI_Wtime();
-    double elapsedTime = endTime - startTime;
+        // Start time measurement
+        double startTime = MPI_Wtime();
 
-    if (rank == 0) {
-        printf("\nTime taken for 'single_writer': %g seconds\n", elapsedTime);
+        single_writer(localData, filename.c_str());
 
-        if (doDebugPrint) {
-            printf("File contents:\n");
-            debug_read_file(filename.c_str());
+        double endTime = MPI_Wtime();
+        double elapsedTime = endTime - startTime;
+
+        if (rank == 0) {
+            printf("i = %d : Time taken for 'single_writer': %g seconds\n", i, elapsedTime);
         }
-        // Remove the file to avoid cluttering storage with unused stuff
-        remove(filename.c_str());
     }
 
+    if (rank == 0 && doDebugPrint) {
+        printf("[%s] file contents:\n", filename.c_str());
+        debug_read_file(filename.c_str());
+    }
 
     // ########## Collective write
 
     filename = "collective_write.dat";
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    startTime = MPI_Wtime();
+    for (int i = 0; i < repeatCount; i++) {
 
-    collective_write(localData, filename.c_str());
+        // Start time measurement
+        double startTime = MPI_Wtime();
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    endTime = MPI_Wtime();
-    elapsedTime = endTime - startTime;
+        collective_write(localData, filename.c_str());
 
-    if (rank == 0) {
-        printf("\nTime taken for 'collective_write': %g seconds\n", elapsedTime);
+        double endTime = MPI_Wtime();
+        double elapsedTime = endTime - startTime;
 
-        if (doDebugPrint) {
-            printf("File contents:\n");
-            debug_read_file(filename.c_str());
+        if (rank == 0) {
+            printf("i = %d : Time taken for 'collective_write': %g seconds\n", i, elapsedTime);
         }
-        remove(filename.c_str());
+    }
+
+    if (rank == 0 && doDebugPrint) {
+        printf("[%s] file contents:\n", filename.c_str());
+        debug_read_file(filename.c_str());
     }
 
     //~
@@ -167,7 +169,7 @@ void debug_read_file(const char* filename) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     if (rank == 0) {
-        FILE *fileptr = fopen(filename, "rb");
+        FILE* fileptr = fopen(filename, "rb");
 
         if (fileptr != NULL) {
 
@@ -181,7 +183,8 @@ void debug_read_file(const char* filename) {
 
             printf("\n");
             fflush(stdout);
-        } else {
+        }
+        else {
             fprintf(stderr, "Failed to open file %s for debug printing!\n", filename);
         }
     }

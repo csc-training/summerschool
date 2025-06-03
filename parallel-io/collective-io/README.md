@@ -1,7 +1,7 @@
 ## Collective I/O
 
 In this exercise we practice outputting data to disk in a parallel MPI program.
-Your task is to implement file writing first using standard I/O routines combined with MPI communication,
+The goal is to implement file writing first using standard I/O routines combined with MPI communication,
 and then again using a collective MPI-IO parallel write routine.
 
 The exercise tries to mimic a typical I/O situation in HPC simulations where the data to be stored is distributed
@@ -9,20 +9,52 @@ across many MPI processes, and we want to write it to disk in some well-defined 
 For example, if the data represents values of some simulated quantity everywhere on a distributed grid,
 we may want to write the data in the same order as the grid points are indexed.
 
-Have a look at one of the following programs:
+Have a look at the following unfinished code:
 
 - [](collective-io.cpp) (`C/C++`)
 - TODO fortran
 
-These create an integer array on each MPI rank and initialize its values to the rank of the process.
-The number of elements in the array (amount of data to be written) can be set through a command line argument.
-There are two unfinished functions `single_writer()` and `collective_write`: both of these are intended to be called by all
-MPI processes and should produce a **single** file on disk containing the full input data from all ranks.
+Here each MPI process allocates a "local data" array of integers and we wish to write the full data to a **single** file on disk.
+The resulting file should be ordered so that data from rank 0 comes first, then data from rank 1 *etc*.
 
-Your task is to implement these functions as follows.
+## Part 1
 
-1. `single_writer()` should write the input data to a single file on disk using the "spokesperson" strategy,
-ie. data is collected to MPI rank 0, which then writes it to file using standard library I/O.
-2. Using the collective MPI-IO routine `MPI_File_write_at_all()`.
+Your task is to implement the two unfinished functions in the code:
+1. `single_writer()` should perform the file I/O using the "spokesperson" strategy,
+ie. all data is collected to MPI rank 0, which then writes it to file using standard library write routines.
+2. `collective_write()` should perform a parallel write using the collective MPI-IO routine `MPI_File_write_at_all()`.
 
-In both cases the writes should be ordered so that data from rank 0 is written first, then data from rank 1 *etc*.
+The starting code has two global constants that you can adjust for testing:
+- `numElements` specifies how many integers will be written in total. Must be divisible by the number of MPI tasks.
+- The `doDebugPrint` boolean can be used to enable or disable printing of file contents for debugging purposes.
+You can disable this after verifying that your writes are OK. Reason: when `numElements` is large the debug prints quickly become unreadable.
+
+The provided `main` function calls both of the write functions and also reads and dumps contents of the written files. Use this "debug" output to check that your writes are correct.
+
+**Example file contents** (when `numElements` is 32):
+- 4 MPI tasks:
+```
+00000000111111112222222233333333
+```
+- 8 MPI tasks:
+```
+00001111222233334444555566667777
+```
+
+## Part 2 (bonus)
+
+Let's compare the I/O performance of the two implementations:
+- First set `doDebugPrint` to `false` in order to keep the output simple.
+- Then add timings to the `main` function for measuring the evaluation time of `single_writer()` and `collective_write()` separately. You can use the `MPI_Wtime()` function for timestamps (in seconds). Print the evaluation time from MPI rank 0.
+- Repeat the time measurements a few times (eg. 5) by putting them in a loop, printing the timings on each iteration.
+
+Run and compare the timings. Which implementation is faster?
+- For `collective_write()`, you should notice that its first invocation is considerably slower than the consecutive calls. This is because the MPI-IO library has to initialize internal state on its first use.
+
+Then increase `numElements` to a larger value so that more data will be written. Recompile and run with varying number of MPI tasks.
+Try eg. the following combinations:
+- `numElements == 1024`, 2 and 4 MPI tasks
+- `numElements == 1048576` ($1024^2$), 2 and 4 MPI tasks
+- `numElements == 1073741824` ($1024^3$), 8 and 32 MPI tasks
+
+You should find that the `collective_write()` method eventually becomes faster than the `single_writer()` routine once the data size if larger enough. Can you explain this behavior?
