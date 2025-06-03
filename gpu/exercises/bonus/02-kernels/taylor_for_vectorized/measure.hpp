@@ -1,12 +1,11 @@
-/*
- * This header includes error checking functions and macros
- * that can be used in the exercises here.
- * Just #include this file.
- * */
-
 #pragma once
 
+#include <iostream>
+#include <string_view>
+#include <vector>
 #include <hip/hip_runtime.h>
+
+using namespace std::literals;
 
 #define HIP_ERRCHK(result) hip_errchk(result, __FILE__, __LINE__)
 static inline void hip_errchk(hipError_t result, const char *file,
@@ -127,3 +126,68 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
     }
 #endif
 }
+
+template <typename F, typename... Args>
+__global__ void kernel(F f, std::tuple<Args...> args) {
+    __shared__ extern uint8_t shmem[];
+    std::apply(f, std::tuple_cat(std::make_tuple(threadIdx, blockDim, blockIdx,
+                                                 gridDim, shmem),
+                                 args));
+}
+
+template <typename Validator, typename... Args> struct Measure {
+  private:
+    std::tuple<Args...> args;
+    std::vector<size_t> microseconds = {};
+    Validator validator;
+    hipStream_t stream = 0;
+    hipEvent_t start = 0;
+    hipEvent_t stop = 0;
+
+  public:
+    Measure(Validator validator, Args... args)
+        : args(std::make_tuple(args...)), validator(validator) {
+        HIP_ERRCHK(hipStreamCreate(&stream));
+        HIP_ERRCHK(hipEventCreate(&start));
+        HIP_ERRCHK(hipEventCreate(&stop));
+    }
+
+    ~Measure() {
+        HIP_ERRCHK(hipStreamDestroy(stream));
+        HIP_ERRCHK(hipEventDestroy(start));
+        HIP_ERRCHK(hipEventDestroy(stop));
+    }
+
+    template <typename F>
+    void run_and_measure(std::string_view name, F f, dim3 blocks, dim3 threads,
+                         size_t shared_bytes) {
+        static constexpr size_t num_measurements = 20ul;
+        size_t average_runtime = 0;
+
+        for (size_t i = 0; i < num_measurements; i++) {
+            HIP_ERRCHK(hipEventRecord(start, stream));
+            LAUNCH_KERNEL(kernel, blocks, threads, shared_bytes, stream, f,
+                          args);
+            HIP_ERRCHK(hipEventRecord(stop, stream));
+            HIP_ERRCHK(hipEventSynchronize(stop));
+
+            float elapsed = 0.0f;
+            HIP_ERRCHK(hipEventElapsedTime(&elapsed, start, stop));
+
+            average_runtime += i == 0 ? 0 : elapsed * 1000.0f;
+        }
+
+        if (not validator()) {
+            std::cerr << "Incorrect results for " << name << std::endl;
+        }
+
+        microseconds.push_back(average_runtime / (num_measurements - 1));
+    }
+
+    void output() {
+        for (size_t i = 0; i < microseconds.size() - 1; i++) {
+            std::printf("%ld, ", microseconds[i]);
+        }
+        std::printf("%ld\n", microseconds[microseconds.size() - 1]);
+    }
+};

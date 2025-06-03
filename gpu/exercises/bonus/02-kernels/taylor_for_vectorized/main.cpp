@@ -1,149 +1,13 @@
 #include <cstdio>
 #include <cstdlib>
-#include <hip/hip_runtime.h>
 
-#include "../../../error_checking.hpp"
+#include "measure.hpp"
 
-__device__ __host__ float taylor(float x, size_t N) {
-    float sum = 1.0f;
-    float term = 1.0f;
-    for (size_t n = 1; n <= N; n++) {
-        term *= x / n;
-        sum += term;
-    }
-    return sum;
-}
+struct Computation {};
 
-__global__ void taylor_base(float *x, float *y, size_t num_values,
-                            size_t num_iters) {
-    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-    if (tid < num_values)
-    {
-        y[tid] = taylor(x[tid], num_iters);
-    }
-}
-
-__global__ void taylor_vec(float *x, float *y, size_t num_values,
-                           size_t num_iters) {
-    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-    float4 *xv = reinterpret_cast<float4 *>(x);
-    float4 *yv = reinterpret_cast<float4 *>(y);
-
-    if (tid < num_values >> 2) {
-        const float4 xs = xv[tid];
-        const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
-                        taylor(xs.z, num_iters), taylor(xs.w, num_iters));
-
-        yv[tid] = ys;
-    }
-
-    const size_t index = num_values - (num_values & 3) + tid;
-    if (index < num_values) {
-        y[index] = taylor(x[index], num_iters);
-    }
-}
-
-__global__ void taylor_for_consecutive(float *x, float *y, size_t num_values,
-                                       size_t num_iters) {
-    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-    const size_t stride = blockDim.x * gridDim.x;
-    const size_t num_per_thread = num_values / stride;
-    for (size_t i = 0; i < num_per_thread; i++) {
-        const size_t j = tid * num_per_thread + i;
-        y[j] = taylor(x[j], num_iters);
-    }
-
-    const size_t left_over = num_values - num_per_thread * stride;
-    if (tid < left_over) {
-        const size_t j = num_per_thread * stride + tid;
-        y[j] = taylor(x[j], num_iters);
-    }
-}
-
-__global__ void taylor_for_strided(float *x, float *y, size_t num_values,
-                                   size_t num_iters) {
-    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-    const size_t stride = blockDim.x * gridDim.x;
-
-    for (size_t i = tid; i < num_values; i += stride) {
-        y[i] = taylor(x[i], num_iters);
-    }
-}
-
-__global__ void taylor_for_vec(float *x, float *y, size_t num_values,
-                               size_t num_iters) {
-    const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
-    const size_t stride = blockDim.x * gridDim.x;
-
-    float4 *xv = reinterpret_cast<float4 *>(x);
-    float4 *yv = reinterpret_cast<float4 *>(y);
-
-    for (size_t i = tid; i < num_values / 4; i += stride) {
-        const float4 xs = xv[i];
-        const float4 ys(taylor(xs.x, num_iters), taylor(xs.y, num_iters),
-                        taylor(xs.z, num_iters), taylor(xs.w, num_iters));
-
-        yv[i] = ys;
-    }
-
-    const size_t index = num_values - (num_values & 3) + tid;
-    if (index < num_values) {
-        y[index] = taylor(x[index], num_iters);
-    }
-}
-
-size_t run_and_measure(void (*kernel)(float *, float *, size_t, size_t),
-                       int32_t blocks, int32_t threads, hipStream_t stream,
-                       hipEvent_t start, hipEvent_t stop, size_t num_values,
-                       size_t num_iters, float *d_x, float *d_y) {
-    // Run the kernel N times and compute the average runtime
-    // Don't count the first run, as it may contain extra time unrelated to the
-    // computation (GPU init etc.)
-    static constexpr size_t num_measurements = 20ul;
-    size_t average_runtime = 0;
-    for (size_t i = 0; i < num_measurements; i++) {
-        HIP_ERRCHK(hipEventRecord(start, stream));
-
-        LAUNCH_KERNEL(kernel, blocks, threads, 0, stream, d_x, d_y, num_values,
-                      num_iters);
-
-        HIP_ERRCHK(hipEventRecord(stop, stream));
-        HIP_ERRCHK(hipEventSynchronize(stop));
-
-        float elapsed = 0.0f;
-        HIP_ERRCHK(hipEventElapsedTime(&elapsed, start, stop));
-
-        average_runtime += i == 0 ? 0 : elapsed * 1000.0f;
-    }
-
-    return average_runtime / (num_measurements - 1);
-}
-
-bool validate_result(float *h_y, float *d_y, float *reference,
-                     size_t num_values) {
-    const size_t num_bytes = num_values * sizeof(float);
-    HIP_ERRCHK(hipMemcpy(h_y, d_y, num_bytes, hipMemcpyDefault));
-
-    float error = 0.0;
-    static constexpr float tolerance = 1e-5f;
-    for (size_t i = 0; i < num_values; i++) {
-        const auto diff = abs(h_y[i] - reference[i]);
-        if (diff > tolerance) {
-            std::fprintf(
-                stderr,
-                "Large error at i = %lu: h_y[i] = %f, reference[i] = %f\n", i,
-                h_y[i], reference[i]);
-            error += diff;
-        }
-    }
-
-    HIP_ERRCHK(hipMemset(d_y, 0, num_bytes));
-
-    return error < 0.01f;
-}
-
-void initialize(float **h_x, float **h_y, float **reference, float **d_x,
-                float **d_y, size_t num_values, size_t num_iters) {
+template <typename F>
+void initialize(F f, float **h_x, float **h_y, float **reference, float **d_x,
+                float **d_y, size_t num_values) {
     const size_t num_bytes = sizeof(float) * num_values;
     // Allocate host memory for x and y
     *h_x = static_cast<float *>(std::malloc(num_bytes));
@@ -153,7 +17,7 @@ void initialize(float **h_x, float **h_y, float **reference, float **d_x,
     // Initialize host x with some values
     for (size_t i = 0; i < num_values; i++) {
         (*h_x)[i] = static_cast<float>(i) / num_values * 3.14159265f;
-        (*reference)[i] = taylor((*h_x)[i], num_iters);
+        (*reference)[i] = f((*h_x)[i]);
     }
 
     // Allocate device memory for x and y
@@ -172,10 +36,12 @@ int main(int argc, char **argv) {
         std::printf("E.g. %s 20 100000000 256\n", argv[0]);
         exit(EXIT_FAILURE);
     }
-    const size_t num_iters = std::atol(argv[1]);
+
+    const size_t N = std::atol(argv[1]);
     const size_t num_values = std::atol(argv[2]);
     const size_t threads = std::atol(argv[3]);
-    assert(num_iters > 0 && num_iters <= 50 && "Use values up to 50");
+
+    assert(N > 0 && N <= 50 && "Use values up to 50");
     assert(num_values > 0 && num_values <= 100000000 &&
            "Use values up to 100'000'000");
     assert(threads > 0 && threads <= 1024 && "Use values up to 1024");
@@ -186,63 +52,136 @@ int main(int argc, char **argv) {
     float *d_x = nullptr;
     float *d_y = nullptr;
 
-    initialize(&h_x, &h_y, &reference, &d_x, &d_y, num_values, num_iters);
+    auto f = [N] __host__ __device__(float x) {
+        float sum = 1.0f;
+        float term = 1.0f;
+        for (size_t n = 1; n <= N; n++) {
+            term *= x / n;
+            sum += term;
+        }
+        return sum;
+    };
 
-    hipStream_t stream;
-    hipEvent_t start;
-    hipEvent_t stop;
-    HIP_ERRCHK(hipStreamCreate(&stream));
-    HIP_ERRCHK(hipEventCreate(&start));
-    HIP_ERRCHK(hipEventCreate(&stop));
+    initialize(f, &h_x, &h_y, &reference, &d_x, &d_y, num_values);
 
-    // Base kernel with nothing fancy
-    int blocks = num_values / threads;
+    auto validate_result = [h_y, d_y, reference, num_values]() {
+        const size_t num_bytes = num_values * sizeof(float);
+        HIP_ERRCHK(hipMemcpy(h_y, d_y, num_bytes, hipMemcpyDefault));
+
+        float error = 0.0;
+        static constexpr float tolerance = 1e-5f;
+        for (size_t i = 0; i < num_values; i++) {
+            const auto diff = abs(h_y[i] - reference[i]);
+            if (diff > tolerance) {
+                std::fprintf(
+                    stderr,
+                    "Large error at i = %lu: h_y[i] = %f, reference[i] = %f\n",
+                    i, h_y[i], reference[i]);
+                error += diff;
+            }
+        }
+
+        HIP_ERRCHK(hipMemset(d_y, 0, num_bytes));
+
+        return error < 0.01f;
+    };
+
+    Measure measure(validate_result, num_values, f, d_x, d_y);
+
+    auto base = [] __host__ __device__(
+                    auto threadIdx, auto blockDim, auto blockIdx, auto gridDim,
+                    uint8_t *, size_t num_values, auto f, float *x, float *y) {
+        const size_t tid = blockIdx.x * blockDim.x + threadIdx.x;
+        if (tid < num_values) {
+            y[tid] = f(x[tid]);
+        }
+    };
+
+    auto vectorized = [] __host__ __device__(auto threadIdx, auto blockDim,
+                                             auto blockIdx, auto gridDim,
+                                             uint8_t *, size_t num_values,
+                                             auto f, float *x, float *y) {
+        const size_t tid = blockIdx.x * blockDim.x + threadIdx.x;
+        const size_t stride = blockDim.x * gridDim.x;
+        float4 *xv = reinterpret_cast<float4 *>(x);
+        float4 *yv = reinterpret_cast<float4 *>(y);
+
+        if (tid < num_values >> 2) {
+            const float4 xs = xv[tid];
+            yv[tid] = float4(f(xs.x), f(xs.y), f(xs.z), f(xs.w));
+        }
+
+        const size_t index = num_values - (num_values & 3) + tid;
+        if (index < num_values) {
+            y[index] = f(x[index]);
+        }
+    };
+
+    auto consecutive = [] __host__ __device__(auto threadIdx, auto blockDim,
+                                              auto blockIdx, auto gridDim,
+                                              uint8_t *, size_t num_values,
+                                              auto f, float *x, float *y) {
+        const size_t tid = blockIdx.x * blockDim.x + threadIdx.x;
+        const size_t stride = blockDim.x * gridDim.x;
+        const size_t num_per_thread = num_values / stride;
+        for (size_t i = 0; i < num_per_thread; i++) {
+            const size_t j = tid * num_per_thread + i;
+            y[j] = f(x[j]);
+        }
+
+        const size_t index = num_per_thread * stride + tid;
+        if (index < num_values) {
+            y[index] = f(x[index]);
+        }
+    };
+
+    auto strided = [] __host__ __device__(auto threadIdx, auto blockDim,
+                                          auto blockIdx, auto gridDim,
+                                          uint8_t *, size_t num_values, auto f,
+                                          float *x, float *y) {
+        const size_t tid = blockIdx.x * blockDim.x + threadIdx.x;
+        const size_t stride = blockDim.x * gridDim.x;
+        for (size_t i = tid; i < num_values; i += stride) {
+            y[i] = f(x[i]);
+        }
+    };
+
+    auto strided_vectorized =
+        [] __host__ __device__(auto threadIdx, auto blockDim, auto blockIdx,
+                               auto gridDim, uint8_t *, size_t num_values,
+                               auto f, float *x, float *y) {
+            const size_t tid = blockIdx.x * blockDim.x + threadIdx.x;
+            const size_t stride = blockDim.x * gridDim.x;
+            float4 *xv = reinterpret_cast<float4 *>(x);
+            float4 *yv = reinterpret_cast<float4 *>(y);
+
+            for (size_t i = tid; i < num_values >> 2; i += stride) {
+                const float4 xs = xv[i];
+                yv[i] = float4(f(xs.x), f(xs.y), f(xs.z), f(xs.w));
+            }
+
+            const size_t index = num_values - (num_values & 3) + tid;
+            if (index < num_values) {
+                y[index] = f(x[index]);
+            }
+        };
+
+    size_t blocks = num_values / threads;
     blocks += blocks * threads < num_values ? 1 : 0;
-    const auto base_runtime =
-        run_and_measure(taylor_base, blocks, threads, stream, start, stop,
-                        num_values, num_iters, d_x, d_y);
-    assert(validate_result(h_y, d_y, reference, num_values) &&
-           "Base result incorrect");
+    measure.run_and_measure("Base"sv, base, blocks, threads, 0);
 
-    // Using float4s to load and process 4 values at a time: reduce the number
-    // of blocks by 4
-    blocks /= 4;
+    blocks = num_values / (4 * threads);
     blocks += 4 * threads * blocks < num_values ? 1 : 0;
-    const auto vec_runtime =
-        run_and_measure(taylor_vec, blocks, threads, stream, start, stop,
-                        num_values, num_iters, d_x, d_y);
-    assert(validate_result(h_y, d_y, reference, num_values) &&
-           "Vectorized result incorrect");
+    measure.run_and_measure("Vectorized"sv, vectorized, blocks, threads, 0);
 
-    // Kernels with thread re-use can use arbitrary grid size. It should be
-    // large enough to utilize all the availabe CUs of the GPU, however.
-    blocks = 880;
+    blocks = 1024;
+    measure.run_and_measure("Consecutive"sv, consecutive, blocks, threads, 0);
+    measure.run_and_measure("Strided"sv, strided, blocks, threads, 0);
+    measure.run_and_measure("Strided vectorized"sv, strided_vectorized, blocks,
+                            threads, 0);
 
-    // Consecutive N per thread
-    const auto consecutive_runtime =
-        run_and_measure(taylor_for_consecutive, blocks, threads, stream, start,
-                        stop, num_values, num_iters, d_x, d_y);
-    assert(validate_result(h_y, d_y, reference, num_values) &&
-           "Consecutive result incorrect");
-
-    // Strided access
-    const auto strided_runtime =
-        run_and_measure(taylor_for_strided, blocks, threads, stream, start,
-                        stop, num_values, num_iters, d_x, d_y);
-    assert(validate_result(h_y, d_y, reference, num_values) &&
-           "Strided result incorrect");
-
-    // Vectorized loads in loop
-    const auto vec_for_runtime =
-        run_and_measure(taylor_for_vec, blocks, threads, stream, start, stop,
-                        num_values, num_iters, d_x, d_y);
-    assert(validate_result(h_y, d_y, reference, num_values) &&
-           "Vec for result incorrect");
-
-    std::printf("%ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld\n", num_iters,
-                2 * sizeof(float) * num_values, threads, base_runtime,
-                vec_runtime, strided_runtime, consecutive_runtime,
-                vec_for_runtime);
+    std::printf("%ld, %ld, %ld, ", N, 2 * sizeof(float) * num_values, threads);
+    measure.output();
 
     std::free(h_x);
     std::free(h_y);
@@ -250,10 +189,6 @@ int main(int argc, char **argv) {
 
     HIP_ERRCHK(hipFree(d_x));
     HIP_ERRCHK(hipFree(d_y));
-
-    HIP_ERRCHK(hipStreamDestroy(stream));
-    HIP_ERRCHK(hipEventDestroy(start));
-    HIP_ERRCHK(hipEventDestroy(stop));
 
     return 0;
 }
