@@ -114,7 +114,7 @@ This gives the following output:
     Sum of b is 6.600000
 
 You should also be familiar with C preprocessor directives:
-```
+```c
 // Preprocessor "#include" does a copy & paste another file. For standard headers like stdio.h use "#include <some_header.h>" instead
 #include "some_header.h"
 
@@ -133,7 +133,7 @@ Please review the C++ section below how this same C code could look like in C++.
 
 The C++ language originally started as an object-oriented extension of C but has long since grown into its own programming ecosystem with different conventions and practices.
 We make some use of the C++ Standard Template Library (STL) which provides a handy collection of common container types and other helpers. Apart from these our use of C++ features is kept to a minimum for simplicity:
-- No custom object-oriented code.
+- Very little object-oriented code.
 - From STL we mainly use `std::vector` for dynamic arrays, sometimes `std::array` for static arrays. These act as drop-in replacements for raw C-style arrays but provide automatic memory management. The "prefix" `std::` is a namespace specifier; all STL objects and functions reside in the `std` namespace.
 - `constexpr` is used for compile-time constants. Type-safe replacement for preprocessor constants created with `#define`.
 - Bonus: reference parameters in functions may occasionally be used. Eg. `void some_function(int &a, const std::vector<double>& b);` declares that the `a` parameter is always passed by reference, and `b` is always passed by constant reference.
