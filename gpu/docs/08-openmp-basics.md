@@ -108,7 +108,7 @@ for(size_t k = 0; k<N; ++k) {
 - Target construct does not create any parallelism, so additional
   constructs are needed
 - *`omp target teams`* creates a league of teams
-    - number of teams is implementation dependent
+    - Number of teams is implementation dependent (*might be large!*)
     - initially, a single thread in each team executes the following
       structured block
 
@@ -192,18 +192,11 @@ __global__ void sum_vecs(float* a, float* b, float* c, size_t n) {
   threads are still executing the same code
 - *`distribute`* construct distributes loop iterations over the teams
 - *`for`* / *`do`* construct can also be used within a parallel region
-- *`distribute`* and *`for`*/*`do`* can be combined for one loop:
-```cpp
-#pragma omp target teams distribute parallel for
-for (size_t k = 0; k<N; ++k)
-  c[k] = a[k] + b[k];
-```
 
-# Worksharing in the accelerator
-
-- It is not required to combine *`distribute`* and *`for`*/*`do`*.
+# Worksharing syntax
 
 <div class=column>
+C
 ```c++
 #pragma omp target
 #pragma omp teams
@@ -218,6 +211,7 @@ for (int i = 0; i < N; i++)
 </div>
 
 <div class=column>
+Fortran
 ```fortranfree
 !$omp target
 !$omp teams
@@ -237,9 +231,50 @@ end do
 ```
 </div>
 
+# Composite directives
+
+::: incremental
+- In many cases composite directives are more convenient
+    - possible to parallelize also single loop over both teams and threads
+
+  ::::::{.columns}
+  :::{.column}
+
+  ```c++
+  #pragma omp target teams
+  #pragma omp distribute parallel for
+  for (int i = 0; i < N; i++) {
+    p[i] = v1[i] * v2[i]
+  }
+  ```
+
+  :::
+  :::{.column}
+
+  ```fortranfree
+  !$omp target teams
+  !$omp distribute parallel do
+  do i = 1, N
+    p(i) = v1(i) * v2(i)
+  end do
+  !$omp end distribute parallel do
+  !$omp end target teams
+  ```
+
+  :::
+  ::::::
+
+- or even further
+  ```cpp
+  #pragma omp target teams distribute parallel for
+  for (size_t k = 0; k<N; ++k)
+    c[k] = a[k] + b[k];
+  ```
+:::
 
 # OpenMP data model in offloading: *`map`* clause
 
+::: incremental
 - Host variables are mirrored on device, but dynamically allocated data is *not*.
 - Data is moved to/from host with `map` clause: 
   - *`target ... map(...)`* Mapping is valid within following scope device code.
@@ -247,6 +282,7 @@ end do
   - *`target enter/exit data map(...)`* Mapping is valid after/before statement
 - Device allocations/deallocations with map clause directives (target 
   - *`map(alloc/delete:...)`*
+:::
 
 # `map(to/from/tofrom)`
 
@@ -327,29 +363,6 @@ for (size_t k = 0; k<N; ++k) c[k] *= a[k]; // Device code
 #pragma omp target exit data map(from:c[:N]) map(tofrom: a[:N])
 ```
 
-# Compiling an OpenMP program for GPU offloading
-
-On LUMI compiling OpenMP offload is enabled with
-
-- Modules `module load LUMI/24.03 partition/G PrgEnv-cray`
-- and `-fopenmp` flag.
-- Note: Compiling HIP and OpenMP offload code in same source unit is not supported (at least on LUMI).
-
-::::::{.columns}
-:::{.column}
-C/C++
-```
-CC -fopenmp code.cpp -o code
-```
-:::
-:::{.column}
-Fortran
-```
-ftn -fopenmp code.f90 -o code
-```
-:::
-::::::
-
 # Useful runtime API functions
 
 Function definitions are in header file `omp.h` (C/C++) or `omp_lib` (fortran)
@@ -369,15 +382,20 @@ Function definitions are in header file `omp.h` (C/C++) or `omp_lib` (fortran)
 
 </small>
 
-# OpenMP internal control variables
+# Device pointer
 
-- OpenMP has internal control variables (ICV)
-    - Environment variable `OMP_DEFAULT_DEVICE`: which device to use
-- During runtime, default device can be modified/queried with
-  - `omp_`**`set`**`_default_device`
-  - `omp_`**`get`**`_default_device`
-- Values are always re-read before a kernel is launched and can be
-  different for different kernels
+::: incremental
+- If *`d_a`* is already a device pointer we can instruct OpenMP by
+  ```cpp
+  #pragma omp target ... is_device_ptr(d_a) 
+  ```
+- If host pointer *`a`* has been mapped to device with `enter
+data`, we can get corresponding device address by
+  ```cpp
+  double* d_a = omp_get_mapped_ptr(a, omp_get_default_device())
+  ```
+  - Now *`d_a`* can be passed to a HIP kernel for example.
+:::
 
 # Controlling number of teams and threads
 
@@ -398,32 +416,76 @@ Function definitions are in header file `omp.h` (C/C++) or `omp_lib` (fortran)
 }
 ```
 
-# Composite directives
+# Compiling an OpenMP program for GPU offloading: LUMI-G
 
-- In many cases composite directives are more convenient
-    - possible to parallelize also single loop over both teams and threads
+On LUMI compiling OpenMP offload is enabled with
 
-<div class=column>
-```c++
-#pragma omp target teams
-#pragma omp distribute parallel for
-for (int i = 0; i < N; i++) {
-  p[i] = v1[i] * v2[i]
-}
+Modules: 
+```bash
+module load LUMI/24.03 partition/G PrgEnv-cray
 ```
-</div>
 
-<div class=column>
-```fortranfree
-!$omp target teams
-!$omp distribute parallel do
-do i = 1, N
-  p(i) = v1(i) * v2(i)
-end do
-!$omp end distribute parallel do
-!$omp end target teams
+::::::{.columns}
+:::{.column}
+C/C++
 ```
-</div>
+CC -fopenmp code.cpp -o code
+```
+:::
+:::{.column}
+Fortran
+```
+ftn -fopenmp code.f90 -o code
+```
+:::
+::::::
+
+- Note: Compiling HIP and OpenMP offload code in same source unit is not supported (at least on LUMI).
+
+# Compiling an OpenMP program for GPU offloading: Mahti
+
+On LUMI compiling OpenMP offload is enabled with
+
+Modules:
+```bash
+module load .unsupported
+module load nvhpc/22.3
+```
+
+::::::{.columns}
+:::{.column}
+C/C++
+```
+c++: nvc++ -mp=gpu code.cpp -gpu=cc80
+c: nvcc -mp=gpu code.c -gpu=cc80
+```
+:::
+:::{.column}
+Fortran
+```
+nvfortran -mp=gpu code.f90 -gpu=cc80
+```
+:::
+::::::
+
+# OpenMP internal control variables
+
+- OpenMP has internal control variables (ICV)
+- Values are always re-read before a kernel is launched and can be
+  different for different kernels
+
+<small>
+
+| Variable             | Description                                                   |
+| ------------------------ | ----------------------------------------------------------------- |
+| `OMP_DEFAULT_DEVICE`     | Sets default target device (0 = first device) |
+| `OMP_TARGET_OFFLOAD`     | Controls offload behavior: `MANDATORY`, `DISABLED`, or `DEFAULT` |
+| `OMP_NUM_TEAMS`          | Suggests the number of teams to create         |
+| `OMP_TEAMS_THREAD_LIMIT` | Limits number of threads per team                |
+
+</small>
+
+
 
 
 # Loop construct
