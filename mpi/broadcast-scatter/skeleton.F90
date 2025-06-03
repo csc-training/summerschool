@@ -45,7 +45,7 @@ contains
     integer, dimension(:), intent(out) :: buffer
     integer, parameter :: bufsize = size
     integer :: i
-    if(rank==0) then
+    if(rank == 0) then
       do i = 1, size
          buffer(i) = i
       end do

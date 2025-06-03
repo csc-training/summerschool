@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
     /* Print data that was received */
     print_buffer(recvbuf);
-    if (0 == rank) {
+    if (rank == 0) {
         printf("Time elapsed: %6.8f s\n", t1 - t0);
     }
 
