@@ -1,1 +1,1 @@
-# Multi-GPU Programs
+# Exercises Multi-GPU Programing
