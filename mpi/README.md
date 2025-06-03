@@ -48,7 +48,7 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 ### Collective operations
 
-- [Broadcast and scatter](broadcast-scatter/) TODO: Compare timing real broadcast vs Send-Recv implementation
+- [Broadcast and scatter](broadcast-scatter/)
 - [(Bonus) Collective operations](collectives/)
 
 ### Collective reductions

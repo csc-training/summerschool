@@ -26,7 +26,17 @@ int main(int argc, char *argv[])
     double t0 = MPI_Wtime();
 
     /* Send everywhere */
-    MPI_Bcast(buf.data(), size, MPI_INT, 0, MPI_COMM_WORLD);
+    if (rank == 0) {
+        std::vector<MPI_Request> requests(ntasks - 1);
+        for (int i = 1; i < ntasks; i++) {
+            // Dangerous! This is using "ready" send - it assumes that the corresponding MPI_Recv has been issued before send.
+            // Expect random failures!
+            MPI_Irsend(buf.data(), size, MPI_INT, i, 123, MPI_COMM_WORLD, &requests[i - 1]);
+        }
+        MPI_Waitall(ntasks - 1, requests.data(), MPI_STATUSES_IGNORE);
+    } else {
+        MPI_Recv(buf.data(), size, MPI_INT, 0, 123, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    }
 
     /* End timing */
     double t1 = MPI_Wtime();

@@ -33,8 +33,17 @@ program scatter
      call mpi_abort(MPI_COMM_WORLD, -1)
   end if
 
-  block_size = size/ntasks;
-  call mpi_scatter(sendbuf, block_size, MPI_INTEGER, recvbuf, block_size, MPI_INTEGER, 0, MPI_COMM_WORLD);
+  block_size = size/ntasks
+  if(rank == 0) then
+     do i=1, ntasks-1
+        call mpi_send(sendbuf(i*block_size + 1:), block_size, MPI_INTEGER, i, 123, MPI_COMM_WORLD)
+     enddo
+
+     ! Scatter also the local part
+     recvbuf(:block_size) = sendbuf(:block_size)
+  else
+     call mpi_recv(recvbuf, block_size, MPI_INTEGER, 0, 123, MPI_COMM_WORLD, MPI_STATUS_IGNORE)
+  endif
 
   ! End timing
   call mpi_barrier(MPI_COMM_WORLD);
