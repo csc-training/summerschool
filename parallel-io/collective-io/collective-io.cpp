@@ -8,74 +8,26 @@
 // How many integers to write, total from all MPI processes
 static constexpr size_t numElements = 64;
 
-// Enables or disables debug printing of file contents. Set to false if numElements is very large (>> 100)
+// Enables or disables debug printing of file contents. Set this to false if numElements is very large (>> 100)
 static constexpr bool doDebugPrint = true;
 
 
-// Debugging helper, prints out file contents
+// Debugging helper, prints out file contents. You don't have to touch this
 void debug_read_file(const char* filename);
 
 void single_writer(const std::vector<int>& localData, const char* filename) {
+    // Gets called from all MPI ranks. 'localData' contains different data on each rank.
+    // TODO: Gather contents of 'localData' to one MPI process and write it all to file 'filename' ("spokesperson" strategy).
+    // The output should be ordered such that data from rank 0 comes first, then rank 1, and so on
 
-    // Get MPI rank and world size
-    int rank, ntasks;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
-
-    // We assume that each rank has the same amount of data
+    // You can assume that 'localData' has same length in all MPI processes:
     const size_t numElementsPerRank = localData.size();
 
-    // "Spokesperson strategy": Send all data to rank == 0 and write it from there.
-    // Rank 0 has to allocate a receive/gather buffer to hold the full data.
-    // Note that the receive buffer for MPI_Gather can be unallocated in other processes.
-    // This saves memory and is OK for MPI
-
-    const size_t totalNumElements = ntasks * numElementsPerRank;
-
-    std::vector<int> receiveBuffer;
-    if (rank == 0) {
-        receiveBuffer.resize(totalNumElements);
-    }
-
-    // Gather data to rank 0, each rank sends 'numElementsPerRank' integers.
-    // Note that MPI_Gather automatically orders the data by sending rank
-    MPI_Gather(localData.data(), numElementsPerRank, MPI_INT,
-        receiveBuffer.data(), numElementsPerRank, MPI_INT, 0, MPI_COMM_WORLD
-    );
-
-    // Standard C-style write from rank 0
-    if (rank == 0) {
-
-        FILE *fileptr = fopen(filename, "wb");
-
-        if (fileptr == NULL) {
-            // Failed to open file for whatever reason
-            fprintf(stderr, "Error: %d (%s)\n", errno, strerror(errno));
-            MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
-        }
-
-        fwrite(receiveBuffer.data(), sizeof(int), receiveBuffer.size(), fileptr);
-        fclose(fileptr);
-    }
 }
 
 void collective_write(const std::vector<int>& localData, const char* filename) {
-    // We assume that each rank has the same amount of data
-    const size_t numElementsPerRank = localData.size();
+    // TODO: Like single_writer(), but implement a parallel write using MPI_File_write_at_all()
 
-    // Get MPI rank of this process, used to calculate write offset
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    MPI_File file;
-    MPI_File_open(MPI_COMM_WORLD, filename, MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &file);
-
-    // Offset is always calculated in bytes
-    MPI_Offset offset = static_cast<MPI_Offset>(rank * numElementsPerRank * sizeof(int));
-
-    MPI_File_write_at_all(file, offset, localData.data(), numElementsPerRank, MPI_INT, MPI_STATUS_IGNORE);
-
-    MPI_File_close(&file);
 }
 
 int main(int argc, char **argv) {
@@ -160,6 +112,7 @@ int main(int argc, char **argv) {
     MPI_Finalize();
     return 0;
 }
+
 
 void debug_read_file(const char* filename) {
 
