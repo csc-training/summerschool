@@ -1,4 +1,4 @@
-## Collective I/O
+# parallel-write
 
 In this exercise we practice outputting data to disk in a parallel MPI program.
 The goal is to implement file writing first using standard I/O routines combined with MPI communication,
@@ -11,7 +11,7 @@ we may want to write the data in the same order as the grid points are indexed.
 
 Have a look at the following unfinished code:
 
-- [](collective-io.cpp) (`C/C++`)
+- [](parallel-write.cpp) (`C/C++`)
 - TODO fortran
 
 Here each MPI process allocates a "local data" array of integers and we wish to write the full data to a **single** file on disk.
