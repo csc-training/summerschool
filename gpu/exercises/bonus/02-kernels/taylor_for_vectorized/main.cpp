@@ -175,8 +175,8 @@ int main(int argc, char **argv) {
     measure.run_and_measure("Vectorized"sv, vectorized, blocks, threads, 0);
 
     blocks = 1024;
-    measure.run_and_measure("Consecutive"sv, consecutive, blocks, threads, 0);
     measure.run_and_measure("Strided"sv, strided, blocks, threads, 0);
+    measure.run_and_measure("Consecutive"sv, consecutive, blocks, threads, 0);
     measure.run_and_measure("Strided vectorized"sv, strided_vectorized, blocks,
                             threads, 0);
 
