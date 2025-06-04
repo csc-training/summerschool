@@ -1,47 +1,43 @@
-program scatter
+program bcast
   use mpi_f08
   use iso_fortran_env, only : REAL64
   implicit none
 
   integer, parameter :: size=12
-  integer :: ntasks, rank, i, block_size
-  integer, dimension(size) :: sendbuf, recvbuf
+  integer :: ntasks, rank, i
+  integer, dimension(size) :: buf
   integer, dimension(size**2) :: printbuf
   real(REAL64) :: t0, t1
-
-  recvbuf(:) = -1
 
   call mpi_init()
   call mpi_comm_size(MPI_COMM_WORLD, ntasks)
   call mpi_comm_rank(MPI_COMM_WORLD, rank)
 
   ! Initialize buffer
-  call init_buffer(sendbuf)
+  call init_buffer(buf)
 
   ! Print data that will be sent
-  call print_buffer(sendbuf)
+  call print_buffer(buf)
 
   ! Start timing
   call mpi_barrier(MPI_COMM_WORLD);
   t0 = mpi_wtime()
 
   ! Send everywhere
-  if (mod(size, ntasks) /= 0) then
-     if (rank == 0) then
-        print *, "Size not divisible by the number of tasks. This program will fail."
-     end if
-     call mpi_abort(MPI_COMM_WORLD, -1)
-  end if
-
-  block_size = size/ntasks;
-  call mpi_scatter(sendbuf, block_size, MPI_INTEGER, recvbuf, block_size, MPI_INTEGER, 0, MPI_COMM_WORLD);
+  if(rank == 0) then
+     do i=1, ntasks-1
+        call mpi_send(buf, size, MPI_INTEGER, i, 123, MPI_COMM_WORLD)
+     enddo
+  else
+     call mpi_recv(buf, size, MPI_INTEGER, 0, 123, MPI_COMM_WORLD, MPI_STATUS_IGNORE)
+  endif
 
   ! End timing
   call mpi_barrier(MPI_COMM_WORLD);
   t1 = mpi_wtime()
 
   ! Print data that was received
-  call print_buffer(recvbuf)
+  call print_buffer(buf)
   if (rank == 0) then
       write(*, *) 'Time elapsed: ', t1 - t0, 's'
   endif

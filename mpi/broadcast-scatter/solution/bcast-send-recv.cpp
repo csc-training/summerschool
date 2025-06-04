@@ -26,7 +26,13 @@ int main(int argc, char *argv[])
     double t0 = MPI_Wtime();
 
     /* Send everywhere */
-    // TODO: Implement the broadcast of the array buf
+    if (rank == 0) {
+        for (int i = 1; i < ntasks; i++) {
+            MPI_Send(buf.data(), size, MPI_INT, i, 123, MPI_COMM_WORLD);
+        }
+    } else {
+        MPI_Recv(buf.data(), size, MPI_INT, 0, 123, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    }
 
     /* End timing */
     double t1 = MPI_Wtime();
