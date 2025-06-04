@@ -167,7 +167,9 @@ for(size_t k = 0; k<N; ++k) {
 # Mimicking HIP/CUDA with OpenMP offloading
 
 ```cpp
-#pragma omp target teams parallel
+#pragma omp target
+#pragma omp teams
+#pragma omp parallel
 {
   const int tid = omp_get_team_num() * omp_get_num_threads() + omp_get_thread_num();
   const int stride = omp_get_num_teams()*omp_get_num_threads();
@@ -591,8 +593,9 @@ ftn-6823 ftn: THREAD VECTORSUM, File = sum.F90, Line = 17
 
 # Useful resources
 
+- OpenMP API Examples <br>
+  [https://www.openmp.org/wp-content/uploads/openmp-examples-4.5.0.pdf](https://www.openmp.org/wp-content/uploads/openmp-examples-4.5.0.pdf)
+- [OpenMP Specs (all versions)](https://www.openmp.org/specifications/)
+  
 - HPE Cray Programming Environment Documentation <br>
   <https://cpe.ext.hpe.com/docs/>
-
-- 2022 ECP Community BoF Days <br>
-  <https://www.openmp.org/wp-content/uploads/2022_ECP_Community_BoF_Days-OpenMP_RoadMap_BoF.pdf>

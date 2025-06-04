@@ -1,6 +1,6 @@
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 FACTORY=docker
-OPTIONS=run -it --rm -v "$(ROOT_DIR)":"$(ROOT_DIR)":Z -w "$(ROOT_DIR)" ghcr.io/csc-training/slidefactory:3.2.0-beta.1
+OPTIONS=run -it --rm -v "$(ROOT_DIR)":"$(ROOT_DIR)":Z -w "$(ROOT_DIR)" ghcr.io/csc-training/slidefactory:3.3.1
 
 SRC=$(wildcard *.md)
 HTML=$(patsubst %.md,%.html,$(SRC))
