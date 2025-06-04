@@ -22,9 +22,10 @@ Mahti numbers are from https://docs.csc.fi/computing/lustre/ -->
 # What is covered on these slides
 
 - Common strategies for parallel I/O and their limitations
-- Using file I/O routines included in MPI (MPI-IO)
+- Using file I/O routines included in MPI for parallel I/O (MPI-IO)
 - Controlling file striping in Lustre for better I/O performance
-- Short introduction to the HDF5 file format
+- Short introduction to standardized file formats used in HPC
+    - Focus mostly on HDF5
 
 # Common I/O strategies in HPC {.section}
 
@@ -47,24 +48,25 @@ Small programs _can_ manage with standard I/O routines:
 
 - Do all I/O from one process, using MPI to gather/scatter the data (**"spokesperson"**)
 - Use separate I/O file(s) for each process (**"file-per-process"**)
-- Coordinated I/O to one file from many processes, eg. `fseek` based on MPI rank
+- Coordinated I/O to one file from many processes, eg. `fseek()` based on MPI rank
 
-None of these are ideal for I/O heavy applications! But it is still useful to understand the logic
+MPI-IO essentially implements a smart and scalable combination of these ideas.
+
+- Still useful to understand how these approaches would work in isolation
 
 # Spokesperson strategy: One I/O process
 
 <div class="column">
 - One process takes care of all I/O using standard, serial routines (`fprintf`, `fwrite`, ...)
 - Usually requires a lot of MPI communication
-- Can be a good option for small files (eg. reading input
-    files)
+- Can be a good option for small files (eg. reading input files)
 - Does not scale, single writer is a bottleneck!
 </div>
 <div class="column">
 ![](img/posix-spokesperson.png)
 </div>
 
-Exercise: `spokesperson`
+Exercise: first part of `parallel-write`
 
 # File-per-process I/O
 
@@ -117,7 +119,7 @@ while simulation_is_running:
 
 The "standard" I/O streams `stdout`, `stdin`, `stderr` are effectively **serial** in `mpirun`/`srun` context!
 
-- Ex: Default `srun` will redirect `stdout` of all processes to `stdout` of `srun`
+- *Eg*: Default `srun` will redirect `stdout` of all processes to `stdout` of `srun`
 - Avoid excessive debug prints in production runs
     - Separate "Debug" and "Release" builds if needed
 - **Do not** rely on standard streams for heavy I/O operations. Code for direct file I/O instead
@@ -135,15 +137,13 @@ MPI-IO = part of the MPI specification that deals with I/O.
 
 - **Portable**: Specifics about the filesystem are abstracted away
 
-- Implementations: (both in `MPICH` and `OpenMPI`) and `OMPIO` (`OpenMPI` only)
+- Implementations: `ROMIO` (both in `MPICH` and `OpenMPI`) and `OMPIO` (`OpenMPI` only)
     - Advanced users can configure the internals via "hints"
 
-API is rather similar to standard I/O programming. Consult MPI docs for details
-
-# MPI-IO example: collective write
+# MPI-IO example
 
 ```c
-// Remember to "#include <mpi.h>"
+// Remember to #include <mpi.h>
 
 MPI_File file;
 // Creates file called "stuff.out" and opens it in write-only mode.
@@ -151,21 +151,26 @@ MPI_File file;
 MPI_File_open(MPI_COMM_WORLD, "stuff.out",
     MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &file);
 
-// Write N integers from each rank from pointer 'data_ptr',
-// to different parts of the file (specified by 'offset').
-// MPI_File_write_at_all() is a collective routine that let's MPI optimize.
-// It may eg. combine the writes into one operation, but this is up to the implementation.
-
+// Compute a file offset (in bytes), ie. where in the file this rank should perform the write.
 MPI_Offset offset = (MPI_Offset) (rank * N * sizeof(int));
+
+// Write N integers from each rank from pointer 'data_ptr' to position specified by the offset
+MPI_File_write_at(file, offset, data_ptr, N, MPI_INT, MPI_STATUS_IGNORE);
+
+// Or using collective MPI_File_write_at_all(), which can be more performant for large writes.
 MPI_File_write_at_all(file, offset, data_ptr, N, MPI_INT, MPI_STATUS_IGNORE);
 
 MPI_File_close(&file);
 ```
 
-# MPI collective I/O details
+# Collective I/O in MPI
 
-- TODO: figure here, eg. from https://docs.csc.fi/support/tutorials/lustre_performance/
-- Note the "spokesperson"-like implementation
+- Some MPI-IO routines, like `MPI_File_write_at_all()`, are **collective**:
+    - Must be called by all ranks that have the file open
+    - Lets MPI optimize. For example, it can create internal *aggregator tasks* for handling the filesystem I/O
+
+![](./img/aggregators.png){.center width=60%}
+<small>*Figure from https://docs.csc.fi/support/tutorials/lustre_performance/*</small>
 
 # Lustre file striping {.section}
 
