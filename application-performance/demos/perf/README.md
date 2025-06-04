@@ -58,26 +58,34 @@ perf stat\
 
 ## Demo
 
-How to make a flamegraph of a program:
-- compile with correct flags
-- run with perf
-- construct flamegraphs
-- scp to laptop
+```bash
+git clone https://github.com/brendangregg/FlameGraph
+cd FlameGraph
+export FGDIR=$PWD
+```
 
+Run code on a node, profile it with perf and generate a flamegraph from perf output:
 ```bash
 OMP_NUM_THREADS=4\
     srun\
         -A project_462000007\
+        -N 1\
         -n 1\
         -c 4\
-        -t 00:10:00\
+        -t 00:01:00\
         -p standard\
     perf record -F 1997 -g -o perf.data\
-    ./heat_hybrid 2000 2000 1000
+    ./heat_hybrid 4000 4000 2000 &&\
+    perf script | $FGDIR/stackcollapse-perf.pl | $FGDIR/flamegraph.pl > perf-flamegraph.svg
 ```
 
+Copy the interactive file to laptop & view with web browser:
+```bash
+scp lumi:/users/juhanala/Documents/summerschool/application-performance/demos/perf/heat-equation/2d/mpi-openmp/perf-flamegraph.svg .
+firefox perf-flamegraph.svg
+```
+
+Or view the perf data on LUMI:
 ```bash
 perf report --stdio -n -i perf.data
 ```
-
-TODO: git clone flamegraph and generate on node
