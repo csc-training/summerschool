@@ -16,14 +16,14 @@ Get some counters from hybrid MPI-OpenMP run within a single node
 Run the program on LUMI:
 ```bash
 OMP_NUM_THREADS=16\
-    srun\
-        -A project_462000007\
-        -N 1\
-        -n 4\
-        -c 16\
-        -t 00:10:00\
-        -p standard\
-    ./heat_hybrid 8000 8000 20000
+srun\
+    -A project_462000007\
+    -N 1\
+    -n 4\
+    -c 16\
+    -t 00:10:00\
+    -p standard\
+./heat_hybrid 8000 8000 20000
 ```
 
 In a different shell, check on a job running on the node (e.g. with name `heat_hybrid`):
@@ -67,16 +67,16 @@ export FGDIR=$PWD
 Run code on a node, profile it with perf and generate a flamegraph from perf output:
 ```bash
 OMP_NUM_THREADS=4\
-    srun\
-        -A project_462000007\
-        -N 1\
-        -n 1\
-        -c 4\
-        -t 00:01:00\
-        -p standard\
-    perf record -F 1997 -g -o perf.data\
-    ./heat_hybrid 4000 4000 2000 &&\
-    perf script | $FGDIR/stackcollapse-perf.pl | $FGDIR/flamegraph.pl > perf-flamegraph.svg
+srun\
+    -A project_462000007\
+    -N 1\
+    -n 1\
+    -c 4\
+    -t 00:01:00\
+    -p standard\
+perf record -F 1997 -g -o perf.data\
+./heat_hybrid 4000 4000 2000 &&\
+perf script | $FGDIR/stackcollapse-perf.pl | $FGDIR/flamegraph.pl > perf-flamegraph.svg
 ```
 
 Copy the interactive file to laptop & view with web browser:
