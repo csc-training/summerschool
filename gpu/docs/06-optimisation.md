@@ -237,7 +237,7 @@ double val = global_array[tid];
 
 ---
 
-## Local data share
+# Local data share
 
 - Variable defined as `__shared__` is shared within block 
 - Use cases:
@@ -248,22 +248,29 @@ double val = global_array[tid];
   ```cpp
   __shared__ float buf[256];
   ```
+- Divided in banks for parallel access
+  - one unique memory address access per bank per cycle
 
 ---
 
-## Local data share
-
-**Advanced optimization**: avoid bank conflicts
-
-- LDS is divided into 32 banks of 512 Dwords (MI250x), each serve one address per cycle
+# Local data share: banked access
 
 
-<div class="column">
-<! [](img/NoBankConflicts.jpeg){width=100%}>
-</div>
-<div class="column">
-<! [](img/BankConflicts.jpeg){width=100%}>
-</div>
+::::::{.columns}
+:::{.column}
+- Example: <br>8 banks, 16 threads
+  - Left: 2 bank conflicts per cycle,  use all LDS
+  - Right: 8 conflicts per cycle, use $\frac 1 4$ of LDS
+
+- MI250x: 32 banks of 512 dwords
+:::
+:::{.column}
+![](img/no-bank-conflicts.svg){width=80%}
+:::
+:::{.columnn}
+![](img/many-bank-conflicts.svg){width=23cm}
+:::
+::::::
 
 
 # 5. Avoid branching within warp
