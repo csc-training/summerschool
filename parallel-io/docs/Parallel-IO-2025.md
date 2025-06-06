@@ -202,10 +202,11 @@ With striping, many OSTs can participate in single-file I/O
 - Default stripe count on Puhti/Mahti/Lumi is 1, *ie.* no striping
 - Can also control striping at runtime through Lustre's programming API (`lustreapi.h`)
 
-# Performance with Lustre striping
+# Test: collective write with 256 MPI ranks
 
-![](img/striping-performance.png){.center width=60%}
+![](img/striping-performance.png){.center width=55%}
 
+- OSTs are a shared resource; I/O performance can vary depending on user activity. This was done on Mahti
 
 # Common I/O libraries and file formats {.section}
 
@@ -251,7 +252,7 @@ Most popular high-level I/O libraries in HPC are **`HDF5`** and **`netCDF`**.
 # Using HDF5
 
 - Official programming API for `C`, `C++`, `f90`
-    - Quite verbose! Consult the docs: <https://support.hdfgroup.org/documentation/hdf5/latest/_r_m.html>
+    - Quite verbose and abstract! Consult the docs: <https://support.hdfgroup.org/documentation/hdf5/latest/_r_m.html>
 - Python package: `h5py`. File read example:
 ```python
 import h5py
@@ -275,5 +276,5 @@ See our self-study material on HDF5 API (bonus content)
 - Pay attention to your I/O logic in parallel programs - you don't want it becoming a bottleneck
 - MPI-IO provides parallelized replacements for standard I/O functions, and more
 - Utilize Lustre striping for better parallel I/O performance
-- Standardized file formats and libraries exist for storing and manipulating large amounts of complicated data
+- Standard & optimized file formats and libraries exist for storing and manipulating large amounts of complicated data
     - No need to cook up your own format :)
