@@ -35,7 +35,7 @@ lang:   en
 
 - User-defined datatypes enable communication of non-contiguous or heterogeneous data with single MPI communication operations
   - Improves code readability and portability
-  - Allows optimizations by the MPI runtime
+  - Allows optimizations by MPI at runtime
 - MPI provides constructors for several specific types
 
 # Example: Sending rows of matrix in Fortran
