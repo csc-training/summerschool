@@ -50,7 +50,7 @@ Small programs _can_ manage with standard I/O routines:
 - Use separate I/O file(s) for each process (**"file-per-process"**)
 - Coordinated I/O to one file from many processes, eg. `fseek()` based on MPI rank
 
-MPI-IO essentially implements a smart and scalable combination of these ideas.
+MPI-IO essentially implements a scalable combination of these ideas.
 
 - Still useful to understand how these approaches would work in isolation
 
@@ -66,7 +66,7 @@ MPI-IO essentially implements a smart and scalable combination of these ideas.
 ![](img/posix-spokesperson.png)
 </div>
 
-Exercise: first part of `parallel-write`
+<small>Exercise: first part of `parallel-write`</small>
 
 # File-per-process I/O
 
@@ -85,9 +85,8 @@ Exercise: first part of `parallel-write`
 
 # Programs with dedicated I/O processes ("I/O servers")
 
-Variation of "spokesperson": One or more MPI processes that *only* do I/O.
-
-- Can be great for I/O-heavy programs. Used eg. by the climate simulation code `ICON`
+- Variation of "spokesperson": One or more MPI processes that *only* do I/O
+- I/O is done asynchronously, in parallel with computations &rarr; can be great for I/O-heavy programs
 - Pseudocode example:
 
 <div class="column">
@@ -140,6 +139,8 @@ MPI-IO = part of the MPI specification that deals with I/O.
 - Implementations: `ROMIO` (both in `MPICH` and `OpenMPI`) and `OMPIO` (`OpenMPI` only)
     - Advanced users can configure the internals via "hints"
 
+<small>Exercise: second part of `parallel-write`</small>
+
 # MPI-IO example
 
 ```c
@@ -154,7 +155,7 @@ MPI_File_open(MPI_COMM_WORLD, "stuff.out",
 // Compute a file offset (in bytes), ie. where in the file this rank should perform the write.
 MPI_Offset offset = (MPI_Offset) (rank * N * sizeof(int));
 
-// Write N integers from each rank from pointer 'data_ptr' to position specified by the offset
+// Write N integers from each rank from pointer 'data_ptr' to position specified by the offset.
 MPI_File_write_at(file, offset, data_ptr, N, MPI_INT, MPI_STATUS_IGNORE);
 
 // Or using collective MPI_File_write_at_all(), which can be more performant for large writes.
@@ -178,7 +179,7 @@ MPI_File_close(&file);
 
 ![](../../computer-platforms/docs/images/lustre-architecture.svg){.center width=100%}
 
-Striping = how the file is distributed across OSTs
+**Striping** = how the file is distributed across OSTs
 
 # File striping
 
@@ -195,30 +196,11 @@ With striping, many OSTs can participate in single-file I/O
 - `lfs getstripe` <*dir*|*file*>
 - `lfs setstripe` -c *count* *dir*
     - Set the default stripe count for directory *dir* to *count*
-    - All the new files within the directory will have the specified
-    striping
-    - Also stripe size can be specified, see *man lfs* for details
+    - All new files/subdirectories within the directory will have the specified striping
+    - Also the stripe size can be specified. Default is usually 1 MB
 
 - Default stripe count on Puhti/Mahti/Lumi is 1, *ie.* no striping
-
-# Lustre file striping in C codes
-
-TODO working example with MPI-IO + lustre API
-
-- The striping policy for files within an application
-
-```c
-...
-#include <lustre/lustreapi.h>
-int main(int argc, char **argv) {
- int fd;
- char fname[]="lfile";
- unsigned long long stripe_size;
- int stripe_count, stripe_pattern=0, stripe_offset=-1;
- // Try to create file
- stripe_size=1048576; stripe_count=4;
- fd=llapi_file_open(fname,O_CREAT|O_RDWR,S_IRWXU,stripe_size,stripe_offset,stripe_count,stripe_pattern);
-```
+- Can also control striping at runtime through Lustre's programming API (`lustreapi.h`)
 
 # Performance with Lustre striping
 
@@ -227,18 +209,35 @@ int main(int argc, char **argv) {
 
 # Common I/O libraries and file formats {.section}
 
+# File format considerations: binary vs. text
+
+Binary files should be preferred for storing large datasets:
+
+- Smaller file sizes compared to text files (no need for character formatting)
+- Choose your file format and structure carefully
+    - Creating your own format means only you know how to read them!
+    - Prefer standardized formats: `HDF5`, `netCDF` *etc.*
+
+Human-readable text files are common for small configuration/input files.
+
+- Prefer existing standards and parsers: no need to reinvent the wheel
+    - `JSON`, `YAML`, `TOML`, `INI`, ...
+
+
 # High-level I/O libraries
 
 Most popular high-level I/O libraries in HPC are **`HDF5`** and **`netCDF`**.
 
 - Both define hierarchical file formats for storing large binary data
 - Both can be compiled with parallel support, using MPI-IO under the hood
-- Format is very versatile. Mental model: "Database in a single file"
+- Their data models are complex, but very versatile
+    - Mental model: "Database in a single file"
 - Modern `netCDF` is actually a layer built upon `HDF5`
 
 # File format of HDF5 (Hierarchical Data Format)
 
-- HDF5 files consist of *datasets* (multidimensional arrays) organized into *groups*, and their associated *metadata*.
+- HDF5 files consist of *datasets* organized into *groups*, and their associated *metadata*
+    - In practice, dataset = multidimensional array
 
 <div class="column">
 ![](img/hdf5_structure.png)
@@ -253,28 +252,28 @@ Most popular high-level I/O libraries in HPC are **`HDF5`** and **`netCDF`**.
 
 - Official programming API for `C`, `C++`, `f90`
     - Quite verbose! Consult the docs: <https://support.hdfgroup.org/documentation/hdf5/latest/_r_m.html>
-    - Python package: `h5py`. File read example:
-    ```python
-    import h5py
-    file = h5py.File("somefile.hdf5", 'r') # Behaves like a Python dict
-    dataset_names = list(file.keys())
-    dataset = file['somename'] # Behaves like a NumPy array
-    ```
+- Python package: `h5py`. File read example:
+```python
+import h5py
+myFile = h5py.File("some_file.hdf5", 'r') # Behaves like a Python dict
+dataset_names = list(myFile .keys())
+dataset = myFile['some_dataset']         # Behaves like a NumPy array
+```
 
 - HDF5 I/O is supported by many scientific software (`Paraview`, `Matlab`, ...)
 - Command line tools for investigating HDF5 files (`h5ls`, `h5dump`)
 
 <small>
-Exercises: `hdf5-write-read` and `hdf5-writerank`
+See our self-study material on HDF5 API (bonus content)
 </small>
 
-# Why use I/O libraries?
 
-- File format is portable and standardized. No need to cook up your own ad-hoc format
+# Summary {.section}
 
-- Built-in metadata support: data and its description stored in same file
-    - You are still responsible for writing useful metadata :)
+# Parallel I/O summary
 
-- Parallel scalability thanks to built-in MPI-IO support (at least for `HDF5`, `netCDF`)
-
-High-level libraries always aim to make development easier by abstracting away low-level details. **The same applies here!**
+- Pay attention to your I/O logic in parallel programs - you don't want it becoming a bottleneck
+- MPI-IO provides parallelized replacements for standard I/O functions, and more
+- Utilize Lustre striping for better parallel I/O performance
+- Standardized file formats and libraries exist for storing and manipulating large amounts of complicated data
+    - No need to cook up your own format :)
