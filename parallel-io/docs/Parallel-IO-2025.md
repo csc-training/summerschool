@@ -63,7 +63,7 @@ MPI-IO essentially implements a scalable combination of these ideas.
 - Does not scale, single writer is a bottleneck!
 </div>
 <div class="column">
-![](img/posix-spokesperson.svg){.center width=70%}
+![](img/posix-spokesperson.png)
 </div>
 
 <small>Exercise: first part of `parallel-write`</small>
@@ -80,7 +80,7 @@ MPI-IO essentially implements a scalable combination of these ideas.
 </div>
 
 <div class="column">
-![](img/posix-everybody.svg){.center width=70%}
+![](img/posix-everybody.png)
 </div>
 
 # Programs with dedicated I/O processes ("I/O servers")
@@ -187,7 +187,7 @@ With striping, many OSTs can participate in single-file I/O
 
 - Can have simultaneous read/write by many physical disks!
 
-![](img/lustre-striping.svg){width=70%}
+![](img/lustre-striping.png)
 
 # Controlling Lustre striping
 
