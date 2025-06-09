@@ -27,7 +27,7 @@ ie. all data is collected to MPI rank 0, which then writes it to file using stan
 The starting code has two global constants that you can adjust for testing:
 - `numElements` specifies how many integers will be written in total. Must be divisible by the number of MPI tasks.
 - The `doDebugPrint` boolean can be used to enable or disable printing of file contents for debugging purposes.
-You can disable this after verifying that your writes are OK. Reason: when `numElements` is large the debug prints quickly become unreadable.
+Note that the debug prints are not very useful if `numElements` is very large. For this reason the starting code enables debug prints only if `numElements <= 100`.
 
 The provided `main` function calls both of the write functions and also reads and dumps contents of the written files. Use this "debug" output to check that your writes are correct.
 
@@ -44,8 +44,8 @@ The provided `main` function calls both of the write functions and also reads an
 ## Part 2 (bonus)
 
 Let's compare the I/O performance of the two implementations:
-- First set `doDebugPrint` to `false` in order to keep the output simple.
-- Then add timings to the `main` function for measuring the evaluation time of `single_writer()` and `collective_write()` separately. You can use the `MPI_Wtime()` function for timestamps (in seconds). Print the evaluation time from MPI rank 0.
+- Ensure `doDebugPrint` is set to `false` in order to keep the output simple.
+- Add timings to the `main` function for measuring the evaluation time of `single_writer()` and `collective_write()` separately. You can use the `MPI_Wtime()` function for timestamps (in seconds). Print the evaluation time from MPI rank 0.
 - Repeat the time measurements a few times (eg. 5) by putting them in a loop, printing the timings on each iteration.
 
 Run and compare the timings. Which implementation is faster?

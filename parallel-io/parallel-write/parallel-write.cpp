@@ -8,8 +8,9 @@
 // How many integers to write, total from all MPI processes
 static constexpr size_t numElements = 32;
 
-// Enables or disables debug printing of file contents. Set to false if numElements is very large (>> 100)
-static constexpr bool doDebugPrint = true;
+/* Enables or disables debug printing of file contents. Printing is not practical for large files,
+so we enable/disable this based on 'numElements'. */
+static constexpr bool doDebugPrint = (numElements <= 100);
 
 
 // Debugging helper, prints out file contents. You don't have to modify this
