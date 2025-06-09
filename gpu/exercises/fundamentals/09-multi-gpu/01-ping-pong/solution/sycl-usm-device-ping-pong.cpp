@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
     int nodeprocs=1;
     char machine_name[50];
     int name_len=0;
-    int M=256;
+    int M=256, N;
     if (MPI_Init(&argc, &argv) != MPI_SUCCESS) 
     {
         std::cout << "Failed to initialize MPI\n";
@@ -160,7 +160,10 @@ int main(int argc, char *argv[])
 
     if (argc < 2) {
         printf("Need the vector length as argument\n");
-        exit(EXIT_FAILURE);
+       N=256*1024*1024;
+    }
+    else {
+         N = atoi(argv[1]);
     }
 
     //Check how many gpus per node are present
@@ -188,7 +191,6 @@ int main(int argc, char *argv[])
     std::cout << "Rank #" << id << " runs on: " << machine_name  << "\n";
     ShowDevice(q);
     MPI_Barrier(MPI_COMM_WORLD);
-    int N = atoi(argv[1]);
     
     double GPUtime,CPUtime;
     std::vector<int> ha(N);
@@ -211,27 +213,7 @@ int main(int argc, char *argv[])
         printf("CPU-CPU time time %lf, errorsum %d\n", CPUtime, errorsum);
     }
 
-    // Dummy transfer to remove the overhead of the first communication
-    GPUtoGPUtestmanual(id, da_usm, ha.data() , N, M, &GPUtime, q);
 
-    // Reinitialize the data
-    std::fill(ha.begin(), ha.end(), 1);
-    // Copy data from host to USM
-    q.memcpy(da_usm, ha.data(), N * sizeof(int)).wait();
-
-
-    /* GPU-to-GPU test, manual transfers */
-    GPUtoGPUtestmanual(id, da_usm, ha.data() , N, M, &GPUtime, q);
-
-    /*Check results, copy device array back to Host*/
-    q.memcpy(ha.data(), da_usm, N * sizeof(int)).wait();
-
-    if (id  == 0) {
-        int errorsum = 0;
-        for (int i = 0; i < N; ++i)
-            errorsum += ha[i] - 2.0;        
-        printf("GPU-GPU manual transfer time %lf, errorsum %d\n", GPUtime, errorsum);
-    }
 
 
     // Dummy transfer to remove the overhead of the first communication
@@ -253,6 +235,28 @@ int main(int argc, char *argv[])
         for (int i = 0; i < N; ++i)
             errorsum += ha[i] - 2.0;        
         printf("GPU-GPU GPU-aware time %lf, errorsum %d\n", GPUtime, errorsum);
+    }
+
+    // Dummy transfer to remove the overhead of the first communication
+    GPUtoGPUtestmanual(id, da_usm, ha.data() , N, M, &GPUtime, q);
+
+    // Reinitialize the data
+    std::fill(ha.begin(), ha.end(), 1);
+    // Copy data from host to USM
+    q.memcpy(da_usm, ha.data(), N * sizeof(int)).wait();
+
+
+    /* GPU-to-GPU test, manual transfers */
+    GPUtoGPUtestmanual(id, da_usm, ha.data() , N, M, &GPUtime, q);
+
+    /*Check results, copy device array back to Host*/
+    q.memcpy(ha.data(), da_usm, N * sizeof(int)).wait();
+
+    if (id  == 0) {
+        int errorsum = 0;
+        for (int i = 0; i < N; ++i)
+            errorsum += ha[i] - 2.0;        
+        printf("GPU-GPU manual transfer time %lf, errorsum %d\n", GPUtime, errorsum);
     }
 
 }
