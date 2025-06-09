@@ -118,9 +118,20 @@ EuroHPC JU LUMI (HPE Cray EX) <br>at CSC (2021–)
 </center>
 </div>
 
-# Computer clusters
+# Anatomy of a supercomputer
 
-animation...
+<!-- Copyright CSC -->
+![](img/cluster_diagram.svg){.center width=100%}
+
+# Closer look on supercomputer nodes
+
+<!-- Copyright CSC -->
+ ![](img/anatomy.svg){.center width=55%}
+
+- Supercomputers consist of nodes connected by a high-speed network
+  - Latency `~`1 µs, bandwidth `~`100 GB / s
+- A node can contain several multicore CPUs and several GPUs
+- Permanent storage is accessed via network (shared resource among *all* users)
 
 # Computer clusters and supercomputers
 
@@ -134,6 +145,24 @@ animation...
 **A supercomputer is not a single "super fast" processor,<br>but a set of hundreds of thousands (or more) processing units<br>that *can be programmed* to work together**<br><br>
 &rarr; *Parallel algorithms* are needed to utilize supercomputer
 </center>
+
+# Parallel processing
+
+- Modern supercomputers (and regular computers) rely on parallel processing
+- **Multiple** CPU cores & accelerators (GPUs)
+  - LUMI-G has ~12,000 GPUs together with ~190,000 CPU cores
+  - LUMI-C has ~260,000 CPU cores
+- Vectorization
+  - A single instruction can process multiple data (SIMD)
+- Instruction level parallelism and pipelining
+  - Core executes multiple instructions in parallel (superscalar execution)
+  - Core executes different parts of instructions in parallel
+
+# Why parallel processing?
+
+- Power consumption of CPU: $~f^3$
+
+![](img/moore.png){.center width=45%}
 
 
 # Performance of supercomputers
@@ -157,46 +186,12 @@ Image: [top500.org](https://top500.org/)
 </div>
 
 
-# What are supercomputers made of? {.section}
-
-# CPU frequency development
-
-- Power consumption of CPU: $~f^3$
-
- ![](img/moore.png){.center width=45%}
-
-# Parallel processing
-
-- Modern (super)computers rely on parallel processing
-- **Multiple** CPU cores & accelerators (GPUs)
-  - LUMI-G has ~12,000 GPUs together with ~190,000 CPU cores
-  - LUMI-C has ~260,000 CPU cores
-- Vectorization
-  - A single instruction can process multiple data (SIMD)
-- Instruction level parallelism and pipelining
-  - Core executes multiple instructions in parallel (superscalar execution)
-  - Core executes different parts of instructions in parallel
-
-# Anatomy of a supercomputer
-
-<!-- Copyright CSC -->
- ![](img/anatomy.svg){.center width=55%}
-
-- Supercomputers consist of nodes connected by a high-speed network
-  - Latency `~`1 µs, bandwidth `~`100 GB / s
-- A node can contain several multicore CPUs and several GPUs
-- Memory within the node is directly usable by all CPU cores
-
-# Supercomputer autopsy – Lumi
-
- ![](img/lumi.png){.center width=50%}
-
 # From laptop to Tier-0
 
 <div class=column>
 
 <!-- Copyright CSC -->
- ![](img/tier.png){.center width=80%}
+ ![](img/tier.svg){.center width=80%}
 
 </div>
 <div class=column>
@@ -257,9 +252,10 @@ Image: [top500.org](https://top500.org/)
 
 <div class=column>
 - Solving certain types of problems exponentially faster than classical computers
-- General purpose quantum computer is still far away
+- General-purpose quantum computer is still far away
 - Use cases still largely experimental
-- Hybrid approaches
+- Hybrid approaches combining classical and quantum computing
+  - Both are needed
 </div>
 <div class=column>
 ![](img/quantum.png){.center width=50%}
@@ -277,8 +273,7 @@ Image: [top500.org](https://top500.org/)
 
 # Summary
 
-- HPC reaches a lot of different fields of research
+- HPC is essential in many fields of research
 - Supercomputers base their performance on extreme parallelism
-    - And GPUs nowadays
+  - Including GPUs nowadays
 - Cloud computing as an option for accessing HPC resources
-- The future of HPC looks bright but presents unique challenges
