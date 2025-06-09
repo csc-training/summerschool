@@ -6,47 +6,72 @@ lang:   en
 
 # Outline
 
-- Connecting to supercomputers
-- Directory structure in CSC supercomputers
+- Connecting to LUMI and CSC supercomputers
+- File system in LUMI and CSC supercomputers
 - Module system
 - Building applications
 - Running applications via batch job system
 
-<br>
-Some information provided here is specific to LUMI, Mahti, and Puhti, some more general
+# Connecting to LUMI and CSC supercomputers {.section}
 
-# Anatomy of supercomputer
- ![](img/cluster_diagram.jpeg){.center width=80%}
+# Anatomy of a supercomputer
+
+<!-- Copyright CSC -->
+![](img/cluster_diagram.svg){.center width=100%}
  
-# Connecting to supercomputers
+# Connecting to LUMI and CSC supercomputers
 
-- `ssh` is used to connect to all CSC supercomputers
-```
-ssh -i <path-to-ssh-key> <my_user_id>@lumi.csc.fi
-```
-- With **ssh keys** one can login without password
-    - Automatically setup for LUMI
-    - In Mahti and Puhti need to create and setup manually
+- SSH with public key authentication is used to connect the login node
+  - <https://github.com/csc-training/summerschool/wiki/Setting-up-CSC-account-and-SSH>
+- Also web interfaces exist
+  - <https://www.lumi.csc.fi>
+  - <https://www.mahti.csc.fi>
+  - <https://www.puhti.csc.fi>
 
-```
-ssh-keygen -o -a 100 -t ed25519 # Not needed if key exists
-ssh-copy-id <my_user_id>@mahti.csc.fi
-```
+# File system in LUMI and CSC supercomputers {.section}
 
+# Directory structure
 
-# Directory structure in CSC supercomputers
-
-- All the CSC supercomputers have separate file systems
-    - Files need to be explicitly copied between LUMI, Mahti and Puhti
-- All the CSC supercomputers share a commong directory structure
+- LUMI and CSC supercomputers have separate file systems
+  - Files need to be explicitly copied between LUMI, Mahti, and Puhti
+- Directory structure is common in all systems
 
 |            |Owner   |Environment variable|Path                 |
 |------------|--------|--------------------|---------------------|
-|**home**    |Personal|`${HOME}`           |`/users/<user-name>` |
+|**home**    |Personal|`$HOME`             |`/users/<user-name>` |
 |**projappl**|Project |Not available       |`/projappl/<project>`|
 |**scratch** |Project |Not available       |`/scratch/<project>` |
 
-# Modules {.section}
+- See `lumi-workspaces` on LUMI or `csc-workspaces` on Mahti and Puhti
+
+# Using project-level storage space
+
+- Common practice: create your personal directory under scratch:
+  ```bash
+  mkdir -p /scratch/<project>/$USER
+  cd /scratch/<project>/$USER
+  ```
+- Use this personal work space during summer school to avoid file conflicts with other project members
+
+# Parallel distributed file system: Lustre
+
+- All storage is accessed via interconnect and it is a *shared resource* among *all users* in the supercomputer<br>
+  - One should avoid putting unnecessary load to the file system to keep the system responsive
+- LUMI and CSC supercomputers use Lustre as the parallel distributed file system<br>
+  - Lustre is designed for efficient parallel I/O for large files
+  - Excessively accessing file metadata or opening and closing files puts stress on *metadata servers* and can cause slowness in the file system (especially if *all users* do so)
+
+# Being nice to Lustre (and other users)
+
+- Avoid accessing a large number of small files
+  - Practical example: Python environments are typically containerized in supercomputers to avoid a significant performance hit due to accessing thousands of small files when loading the enviroment
+- Avoid `ls -l` and use plain `ls` instead if you don't need the extra metadata
+  - Less stress on the metadata servers
+- Use Lustre tools (e.g., `lfs find`) instead of regular file system tools (e.g. `find`)
+  - Less stress on the metadata servers
+
+
+# Module system {.section}
 
 # Module environment
 
@@ -54,11 +79,9 @@ ssh-copy-id <my_user_id>@mahti.csc.fi
   development environments and applications
 - _Environment modules_ provide a convenient way to dynamically change the
   user's environment
-- In this way, different compiler suites and application versions can be used
-  more easily
-    * Changing compiler module loads automatically also correct versions of libraries 
-    * Loading a module for application sets up the correct environment with single 
-      command
+- With modules different compiler suites and application versions can be used smoothly
+  - Changing compiler module loads automatically also correct versions of libraries 
+  - Loading a module for application sets up the correct environment with a single command
 
 
 # Common module commands
@@ -89,16 +112,15 @@ ssh-copy-id <my_user_id>@mahti.csc.fi
 </div>
 
 
-# Make {.section}
+# Building applications {.section}
 
 # Compiling and linking
 
 <div class=column>
 - A compiler turns a source code file into an object file that contains
   machine code that can be executed by the processor
-- A linker combines several compiled object files into a single executable
-  file
-- Together, compiling and linking can be called building
+- A linker combines several compiled object files into a single executable file
+- Together, compiling and linking is called building
 </div>
 <div class=column>
 ![](img/building.svg){.center}
@@ -115,17 +137,17 @@ cc main.c -o main
 - In practice programs are separated into several files
   <br>$\Rightarrow$ complicated dependency structures
 - Building large programs takes time
-    - could we just rebuild the parts that changed?
+  - Could we just rebuild the parts that changed?
 - Having different options when building
-    - debug versions, enabling/disabling features, etc.
+  - Debug versions, enabling/disabling features, etc.
 
 
 # Make
 
 - Make allows you to define how to build individual parts of a program
   and how they depend on each other. This enables:
-    - Building parts of a program and only rebuilding necessary parts
-    - Building different version and configurations of a program
+  - Building parts of a program and only rebuilding necessary parts
+  - Building different version and configurations of a program
 
 ![](img/depend.png){.center width=40%}
 
@@ -145,7 +167,7 @@ _A make rule_
 </div>
 
 
-# Simple Makefile example
+# Example Makefile
 
 <div class=column>
 - Dependencies can be files or other targets
@@ -171,14 +193,13 @@ clean:
 ```
 </div>
 
-
 # Variables and patterns in rules
 
 <div class=column>
 - It is possible to define variables, for example compiler and link commands
   and flags
 - Targets, dependencies and recipes can contain special wild cards
-- Rerunning all the recipies can be forced with `make -B`
+- Rerunning all the recipes can be forced with `make -B`
 </div>
 
 <div class=column>
@@ -205,7 +226,7 @@ CCFLAGS=-O3
 - **GNU Autotools** and **cmake** are the most common build generators in HPC
 
 
-# Batch queue system {.section}
+# Running applications via batch job system {.section}
 
 # Batch queue system
 
@@ -227,30 +248,37 @@ CCFLAGS=-O3
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=<project_id>
-#SBATCH –-partition=small
-#SBATCH –-time=00:10:00
-#SBATCH –-nodes=2
-#SBATCH –-ntasks-per-nodes=128
+#SBATCH --partition=small
+#SBATCH --time=00:10:00
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=128
 
-# srun launches "nodes * ntasks-per-nodes" copies of myprog
-srun myprog
+# srun launches "nodes * ntasks-per-node" MPI tasks of myprog
+srun ./myprog
 ```
 
 - More examples:
-    - <https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/batch-job/>
-    - <https://docs.csc.fi/computing/running/example-job-scripts-puhti/>
-    - <https://docs.csc.fi/computing/running/example-job-scripts-mahti/>
+  - <https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/batch-job/>
+  - <https://docs.csc.fi/computing/running/example-job-scripts-mahti/>
+  - <https://docs.csc.fi/computing/running/example-job-scripts-puhti/>
 
 
-# Running batch jobs under SLURM
+# Submitting batch jobs
 
-- Submit your batch job script to the queue using `sbatch`
+- Submit your batch job script to the queue using `sbatch`:
   ```bash
-  sbatch my_job.sh
+  sbatch job.sh
   ```
+- You can override parameters in the job script from commandline:
+  ```bash
+  sbatch --nodes=1 --ntasks-per-node=4 --partition=debug job.sh
+  ```
+
+# Managing batch jobs
+
 - You can follow the status of your jobs with `squeue`:
   ```bash
-  squeue -u my_username
+  squeue --me
   ```
 - If something goes wrong, you can cancel your job with `scancel`:
   ```bash
@@ -262,55 +290,50 @@ srun myprog
   sacct jobid
   ```
   
-# Interactive jobs
+# Running interactive jobs
 
-Alternatively to `sbatch` one can submit a job to the queue using `srun`
+- Alternatively to `sbatch`, you can submit a job to the queue using `srun`
+  ```bash
+  srun --account=... --partition=small --nodes=2 --ntasks-per-nodes=128 --time=00:10:00 ./myprog
+  ```
+  In this case the output will be shown on the terminal  (job will fail if the connection is lost). 
 
-```bash
-srun --account=<...> –-partition=<...> –-time=00:10:00 –-nodes=2 –-ntasks-per-nodes=128 ./myprog
-```
+- Yet another way is to create an allocation with `salloc`:
+  ```bash
+  salloc --account=... --partition=small --nodes=2 --ntasks-per-nodes=128 --time=00:30:00
+  ```
+  Once the allocation is made, the `srun` command will execute in that allocation:
+  ```bash
+  srun --ntasks=32 --cpus-per-task=8 ./myprog
+  ```
 
-In this case the output will be shown on the terminal  (job will fail if the connection is lost). 
-
-When debugging or doing performance analisys the user needs to interact with the application.
-
-```bash
-salloc --account=<project_id> –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00
-```
-Once the allocation is made, this command will start a shell on the login node.
-
-```bash
-srun --ntasks=32 --cpus-per-task=8 ./my_interactive_prog
-```
-
-# Useful Slurm environment variables
-
+# Useful environment variables
 
 Following variables are available inside Slurm scripts:
 
-<small>
-
+- `SLURM_JOBID`: jobid
 - `SLURM_JOB_NAME` : name given in `job_name`
-- `SLURM_JOBID`
 - `SLURM_JOB_NODELIST` : list of nodes the job will run
 
-</small>
-
-Following variables are available inside program launched by `srun`
-
-<small>
+Following variables are available inside program launched by `srun`:
 
 - `SLURM_PROCID` : global id of process 
 - `SLURM_LOCALID` : node local id of process 
 
-</small>
+# Useful environment variables
 
-Following variables override the corresponding variables in the batch script
-
-<small>
+Following variables override the corresponding variables in the batch script and command line:
 
 - `SBATCH_ACCOUNT` : `--account`
 - `SBATCH_PARTITION` : `--partition`
 
-</small>
+See `man sbatch` for full list.
 
+
+# Summary {.section}
+
+# Summary
+
+- Login nodes are entry points to a supercomputer
+- Calculations are submitted as jobs to the queueing system
+- Modules and build tools help managing environment and software
