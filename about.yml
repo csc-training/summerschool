@@ -1,6 +1,7 @@
 # This file is used in the generation of the web page
 title: CSC Summer School in High-Performance Computing
 modules:
+  - welcome
   - intro-to-hpc
   - mpi
   - openmp
