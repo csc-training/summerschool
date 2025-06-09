@@ -12,7 +12,7 @@ static constexpr size_t numElements = 32;
 static constexpr bool doDebugPrint = true;
 
 
-// Debugging helper, prints out file contents
+// Debugging helper, prints out file contents. You don't have to modify this
 void debug_read_file(const char* filename);
 
 void single_writer(const std::vector<int>& localData, const char* filename) {
@@ -174,8 +174,7 @@ void debug_read_file(const char* filename) {
         if (fileptr != NULL) {
 
             int value;
-            while (fread(&value, sizeof(int), 1, fileptr) == 1)
-            {
+            while (fread(&value, sizeof(int), 1, fileptr) == 1) {
                 printf("%d", value);
             }
 
@@ -183,8 +182,7 @@ void debug_read_file(const char* filename) {
 
             printf("\n");
             fflush(stdout);
-        }
-        else {
+        } else {
             fprintf(stderr, "Failed to open file %s for debug printing!\n", filename);
         }
     }

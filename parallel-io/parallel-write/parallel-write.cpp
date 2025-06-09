@@ -8,7 +8,7 @@
 // How many integers to write, total from all MPI processes
 static constexpr size_t numElements = 32;
 
-// Enables or disables debug printing of file contents. Set this to false if numElements is very large (>> 100)
+// Enables or disables debug printing of file contents. Set to false if numElements is very large (>> 100)
 static constexpr bool doDebugPrint = true;
 
 
@@ -97,8 +97,7 @@ void debug_read_file(const char* filename) {
         if (fileptr != NULL) {
 
             int value;
-            while (fread(&value, sizeof(int), 1, fileptr) == 1)
-            {
+            while (fread(&value, sizeof(int), 1, fileptr) == 1) {
                 printf("%d", value);
             }
 
