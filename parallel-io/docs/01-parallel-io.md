@@ -139,7 +139,7 @@ MPI-IO = part of the MPI specification that deals with I/O.
 - Implementations: `ROMIO` (both in `MPICH` and `OpenMPI`) and `OMPIO` (`OpenMPI` only)
     - Advanced users can configure the internals via "hints"
 
-<small>Exercise: second part of `parallel-write`</small>
+<small>Exercise: `parallel-write`</small>
 
 # MPI-IO example
 
