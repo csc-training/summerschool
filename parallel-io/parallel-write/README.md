@@ -57,4 +57,4 @@ Try eg. the following combinations:
 - `numElements == 1048576` ($1024^2$), 4 and 8 MPI tasks
 - `numElements == 1073741824` ($1024^2 \times 100$), 8 and 16 MPI tasks
 
-You should find that the `collective_write()` method eventually becomes faster than `single_writer()` once the data size if larger enough. Can you explain this behavior?
+You should find that the `collective_write()` method eventually becomes faster than `single_writer()` once the data size is large enough. Can you explain this behavior?
