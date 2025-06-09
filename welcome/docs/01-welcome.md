@@ -60,7 +60,7 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
 # Attendance list
 
 - Please mark "x" for your name **every morning** in the list outside the lecture room
-- This is a hearbeat signal -- We wan't to keep track that no-one has gotten lost in the forest etc
+- This is a hearbeat signal -- We want to keep track that no-one has gotten lost in the forest etc
   - Before you do, please save [the phone numbers of organizers](https://github.com/csc-training/summerschool/wiki#contacts) in your phone
 
 # Code of conduct
