@@ -8,6 +8,7 @@ modules:
   - parallel-io
   - gpu
   - hpc-ai
+  - application-design
   - application-performance
   - application-testing
   - build-systems
