@@ -11,7 +11,7 @@ we may want to write the data in the same order as the grid points are indexed.
 
 Have a look at the following unfinished code:
 
-- [](parallel-write.cpp) (`C/C++`)
+- [`parallel-write.cpp`](./parallel-write.cpp) (C/C++)
 - TODO fortran
 
 Here each MPI process allocates a "local data" array of integers and we wish to write the full data to a **single** file on disk.
