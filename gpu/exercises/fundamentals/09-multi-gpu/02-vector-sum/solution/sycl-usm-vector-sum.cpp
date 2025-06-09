@@ -25,10 +25,10 @@ int main() {
     std::cout << "Found " << gpus.size() << " GPU devices, using GPUs 0 and 1!\n\n";
 
     // Create two in-order queues with profiling enabled
-    queue queues[2] = {
-        queue(gpus[0], {property::queue::in_order(), property::queue::enable_profiling()}),
-        queue(gpus[1], {property::queue::in_order(), property::queue::enable_profiling()})
-    };
+    queue queues[2];
+    for (int i = 0; i < 2; ++i) {
+        queues[i] = queue(gpus[i], {property::queue::in_order(), property::queue::enable_profiling()});
+    }
 
     // Decomposition into two parts
     Decomp dec[2];
