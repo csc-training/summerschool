@@ -24,8 +24,8 @@ and the inner ranks with two neighbours.
 
 1. [First steps](#first-steps)
 2. [Using sendrecv](#using-sendrecv)
-3. [Using collective communication](#using-collective-communication)
-4. [Using non-blocking communication](#using-non-blocking-communication)
+3. [Using non-blocking communication](#using-non-blocking-communication)
+4. [Using collective communication](#using-collective-communication)
 5. [Using Cartesian communicator](#using-cartesian-communicator)
 6. [2D decomposition](#2d-decomposition)
 
@@ -53,7 +53,7 @@ which you can use as reference.
 
 ### Using sendrecv
 
-Before starting with this exercise, complete at least the steps 1 and 2 of [the first steps](#first-steps).
+Before starting with this exercise, complete [the first steps](#first-steps).
 You can also use its model solution as starting point.
 
 1. Use `MPI_Sendrecv` for implementing the "halo exchange" operation in the `exchange()` routine
@@ -61,9 +61,27 @@ You can also use its model solution as starting point.
    - in [fortran/core.F90](fortran/core.F90)
 
 
+### Using non-blocking communication
+
+Before starting with this exercise, complete [the first steps](#first-steps).
+You can also use its model solution as starting point.
+
+Utilize non-blocking communication in the "halo exchange".
+The aim is to be able to overlap the communication and communication. In order to achieve this,
+you need to divide the communication and computation into four steps:
+
+1. Initiate the communication in the halo exchange
+2. Compute the inner values of the temperature field (those that do not depend on the ghost layers)
+3. Finalize the communication in halo exchange
+4. Compute the edge values of the temperature field (those that depend on the ghost layers)
+
+Implement the required routines in [cpp/core.cpp](cpp/core.cpp) or [fortran/core.F90](fortran/core.F90),
+and replace the calls to `exchange` and `evolve` in the `main` routine by the newly implemented ones.
+
+
 ### Using collective communication
 
-Before starting with this exercise, complete either [the first steps](#first-steps) or [using sendrecv](#using-sendrecv).
+Before starting with this exercise, complete [the first steps](#first-steps).
 You can also use its model solution as starting point.
 
 Implement collective communication in the code.
@@ -78,24 +96,6 @@ Implement collective communication in the code.
 3. Is it possible to use collective communications also in the routine `write_field`?
    - in [cpp/io.cpp](cpp/io.cpp) or
    - in [fortran/io.F90](fortran/io.F90)
-
-
-### Using non-blocking communication
-
-Before starting with this exercise, you need to have a working parallel code from the previous exercises.
-You can also use its model solution as starting point.
-
-Utilize non-blocking communication in the "halo exchange".
-The aim is to be able to overlap the communication and communication. In order to achieve this,
-you need to divide the communication and computation into four steps:
-
-1. Initiate the communication in the halo exchange
-2. Compute the inner values of the temperature field (those that do not depend on the ghost layers)
-3. Finalize the communication in halo exchange
-4. Compute the edge values of the temperature field (those that depend on the ghost layers)
-
-Implement the required routines in [cpp/core.cpp](cpp/core.cpp) or [fortran/core.F90](fortran/core.F90),
-and replace the calls to `exchange` and `evolve` in the `main` routine by the newly implemented ones.
 
 
 ### Using Cartesian communicator

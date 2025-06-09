@@ -39,6 +39,7 @@ See [demos](demos/) for demo codes referred to in the slides.
 ### Non-blocking communication
 
 - [Non-blocking message chain](message-chain-non-blocking/)
+- [Heat equation solver](heat-equation/): Task 3
 
 ## Thursday exercises
 
@@ -48,13 +49,13 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 ### Collective operations
 
-- [Broadcast and scatter](broadcast-scatter/) TODO: Compare timing real broadcast vs Send-Recv implementation
+- [Broadcast and scatter](broadcast-scatter/)
 - [(Bonus) Collective operations](collectives/)
 
 ### Collective reductions
 
-- TODO: add parallel pi with collective reduction
-- [Heat equation solver](heat-equation/): Tasks 3-4
+- [Parallel pi with reduction](parallel-pi-reduction/)
+- [Heat equation solver](heat-equation/): Task 4
 
 ### User-defined communicators
 

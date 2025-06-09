@@ -1,7 +1,7 @@
 #include <stdio.h>
 /* #include <omp.h> */
 #include <iostream>
-#include "../error_checking.hpp"
+#include "error_checking.hpp"
 
 __global__ void sum_vecs(float* a, float* b, float* c, size_t n) {
     const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
