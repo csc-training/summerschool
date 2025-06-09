@@ -196,11 +196,12 @@ With striping, many OSTs can participate in single-file I/O
 - `lfs getstripe` <*dir*|*file*>
 - `lfs setstripe` -c *count* *dir*
     - Set the default stripe count for directory *dir* to *count*
-    - All new files/subdirectories within the directory will have the specified striping
+    - All new files/subdirectories within the directory inherit the specified striping
     - Also the stripe size can be specified. Default is usually 1 MB
 
-- Default stripe count on Puhti/Mahti/Lumi is 1, *ie.* no striping
 - Can also control striping at runtime through Lustre's programming API (`lustreapi.h`)
+
+<small>Demo: `demo-striping.md`</small>
 
 # Test: collective write with 256 MPI ranks
 
