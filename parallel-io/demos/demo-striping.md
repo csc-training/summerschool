@@ -1,12 +1,11 @@
-# Parallel I/O
+# Lustre striping demo
 
-## Striping example
-
-Different tools to setting and displaying stripe properties
+Lustre commands for setting and displaying stripe properties:
  - `lfs setstripe` Set striping properties of a directory or new file
  - `lfs getstripe` Return information on current striping settings
  - `lfs df` Show disk usage of this file system
 
+New files created in a directory automatically inherit the stripe configurations set for the directory. This is demonstrated in the example below.
 
 ```
 touch first_file

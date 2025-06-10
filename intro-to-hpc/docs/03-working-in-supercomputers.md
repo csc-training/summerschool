@@ -18,7 +18,7 @@ lang:   en
 
 <!-- Copyright CSC -->
 ![](img/cluster_diagram.svg){.center width=100%}
- 
+
 # Connecting to LUMI and CSC supercomputers
 
 - SSH with public key authentication is used to connect the login node
@@ -80,7 +80,7 @@ lang:   en
 - _Environment modules_ provide a convenient way to dynamically change the
   user's environment
 - With modules different compiler suites and application versions can be used smoothly
-  - Changing compiler module loads automatically also correct versions of libraries 
+  - Changing compiler module loads automatically also correct versions of libraries
   - Loading a module for application sets up the correct environment with a single command
 
 
@@ -216,7 +216,7 @@ CCFLAGS=-O3
 
 # Build generators
 
-- In a large software projects, figuring out all the dependencies between 
+- In a large software projects, figuring out all the dependencies between
   software modules can be difficult
 - `Makefile` is not necessarily portable
 - In order to improve portability and make dependency handling easier, build generators
@@ -289,14 +289,14 @@ srun ./myprog
   ```bash
   sacct jobid
   ```
-  
+
 # Running interactive jobs
 
 - Alternatively to `sbatch`, you can submit a job to the queue using `srun`
   ```bash
   srun --account=... --partition=small --nodes=2 --ntasks-per-nodes=128 --time=00:10:00 ./myprog
   ```
-  In this case the output will be shown on the terminal  (job will fail if the connection is lost). 
+  In this case the output will be shown on the terminal  (job will fail if the connection is lost).
 
 - Yet another way is to create an allocation with `salloc`:
   ```bash
@@ -317,8 +317,8 @@ Following variables are available inside Slurm scripts:
 
 Following variables are available inside program launched by `srun`:
 
-- `SLURM_PROCID` : global id of process 
-- `SLURM_LOCALID` : node local id of process 
+- `SLURM_PROCID` : global id of process
+- `SLURM_LOCALID` : node local id of process
 
 # Useful environment variables
 
@@ -329,6 +329,63 @@ Following variables override the corresponding variables in the batch script and
 
 See `man sbatch` for full list.
 
+
+#  HPC filesystems and Lustre {.section}
+
+# Filesystems on CSC supercomputers
+
+The filesystem used on CSC systems (Puhti, Mahti, Lumi) is called **Lustre**.
+
+- Parallel: data is distributed across many storage drives
+- Files can be accessed from all tasks (user permissions still apply)
+- Lustre is very common in HPC in general, not just at CSC
+
+Many systems also provide node-local disk area for temporary storage
+
+- `/tmp`, `$TMPDIR`, `$LOCAL_SCRATCH` *etc.* depending on the system
+- Sometimes the temporary storage may reside directly in memory (`/tmp` on Lumi compute nodes). Consult system docs
+
+# Lustre architecture
+
+<div class="column">
+
+- Files are chunked up and spread across multiple **storage servers** as **objects**
+- Dedicated **metadata server(s)** (MDS): file names, owners, permissions, ...
+- **Client**: HPC nodes that access the data
+
+</div>
+
+<div class="column">
+
+![](images/lustre-architecture.svg)
+Clients interact with MDS once to gain OST access, then I/O to objects directly.
+
+- Allows for **very high, parallel I/O bandwidth!**
+
+</div>
+
+# Being nice to Lustre as an HPC user
+
+Every file lookup, file creation/deletion, permission change *etc.* is processed by the metadata server.
+
+- Metadata servers are shared by everyone using the supercomputer!
+- Commands like `ls` unresponsive? Servers may be under heavy load
+
+**Please be mindful of other users!**
+
+- Lustre best practices in docs: <https://docs.csc.fi/computing/lustre/#best-practices>
+
+
+# Some Lustre best practices
+
+- Avoid creating/accessing small files in large quantities (*eg.* in scripts)
+- Avoid listing extended attributes (timestamps *etc.*) when not necessary
+  - Prefer `ls` over `ls -l` for file listing
+  - `LUE` tool for size queries: <https://docs.csc.fi/support/tutorials/lue/>
+- Consider using local disk when compiling code: `$TMPDIR` or similar non-Lustre location
+- Be careful when installing Python packages with `Conda` or `pip`!
+  - These have the "many small files" problem, especially with dependencies
+  - See <https://docs.lumi-supercomputer.eu/software/installing/python/>
 
 # Summary {.section}
 
