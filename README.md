@@ -143,7 +143,8 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 08:00 | Breakfast
-| 09:00 | Application design and performance
+| 09:00 | [Application design](application-design)
+| 09:30 | [Application performance](application-performance)
 | 11:30 | Closing
 | 12:00 | Lunch
 | 13:00 | Transport to Helsinki city
