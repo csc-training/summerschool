@@ -11,17 +11,33 @@ lang:   en
 
 # Collective reductions {.section}
 
-# Introduction
+# What is reduction?
 
-- Collective reduction operations allow performing computations on data distributed over all processes in a
-  process group (communicator)
+- Reduction in functional programming: Reduce a set of numbers into a smaller set of numbers using some function
+    - Example: `sum([1, 2, 3]) = 6` reduces three numbers to one by adding them
 
+- In parallel programming, (collective) **reduction** refers to a computational operation performed on data distributed over many processes
+    - Example: Get value of some variable `a` on all processes and add them together
 
-# Reduction operations
+- MPI provides a collective `MPI_Reduce` function that supports common reduction operations
+
+# Reduction illustration
 
 - Applies an operation to data scattered over processes and places the result in a single process
 
 ![](img/reduce.png){.center width=80%}
+
+# Reduction in MPI
+
+MPI_Reduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `root`{.input}, `comm`{.input})
+  : Combines values to the root process from all processes of the group
+
+<p>
+- `op` is an *operation code* specifying the reduction operation (sum, product, ...)
+- Only the root process gets the reduced result
+- Prefer `MPI_Reduce` instead of manually gathering and processing data on a single process
+- Demo: `reduce.c`
+
 
 # Available reduction operations
 
@@ -47,21 +63,13 @@ lang:   en
 </div>
 
 
-# Reduce operation
-
-MPI_Reduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `root`{.input}, `comm`{.input})
-  : Combines values to the root process from all processes of the group
-
-<p>
-- Demo: `reduce.c`
-
-
 # Global reduction
 
 MPI_Allreduce(`sendbuf`{.input}, `recvbuf`{.output}, `count`{.input}, `datatype`{.input}, `op`{.input}, `comm`{.input})
   :  Combines values from all processes and distributes the result back to all processes
 
 <p>
+- All processes get the reduced result
 - Similar to `MPI_Reduce` + `MPI_Bcast` but more efficient
 
 <p>
@@ -103,11 +111,11 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL, &
 
 # In-place collective operations
 
-- Using the input buffer as the output buffer<br>
+- What if we use the input buffer as the output buffer?<br>
 `call mpi_allreduce(a, a, n, mpi_real,...`
-    - One should employ `MPI_IN_PLACE` for this purpose
-- Replacing the send buffer with the `MPI_IN_PLACE` clause informs MPI that the buffers are the same
-<p>
+
+- Special clause for this purpose: `MPI_IN_PLACE`
+    - Replacing the send buffer with `MPI_IN_PLACE` informs MPI that the buffers are the same
 - Demo: `reduce.c`
 
 # Non-blocking collectives {.section}
@@ -120,6 +128,7 @@ call mpi_allreduce(rloc, r, 1, MPI_REAL, &
     - “``I``” at the front of the name (`MPI_Alltoall` -> `MPI_Ialltoall`)
     - Request parameter at the end of the list of arguments
     - Completion needs to be waited
+    - See earlier slides on non-blocking communication
 
 # Example: Non-blocking broadcasting
 
@@ -130,14 +139,13 @@ MPI_Ibcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `ro
 - Request parameter at the end of the list of arguments in comparison to `MPI_Bcast`
 
 
-# Non-blocking collectives
+# Restrictions on non-blocking collectives
 
-- Restrictions
-    - Have to be called in same order by all ranks in a communicator
-    - Mixing of blocking and non-blocking collectives is not allowed
+- Have to be called in same order by all ranks in a communicator
+- Mixing of blocking and non-blocking collectives is **not** allowed
 
 
-# Non-blocking collectives
+# Illustration: blocking vs non-blocking reduction
 
 ![](img/non_blocking_large.png){.center width=100%}
 
@@ -153,14 +161,8 @@ involving data in the `MPI_Allreduce` operation
 
 # Summary {.section}
 
-# Summary
-
-- Collective operations can also be done in non-blocking mode
-- Enables overlapping computation and communication
-
-
-# Summary
+# Summary: reductions and non-blocking collectives
 
 - Collective reductions allow efficient collective computation
 - The `MPI_IN_PLACE` clause can be useful when you want to overwrite your send buffer in certain collective operations
-
+- Collective operations can also be done in non-blocking mode
