@@ -30,7 +30,7 @@ lang:     en
 | cuSPARSE | hipSPARSE | rocSPARSE  | Sparse BLAS + SMV                                                                   |
 | cuSOLVER | hipSOLVER | rocSOLVER  | Lapack library                                                                      |
 | AMG-X    |           | rocALUTION | Sparse iterative solvers and preconditioners with Geometric and Algebraic MultiGrid |
-| Thrust   |           | rocThrust  | C++ parallel algorithms library                                                     |
+| Thrust   |           | https://github.com/ROCm/rocThrust  | C++ parallel algorithms library                                                     |
 
 
 # Libraries (II)
@@ -357,12 +357,18 @@ if(tid%2 == 0) {
 
 # 6. Minimise number of active local variables 
 
+::: {.incremental}
+- Registers are allocated per block basis upon starting kernel
+  - Fewer blocks on CU if too many registers are used ⇒ *reduced occupancy*
 - Local variables are stored in registers
-  - MI250x 128 kiB per SIMD-unit
+  - MI250x with 256 threads per block (smallest sensible): 2 kiB registers per thread
 - What happens if there is not enough registers? 
   - Variables are "spilled" to local memory on slow global device memory
-- Might happen if the kernel is very complicated
-  - Solution: reduce *occupancy*.
+- Solution: 
+  - Reduce *occupancy*: Fewer threads per block (MI250x: >=256)
+  - Use LDS for temporary storage area
+  - Divide kernels mindfully
+:::
 
 # Example: Using local shared memory in matrix transpose{.section}
 
@@ -418,6 +424,7 @@ The duration is `0.401 ms`  and the effective bandwidth `311 GB/s`
 # Matrix transpose with shared memory
 
 <small>
+
 ```cpp
 __global__ void transpose_lds_kernel(float *in, float *out, int width,
                                      int height) {
@@ -438,6 +445,7 @@ __global__ void transpose_lds_kernel(float *in, float *out, int width,
   out[out_index] = tile[threadIdx.x][threadIdx.y];
 }
 ```
+
 </small>
 
 The duration is `0.185 ms`  and the effective bandwidth `674 GB/s`
