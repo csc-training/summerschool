@@ -41,6 +41,10 @@ The provided `main` function calls both of the write functions and also reads an
 00001111222233334444555566667777
 ```
 
+**Hints:**
+- What file access flags do you need in `MPI_File_open()`? A list of valid flags can be found [here](https://docs.open-mpi.org/en/main/man-openmpi/man3/MPI_File_open.3.html).
+- `MPI_File_open()` does *not* truncate the file if it already exists. You can do this manually using [`MPI_File_set_size()`](https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/MPI_File_set_size.3.html).
+
 ## Part 2 (bonus)
 
 Let's compare the I/O performance of the two implementations:
