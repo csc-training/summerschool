@@ -213,9 +213,6 @@ int main(int argc, char *argv[])
         printf("CPU-CPU time time %lf, errorsum %d\n", CPUtime, errorsum);
     }
 
-
-
-
     // Dummy transfer to remove the overhead of the first communication
     GPUtoGPUtestGPUAware(id, da_usm, N, M, &GPUtime, q);
     
