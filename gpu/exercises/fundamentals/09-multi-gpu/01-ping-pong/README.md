@@ -41,4 +41,4 @@ Direct GPU-to-GPU communications requires a GPU-aware MPI wich uses GPU pointers
 
 Finally the kernels are replaced by for loops and `target teams distribute parallel for` directives.
 ## Case 3 - SYCL  & USM
-When using gUSM with device pinned memory (`malloc_device()`) the SYCL code follows almost one-to-one the HIP code structure. Though there are a few difference to consider. All operations are subumitted to a queue which can be out-of-order (default) or in-order, memory allocations are always blocking, and the `.memcpy()` methods are always non-blocking.
+When using USM with device pinned memory (`malloc_device()`) the SYCL code follows almost one-to-one the HIP code structure. Though there are a few difference to consider. All operations are subumitted to a queue which can be out-of-order (default) or in-order, memory allocations are always blocking, and the `.memcpy()` methods are always non-blocking.
