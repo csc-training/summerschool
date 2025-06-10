@@ -48,7 +48,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 <div class=column style="width:48%">
 - There needs to be still a `MPI_Recv` for each `MPI_Send`
 - `MPI_ANY_SOURCE` may introduce performance overhead
-    - Typically used only when there is clear benefit (*e.g.* in load balancing)
+    - Use only when there is clear benefit (*e.g.* in load balancing)
 </div>
 
 <div class=column style="width:50%">
@@ -67,7 +67,7 @@ if (rank == 0) {
 </div>
 
 
-# Examining status: Example
+# Example: Examining status
 
 <div class="column">
 **C**
@@ -126,6 +126,7 @@ MPI_Probe(`source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
 - Can be used to determine the size of the incoming data<br>
   → Use to allocate large enough buffer for `MPI_Recv`
 
+<small>Exercise: `message-length`</small>
 
 # Common communication patterns {.section}
 
@@ -174,7 +175,7 @@ if (0 == rank) {
 - Avoid hard-coding the `source`  and `destination` arguments (like in most illustratory examples thus far)
   - Such a program would work correctly only with a fixed number of processes
 - Better approach: Store `source` and `destination` in variables and place MPI calls outside `if`s when possible
-  - This produces typically code that is easier to read 
+  - This produces typically code that is easier to read
   - The program is generalizable to arbitrary number of processes
 
 
@@ -236,7 +237,7 @@ dst = (rank + 1) % ntasks;
 src = (rank - 1 + ntasks) % ntasks;
 
 MPI_Sendrecv(message, msgsize, MPI_INT,
-             dst, 42, 
+             dst, 42,
              recvbuf, bufsize, MPI_INT,
              src, 42, MPI_COMM_WORLD,
              &status);
