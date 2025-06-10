@@ -9,31 +9,36 @@ The ping-pong test constists of the following steps:
   2. The receiving GPU should increment all elements of the vector by one
   3. Send the vector back to the original GPU
 
-For reference, there is also a CPU-to-CPU implementation in the skeleton
-code ([ping-pong.cpp](ping-pong.cpp)). Timing of all tests is also included to
-compare the execution times.
-
 
 NOTE: Remember to request 2 MPI processes and 2 GPUs when running this exercise. 
+
+
+```
+srun --account=XXXXXX --partition=dev-g -N1 -tasks-per-node=2 --cpus-per-task=1 --gpus-per-node=2 --time=00:15:00 ./a.out
+```
+
+
+## Case 1 - HIP
+
+Start from the skeleton code ([ping-pong.cpp](ping-pong.cpp)). A CPU-to-CPU is already included for reference and as well timing of all tests to compare the execution times.
 
 On **Lumi**, one can compile the MPI example simply using the Cray compiler with
 ```
 CC -xhip ping-pong.cpp
 ```
-and run with
-```
-srun --account=XXXXXX --partition=dev-g -N1 -tasks-per-node=2 --cpus-per-task=1 --gpus-per-node=2 --time=00:15:00 ./a.out
-```
+and run as indicated above.
 
-On **Puhti**, compile the MPI example with
+## Case 2 - OpenMP Offloading
+Based on the solution above write an equivalent code using OpenMP offloading. Replace the memory allocation `hipMalloc((void **) &dA, sizeof(double) * N);` with target data region `#pragma omp target enter data map(alloc: hA[0:N])` and replace `hipmemcpy`  with  `#pragma omp target update` to copy data to and from device.
+
+Direct GPU-to-GPU communications requires a GPU-aware MPI wich uses GPU pointers as arguments. In OpenMP offloading one can require specific calls done by the host to use the GPU pointer of the data by using `use_device_ptr` directive
 ```
-OMPI_CXXFLAGS='' OMPI_CXX='hipcc --x cu' mpicxx -c -o ping-pong.o ping-pong.cpp
-```
-then link with
-```
-hipcc ping-pong.o -lmpi
-```
-and finally run:
-```
-srun --account=XXXXXX --partition=gputest -N1 -n2 --cpus-per-task=1 --gres=gpu:v100:2 --time=00:15:00 ./a.out
-```
+#pragma omp target data use_device_ptr(A)
+{
+    MPI_Recv(A, N, MPI_DOUBLE, 0, 11, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+}
+``` 
+
+Finally the kernels are replaced by for loops and `target teams distribute parallel for` directives.
+## Case 3 - SYCL  & USM
+When using gUSM with device pinned memory (`malloc_device()`) the SYCL code follows almost one-to-one the HIP code structure. Though there are a few difference to consider. All operations are subumitted to a queue which can be out-of-order (default) or in-order, memory allocations are always blocking, and the `.memcpy()` methods are always non-blocking.
