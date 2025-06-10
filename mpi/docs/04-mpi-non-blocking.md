@@ -75,7 +75,12 @@ MPI_Waitsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, 
 : Waits for some of the given communications to complete
 
 
-# Typical usage pattern
+# Example: Data on a distributed grid
+
+Suppose `compute()` requires knowledge of neighboring data
+
+- Processes must communicate border data to neighbor processes
+- Common pattern in simulations with nearest-neighbor interactions
 
 <div class=column>
 **`MPI_Irecv`(<font color="green">ghost_data</font>)**<br>
