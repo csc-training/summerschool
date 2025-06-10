@@ -28,17 +28,18 @@ lang:   en
 </div>
 
 
-# Creating new communicator {.split-definition}
+# Using communicator splitting {.split-definition}
 
 MPI_Comm_split(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})
-: Creates new communicators based on colors and keys
+: Creates new communicators based on *colors* and *keys*
 
 <p>
+- **Color** is an integer label given by us (the programmer) to each process
 - Processes with the same color belong to the same new communicator
-  - If color is `MPI_UNDEFINED`, a process does not belong to any of the new communicators
-- Key controls rank assignment
+  - If color is `MPI_UNDEFINED`, the process does not belong to any of the new communicators
+- **Key** controls rank assignment within the new communicator
 
-# Creating new communicator
+# `MPI_Comm_split` example
 
 <div class=column>
 ```c
@@ -77,7 +78,7 @@ I am rank 1 in MPI_COMM_WORLD, but 0 in Comm 2.
 
 </div>
 
-# Using an own communicator
+# Using a custom communicator
 
 <div class=column>
 <p>
@@ -116,8 +117,8 @@ After broadcast:
 
 # Summary
 
-- Defining new communicators usually required in real-world programs
-    - Task parallelism, using libraries, I/O,...
+- Defining new communicators is common in real-world programs
+    - Task parallelism, interfacing with libraries, I/O,...
 - We introduced one way of creating new communicators via
   `MPI_Comm_split`
     - Tasks assigned with a "color", which can be `MPI_UNDEFINED` if
