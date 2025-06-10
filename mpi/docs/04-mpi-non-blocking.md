@@ -21,16 +21,17 @@ lang:   en
 - Avoids many common deadlock situations
 - Collective operations are also available as non-blocking versions
 
-# Non-blocking send
+# Non-blocking send ("Implicit Send")
 
 MPI_Isend(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
 : Starts a nonblocking send
 
 <p>
 * Parameters similar to `MPI_Send` but has an additional request parameter
-* Send buffer must not be written to until one has checked that the operation is over
+  - Handle to `MPI_Request` object, used to keep track of the send operation
+* **Send buffer must not be written to until one has checked that the operation is over**
 
-# Non-blocking receive
+# Non-blocking receive ("Implicit Receive")
 
 MPI_Irecv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
 : Starts a nonblocking receive
@@ -93,7 +94,8 @@ MPI_Waitsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, 
 # Overlapping communication with computation
 
 - Use of non-blocking operations does not guarantee overlapping communication with computation
-- In terms of code logic, non-blocking operations return immediately, but performing communication requires CPU resources that need to be available for communication too
+- In terms of code logic, non-blocking operations return immediately, but some CPU resources will be spent on communication
+  - MPI handles this for us behind the scenes whenever possible
 - Without dedicated resources for communication, the communication might progress only when needed for MPI calls, e.g., `MPI_Wait`
 
 # Overlapping communication with computation
@@ -101,7 +103,7 @@ MPI_Waitsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, 
 - There are two general mechanisms inside the MPI library to allow communication to proceed at the same time with computations
   - Progress thread within the library
   - Offloading part of the communication to network interface card (NIC)
-- The MPI implementations have typically settings and environment variables to configure communication progression mechanism
+- MPI implementations typically have settings and environment variables for configuring communication progression mechanisms
   - See demonstrations codes: <https://github.com/cschpc/mpi-overlap>
 
 
@@ -148,7 +150,8 @@ MPI_Testsome(`count`{.input}, `array_of_requests`{.input}, `outcount`{.output}, 
 
 # Summary
 
-- Non-blocking communication is often useful way to do communication in MPI
+- Non-blocking MPI routines are useful for creating flexible and optimized communication logic
+  - Programmer is responsible for not manipulating send/receive buffers until the communication completes
 - Non-blocking point-to-point communication core features
   - Open receives with `MPI_Irecv`
   - Start sending with `MPI_Isend`
