@@ -6,24 +6,26 @@ lang:   en
 
 # Outline
 
-- Collective communication in MPI
-- Collective MPI operations
+- Introducing collective communication in MPI
+    - "Collective" = all (specified) MPI processes participate
+- Examples of common collective communication routines and patterns
 
-# Collective communication in MPI {.section}
+# Introducing collective communication in MPI {.section}
 
-# Introduction
+# Types of collective communication
 
 - Collective communication transmits data among all processes in a
   process group (communicator)
-- Collective communication includes
-    - Data movement
-    - Collective computation
-    - Synchronization
+- Can be used for any of the following:
+    - Data movement, eg. everyone receives from one process
+    - Collective computation, eg. reductions
+    - Synchronization, eg. wait until all processes reach the same instruction
 
-# Introduction
+# Benefits of collective communication
 
-- Collective communication typically outperforms point-to-point communication
-- Code becomes more compact and easier to read:
+- Usually more performant compared to point-to-point communication
+    - Allows internal MPI optimizations and needs less function calls
+- Code tends to be simpler with collective routines:
 
 <div class=column>
 ```fortranfree
@@ -52,20 +54,23 @@ the task 0 to all other tasks
 
 </div>
 
-# Introduction
+# Collective communication restrictions
 
 - These routines **must be called by all the processes** in the communicator
+    - If not, the program deadlocks
 - Amount of sent and received data must match
 - No tag arguments
   - Order of execution must coincide across processes
 
 
-# Collective MPI operations {.section}
+# Examples of collective communication {.section}
 
 # Barrier
 
 MPI_Barrier(`comm`{.input})
-: Waits until all ranks within the communicator reaches the call
+: Waits until all ranks within the communicator reach the call
+
+- Use when you need to synchronization processes
 
 # Broadcasting
 
@@ -73,10 +78,10 @@ MPI_Barrier(`comm`{.input})
 
 ![](img/bcast_comment.png){.center width=80%}
 
-# Broadcasting
+# Broadcasting in MPI
 
 MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `root`{.input}, `comm`{.input})
-: Broadcasts data from the root process to all other processes of the group
+: Broadcasts data from the `root` process to all other processes of the group
 
 
 # Scattering
@@ -94,10 +99,10 @@ MPI_Bcast(`buf`{.input}`fer`{.output}, `count`{.input}, `datatype`{.input}, `roo
 
 ![](img/scatter_data.png){.center width=100%}
 
-# Scattering
+# Scattering in MPI
 
 MPI_Scatter(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
-: Sends data from the root process to all other processes of the group
+: Sends data from the `root` process to all other processes of the group
 
 <p>
 - Data is scattered in portions of equal size (`sendcount`)
@@ -192,7 +197,7 @@ Assume 4 MPI tasks. What are the values in `aloc` in the last task (#3)?
 
 # Gathering data
 
-- Collect data from all the processes to one process
+- Collect data from all the processes to one process (inverse of scatter)
 
 ![](img/gather.png){.center width=80%}
 
@@ -204,7 +209,7 @@ Assume 4 MPI tasks. What are the values in `aloc` in the last task (#3)?
 
 ![](img/gather_data.png){.center width=100%}
 
-# Gathering data
+# Gathering data in MPI
 
 MPI_Gather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `root`{.input}, `comm`{.input})
 : Gathers data to the root process from all other processes of the group
@@ -235,7 +240,7 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 ![](img/allgather.png){.center width=50%}
 
 
-# All gather
+# All gather in MPI
 
 MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output}, `recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
 : Gathers data from all processes and distributes it to all processes
@@ -243,7 +248,7 @@ MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvb
 
 # All to all
 
-- Send a distinct message from every process to every processes
+- Send a distinct message from every process to every process
     - Kind of "All scatter" or "transpose" like operation
 
 <p>
@@ -252,7 +257,7 @@ MPI_Allgather(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvb
 <p>
 
 
-# All to all
+# All to all in MPI
 
 MPI_Alltoall(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf`{.output},`recvcount`{.input}, `recvtype`{.input}, `comm`{.input})
 : All processes send data to all processes
@@ -296,7 +301,7 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 # Summary
 
 - Collective communications involve all the processes within a communicator
-  - All processes must call them
+    - All processes must call them
 - Collective operations make code more transparent and compact
 - Collective routines allow optimizations by MPI library
 
