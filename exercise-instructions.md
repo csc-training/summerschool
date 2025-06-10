@@ -1,106 +1,86 @@
 # General exercise instructions
 
-## Working with the summer school repository
+## Accessing LUMI
 
-The repository of the summer school can be cloned via:
-```
-git clone https://github.com/csc-training/summerschool.git
-```
+You can access the [LUMI](https://docs.lumi-supercomputer.eu/) supercomputer with ssh:
 
-#### Repository structure
+    ssh <username>@lumi.csc.fi
 
-The exercise assignments are provided in various `README.md`s.
-For most of the exercises, skeleton codes are provided both for
-Fortran and C/C++ in the corresponding subdirectory. Some exercise
-skeletons have sections marked with “TODO” for completing the
-exercises. In addition, all of the exercises have exemplary full codes
-(that can be compiled and run) in the `solutions` folder. Note that these are
-seldom the only or even the best way to solve the problem.
+If you don't have the ssh key in the default location, you need to give a path to the key file:
+
+    ssh -i <path-to-private-key> <username>@lumi.csc.fi
+
+See [wiki](../../wiki/Setting-up-CSC-account-and-SSH) for further details.
+
+## First-time setup on LUMI
+
+All the exercises should be carried out in the scratch disk area.
+This scratch area is shared between all the project members, so create a personal working directory there:
+
+    mkdir -p /scratch/project_465000956/$USER
+    cd /scratch/project_465000956/$USER
+
+and clone the summer school git repository there:
+
+    git clone https://github.com/csc-training/summerschool.git /scratch/project_465000956/$USER/summerschool
+
+Now, `/scratch/project_465000956/$USER/summerschool` is your own clone of the summer school repository on LUMI
+and you can modify files there without causing conflicts with other summer school participants.
+
+<details>
+<summary>Optional: Working with through your own git fork</summary>
+
+**We don't have time to teach git during the summer school, so this is recommended only if you are already somewhat familiar with git.**
+
+It is recommended to fork the summer school repository on github and clone your own fork to LUMI instead.
+This allows you to push your exercise solutions to a branch on your own fork.
+
+In order to push commits to your own fork on LUMI, you can use your existing key on your laptop by enabling ssh agent forwarding (`ssh -A <username>@lumi.csc.fi`) *or* to add an SSH public key generated on LUMI to your github account.
+
+Note that the default editor for commit messages is *vim*, if you prefer something else you can add, e.g.,
+
+    export EDITOR=nano
+
+to the file `$HOME/.bashrc`.
+
+</details>
 
 ## Using local workstation
 
 In case you have working parallel program development environment in your laptop
 (Fortran or C/C++ compiler, MPI development library, etc.) you may use that for
-exercises. Note, however, that no support for installing MPI environment or ROCM can be
+exercises. Note, however, that not much support for installing MPI environment or ROCM can be
 provided during the course. Otherwise, you can use CSC supercomputers for
 carrying out the exercises.
 
-## Using supercomputers
 
-Exercises can be carried out using the [LUMI](https://docs.lumi-supercomputer.eu/) supercomputer.
-
-LUMI can be accessed via ssh using the provided username and ssh key pair:
-```
-ssh -i <path-to-private-key> <username>@lumi.csc.fi
-```
-
-#### Working with git (OPTIONAL)
-
-In order to push code to your own fork, you need to **add your SSH public key in LUMI** (created on LUMI, **not** the used to log into LUMI)
-to your github account. The SSH key can be added to your github account using a browser. In your github profile go to "Settings"->"SSH and GPG keys"->"New SSH key" and copy-paste output of the following command:
-```
-cat $HOME/.ssh/id_rsa.pub
-```
-
-Once succesful, make sure you are in your personal workspace in the **scratch** area `/scratch/project_465000536/$USER`, clone the repository, and create a branch:
-```
-git clone git@github.com:<my-github-id>/summerschool.git
-git checkout -b hpcss25
-```
-
-If you haven't used git before in LUMI, you need to add also your identity:
-```
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
-```
-
-The default editor for commit messages is *vim*, if you prefer something else you can add
-to the file `$HOME/.bashrc` *e.g.*
-```
-export EDITOR=nano
-```
-
-#### Disk areas
-
-All the exercises in the supercomputers should be carried out in the
-**scratch** disk area. The name of the scratch directory can be
-queried with the command `lumi-workspaces`. As the base directory is
-shared between members of the project, you should create your own
-directory:
-```
-mkdir -p /scratch/project_465000956/$USER
-cd /scratch/project_465000956/$USER
-```
-
-#### Editors
+## Editors
 
 For editing program source files you can use e.g. the *nano* editor:
 
-```
-nano prog.f90
-```
+    nano prog.f90
+
 (`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save the file and exit the editor press `Ctrl+X`)
 Also other popular editors such as *emacs* and *vim* are available.
+
 
 ## Compilation
 
 LUMI has several programming environments. For the summer school, we recommend that you use the Cray tools.
 
 For CPU programming use:
-```
-module load PrgEnv-cray/8.4.0
-module load LUMI/23.09
+```bash
+module load LUMI/24.03
 module load partition/C
 ```
 For GPU programming use:
-```
-module load PrgEnv-cray
+```bash
 module load LUMI/24.03
 module load partition/G
 module load rocm/6.2.2
 ```
 
-#### MPI
+### MPI
 
 Compilation of the MPI programs can be performed with the `CC`, `cc`, or `ftn`
 wrapper commands:
@@ -116,10 +96,9 @@ or
 ftn -o my_mpi_exe test.f90
 ```
 
-The wrapper commands include automatically all the flags needed for building
-MPI programs.
+The wrapper commands include automatically all the flags needed for building MPI programs.
 
-#### OpenMP (threading with CPUs)
+### OpenMP (threading with CPUs)
 
 Pure OpenMP (as well as serial) programs can also be compiled with the `CC`,
 `cc`, and `ftn` wrapper commands. OpenMP is enabled with the
@@ -139,7 +118,7 @@ ftn -o my_exe test.f90 -fopenmp
 When the code also uses MPI, the wrapper commands include automatically all the flags needed for
 building MPI programs.
 
-#### HDF5
+### HDF5
 
 In order to use HDF5 in CSC supercomputers, you need the load the HDF5 module with MPI I/O support.
 The appropriate module in **Lumi** is
@@ -149,9 +128,8 @@ module load cray-hdf5-parallel
 
 No special flags are needed for compiling and linking, the compiler wrappers take care of them automatically.
 
-Usage in your local workstation may vary.
 
-#### OpenMP offloading
+### OpenMP offloading
 
 On **Lumi**, the following modules are required:
 
@@ -168,7 +146,7 @@ CC -fopenmp <source.cpp>
 ```
 **NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L` or `partition/C` is loaded it will use compiling options for creating code for multi-core cpus. If `partition/G` is loaded it will use compiling options to create code for offloading on GPUs.
 
-#### HIP
+### HIP
 
 Use the following modules :
 
@@ -197,6 +175,7 @@ export HIPCC_LINK_FLAGS_APPEND=$(CC --cray-print-opts=libs)
 hipcc <source.cpp>
 ```
 This is helpful when using make.
+
 #### HIPFORT
 The following modules are required:
 ```bash

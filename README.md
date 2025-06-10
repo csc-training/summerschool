@@ -30,10 +30,10 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 09:00 | Transport from Helsinki city
-| 10:00 | Welcome to the Hotel Nuuksio
-| 10:30 | Introduction to the school
+| 10:00 | Welcome to Nuuksio
+| 10:30 | [Introduction to HPC](intro-to-hpc)
 | 12:00 | Lunch
-| 13:00 | [Introduction to supercomputing](computer-platforms)
+| 13:00 | [Introduction to HPC](intro-to-hpc)
 | 17:00 | Dinner
 | 18:00 | Exercises
 | 19:00 | Get together & Lightning talks
@@ -143,7 +143,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 08:00 | Breakfast
-| 09:00 | Application design
+| 09:00 | Application design and performance
 | 11:30 | Closing
 | 12:00 | Lunch
 | 13:00 | Transport to Helsinki city

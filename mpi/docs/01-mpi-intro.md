@@ -253,6 +253,14 @@ MPI_Comm_rank(`comm`{.input}, `rank`{.output})
 <p>
 - Demo: `hello_rank.c`
 
+# Synchronization
+
+MPI_Barrier(`comm`{.input})
+  : Waits until all ranks within the communicator reaches the call
+
+<p>
+- Demo: `barrier.c`
+
 
 # Summary {.section}
 

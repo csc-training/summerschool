@@ -16,14 +16,13 @@ lang:   en
 - Collective communication transmits data among all processes in a
   process group (communicator)
 - Collective communication includes
-    - data movement
-    - collective computation
-    - synchronization
+    - Data movement
+    - Collective computation
+    - Synchronization
 
 # Introduction
 
-- Collective communication typically outperforms
-  point-to-point communication
+- Collective communication typically outperforms point-to-point communication
 - Code becomes more compact and easier to read:
 
 <div class=column>
@@ -58,10 +57,15 @@ the task 0 to all other tasks
 - These routines **must be called by all the processes** in the communicator
 - Amount of sent and received data must match
 - No tag arguments
-    - Order of execution must coincide across processes
+  - Order of execution must coincide across processes
 
 
 # Collective MPI operations {.section}
+
+# Barrier
+
+MPI_Barrier(`comm`{.input})
+: Waits until all ranks within the communicator reaches the call
 
 # Broadcasting
 
@@ -291,9 +295,8 @@ Assume 4 MPI tasks. What will be the values of **aloc in the process #0?**
 
 # Summary
 
-- Collective communications involve all the processes within a
-  communicator
-    - All processes must call them
+- Collective communications involve all the processes within a communicator
+  - All processes must call them
 - Collective operations make code more transparent and compact
 - Collective routines allow optimizations by MPI library
 

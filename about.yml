@@ -1,13 +1,14 @@
 # This file is used in the generation of the web page
 title: CSC Summer School in High-Performance Computing
 modules:
+  - welcome
   - intro-to-hpc
-  - computer-platforms
   - mpi
   - openmp
   - parallel-io
   - gpu
   - hpc-ai
+  - application-design
   - application-performance
   - application-testing
   - build-systems

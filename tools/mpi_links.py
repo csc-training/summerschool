@@ -31,7 +31,7 @@ def link_mpi_element(mpi_func, element):
     Pandoc element
     """
     url = f'https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/{mpi_func}.3.html'
-    return Link(("", [], [["target", "_blank"], ["style", "color:var(--csc-grey)"]]),
+    return Link(("", [], [["target", "_blank"]]),
                 [element],
                 [url, ""])
 
