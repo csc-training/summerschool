@@ -357,7 +357,7 @@ Many systems also provide node-local disk area for temporary storage
 
 <div class="column">
 
-![](images/lustre-architecture.svg)
+![](img/lustre-architecture.svg)
 Clients interact with MDS once to gain OST access, then I/O to objects directly.
 
 - Allows for **very high, parallel I/O bandwidth!**
