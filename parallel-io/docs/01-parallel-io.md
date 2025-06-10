@@ -153,13 +153,13 @@ MPI_File_open(MPI_COMM_WORLD, "stuff.out",
     MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &file);
 
 // Compute a file offset (in bytes), ie. where in the file this rank should perform the write.
-MPI_Offset offset = (MPI_Offset) (rank * N * sizeof(int));
+MPI_Offset offset = (MPI_Offset) (rank * numElements * sizeof(int));
 
-// Write N integers from each rank from pointer 'data_ptr' to position specified by the offset.
-MPI_File_write_at(file, offset, data_ptr, N, MPI_INT, MPI_STATUS_IGNORE);
+// Each rank writes 'numElements' integers, from pointer 'data_ptr' to position 'offset' in file
+MPI_File_write_at(file, offset, data_ptr, numElements, MPI_INT, MPI_STATUS_IGNORE);
 
 // Or using collective MPI_File_write_at_all(), which can be more performant for large writes.
-MPI_File_write_at_all(file, offset, data_ptr, N, MPI_INT, MPI_STATUS_IGNORE);
+MPI_File_write_at_all(file, offset, data_ptr, numElements, MPI_INT, MPI_STATUS_IGNORE);
 
 MPI_File_close(&file);
 ```
@@ -177,7 +177,7 @@ MPI_File_close(&file);
 
 # Lustre filesystem recap
 
-![](../../computer-platforms/docs/images/lustre-architecture.svg){.center width=100%}
+![](img/lustre-architecture.svg){.center width=100%}
 
 **Striping** = how the file is distributed across OSTs
 
