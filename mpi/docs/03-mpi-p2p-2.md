@@ -24,7 +24,7 @@ MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, 
 MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
   : Performs a blocking receive
   : **Note!** The `count` parameter is the **maximum** number of elements to receive
-  : The `status` parameter is discussed now
+  : The `status` parameter is discussed on the next slide
 
 
 # Status parameter
@@ -36,7 +36,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - Examining the status parameter is needed in communication patterns where the receiver does not know this information a priori
 - When the information is known or irrelevant, the status can be ignored
   - Use the special constant `MPI_STATUS_IGNORE` as status
-  - Benefit: Saves memory in the user program and allows optimizations in the MPI library
+  - Benefit: Cleaner code & allows (small) optimizations in the MPI library
 
 
 # Arbitrary receives
@@ -48,12 +48,12 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 <div class=column style="width:48%">
 - There needs to be still a `MPI_Recv` for each `MPI_Send`
 - `MPI_ANY_SOURCE` may introduce performance overhead
-    - Use only when there is clear benefit (*e.g.* in load balancing)
+    - Typically used only when there is clear benefit (*e.g.* in load balancing)
 </div>
 
 <div class=column style="width:50%">
 ```c++
-if (0 == rank) {
+if (rank == 0) {
   for (int i=1; i < ntasks; i++) {
     MPI_Recv(&data, n, MPI_INT, MPI_ANY_SOURCE,
              42, MPI_COMM_WORLD, &status);
