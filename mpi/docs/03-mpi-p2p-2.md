@@ -24,7 +24,7 @@ MPI_Send(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, 
 MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
   : Performs a blocking receive
   : **Note!** The `count` parameter is the **maximum** number of elements to receive
-  : The `status` parameter is discussed now
+  : The `status` parameter is discussed on the next slide
 
 
 # Status parameter
@@ -36,7 +36,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - Examining the status parameter is needed in communication patterns where the receiver does not know this information a priori
 - When the information is known or irrelevant, the status can be ignored
   - Use the special constant `MPI_STATUS_IGNORE` as status
-  - Benefit: Saves memory in the user program and allows optimizations in the MPI library
+  - Benefit: Cleaner code & allows (small) optimizations in the MPI library
 
 
 # Arbitrary receives
@@ -53,7 +53,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 <div class=column style="width:50%">
 ```c++
-if (0 == rank) {
+if (rank == 0) {
   for (int i=1; i < ntasks; i++) {
     MPI_Recv(&data, n, MPI_INT, MPI_ANY_SOURCE,
              42, MPI_COMM_WORLD, &status);
@@ -67,7 +67,7 @@ if (0 == rank) {
 </div>
 
 
-# Examining status: Example
+# Example: Examining status
 
 <div class="column">
 **C**
@@ -126,6 +126,7 @@ MPI_Probe(`source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
 - Can be used to determine the size of the incoming data<br>
   → Use to allocate large enough buffer for `MPI_Recv`
 
+<small>Exercise: `message-length`</small>
 
 # Common communication patterns {.section}
 
@@ -174,7 +175,7 @@ if (0 == rank) {
 - Avoid hard-coding the `source`  and `destination` arguments (like in most illustratory examples thus far)
   - Such a program would work correctly only with a fixed number of processes
 - Better approach: Store `source` and `destination` in variables and place MPI calls outside `if`s when possible
-  - This produces typically code that is easier to read 
+  - This produces typically code that is easier to read
   - The program is generalizable to arbitrary number of processes
 
 
@@ -236,7 +237,7 @@ dst = (rank + 1) % ntasks;
 src = (rank - 1 + ntasks) % ntasks;
 
 MPI_Sendrecv(message, msgsize, MPI_INT,
-             dst, 42, 
+             dst, 42,
              recvbuf, bufsize, MPI_INT,
              src, 42, MPI_COMM_WORLD,
              &status);

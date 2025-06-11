@@ -158,20 +158,19 @@ is true for values greater than one.
 
 ![Relative runtime for vectorized kernel](runtime_vectorized.svg "Relative runtime vectorized")
 
-For memory bound problems it's useful to use vectorized loads. They can offer significant speed ups
+Especially for memory bound problems it's useful to use vectorized loads. They can offer significant speed ups
 compared to non-vectorized loads. The red regions in the top right corners for cases `N = 2, 4` can
 be explained by the slowness of the base kernel with those configurations. See the deviation plot for the base kernel:
 there's a similar pattern.
 
-For compute bound problem (`N = 8`) vectorized loads only hurt performance. This repeats for the strided and
-strided vectorized cases as well. More detailed measurement is needed to explain why.
+If there's not enough data, vectorized loads can hurt performance, however.
 
 #### Consecutive values for loop
 
 ![Relative runtime for consecutive kernel](runtime_consecutive.svg "Relative runtime consecutive")
 
 This is a very bad strategy. It's due to the increased memory traffic that this kernel is so slow.
-With GPUs, newer divide the work among the threads like this.
+With GPUs, never divide the work among the threads like this.
 
 The memory traffic increases both up and left. Up, because there are more values to process over all
 and thus also per thread. Left, because there are fewer threads, so more values per thread.
@@ -208,7 +207,7 @@ Block sizes that are multiples of 256 are fastest, this is very clear for the co
 
 Block sizes 832, 896 and 960 are especially bad with `N = 2, 4`.
 
-Smallest block size performs the best overall, whether the problem is compute or memory bound.
+Block size 256 performs very well in each case, whether the problem is compute or memory bound.
 
 #### Vectorized loads
 
@@ -257,7 +256,8 @@ but the wavefronts can do some work with the old data, thus hiding some of the l
 
 ![Deviation from row average for strided kernel](deviation_strided.svg "Deviation from row average for strided kernel")
 
-The kernel performs best with the largest block size, whether the problem is memory or compute bound.
+For the strided loop, the block size matters less compared to the base and vectorized kernels.
+The multiples of 256 threads per kernel are still visible, and there's no reason not to use one of these values.
 
 #### Vectorized loads, strided for loop
 

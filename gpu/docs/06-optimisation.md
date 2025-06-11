@@ -30,7 +30,7 @@ lang:     en
 | cuSPARSE | hipSPARSE | rocSPARSE  | Sparse BLAS + SMV                                                                   |
 | cuSOLVER | hipSOLVER | rocSOLVER  | Lapack library                                                                      |
 | AMG-X    |           | rocALUTION | Sparse iterative solvers and preconditioners with Geometric and Algebraic MultiGrid |
-| Thrust   |           | rocThrust  | C++ parallel algorithms library                                                     |
+| Thrust   |           | https://github.com/ROCm/rocThrust  | C++ parallel algorithms library                                                     |
 
 
 # Libraries (II)
@@ -237,7 +237,7 @@ double val = global_array[tid];
 
 ---
 
-## Local data share
+# Local data share
 
 - Variable defined as `__shared__` is shared within block 
 - Use cases:
@@ -248,22 +248,29 @@ double val = global_array[tid];
   ```cpp
   __shared__ float buf[256];
   ```
+- Divided in banks for parallel access
+  - one unique memory address access per bank per cycle
 
 ---
 
-## Local data share
-
-**Advanced optimization**: avoid bank conflicts
-
-- LDS is divided into 32 banks of 512 Dwords (MI250x), each serve one address per cycle
+# Local data share: banked access
 
 
-<div class="column">
-<! [](img/NoBankConflicts.jpeg){width=100%}>
-</div>
-<div class="column">
-<! [](img/BankConflicts.jpeg){width=100%}>
-</div>
+::::::{.columns}
+:::{.column}
+- Example: <br>8 banks, 16 threads
+  - Left: 2 bank conflicts per cycle,  use all LDS
+  - Right: 8 conflicts per cycle, use $\frac 1 4$ of LDS
+
+- MI250x: 32 banks of 512 dwords
+:::
+:::{.column}
+![](img/no-bank-conflicts.svg){width=80%}
+:::
+:::{.columnn}
+![](img/many-bank-conflicts.svg){width=23cm}
+:::
+::::::
 
 
 # 5. Avoid branching within warp
@@ -350,12 +357,18 @@ if(tid%2 == 0) {
 
 # 6. Minimise number of active local variables 
 
+::: {.incremental}
+- Registers are allocated per block basis upon starting kernel
+  - Fewer blocks on CU if too many registers are used ⇒ *reduced occupancy*
 - Local variables are stored in registers
-  - MI250x 128 kiB per SIMD-unit
+  - MI250x with 256 threads per block (smallest sensible): 2 kiB registers per thread
 - What happens if there is not enough registers? 
   - Variables are "spilled" to local memory on slow global device memory
-- Might happen if the kernel is very complicated
-  - Solution: reduce *occupancy*.
+- Solution: 
+  - Reduce *occupancy*: Fewer threads per block (MI250x: >=256)
+  - Use LDS for temporary storage area
+  - Divide kernels mindfully
+:::
 
 # Example: Using local shared memory in matrix transpose{.section}
 
@@ -411,6 +424,7 @@ The duration is `0.401 ms`  and the effective bandwidth `311 GB/s`
 # Matrix transpose with shared memory
 
 <small>
+
 ```cpp
 __global__ void transpose_lds_kernel(float *in, float *out, int width,
                                      int height) {
@@ -431,6 +445,7 @@ __global__ void transpose_lds_kernel(float *in, float *out, int width,
   out[out_index] = tile[threadIdx.x][threadIdx.y];
 }
 ```
+
 </small>
 
 The duration is `0.185 ms`  and the effective bandwidth `674 GB/s`

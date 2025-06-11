@@ -2,62 +2,66 @@
 #include <vector>
 #include <mpi.h>
 
-void init_buffers(std::vector<int> &sendbuffer, std::vector<int> &recvbuffer);
-void print_buffers(std::vector<int> &buffer);
+void init_buffer(std::vector<int> &buffer);
+void print_buffer(std::vector<int> &buffer);
 
 
 int main(int argc, char *argv[])
 {
     int ntasks, rank, size=12;
-    std::vector<int> sendbuf(size);
-    std::vector<int> recvbuf(size);
-    MPI_Status status;
+    std::vector<int> buf(size);
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    /* Initialize message buffers */
-    init_buffers(sendbuf, recvbuf);
+    /* Initialize message buffer */
+    init_buffer(buf);
 
     /* Print data that will be sent */
-    print_buffers(sendbuf);
+    print_buffer(buf);
+
+    /* Start timing */
+    MPI_Barrier(MPI_COMM_WORLD);
+    double t0 = MPI_Wtime();
 
     /* Send everywhere */
+    // TODO: Implement the broadcast of the array buf
 
-    // TODO for broadcast: Implement the broadcast of the array sendbuf using send and recv functions
-    // TODO for scatter: Implement the scatter of the array sendbuf using send and recv functions
+    /* End timing */
+    double t1 = MPI_Wtime();
 
     /* Print data that was received */
-    print_buffers(recvbuf);
+    print_buffer(buf);
+    if (rank == 0) {
+        printf("Time elapsed: %6.8f s\n", t1 - t0);
+    }
 
     MPI_Finalize();
     return 0;
 }
 
 
-void init_buffers(std::vector<int> &sendbuffer, std::vector<int> &recvbuffer)
+void init_buffer(std::vector<int> &buffer)
 {
     int rank;
-    int buffersize = sendbuffer.size();
+    int buffersize = buffer.size();
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     if (rank == 0) {
         for (int i = 0; i < buffersize; i++) {
-            recvbuffer[i] = -1;
-            sendbuffer[i] = i;
+            buffer[i] = i;
         }
     } else {
         for (int i = 0; i < buffersize; i++) {
-            recvbuffer[i] = -1;
-            sendbuffer[i] = -1;
+            buffer[i] = -1;
         }
     }
 }
 
 
-void print_buffers(std::vector<int> &buffer)
+void print_buffer(std::vector<int> &buffer)
 {
     int rank, ntasks;
     int buffersize = buffer.size();

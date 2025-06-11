@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="323.84421mm"
+   height="154.48419mm"
+   viewBox="0 0 323.84421 154.48419"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="cluster_diagram.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:snap-global="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:zoom="0.77771465"
+     inkscape:cx="810.06575"
+     inkscape:cy="264.87864"
+     inkscape:window-width="2560"
+     inkscape:window-height="1351"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path66292" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path66286" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path66274" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path66268" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mstart"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(0.4,0,0,0.4,4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path66271" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(32.818679,-5.9877405)">
+    <rect
+       style="fill:#d8d8d8;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect66695"
+       width="66.080338"
+       height="154.4418"
+       x="55.315186"
+       y="5.9877405" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect846"
+       width="50"
+       height="12"
+       x="0.40320975"
+       y="45.796131" />
+    <g
+       id="g74637">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect928"
+         width="46.447144"
+         height="11.999998"
+         x="125.3022"
+         y="25.076921" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+         x="127.01252"
+         y="32.634102"
+         id="text4984"><tspan
+           sodipodi:role="line"
+           id="tspan4982"
+           style="font-size:5.64444px;stroke-width:0.264583"
+           x="127.01252"
+           y="32.634102">Compute node</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;stroke-width:0.264583"
+       x="88.086639"
+       y="14.240832"
+       id="text9906-7"><tspan
+         sodipodi:role="line"
+         id="tspan9904-5"
+         style="font-size:5.64444px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="88.086639"
+         y="14.240832">High-speed network</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="88.086639"
+         y="21.296383"
+         id="tspan60617">(interconnect)</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="88.086639"
+         y="28.351933"
+         id="tspan33724" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="213.16917"
+       y="49.869587"
+       id="text9906-7-3"><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="213.16917"
+         y="49.869587"
+         id="tspan33724-2">Compute nodes have:</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="213.16917"
+         y="56.925137"
+         id="tspan134892">- CPUs and RAM (and GPUs)</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="213.16917"
+         y="63.980686"
+         id="tspan87981">- No storage or only</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="213.16917"
+         y="71.03624"
+         id="tspan134894"><tspan
+   style="fill:#000000;fill-opacity:0"
+   id="tspan138064">-</tspan> temporary storage</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="213.16917"
+         y="78.091789"
+         id="tspan151327" /><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="213.16917"
+         y="85.147339"
+         id="tspan151323">Compute nodes are used</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="213.16917"
+         y="92.202888"
+         id="tspan151321">via job scheduling system.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="-22.17808"
+       y="106.21989"
+       id="text9906-7-3-9"><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-22.17808"
+         y="106.21989"
+         id="tspan151321-0">Login nodes are similar</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-22.17808"
+         y="113.27544"
+         id="tspan184530">to compute nodes</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-22.17808"
+         y="120.33099"
+         id="tspan184532">except that they are</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-22.17808"
+         y="127.38654"
+         id="tspan184534">accessed directly via ssh.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="4.405611"
+       y="53.353313"
+       id="text14496"><tspan
+         sodipodi:role="line"
+         id="tspan14494"
+         style="font-size:5.64444px;stroke-width:0.264583"
+         x="4.405611"
+         y="53.353313">Login nodes</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.93889px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="130.82355"
+       y="148.79997"
+       id="text14496-3"><tspan
+         sodipodi:role="line"
+         id="tspan14494-6"
+         style="font-size:4.93889px;stroke-width:0.264583"
+         x="130.82355"
+         y="148.79997">Storage servers</tspan></text>
+    <g
+       id="g16682"
+       transform="matrix(0.59183655,0,0,0.59183655,20.985321,-33.126756)"
+       style="stroke-width:1.68966">
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+         id="path16458"
+         cx="-67.944893"
+         cy="100.98741"
+         r="10.733106" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+         id="circle16540"
+         sodipodi:type="arc"
+         sodipodi:cx="-67.944893"
+         sodipodi:cy="100.98741"
+         sodipodi:rx="7.9077997"
+         sodipodi:ry="7.9077997"
+         sodipodi:start="0"
+         sodipodi:end="3.1415927"
+         sodipodi:arc-type="arc"
+         d="m -60.037093,100.98741 a 7.9077997,7.9077997 0 0 1 -3.9539,6.84836 7.9077997,7.9077997 0 0 1 -7.9078,0 7.9077997,7.9077997 0 0 1 -3.9539,-6.84836"
+         sodipodi:open="true" />
+      <g
+         id="g16669"
+         transform="translate(-0.08721542)"
+         style="stroke-width:1.68966">
+        <circle
+           style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+           id="path16583"
+           cx="-71.420708"
+           cy="96.9189"
+           r="1.187067" />
+        <circle
+           style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+           id="circle16665"
+           cx="-64.294647"
+           cy="96.9189"
+           r="1.187067" />
+      </g>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 50.506147,51.79613 H 95.809389"
+       id="path16717"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 125.0522,31.076921 H 95.979853 l -4e-6,119.508909"
+       id="path16799"
+       sodipodi:nodetypes="ccc" />
+    <g
+       id="g83245">
+      <g
+         id="g83238">
+        <rect
+           style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="rect930"
+           width="79.5"
+           height="12"
+           x="125.3022"
+           y="83.69072" />
+        <text
+           xml:space="preserve"
+           style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+           x="127.01252"
+           y="91.247902"
+           id="text9906"><tspan
+             sodipodi:role="line"
+             id="tspan9904"
+             style="font-size:5.64444px;stroke-width:0.264583"
+             x="127.01252"
+             y="91.247902">Compute node with GPUs</tspan></text>
+      </g>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 95.979849,89.69072 H 125.0522"
+         id="path16801" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 95.979849,150.58583 H 125.0522"
+       id="path16803" />
+    <g
+       id="g18093"
+       transform="translate(46.311828,35.441946)">
+      <path
+         id="path17053"
+         style="fill:none;stroke:#000000;stroke-width:1.88976;stroke-linecap:round;stroke-linejoin:round"
+         d="m 393.46484,398.76953 c -52.42291,2.2e-4 -94.91926,10.62474 -94.91796,23.73047 v 25.37891 c -10e-4,13.10573 42.49505,23.73025 94.91796,23.73047 52.42368,6e-5 94.92123,-10.62455 94.91993,-23.73047 0,-25.37891 0,0 0,-25.37891 10e-4,-13.10592 -42.49625,-23.73053 -94.91993,-23.73047 z"
+         transform="scale(0.26458333)"
+         sodipodi:nodetypes="ccccccc" />
+      <path
+         id="path17372"
+         style="fill:none;stroke:#000000;stroke-width:0.499999;stroke-linecap:round;stroke-linejoin:round"
+         d="m 129.21863,111.7863 a 25.114126,6.2785316 0 0 1 -25.11413,6.27853 25.114126,6.2785316 0 0 1 -25.114129,-6.27853 25.114126,6.2785316 0 0 1 25.114129,-6.27853 25.114126,6.2785316 0 0 1 25.11413,6.27853 z" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="m -12.798293,32.772128 11.3369586,11.33696"
+       id="path66263" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="M -12.791501,70.86121 -1.4545406,59.524251"
+       id="path66645" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="m -17.684761,51.800934 16.0328814,1e-6"
+       id="path66647" />
+    <g
+       id="g66659"
+       transform="matrix(0.59183655,0,0,0.59183655,14.098615,-7.9719112)"
+       style="stroke-width:1.68966">
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+         id="circle66649"
+         cx="-67.944893"
+         cy="100.98741"
+         r="10.733106" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+         id="path66651"
+         sodipodi:type="arc"
+         sodipodi:cx="-67.944893"
+         sodipodi:cy="100.98741"
+         sodipodi:rx="7.9077997"
+         sodipodi:ry="7.9077997"
+         sodipodi:start="0"
+         sodipodi:end="3.1415927"
+         sodipodi:arc-type="arc"
+         d="m -60.037093,100.98741 a 7.9077997,7.9077997 0 0 1 -3.9539,6.84836 7.9077997,7.9077997 0 0 1 -7.9078,0 7.9077997,7.9077997 0 0 1 -3.9539,-6.84836"
+         sodipodi:open="true" />
+      <g
+         id="g66657"
+         transform="translate(-0.08721542)"
+         style="stroke-width:1.68966">
+        <circle
+           style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+           id="circle66653"
+           cx="-71.420708"
+           cy="96.9189"
+           r="1.187067" />
+        <circle
+           style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+           id="circle66655"
+           cx="-64.294647"
+           cy="96.9189"
+           r="1.187067" />
+      </g>
+    </g>
+    <g
+       id="g66671"
+       transform="matrix(0.59183655,0,0,0.59183655,20.985321,16.805986)"
+       style="stroke-width:1.68966">
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+         id="circle66661"
+         cx="-67.944893"
+         cy="100.98741"
+         r="10.733106" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+         id="path66663"
+         sodipodi:type="arc"
+         sodipodi:cx="-67.944893"
+         sodipodi:cy="100.98741"
+         sodipodi:rx="7.9077997"
+         sodipodi:ry="7.9077997"
+         sodipodi:start="0"
+         sodipodi:end="3.1415927"
+         sodipodi:arc-type="arc"
+         d="m -60.037093,100.98741 a 7.9077997,7.9077997 0 0 1 -3.9539,6.84836 7.9077997,7.9077997 0 0 1 -7.9078,0 7.9077997,7.9077997 0 0 1 -3.9539,-6.84836"
+         sodipodi:open="true" />
+      <g
+         id="g66669"
+         transform="translate(-0.08721542)"
+         style="stroke-width:1.68966">
+        <circle
+           style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+           id="circle66665"
+           cx="-71.420708"
+           cy="96.9189"
+           r="1.187067" />
+        <circle
+           style="fill:none;stroke:#000000;stroke-width:1.19215;stroke-linecap:round;stroke-linejoin:round"
+           id="circle66667"
+           cx="-64.294647"
+           cy="96.9189"
+           r="1.187067" />
+      </g>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 95.979849,45.791149 H 125.0522"
+       id="path66779" />
+    <g
+       id="g74642"
+       transform="translate(0,1.1027347)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect66777"
+         width="46.447144"
+         height="11.999998"
+         x="125.3022"
+         y="38.688416" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+         x="127.01252"
+         y="46.245598"
+         id="text74619"><tspan
+           sodipodi:role="line"
+           id="tspan74617"
+           style="font-size:5.64444px;stroke-width:0.264583"
+           x="127.01252"
+           y="46.245598">Compute node</tspan></text>
+    </g>
+    <g
+       id="g74647"
+       transform="translate(0,-0.1632733)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect74621"
+         width="46.447144"
+         height="11.999998"
+         x="125.3022"
+         y="54.505375" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+         x="127.01252"
+         y="62.062557"
+         id="text74625"><tspan
+           sodipodi:role="line"
+           id="tspan74623"
+           style="font-size:5.64444px;stroke-width:0.264583"
+           x="127.01252"
+           y="62.062557">Compute node</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 95.979849,60.342101 H 125.0522"
+       id="path74627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 95.979849,74.893055 H 125.0522"
+       id="path74649" />
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="127.01252"
+       y="75.354553"
+       id="text74653"><tspan
+         sodipodi:role="line"
+         id="tspan74651"
+         style="font-size:5.64444px;stroke-width:0.264583"
+         x="127.01252"
+         y="75.354553">...</tspan></text>
+    <g
+       id="g83257"
+       transform="translate(0,14.893552)">
+      <g
+         id="g83253">
+        <rect
+           style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="rect83247"
+           width="79.5"
+           height="12"
+           x="125.3022"
+           y="83.69072" />
+        <text
+           xml:space="preserve"
+           style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+           x="127.01252"
+           y="91.247902"
+           id="text83251"><tspan
+             sodipodi:role="line"
+             id="tspan83249"
+             style="font-size:5.64444px;stroke-width:0.264583"
+             x="127.01252"
+             y="91.247902">Compute node with GPUs</tspan></text>
+      </g>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 95.979849,89.69072 H 125.0522"
+         id="path83255" />
+    </g>
+    <g
+       id="g83365"
+       transform="translate(0,29.787095)">
+      <g
+         id="g83361">
+        <rect
+           style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="rect83355"
+           width="79.5"
+           height="12"
+           x="125.3022"
+           y="83.69072" />
+        <text
+           xml:space="preserve"
+           style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+           x="127.01252"
+           y="91.247902"
+           id="text83359"><tspan
+             sodipodi:role="line"
+             id="tspan83357"
+             style="font-size:5.64444px;stroke-width:0.264583"
+             x="127.01252"
+             y="91.247902">Compute node with GPUs</tspan></text>
+      </g>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 95.979849,89.69072 H 125.0522"
+         id="path83363" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 95.979849,134.37137 H 125.0522"
+       id="path83562" />
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="127.01252"
+       y="134.5817"
+       id="text83653"><tspan
+         sodipodi:role="line"
+         id="tspan83651"
+         style="font-size:5.64444px;stroke-width:0.264583"
+         x="127.01252"
+         y="134.5817">...</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="M 211.55368,48.290254 174.71307,29.470605"
+       id="path84161"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="m 211.55368,48.290254 -10.3424,30.611247"
+       id="path131804"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:sans-serif;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="208.52191"
+       y="140.16641"
+       id="text139346"><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="208.52191"
+         y="140.16641"
+         id="tspan139698">Storage is shared network</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="208.52191"
+         y="147.22197"
+         id="tspan139344">storage (parallel filesystem).</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="m 207.25858,138.44024 -28.81653,8.34103"
+       id="path141375"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="M -1.6798462,100.65609 22.286082,60.239993"
+       id="path185474"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>

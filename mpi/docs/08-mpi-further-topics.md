@@ -8,7 +8,6 @@ lang:   en
 
 - Process topologies
   - Cartesian communicator
-  - Neighborhood collectives
 - User-defined datatypes
 - Additional communication modes
   - Persistent communication
@@ -27,7 +26,18 @@ lang:   en
 # Example: Cartesian communicator
 
 - Cartesian topology represents a regular multidimensional grid
-- TODO: add information relevant for heat equation
+
+```c
+int ndims = 2;
+int dims[ndims] = {0};
+int periods[ndims] = {0};
+int coords[ndims] = {0};
+
+MPI_Dims_create(size, ndims, dims);
+MPI_Cart_create(MPI_COMM_WORLD, ndims, dims, periods, 1, &comm);
+MPI_Comm_rank(comm, &rank);
+MPI_Cart_coords(comm, rank, ndims, coords)
+```
 
 # User-defined datatypes {.section}
 
@@ -35,7 +45,7 @@ lang:   en
 
 - User-defined datatypes enable communication of non-contiguous or heterogeneous data with single MPI communication operations
   - Improves code readability and portability
-  - Allows optimizations by the MPI runtime
+  - Allows optimizations by MPI at runtime
 - MPI provides constructors for several specific types
 
 # Example: Sending rows of matrix in Fortran
@@ -71,7 +81,7 @@ call mpi_type_free(rowtype, ierr)
   - Compare to "regular" communication where sends and receives of different processes need to match
 - Always non-blocking
 - Certain algorithms can be easier to implement with one-sided communication
-- Can potentiall reduce synchronization overheads and provide better performance especially on recent hardware
+- Can potentially reduce synchronization overheads and provide better performance especially on recent hardware
 
 # Summary {.section}
 
