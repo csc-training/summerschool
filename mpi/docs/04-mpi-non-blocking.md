@@ -21,7 +21,7 @@ lang:   en
 - Avoids many common deadlock situations
 - Collective operations are also available as non-blocking versions
 
-# Non-blocking send ("Implicit Send")
+# Non-blocking send
 
 MPI_Isend(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
 : Starts a nonblocking send
@@ -31,7 +31,13 @@ MPI_Isend(`buffer`{.input}, `count`{.input}, `datatype`{.input}, `dest`{.input},
   - Handle to `MPI_Request` object, used to keep track of the send operation
 * **Send buffer must not be written to until one has checked that the operation is over**
 
-# Non-blocking receive ("Implicit Receive")
+<small>
+**Trivia:** The "I" in `ISend` stands for immediate/incomplete.
+
+- Can usually identify non-blocking variants of MPI routines by this prefix
+</small>
+
+# Non-blocking receive
 
 MPI_Irecv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input}, `tag`{.input}, `comm`{.input}, `request`{.output})
 : Starts a nonblocking receive
