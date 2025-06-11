@@ -4,40 +4,42 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
-# Communicators
+# Communicators in MPI
 
-- The communicator determines the "communication universe"
-    - The source and destination of a message are identified by the process ranks
-      *within* the communicator
-- So far: `MPI_COMM_WORLD` (all processes)
-- Processes can be divided into subcommunicators
-    - Task level parallelism with process groups performing separate tasks
-    - Collective communication within a group of processes
-    - Parallel I/O
+- So far we have used the `MPI_COMM_WORLD` communicator
+    - "World" refers to all MPI processes started with `mpirun` or similar call
 
-# Communicators
+- More generally, an MPI communicator determines the "communication universe"
+    - Each process has a unique integer identifier (the **rank**) within **each communicator it belongs to**
+    - `MPI_COMM_WORLD` is a special communicator created by MPI at startup
+
+- Can create new communicators for interesting communication patterns
+    - Eg: task level parallelism with process groups performing separate tasks
+
+# Communicator splitting
 
 <div class="column">
-- Communicators are dynamic
-- A task can belong simultaneously to several communicators
-    - Unique rank in each communicator
+- We can group processes into communication groups by **splitting** from `MPI_COMM_WORLD`
+- A process can belong simultaneously to several communicators
+    - Unique rank in *each* communicator
 </div>
 <div class="column">
 ![](img/communicator.png){.center width=80%}
 </div>
 
 
-# Creating new communicator {.split-definition}
+# Using communicator splitting {.split-definition}
 
 MPI_Comm_split(`comm`{.input}, `color`{.input}, `key`{.input}, `newcomm`{.output})
-: Creates new communicators based on colors and keys
+: Creates new communicators based on *colors* and *keys*
 
 <p>
+- **Color** is an integer label given by us (the programmer) to each process
 - Processes with the same color belong to the same new communicator
-  - If color is `MPI_UNDEFINED`, a process does not belong to any of the new communicators
-- Key controls rank assignment
+  - If color is `MPI_UNDEFINED`, the process does not belong to any of the new communicators
+- **Key** controls rank assignment within the new communicator
 
-# Creating new communicator
+# `MPI_Comm_split` example
 
 <div class=column>
 ```c
@@ -76,7 +78,7 @@ I am rank 1 in MPI_COMM_WORLD, but 0 in Comm 2.
 
 </div>
 
-# Using an own communicator
+# Using a custom communicator
 
 <div class=column>
 <p>
@@ -115,8 +117,8 @@ After broadcast:
 
 # Summary
 
-- Defining new communicators usually required in real-world programs
-    - Task parallelism, using libraries, I/O,...
+- Defining new communicators is common in real-world programs
+    - Task parallelism, interfacing with libraries, I/O,...
 - We introduced one way of creating new communicators via
   `MPI_Comm_split`
     - Tasks assigned with a "color", which can be `MPI_UNDEFINED` if
