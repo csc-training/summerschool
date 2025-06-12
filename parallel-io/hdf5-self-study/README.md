@@ -11,15 +11,13 @@ library that we can use from our code.
 
 We will cover the following:
 - Creating and writing HDF5 datasets into a file, and reading them
-- Writing user-specified metadata for the datasets using HDF5 attributes
 - Investigating HDF5 file contents with command line tools
-- Using MPI parallel I/O with HDF5 files
+- Writing user-specified metadata for the datasets using HDF5 attributes
 - Using HDF5 hyperslabs to selectively operate on parts of a dataset
+- Using MPI parallel I/O with HDF5 files
 
 You can find the official HDF5 documentation [here](https://support.hdfgroup.org/documentation/hdf5/latest/index.html).
 Especially useful are the User Guide and Reference Manual tabs.
-
-**TODO:** Prepare Fortran example codes!
 
 ## The HDF5 programming interface (= API)
 
@@ -57,6 +55,7 @@ C-style API, but has the following differences:
 - Order of arguments may sometimes vary relative to the C version. Input arguments come first, then output parameters
 (including the error code), then optional input parameters.
 
+**Please note that we currently do not have HDF5 exercises for the Fortran API.**
 
 ## HDF5 file structure, datasets and dataspaces
 
@@ -134,15 +133,15 @@ write a collective operation (more on this later). Can pass `H5P_DEFAULT` to use
 - The source data buffer, ie. what data to write.
 
 The memspace and file space arguments in particular may appear somewhat abstract. In essence, memory space specifies
-shape of the source data in memory, and file space specifies where in the file dataset the data should be written to.
-Both arguments are handles to dataspace objects (remember that a dataspace really describes a multidimensional grid).
-HDF5 has the special keyword `H5S_ALL`, which when passed as *both* the memspace and file space arguments means that
-the entire dataspace of the dataset will be written to. This is often the desired behavior if we have previously created the
+the shape of the source data in memory, and file space specifies where in the file dataset the data should be written to.
+Both arguments are handles to dataspace objects (remember that a dataspace essentially describes a multidimensional grid).
+HDF5 has a special keyword `H5S_ALL`, which when passed as *both* the memspace and file space arguments means that
+the entire dataspace of the dataset will be written to. This is often the desired behavior if we have created the
 dataset to exactly match dimensions of our source array.
 We will later have examples of using the memspace and file space arguments for more complicated writes.
 
 Here is a minimal code snippet using the C-API to write a 2D dataset.
-Note that this does NOT support parallel I/O (yet).
+Note that this example does NOT support parallel I/O.
 ```c
 // Data array that we wish to write. In a real program this would be filled with some relevant data
 int myMatrix[4][5];
@@ -198,7 +197,7 @@ indeed unnecessarily complicated, but becomes very useful when working with comp
 
 ### Dataset exercise
 
-Part 1 of [`hdf5-dataset-write.cpp`](hdf5-dataset-write). This exercise produces the HDF5 file that we previously
+Part 1 of [`hdf5-write-dataset`](hdf5-write-dataset). This exercise produces the HDF5 file that we previously
 inspected with `h5dump`.
 
 ### Reading HDF5 files
@@ -291,7 +290,7 @@ H5Sclose(attributeSpaceId);
 
 ### Exercise: writing attributes
 
-Part 2 of [`hdf5-dataset-write.cpp`](hdf5-dataset-write).
+Part 2 of [`hdf5-write-dataset`](hdf5-write-dataset).
 
 
 ## Parallel write with HDF5 and MPI
