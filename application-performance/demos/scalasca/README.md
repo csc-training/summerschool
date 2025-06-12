@@ -33,7 +33,7 @@ Run the program on LUMI to get a reference runtime:
 
 ```bash
 srun \
-    --account=project_462000007 \
+    --account=project_46200095 \
     -N 2 \
     -n 128 \
     -c 1 \
@@ -61,7 +61,7 @@ ml Scalasca/2.6.2-cpeCray-24.03
 scalasca \
     -analyze \
 srun \
-    --account=project_462000007 \
+    --account=project_46200095 \
     -N 2 \
     -n 128 \
     -c 1 \
@@ -70,10 +70,11 @@ srun \
 ./heat_mpi 4096 4096 20000
 ```
 
-Score the summary:
+Score the summary and view 25 rows:
 
 ```bash
 scalasca -examine -s scorep_heat_mpi_2p128_sum
+head -n 25 scorep_heat_mpi_2p128_sum/scorep.score
 ```
 
 Generate a filter:
@@ -102,7 +103,7 @@ scalasca \
     -analyze \
     -f initial_scorep.filter \
 srun \
-    --account=project_462000007 \
+    --account=project_46200095\
     -N 2 \
     -n 128 \
     -c 1 \
@@ -129,7 +130,7 @@ Rerun with fewer ranks:
 scalasca \
     -analyze \
 srun \
-    --account=project_462000007 \
+    --account=project_46200095 \
     -N 1 \
     -n 64 \
     -c 1 \
@@ -138,4 +139,49 @@ srun \
 ./heat_mpi 4096 4096 20000
 
 scalasca -examine -s scorep_heat_mpi_1p64_sum/
+```
+
+Tracing:
+
+```bash
+OMP_NUM_THREADS=16 \
+SCOREP_TOTAL_MEMORY=48MB \
+scalasca \
+    -analyze \
+    -f initial_scorep.filter \
+    -q \
+    -t \
+srun \
+    --account=project_46200095 \
+    -N 2 \
+    -n 16 \
+    -c 16 \
+    -t 00:10:00 \
+    -p standard \
+./heat_hybrid 4096 4096 5000
+```
+
+## On Mahti
+
+```bash
+ml gcc/11.2.0
+ml openmpi/4.1.2
+ml scorep/7.0
+ml scalasca/2.6
+
+OMP_NUM_THREADS=16 \
+SCOREP_TOTAL_MEMORY=48MB \
+scalasca \
+    -analyze \
+    -f initial_scorep.filter \
+    -q \
+    -t \
+srun \
+    --account=project_46200095 \
+    -N 2 \
+    -n 16 \
+    -c 16 \
+    -t 00:10:00 \
+    -p test \
+./heat_hybrid 4096 4096 5000
 ```
