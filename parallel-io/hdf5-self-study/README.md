@@ -91,9 +91,10 @@ Running `h5ls example_datasets.h5` lists all datasets in the file:
 ```
 MyDataset1D              Dataset {16}
 MyDataset2D              Dataset {4, 4}
-MyDataset3D              Dataset {2, 3, 3}
+MyDataset3D              Dataset {2, 2, 4}
 ```
-The file contains three datasets of shapes `{16}`, `{4, 4}`, `{2, 3, 3}`; their names are on the first column.
+The file contains three datasets of shapes `{16}`, `{4, 4}`, `{2, 2, 4}`; their names are on the first column.
+Each dataset thus contains 16 data elements but in different layouts.
 
 Next run `h5dump example_datasets.h5`. This command gives a full dump of HDF5 file contents. For each dataset, the
 `DATASPACE` field gives the type and shape of the dataspace associated with that dataset ("simple dataspace" is HDF5
@@ -121,14 +122,24 @@ into the file.
 
 The last step, `H5Dwrite()`, is a rather complex operation.
 Quoting from the [docs](https://portal.hdfgroup.org/documentation/hdf5/latest/_l_b_dset_r_w.html):
-> During a dataset I/O operation, the library transfers raw data between memory and the file. The data in memory can have a datatype different from that of the file and can also be of a different size (i.e., the data in memory is a subset of the dataset elements, or vice versa). Therefore, to perform read or write operations, the application program must specify:
+> During a dataset I/O operation, the library transfers raw data between memory and the file. The data in memory can have a datatype different from that of the file and can also be of a different size (i.e., the data in memory is a subset of the dataset elements, or vice versa).
 
-- The dataset
-- The dataset's datatype in memory
-- The dataset's dataspace in memory
-- The dataset's dataspace in the file
-- The dataset transfer property list
-- The data buffer
+The inputs required for writing are:
+- Handle to the dataset.
+- The dataset's datatype in memory.
+- The dataset's dataspace in memory ("memory space" or "memspace").
+- The dataset's dataspace in the file ("file space").
+- The dataset transfer property list. This can be used to configure various aspects of the I/O operation, eg. make the
+write a collective operation (more on this later). Can pass `H5P_DEFAULT` to use default transfer properties.
+- The source data buffer, ie. what data to write.
+
+The memspace and file space arguments in particular may appear somewhat abstract. In essence, memory space specifies
+shape of the source data in memory, and file space specifies where in the file dataset the data should be written to.
+Both arguments are handles to dataspace objects (remember that a dataspace really describes a multidimensional grid).
+HDF5 has the special keyword `H5S_ALL`, which when passed as *both* the memspace and file space arguments means that
+the entire dataspace of the dataset will be written to. This is often the desired behavior if we have previously created the
+dataset to exactly match dimensions of our source array.
+We will later have examples of using the memspace and file space arguments for more complicated writes.
 
 Here is a minimal code snippet using the C-API to write a 2D dataset.
 Note that this does NOT support parallel I/O (yet).
@@ -164,117 +175,36 @@ hid_t datasetId = H5Dcreate(
     H5P_DEFAULT       // Default access options
 );
 
-// Perform the actual write. Last argument is a pointer to the source data that we wish to write.
-// H5Dwrite automatically converts between the "dataset in memory" (the dataset object we created)  from "memory" space ('myMatrix' array) to "file" space
+// Perform the actual write. Passing H5S_ALL to memspace and file space arguments is OK here since the dataset has
+// the same dimensions as our array, and we want to write the entire array
 // The return value is an error code (< 0 if something went wrong). We skip manual error checking here.
 herr_t status = H5Dwrite(
     datasetId,      // Dataset to write to
     H5T_NATIVE_INT, // Type of the data
-    H5S_ALL,        // Dataspace describing layout of the memory buffer
-    H5S_ALL,        // Dataspace describing where in the dataset we write to
+    H5S_ALL,        // Memspace
+    H5S_ALL,        // File space
     H5P_DEFAULT,    // Default data transfer options
-    myMatrix    // Pointer to data
+    myMatrix        // Pointer to source data
 );
 
-        // Perform the actual write. We pass the `matrix.data()` pointer to our data, and use the memspace argument to specify
-        // how the full data should be obtained starting from this memory address.
-        // In this case our input data is contiguous and fits nicely in the dataset, so we can use `H5S_ALL` to let HDF5 know
-        // it can use the dataset shape to access the data. Same for the filespace argument: it can write the entire dataset.
-        // Return value is an error code and will be < 0 if there was an error.
-        // We skip manual error checking here for simplicity (HDF5 also has a built-in validation layer).
-        herr_t status = H5Dwrite(
-            datasetId,      // Dataset to write to
-            H5T_NATIVE_INT, // Type of the data, should match the type used when defining the dataset
-            H5S_ALL,        // Dataspace describing layout of the memory buffer
-            H5S_ALL,        // Dataspace describing where in the dataset we write to
-            H5P_DEFAULT,    // Default data transfer options
-            matrix.data()   // Pointer to data
-        );
-
-        // Write some metadata using HDF5 attributes. Here we just write a dummy floating point number.
-        // In a real program this metadata could represent eg. value of an input parameter used when producing the data.
-        const double dummyMetadata = 42.0;
-
-        // Create dataspace for defining the layout of the attribute. Our metadata is a single number, so use scalar layout
-        hid_t attributeSpaceId = H5Screate(H5S_SCALAR);
-
--        // Create the attribute and associate it with our dataset
-        hid_t attributeId = H5Acreate(
-            datasetId,                // Handle to the dataset to which the attribute will be attached to
-            "DummyAttribute",         // Name of the attribute
-            H5T_NATIVE_DOUBLE,        // Datatype of the attribute
-            attributeSpaceId,         // Handle to the Attribute Space
-            H5P_DEFAULT,              // Default creation options
-            H5P_DEFAULT               // Default access options
-        );
-
-        // Write the attribute to the attached dataset (skip error checking for simplicity)
-        status = H5Awrite(attributeId, H5T_NATIVE_DOUBLE, &dummyMetadata);
-
-        // Cleanup by closing (deallocating) all HDF5 objects that we created. Do this in reverse order to be on the safe side
-        H5Aclose(attributeId);
-        H5Sclose(attributeSpaceId);
-        H5Dclose(datasetId);
-        H5Sclose(dataspaceId);
-        H5Fclose(fileId);
+// Cleanup by closing (deallocating) all HDF5 objects that we created. Safest to do this in reverse order
+H5Dclose(datasetId);
+H5Sclose(dataspaceId);
+H5Fclose(fileId);
 ```
 
 This may seem like a lot of programming overhead just for outputting data to a file! For simple writes most of this machinery is
 indeed unnecessarily complicated, but becomes very useful when working with complex or parallel data.
 
-### Exercise
+### Dataset exercise
 
-[`hdf5-dataset-write.cpp`](hdf5-dataset-write)
-
-
-### Writing custom metadata via HDF5 attributes
-
-HDF5 [**attributes**](https://portal.hdfgroup.org/documentation/hdf5/latest/_h5_a__u_g.html) are a special data
-structure intended for storing arbitrary user-specified metadata. This refers to any data we may want to store in
-addition to actual datasets. Usually the intent of user metadata is to describe what the dataset represents and how it
-was produced (eg. what simulation parameters were used). Such metadata *could* be stored as standard HDF5 datasets,
-however this can be inefficient because metadata is usually small compared the actual data. HDF5 attributes are similar
-to datasets, but optimized for small metadata that can be *attached* to datasets.
-
-Attributes can be created using the [`H5Acreate function`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5A.html#Annot-Create).
-This requires the following arguments:
-- A valid dataset ID to which the attribute will be attached to.
-- A name for the attribute (string).
-- Type of the attribute (built-in HDF5 type identifier). For example, `H5T_NATIVE_DOUBLE` for a `double` valued attribute.
-- Dataspace ID that specifies **shape** of the metadata. For example, a simple scalar-valued metadata field should use
-dataspace created with the `H5S_SCALAR` flag.
-- Creation/access configuration options (`H5P_DEFAULT` gives default behavior).
-
-TODO example code snippet
-
-Once created, the attribute can be written to file with [`H5Awrite`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5A.html#Annot-Write).
-The syntax is considerably simpler than the write function for datasets.
-
-### Case study: Writing a 2D dataset
-
-Read through the example code (C++ or Fortran) in [`hdf5-write-matrix`](./hdf5-write-matrix/). This program creates a
-contiguous 1D array and writes it to an HDF5 file as a 2D dataset (a common way of implementing multidimensional arrays
-is to use a large 1D array and simply interpret it as N-dimensional). A metadata field is also written using a `double`
-attribute.
-
-Exercises:
-1. Compile and run the program (without MPI, or just 1 MPI process). It should produce a file called `matrix.h5` in the
-working directory. See [](hdf5-exercise-instructions.md) for compilation instructions.
-2. Use the HDF5 command line tools to inspect contents of the file.
-```bash
-h5ls matrix.h5
-h5dump matrix.h5
-```
-`h5ls` gives a list of datasets in the file and their shapes. Ensure you understand the output. `h5dump` gives a full
-dump of the file contents. Can you identify the matrix values, and the metadata?
-
-3. How would you modify the example code to instead produce a 3D dataset?
-
+Part 1 of [`hdf5-dataset-write.cpp`](hdf5-dataset-write). This exercise produces the HDF5 file that we previously
+inspected with `h5dump`.
 
 ### Reading HDF5 files
 
-So far we have only discussed writing to HDF5 files. The API for file reading is rather similar, but there is no need to
-create dataspaces since dataset shapes can be inferred from the file.
+So far we have only discussed writing to HDF5 files. The API for file reading is rather similar, but we use `H5Dopen`
+to open an existing dataset by name, instead of `H5Dcreate` which creates a new dataset.
 
 Below is an example read of a 2D dataset using the C-API.
 ```c
@@ -299,7 +229,7 @@ H5Dread(
     datasetId,      // Dataset to read from
     H5T_NATIVE_INT, // Type of data to read, here `int` type
     H5S_ALL,        // Memspace
-    H5S_ALL,        // File spac.  H5S_ALL for this and memspace means we read the full dataset
+    H5S_ALL,        // File space.  H5S_ALL for this and memspace means we read the full dataset
     H5P_DEFAULT,    // Default transfer properties
     data            // Pointer to the array to which the data will be stored
 );
@@ -308,12 +238,60 @@ H5Dread(
 H5Dclose(datasetId);
 H5Fclose(fileId);
 ```
+
 If the types/names/shapes of stored data are unknown, we should query them from the file or dataset using the API.
 See eg. [`H5Dget_type`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5D.html#Dataset-GetType).
+The command line tools `h5ls` and `h5dump` can also be useful.
 
-Often it it convenient to inspect HDF5 file contents directly from the command line. For this the commands `h5ls` and
-`h5dump` can be used. These tools are usually bundled with HDF5 installations, or on computing clusters become available
-after loading an appropriate HDF5 module. We practice using these tools in the case study below.
+
+### Writing custom metadata via HDF5 attributes
+
+HDF5 [**attributes**](https://portal.hdfgroup.org/documentation/hdf5/latest/_h5_a__u_g.html) are a special data
+structure intended for storing arbitrary user-specified metadata. Usually the purpose of attributes is to describe
+what a dataset represents and how it was produced (eg. what simulation parameters were used).
+Such metadata *could* be stored as standard HDF5 datasets, however this can be inefficient because metadata is usually
+small compared the actual data. HDF5 attributes are similar to datasets, but optimized for small metadata that can be
+*attached* to datasets.
+
+Attributes can be created using the [`H5Acreate function`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5A.html#Annot-Create).
+This requires the following arguments:
+- A valid dataset ID to which the attribute will be attached to.
+- A name for the attribute (string).
+- Type of the attribute (built-in HDF5 type identifier). For example, `H5T_NATIVE_DOUBLE` for a `double` valued attribute.
+- Dataspace ID that specifies **shape** of the metadata. For example, a simple scalar-valued metadata field should use
+dataspace created with the `H5S_SCALAR` flag.
+- Creation/access configuration options (`H5P_DEFAULT` gives default behavior).
+
+Once created, the attribute can be written to file with [`H5Awrite`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5A.html#Annot-Write).
+The syntax is considerably simpler than the write function for datasets. Below is a minimal example that writes a
+`double`-valued attribute to an existing dataset.
+```c
+double dummyAttribute = 42.0;
+
+// Create dataspace for defining the layout of the attribute. Our metadata is a single number, so use scalar layout
+hid_t attributeSpaceId = H5Screate(H5S_SCALAR);
+
+// Create the attribute and associate it with our dataset. This assumes that the dataset is already open
+hid_t attributeId = H5Acreate(
+    datasetId,                // Handle to the dataset to which the attribute will be attached to
+    "DummyAttribute",         // Name of the attribute
+    H5T_NATIVE_DOUBLE,        // Datatype of the attribute
+    attributeSpaceId,         // Handle to the Attribute Space
+    H5P_DEFAULT,              // Default creation options
+    H5P_DEFAULT               // Default access options
+);
+
+// Write the attribute to the attached dataset (skip error checking for simplicity)
+herr_t status = H5Awrite(attributeId, H5T_NATIVE_DOUBLE, &dummyMetadata);
+
+// Cleanup
+H5Aclose(attributeId);
+H5Sclose(attributeSpaceId);
+```
+
+### Exercise: writing attributes
+
+Part 2 of [`hdf5-dataset-write.cpp`](hdf5-dataset-write).
 
 
 ## Parallel write with HDF5 and MPI

@@ -2,8 +2,12 @@
 
 This exercise practices HDF5 file creation and writing of multidimensional datasets. Have a look at the unfinished code
 at [`hdf5-dataset-write.cpp`](hdf5-dataset-write.cpp). This program creates a static array containing 16 integers which
-are to be written as HDF5 datasets using different layouts. The main function calls some unfinished functions;
-your task is to implement them as instructed below.
+are to be written as HDF5 datasets using different layouts.
+- A common way of implementing multidimensional arrays is to use a long 1D array and simply interpret it as N-dimensional.
+
+The main function calls some unfinished functions. Your task is to implement them as instructed below.
+
+See [`hdf5-exercise-instructions](hdf5-exercise-instructions.md) for instructions for compiling the code.
 
 ## Part 1
 
@@ -18,6 +22,8 @@ Then implement the following three functions:
 In each case the functions should clean up after themselves by closing any HDF5 objects that they create. The HDF5 file
 should be closed only in the main function.
 - Use `H5Sclose()` and `H5Dclose()` for cleanup.
+
+You can use the `h5dump` and `h5ls` command line tools to check and debug your file contents.
 
 **Hint:** In each case you will be writing exactly 16 elements, only the logical layout will differ.
 Therefore you can use `H5S_ALL` for the memory space and file space arguments in `H5Dwrite()`. Think about why this works.
