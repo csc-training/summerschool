@@ -44,10 +44,13 @@ void writeDataset1D(const std::array<int, 16>& arrayToWrite, const hid_t fileId,
 
 void writeDataset2D(const std::array<int, 16>& arrayToWrite, const hid_t fileId, const char* datasetName) {
 
-    // This is analogous to the 1D case above, we only change the dataspace to be 6x6
+    // This is analogous to the 1D case above, we only change the dataspace to be 4x4
     const hsize_t dims[2] = { 4, 4 };
 
     hid_t dataspace = H5Screate_simple(2, dims, NULL);
+
+    // Can use H5P_DEFAULT for memspace / file space because although the dataspace and array shapes are different,
+    // the number of elements are the same. HDF5 will access and write the data contiguously starting from the first array element
     hid_t dataset = H5Dcreate(fileId, datasetName, H5T_NATIVE_INT, dataspace, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     herr_t status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, arrayToWrite.data());
@@ -58,46 +61,13 @@ void writeDataset2D(const std::array<int, 16>& arrayToWrite, const hid_t fileId,
 
 void writeDataset3D(const std::array<int, 16>& arrayToWrite, const hid_t fileId, const char* datasetName) {
 
-    // This is analogous to the 1D and 2D cases above, we only change the dataspace to be 3D
-    const hsize_t dims[3] = { 2, 3, 3 };
+    // This is analogous to the 1D and 2D cases, we only change the dataspace dimensions as instructed
+    const hsize_t dims[3] = { 2, 2, 4 };
 
     hid_t dataspace = H5Screate_simple(3, dims, NULL);
     hid_t dataset = H5Dcreate(fileId, datasetName, H5T_NATIVE_INT, dataspace, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     herr_t status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, arrayToWrite.data());
-
-    /* Use hyperslab selection to set the leftover elements to negative values.
-    There are 2*3*3 - 16 = 18 - 16 = 2 leftover elements. These are the last two elements in our dataset.
-    We can write just these elements by performing a hyperslab selection in the dataspace.
-    */
-    const int fillerData[2] = { -1, -2 };
-
-    // Hyperslab: set starting offset and block size/count so that we select the last two elements
-    const hsize_t offset[3] = { 1, 2, 1 };
-    const hsize_t blockCount[3] = { 1, 1, 1 };
-    const hsize_t blockSize[3] = { 1, 1, 2 };
-
-    // The following would also work (same offset): blockSize = { 1, 1, 1 }; blockCount = { 1, 1, 2 }
-
-    // Perform selection in dataspace. The dataspace object "remembers" this selection
-    status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, blockCount, blockSize);
-
-    // Define memspace: grid layout of the filler data to be written. In this case, just 1D array with 2 elements
-    const hsize_t memspaceDims[1] = { 2 };
-    hid_t memspace = H5Screate_simple(1, memspaceDims, NULL);
-
-    /* Write 'fillerData' to the same dataset as before, but instead of using H5S_ALL we explicitly specify the memspace
-    and filespace arguments. Our 'dataspace' object has only the last two elements selected, so we pass it as the
-    filespace argument.
-    */
-    status = H5Dwrite(
-        dataset,
-        H5T_NATIVE_INT,
-        memspace,
-        dataspace,
-        H5P_DEFAULT,
-        fillerData
-    );
 
     H5Dclose(dataset);
     H5Sclose(dataspace);
@@ -136,7 +106,7 @@ void writeAttribute(const char* attributeName, double attributeValue, hid_t file
 }
 
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
 
     /* This program is serial and is not intended to be ran using MPI.
     Accidentally running with many MPI processes would lead to competing HDF5 writes and other mess, so to prevent this
@@ -152,7 +122,7 @@ int main(int argc, char **argv) {
         std::array<int, 16> arrayToWrite;
 
         for (size_t i = 0; i < arrayToWrite.size(); i++) {
-            arrayToWrite[i] = (int) i;
+            arrayToWrite[i] = (int)i;
         }
 
         // Create a HDF5 file, truncating existing contents if the file already exists
