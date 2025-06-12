@@ -78,6 +78,10 @@ creating a dataset requires that we have already created a valid dataspace objec
 ![](./img/hdf5_dataset.png)
 *Example HDF5 dataset and its metadata. Image taken from https://portal.hdfgroup.org/documentation/hdf5/latest/_intro_h_d_f5.html.*
 
+In addition to dataset shape (its dataspace), HDF5 files associates datasets with metadata such as type information of
+the data elements (integer, floating point, etc). It is also possible to write user-specified **attributes** for
+to act as arbitrary metadata. We will discuss attributes in more detail shortly.
+
 ### Case study: HDF5 file with many datasets
 
 Let's investigate the sample HDF5 file [`example_datasets.h5`](example_datasets.h5) using command line tools.
@@ -97,39 +101,126 @@ jargon for a multidimensional dataspace). The actual stored data is shown in the
 in range `[0, 15]`. Try to understand what these datasets would look like as multidimensional arrays in C or Fortran
 (or Numpy).
 
-- The line `DATATYPE_H5T_STD_I32LE` means that each data element is a "standard" 32-bit integer type. This information
-is important for portability between platforms.
+- The line `DATATYPE_H5T_STD_I32LE` means that each data element is stored as "standard" 32-bit integer type. This
+information is important for portability between platforms.
 
-### Writing an HDF5 dataset
+## Writing data to a HDF5 file
 
-The minimal steps for creating an HDF5 file and writing a dataset to it are as follows:
+The pipeline for creating a fresh HDF5 file and writing a dataset proceeds roughly as follows:
 1. Create the file using [`H5Fcreate()`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5F.html#File-Create),
-with appropriate creation flags and configuration options.
+with appropriate creation flags and configuration options (eg. access permissions).
 2. Create a [**dataspace**](https://support.hdfgroup.org/documentation/hdf5/latest/group___h5_s.html#ga8e35eea5738b4805856eac7d595254ae)
 to represent shape of the data. Usually we are interested in writing N-dimensional arrays; dataspaces corresponding to
-these are called "simple" in HDF5. A simple dataspace can be created with [`H5Screate_simple()`](https://support.hdfgroup.org/documentation/hdf5/latest/group___h5_s.html#ga8e35eea5738b4805856eac7d595254ae)
-in which we specify the dimensionality and number of elements along each dimension.
+these are called "simple" in HDF5. A simple dataspace can be created with [`H5Screate_simple()`](https://support.hdfgroup.org/documentation/hdf5/latest/group___h5_s.html#ga8e35eea5738b4805856eac7d595254ae).
 3. Create a [**dataset**](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d__u_g.html) by calling
 [`H5Dcreate()`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5D.html#Dataset-Create). In this function call
 we specify which file this dataset is to be created in, type of data that we are storing (eg. integers of floats), and a
 valid dataspace for defining dataspace shape.
 4. Call [`H5Dwrite()`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5D.html#Dataset-Write) to write data to
-into the dataset. We have to specify the target dataspace, type of data to be written and a valid pointer to memory
-address where the source data resides. We must also pass _two_ dataspaces for specifying shapes of source and target
-data:
-    - A "memory space" or **memspace**, which defines how the source data is aligned in memory. This is like specifying
-    the number of elements to get starting from the input memory address in "standard" I/O routines. If the source data
-    is contiguous and has same logical shape as the dataspace used by the dataset, we may use the special keyword
-    `H5S_ALL`; otherwise a valid memspace must be manually created (via `H5Screate_simple()`) and passed to `H5Dwrite()`.
-    - A "file space", which is an another dataspace object specifying where in the dataset the data should be written to.
-    Passing `H5S_ALL` means we write the full memspace.
-A more detailed specification of memspace and file space semantics can be found in the documentation linked above.
+into the file.
 
-This is a lot of programming overhead just for outputting data to a file! For simple writes most of this machinery is
+The last step, `H5Dwrite()`, is a rather complex operation.
+Quoting from the [docs](https://portal.hdfgroup.org/documentation/hdf5/latest/_l_b_dset_r_w.html):
+> During a dataset I/O operation, the library transfers raw data between memory and the file. The data in memory can have a datatype different from that of the file and can also be of a different size (i.e., the data in memory is a subset of the dataset elements, or vice versa). Therefore, to perform read or write operations, the application program must specify:
+
+- The dataset
+- The dataset's datatype in memory
+- The dataset's dataspace in memory
+- The dataset's dataspace in the file
+- The dataset transfer property list
+- The data buffer
+
+Here is a minimal code snippet using the C-API to write a 2D dataset.
+Note that this does NOT support parallel I/O (yet).
+```c
+// Data array that we wish to write. In a real program this would be filled with some relevant data
+int myMatrix[4][5];
+
+// HDF5 object creation routines return integer IDs (handles) to the created objects
+hid_t fileId = H5Fcreate(
+    "my_matrix.h5", // file name
+    H5F_ACC_TRUNC,  // "truncate mode", ie. overwrite existing file. Read-write access is always implied
+    H5P_DEFAULT,    // Default file creation options
+    H5P_DEFAULT     // Default file access options (we explore this more when discussing parallel I/O)
+);
+
+// Create 2D dataspace. We need a 2-element array for specifying the dimensions (rows and columns)
+hsize_t dims[2] = { 4, 5 };
+
+hid_t dataspaceId = H5Screate_simple(
+    2,      // 2D dataspace
+    dims,   // Dimensions
+    NULL    // Could limit maximum row/column count here. NULL means unlimited
+);
+
+// Create the dataset, no actual I/O here yet.
+hid_t datasetId = H5Dcreate(
+    fileId,           // Which file this dataset will reside in
+    "VeryCoolMatrix", // Name of the dataset
+    H5T_NATIVE_INT,   // Specify that the data consists of 'int' types
+    dataspaceId,      // Dataspace to use for this dataset, ie. data shape.
+    H5P_DEFAULT,      // Default link creation options. Advanced feature: "links" in HDF5 behave like symlinks in UNIX
+    H5P_DEFAULT,      // Default creation options
+    H5P_DEFAULT       // Default access options
+);
+
+// Perform the actual write. Last argument is a pointer to the source data that we wish to write.
+// H5Dwrite automatically converts between the "dataset in memory" (the dataset object we created)  from "memory" space ('myMatrix' array) to "file" space
+// The return value is an error code (< 0 if something went wrong). We skip manual error checking here.
+herr_t status = H5Dwrite(
+    datasetId,      // Dataset to write to
+    H5T_NATIVE_INT, // Type of the data
+    H5S_ALL,        // Dataspace describing layout of the memory buffer
+    H5S_ALL,        // Dataspace describing where in the dataset we write to
+    H5P_DEFAULT,    // Default data transfer options
+    myMatrix    // Pointer to data
+);
+
+        // Perform the actual write. We pass the `matrix.data()` pointer to our data, and use the memspace argument to specify
+        // how the full data should be obtained starting from this memory address.
+        // In this case our input data is contiguous and fits nicely in the dataset, so we can use `H5S_ALL` to let HDF5 know
+        // it can use the dataset shape to access the data. Same for the filespace argument: it can write the entire dataset.
+        // Return value is an error code and will be < 0 if there was an error.
+        // We skip manual error checking here for simplicity (HDF5 also has a built-in validation layer).
+        herr_t status = H5Dwrite(
+            datasetId,      // Dataset to write to
+            H5T_NATIVE_INT, // Type of the data, should match the type used when defining the dataset
+            H5S_ALL,        // Dataspace describing layout of the memory buffer
+            H5S_ALL,        // Dataspace describing where in the dataset we write to
+            H5P_DEFAULT,    // Default data transfer options
+            matrix.data()   // Pointer to data
+        );
+
+        // Write some metadata using HDF5 attributes. Here we just write a dummy floating point number.
+        // In a real program this metadata could represent eg. value of an input parameter used when producing the data.
+        const double dummyMetadata = 42.0;
+
+        // Create dataspace for defining the layout of the attribute. Our metadata is a single number, so use scalar layout
+        hid_t attributeSpaceId = H5Screate(H5S_SCALAR);
+
+-        // Create the attribute and associate it with our dataset
+        hid_t attributeId = H5Acreate(
+            datasetId,                // Handle to the dataset to which the attribute will be attached to
+            "DummyAttribute",         // Name of the attribute
+            H5T_NATIVE_DOUBLE,        // Datatype of the attribute
+            attributeSpaceId,         // Handle to the Attribute Space
+            H5P_DEFAULT,              // Default creation options
+            H5P_DEFAULT               // Default access options
+        );
+
+        // Write the attribute to the attached dataset (skip error checking for simplicity)
+        status = H5Awrite(attributeId, H5T_NATIVE_DOUBLE, &dummyMetadata);
+
+        // Cleanup by closing (deallocating) all HDF5 objects that we created. Do this in reverse order to be on the safe side
+        H5Aclose(attributeId);
+        H5Sclose(attributeSpaceId);
+        H5Dclose(datasetId);
+        H5Sclose(dataspaceId);
+        H5Fclose(fileId);
+```
+
+This may seem like a lot of programming overhead just for outputting data to a file! For simple writes most of this machinery is
 indeed unnecessarily complicated, but becomes very useful when working with complex or parallel data.
-
-
-TODO example code snippet
 
 ### Exercise
 
