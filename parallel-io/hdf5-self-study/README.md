@@ -1,4 +1,4 @@
-# Self study module on HDF5
+# Self study material on HDF5
 
 HDF5 is a file format (suffix `.h5` or `.hdf5`) that has become popular in scientific and industrial computing due to
 its flexibility, I/O performance and portability. HDF5 files are designed for storing large multidimensional arrays in a
@@ -18,6 +18,8 @@ We will cover the following:
 
 You can find the official HDF5 documentation [here](https://support.hdfgroup.org/documentation/hdf5/latest/index.html).
 Especially useful are the User Guide and Reference Manual tabs.
+
+There are a few coding exercises associates with these notes. They will be pointed out as you progress through the notes.
 
 ## The HDF5 programming interface (= API)
 
@@ -296,10 +298,45 @@ Part 2 of [`hdf5-write-dataset`](hdf5-write-dataset).
 ## Hyperslab selections and operating on partial datasets
 
 HDF5 **hyperslabs** are used to *select* subregions of dataspaces for data manipulation or I/O, hence the name: they are
-slices of N-dimensional spaces. Hyperslabs can be useful also in serial applications that need to operate only on
-specific parts of a dataset.
+slices of N-dimensional spaces. Hyperslabs are useful for doing I/O or data manipulation only to specific parts of a
+dataset.
 
-## Parallel write with HDF5 and MPI
+Hyperslab selection is organized in terms of **blocks** of dataspace elements.Eg: for a 2D dataspace, block size of
+`(2, 2)` means we would select one or more subspaces, each containing 2x2 elements. Block size of `(1, 1)` would mean
+we'd just select individual elements (default behavior). We can select hyperslabs (one or more) from a dataspace using
+[H5Sselect_hyperslab()](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5S.html#Dataspace-SelectHyperslab).
+It takes in the following arguments:
+- Dataspace ID
+- A "selection operation code", ie. what kind of selection are we performing. For example, `H5S_SELECT_SET` will replace
+any existing selection with the new selection, `H5S_SELECT_OR` will add any new hyperslabs to an existing selection,
+and so on.
+- The following 4 `hsize_t` arrays, each one being length $N$ if the dataspace is $N$-dimensional:
+    - Starting offset: How many elements to skip in each direction before starting selection.
+    - Stride: Specifies how the dataspace is traversed when selecting elements. `stride[i]` is the number of elements to
+    move in direction `i`, ie. elements to be selected are `offset[i]`, `offset[i] + stride[i]`, `offset[i] + 2*stride[i]`
+    etc. Passing `NULL` stride defaults to 1 in all directions, meaning a contiguous selection.
+    - Block count: How many blocks to select in each direction.
+    - Block size: How many elements to include in one block, as discussed above. `NULL` means 1 in each direction
+    (single-element blocks).
+
+See the following figure for a demonstration of hyperslab selection. More hyperslab visualizations can be found on the
+[HDF5 homepage](https://portal.hdfgroup.org/documentation/hdf5/latest/_l_b_dset_sub_r_w.html).
+
+![](./img/hdf5-hyperslabs.svg)
+*Hyperslab selection example*
+
+HDF5 "remembers" which hyperslab of the dataspace is currently selected and allows dataspace operations only in the
+active selection.  This is particularly useful for parallel I/O: each MPI process can select a unique hyperslab based on its MPI rank,
+and use `H5Dwrite/H5Dread` to perform I/O only in its own hyperslab.
+
+TODO code snippet that also shows memspace use
+
+### Exercise: hyperslabs
+
+TODO
+
+
+## Parallel I/O with HDF5 and MPI
 
 The HDF5 development library can be compiled with MPI support to allow many MPI processes to operate on shared HDF5
 files. In the API, parallel access to HDF5 files is configured at the time of file creation or opening (`H5Fcreate()` or
@@ -342,45 +379,26 @@ hid_t file = H5Fcreate(
 ```
 This should be called from all MPI processes: it is a *collective* operation. Same for `H5Fclose()` when cleaning up.
 
-### Using hyperslabs to avoid overlapping writes
-
 How do we write data to the file while ensuring that parallel writes from different processes do not mess with each
 other? Recall that in MPI-IO we could calculate a different `MPI_Offset` for each rank and pass this to I/O operations
 to read/write different sections of the file stream.
 
-HDF5 uses a more general (and abstract) way of specifying offsets: **hyperslabs**. More specifically, hyperslabs are
-used to *select* subregions of dataspaces for data manipulation or I/O, hence the name: they are slices of N-dimensional
-spaces. Hyperslabs can be useful also in serial applications that need to operate only on specific parts of a dataset.
-Here we demonstrate their use with parallel dataset writes.
+The HDF5 way to achieve the same effect is via hyperslab selections. We already discussed hyperslabs above.
+For parallel dataset operations, the common strategy is to have each MPI process select a non-overlapping hyperslab
+based on their rank, and do their dataset operations using appropriate memspace and file space arguments.
+This approach is demonstrated by the following example.
 
-Hyperslab selection is organized in terms of **blocks** of dataspace elements.Eg: for a 2D dataspace, block size of
-`(2, 2)` means we would select one or more subspaces, each containing 2x2 elements. Block size of `(1, 1)` would mean
-we'd just select individual elements (default behavior). We can select hyperslabs (one or more) from a dataspace using
-[H5Sselect_hyperslab()](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5S.html#Dataspace-SelectHyperslab).
-It takes in the following arguments:
-- Dataspace ID
-- A "selection operation code", ie. what kind of selection are we performing. For example, `H5S_SELECT_SET` will replace
-any existing selection with the new selection, `H5S_SELECT_OR` will add any new hyperslabs to an existing selection,
-and so on.
-- The following 4 `hsize_t` arrays, length of each one must match dataspace dimensionality/rank:
-    - Starting offset: How many elements to skip in each direction before starting selection.
-    - Stride: Specifies how the dataspace is traversed when selecting elements. `stride[i]` is the number of elements to
-    move in direction `i`, ie. elements to be selected are `offset[i]`, `offset[i] + stride[i]`, `offset[i] + 2*stride[i]`
-    etc. Passing `NULL` stride defaults to 1 in all directions, meaning a contiguous selection.
-    - Block count: How many blocks to select in each direction.
-    - Block size: How many elements to include in one block, as discussed above. `NULL` means 1 in each direction
-    (single-element blocks).
+### Case study: parallel write
 
-See the following figure for a demonstration of hyperslab selection. More hyperslab visualizations can be found on the
-[HDF5 homepage](https://portal.hdfgroup.org/documentation/hdf5/latest/_l_b_dset_sub_r_w.html).
+Read through the example code [`hdf5-parallel-example`](./hdf5-parallel-example/).
+The program demonstrates parallel HDF5 I/O by writing one integer from each MPI process.
 
-![](./img/hdf5-hyperslabs.svg)
-*Hyperslab selection example*
-
-HDF5 "remembers" which hyperslab of the dataspace is currently selected and allows dataspace operations only in the
-active selection. This is useful for parallel I/O: each MPI process can select a unique hyperslab based on its MPI rank,
-and use `H5Dwrite/H5Dread` to perform I/O only in its own hyperslab.
-
+**Tasks:**
+1. Ensure you understand the steps for creating and opening an HDF5 file for parallel access.
+2. Compile and run the program with 4 MPI processes. Inspect the output file `parallel_out.h5` using `h5dump`.
+Try to understand the relevant hyperslab selection logic used in the example code.
+3. Run the program again with a different number of MPI processes and verify that the dataset shape and contents have
+changed.
 
 ### Collective I/O HDF5
 
@@ -402,19 +420,7 @@ herr_t status = H5Pset_dxpl_mpio(xfer_plist, H5FD_MPIO_COLLECTIVE);
 H5Dwrite(dataset, H5T_NATIVE_INT, memspace, filespace, xfer_plist, data_pointer);
 ```
 
-### Case study: parallel write
-
-Read through the example code [`hdf5-parallel-example`](./hdf5-parallel-example/).
-The program demonstrates parallel HDF5 I/O by writing one integer from each MPI process.
-
-**Tasks:**
-1. Ensure you understand the steps for creating and opening an HDF5 file for parallel access.
-2. Compile and run the program with 4 MPI processes. Inspect the output file `parallel_out.h5` using `h5dump`.
-Try to understand the relevant hyperslab selection logic used in the example code.
-3. Run the program again with a different number of MPI processes and verify that the dataset shape and contents have
-changed.
-
-### Exercise: HDF5 parallel write
+### Exercise: parallel write with different array sizes
 
 Write a modified version of the [`hdf5-parallel-example`](./hdf5-parallel-example/) program as instructed in
 [`hdf5-parallel-exercise`](./hdf5-parallel-exercise/README.md).
