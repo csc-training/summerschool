@@ -257,8 +257,9 @@ This requires the following arguments:
 - A valid dataset ID to which the attribute will be attached to.
 - A name for the attribute (string).
 - Type of the attribute (built-in HDF5 type identifier). For example, `H5T_NATIVE_DOUBLE` for a `double` valued attribute.
-- Dataspace ID that specifies **shape** of the metadata. For example, a simple scalar-valued metadata field should use
-dataspace created with the `H5S_SCALAR` flag.
+- Dataspace ID that specifies shape/layout of the metadata. Attributes are allowed to be multidimensional (like datasets),
+but scalar-valued attribute fields are quite common. For example, to write a single number as an attribute we can
+use a dataspace created with the `H5S_SCALAR` flag.
 - Creation/access configuration options (`H5P_DEFAULT` gives default behavior).
 
 Once created, the attribute can be written to file with [`H5Awrite`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5A.html#Annot-Write).
@@ -292,6 +293,11 @@ H5Sclose(attributeSpaceId);
 
 Part 2 of [`hdf5-write-dataset`](hdf5-write-dataset).
 
+## Hyperslab selections and operating on partial datasets
+
+HDF5 **hyperslabs** are used to *select* subregions of dataspaces for data manipulation or I/O, hence the name: they are
+slices of N-dimensional spaces. Hyperslabs can be useful also in serial applications that need to operate only on
+specific parts of a dataset.
 
 ## Parallel write with HDF5 and MPI
 
