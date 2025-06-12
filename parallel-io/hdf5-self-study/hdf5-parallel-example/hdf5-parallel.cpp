@@ -42,8 +42,8 @@ int main(int argc, char** argv) {
 
     hsize_t dims[] = { (hsize_t) ntasks }; // Explicit cast from 'int' to HDF5 size type
     hid_t dataspace = H5Screate_simple(1, dims, NULL);
-    // Dataset creation, call it "MPI_RANKS". Default options are OK
-    hid_t dataset = H5Dcreate(file, "MPI_RANKS", H5T_NATIVE_INT, dataspace, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    // Dataset creation, call it "ranks". Default options are OK
+    hid_t dataset = H5Dcreate(file, "ranks", H5T_NATIVE_INT, dataspace, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     /*
     Setup file write so that writes from different processes don't overlap.

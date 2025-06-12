@@ -200,7 +200,7 @@ indeed unnecessarily complicated, but becomes very useful when working with comp
 Part 1 of [`hdf5-write-dataset`](hdf5-write-dataset). This exercise produces the HDF5 file that we previously
 inspected with `h5dump`.
 
-### Reading HDF5 files
+## Reading HDF5 files
 
 So far we have only discussed writing to HDF5 files. The API for file reading is rather similar, but we use `H5Dopen`
 to open an existing dataset by name, instead of `H5Dcreate` which creates a new dataset.
@@ -243,7 +243,7 @@ See eg. [`H5Dget_type`](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM
 The command line tools `h5ls` and `h5dump` can also be useful.
 
 
-### Writing custom metadata via HDF5 attributes
+## Writing custom metadata via HDF5 attributes
 
 HDF5 [**attributes**](https://portal.hdfgroup.org/documentation/hdf5/latest/_h5_a__u_g.html) are a special data
 structure intended for storing arbitrary user-specified metadata. Usually the purpose of attributes is to describe
@@ -303,17 +303,21 @@ configure the file access manually.
 
 The HDF5 API uses objects called [**Property Lists**](https://portal.hdfgroup.org/documentation/hdf5/latest/_h5_p__u_g.html)
 for configuring API calls. These are collections of configurable **properties** specified by the HDF5 standard.
-Property Lists come in different flavors, or **Property List Classes**, depending on what properties they manage.
+Property Lists are created using the `H5Pcreate` function. When creating one, we must also specify a class/type of the
+Property List that tells HDF5 know what the Property List will be used for. Ie: does it configure file creation, file
+access, or something else.
 - *Side note*: Notice how similar this design is to Object Oriented Programming (OOP), despite OOP not being a built-in
 feature in neither C nor Fortran.
 
-In the case of parallel I/O, we need a Property List for configuring file access specifically.
-We can create one as follows:
+In the case of parallel I/O, we want to give many processes simultaneous access to a file, so we need  a Property List
+for configuring file access specifically. We can create one as follows:
 ```c
 hid_t plist = H5Pcreate(H5P_FILE_ACCESS);
 ```
-Next we tell the Property List about our MPI setup, on in HDF5 language, we must set the relevant **property**.
-HDF5 provides a [function specifically for this purpose](https://support.hdfgroup.org/documentation/hdf5/latest/group___f_a_p_l.html#ga7519d659a83ef5717d7a5d95baf0e9b1):
+Next we tell the Property List about our MPI setup. In HDF5 this is done by setting a specific **property** within the
+Property List. The HDF5 API provides dedicated functions for setting properties. In this case property setting involves
+passing info about our MPI communicator, and the relevant function is called
+[H5Pset_fapl_mpio](https://support.hdfgroup.org/documentation/hdf5/latest/group___f_a_p_l.html#ga7519d659a83ef5717d7a5d95baf0e9b1):
 ```c
 // Note the abbreviation: fapl = File Access Property List
 herr_t status = H5Pset_fapl_mpio(plist, MPI_COMM_WORLD, MPI_INFO_NULL);
@@ -404,6 +408,7 @@ Try to understand the relevant hyperslab selection logic used in the example cod
 3. Run the program again with a different number of MPI processes and verify that the dataset shape and contents have
 changed.
 
-**Exercise:**
+### Exercise: HDF5 parallel write
 
-Write a modified version of the program as instructed in [`hdf5-parallel-exercise`](./hdf5-parallel-exercise/README.md).
+Write a modified version of the [`hdf5-parallel-example`](./hdf5-parallel-example/) program as instructed in
+[`hdf5-parallel-exercise`](./hdf5-parallel-exercise/README.md).
