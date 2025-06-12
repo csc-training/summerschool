@@ -9,7 +9,23 @@ cd heat-equation/2d/mpi-openmp
 CCFLAGS=-fno-omit-frame-pointer make CXX=CC CC=cc
 ```
 
-## Demo
+## perf list
+
+View available hardware counters (run on a compute node!):
+
+```bash
+srun \
+    -A project_462000956 \
+    -N 1 \
+    -n 1 \
+    -c 1 \
+    -t 00:01:00 \
+    -p standard \
+perf list > perf_list.txt
+less perf_list.txt
+```
+
+## perf stat
 
 Get some counters from hybrid MPI-OpenMP run within a single node
 
@@ -17,7 +33,7 @@ Run the program on LUMI:
 ```bash
 OMP_NUM_THREADS=16 \
 srun \
-    -A project_462000007 \
+    -A project_462000956 \
     -N 1 \
     -n 4 \
     -c 16 \
@@ -56,7 +72,7 @@ perf stat \
     --timeout 500
 ```
 
-## Demo
+## perf record & report and flamegraphs
 
 ```bash
 git clone https://github.com/brendangregg/FlameGraph
@@ -68,7 +84,7 @@ Run code on a node, profile it with perf and generate a flamegraph from perf out
 ```bash
 OMP_NUM_THREADS=4 \
 srun \
-    -A project_462000007 \
+    -A project_462000956 \
     -N 1 \
     -n 1 \
     -c 4 \
