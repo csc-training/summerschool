@@ -1,5 +1,7 @@
 ## Prerequisite
 
+**TODO: Build these before hand**
+
 Load modules to use EasyBuild, then build Score-P and Scalasca
 (building Score-P/Scalasca may take tens of minutes):
 
@@ -13,6 +15,9 @@ eb Scalasca-2.6.2-cpeCray-24.03.eb -r
 ```
 
 Clone the heat equation code.
+
+**TODO: Try to get hybrid working**
+**TODO: Tracing requires pragma omp master & pragma omp barrier**
 
 ```bash
 git clone https://github.com/cschpc/heat-equation.git
