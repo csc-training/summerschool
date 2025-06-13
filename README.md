@@ -23,7 +23,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 - [General exercise instructions](exercise-instructions.md)
 - Session-specific material linked in the schedule below
 
-## Schedule (tentative)
+## Schedule
 
 ### Day 1, Tue 24.6.
 
