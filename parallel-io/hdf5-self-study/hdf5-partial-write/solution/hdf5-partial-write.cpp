@@ -1,7 +1,7 @@
 #include <hdf5.h> // C-style HDF5 API
 #include <mpi.h>
 
-void hyperslab1D(const hid_t fileId) {
+void partialWrite1D(const hid_t fileId) {
 
     // Create a 1D dataspace of length 10 and a corresponding dataset
     const hsize_t dims[1] = { 10 };
@@ -55,9 +55,9 @@ void hyperslab1D(const hid_t fileId) {
     H5Sclose(dataspace);
 }
 
-void hyperslab2D(const hid_t fileId) {
+void partialWrite2D(const hid_t fileId) {
 
-    // Create a 4D dataspace and a corresponding dataset
+    // Create a 2D dataspace and a corresponding dataset
     const hsize_t dims[3] = { 6, 6 };
     hid_t dataspace = H5Screate_simple(2, dims, NULL);
 
@@ -141,17 +141,17 @@ int main(int argc, char** argv) {
 
         // Create an HDF5 file, truncating existing contents if the file already exists
         hid_t fileId = H5Fcreate(
-            "hyperslab_testing.h5",
+            "partial_write.h5",
             H5F_ACC_TRUNC,
             H5P_DEFAULT,
             H5P_DEFAULT
         );
 
         // ### Part 1 ###
-        hyperslab1D(fileId);
+        partialWrite1D(fileId);
 
         // ### Part 2 ###
-        hyperslab2D(fileId);
+        partialWrite2D(fileId);
 
         // Close the file
         H5Fclose(fileId);

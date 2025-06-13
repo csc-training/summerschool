@@ -406,8 +406,8 @@ dataset.
 
 ### Exercise: Partial write
 
-TODO
-
+Do the exercise at [`hdf5-partial-write`](hdf5-partial-write). This practices the methodology and concepts introduced
+here.
 
 ## Parallel I/O with HDF5 and MPI
 
