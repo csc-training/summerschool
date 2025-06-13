@@ -56,6 +56,10 @@ C-style API, but has the following differences:
 - Some functions have the error code as an additional output argument
 - Order of arguments may sometimes vary relative to the C version. Input arguments come first, then output parameters
 (including the error code), then optional input parameters.
+- Due to different array indexing conventions between C and Fortran, some examples in these notes may require that you
+interchange array rows and columns if converting the exmaples to Fortran. Internally, HDF5 uses C-style conventions for
+multidimensional array storage, ie. last dimension is the fastest-changing dimension. More details are available in the
+[docs](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_s__u_g.html).
 
 **Please note that we currently do not have HDF5 exercises for the Fortran API.**
 
@@ -73,8 +77,11 @@ As is appropriate for multidimensional arrays, HDF5 also stores **shape** inform
 In practice, HDF5 associates each dataset with a **dataspace** object, which is the HDF5 abstraction of a
 multidimensional grid. A dataspace defines just the number and layout of grid points, but does not say anything about
 what object may or may not occupy these grid points. For example, a 2D dataspace is defined by specifying the number of
-its rows and columns. In the API, dataspaces are used whenever shape or grid information is required. In particular,
-creating a dataset requires that we have already created a valid dataspace object for specifying dataset shape.
+its rows and columns. In the API, dataspaces are used whenever shape or grid information is required:
+- Creating a dataset requires that we have already created a valid dataspace object for specifying dataset shape.
+- Dataspace objects are used to specify memory buffer layouts for dataset I/O operations ("memory space").
+- Likewise, I/O routines require a dataspace object for specifying the layout of accessed data *in* the file ("file space").
+The last two requirements make it possible to perform I/O operations only to parts of a larger dataset.
 
 ![](./img/hdf5_dataset.png)
 *Example HDF5 dataset and its metadata. Image taken from https://portal.hdfgroup.org/documentation/hdf5/latest/_intro_h_d_f5.html.*
@@ -128,18 +135,22 @@ Quoting from the [docs](https://portal.hdfgroup.org/documentation/hdf5/latest/_l
 The inputs required for writing are:
 - Handle to the dataset.
 - The dataset's datatype in memory.
-- The dataset's dataspace in memory ("memory space" or "memspace").
-- The dataset's dataspace in the file ("file space").
+- The memory layout of the source data buffer that we wish to write (**memory space** or **memspace**).
+This is specified using a dataspace object.
+- Destination data layout, ie. how the data is aligned *within* the file's dataset (**file space** argument).
+This is again specifed using a dataspace.
 - The dataset transfer property list. This can be used to configure various aspects of the I/O operation, eg. make the
 write a collective operation (more on this later). Can pass `H5P_DEFAULT` to use default transfer properties.
 - The source data buffer, ie. what data to write.
 
-The memspace and file space arguments in particular may appear somewhat abstract. In essence, memory space specifies
-the shape of the source data in memory, and file space specifies where in the file dataset the data should be written to.
-Both arguments are handles to dataspace objects (remember that a dataspace essentially describes a multidimensional grid).
-HDF5 has a special keyword `H5S_ALL`, which when passed as *both* the memspace and file space arguments means that
-the entire dataspace of the dataset will be written to. This is often the desired behavior if we have created the
-dataset to exactly match dimensions of our source array.
+The memspace and file space arguments are useful for doing partial I/O operations on a dataset, eg. write or read only
+a small part of a large dataset. HDF5 provides a special keyword `H5S_ALL`, which when passed as *both* the memspace and
+file space arguments means that the entire dataset will be written to or read from. More specifically, dimensions of a
+dataset are fixed by the dataspace object that we used when creating the dataset `H5Dcreate()`. When `H5S_ALL` is used,
+HDF5 uses this full dataspace for accessing both the source and destination data during I/O. For simple array writes
+this is often the desired behavior if we already created the dataset to match our array layout.
+
+You can read more about the semantics of `H5S_ALL` in the documentation linked above.
 We will later have examples of using the memspace and file space arguments for more complicated writes.
 
 Here is a minimal code snippet using the C-API to write a 2D dataset.
@@ -230,7 +241,7 @@ H5Dread(
     datasetId,      // Dataset to read from
     H5T_NATIVE_INT, // Type of data to read, here `int` type
     H5S_ALL,        // Memspace
-    H5S_ALL,        // File space.  H5S_ALL for this and memspace means we read the full dataset
+    H5S_ALL,        // File space. H5S_ALL for this and memspace means we read the full dataset
     H5P_DEFAULT,    // Default transfer properties
     data            // Pointer to the array to which the data will be stored
 );
@@ -295,22 +306,29 @@ H5Sclose(attributeSpaceId);
 
 Part 2 of [`hdf5-write-dataset`](hdf5-write-dataset).
 
-## Hyperslab selections and operating on partial datasets
+
+## Partial dataset I/O
+
+So far we have used the `H5S_ALL` keyword for the data layout arguments in `H5Dwrite()` and `H5Dread()`. This keyword
+instructs HDF5 to write or read the entire dataset. We next consider partial dataset operations, ie. reading or writing
+subsets of a large dataset.
+
+### Hyperslab selections
 
 HDF5 **hyperslabs** are used to *select* subregions of dataspaces for data manipulation or I/O, hence the name: they are
 slices of N-dimensional spaces. Hyperslabs are useful for doing I/O or data manipulation only to specific parts of a
 dataset.
 
-Hyperslab selection is organized in terms of **blocks** of dataspace elements.Eg: for a 2D dataspace, block size of
-`(2, 2)` means we would select one or more subspaces, each containing 2x2 elements. Block size of `(1, 1)` would mean
-we'd just select individual elements (default behavior). We can select hyperslabs (one or more) from a dataspace using
-[H5Sselect_hyperslab()](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5S.html#Dataspace-SelectHyperslab).
+Hyperslab selection is organized in terms of **blocks** of dataspace elements (or grid points, if you prefer that analogy).
+Eg: for a 2D dataspace, block size of `(2, 2)` means we would select one or more subspaces, each containing 2x2 elements.
+Block size of `(1, 1)` would mean we'd just select individual elements (default behavior). We can select hyperslabs (one
+or more) from a dataspace using [H5Sselect_hyperslab()](https://docs.hdfgroup.org/archive/support/HDF5/doc/RM/RM_H5S.html#Dataspace-SelectHyperslab).
 It takes in the following arguments:
 - Dataspace ID
 - A "selection operation code", ie. what kind of selection are we performing. For example, `H5S_SELECT_SET` will replace
 any existing selection with the new selection, `H5S_SELECT_OR` will add any new hyperslabs to an existing selection,
 and so on.
-- The following 4 `hsize_t` arrays, each one being length $N$ if the dataspace is $N$-dimensional:
+- The following four `hsize_t` arrays, each containing $N$ elements if the dataspace is $N$-dimensional:
     - Starting offset: How many elements to skip in each direction before starting selection.
     - Stride: Specifies how the dataspace is traversed when selecting elements. `stride[i]` is the number of elements to
     move in direction `i`, ie. elements to be selected are `offset[i]`, `offset[i] + stride[i]`, `offset[i] + 2*stride[i]`
@@ -319,19 +337,74 @@ and so on.
     - Block size: How many elements to include in one block, as discussed above. `NULL` means 1 in each direction
     (single-element blocks).
 
-See the following figure for a demonstration of hyperslab selection. More hyperslab visualizations can be found on the
+See the following figure for a demonstration of hyperslab parameters. More hyperslab visualizations can be found on the
 [HDF5 homepage](https://portal.hdfgroup.org/documentation/hdf5/latest/_l_b_dset_sub_r_w.html).
 
 ![](./img/hdf5-hyperslabs.svg)
-*Hyperslab selection example*
+*Hyperslab selection example. Note that in Fortran API the rows and columns should be interchanged.*
 
 HDF5 "remembers" which hyperslab of the dataspace is currently selected and allows dataspace operations only in the
-active selection.  This is particularly useful for parallel I/O: each MPI process can select a unique hyperslab based on its MPI rank,
-and use `H5Dwrite/H5Dread` to perform I/O only in its own hyperslab.
+active selection.  This is particularly useful for parallel I/O as we will see below: each MPI process can select a
+unique hyperslab based on its MPI rank, and use `H5Dwrite/H5Dread` to perform I/O only in its own hyperslab.
 
-TODO code snippet that also shows memspace use
+### Partial write using memory space and file space arguments
 
-### Exercise: hyperslabs
+The code below does a non-contiguous hyperslab selection as in the right-hand figure above and writes data only to the
+selected elements. We will have to create a separate "memspace" dataspace for specifying memory layout of the source
+data. Note that memspace and file space *dimensions* don't necessarily have to match, as is the case here. Important is
+that the number of elements in memspace and file space are equal. `H5Dwrite()` will error out if this is not the case.
+
+```c
+// Dataspace and dataset creation. We're using double-valued dataset this time for variety
+hsize_t dims[2] = { 4, 6 };
+hid_t dataspace = H5Screate_simple(2, dims, NULL);
+// Assume 'fileId' is a valid handle to an HDF5 file
+hid_t dataset = H5Dcreate(fileId, "SomeDataset", H5T_NATIVE_DOUBLE, dataspace, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+// Data to be written
+double data[4] = { 1.0, 2.0, 3.0, 4.0 };
+
+// Define memory space (memspace) for writing, ie. shape of the source data. Just 1D array of length 4 in this case
+hsize_t memspaceDims[1] = { 4 };
+hid_t memspace = H5Screate_simple(1, memspaceDims, NULL);
+
+// Perform a non-contiguous hyperslab selection as in the right-hand side of the image above
+hsize_t offset[2] = { 1, 0 };
+hsize_t stride[2] = { 1, 4 };
+hsize_t count[2] = { 1, 2 };
+hsize_t block[2] = { 1, 2 };
+
+herr_t status = H5Sselect_hyperslab(
+    dataspace,          // Dataspace to operate on
+    H5S_SELECT_SET,     // New selection, ie. discard any previously selected dataspace elements
+    offset,
+    stride,
+    count,
+    block
+);
+
+// Perform the write with appropriate memspace/file space arguments.
+// 'dataspace' has an active selection of 4 elements, so we pass it as the "file space" argument.
+// Memspace is also 4 elements in total, so this write is OK.
+status = H5Dwrite( dataset, H5T_NATIVE_DOUBLE, memspace, dataspace, H5P_DEFAULT, data);
+```
+The resulting dataset:
+```c
+DATASET "SomeDataset" {
+    DATATYPE  H5T_IEEE_F64LE
+    DATASPACE  SIMPLE { ( 4, 6 ) / ( 4, 6 ) }
+    DATA {
+    (0,0): 0, 0, 0, 0, 0, 0,
+    (1,0): 1, 2, 0, 0, 3, 4,
+    (2,0): 0, 0, 0, 0, 0, 0,
+    (3,0): 0, 0, 0, 0, 0, 0
+    }
+}
+```
+All elements that we did not explicitly write are set to 0, which is the default fill value in HDF5 when creating a
+dataset.
+
+### Exercise: Partial write
 
 TODO
 
