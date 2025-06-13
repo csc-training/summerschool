@@ -2,16 +2,18 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="254.34175mm"
-   height="45.441837mm"
-   viewBox="0 0 254.34175 45.441837"
+   width="267.50409mm"
+   height="61.658066mm"
+   viewBox="0 0 267.50409 61.658065"
    version="1.1"
    id="svg7832"
    sodipodi:docname="hdf5-hyperslabs.svg"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="hdf5-hyperslabs.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -25,29 +27,17 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.7834877"
-     inkscape:cx="374.82737"
-     inkscape:cy="192.60015"
+     inkscape:zoom="0.89174385"
+     inkscape:cx="533.22487"
+     inkscape:cy="12.89608"
      inkscape:window-width="3374"
      inkscape:window-height="1371"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g577-3" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs7829">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient7333">
-      <stop
-         style="stop-color:#303030;stop-opacity:1;"
-         offset="0"
-         id="stop7329" />
-      <stop
-         style="stop-color:#303030;stop-opacity:0;"
-         offset="1"
-         id="stop7331" />
-    </linearGradient>
     <marker
        style="overflow:visible"
        id="TriangleStart"
@@ -86,21 +76,12 @@
          d="M 5.77,0 -2.88,5 V -5 Z"
          id="path135-6" />
     </marker>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient7333"
-       id="linearGradient7335"
-       x1="27.713606"
-       y1="101.76358"
-       x2="43.713948"
-       y2="101.76358"
-       gradientUnits="userSpaceOnUse" />
   </defs>
   <g
      inkscape:label="Background"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-2.5886899,-113.5233)"
+     transform="translate(9.1328281,-98.955268)"
      style="fill:#ffffff">
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:0.304526"
@@ -110,44 +91,12 @@
        x="-9.1328287"
        y="98.955269"
        ry="1.2520912" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:30.3534;display:inline;fill:#1a1a1a;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
-       x="27.348349"
-       y="104.10355"
-       id="text7016-4"
-       transform="rotate(-90,32.472726,138.7488)"><tspan
-         x="27.348349"
-         y="104.10355"
-         id="tspan569"><tspan
-           style="stroke-width:0.5"
-           id="tspan567">Dim 0</tspan></tspan></text>
-    <path
-       style="opacity:1;fill:#1a1a1a;stroke:#303030;stroke-width:0.567973;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
-       d="M -0.68373899,109.48478 H 67.601699"
-       id="path6558" />
-    <path
-       style="fill:#1a1a1a;stroke:#303030;stroke-width:0.475856;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart-3)"
-       d="m -0.34569411,109.40234 v 47.93184"
-       id="path6558-7" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:30.3534;display:inline;opacity:1;fill:#1a1a1a;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
-       x="27.348349"
-       y="104.10355"
-       id="text7016"
-       transform="translate(-0.62933549,3.0626503)"><tspan
-         x="27.348349"
-         y="104.10355"
-         id="tspan573"><tspan
-           style="stroke-width:0.5"
-           id="tspan571">Dim 1</tspan></tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
      id="g577-3"
      inkscape:label="Grid1"
-     transform="scale(0.26458333)">
+     transform="matrix(0.26458333,0,0,0.26458333,11.721518,14.568032)">
     <path
        inkscape:connector-curvature="0"
        d="M 0.57551163,43.120832 H 42.796675 V 0.57551163 H 0.57551163 Z"
@@ -433,7 +382,7 @@
      inkscape:groupmode="layer"
      id="g577-3-4"
      inkscape:label="Grid2"
-     transform="matrix(0.26518988,0,0,0.26518988,133.73315,0.00624958)">
+     transform="matrix(0.26518988,0,0,0.26518988,145.45467,14.574282)">
     <path
        inkscape:connector-curvature="0"
        d="M 0.57551163,43.120832 H 41.970958 V 0.57551163 H 0.57551163 Z"
@@ -718,5 +667,41 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Arrows" />
+     inkscape:label="Arrows"
+     transform="translate(11.721518,14.568032)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:30.3534;display:inline;fill:#1a1a1a;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="27.348349"
+       y="104.10355"
+       id="text7016-4"
+       transform="rotate(-90,-25.583268,83.281496)"><tspan
+         x="27.348349"
+         y="104.10355"
+         id="tspan843"><tspan
+           style="stroke-width:0.5"
+           id="tspan841">Dim 0</tspan></tspan></text>
+    <path
+       style="opacity:1;fill:#1a1a1a;stroke:#303030;stroke-width:0.567973;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M -0.68373899,109.48478 H 67.601699"
+       id="path6558"
+       transform="translate(-2.5886899,-113.5233)" />
+    <path
+       style="fill:#1a1a1a;stroke:#303030;stroke-width:0.475856;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart-3)"
+       d="m -0.34569411,109.40234 v 47.93184"
+       id="path6558-7"
+       transform="translate(-2.5886899,-113.5233)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:30.3534;display:inline;opacity:1;fill:#1a1a1a;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="27.348349"
+       y="104.10355"
+       id="text7016"
+       transform="translate(-3.2180255,-110.46065)"><tspan
+         x="27.348349"
+         y="104.10355"
+         id="tspan847"><tspan
+           style="stroke-width:0.5"
+           id="tspan845">Dim 1</tspan></tspan></text>
+  </g>
 </svg>
