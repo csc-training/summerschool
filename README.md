@@ -30,7 +30,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 09:00 | Transport from Helsinki city
-| 10:00 | Welcome to Nuuksio
+| 10:00 | [Welcome to Nuuksio](https://csc-training.github.io/summerschool/)
 | 10:30 | [Introduction to HPC](intro-to-hpc)
 | 12:00 | Lunch
 | 13:00 | [Introduction to HPC](intro-to-hpc)
