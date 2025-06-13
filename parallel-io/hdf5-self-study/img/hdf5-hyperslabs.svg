@@ -7,10 +7,11 @@
    viewBox="0 0 254.34175 45.441837"
    version="1.1"
    id="svg7832"
-   sodipodi:docname="drawing.svg"
+   sodipodi:docname="hdf5-hyperslabs.svg"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -24,9 +25,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.89174383"
-     inkscape:cx="392.4894"
-     inkscape:cy="155.31366"
+     inkscape:zoom="1.7834877"
+     inkscape:cx="374.54703"
+     inkscape:cy="192.03946"
      inkscape:window-width="3374"
      inkscape:window-height="1371"
      inkscape:window-x="0"
@@ -34,7 +35,67 @@
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
-     id="defs7829" />
+     id="defs7829">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient7333">
+      <stop
+         style="stop-color:#303030;stop-opacity:1;"
+         offset="0"
+         id="stop7329" />
+      <stop
+         style="stop-color:#303030;stop-opacity:0;"
+         offset="1"
+         id="stop7331" />
+    </linearGradient>
+    <marker
+       style="overflow:visible"
+       id="TriangleStart"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleStart-3"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135-6" />
+    </marker>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7333"
+       id="linearGradient7335"
+       x1="27.713606"
+       y1="101.76358"
+       x2="43.713948"
+       y2="101.76358"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <g
      inkscape:label="Background"
      inkscape:groupmode="layer"
@@ -42,13 +103,45 @@
      transform="translate(-2.5886899,-113.5233)"
      style="fill:#ffffff">
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.304526"
        id="rect11334"
-       width="256.73065"
-       height="48.497066"
-       x="1.6406301"
-       y="112.20435"
-       ry="0.98483068" />
+       width="267.50412"
+       height="61.658062"
+       x="-9.1328287"
+       y="98.955269"
+       ry="1.2520912" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:30.3534;display:inline;fill:#1a1a1a;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="27.348349"
+       y="104.10355"
+       id="text7016-4"
+       transform="rotate(-90,32.472726,138.7488)"><tspan
+         x="27.348349"
+         y="104.10355"
+         id="tspan7687"><tspan
+           style="stroke-width:0.5"
+           id="tspan7685">Dim 0</tspan></tspan></text>
+    <path
+       style="opacity:1;fill:#1a1a1a;stroke:#303030;stroke-width:0.567973;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M -0.68373899,109.48478 H 67.601699"
+       id="path6558" />
+    <path
+       style="fill:#1a1a1a;stroke:#303030;stroke-width:0.475856;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart-3)"
+       d="m -0.34569411,109.40234 v 47.93184"
+       id="path6558-7" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;inline-size:30.3534;display:inline;opacity:1;fill:#1a1a1a;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="27.348349"
+       y="104.10355"
+       id="text7016"
+       transform="translate(-0.62933549,3.0626503)"><tspan
+         x="27.348349"
+         y="104.10355"
+         id="tspan7691"><tspan
+           style="stroke-width:0.5"
+           id="tspan7689">Dim 1</tspan></tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -304,7 +397,7 @@
          sodipodi:role="line"
          id="tspan561-3"
          x="308.10742"
-         y="32.457584">offset=(1, 2)</tspan></text>
+         y="32.457584">offset=(2, 1)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
@@ -324,7 +417,7 @@
          sodipodi:role="line"
          id="tspan569-6"
          x="308.10742"
-         y="110.94657">count=(3, 1)</tspan></text>
+         y="110.94657">count=(1, 3)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
@@ -584,42 +677,46 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="308.10742"
-       y="32.457584"
+       x="304.31387"
+       y="33.624493"
        id="text563-0-1"><tspan
          sodipodi:role="line"
          id="tspan561-3-3"
-         x="308.10742"
-         y="32.457584">offset=(0, 1)</tspan></text>
+         x="304.31387"
+         y="33.624493">offset=(1, 0)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="308.21408"
-       y="71.998299"
+       x="304.42053"
+       y="73.165207"
        id="text567-6-1"><tspan
          sodipodi:role="line"
          id="tspan565-1-1"
-         x="308.21408"
-         y="71.998299">stride=(4, 1)</tspan></text>
+         x="304.42053"
+         y="73.165207">stride=(1, 4)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="308.10742"
-       y="110.94657"
+       x="304.31387"
+       y="112.11348"
        id="text571-0-0"><tspan
          sodipodi:role="line"
          id="tspan569-6-3"
-         x="308.10742"
-         y="110.94657">count=(2, 1)</tspan></text>
+         x="304.31387"
+         y="112.11348">count=(1, 2)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
-       x="307.30743"
-       y="151.07973"
+       x="303.51389"
+       y="152.24664"
        id="text575-3-4"><tspan
          sodipodi:role="line"
          id="tspan573-2-0"
-         x="307.30743"
-         y="151.07973">block=(2, 1)</tspan></text>
+         x="303.51389"
+         y="152.24664">block=(1, 2)</tspan></text>
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Arrows" />
 </svg>
