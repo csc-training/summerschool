@@ -1,8 +1,8 @@
 ---
 title:    Kernel optimisation
-subtitle: GPU programming with HIP
+subtitle: CSC Summer School in High-Performance Computing 
 author:   CSC Training
-date:     2025-03
+date:     2025
 lang:     en
 ---
 
@@ -30,7 +30,7 @@ lang:     en
 | cuSPARSE | hipSPARSE | rocSPARSE  | Sparse BLAS + SMV                                                                   |
 | cuSOLVER | hipSOLVER | rocSOLVER  | Lapack library                                                                      |
 | AMG-X    |           | rocALUTION | Sparse iterative solvers and preconditioners with Geometric and Algebraic MultiGrid |
-| Thrust   |           | https://github.com/ROCm/rocThrust  | C++ parallel algorithms library                                                     |
+| Thrust   |           | rocThrust  | C++ parallel algorithms library                                                     |
 
 
 # Libraries (II)
