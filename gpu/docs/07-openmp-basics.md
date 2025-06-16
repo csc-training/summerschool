@@ -1,7 +1,9 @@
 ---
 title:  "OpenMP offloading"
-event:  CSC Summer School in High-Performance Computing 2025
-lang:   en
+subtitle: CSC Summer School in High-Performance Computing 
+author:   CSC Training
+date:     2025
+lang:     en
 ---
 
 # OpenMP offloading {.section}
@@ -446,7 +448,7 @@ ftn -fopenmp code.f90 -o code
 
 # Compiling an OpenMP program for GPU offloading: Mahti
 
-On LUMI compiling OpenMP offload is enabled with
+On Mahti compiling OpenMP offload is enabled with
 
 Modules:
 ```bash

@@ -17,3 +17,4 @@ operation so that the receive buffers will have the following values:
 You can start from scratch or use the skeleton code
 [skeleton.cpp](skeleton.cpp) or [skeleton.F90](skeleton.F90).
 
+**HINT:** Notice how the desired result in Task 0 can be achieved by adding the send arrays in tasks 0 and 1 element wise. What about Task 2?

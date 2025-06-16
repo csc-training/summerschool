@@ -4,8 +4,8 @@
 
 static size_t N = 1<<20;
 
-// Declare interface
-void hip_sum(float* a, float* b, float* c, size_t n);
+// Declare interface (spoiler alert!)
+// void hip_sum(float* a, float* b, float* c, size_t n);
 
 int main() {
   float *a, *b, *c;
@@ -22,10 +22,7 @@ int main() {
 
 #pragma omp target enter data map(to: a[:N], b[:N]) map(alloc: c[:N])
 
-  hip_sum((float*)omp_get_mapped_ptr(a, omp_get_default_device()),
-          (float*)omp_get_mapped_ptr(b, omp_get_default_device()),
-          (float*)omp_get_mapped_ptr(c, omp_get_default_device()),
-          N);
+  // TODO: pass device pointers of a,b and c and N to sum_vecs kernel
 
 #pragma omp target update from(c[:N])
 

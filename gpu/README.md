@@ -31,31 +31,24 @@ concepts to solve some more advanced cases.
 
 ### Fundamentals
 
-- [Lorem ipsum](exercises/fundamentals/lorem)
-
-### Bonus exercises
-
-- [Lorem ipsum](exercises/bonus/lorem)
+- [Four exercise on stream and events](exercises/fundamentals/03-streams)
 
 ## Memory management
 
 ### Fundamentals
 
-- [Lorem ipsum](exercises/fundamentals/lorem)
-
-### Bonus exercises
-
-- [Lorem ipsum](exercises/bonus/lorem)
+- [API learning exercise](exercises/fundamentals/04-memory)
 
 ## Kernel optimizations
 
 ### Fundamentals
 
-- [Lorem ipsum](exercises/fundamentals/lorem)
+- [Investigate coalescing](exercises/fundamentals/06-optimization/01-coalescing)
+- [Tracing with rocprof](exercises/fundamentals/06-optimization/02-trace)
 
 ### Bonus exercises
 
-- [Lorem ipsum](exercises/bonus/lorem)
+- [Matrix transpose](exercises/bonus/06-optimization/matrix-transpose)
 
 ## Multi-GPU programming
 

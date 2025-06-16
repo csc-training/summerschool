@@ -23,14 +23,14 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 - [General exercise instructions](exercise-instructions.md)
 - Session-specific material linked in the schedule below
 
-## Schedule (tentative)
+## Schedule
 
 ### Day 1, Tue 24.6.
 
 | Time  | Topic |
 | ----  | ----- |
 | 09:00 | Transport from Helsinki city
-| 10:00 | Welcome to Nuuksio
+| 10:00 | [Welcome to Nuuksio](https://csc-training.github.io/summerschool/)
 | 10:30 | [Introduction to HPC](intro-to-hpc)
 | 12:00 | Lunch
 | 13:00 | [Introduction to HPC](intro-to-hpc)
