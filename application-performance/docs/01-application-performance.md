@@ -1,7 +1,7 @@
 ---
-title:  Application performance
-author:   CSC Training
-date:     2025-06
+title:    Application performance
+subtitle: CSC Summer School in High-Performance Computing
+date:     2025
 lang:     en
 ---
 
