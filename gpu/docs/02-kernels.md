@@ -1,7 +1,7 @@
 ---
 title:    HIP, CUDA and GPU kernels
-author:   CSC Summer School in High-Performance Computing 2025
-date:     2025-06
+author:   CSC Summer School in High-Performance Computing
+date:     2025
 lang:     en
 ---
 
@@ -380,13 +380,11 @@ int main() {
 # Summary
 
 ::: incremental
-- CUDA and HIP are low level GPU programming APIs
-- ROCm is a software stack providing the tools for programming AMD GPUs
 - HIP supports both AMD and NVIDIA devices
 - CUDA and HIP consist of an API and a kernel language
     - API controls the larger context
     - kernel language for single thread point of view GPU code
 - kernels execute over a grid of (blocks of) threads
     - each block is executed in wavefronts of 64 (AMD) or 32 (NVIDIA) threads
-- kernels need to be declared `__global__` and `void` and are launched with special syntax
+- kernels need to be declared `__global__ void` and are launched with `kernel<<<blocks, threads>>>(arguments)`
 :::

@@ -1,7 +1,7 @@
 ---
 title:    Memory Hierarchy and Memory Accesses in GPUs
-author:   CSC Summer School in High-Performance Computing 2025
-date:     2025-06
+author:   CSC Summer School in High-Performance Computing
+date:     2025
 lang:     en
 ---
 

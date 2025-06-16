@@ -1,8 +1,7 @@
 ---
 title:  Introduction to GPU programming
-subtitle: Mental model of a GPU
-author:   CSC Training
-date:     2025-06
+subtitle: CSC Summer School in High-Performance Computing
+date:     2025
 lang:     en
 ---
 
