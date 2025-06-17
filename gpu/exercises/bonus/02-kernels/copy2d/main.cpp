@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <vector>
 
-#include "../error_checking.hpp"
+#include "../../../error_checking.hpp"
 
 // Copy all elements using threads in a 2D grid
 __global__ void copy2d(/*TODO: add arguments*/) {
