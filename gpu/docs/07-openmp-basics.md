@@ -1,9 +1,7 @@
 ---
 title:  "OpenMP offloading"
-subtitle: CSC Summer School in High-Performance Computing 
-author:   CSC Training
-date:     2025
-lang:     en
+event:  CSC Summer School in High-Performance Computing 2025
+lang:   en
 ---
 
 # OpenMP offloading {.section}

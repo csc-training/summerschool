@@ -1,8 +1,7 @@
 ---
 title:  Introduction to GPU programming
-subtitle: CSC Summer School in High-Performance Computing
-date:     2025
-lang:     en
+event:  CSC Summer School in High-Performance Computing 2025
+lang:   en
 ---
 
 # Overview

@@ -1,9 +1,7 @@
 ---
-title:    Kernel optimisation
-subtitle: CSC Summer School in High-Performance Computing 
-author:   CSC Training
-date:     2025
-lang:     en
+title:  Kernel optimisation
+event:  CSC Summer School in High-Performance Computing 2025
+lang:   en
 ---
 
 # Kernel optimisation strategies

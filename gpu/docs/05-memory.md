@@ -1,9 +1,7 @@
 ---
 title:  Memory allocations, access, and unified memory
-subtitle: CSC Summer School in High-Performance Computing 
-author:   CSC Training
-date:     2025
-lang:     en
+event:  CSC Summer School in High-Performance Computing 2025
+lang:   en
 pdfSeparateFragments: false
 ---
 

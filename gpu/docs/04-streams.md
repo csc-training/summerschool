@@ -1,9 +1,7 @@
 ---
-title:    Streams, events, and synchronization
-subtitle: CSC Summer School in High-Performance Computing 
-author:   CSC Training
-date:     2025
-lang:     en
+title: Streams, events, and synchronization
+event: CSC Summer School in High-Performance Computing 2025
+lang:  en
 pdfSeparateFragments: false
 ---
 

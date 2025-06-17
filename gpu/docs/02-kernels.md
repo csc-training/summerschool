@@ -1,8 +1,7 @@
 ---
-title:    HIP, CUDA and GPU kernels
-author:   CSC Summer School in High-Performance Computing
-date:     2025
-lang:     en
+title:  HIP, CUDA and GPU kernels
+event:  CSC Summer School in High-Performance Computing 2025
+lang:   en
 ---
 
 # CUDA

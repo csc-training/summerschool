@@ -1,8 +1,7 @@
 ---
-title:    Application performance
-subtitle: CSC Summer School in High-Performance Computing
-date:     2025
-lang:     en
+title: Application performance
+event: CSC Summer School in High-Performance Computing 2025
+lang:  en
 ---
 
 # Overview
