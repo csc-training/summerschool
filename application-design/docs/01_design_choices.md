@@ -9,9 +9,12 @@ lang:   en
 <div class=column>
     
 - **Do science**
-    - Scientific articles
-    - Method-oriented articles presenting code and methods
-    - Speedup other standard scientific procedures, reducing also their costs
+    - Answer questions, solve problems
+    - Scientific method:
+        - Observations/measurements
+        - Theoretical model
+        - **Simulation**
+    - Speedup scientific procedures and analysis, reducing also their costs
 </div>
 
 <div class=column>
@@ -21,7 +24,6 @@ lang:   en
     - Gateway into projects, collaborations
     - Citations, co-authorships
     - Work on the bleeding edge
-
 </div>
 
 
@@ -33,67 +35,33 @@ lang:   en
 
 - **Questions**: your software project?
 
-# ICON
+# Vlasiator
 
 <div class=column style="width:65%">
-- Icosahedral Nonhydrostatic Weather and Climate Model
-- Closed source, developed my several meteorology institutes
-    - DWD, MPI-M, MeteoSwiss, ...
-    - ~200 developers
-- 1 600 000 lines of modern Fortran
-- Stencil type operations
-    - Memory bound
-- MPI + OpenMP, OpenACC for GPUs
-</div>
-<div class=column style="width:30%">
-    
-<!-- Image source https://code.mpimet.mpg.de/projects/iconpublic -->
-![](images/r2b02_europe.png){.center width=70%} 
-<br>
-<!-- Image source https://earthobservatory.nasa.gov/images/47628/global-warming-mapped
-     Copyright NASA’s Earth Observatory -->
-![](images/climate-temperature.png){.center width=80%} 
-
+- Hybrid-Vlasov model of magnetised space plasma physics
+- [Open source](https://github.com/fmihpc/vlasiator), led by University of Helsinki
+- \>60 000 lines of modern C++
+- Semi-Lagrangian solver on Cartesian grids
+- 6D: 3D space, 3V velocity
+    - ghost updates in every direction, every step
+    - **Lots** of memory
+- MPI + OpenMP + SIMD, Cuda/HIP for GPUs
 </div>
 
-# LiGen
-<div class=column>
-- High Throughput virtual screening Application
-- C++ + GPU (CUDA/SYCL)
-    - MPI + std::thread + offloading
-    - Property of Dompe' Farmaceutici
-    - Found a compound active against COVID (paucisymptomatic)
-</div>
-<div class=column>
-    
-![<span style=" font-size:0.5em;">image credits: https://exscalate.com/our-approach/exscalate-platform </span>](images/ligen.svg){.center width=50%}
-
+<div class=column style="width:33%">    
+![ M. Alho / Vlasiator team](images/vlasiator_Alho_illustration.png){width=100%}
 </div>
 
 
-# Starting position: Cases ICON & LiGen
+# Starting position: Case Vlasiator
 
-<div class=column>
-    
-ICON
-
-- Rewrite of earlier weather model in early 2000s
-- Next generation modeling system capable of global simulations down to 1km resolutions
-- Operational forecasts since 2015
-- GPU porting started in ~2015
-
-</div>
-
-<div class=column>
-    
-LiGen
-
-- Existing code with basic features mostly working
-- Bad scaling paradigm
-- Complete rewrite of the application to use advanced C++ features
-    - Data flow design
-    - GPU acceleration added
-</div>
+- Science case: apply algorithm with "more physics" (kinetic phenomena)
+    - Previous state of the art: fluid-based approaches
+- Problem: "too heavy" for current HPC systems
+- Strategy: start developing now what will run on "next year's" cutting-edge HPC systems
+- Global (2D) simulations of the Earth's magnetosphere since 2013, 3D since 2020
+- GPU porting started earnestly around 2021
+    - Before that, insufficient memory and host &harr; device bandwidth
 
 
 # Design model
@@ -108,16 +76,16 @@ LiGen
 
 # Design considerations
 
-- Parallelization strategies
+- Parallelisation strategies
 - Data design
 - Programming languages
 - Modularity
 - I/O formats
-- Documenatation
+- Documentation
 - Testing
 
 
-# Parallelization strategies
+# Parallelisation strategies
 
 - Planning includes thinking what is the target platform
 - Target machines: laptops, small clusters, supercomputers
@@ -125,92 +93,53 @@ LiGen
 - From shared memory to distributed memory machines
     - Keep in mind that most machines are distributed memory systems = MPI
 - Moving from <1000 cores to >10k cores
-    - Parallellization strategies need to be considered
+    - Parallelisation strategies need to be considered
     - Non-blocking, avoiding global calls,...
 - Accelerators
     - GPUs have their own tricks and quirks
 
-# Parallelization strategies 
+# Parallelisation strategies 
 
 - Going **BIG** -> GPUs are mandatory
 - But not all HPC needs to be exascale
     - Size is not a goal in itself
 
-# Case ICON: Parallellization
+# Case Vlasiator: Parallelisation
 
-<div class=column style="width:65%">
-- Domain decomposition of the horizontal grid
-- Halo exchange with `Isend` / `Irecv`
-- Asynchronous I/O with special I/O processes
-    - One sided MPI
-- Coupled simulations
-    - Some processes simulate atmosphere, some ocean at the same time
+<div class=column style="width:57%">
+- Domain decomposition (MPI) of position-space grid
+- OpenMP parallelisation for position and velocity spaces
+- Parallel MPI-IO with own library
+    - Adapted for 6D data
 - Good parallel scalability
-</div>
-
-<div class=column style="width:33%">
-<!-- Image source ICON Tutorial 
-     https://www.dwd.de/EN/ourservices/nwv_icon_tutorial/nwv_icon_tutorial_en.html
-     Copyright DWD -->
-![](images/icon-domain-decomposition.png){.center width=70%}
-</div>
-
-
-
-# Case ICON: GPU porting
-
-- Most of the computations on GPU
-- Data copied to the GPU in the start of the simulation
-- Loops parallelized with OpenACC directives
-    - Few CUDA/HIP kernels
-- GPU aware MPI communication
-
-# Case LiGen: Parallellization
-
-<div class=column style="width:58%">
-    
-- Embarassingly parallel (or data parallel)
-- One process per node
-- Internal pipeline
-    - Thread balancing is a variable to explore!
-        - Find the bottleneck, increase workers, repeat
-
-- No need to communicate between nodes
-    - MPI used only for I/O operations
-
+    - Record: 1452 nodes / 185 856 cores on LUMI-C
 </div>
 
 <div class=column style="width:40%">
-<br />
-<br />
-
-![ <span style=" font-size:0.5em;">   image credits: https://arxiv.org/pdf/2110.11644.pdf </span> ](images/docker-ht-pipeline.jpg){.center width=100%}
-
-
-</div>
-
-# Case LiGen: GPU parallelization
-
-<div class=column style="width:55%">
-- Traditional approach: distribute computation
-    - Latency oriented: process a single data as fast as possible
-
-- New solution: batch of data
-    - Throughput oriented: kernel is slower, but can handle much more data
-    - If enough data are available, throughput is increased
-    - Possible only if amount of memory per data required is small
+![<span style=" font-size:0.5em;">   [\[Kotipalo et al., 2025\]](https://doi.org/10.48550/arXiv.2505.20908)](images/vlasiator_Kotipalo_load_balance.png){.center width=100%}
 </div>
 
 
-<div class=column style="width:43%">
+# Case Vlasiator: GPU porting strategy
 
-![](images/latency.jpg){.justify width=90%}
+- Initial exploration/hackathons e.g. using OpenACC
+- Decision to use unified memory
+- Piece-by-piece porting to GPU
+- Performance analysis, to guide re-design effort
+- Re-writing to consolidate GPU version
+- Performance on-par with CPU
 
-<br />
 
-![ <span style=" font-size:0.5em;">images credits: https://arxiv.org/pdf/2209.05069.pdf </span> ](images/batch.jpg){.justify width=90%}
+# Case Vlasiator: GPU porting
 
-</div>
+- Most of the computations on GPU
+- Data resides in unified memory, page faults successfully minimised
+- CUDA/HIP kernels for portability
+    - Algorithms redesigned to operate on at least 64 elements at a time
+    - Extensive kernel merging
+- GPU-aware MPI communication
+- Custom hybrid hashmap and vector libraries [\[Papadakis et al., Front. Comput. Sci., 2024\]](https://doi.org/10.3389/fcomp.2024.1407365)
+
 
 # Programming languages
 
@@ -242,7 +171,7 @@ LiGen
 - Fortran
     - Good for number crunching
     - Good array syntax
-    - Language semantics make optimization easier for compilers
+    - Language semantics make optimisation easier for compilers
 
 </div>
 
@@ -257,6 +186,7 @@ LiGen
     - Python & C++ (PyBind11) for object-oriented programming
     - Julia & Fortran (native) for functional programming
 
+
 # GPU programming approaches
 
 - Directive based approaches: OpenACC and OpenMP
@@ -270,6 +200,7 @@ LiGen
     - Rely on implicit data movements
     - Compiler support incomplete
 
+
 # Modular code design: programming
 
 - Good code is modular
@@ -278,14 +209,14 @@ LiGen
     - No global variables, input what you need
 - Modular code takes more time to design but is **a lot** easier to extend and understand
 
-# Case LiGen: Modular design
 
-- Pipeline of stages with a common structure (input/output queues)
-    - Easy to create new stages to support new functionalities
-- Single interface for compute intensive backends
-    - High level program structure separated by time consuming accelerated code
-    - Different implementation for the accelerated code.
-    - Backend characteristics (e.g data movement) are hidden from the rest of the application.
+# Case Vlasiator: Modular design
+
+- Object-oriented programming to manage e.g. boundary conditions
+    - Easy to create new boundaries to support new functionalities
+- Separate what to do (e.g. physics) from how to do (e.g. optimal implementation of loops)
+    - Interfaces to different backends (CUDA kernel, OpenMP threading, ...)
+    - Use of class inheritance/templates/lambdas to reduce code duplication
 
 # Version control
 
@@ -296,7 +227,8 @@ LiGen
     - Issue tracking
     - Review of pull/merge requests
     - wikis
-- ICON and LiGen: private gitlab
+- Vlasiator: public GitHub
+
 
 # Code design: tools
 
@@ -307,17 +239,19 @@ LiGen
     - Libraries
         - Numerical (BLAS, solvers,...)
         - I/O
-        - Parallelization
+        - Parallelisation
+        - Profiling/monitoring
 </div>
 
 <div class=column>
     
 - Caveats:
     - Is the lib still supported/updated?
-    - Do you trust the source, is it widely used
-    - Is there documentation
-    - Does it support all the features
+    - Do you trust the source, is it widely used?
+    - Is there documentation?
+    - Does it support all the features, can you extend it if needed?
 </div>
+
 
 # Code design: development tools
 
@@ -328,6 +262,7 @@ LiGen
     - Make, Ninja
 - The bigger your project is, the better is to rely on these automatic tools.
     - Setup can be painful
+
     
 # Code design: development tools
 
@@ -350,27 +285,20 @@ LiGen
 - How to distribute the data 
 - GPU introduce more data related problems and opportunities:
     - Memory copies between Host and Device
-    - Preallocation
-    - Overlapping computation with copy
+    - Preallocation, prefetching, overlapping computation with copy
+    - GPU-aware MPI
 
-# Case ICON: Data design
 
-- Multiply nested data structures
-- Need to perform deep copies for GPUs
-- Fortran pointers used as "shortcuts"
-- Blocking for innermost array dimension ("nproma")
-    - Helps for cache performance and vectorization
-    - Optimum block size very different in CPUs and GPUs (~32 vs. ~10 000)
+# Case Vlasiator: Data design
 
-# Case LiGen: Data design
+- Adaptively refined 3D spatial mesh
+    - Array of spatial variables
+    - (Hybrid) hashmap of (sparse, dynamic) 3V velocity mesh
+    - 3D-3V used for (computationally heavy) propagation of plasma
+- Uniform, highest-resolution 3D spatial mesh
+    - Arrays of electromagnetic field variables
+    - Used for (computationally lighter) EM field propagation
 
-- Relies a lot on C++ data ownership semantics (usage of move, refs, ...)
-    - Avoid costly copies!
-
-- GPU: 
-    - Wrapper for memory to enable C++ RAII paradigm: we can forget about mallocs!
-    - Preallocate for worst case: one malloc to process them all!
-    - Double buffering
 
 # I/O Data formats
 
@@ -383,29 +311,190 @@ LiGen
     - Your field might have some data standards 
 - Remember also that large simulations produce lots of data
     - Storing "big data" is an issue
-    - A global climate simulation can produce one peta byte in a day
+    - A global climate simulation can produce one PB in a day
 
-# Case ICON: I/O Data formats
 
-- Input data (grids, initial values etc.) normally as netcdf
-- Output data either in netcdf or grib2 (binary format for weather and climate data)
-- Large climate simulation can produce a petabyte of data per day
-    - Need to consider post-processing and long time storage
+# Case Vlasiator: I/O data formats
+
+- Input data (run parameters): command line arguments or ascii configuration file
+- Logfile with simulation progress, memory monitoring, etc. in ascii
+- Output data in custom format with library using parallel MPI-IO (reduces redundancy of stored metatdata for 3D-3V data compared to industry-standard formats)
+- Checkpoint/restart files also in custom format
+- Can be 10 TB per file
+    - Need to consider post-processing and long-term storage
+
 
 # Coding style
 
 - Code readability comes first
 - Consistency helps readability 
-    - Indentation, how/when to have instructions longer than one line,...
+    - Indentation, how/when to have instructions longer than one line, ...
     - Many editor have tools to help
     - There are exceptions!
 
-# Summary 
+
+# Documentation
+- In-code:
+    - Explanation of what files, classes, functions are doing
+    - Text and e.g. ascii-art explanations of complex parts
+    - Can be formatted to be retrieved externally to build e.g. online documentation too (e.g. `Doxygen`, `Sphinx`)
+- Along with the code (wiki, manual)
+    - How to contribute
+    - How to install and use
+    - How to analyse
+
+
+# Documentation
+- For whom am I writing documentation? Think of:
+    - You after vacation (did *I* write this?)
+    - Who comes after your PhD (they *must* have had a good reason for writing it like this?!)
+    - Future contributors (where to start? how do I contribute my optimised kernel to their repo?)
+    - Future users (I could use this for my research, how does it work?)
+
+
+# Testing
+- Unit testing (does this function/solver/module work?)
+- Integration testing (hopefully my new feature doesn't break everything?)
+- Verification (does my code do what I designed it to do?)
+- Validation (does my code do things as expected compared to theory/data?)
+
+**Use automated tools to streamline as much testing as you can! Ensure your test coverage is adequate!**
+
+# Code deployment and production
+
+<div class=column>
+
+- Your HPC code is
+    - Written/ported &checkmark;
+    - Modular &checkmark;
+    - Using robust version control and software engineering practices &checkmark;
+    - Parallelised &checkmark;
+    - Optimised &checkmark;
+    - Uses efficient I/O &checkmark;
+
+</div>
+
+<div class=column>
+
+- You were granted computational resources for benchmarking and/or production! 🎉
+- How do you ensure your code is performing well and not wasting these precious resources?
+
+</div>
+
+
+# Code deployment and production: scaling
+
+- How efficiently is your code running in parallel?
+- Weak scaling:
+    - Start with a problem run on a single core/CPU/GPU/node
+    - Multiply **both** problem size **and** core/CPU/GPU/node count by *n*
+    - Plot execution time vs. problem size: **should be flat**
+- Strong scaling:
+    - Start with problem run on a small amount of resources
+    - Run fixed problem size with increasing amount of resources
+    - Plot execution time vs. amount of resources used: **should be inversely proportional**
+
+
+# Case Vlasiator: Weak scaling
+
+<div class=column>
+![](images/vlasiator_weak_scaling.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_weak_scaling_efficiency.png){.center width=100%}
+</div>
+
+# Case Vlasiator: Strong scaling (light)
+
+<div class=column>
+![](images/vlasiator_strong_scaling_light.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_strong_scaling_efficiency_light.png){.center width=100%}
+</div>
+
+# Case Vlasiator: Strong scaling (medium)
+
+<div class=column>
+![](images/vlasiator_strong_scaling_medium.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_strong_scaling_efficiency_medium.png){.center width=100%}
+</div>
+
+
+# Case Vlasiator: Strong scaling (heavy)
+
+<div class=column>
+![](images/vlasiator_strong_scaling_heavy.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_strong_scaling_efficiency_heavy.png){.center width=100%}
+</div>
+
+
+# Code deployment and production: profiling
+- Detailed performance analysis usually has overheads incompatible with production performance
+- It can be useful to monitor some performance metrics/profiling with lightweight tools
+    - Ensure the code works as intended
+    - Ensure the system works as intended
+- "Basic" health checks:
+    - Is the job proceeding (not hanging)?
+    - Is the performance as expected and homogeneous (no unexplained slowdowns)?
+    - Is the memory usage as expected (resident, high-water mark)?
+
+
+# Code deployment and production: monitoring
+- Production campaigns can be long and frustrating
+    - Long queueing times
+    - System downtimes
+    - Hardware and software failures (the more nodes used, the more frequent!)
+- Streamline and automatise procedures as much as possible!
+    - Automatised workflows
+    - Automatic warnings from system
+        - slurm email if available (not on LUMI...)
+        - Use available APIs to push notifications
+- Do not spend 24/7 on the command line! 
+
+
+# Code deployment and production: troubleshooting
+- In case of anomalies:
+    - Is my code version correct?
+    - Are my compilation parameters correct?
+    - Is my job script correct and up to date (run parameters, modules)?
+    - Check your workflow still matches best practices in the documentation!
+    - Ask your team colleagues to check if things work for them?
+- If you suspect system issues:
+    - Is a maintenance announced/under way?
+    - Is there an update on the system status page or mailing list?
+    - Is anyone else running/in queue?
+
+
+# Code deployment and production: get help!
+- If you still suspect issues with the system, contact support!
+    - Detailed description!
+    - Code, modules, job parameters
+    - Expected result/behaviour
+    - What is abnormal
+
+
+# Conclusions 
 
 - Software design is all about planning 
 - Productivity
     - Modular design
     - Use existing libraries
-    - Use & adopt design, community, and collaboration tools
+    - Use and integrate design, community, and collaboration tools
     - Programming language and design selection
+- Re-/Usability
+    - Not only for a single developer
+    - Automation/standardisation where possible
+    - Adopt practices and tools to ease the burden of a single person
 
+# ...and lastly:
+
+**Have great success running your well-designed application on top supercomputers!**
