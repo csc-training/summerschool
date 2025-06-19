@@ -385,7 +385,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 
 
 
-# Task Graph as a Directed Acyclic Graph
+# SYCL Dependencies and Concurrency
 
 ![Examples of a linear chain (left) and Y-pattern (right) of dependencies.](img/graphs.svg){.center width=60%}
 
