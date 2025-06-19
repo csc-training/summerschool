@@ -142,7 +142,7 @@ download the summary from LUMI and open it with CubeGUI:
 ```bash
 wget https://apps.fz-juelich.de/scalasca/releases/cube/4.9/dist/CubeGUI-4.9.AppImage
 chmod +x CubeGUI-4.9.AppImage
-scp lumi:/scratch/project_462000956/juhanala/heat-equation/2d/mpi-openmp/scorep_experiment_11503172/summary.cubex .
+scp lumi:/scratch/project_462000956/juhanala/heat-equation/2d/mpi-openmp/scorep_experiment_11503172/trace.cubex .
 ./CubeGUI-4.9.AppImage summary.cubex
 ```
 
