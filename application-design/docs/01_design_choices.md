@@ -224,7 +224,7 @@ lang:   en
 # Version control
 
 - Version control is the single most important software development tool
-- Git is nowadays ubiquitous, Subversion (SVN) was more common but is less versatile
+- Git is nowadays ubiquitous, Subversion (SVN) was more common but is less popular now
 - Additional tools in web services (GitHub, GitLab, Bitbucket)
     - Forking
     - Issue tracking
