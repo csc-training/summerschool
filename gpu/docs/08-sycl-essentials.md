@@ -537,7 +537,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
       - when a buffer goes out of scope program  wait for all actions that use it to complete
 
 
-#  Profiling with Events 
+#  Basuc Profiling with Events 
 
  - the queue needs to be initialized for profiling:
     - `queue q{ gpu_selector{}, { property::queue::enable_profiling() } };`
