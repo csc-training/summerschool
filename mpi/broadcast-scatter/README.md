@@ -5,7 +5,7 @@
 This exercises illustrates the collective communication operations and their benefits over point-to-point communication routines.
 Your task is to write a program using send and receive calls to implement *broadcast* and *scatter* operations.
 
-1. Examine, compile, and run the provided skeleton code ([skeleton.cpp](skeleton.cpp) or [skeleton.F90](skeleton.F90)).
+1. Examine, compile, and run the provided skeleton code with 4 MPI tasks ([skeleton.cpp](skeleton.cpp) or [skeleton.F90](skeleton.F90)).
    This code does the following:
    - Creates an integer array of size N (e.g. N=12) and initializes it using `init_buffer()` as follows:
       - rank 0: i (i=1,12)
@@ -25,7 +25,8 @@ Your task is to write a program using send and receive calls to implement *broad
    2. Implement using the collective `MPI_Scatter` operation.
 
 4. Compare the timing between your point-to-point and collective implementations. How much faster the real collective operation is?
+   Try increasing the array size to, e.g., N=10000, and running with a larger number of MPI tasks, e.g., 64 tasks.
 
 5. (Bonus) How could you improve the timing of your send-recv implementation without still using the real collective call?
-   See a provided model solution for broadcast as one possible example.
+   See the [provided code example](solution/bcast-send-recv-tree.cpp) implementing broadcast using a tree algorithm.
 
