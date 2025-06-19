@@ -1,6 +1,6 @@
 # Scalability test
 
-| GPUs | Runtime (s) | Resource cost (GPU-s) | Time spent in communication (s) | Time spent in computing (s) | Speedup | Parallel efficiency |
+| GCDs | Runtime (s) | Resource cost (GCD-s) | Time spent in communication (s) | Time spent in computing (s) | Speedup | Parallel efficiency |
 | ---: | ----------: | --------------------: | ------------------------------: | --------------------------: | ------: | ------------------: |
 |   1  |       9.59  |                 9.59  |                           0.00  |                       9.41  |      -  |                  -  |
 |   2  |       5.07  |                10.14  |                           0.18  |                       4.79  |   1.89  |                95%  |
