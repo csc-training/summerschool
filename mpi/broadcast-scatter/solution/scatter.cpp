@@ -2,18 +2,20 @@
 #include <vector>
 #include <mpi.h>
 
+#define MAX_PRINT_SIZE 12
+
 void init_buffer(std::vector<int> &buffer);
 void print_buffer(std::vector<int> &buffer);
 
 
 int main(int argc, char *argv[])
 {
-    int ntasks, rank, size=12;
-    std::vector<int> sendbuf(size);
-    std::vector<int> recvbuf(size, -1);
+    int size, rank, buf_size=12;
+    std::vector<int> sendbuf(buf_size);
+    std::vector<int> recvbuf(buf_size, -1);
 
     MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     /* Initialize message buffer */
@@ -27,14 +29,14 @@ int main(int argc, char *argv[])
     double t0 = MPI_Wtime();
 
     /* Send everywhere */
-    if (size % ntasks != 0) {
+    if (buf_size % size != 0) {
         if (rank == 0) {
-            fprintf(stderr, "Size not divisible by the number of tasks. This program will fail.\n");
+            fprintf(stderr, "Buffer size not divisible by the number of tasks. This program will fail.\n");
         }
         MPI_Abort(MPI_COMM_WORLD, -1);
     }
 
-    int block_size = size/ntasks;
+    int block_size = buf_size/size;
     MPI_Scatter(sendbuf.data(), block_size, MPI_INT, recvbuf.data(), block_size, MPI_INT, 0, MPI_COMM_WORLD);
 
     /* End timing */
@@ -72,23 +74,26 @@ void init_buffer(std::vector<int> &buffer)
 
 void print_buffer(std::vector<int> &buffer)
 {
-    int rank, ntasks;
+    int rank, size;
     int buffersize = buffer.size();
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &ntasks);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    std::vector<int> printbuffer(buffersize * ntasks);
+    std::vector<int> printbuffer(buffersize * size);
 
     MPI_Gather(buffer.data(), buffersize, MPI_INT,
                printbuffer.data(), buffersize, MPI_INT,
                0, MPI_COMM_WORLD);
 
     if (rank == 0) {
-        for (int j = 0; j < ntasks; j++) {
+        for (int j = 0; j < size; j++) {
             printf("Task %2i:", j);
-            for (int i = 0; i < buffersize; i++) {
+            for (int i = 0; i < MAX_PRINT_SIZE; i++) {
                 printf(" %2i", printbuffer[i + buffersize * j]);
+            }
+            if (MAX_PRINT_SIZE < buffersize) {
+                printf(" ...");
             }
             printf("\n");
         }
