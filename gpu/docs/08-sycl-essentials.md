@@ -305,7 +305,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
 
  - three memory-management abstractions in the SYCL standard:
      - **buffer and accessor API**: a buffer encapsulate the data and accessors describe how you access that data
-     - **unified shared memory**: pointer-based approach to C/C++/CUDA/HIP
+     - **unified shared memory**: pointer-based approach, C/CUDA/HIP-like
      - **images**: similar API to buffer types, but with extra functionality tailored for image processing (will not be discussed here)
 
 # Buffers and Accessors I
