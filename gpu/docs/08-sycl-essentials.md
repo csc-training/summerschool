@@ -1,5 +1,5 @@
 ---
-title:  SYCL Essentials & More
+title:  SYCL Essentials
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
