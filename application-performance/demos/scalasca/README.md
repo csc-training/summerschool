@@ -1,27 +1,12 @@
 ## Prerequisite
 
-**TODO: Build these before hand**
-
-Load modules to use EasyBuild, then build Score-P and Scalasca
-(building Score-P/Scalasca may take tens of minutes):
-
-```bash
-ml LUMI/24.03
-ml partition/C
-ml EasyBuild-user/LUMI
-
-eb Score-P-9.0-cpeCray-24.03.eb -r
-eb Scalasca-2.6.2-cpeCray-24.03.eb -r
-```
-
 Clone the heat equation code.
 
-**TODO: Try to get hybrid working**
-**TODO: Tracing requires pragma omp master & pragma omp barrier**
-
 ```bash
+mkdir -p /scratch/project_462000956/$USER
+cd /scratch/project_462000956/$USER
 git clone https://github.com/cschpc/heat-equation.git
-cd heat-equation/2d/mpi
+cd heat-equation/2d/mpi-openmp
 ```
 
 ## Demo
@@ -29,94 +14,126 @@ cd heat-equation/2d/mpi
 First build normally:
 
 ```bash
+bash << 'EOF'
 make CXX="CC"\
      CC="cc"\
      FC="ftn"
+EOF
 ```
 
 Run the program on LUMI to get a reference runtime:
 
 ```bash
-srun \
-    --account=project_46200095 \
-    -N 2 \
-    -n 128 \
-    -c 1 \
-    -t 00:10:00 \
-    -p standard \
-./heat_mpi 4096 4096 20000
+sbatch << 'EOF'
+#!/bin/bash
+
+#SBATCH -A project_462000956
+#SBATCH -N 2
+#SBATCH -n 16
+#SBATCH -c 16
+#SBATCH -t 00:10:00
+#SBATCH -p standard
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+srun ./heat_hybrid 4096 4096 20000
+EOF
 ```
 
 Then build with instrumentation:
 
 ```bash
-ml Score-P/9.0-cpeCray-24.03
+bash << 'EOF'
+#!/bin/bash
 
+export EBU_USER_PREFIX=/projappl/project_462000956/EB/
+
+ml LUMI/24.03
+ml partition/C
+ml Score-P/9.0-cpeGNU-24.03
+
+rm ../../common/*.o
 make clean
 make CXX="scorep CC"\
      CC="scorep cc"\
      FC="scorep ftn"
+EOF
 ```
 
 Then run an initial summary measurement to figure out the overhead of the instrumentation:
 
 ```bash
-ml Scalasca/2.6.2-cpeCray-24.03
+sbatch << 'EOF'
+#!/bin/bash
 
+#SBATCH -A project_462000956
+#SBATCH -N 2
+#SBATCH -n 16
+#SBATCH -c 16
+#SBATCH -t 00:10:00
+#SBATCH -p standard
+
+export EBU_USER_PREFIX=/projappl/project_462000956/EB/
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export SCOREP_EXPERIMENT_DIRECTORY=scorep_experiment_${SLURM_JOBID}
+
+ml LUMI/24.03
+ml partition/C
+ml Score-P/9.0-cpeGNU-24.03
+ml Scalasca/2.6.2-cpeGNU-24.03
+
+# Run the analysis
 scalasca \
     -analyze \
-srun \
-    --account=project_46200095 \
-    -N 2 \
-    -n 128 \
-    -c 1 \
-    -t 00:10:00 \
-    -p standard \
-./heat_mpi 4096 4096 20000
-```
+srun ./heat_hybrid 4096 4096 20000
 
-Score the summary and view 25 rows:
+# Score the summary
+scalasca -examine -s ${SCOREP_EXPERIMENT_DIRECTORY}
 
-```bash
-scalasca -examine -s scorep_heat_mpi_2p128_sum
-head -n 25 scorep_heat_mpi_2p128_sum/scorep.score
-```
+# Print out 40 first lines of the score
+head -n 40 ${SCOREP_EXPERIMENT_DIRECTORY}/scorep.score
 
-Generate a filter:
+# Generate an initial filter
+scorep-score -m -g ${SCOREP_EXPERIMENT_DIRECTORY}/profile.cubex
 
-```bash
-scorep-score -m -g scorep_heat_mpi_2p128_sum/profile.cubex
-```
+# Rescore with the filter
+scalasca -examine -s -f initial_scorep.filter ${SCOREP_EXPERIMENT_DIRECTORY}/
 
-Score it with the filter:
-
-```bash
-scalasca -examine -s -f initial_scorep.filter scorep_heat_mpi_2p128_sum/
-```
-
-Rename the unfiltered score, otherwise Scalasca will abort immediately,
-as the directory exists:
-
-```bash
-mv scorep_heat_mpi_2p128_sum/ scorep_heat_mpi_2p128_sum-unfiltered/
+head -n 40 ${SCOREP_EXPERIMENT_DIRECTORY}/scorep.score
+EOF
 ```
 
 Run with the filter:
 
 ```bash
+sbatch << 'EOF'
+#!/bin/bash
+
+#SBATCH -A project_462000956
+#SBATCH -N 2
+#SBATCH -n 16
+#SBATCH -c 16
+#SBATCH -t 00:10:00
+#SBATCH -p standard
+
+export EBU_USER_PREFIX=/projappl/project_462000956/EB/
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export SCOREP_EXPERIMENT_DIRECTORY=scorep_experiment_${SLURM_JOBID}
+
+ml LUMI/24.03
+ml partition/C
+ml Score-P/9.0-cpeGNU-24.03
+ml Scalasca/2.6.2-cpeGNU-24.03
+
+# Run the analysis
 scalasca \
     -analyze \
     -f initial_scorep.filter \
-srun \
-    --account=project_46200095\
-    -N 2 \
-    -n 128 \
-    -c 1 \
-    -t 00:10:00 \
-    -p standard \
-./heat_mpi 4096 4096 20000
+srun ./heat_hybrid 4096 4096 20000
 
-scalasca -examine -s scorep_heat_mpi_2p128_sum/
+scalasca -examine -s ${SCOREP_EXPERIMENT_DIRECTORY}
+head -n 40 ${SCOREP_EXPERIMENT_DIRECTORY}/scorep.score
+EOF
 ```
 
 Download CubeGUI to your own laptop for viewing the profile,
@@ -125,68 +142,44 @@ download the summary from LUMI and open it with CubeGUI:
 ```bash
 wget https://apps.fz-juelich.de/scalasca/releases/cube/4.9/dist/CubeGUI-4.9.AppImage
 chmod +x CubeGUI-4.9.AppImage
-scp lumi:/users/juhanala/Documents/summerschool/application-performance/demos/scalasca/heat-equation/2d/mpi/scorep_heat_mpi_2p128_sum/summary.cubex .
+scp lumi:/scratch/project_462000956/juhanala/heat-equation/2d/mpi-openmp/scorep_experiment_11503172/summary.cubex .
 ./CubeGUI-4.9.AppImage summary.cubex
 ```
 
-Rerun with fewer ranks:
+## Tracing
 
 ```bash
-scalasca \
-    -analyze \
-srun \
-    --account=project_46200095 \
-    -N 1 \
-    -n 64 \
-    -c 1 \
-    -t 00:10:00 \
-    -p standard \
-./heat_mpi 4096 4096 20000
+sbatch << 'EOF'
+#!/bin/bash
 
-scalasca -examine -s scorep_heat_mpi_1p64_sum/
-```
+#SBATCH -A project_462000956
+#SBATCH -N 2
+#SBATCH -n 16
+#SBATCH -c 16
+#SBATCH -t 00:10:00
+#SBATCH -p standard
 
-Tracing:
+export EBU_USER_PREFIX=/projappl/project_462000956/EB/
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export SCOREP_EXPERIMENT_DIRECTORY=scorep_experiment_${SLURM_JOBID}
+export SCOREP_TOTAL_MEMORY=88MB
 
-```bash
-OMP_NUM_THREADS=16 \
-SCOREP_TOTAL_MEMORY=48MB \
-scalasca \
-    -analyze \
-    -f initial_scorep.filter \
-    -q \
-    -t \
-srun \
-    --account=project_46200095 \
-    -N 2 \
-    -n 16 \
-    -c 16 \
-    -t 00:10:00 \
-    -p standard \
-./heat_hybrid 4096 4096 5000
-```
+ml LUMI/24.03
+ml partition/C
+ml Score-P/9.0-cpeGNU-24.03
+ml Scalasca/2.6.2-cpeGNU-24.03
 
-## On Mahti
+export SCAN_TRACE_FILESYS=${PWD}${SCAN_TRACE_FILESYS:+:${SCAN_TRACE_FILESYS}}
 
-```bash
-ml gcc/11.2.0
-ml openmpi/4.1.2
-ml scorep/7.0
-ml scalasca/2.6
-
-OMP_NUM_THREADS=16 \
-SCOREP_TOTAL_MEMORY=48MB \
 scalasca \
     -analyze \
     -f initial_scorep.filter \
     -q \
     -t \
-srun \
-    --account=project_46200095 \
-    -N 2 \
-    -n 16 \
-    -c 16 \
-    -t 00:10:00 \
-    -p test \
-./heat_hybrid 4096 4096 5000
+srun ./heat_hybrid 4096 4096 20000
+
+scalasca -examine -s ${SCOREP_EXPERIMENT_DIRECTORY}
+EOF
 ```
+
+TODO: view with Vampir on LUMI
