@@ -101,7 +101,7 @@ void axpy(queue &q, const T &a, const std::vector<T> &x,
  - Program runs on the CPU (host)
  - CPU initializes the GPUs (devices), allocates the memory, and stages the CPU-GPU transfers
     - **Note!** CPU can also be a device
- - CPU launched the parallel code (kernel) to be executed on a device by several threads
+ - CPU launches the parallel code (kernel) to be executed on a device by several threads
  - Code is written from the point of view of a single thread
     - each thread has a unique ID
 
