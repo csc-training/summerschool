@@ -131,30 +131,29 @@ No special flags are needed for compiling and linking, the compiler wrappers tak
 
 ### OpenMP offloading
 
-On **Lumi**, the following modules are required:
+On **Lumi**, OpenMP offloading works with `PrgEnv-cray` and `PrgEnv-amd` programming environments. Otherwise load the GPU programming modules:
 
 ```bash
-module load PrgEnv-cray/8.4.0
-module load LUMI/23.09
+module load PrgEnv-cray
+module load LUMI/24.03
 module load partition/G
-module load rocm/5.4.6
+module load rocm
 ```
 
 On **Lumi**, to compile your program, use
 ```bash
 CC -fopenmp <source.cpp>
 ```
-**NOTE!** The `-fopenmp` option behaves differently depending on which module are loaded. If `partition/L` or `partition/C` is loaded it will use compiling options for creating code for multi-core cpus. If `partition/G` is loaded it will use compiling options to create code for offloading on GPUs.
 
 ### HIP
 
-Use the following modules :
+Use the GPU programming modules:
 
 ```bash
-module load PrgEnv-cray/8.4.0
-module load LUMI/23.09
+module load PrgEnv-cray
+module load LUMI/24.03
 module load partition/G
-module load rocm/5.4.6
+module load rocm
 ```
 
 To compile your program, use:
