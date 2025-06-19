@@ -1,17 +1,18 @@
 # Background: Matrix Transpose
 
 Transposing a matrix is memory bound problem because it is essentially just
-memory copy. However, naive implementation of it on GPU will result badly
+memory copy. However, a naive implementation of it on GPU will result badly
 coalesced memory accesses: either the reads are not coalesceable or the writes
 are not coalesceable.
 
-We will compare the execution times and the effective bandwidth between a
-simple `copy` kernel, a `naive` transpose implementation, and two more
-optimized versions using `shared memory` (with and without bank conflicts). The
-time is measured using the `events` as shown in section [Streams, events, and
-synchronization](../../docs/03-streams.md). The effective bandwidth is computed
-as the ratio between the total memory read and written by the kernel (`2 x
-Total size of the Matrix in Gbytes`) and the execution time in seconds. 
+In this exercise your task is to compare the execution times and the effective
+bandwidth between a simple `copy` kernel, a `naive` transpose implementation,
+and two more optimized versions using `shared memory` (with and without bank
+conflicts). The time is measured using the `events` as shown in section
+[Streams, events, and synchronization](../../docs/03-streams.md). The effective
+bandwidth is computed as the ratio between the total memory read and written by
+the kernel (`2 x Total size of the Matrix in Gbytes`) and the execution time in
+seconds. 
 
 ## Copy kernel
 The base line for our experiment is the simple copy kernel. 
@@ -79,7 +80,7 @@ __global__ void transpose_SM_kernel(float *in, float *out, int width,
 }
 ```
 
-The shared memory is local to each CU with about 100 time slower latency than
+The shared memory is local to each CU with about 100 time lower latency than
 the global memory. While there is an extra synchronization needed to ensure
 that the data has been saved locally, the gain in switching from uncoalesced to
 coalesced accesses outweighs the loss. The reading and writing of SM can be
@@ -94,7 +95,8 @@ gain of using SM is quite big.
 The bank conflicts in this case can be solved in a very simple way. We pad the
 shared matrix. Instead of `__shared__ float tile[tile_dim][tile_dim];` we use
 `__shared__ float tile[tile_dim][tile_dim+1];`. Effectively this shifts the
-data in the banks. Hopefully this does not create other banks conflicts!!!!
+data in the banks and hopefully won't create more banks conflicts than it
+removes!
 
 ```
 __global__ void transpose_SM_nobc_kernel(float *in, float *out, int width,
@@ -119,8 +121,8 @@ __global__ void transpose_SM_nobc_kernel(float *in, float *out, int width,
 
 # Exercise
 
-- Compile and execute the code and record bandwidths (MI250x has theoretical
-  memory bandwidth of 1600 GB/s).
+- Compile and execute the code and record bandwidths (MI250x GCD has
+  theoretical memory bandwidth of 1600 GB/s).
 - Profile the code with `rocprof` and measure 
   - read and write requests for memory buses TCP_TCC and TCC_EA.
   - how much GPU is stalled by LDS bank conflicts.

@@ -1,3 +1,3 @@
-## Exercises
+# Application design
 
-- [Continuous integration](ci/)
+This section has no exercises.

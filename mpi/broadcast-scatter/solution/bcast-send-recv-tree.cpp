@@ -28,12 +28,50 @@ int main(int argc, char *argv[])
     double t0 = MPI_Wtime();
 
     /* Send everywhere */
-    if (rank == 0) {
-        for (int i = 1; i < size; i++) {
-            MPI_Send(buf.data(), buf_size, MPI_INT, i, 123, MPI_COMM_WORLD);
+    // Distributing data in a tree
+    if (rank % 2 == 0) {
+        int block_size; // size of this rank's block where to distribute data
+        if (rank == 0) {
+            // Rank 0 only sends
+            block_size = 1;
+            while (block_size < size) {
+                block_size <<= 1;
+            }
+        } else {
+            // Other even ranks first receive and then send to their block
+            int source = 0;
+
+            while (true) {
+                block_size = 2;
+                int block_rank = rank - source;
+                while (block_rank > block_size) {
+                    block_size <<= 1;
+                }
+                if (block_rank == block_size) {
+                    break;
+                } else {
+                    source += block_size >> 1;
+                }
+            }
+
+            // printf("Rank %02d recv from %02d\n", rank, source); fflush(stdout);
+            MPI_Recv(buf.data(), buf_size, MPI_INT, source, 123, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        }
+
+        // Send to the power of 2 destinations in the block
+        // For example, rank 0 osends to ranks 2, 4, 8, 16, 32, ... (in reverse order)
+        for (int block_dest = block_size >> 1; block_dest > 0; block_dest >>= 1) {
+            int dest = rank + block_dest;
+            if (dest < size) { // guard for sizes not power of 2
+                // printf("Rank %02d send to   %02d\n", rank, dest); fflush(stdout);
+                MPI_Send(buf.data(), buf_size, MPI_INT, dest, 123, MPI_COMM_WORLD);
+            }
         }
     } else {
-        MPI_Recv(buf.data(), buf_size, MPI_INT, 0, 123, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        // Odd ranks receive from previous rank (which is even)
+        int source = rank - 1;
+        // printf("Rank %02d recv from %02d\n", rank, source); fflush(stdout);
+        MPI_Recv(buf.data(), buf_size, MPI_INT, source, 123, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
 
     /* End timing */

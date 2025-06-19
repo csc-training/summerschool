@@ -2,8 +2,9 @@
 *.o
 *.mod
 *.exe
+*.x
 \#*
-*~ 
+*~
 *.html
 *.pdf
 *.sif

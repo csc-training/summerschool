@@ -33,9 +33,9 @@ lang:   en
 - How much effort do you have at your disposal?
     - Number of developers may grow
 
-- **Questions**: your software project?
+- **Question**: What is your software project?
 
-# Vlasiator
+# Today's real-world case: Vlasiator
 
 <div class=column style="width:65%">
 - Hybrid-Vlasov model of magnetised space plasma physics
@@ -53,7 +53,7 @@ lang:   en
 </div>
 
 
-# Starting position: Case Vlasiator
+# Starting position: Case Vlasiator (ca. 2008)
 
 - Science case: apply algorithm with "more physics" (kinetic phenomena)
     - Previous state of the art: fluid-based approaches
@@ -100,7 +100,7 @@ lang:   en
 
 # Parallelisation strategies 
 
-- Going **BIG** -> GPUs are mandatory
+- Going **BIG** &rarr; GPUs are pretty mandatory these days
 - But not all HPC needs to be exascale
     - Size is not a goal in itself
 
@@ -112,7 +112,7 @@ lang:   en
 - Parallel MPI-IO with own library
     - Adapted for 6D data
 - Good parallel scalability
-    - Record: 1452 nodes / 185 856 cores on LUMI-C
+    - Current record: 1452 nodes / 185 856 cores on LUMI-C
 </div>
 
 <div class=column style="width:40%">
@@ -128,6 +128,7 @@ lang:   en
 - Performance analysis, to guide re-design effort
 - Re-writing to consolidate GPU version
 - Performance on-par with CPU
+- Effort: > 4 person-years
 
 
 # Case Vlasiator: GPU porting
@@ -151,6 +152,7 @@ lang:   en
         - Low-level languages for costly functions
         - High-level languages for main functions
 
+
 # Low level languages
 
 - Direct control over memory
@@ -160,7 +162,7 @@ lang:   en
 <div class=column>
 
 - C++
-    - std library for data structures
+    - `std` library for data structures
     - low level memory management (concept of data ownership, move semantics,...)
     - metaprogramming
 
@@ -174,6 +176,7 @@ lang:   en
     - Language semantics make optimisation easier for compilers
 
 </div>
+
 
 # High level languages
 
@@ -213,7 +216,7 @@ lang:   en
 # Case Vlasiator: Modular design
 
 - Object-oriented programming to manage e.g. boundary conditions
-    - Easy to create new boundaries to support new functionalities
+    - Easy to create new boundaries or initial conditions
 - Separate what to do (e.g. physics) from how to do (e.g. optimal implementation of loops)
     - Interfaces to different backends (CUDA kernel, OpenMP threading, ...)
     - Use of class inheritance/templates/lambdas to reduce code duplication
@@ -221,13 +224,14 @@ lang:   en
 # Version control
 
 - Version control is the single most important software development tool
-- Git is nowadays ubiquitous
-- Additional tools in web services (github, gitlab, bitbucket)
+- Git is nowadays ubiquitous, Subversion (SVN) was more common but is less versatile
+- Additional tools in web services (GitHub, GitLab, Bitbucket)
     - Forking
     - Issue tracking
     - Review of pull/merge requests
-    - wikis
-- Vlasiator: public GitHub
+    - Wikis
+    - Integrations
+- Vlasiator: public [GitHub repository](https://github.com/fmihpc/vlasiator)
 
 
 # Code design: tools
@@ -272,7 +276,7 @@ lang:   en
     - Test your code with different compilers (gnu, clang, intel, cray,...)
 - Linters (check coding style)
 
-- **Questions**: Choices in your software and experiences about them?
+- **Questions**: What development tools do you use? Do they make your work easier?
 
 
 # Data design
@@ -318,10 +322,10 @@ lang:   en
 
 - Input data (run parameters): command line arguments or ascii configuration file
 - Logfile with simulation progress, memory monitoring, etc. in ascii
-- Output data in custom format with library using parallel MPI-IO (reduces redundancy of stored metatdata for 3D-3V data compared to industry-standard formats)
+- Output data in custom format with library using parallel MPI-IO (reduces redundancy of stored metadata for 3D-3V data compared to industry-standard formats)
 - Checkpoint/restart files also in custom format
 - Can be 10 TB per file
-    - Need to consider post-processing and long-term storage
+    - Need to consider post-processing and long-term storage, collaboration
 
 
 # Coding style
@@ -329,7 +333,7 @@ lang:   en
 - Code readability comes first
 - Consistency helps readability 
     - Indentation, how/when to have instructions longer than one line, ...
-    - Many editor have tools to help
+    - Many editors have tools to help
     - There are exceptions!
 
 
@@ -337,11 +341,12 @@ lang:   en
 - In-code:
     - Explanation of what files, classes, functions are doing
     - Text and e.g. ascii-art explanations of complex parts
-    - Can be formatted to be retrieved externally to build e.g. online documentation too (e.g. `Doxygen`, `Sphinx`)
+    - Can be formatted to build external documentation (e.g. `Doxygen`, `Sphinx`)
 - Along with the code (wiki, manual)
     - How to contribute
     - How to install and use
     - How to analyse
+    - How to cite
 
 
 # Documentation
@@ -350,7 +355,30 @@ lang:   en
     - Who comes after your PhD (they *must* have had a good reason for writing it like this?!)
     - Future contributors (where to start? how do I contribute my optimised kernel to their repo?)
     - Future users (I could use this for my research, how does it work?)
+- **Questions**: How often do you write and maintain documentation? Do you use any tools?
 
+
+# Documentation: Example
+```c++
+// These names come from the right hand rule, with
+// - x horizontal
+// - y on the line of sight                         +z    +y
+// - z vertical                                      |    /
+//                                                  oop  /
+// and                                          mpo__|_opo____ppo
+// - m standing for "minus"                     /    | /      /
+// - p for "plus" and                          /     |/      /
+// - o for "zero" or "origin"        -x --moo ------ooo------ poo-- +x
+//                                           /      /|     /
+// Examples:                                /_____ /_|____/
+// -1,  0,  0 = moo                       mmo    omo |    pmo
+// +1,  0,  0 = poo                              /  oom    
+// +1, +1, +1 = ppp                             /    |
+//  0,  0,  0 = ooo                            -y   -z
+
+constexpr size_t poo() const { return calculateIndex({i + 1, j    , k    }); }
+constexpr size_t pop() const { return calculateIndex({i + 1, j    , k + 1}); }
+```
 
 # Testing
 - Unit testing (does this function/solver/module work?)
@@ -364,21 +392,19 @@ lang:   en
 
 <div class=column>
 
-- Your HPC code is
+- Your code is
     - Written/ported &checkmark;
     - Modular &checkmark;
     - Using robust version control and software engineering practices &checkmark;
     - Parallelised &checkmark;
     - Optimised &checkmark;
-    - Uses efficient I/O &checkmark;
-
+    - Using efficient I/O &checkmark;
+    - Tested, verified, and validated &checkmark;
 </div>
 
 <div class=column>
-
 - You were granted computational resources for benchmarking and/or production! 🎉
 - How do you ensure your code is performing well and not wasting these precious resources?
-
 </div>
 
 
@@ -458,16 +484,16 @@ lang:   en
     - Automatic warnings from system
         - slurm email if available (not on LUMI...)
         - Use available APIs to push notifications
-- Do not spend 24/7 on the command line! 
+- **Do not spend 24/7 on the command line!**
 
 
 # Code deployment and production: troubleshooting
 - In case of anomalies:
-    - Is my code version correct?
-    - Are my compilation parameters correct?
-    - Is my job script correct and up to date (run parameters, modules)?
-    - Check your workflow still matches best practices in the documentation!
-    - Ask your team colleagues to check if things work for them?
+    - Is my **code version** correct?
+    - Are my **compilation** parameters correct? Maybe recompile?
+    - Is my **job script** correct and up to date (run parameters, modules)?
+    - Check your **workflow** still matches best practices in the documentation!
+    - Ask your **team** colleagues to check if things work for them?
 - If you suspect system issues:
     - Is a maintenance announced/under way?
     - Is there an update on the system status page or mailing list?
@@ -475,7 +501,7 @@ lang:   en
 
 
 # Code deployment and production: get help!
-- If you still suspect issues with the system, contact support!
+- If you still suspect issues with the system, **contact support**!
     - Detailed description!
     - Code, modules, job parameters
     - Expected result/behaviour
@@ -497,4 +523,11 @@ lang:   en
 
 # ...and lastly:
 
+<div class=column style=width:45%>
 **Have great success running your well-designed application on top supercomputers!**
+</div>
+
+<div class=column style=width:45%>
+![](images/copilot_running.jpeg)
+</div>
+
