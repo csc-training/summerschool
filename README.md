@@ -46,7 +46,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [MPI](mpi)
 | 12:00 | Lunch
 | 13:00 | [MPI](mpi)
-| **15:30** | Sports: Nuuksio Olympic Games
+| **15:45** | Sports: Nuuksio Olympic Games
 | **17:15** | Dinner
 | **18:15** | Exercises
 | 19:30 | Snack & Saunas at the lake
