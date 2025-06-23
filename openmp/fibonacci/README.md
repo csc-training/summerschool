@@ -1,10 +1,8 @@
 # Calculating Fibonacci numbers in parallel
 
-Fibonacci numbers are a sequence of integers defined by the recurrence 
-relation 
- F<sub>n</sub> = F<sub>n-1</sub> + F<sub>n-2</sub>
-with the initial values F<sub>0</sub>=0, F<sub>1</sub>=1.
+Fibonacci numbers are a sequence of integers defined by the recurrence
+relation $F_n = F_{n-1} + F_{n-2}$ with the initial values $F_0 = 0, F_n = 1$.
 
 The code [fibonacci.cpp](fibonacci.cpp) or [fibonacci.F90](fibonacci.F90)
 contains (a very bad!!) recursive algorithm for calculating a
-Fibonacci number n. Parallelize the code with OpenMP tasks.
+Fibonacci number $n$. Parallelize the code with OpenMP tasks.
