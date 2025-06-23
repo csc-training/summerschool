@@ -179,13 +179,15 @@ This is helpful when using make.
 #### OneAPI + AMD Plug-in
 Set-up the modules and paths:
 ```
+source /projappl/project_462000956/apps/intel/oneapi/setvars.sh --include-intel-llvm
 module load LUMI/24.03
 module load partition/G
 module load rocm/6.2.2
-source /projappl/project_462000956/apps/intel/oneapi/setvars.sh --include-intel-llvm
 export  HSA_XNACK=1 # enables managed memory
 export MPICH_GPU_SUPPORT_ENABLED=1                                # Needed for using GPU-aware MPI
 ```
+Note that the intel initialization is done before loading the other modules to avoid overwriting the environment variables. 
+
 Compile with:
 ```
 icpx -fuse-ld=lld -std=c++20 -O3 -fsycl -fsycl-targets=amdgcn-amd-amdhsa,spir64_x86_64 -Xsycl-target-backend=amdgcn-amd-amdhsa --offload-arch=gfx90a <sycl_code>.cpp
