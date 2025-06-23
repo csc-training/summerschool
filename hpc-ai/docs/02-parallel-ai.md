@@ -33,8 +33,8 @@ lang:   en
 
 
 # Signle-GPU Training
-<div class="column"  style="width:80%; text-align: center;">
-  ![](img/single_gpu.png){width=80%}
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/single_gpu.png){width=20%}
 </div>
 - How it works: Entire model & data on one GPU.
 - Pros: Simple, fast for small models.
@@ -42,7 +42,7 @@ lang:   en
 
 
 # Data Parallelism (DP)
-<div class="column"  style="width:80%; text-align: center;">
+<div class="column"  style="width:50%; text-align: center;">
   ![](img/data_parallelism.png){width=80%}
 </div>
 
