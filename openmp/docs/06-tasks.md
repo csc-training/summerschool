@@ -216,6 +216,25 @@ int fib(int n) {
 ![](img/fibonacci5.png){.center width=90%}
 </div>
 
+# Task dependencies
+
+- The `depend` clause can be used to specify constraints on task execution
+    - `in`/`out`/`inout` dependency on a variable: `in` tasks must execute after any **previously created** `out`/`inout` tasks
+    - Allows fine-grained scheduling of tasks that share data. No need for `taskwait` after every task!
+
+```c
+int a, b;
+
+#pragma omp task depend(out: a)
+a = -1; // Some modification to `a`
+
+#pragma omp task depend(in: a) // Guaranteed to run after the `out` task
+b = 2 * a; // Use `a` to compute `b`. Could also mark `b` as an `out` dependency
+```
+
+<small> Demo: `task-dependencies.cpp` </small>
+
+# OpenMP conclusion {.section}
 
 # OpenMP programming best practices
 
@@ -254,7 +273,6 @@ int fib(int n) {
 
 - sections construct
 - scheduling clauses of `for`/`do` constructs
-- task dependencies
 - taskgroup and taskloop constructs
 - simd construct
 - ...
