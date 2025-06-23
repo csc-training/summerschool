@@ -228,7 +228,7 @@ Human-readable text files are common for small configuration/input files.
 
 # High-level I/O libraries
 
-Most popular high-level I/O libraries in HPC are **`HDF5`** and **`netCDF`**.
+The most popular I/O libraries in HPC are **`HDF5`** and **`netCDF`**.
 
 - Both define hierarchical file formats for storing large binary data
 - Both can be compiled with parallel support, using MPI-IO under the hood
