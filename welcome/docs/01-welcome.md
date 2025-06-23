@@ -85,6 +85,12 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
 - Feel free to use the chat channel for organizing social activities, asking questions, free discussion, etc.
   - <https://chat.csc.fi/group/CSC_Summer_School_in_HPC_2025>
 
+# Acknowledgements
+
+<div style="position: absolute; left:0.0em; top:3.0em">
+![](img/acknowledgements.svg){.center width=80%}
+</div>
+
 
 # School content {.section}
 
@@ -126,12 +132,6 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
   - Schedule, practical information (in [wiki](https://github.com/csc-training/summerschool/wiki))
 - Feel free to fork the repository for your own use
 - After the school, a static copy of 2025 content will be published as a release under GitHub
-
-# Acknowledgements
-
-<div style="position: absolute; left:0.0em; top:3.0em">
-![](img/acknowledgements.svg){.center width=80%}
-</div>
 
 
 # Welcome to the school!
