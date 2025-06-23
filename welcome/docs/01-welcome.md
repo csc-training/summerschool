@@ -8,6 +8,8 @@ lang:   en
 
 # Nuuksio National Park
 
+*A green oasis in the Helsinki capital region*
+
 <https://www.luontoon.fi/en/destinations/nuuksio-national-park>
 
 # Neighborhood
