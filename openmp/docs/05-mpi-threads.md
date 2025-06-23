@@ -4,6 +4,12 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
+# Outline
+
+- Using MPI+OpenMP
+- Thread and process affinity
+
+# Using MPI+OpenMP {.section}
 
 # Thread support in MPI
 
@@ -12,21 +18,13 @@ lang:   en
 
 # Thread safe initialization
 
-`MPI_Init_thread(required, provided)`
-  : `argc`{.input}, `argv`{.input}
-    : Command line arguments in C
-  : `required`{.input}
-    : Required thread safety level
-  : `provided`{.output}
-    : Supported thread safety level
-  : `error`{.output}
-    : Error value; in C/C++ it's the return value of the function,
-      and in Fortran an additional output parameter
+MPI_Init_thread(`required`{.input}, `provided`{.output})
+  : Initializes the MPI execution environment
+  : Note! C interface include command line arguments
 
-- Pre-defined integer constants:
-  <div style="font-size:0.8em">
-  `MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
-  </div>
+<p>
+- Thread safety levels `required` and `provided` are pre-defined integer constants:<br>
+  `MPI_THREAD_SINGLE < MPI_THREAD_FUNNELED < `<br>`MPI_THREAD_SERIALIZED < MPI_THREAD_MULTIPLE`
 
 # Example: Hybrid hello
 
@@ -147,15 +145,13 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 # MPI thread support levels
 
 - Modern MPI libraries support all threading levels
-    - OpenMPI: Build time configuration, check with
-    ```bash
-    ompi_info | grep 'Thread support'
-    ```
-    - Intel MPI: When compiling with `-qopenmp` a thread safe version of the
-      MPI library is automatically used
-    - Cray MPI: Set `MPICH_MAX_THREAD_SAFETY` environment variable to
+    - OpenMPI (Mahti): Build time configuration, check with<br>
+      `ompi_info | grep 'Thread support'`
+    - Cray MPICH (LUMI): Set `MPICH_MAX_THREAD_SAFETY` environment variable to
       `single`, `funneled`, `serialized`, or `multiple` to select the
       threading level
+    - Intel MPI: When compiling with `-qopenmp` a thread safe version of the
+      MPI library is automatically used
 - Note that using `MPI_THREAD_MULTIPLE` requires the MPI library to
   internally lock some data structures to avoid race conditions
     - may result in additional overhead in MPI calls
@@ -164,9 +160,8 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 # Summary
 
 - Multiple threads may make MPI calls simultaneously
-- Thread specific tags and/or communicators
-- For collectives it is often better to use a single thread for
-  communication
+- Thread-specific tags and/or communicators
+- For collectives it is often better to use a single thread for communication
 
 
 
