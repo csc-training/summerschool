@@ -36,17 +36,18 @@ MPI_Init_thread(`required`{.input}, `provided`{.output})
 #include <omp.h>
 
 int main(int argc, char *argv[]) {
-    int my_id, omp_rank;
+    int rank, thread_id;
     int provided, required=MPI_THREAD_FUNNELED;
 
-    MPI_Init_thread(&argc, &argv, required,
-                    &provided);
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
-#pragma omp parallel private(omp_rank)
+    MPI_Init_thread(&argc, &argv,
+                    required, &provided);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+#pragma omp parallel private(thread_id)
 {
-    omp_rank = omp_get_thread_num();
+    thread_id = omp_get_thread_num();
     printf("I'm thread %d in process %d\n",
-           omp_rank, my_id);
+           thread_id, rank);
 }
     MPI_Finalize();
 }
