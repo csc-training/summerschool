@@ -295,7 +295,7 @@ hid_t attributeId = H5Acreate(
 );
 
 // Write the attribute to the attached dataset (skip error checking for simplicity)
-herr_t status = H5Awrite(attributeId, H5T_NATIVE_DOUBLE, &dummyMetadata);
+herr_t status = H5Awrite(attributeId, H5T_NATIVE_DOUBLE, &dummyAttribute);
 
 // Cleanup
 H5Aclose(attributeId);
