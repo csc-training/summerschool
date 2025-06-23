@@ -1,6 +1,7 @@
 # SYCL Exercises
-SYCL codes can be compiled using one of the two implementations, **OneAPI** or **AdaptiveCPP**. Note that a different module is used, **rocm/6.2.2**. SYCL codes are ran the same way as a usual GPU or CPU applciations depending on the desire target device. 
+SYCL codes can be compiled using one of the two implementations, **OneAPI** or **AdaptiveCPP**. 
 
+A different rocm module is used, **rocm/6.2.2**. SYCL codes are ran the same way as a usual GPU or CPU applciations depending on the desire target device. 
 
 ## OneAPI + AMD Plug-in
 ### Set-up the modules and paths
@@ -13,6 +14,7 @@ module load rocm/6.2.2
 export  HSA_XNACK=1 # enables managed memory
 export MPICH_GPU_SUPPORT_ENABLED=1                                # Needed for using GPU-aware MPI
 ```
+The intel initialization is done before loading the other modules to avoid overwriting the environment variables.
 ### Compile
 ```
 icpx -fuse-ld=lld -std=c++20 -O3 -fsycl -fsycl-targets=amdgcn-amd-amdhsa,spir64_x86_64 -Xsycl-target-backend=amdgcn-amd-amdhsa --offload-arch=gfx90a <sycl_code>.cpp
