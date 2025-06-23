@@ -1,6 +1,10 @@
 /*
  * This code uses default stream
- * Task is to create stream and place all operations in that stream
+ * Task is to 
+ *   - create a stream
+ *   - copy memory to/from device with that stream
+ *   - launch kernel using that stream
+ *   - destroy the stream
  */
 #include <stdio.h>
 #include <stdlib.h>
