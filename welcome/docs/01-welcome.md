@@ -125,6 +125,13 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
 - Feel free to fork the repository for your own use
 - After the school, a static copy of 2025 content will be published as a release under GitHub
 
+# Acknowledgements
+
+<div style="position: absolute; left:0.0em; top:3.0em">
+![](img/acknowledgements.svg){.center width=80%}
+</div>
+
+
 # Welcome to the school!
 
 - Be active!
