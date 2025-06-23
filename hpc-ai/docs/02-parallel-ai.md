@@ -33,13 +33,16 @@ lang:   en
 
 
 # Signle-GPU Training
-<div class="column"  style="width:58%">
+
+<div class="column"  style="width:40%">
   ![](img/single_gpu.png){width=15%}
 </div>
 <div class="column"  style="width:40%">
+
   - <small>How it works: Entire model & data on one GPU.</small>
   - <small>Pros: Simple, fast for small models.</small>
   - <small>Cons: Not scalable to large models/datasets.</small>
+  
 </div>
 
 
