@@ -219,9 +219,9 @@ Local dependencies
   ```
   v[i,j] = u[i-1, j] + u[i+1, j] + u[i, j-1] ...
   ```
-- Finite elements methods
+- Finite element methods
 - Particle based methods with short range interactions
-- Number of communications remains constant
+- Number of communications per process remains constant
 </div>
 <div class=column>
 Global dependencies
@@ -233,7 +233,7 @@ Global dependencies
   <!-- Copyright CSC -->
   ![](img/matmul.png){.center width=50%}
 
-- Number of communication events increases with number of execution units
+- Number of communication events per process increases with number of execution units
 
 # Data distribution: load balance
 

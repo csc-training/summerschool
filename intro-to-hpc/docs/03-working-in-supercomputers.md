@@ -110,9 +110,9 @@ Every file lookup, file creation/deletion, permission change *etc.* is processed
   development environments and applications
 - _Environment modules_ provide a convenient way to dynamically change the
   user's environment
-- With modules different compiler suites and application versions can be used smoothly
-  - Changing compiler module loads automatically also correct versions of libraries
-  - Loading a module for application sets up the correct environment with a single command
+- Different compiler suites and application versions can be used smoothly with different modules
+  - Changing the compiler module automatically loads also the correct versions of other dependent libraries
+  - Loading a module for an application sets up the correct environment with a single command
 
 
 # Common module commands
