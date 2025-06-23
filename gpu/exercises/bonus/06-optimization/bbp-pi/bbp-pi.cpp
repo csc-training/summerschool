@@ -74,9 +74,6 @@ int main() {
   HIP_ERRCHK(hipEventCreate(&start));
   HIP_ERRCHK(hipEventCreate(&stop));
 
-  memset(a, 0, N_bytes);
-
-  HIP_ERRCHK(hipMemcpy(d_a, a, N_bytes, hipMemcpyHostToDevice));
   HIP_ERRCHK(hipEventRecord(start, 0));
   hex_pi<<<gridsize, blocksize,0,0>>>(d_a, N);
   HIP_ERRCHK(hipGetLastError());
