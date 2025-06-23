@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
 
     // BONUS: Setup collective write
     hid_t xfer_plist = H5Pcreate(H5P_DATASET_XFER);
-    herr_t status = H5Pset_dxpl_mpio(xfer_plist, H5FD_MPIO_COLLECTIVE);
+    status = H5Pset_dxpl_mpio(xfer_plist, H5FD_MPIO_COLLECTIVE);
 
     hid_t memspace = H5Screate_simple(1, count, NULL);
     H5Dwrite(
