@@ -52,7 +52,7 @@ lang:   en
 </div>    
 
 
-# Model Parallelism - Tensor Parallelism
+# "Model Parallelism - Tensor Parallelism"
 <div class="column"  style="width:58%">
   ![](img/tensor_parallelism.png){width=15%}
 </div>
@@ -61,7 +61,7 @@ lang:   en
   - <small>2. Transfer outputs between GPUs manually.</small>
 </div>  
 
-# Model Parallelism - Pipeline Parallelism
+# "Model Parallelism - Pipeline Parallelism"
 <div class="column"  style="width:50%">
   ![](img/pipeline_parallelism.png){width=15%}
 </div>
