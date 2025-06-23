@@ -51,3 +51,22 @@ lang:   en
   - <small>4. Aggregate gradients (AllReduce).</small>
 </div>    
 
+
+# Model Parallelism - Tensor Parallelism
+<div class="column"  style="width:58%">
+  ![](img/tensor_parallelism.png){width=15%}
+</div>
+<div class="column"  style="width:40%">
+  - <small>1. Send layers or blocks to different GPUs.</small>
+  - <small>2. Transfer outputs between GPUs manually.</small>
+</div>  
+
+# Model Parallelism - Pipeline Parallelism
+<div class="column"  style="width:50%">
+  ![](img/pipeline_parallelism.png){width=15%}
+</div>
+<div class="column"  style="width:40%">
+  - <small>Idea: Split model layer-wise across GPUs.</small>
+  - <small>Each GPU processes part of the model sequentially, like a factory pipeline.</small>
+  - <small>Maximizes compute by overlapping stages (with microbatching).</small>
+</div>
