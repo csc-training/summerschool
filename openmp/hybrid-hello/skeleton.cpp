@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    int my_id, omp_rank;
+    int rank, thread_id;
     int provided, required=MPI_THREAD_FUNNELED;
 
     /* TODO: Initialize MPI with thread support. */

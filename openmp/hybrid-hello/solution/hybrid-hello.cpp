@@ -4,19 +4,19 @@
 
 int main(int argc, char *argv[])
 {
-    int my_id, omp_rank;
+    int rank, thread_id;
     int provided, required=MPI_THREAD_FUNNELED;
 
     MPI_Init_thread(&argc, &argv, required, &provided);
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-#pragma omp parallel private(omp_rank)
+#pragma omp parallel private(thread_id)
     {
-        omp_rank = omp_get_thread_num();
-        printf("I'm thread %d in process %d\n", omp_rank, my_id);
+        thread_id = omp_get_thread_num();
+        printf("I'm thread %d in process %d\n", thread_id, rank);
     }
 
-    if (my_id == 0) {
+    if (rank == 0) {
         printf("\nProvided thread support level: %d\n", provided);
         printf("  %d - MPI_THREAD_SINGLE\n", MPI_THREAD_SINGLE);
         printf("  %d - MPI_THREAD_FUNNELED\n", MPI_THREAD_FUNNELED);
