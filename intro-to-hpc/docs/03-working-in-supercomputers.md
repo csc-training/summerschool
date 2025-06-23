@@ -53,13 +53,44 @@ lang:   en
   ```
 - Use this personal work space during summer school to avoid file conflicts with other project members
 
-# Parallel distributed file system: Lustre
+# Filesystems on CSC supercomputers
 
-- All storage is accessed via interconnect and it is a *shared resource* among *all users* in the supercomputer<br>
-  - One should avoid putting unnecessary load to the file system to keep the system responsive
-- LUMI and CSC supercomputers use Lustre as the parallel distributed file system<br>
-  - Lustre is designed for efficient parallel I/O for large files
-  - Excessively accessing file metadata or opening and closing files puts stress on *metadata servers* and can cause slowness in the file system (especially if *all users* do so)
+The filesystem used on CSC systems (Puhti, Mahti, Lumi) is called **Lustre**.
+
+- Parallel: data is distributed across many storage drives
+- Files can be accessed from all tasks (user permissions still apply)
+- Lustre is very common in HPC in general, not just at CSC
+
+Many systems also provide node-local disk area for temporary storage
+
+- `/tmp`, `$TMPDIR`, `$LOCAL_SCRATCH` *etc.* depending on the system
+- Sometimes the temporary storage may reside directly in memory (`/tmp` on Lumi compute nodes). Consult system docs for details
+
+# Lustre architecture
+
+<div class="column">
+
+- Files are chunked up and spread across multiple **storage servers** as **objects**
+- Dedicated **metadata server(s)** (MDS): file names, owners, permissions, ...
+- **Client**: HPC nodes that access the data
+
+</div>
+
+<div class="column">
+
+![](img/lustre-architecture.svg)
+Clients interact with MDS once to gain OST access, then I/O to objects directly.
+
+- Allows for **very high, parallel I/O bandwidth!**
+
+</div>
+
+# Being nice to Lustre as an HPC user
+
+Every file lookup, file creation/deletion, permission change *etc.* is processed by the metadata server.
+
+- Metadata servers are shared by everyone using the supercomputer!
+- Commands like `ls` unresponsive? Servers may be under heavy load
 
 # Being nice to Lustre (and other users)
 
@@ -328,64 +359,6 @@ Following variables override the corresponding variables in the batch script and
 - `SBATCH_PARTITION` : `--partition`
 
 See `man sbatch` for full list.
-
-
-#  HPC filesystems and Lustre {.section}
-
-# Filesystems on CSC supercomputers
-
-The filesystem used on CSC systems (Puhti, Mahti, Lumi) is called **Lustre**.
-
-- Parallel: data is distributed across many storage drives
-- Files can be accessed from all tasks (user permissions still apply)
-- Lustre is very common in HPC in general, not just at CSC
-
-Many systems also provide node-local disk area for temporary storage
-
-- `/tmp`, `$TMPDIR`, `$LOCAL_SCRATCH` *etc.* depending on the system
-- Sometimes the temporary storage may reside directly in memory (`/tmp` on Lumi compute nodes). Consult system docs
-
-# Lustre architecture
-
-<div class="column">
-
-- Files are chunked up and spread across multiple **storage servers** as **objects**
-- Dedicated **metadata server(s)** (MDS): file names, owners, permissions, ...
-- **Client**: HPC nodes that access the data
-
-</div>
-
-<div class="column">
-
-![](img/lustre-architecture.svg)
-Clients interact with MDS once to gain OST access, then I/O to objects directly.
-
-- Allows for **very high, parallel I/O bandwidth!**
-
-</div>
-
-# Being nice to Lustre as an HPC user
-
-Every file lookup, file creation/deletion, permission change *etc.* is processed by the metadata server.
-
-- Metadata servers are shared by everyone using the supercomputer!
-- Commands like `ls` unresponsive? Servers may be under heavy load
-
-**Please be mindful of other users!**
-
-- Lustre best practices in docs: <https://docs.csc.fi/computing/lustre/#best-practices>
-
-
-# Some Lustre best practices
-
-- Avoid creating/accessing small files in large quantities (*eg.* in scripts)
-- Avoid listing extended attributes (timestamps *etc.*) when not necessary
-  - Prefer `ls` over `ls -l` for file listing
-  - `LUE` tool for size queries: <https://docs.csc.fi/support/tutorials/lue/>
-- Consider using local disk when compiling code: `$TMPDIR` or similar non-Lustre location
-- Be careful when installing Python packages with `Conda` or `pip`!
-  - These have the "many small files" problem, especially with dependencies
-  - See <https://docs.lumi-supercomputer.eu/software/installing/python/>
 
 # Summary {.section}
 

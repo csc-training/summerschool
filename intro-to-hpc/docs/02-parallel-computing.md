@@ -187,6 +187,18 @@ Loop can be parallelized over `i`
 
 </div>
 
+# What happens when two processes compete over the same data?
+
+- Race condition
+    - Two (or more) processes access shared data concurrently
+    - The final outcome depends on the sequence or timing of execution
+    - Unpredictable and often leads to bugs
+    - Example: Two threads incrementing the same counter simultaneously might overwrite each other’s result
+
+- Deadlock
+    - Two (or more) processes wait indefinitely for each other to release resources (or e.g. to send data)
+    - System halts or stalls due to resource unavailability
+
 # Data distribution
 
 - Single node cannot typically hold all the data of large simulation

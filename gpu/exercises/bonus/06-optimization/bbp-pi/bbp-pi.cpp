@@ -2,7 +2,7 @@
  * This code calculates digits of PI in hexadecimal using
  * Bailey-Borwein-Plouffe formula.
  *
- * This code is quite naively written in terms of GPU performance.
+ * The code is quite naively written in terms of GPU performance.
  * Your task is optimize the code. No solution is given.
  *
  * See end for spoilers/ideas.
@@ -13,6 +13,7 @@
 #include <iostream>
 #include "../../../error_checking.hpp"
 
+// This function looks suspicious
 __device__ int ipow_mod(int m, int n, int mod) {
   int ret(1);
   while ( n!=0) {
@@ -23,10 +24,9 @@ __device__ int ipow_mod(int m, int n, int mod) {
   return ret;
 }
 
-// This function looks suspicious
+// This function looks even more suspicious
 __device__ float S(int j,int n) {
   float s = 0.0;
-  __shared__ int ipow_tbl[1<<11];
   for (int k = 0; k<n;++k) s += ipow_mod(16, n-k, 8*k+j) / (8.0*k+j);
   float t = 0.0;
   int k = n;
@@ -56,7 +56,7 @@ __global__ void hex_pi(float *a, int n)
 int main() {
   const size_t N = 1<<17;
 
-  constexpr int blocksize = 256;
+  constexpr int blocksize = 1024;
   constexpr int gridsize =(N-1+blocksize)/blocksize;
   constexpr size_t N_bytes = N*sizeof(float);
 
@@ -74,9 +74,6 @@ int main() {
   HIP_ERRCHK(hipEventCreate(&start));
   HIP_ERRCHK(hipEventCreate(&stop));
 
-  memset(a, 0, N_bytes);
-
-  HIP_ERRCHK(hipMemcpy(d_a, a, N_bytes, hipMemcpyHostToDevice));
   HIP_ERRCHK(hipEventRecord(start, 0));
   hex_pi<<<gridsize, blocksize,0,0>>>(d_a, N);
   HIP_ERRCHK(hipGetLastError());
@@ -110,9 +107,13 @@ int main() {
 
 
 
+
+
+
+
 /* Spoilers/ideas
  * - Threads get assigned different amounts of iterations (`float S()` function)
  * - Same numbers within blocks are calculated over and over (`float S()`)
  * - Lot of branching
- * - 
+ * - profile!
  */
