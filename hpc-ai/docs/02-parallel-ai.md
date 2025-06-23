@@ -31,7 +31,7 @@ lang:   en
 
 # Signle-GPU Training
 <div class="column"  style="width:58%">
-  ![](img/single_gpu.png){width=50%}
+  ![](img/single_gpu.png){width=25%}
 </div>
 <div class="column"  style="width:40%">
   - <small>How it works: Entire model & data on one GPU.</small>
@@ -72,15 +72,15 @@ lang:   en
 </div>
 
 # Realliity: 3D Parallelism
-<div class="column"  style="width:100%">
-  ![](img/parallelism_3d.png){width=60%}
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/parallelism_3d.png){width=40%}
 </div>
 - In real world: Data Parallel + Tensor Parallel + Pipeline Parallel are combined.
 - Example: Training GPT-3 used all three.
 
 
 # Advance Data Parallelism - ZeRO and DDP
-<div class="column"  style="width:100%">
+<div class="column"  style="width:100%; text-align: center;">
   ![](img/parallelism_zero.png){width=40%}
 </div>
 - Problem with Normal DP: Full optimizer states and gradients duplicated on every GPU.
