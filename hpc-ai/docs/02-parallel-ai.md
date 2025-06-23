@@ -47,18 +47,18 @@ lang:   en
 <div class="column"  style="width:40%">
   - <small>1. Copy model to each GPU.</small>
   - <small>2. Split inputs across GPUs.</small>
-  - <small>3. Compute forward/backward independently.
+  - <small>3. Compute forward/backward independently.</small>
   - <small>4. Aggregate gradients (AllReduce).</small>
 </div>    
 
 
 # Tensor Parallelism
 <div class="column"  style="width:58%">
-  ![](img/tensor_parallelism.png){width=15%}
+  ![](img/tensor_parallelism.png){width=20%}
 </div>
 <div class="column"  style="width:40%">
-  - <small>1. Send layers or blocks to different GPUs.</small>
-  - <small>2. Transfer outputs between GPUs manually.</small>
+  - <small>Send layers or blocks to different GPUs.</small>
+  - <small>Transfer outputs between GPUs manually.</small>
 </div>  
 
 # Pipeline Parallelism
