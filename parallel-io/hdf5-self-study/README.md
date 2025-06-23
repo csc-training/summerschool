@@ -57,7 +57,7 @@ C-style API, but has the following differences:
 - Order of arguments may sometimes vary relative to the C version. Input arguments come first, then output parameters
 (including the error code), then optional input parameters.
 - Due to different array indexing conventions between C and Fortran, some examples in these notes may require that you
-interchange array rows and columns if converting the exmaples to Fortran. Internally, HDF5 uses C-style conventions for
+interchange array rows and columns if converting the examples to Fortran. Internally, HDF5 uses C-style conventions for
 multidimensional array storage, ie. last dimension is the fastest-changing dimension. More details are available in the
 [docs](https://support.hdfgroup.org/documentation/hdf5/latest/_h5_s__u_g.html).
 
@@ -86,8 +86,8 @@ The last two requirements make it possible to perform I/O operations only to par
 ![](./img/hdf5_dataset.png)
 *Example HDF5 dataset and its metadata. Image taken from https://portal.hdfgroup.org/documentation/hdf5/latest/_intro_h_d_f5.html.*
 
-In addition to dataset shape (its dataspace), HDF5 files associates datasets with metadata such as type information of
-the data elements (integer, floating point, etc). It is also possible to write user-specified **attributes** for
+In addition to dataset shape (its dataspace), HDF5 associates datasets with metadata such as type information of
+the data elements (integer, floating point, etc). It is also possible to write user-specified **attributes**
 to act as arbitrary metadata. We will discuss attributes in more detail shortly.
 
 ### Case study: HDF5 file with many datasets
