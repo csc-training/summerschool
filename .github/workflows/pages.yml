@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/csc-training/slidefactory:3.4.1
+      image: ghcr.io/csc-training/slidefactory:3.4.2
     steps:
       - name: Checkout
         uses: actions/checkout@v4
