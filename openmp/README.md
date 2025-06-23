@@ -32,8 +32,8 @@
 ### OpenMP tasks
 
 - [Simple tasking](simple-tasks/)
-- [Parallelizing Mandelbrot with tasks](mandelbrot/)
 - [Parallel Fibonacci](fibonacci/)
+- [Parallelizing Mandelbrot with tasks](mandelbrot/)
 
 ### Heat equation
 
