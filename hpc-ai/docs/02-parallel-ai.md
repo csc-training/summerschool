@@ -33,58 +33,64 @@ lang:   en
 
 
 # Signle-GPU Training
-<div class="column"  style="width:100%; text-align: center;">
-  ![](img/single_gpu.png){width=20%}
+<div class="column"  style="width:58%">
+  ![](img/single_gpu.png){width=15%}
 </div>
-- How it works: Entire model & data on one GPU.
-- Pros: Simple, fast for small models.
-- Cons: Not scalable to large models/datasets.
+<div class="column"  style="width:40%">
+  - <small>How it works: Entire model & data on one GPU.</small>
+  - <small>Pros: Simple, fast for small models.</small>
+  - <small>Cons: Not scalable to large models/datasets.</small>
+</div>
 
 
 # Data Parallelism (DP)
-<div class="column"  style="width:50%; text-align: center;">
-  ![](img/data_parallelism.png){width=80%}
+<div class="column"  style="width:58%">
+  ![](img/data_parallelism.png){width=50%}
 </div>
-
-- Simple Idea: Split the batch across multiple GPUs.
-    1. Copy model to each GPU.
-    2. Split inputs across GPUs.
-    3. Compute forward/backward independently.
-    4. Aggregate gradients (AllReduce).
+<div class="column"  style="width:40%">
+  - <small>1. Copy model to each GPU.</small>
+  - <small>2. Split inputs across GPUs.</small>
+  - <small>3. Compute forward/backward independently.
+  - <small>4. Aggregate gradients (AllReduce).</small>
+</div>
+    
 - How it affects the Flops
 
 
 # Model Parallelism - Tensor Parallelism
-<div class="column"  style="width:80%; text-align: center;">
-  ![](img/tensor_parallelism.png){width=80%}
+<div class="column"  style="width:58%">
+  ![](img/tensor_parallelism.png){width=15%}
 </div>
-
-- Idea: Split each layer’s weights across multiple GPUs.
-    1. Send layers or blocks to different GPUs.
-    2. Transfer outputs between GPUs manually.
+<div class="column"  style="width:40%">
+  - <small>1. Send layers or blocks to different GPUs.</small>
+  - <small>2. Transfer outputs between GPUs manually.</small>
+</div>
+    
 - How it affects the Flops
 
 
 # Model Parallelism - Pipeline Parallelism
-<div class="column"  style="width:80%; text-align: center;">
-  ![](img/pipeline_parallelism.png){width=80%}
+<div class="column"  style="width:50%">
+  ![](img/pipeline_parallelism.png){width=15%}
 </div>
-- Idea: Split model layer-wise across GPUs.
-- Each GPU processes part of the model sequentially, like a factory pipeline.
-- Maximizes compute by overlapping stages (with microbatching).
+<div class="column"  style="width:40%">
+  - <small>Idea: Split model layer-wise across GPUs.</small>
+  - <small>Each GPU processes part of the model sequentially, like a factory pipeline.</small>
+  - <small>Maximizes compute by overlapping stages (with microbatching).</small>
+</div>
 
 
 # Realliity: 3D Parallelism
-<div class="column"  style="width:80%; text-align: center;">
-  ![](img/parallelism_3d.png){width=80%}
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/parallelism_3d.png){width=60%}
 </div>
 - In real world: Data Parallel + Tensor Parallel + Pipeline Parallel are combined.
 - Example: Training GPT-3 used all three.
 
 
 # Advance Data Parallelism - ZeRO and DDP
-<div class="column"  style="width:80%; text-align: center;">
-  ![](img/parallelism_zero.png){width=80%}
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/parallelism_zero.png){width=40%}
 </div>
 - Problem with Normal DP: Full optimizer states and gradients duplicated on every GPU.
 - ZeRO Idea: Partition optimizer states, gradients, and parameters across GPUs.
