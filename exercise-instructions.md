@@ -73,11 +73,11 @@ For CPU programming use:
 module load LUMI/24.03
 module load partition/C
 ```
-For GPU programming use:
+For GPU programming use (except [SYCL](./exercise-instructions.md#sycl)):
 ```bash
 module load LUMI/24.03
 module load partition/G
-module load rocm/6.2.2
+module load rocm/6.0.3
 ```
 
 ### MPI
