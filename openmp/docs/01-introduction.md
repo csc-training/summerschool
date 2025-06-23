@@ -64,51 +64,6 @@ lang:   en
 ![](img/supercomputer-node-hybrid.png){.center width=80%}
 </div>
 
-# Example: Hybrid hello
-
-<!-- Presentation suggestion: live coding for hybrid hello -->
-<small>
-<div class="column">
-```c
-#include <mpi.h>
-#include <omp.h>
-
-int main(int argc, char *argv[]) {
-    int my_id, omp_rank;
-    int provided, required=MPI_THREAD_FUNNELED;
-
-    MPI_Init_thread(&argc, &argv, required,
-                    &provided);
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
-#pragma omp parallel private(omp_rank)
-{
-    omp_rank = omp_get_thread_num();
-    printf("I'm thread %d in process %d\n",
-           omp_rank, my_id);
-}
-    MPI_Finalize();
-}
-```
-</div>
-
-<div class="column">
-```shell
-$ cc -fopenmp hybrid-hello.c -o hybrid-hello
-$ srun  --ntasks=2 --cpus-per-task=4
-  ./hybrid-hello
-
-I'm thread 0 in process 0
-I'm thread 0 in process 1
-I'm thread 2 in process 1
-I'm thread 3 in process 1
-I'm thread 1 in process 1
-I'm thread 3 in process 0
-I'm thread 1 in process 0
-I'm thread 2 in process 0
-```
-</div>
-</small>
-
 # Potential advantages of the hybrid approach
 
 - Fewer MPI processes for a given amount of cores
