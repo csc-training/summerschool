@@ -1,7 +1,9 @@
 # SYCL Exercises
 SYCL codes can be compiled using one of the two implementations, **OneAPI** or **AdaptiveCPP**. 
 
-A different rocm module is used, **rocm/6.2.2**. SYCL codes are ran the same way as a usual GPU or CPU applciations depending on the desire target device. 
+A different rocm module is used, **rocm/6.2.2**. 
+
+SYCL applications are executed the same way as a usual GPU or CPU applications depending on the desire target device. 
 
 ## OneAPI + AMD Plug-in
 ### Set-up the modules and paths
