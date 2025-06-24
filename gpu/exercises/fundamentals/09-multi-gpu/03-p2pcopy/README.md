@@ -23,7 +23,10 @@ On **LUMI**, swap the loaded PrgEnv-cray to PrgEnv-cray-amd as follows:
 module load PrgEnv-cray-amd
 ```
 This is because Cray compiler has no multi-gpu support for `omp_target_alloc()`.
-
+Now compile with 
+```
+CC -fopenmp -fopenmp -fopenmp-targets=amdgcn-amd-amdhsa -Xopenmp-target=amdgcn-amd-amdhsa -march=gfx90a  omp-p2pcopy.cpp 
+```
 Copy [hip-p2pcopy.cpp](hip-p2pcopy.cpp) into [omp-p2pcopy.cpp](omp-p2pcopy.cpp) and modify the code to use OpenMP instead of HIP. With OpenMP, one can't check, enable or disable peer access like with HIP, so these parts of the code can be removed. You may find `omp_target_alloc()` and `omp_target_free()` and `omp_target_memcpy()` functions useful for device memory management with OpenMP. Does it look like the direct peer to peer access works properly with OpenMP, when comparing the bandwith between Case 1 and Case 2?
 
 ## Case 3 - SYCL  & USM
