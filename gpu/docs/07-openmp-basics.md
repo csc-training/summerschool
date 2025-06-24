@@ -399,6 +399,43 @@ data`, we can get corresponding device address by
   - Now *`d_a`* can be passed to a HIP kernel for example.
 :::
 
+# Device functions: `declare target`
+
+- In HIP/CUDA functions with `__device` modified can be called from kernels.
+- In OpenMP: `declare target` directive does the same thing
+- Also works with global variables
+- No shared objects
+
+::::::{.columns}
+
+:::{.column}
+
+```cpp
+#pragma omp declare target
+double fun(double a, double b);
+#pragma omp end declare target
+...
+
+#pragma omp target 
+#pragma omp teams distribute parallel for
+for (int i = 0; i < NX; i++) {
+  vecC[i] = fun(vecA[i], vecB[i]);
+}
+```
+
+:::
+
+:::{.column}
+```cpp
+#pragma omp declare target
+double fun(double a, double b) {
+  return a+b;
+}
+#pragma omp end declare target
+```
+:::
+::::::
+
 # Controlling number of teams and threads
 
 - By default, the number of teams and the number of threads is up to
