@@ -1,4 +1,4 @@
-# General exercise instructions
+# General exercise instructions for LUMI
 
 ## Accessing LUMI
 
