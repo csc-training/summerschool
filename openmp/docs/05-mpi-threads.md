@@ -29,7 +29,6 @@ MPI_Init_thread(`required`{.input}, `provided`{.output})
 # Example: Hybrid hello
 
 <!-- Presentation suggestion: live coding for hybrid hello -->
-<small>
 <div class="column">
 ```c
 #include <mpi.h>
@@ -38,7 +37,6 @@ MPI_Init_thread(`required`{.input}, `provided`{.output})
 int main(int argc, char *argv[]) {
     int rank, thread_id;
     int provided, required=MPI_THREAD_FUNNELED;
-
     MPI_Init_thread(&argc, &argv,
                     required, &provided);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -70,7 +68,6 @@ I'm thread 1 in process 0
 I'm thread 2 in process 0
 ```
 </div>
-</small>
 
 
 # Hybrid programming styles: fine/coarse grained
@@ -168,24 +165,84 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 
 # Thread and process affinity {.section}
 
+# Non-uniform memory access
+
+<div class=column>
+- A node can have multiple sockets with memory attached to each socket
+- Non-Uniform Memory Access (NUMA)
+  - All memory within a node is accessible, but latencies and bandwidths vary
+  - Query configuration with<br>`numactl --hardware`
+</div>
+
+<div class=column>
+![](img/numa-schematic.png){.center width=70%}
+</div>
+
+# First touch policy
+
+- The OS typically optimizes memory allocations
+  - `malloc()` does not allocate the memory directly
+  - At first memory access (write), the OS physically allocates the corresponding page (First touch policy)
+- Initializion of data should be done on the thread using the data
+
+# NUMA aware initialization
+
+<div class=column>
+- No NUMA awareness
+
+```c
+// Initialize data
+for (int i=0; i < N; i++)
+   data[i] = ...
+...
+// Perform work
+#pragma omp parallel for
+for (int i=0; i < N; i++)
+   process(data[i])
+```
+</div>
+<div class=column>
+<!-- Image copyright Intel -->
+![](img/init-nonuma.png){.center width=80%}
+</div>
+
+# NUMA aware initialization
+
+<div class=column>
+- With NUMA awareness
+
+```c
+// Initialize data
+#pragma omp parallel for
+for (int i=0; i < N; i++)
+   data[i] = ...
+...
+// Perform work
+#pragma omp parallel for
+for (int i=0; i < N; i++)
+   process(data[i])
+```
+</div>
+<div class=column>
+<!-- Image copyright Intel -->
+![](img/init-numa.png){.center width=80%}
+</div>
+
 # Thread and process affinity
 
-- Normally, operating system can run threads and processes in any
-  logical core
-- Operating system may even move the running process/thread from one core to
-  another
-    - can be beneficial for load balancing
-    - for HPC workloads often detrimental as private caches get
+- Normally, operating system can run threads and processes in any logical core
+- Operating system may even move the running process/thread from one core to another
+    - Can be beneficial for load balancing
+    - For HPC workloads often detrimental as private caches get
       invalidated and NUMA locality is lost
 - User can control where tasks are run via affinity masks
-    - task can be *pinned* to a specific logical core or a set of logical
-      cores
+    - Task can be *pinned* to a specific logical core or a set of logical cores
 
 
 # Controlling affinity
 
 - Affinity for a *process* can be set with the `numactl` command
-    - limit the process to logical cores 0,3,7:
+    - Limit the process to logical cores 0,3,7:
       <br><span style="padding-left:2em">
       `numactl --physcpubind=0,3,7 ./my_exe`
       </span>
