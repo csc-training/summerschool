@@ -182,4 +182,23 @@ scalasca -examine -s ${SCOREP_EXPERIMENT_DIRECTORY}
 EOF
 ```
 
-TODO: view with Vampir on LUMI
+## Viewing trace with Vampir
+
+Caveat: Vampir is a commercial, closed source tool.
+There is a license, which allows the usage of Vampir on LUMI.
+
+------------------------------------------------
+
+Go to www.lumi.csc.fi and login.
+
+Start a Desktop session.
+
+When in the desktop session, open a terminal and type
+```bash
+ml Vampir/10.6.1
+vampir &
+```
+
+Then navigate to the directory with the trace file `traces.otf2`.
+The Vampir [documentation](https://vampir.eu/tutorial/manual/performance_data_visualization) helps with
+understanding the GUI.
