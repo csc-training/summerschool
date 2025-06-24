@@ -217,7 +217,7 @@ SBATCH --nodes=1
 ### GPU programs
 
 When running GPU programs, few changes need to made to the batch job
-script. The `partition` and `reservation` are now different, and one
+script. The `partition` is now different, and one
 must also request explicitly given number of GPUs with the
 `--gres=gpu:a100:ngpus` option. As an example, in order to use a
 single GPU with single MPI task and a single thread use:
