@@ -28,7 +28,7 @@ Now, `/scratch/project_2014370/$USER/summerschool` is your own clone of the summ
 and you can modify files there without causing conflicts with other summer school participants.
 
 <details>
-<summary>Optional: Working with through your own git fork</summary>
+<summary>Optional: Working with your own git fork</summary>
 
 **We don't have time to teach git during the summer school, so this is recommended only if you are already somewhat familiar with git.**
 
