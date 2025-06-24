@@ -90,11 +90,7 @@ building MPI programs.
 ### HDF5
 
 In order to use HDF5 in CSC supercomputers, you need the load the HDF5 module with MPI I/O support.
-The appropriate module in Puhti is
-```
-module load hdf5/1.10.4-mpi
-```
-and in Mahti
+The appropriate module in Mahti is
 ```
 module load hdf5/1.10.7-mpi
 ```
@@ -153,41 +149,36 @@ where `--gpu-architecture=sm_70` is required when compiling for V100.
 
 ### Pure MPI
 
-In Puhti, programs need to be executed via the batch job system. Simple job running with 4 MPI tasks can be submitted with the following batch job script:
+In Mahti, programs need to be executed via the batch job system. A job running with 4 MPI tasks can be submitted with the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=project_2014370
-#SBATCH --partition=large
-#SBATCH --reservation=summerschool
+#SBATCH --partition=small
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=4
 
-srun my_mpi_exe
+srun ./my_mpi_exe
 ```
 
 Save the script *e.g.* as `job.sh` and submit it with `sbatch job.sh`.
 The output of job will be in file `slurm-xxxxx.out`. You can check the status of your jobs with `squeue -u $USER` and kill possible hanging applications with
 `scancel JOBID`.
 
-The reservation `summerschool` is available during the course days and it
-is accessible only with the training user accounts.
-
 ### Pure OpenMP
 
 For pure OpenMP programs one should use only single tasks and specify the number of cores reserved
-for threading with `--cpus-per-task`. Furthermore, one should use the `small` partition:
+for threading with `--cpus-per-task`.
 ```
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=project_2014370
 #SBATCH --partition=small
-#SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 
-srun my_omp_exe
+srun ./my_omp_exe
 ```
 
 ### Hybrid MPI+OpenMP
@@ -204,8 +195,7 @@ the following batch job script:
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=project_2014370
-#SBATCH --partition=large
-#SBATCH --reservation=summerschool
+#SBATCH --partition=medium
 #SBATCH --time=00:05:00
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=10
@@ -213,7 +203,7 @@ the following batch job script:
 
 # Set the number of threads based on --cpus-per-task
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-srun my_exe
+srun ./my_exe
 ```
 
 When using only single node, one should use the `small` partition, *i.e.*
@@ -229,68 +219,17 @@ SBATCH --nodes=1
 When running GPU programs, few changes need to made to the batch job
 script. The `partition` and `reservation` are now different, and one
 must also request explicitly given number of GPUs with the
-`--gres=gpu:v100:ngpus` option. As an example, in order to use a
+`--gres=gpu:a100:ngpus` option. As an example, in order to use a
 single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=project_2014370
-#SBATCH --partition=gpu
-#SBATCH --reservation=summerschool-gpu
+#SBATCH --partition=gpusmall
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:a100:1
 #SBATCH --time=00:05:00
 
-srun my_gpu_exe
+srun ./my_gpu_exe
 ```
-
-## Running in Mahti
-
-Batch job system in Mahti is very similar to Puhti, and batch scripts written for Puhti
-work in Mahti with only minor modifications. The most important difference is that one should use
-the `medium` partition instead of `large` partition, *i.e.* batch job script should start as:
-```
-#!/bin/bash
-#SBATCH --job-name=example
-#SBATCH --account=project_2014370
-#SBATCH --partition=medium
-#SBATCH --reservation=summerschool
-...
-```
-
-For GPU programs, the `--gres` option is also a bit different, as one
-needs to use `a100` instead of `v100` *i.e.*:
-```
-...
-#SBATCH --gres=gpu:a100:1
-...
-```
-
-## Debugging in CSC supercomputers
-
-The [Allinea DDT parallel debugger](https://docs.csc.fi/apps/ddt/) is available in CSC
-supercomputers. In order to use the debugger, build your code first with the `-g` flag. The DDT is
-then enabled via the module system:
-
-```bash
-module load ddt
-```
-
-The debugger is run in an interactive session, and for proper
-functioning the environment variable `SLURM_OVERLAP` needs to be set.
-
-1. Set `SLURM_OVERLAP` and request Slurm allocation interactively:
-```bash
-export SLURM_OVERLAP=1
-salloc --nodes=1 --ntasks-per-node=2 --account=project_2014370 --partition=small --reservation=mpi_intro
-```
-2. Start the application under debugger
-```bash
-ddt srun ./buggy
-```
-
-For GUI applications we recommend to use the
-[Desktop app](https://docs.csc.fi/computing/webinterface/desktop/) in the Puhti web interface.
-For smoother GUI performance one may use VNC client such as RealVNC or TigerVNC in the local
-workstation.
