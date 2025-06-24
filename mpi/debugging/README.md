@@ -44,7 +44,7 @@ Run DDT for a buggy program `buggy.x`:
 ```bash
 module load ddt
 export SLURM_OVERLAP=1
-salloc -A project_2010554 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
+salloc -A project_2014370 --nodes=1 --ntasks-per-node=2 --time=00:15:00 --partition=test
 ddt srun ./buggy.x
 ```
 

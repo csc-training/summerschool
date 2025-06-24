@@ -157,7 +157,7 @@ In Puhti, programs need to be executed via the batch job system. Simple job runn
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_2000745
+#SBATCH --account=project_2014370
 #SBATCH --partition=large
 #SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
@@ -180,7 +180,7 @@ for threading with `--cpus-per-task`. Furthermore, one should use the `small` pa
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_2000745
+#SBATCH --account=project_2014370
 #SBATCH --partition=small
 #SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
@@ -203,7 +203,7 @@ the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_2000745
+#SBATCH --account=project_2014370
 #SBATCH --partition=large
 #SBATCH --reservation=summerschool
 #SBATCH --time=00:05:00
@@ -234,7 +234,7 @@ single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_2000745
+#SBATCH --account=project_2014370
 #SBATCH --partition=gpu
 #SBATCH --reservation=summerschool-gpu
 #SBATCH --nodes=1
@@ -253,7 +253,7 @@ the `medium` partition instead of `large` partition, *i.e.* batch job script sho
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_2000745
+#SBATCH --account=project_2014370
 #SBATCH --partition=medium
 #SBATCH --reservation=summerschool
 ...
@@ -283,7 +283,7 @@ functioning the environment variable `SLURM_OVERLAP` needs to be set.
 1. Set `SLURM_OVERLAP` and request Slurm allocation interactively:
 ```bash
 export SLURM_OVERLAP=1
-salloc --nodes=1 --ntasks-per-node=2 --account=project_2000745 --partition=small --reservation=mpi_intro
+salloc --nodes=1 --ntasks-per-node=2 --account=project_2014370 --partition=small --reservation=mpi_intro
 ```
 2. Start the application under debugger
 ```bash
