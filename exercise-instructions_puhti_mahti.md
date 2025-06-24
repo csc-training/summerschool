@@ -1,35 +1,49 @@
-# Exercise instructions for Puhti and Mahti
+# General exercise instructions for Mahti
 
-## Using CSC supercomputers
+## Accessing Mahti
 
-Exercises can be carried out using the CSC's Puhti and Mahti supercomputers. In this course,
-we'll use by default Puhti. See CSC User Documentation for quick start guide for [Puhti](https://docs.csc.fi/support/tutorials/puhti_quick/) or for [Mahti](https://docs.csc.fi/support/tutorials/mahti_quick/)
+You can access the [Mahti](https://docs.csc.fi/computing/systems-mahti/) supercomputer with ssh:
 
-Puhti and Mahti can be accessed via ssh using the
-provided username (`trainingxxx`) and password:
-```
-ssh -Y training000@puhti.csc.fi
-```
-or
-```
-ssh -Y training000@mahti.csc.fi
-```
+    ssh <username>@mahti.csc.fi
 
-For easier connecting we recommend that you set up *ssh keys* along the instructions in
-[CSC Docs](https://docs.csc.fi/computing/connecting/#setting-up-ssh-keys)
+If you don't have the ssh key in the default location, you need to give a path to the key file:
 
+    ssh -i <path-to-private-key> <username>@mahti.csc.fi
 
-### Disk areas
+See [wiki](../../wiki/Setting-up-CSC-account-and-SSH) for further details.
 
-All the exercises in the supercomputers should be carried out in the
-**scratch** disk area. The name of the scratch directory can be
-queried with the command `csc-workspaces`. As the base directory is
-shared between members of the project, you should create your own
-directory:
-```
-mkdir -p /scratch/project_2000745/$USER
-cd /scratch/project_2000745/$USER
-```
+## First-time setup on Mahti
+
+All the exercises should be carried out in the scratch disk area.
+This scratch area is shared between all the project members, so create a personal working directory there:
+
+    mkdir -p /scratch/project_2014370/$USER
+    cd /scratch/project_2014370/$USER
+
+and clone the summer school git repository there:
+
+    git clone https://github.com/csc-training/summerschool.git /scratch/project_2014370/$USER/summerschool
+
+Now, `/scratch/project_2014370/$USER/summerschool` is your own clone of the summer school repository on Mahti
+and you can modify files there without causing conflicts with other summer school participants.
+
+<details>
+<summary>Optional: Working with through your own git fork</summary>
+
+**We don't have time to teach git during the summer school, so this is recommended only if you are already somewhat familiar with git.**
+
+It is recommended to fork the summer school repository on github and clone your own fork to Mahti instead.
+This allows you to push your exercise solutions to a branch on your own fork.
+
+In order to push commits to your own fork on Mahti, you can use your existing key on your laptop by enabling ssh agent forwarding (`ssh -A <username>@mahti.csc.fi`) *or* to add an SSH public key generated on Mahti to your github account.
+
+Note that the default editor for commit messages is *vim*, if you prefer something else you can add, e.g.,
+
+    export EDITOR=nano
+
+to the file `$HOME/.bashrc`.
+
+</details>
 
 
 ## Compilation
