@@ -225,7 +225,7 @@ Programs need to be executed via the batch job system. A simple job running with
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=1
 
-srun my_mpi_exe
+srun ./my_mpi_exe
 ```
 
 Save the script *e.g.* as `job.sh` and submit it with `sbatch job.sh`.
@@ -254,7 +254,7 @@ for threading with `--cpus-per-task`:
 
 # Set the number of threads based on --cpus-per-task
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-srun my_omp_exe
+srun ./my_omp_exe
 ```
 
 The same result can be achieved using directly `srun`
@@ -283,7 +283,7 @@ the following batch job script:
 #SBATCH --cpus-per-task=4
 # Set the number of threads based on --cpus-per-task
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-srun my_exe
+srun ./my_exe
 ```
 
 The same result can be achieved using directly `srun`
@@ -307,7 +307,7 @@ single GPU with single MPI task and a single thread use:
 #SBATCH --ntasks=1
 #SBATCH --time=00:05:00
 
-srun my_gpu_exe
+srun ./my_gpu_exe
 ```
 
 The same result can be achieved using directly `srun`
