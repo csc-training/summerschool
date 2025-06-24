@@ -66,6 +66,13 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
 - This is a hearbeat signal -- We want to keep track that no-one has gotten lost in the forest etc.
   - Before you do, please save [the phone numbers of organizers](https://github.com/csc-training/summerschool/wiki#contacts) in your phone
 
+# In case a ticks bites
+
+- Remove the tick attached to the skin immediately and monitor the bite site
+  - Please borrow thin tweezers from [the organizers](https://github.com/csc-training/summerschool/wiki#contacts) or ask help for removing it
+- It's advisable to do regular tick checks to detect tick at an early stage
+- See further information [here](https://www.mehilainen.fi/en/tick-bite) or [here](https://www.terveyskyla.fi/en/emergencyhub/self-care-instructions-in-sudden-health-problems/ticks)
+
 # Code of conduct
 
 - We work in the spirit of [the CodeRefinery Code of Conduct](https://coderefinery.org/about/code-of-conduct/) in the summer school
