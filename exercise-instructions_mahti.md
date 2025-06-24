@@ -145,7 +145,7 @@ hipcc  --gpu-architecture=sm_70 -o hello hello.cpp
 ```
 where `--gpu-architecture=sm_70` is required when compiling for V100.
 
-## Running in Puhti
+## Running in Mahti
 
 ### Pure MPI
 
