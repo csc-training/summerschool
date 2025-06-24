@@ -158,6 +158,17 @@ call mpi_xxxx(parameter, ..., error_code)
 - Last argument is the error code (optional with `mpi_f08`)
 </div>
 
+# Runtime errors in MPI
+
+MPI has a built-in error checker with (mostly) useful error messages.
+
+- No need to check error codes manually
+- Default behavior is to abort on an error: all MPI errors are **fatal**
+- Can change error handling method if you really want to...
+  - Rarely needed and not covered on these slides
+  - Spec **does not** guarantee that any error can be recovered from
+
+<small>See eg. `message-length` exercise</small>
 
 # Warning on old Fortran codes!
 
@@ -180,6 +191,26 @@ MPI_Function(`input_arg`{.input}, `output_arg`{.output})
   - <https://www.mpich.org/static/docs/v4.2.x/>
   - `man MPI_Function` on LUMI (e.g., `man MPI_Init`)
 
+# Quick refresher on C pointer syntax
+
+- Pointer variables store **memory addresses**. Syntax involves `*` and `&`:
+```c
+int a = 2; // Not a pointer: `a` is an integer
+int* b = &a; // Pointer: `b` holds the address of integer `a`
+b = NULL; // `b` now points to nothing. Can't deference with &!
+float* arr = (double*) malloc(5); // `arr` points to memory address that can hold 5 float
+arr[i]; // Gives the float at address `arr + i*sizeof(float)`
+&arr[0]; // Address: same as `arr`
+
+// C++: get raw pointer to data contained in std::vector (= fancy array)
+std::vector<float> vec;
+float* data_ptr = vec.data();
+
+// MPI sneak peek: send 5 floats from address `arr`
+MPI_Send(arr, 5, MPI_FLOAT, ... ); // Other arguments discussed later
+```
+
+- NB: In C++ the `&` operator is also used for *reference types* (eg. `int& b = a`)
 
 # First two MPI functions: Initializing and finalizing
 
