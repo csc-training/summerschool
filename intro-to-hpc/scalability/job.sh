@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=scalability
 #SBATCH --account=project_462000956
-##SBATCH --reservation=CSC_summer_school_gpu
+#SBATCH --reservation=SummerSchoolGPU
 #SBATCH --output=%x.%J.out
 #SBATCH --partition=small-g
 #SBATCH --nodes=1 --ntasks-per-node=1 --gpus-per-node=1

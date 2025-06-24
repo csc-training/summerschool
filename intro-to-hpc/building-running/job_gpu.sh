@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=example
 #SBATCH --account=project_462000956
-##SBATCH --reservation=CSC_summer_school_gpu
+#SBATCH --reservation=SummerSchoolGPU
 #SBATCH --output=%x.%J.out
 #SBATCH --partition=small-g
 #SBATCH --nodes=1
