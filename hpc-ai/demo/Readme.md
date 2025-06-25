@@ -36,9 +36,6 @@ You can run the training directly with the corresponding script listed above:
     sbatch  run_ddp_cifar100.sh
 
 
-By looking at the `slurm-RUN_ID.out`, look for the training speed for the each iteration and also one epoch. What do you observer? Why the total number of iterations are different in DDP?
-
-
 ## GPU Utilization
 You can monitor your GPU usage with the following:
 ```
@@ -51,8 +48,13 @@ Where `<jobid>` should be replaced. You can find the jobID for your job by looki
 
 See [GPU-accelerated machine learning](https://docs.csc.fi/support/tutorials/gpu-ml/) documentations on LUMI for more information .
 
-For each task, look at the GPU utilization, and VRAM. Discuss on how to increase the VRAM.
+## Questions:
+1. For each task, look at the GPU utilization, and VRAM. Discuss on how to increase the VRAM.
+2. By looking at the `slurm-RUN_ID.out`, look for the training speed for the each iteration and also one epoch. Why the first epoch is slower than other epochs?
+3. Why the total number of iterations are different in DDP?
+4. Do you see any overheads for the DDP training?
 
+   
 ## TensorBoard
 
 You can use TensorBoard either via the LUMI web user interface.
