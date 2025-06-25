@@ -2,9 +2,9 @@ Work in progress...
 
 # Demo
 
-In this demo, we study image classification with (CIFAR100 [https://www.cs.toronto.edu/~kriz/cifar.html] dataset. (This image)[./img/cifar100.jpg] is a sample of what the dataset looks like. The dataset has 100 classes containing 600 images each.
+In this demo, we study image classification with [CIFAR100](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. [This image](./img/cifar100.jpg) is a sample of what the dataset looks like. The dataset has 100 classes containing 600 images each.
 
-We will train a CNN model called (ResNet152)[https://docs.pytorch.org/vision/main/models/generated/torchvision.models.resnet152.html]. This model has over 60M parameters to train.
+We will train a CNN model called [ResNet152](https://docs.pytorch.org/vision/main/models/generated/torchvision.models.resnet152.html). This model has over 60M parameters to train.
 
 ## Task 1
 
@@ -29,7 +29,7 @@ output. (Press Ctrl-C when you want to stop following the file.)
 
 ## Task 2
 
-Repeat the experiment with the `train_ddp_cifar100.py` Which trains the model with 2 GPUs with the (Distributed Data Parallel)[https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html] technique.
+Repeat the experiment with the `train_ddp_cifar100.py` Which trains the model with 2 GPUs with the [Distributed Data Parallel](https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html) technique.
 
 You can run the training directly with the corresponding script listed above:
 
@@ -49,7 +49,7 @@ Where `<jobid>` should be replaced. You can find the jobID for your job by looki
 
     squeue --me
 
-See (GPU-accelerated machine learning)[https://docs.csc.fi/support/tutorials/gpu-ml/] documentations on LUMI for more information .
+See [GPU-accelerated machine learning](https://docs.csc.fi/support/tutorials/gpu-ml/) documentations on LUMI for more information .
 
 For each task, look at the GPU utilization, and VRAM. Discuss on how to increase the VRAM.
 
