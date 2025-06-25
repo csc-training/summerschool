@@ -8,7 +8,7 @@ lang:   en
 
 * Illustrate MPI execution and data model
 * Four volunteers: processes
-* Lecturer: MPI runtime
+* Lecturer: MPI library
 
 # One-dimensional acyclic chain {.section}
 
