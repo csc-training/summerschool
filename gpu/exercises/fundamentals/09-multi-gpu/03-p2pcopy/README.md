@@ -23,7 +23,8 @@ On **LUMI**, swap the loaded PrgEnv-cray to PrgEnv-cray-amd as follows:
 module load PrgEnv-cray-amd
 ```
 This is because Cray compiler has no multi-gpu support for `omp_target_alloc()`.
-Now compile with 
+
+Now compile with: 
 ```
 CC -fopenmp -fopenmp -fopenmp-targets=amdgcn-amd-amdhsa -Xopenmp-target=amdgcn-amd-amdhsa -march=gfx90a  omp-p2pcopy.cpp 
 ```
