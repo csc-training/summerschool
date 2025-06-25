@@ -31,6 +31,8 @@ CC -fopenmp -fopenmp -fopenmp-targets=amdgcn-amd-amdhsa -Xopenmp-target=amdgcn-a
 Copy [hip-p2pcopy.cpp](hip-p2pcopy.cpp) into [omp-p2pcopy.cpp](omp-p2pcopy.cpp) and modify the code to use OpenMP instead of HIP. With OpenMP, one can't check, enable or disable peer access like with HIP, so these parts of the code can be removed. You may find `omp_target_alloc()` and `omp_target_free()` and `omp_target_memcpy()` functions useful for device memory management with OpenMP. Does it look like the direct peer to peer access works properly with OpenMP, when comparing the bandwith between Case 1 and Case 2?
 
 ## Case 3 - SYCL  & USM
-With SYCL as well, one can't check, enable or disable peer access like with HIP, so these parts of the code can be removed. While the pointers allocated with `usm_device()` are associated with a specific queue, if the devices are in the same platform one can use the `memcpy()` method, `q0.memcpy(dA_0, dA_1, sizeof(int)*N);`. Under the hood it should use the peer to peer transfers.  Does it look like the direct peer to peer access works properly with SYCL, when comparing the bandwith between Case 1 and Case 2?
+With SYCL as well, one can't check, enable or disable peer access like with HIP, so these parts of the code can be removed. While the pointers allocated with `usm_device()` are associated with a specific queue, if the devices are in the same platform one can use the `memcpy()` method, `q0.memcpy(dA_0, dA_1, sizeof(int)*N);`. Under the hood it should use the peer to peer transfers, but it depends on the implementation.  
 
-**Note!** In both OpenMP offloadingg and SYCL, if needed, one can mix the code  HIP/CUDA API. This however breaks the portability idea behind the two parallel proggrgaming models. 
+Does it look like the direct peer to peer access works properly with SYCL, when comparing the bandwith between Case 1 and Case 2?
+
+**Note!** In both OpenMP offloading and SYCL, if needed, one can mix the code  HIP/CUDA API. This however breaks the portability idea behind the two parallel proggrgaming models. 
