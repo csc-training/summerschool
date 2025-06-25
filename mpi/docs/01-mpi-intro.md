@@ -193,12 +193,13 @@ MPI_Function(`input_arg`{.input}, `output_arg`{.output})
 
 # Quick refresher on C pointer syntax
 
-- Pointer variables store **memory addresses**. Syntax involves `*` and `&`:
-```c
+```cpp
 int a = 2; // Not a pointer: `a` is an integer
 int* b = &a; // Pointer: `b` holds the address of integer `a`
-b = NULL; // `b` now points to nothing. Can't deference with &!
-float* arr = (double*) malloc(5); // `arr` points to memory address that can hold 5 float
+int c = *b; // Get integer at address pointed by `b` ("dereference"). Now c == a
+b = NULL; // `b` now points to nothing. Can't dereference a NULL!
+
+float* arr = (float*) malloc(5); // `arr` points to memory address that can hold 5 float
 arr[i]; // Gives the float at address `arr + i*sizeof(float)`
 &arr[0]; // Address: same as `arr`
 
@@ -210,7 +211,7 @@ float* data_ptr = vec.data();
 MPI_Send(arr, 5, MPI_FLOAT, ... ); // Other arguments discussed later
 ```
 
-- NB: In C++ the `&` operator is also used for *reference types* (eg. `int& b = a`)
+- In C++ the `&` operator is also used for *reference types* (eg. `int& b = a`)
 
 # First two MPI functions: Initializing and finalizing
 
