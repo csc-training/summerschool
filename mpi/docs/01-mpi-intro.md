@@ -191,28 +191,6 @@ MPI_Function(`input_arg`{.input}, `output_arg`{.output})
   - <https://www.mpich.org/static/docs/v4.2.x/>
   - `man MPI_Function` on LUMI (e.g., `man MPI_Init`)
 
-# Quick refresher on C pointer syntax
-
-```cpp
-int a = 2; // Not a pointer: `a` is an integer
-int* b = &a; // Pointer: `b` holds the address of integer `a`
-int c = *b; // Get integer at address pointed by `b` ("dereference"). Now c == a
-b = NULL; // `b` now points to nothing. Can't dereference a NULL!
-
-float* arr = (float*) malloc(5); // `arr` points to memory address that can hold 5 float
-arr[i]; // Gives the float at address `arr + i*sizeof(float)`
-&arr[0]; // Address: same as `arr`
-
-// C++: get raw pointer to data contained in std::vector (= fancy array)
-std::vector<float> vec;
-float* data_ptr = vec.data();
-
-// MPI sneak peek: send 5 floats from address `arr`
-MPI_Send(arr, 5, MPI_FLOAT, ... ); // Other arguments discussed later
-```
-
-- In C++ the `&` operator is also used for *reference types* (eg. `int& b = a`)
-
 # First two MPI functions: Initializing and finalizing
 
 MPI_Init(...)
