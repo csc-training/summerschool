@@ -7,12 +7,8 @@ expression
 
 $$\frac{\pi}{4} = \int_0^1 \frac{dx}{1+x^2} \approx \frac{1}{N} \sum_{i=1}^N \frac{1}{1+\left( \frac{i-\frac{1}{2}}{N}\right)^2}$$
 
-<!--
-\frac{\pi}{4} = \int_0^1 \frac{dx}{1+x^2} \approx \frac{1}{N} \sum_{i=1}^N \frac{1}{1+\left( \frac{i-\frac{1}{2}}{N}\right)^2}
--->
-
-where the answer becomes more accurate with increasing N. As each term is independent,
-the summation over i can be parallelized nearly trivially.
+where the answer becomes more accurate with increasing N.
+As each term is independent, the summation over i can be parallelized.
 
 Starting from the serial code [pi.cpp](pi.cpp) (or [pi.F90](pi.F90) for Fortran), make a version
 that performs the calculation parallel with **two** processes.

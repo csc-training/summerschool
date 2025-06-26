@@ -61,14 +61,61 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 # Buffers in MPI
 
-- The `buffer` arguments are memory addresses
+- The `buffer` arguments are *memory addresses*
 - MPI assumes a contiguous chunk of memory
   - The `count` elements are send starting from the address
   - The received elements are stored starting from the address
 - In C/C++ `buffer` is pointer
-  - For C++ `<array>` and `<vector>` containers, use `array.data()` or `&array[i]`
+  - See next slides
 - In Fortran arguments are passed by reference and variables can be passed as such to MPI calls
   - Note: be careful if passing non-contiguous array segmens such as <br>`a(1, 1:N)`
+
+# Pointers in C
+
+- A pointer is a variable that stores the memory address of another variable
+  ```c
+  int *p; // declaration of a pointer
+  int a = 10;
+  p = &a; // & operator gives the address of a
+  int b = *p; // * operator dereferences (gives the value at the address p)
+  ```
+
+- Demo: `pointers.cpp`
+
+
+# Pointers in C
+
+- Array in C is a pointer to the first element
+  ```c
+  int *arr = (int*)malloc(4 * sizeof(int));
+
+  arr[0] = 10;  // set first element
+  *arr = 10;  // equivalent to line above
+
+  arr[2] = 12;  // set third element
+  *(arr + 2) = 12;  // equivalent to line above
+
+  free(arr);
+  ```
+
+- Demo: `pointers.cpp`
+
+
+# Obtaining pointers in C++ (aka raw pointers)
+
+- For getting raw pointer to the data in C++ `<array>` and `<vector>` containers, use `array.data()` or `&array[i]`
+  ```cpp
+  int *p; // declaration of a raw pointer
+  std::vector<int> message(5);
+
+  p = message.data();  // memory address of the first element
+  p = &message[0];  // equivalent to the line above
+
+  p = message.data() + 2;  // memory address of the third element
+  p = &message[2];  // equivalent to the line above
+  ```
+
+- Demo: `pointers.cpp`
 
 
 # MPI datatypes
