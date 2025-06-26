@@ -15,7 +15,7 @@ When running jobs on LUMI's GPUs, you want to make sure you use the given comput
 
 The `rocm-smi` tool is a command-line utility that allows you to monitor the status of AMD GPUs on LUMI. If the cluster you are using has Nvidia GPUs (like Mahti, you have to use `nvidia-smi`). The output of the command look similar to the following:
 
-![Image title](../assets/images/rocm-smi-gpu.png)
+![Image title](./img/rocm-smi-gpu.png)
 
 To use `rocm-smi` you have to access the node that your GPU job is running. To do that, you need the
   `jobid` of the job which `squeue --me` shows. With the `jobid`, you can open an interactive parallel session with the following command:
