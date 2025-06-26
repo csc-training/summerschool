@@ -1,2 +1,3 @@
-module load LUMI/23.09  partition/C
-module load libpng/1.6.39-cpeCray-23.09
+module load LUMI/24.03  partition/C
+module load PrgEnv-cray
+export COMP=cray
