@@ -6,6 +6,37 @@ In this demo, we study image classification with [CIFAR100](https://www.cs.toron
 
 We will train a CNN model called [ResNet152](https://docs.pytorch.org/vision/main/models/generated/torchvision.models.resnet152.html). This model has over 60M parameters to train.
 
+In this demo, we want to monitor the GPU utilization. Let's first refresh our memory about it.
+
+## GPU Utilization and Monitoring
+When running jobs on LUMI's GPUs, you want to make sure you use the given computational resources as efficiently as possible. Your project will be billed for the number of GPUs you allocate times the number of hours you use them. If you only utilize half of the GPUs computational power, you are still billed for the full GPU, resulting in wasted resources and money. In this chapter, we will show how to monitor and profile your jobs to ensure you are using the resources efficiently.
+
+### Monitoring jobs with `rocm-smi`
+
+The `rocm-smi` tool is a command-line utility that allows you to monitor the status of AMD GPUs on LUMI. If the cluster you are using has Nvidia GPUs (like Mahti, you have to use `nvidia-smi`). The output of the command look similar to the following:
+
+![Image title](../assets/images/rocm-smi-gpu.png)
+
+To use `rocm-smi` you have to access the node that your GPU job is running. To do that, you need the
+  `jobid` of the job which `squeue --me` shows. With the `jobid`, you can open an interactive parallel session with the following command:
+
+```bash
+srun --jobid <jobID> --interactive --pty /bin/bash
+```
+This will open a shell on the compute node where the job is running. We can now use the `rocm-smi` tool to monitor the GPU usage. The following command will show the GPU usage updated every second:
+
+```bash
+watch -n1 rocm-smi
+```
+You can combine the previous commands by 
+```bash
+srun --interactive --pty --jobid=<jobID> watch -n 1 rocm-smi
+```
+
+The `rocm-smi` tool shows multiple useful metrics such as GPU utilization, memory usage, temperature, and power usage. The most intuitive metrics might be GPU utilization and memory usage, they are however not accurate indicators whether the GPU is fully utilized as a kernel waiting idle for data shows in the driver as 100% GPU utilization. The best indicator is instead the drawn power. For a single GPU, a power usage of around 300W is a good indicator that the full GPU is being leveraged. 
+
+See [GPU-accelerated machine learning](https://docs.csc.fi/support/tutorials/gpu-ml/) documentations on LUMI for more information.
+
 ## Task 1
 
 In the first task, we will use one single GPU to train the model Starting with `train_cifar100.py` and familiarize yourself with the codebase.
@@ -43,18 +74,6 @@ Repeat the experimet with `train_data_parallel.py` which trains the model with 2
 You can run the training directly with the corresponding script listed above:
 
     sbatch  run_data_parallel_cifar100.sh
-
-## GPU Utilization
-You can monitor your GPU usage with the following:
-```
-srun --overlap --pty --jobid=<jobid> rocm-smi
-srun --overlap --pty --jobid=<jobid> bash
-```
-Where `<jobid>` should be replaced. You can find the jobID for your job by looking at the queue:
-
-    squeue --me
-
-See [GPU-accelerated machine learning](https://docs.csc.fi/support/tutorials/gpu-ml/) documentations on LUMI for more information .
 
 ## Questions:
 1. For each task, look at the GPU utilization, and VRAM. Discuss on how to increase the VRAM.
