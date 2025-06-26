@@ -36,6 +36,14 @@ You can run the training directly with the corresponding script listed above:
     sbatch  run_ddp_cifar100.sh
 
 
+## Task 3
+
+Repeat the experimet with `train_data_parallel.py` which trains the model with 2 GPUs with the [Data Parallel](https://docs.pytorch.org/docs/stable/generated/torch.nn.DataParallel.html) technique.
+
+You can run the training directly with the corresponding script listed above:
+
+    sbatch  run_data_parallel_cifar100.sh
+
 ## GPU Utilization
 You can monitor your GPU usage with the following:
 ```
@@ -50,9 +58,10 @@ See [GPU-accelerated machine learning](https://docs.csc.fi/support/tutorials/gpu
 
 ## Questions:
 1. For each task, look at the GPU utilization, and VRAM. Discuss on how to increase the VRAM.
-2. By looking at the `slurm-RUN_ID.out`, look for the training speed for the each iteration and also one epoch. Why the first epoch is slower than other epochs?
+2. By looking at the `slurm-RUN_ID.out`, look for the training speed for the each iteration and also one epoch. Why the first epoch in all tasks is slower than other epochs?
 3. Why the total number of iterations are different in DDP?
 4. Do you see any overheads for the DDP training?
+5. Why using 2 GPUs in Data Parallel approach is not as fast as DDP? How much is the overhead?
 
    
 ## TensorBoard
