@@ -106,6 +106,6 @@ Using `rocm-smi` can give us an easy way to peek at GPU utilization, but it does
 
 The output of the profiling will be saved in a `trace.json` file located in `./logs/profiler`. We can visualize the trace using the Chrome browser by copying the `trace.json` file to our local machine. If you are using Google Chrome, you can navigate to `chrome://tracing` or use the Perfetto webite by navigating to [ui.perfetto.dev/](https://ui.perfetto.dev/) and uploading the `trace.json` file. The trace will show us the time spent in each function call, and will look similar to the following:
 
-![Image title](../assets/images/perfetto-trace.png)
+![Image title](./img/perfetto-trace.png)
 
-If the framework-level profiling is not sufficient and you want to investigate hardware-level performance, you can use AMD's profiling tools. The [LUMI training materials](https://lumi-supercomputer.github.io/LUMI-training-materials/) provide multiple lectures on how to use AMD's profilers `rocprof`, `Omnitrace` and `Omniperf`.
+If the framework-level profiling is not sufficient and you want to investigate hardware-level performance, you can use AMD's profiling tools. The [LUMI training materials](https://lumi-supercomputer.github.io/LUMI-training-materials/) has more details information.
