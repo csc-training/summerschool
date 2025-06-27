@@ -158,6 +158,17 @@ call mpi_xxxx(parameter, ..., error_code)
 - Last argument is the error code (optional with `mpi_f08`)
 </div>
 
+# Runtime errors in MPI
+
+MPI has a built-in error checker with (mostly) useful error messages.
+
+- No need to check error codes manually
+- Default behavior is to abort on an error: all MPI errors are **fatal**
+- Can change error handling method if you really want to...
+  - Rarely needed and not covered on these slides
+  - Spec **does not** guarantee that any error can be recovered from
+
+<small>See eg. `message-length` exercise</small>
 
 # Warning on old Fortran codes!
 
@@ -179,7 +190,6 @@ MPI_Function(`input_arg`{.input}, `output_arg`{.output})
   - <https://docs.open-mpi.org/en/v5.0.x/man-openmpi/man3/index.html>
   - <https://www.mpich.org/static/docs/v4.2.x/>
   - `man MPI_Function` on LUMI (e.g., `man MPI_Init`)
-
 
 # First two MPI functions: Initializing and finalizing
 

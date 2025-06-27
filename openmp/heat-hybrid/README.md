@@ -1,8 +1,8 @@
 ## Heat equation solver with hybrid MPI + OpenMP
 
-In this exercise, you should parallelize the two dimensional heat equation with hybrid
-MPI + OpenMP parallelization. Starting point is a working MPI code parallelized over columns (in Fortran) or rows (in C/C++). See [Code description](code-description.md) for some theory and more
-details about the code.
+In this exercise, your task is to parallelize the two dimensional heat equation with hybrid MPI + OpenMP parallelization.
+Starting point is a working MPI code parallelized over columns (in Fortran) or rows (in C/C++).
+See previous sections for a general description of the heat equation solver.
 
 ### Fine-grained OpenMP parallelization
 
@@ -23,5 +23,4 @@ in the halo exchange is still done only by one thread (but not necessarily maste
 1. Initialize MPI with appropriate thread safety level
 2. Insert apprioriate OpenMP directives thoughtout the code
 
-To build the code, please use the provided `Makefile` (by typing `make`). By default, GNU 
-compiler is used, in order to use Intel compiler type `make COMP=intel`.
+To build the code, please use the provided `Makefile` (by typing `make`).

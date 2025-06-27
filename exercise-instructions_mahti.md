@@ -109,41 +109,55 @@ Usage in local workstation may vary.
 
 ### OpenMP offloading
 
-On **Puhti**, in order to use programs with OpenMP offloading to GPUs, you need to load the following modules:
+On **Mahti**, in order to use programs with OpenMP offloading to GPUs, you need to reconfigure the modulepaths as follows:
 ```bash
-module load .unsupported
-module load nvhpc/22.7
+module purge
+module use /appl/opt/nvhpc/modulefiles
 ```
 
-On **Puhti**, the compiler commands (without MPI) for C, C++ and Fortran are `nvc`,
+Please note that this modification has implications on the consistency of the module tree, see CSC's user [documentation](https://docs.csc.fi/computing/compiling-mahti/#openacc-and-openmp-offloading) for more information.
+
+After this change you can load the Nivida nvhpc module:
+``` bash
+module load nvhpc-hpcx-cuda12/25.1
+```
+
+On **Mahti**, the compiler commands (without MPI) for C, C++ and Fortran are `nvc`,
 `nvc++`, and `nvfortran`, and OpenMP offload support is enabled with
-`-mp=gpu -gpu=cc70` options, *i.e.*
+`-mp=gpu -gpu=cc80` options, *i.e.*
 
 ```
-nvc -o my_exe test.c -mp=gpu -gpu=cc70
+nvc -o my_exe test.c -mp=gpu -gpu=cc80
 ```
 or
 ```
-nvc++ -o my_exe test.cpp -mp=gpu -gpu=cc70
+nvc++ -o my_exe test.cpp -mp=gpu -gpu=cc80
 ```
 or
 ```
-nvfortran -o my_exe test.f90 -mp=gpu -gpu=cc70
+nvfortran -o my_exe test.f90 -mp=gpu -gpu=cc80
 ```
 
 For MPI codes, use the wrapper commands `mpicc`, `mpic++`, or `mpif90`
 
 ### HIP
 
-In order to use HIP on **Puhti**, you need to load the following modules:
+In order to use HIP on **Mahti**, you need to reconfigure the module paths as follows:
 ```
-module load gcc/11.3.0 cuda/11.7.0 hip/5.1.0 openmpi/4.1.4-cuda
+module purge
+module use /projappl/project_2014370/spack-container/modules/Core
 ```
+
+After this you can load the following modules:
+``` bash
+module load gcc/13.3.0 hip cuda
+```
+
 Then you can compile with hipcc, eg,
 ```
-hipcc  --gpu-architecture=sm_70 -o hello hello.cpp
+hipcc  --gpu-architecture=sm_80 -o hello hello.cpp
 ```
-where `--gpu-architecture=sm_70` is required when compiling for V100.
+where `--gpu-architecture=sm_80` is required when compiling for A100.
 
 ## Running in Mahti
 
@@ -217,7 +231,7 @@ SBATCH --nodes=1
 ### GPU programs
 
 When running GPU programs, few changes need to made to the batch job
-script. The `partition` and `reservation` are now different, and one
+script. The `partition` is now different, and one
 must also request explicitly given number of GPUs with the
 `--gres=gpu:a100:ngpus` option. As an example, in order to use a
 single GPU with single MPI task and a single thread use:

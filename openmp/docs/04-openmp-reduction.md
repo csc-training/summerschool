@@ -192,6 +192,17 @@ for(i=0; i < n; i++) {
 - Can be faster on hardware platforms that support atomic updates
 </div>
 
+# OpenMP threading styles: fine/coarse grained
+
+- Fine-grained
+    - use **omp parallel do/for** on the most intensive loops
+    - possible to threaqd an existing serial code with little effort and in
+      parts
+
+- Coarse-grained
+    - whole (or most of) program within the same parallel region: OpenMP thread $\leftrightarrow$ MPI task
+    - leverage execution control constructs
+
 # Summary
 
 - Several parallel reduction operators available via `reduction` clause

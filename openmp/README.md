@@ -1,4 +1,4 @@
-## Hybrid programming exercises
+## OpenMP programming exercises
 
 ### Getting started with OpenMP
 
@@ -19,24 +19,19 @@
 - [Reduction](reduction/)
 - [Execution controls](execution-controls/)
 
-### Heat equation
+### Heat equation with OpenMP
 
 - [Fine grain parallelization](heat-equation/README_fine.md)
 - [Coarse grain parallelization](heat-equation/README_coarse.md)
 
-### Hybrid MPI+OpenMP programming
-
-- [Hybrid Hello World](hybrid-hello/)
-- [Multiple thread communication](multiple-thread-communication/)
-
 ### OpenMP tasks
 
 - [Simple tasking](simple-tasks/)
-- [Parallelizing Mandelbrot with tasks](mandelbrot/)
 - [Parallel Fibonacci](fibonacci/)
+- [Parallelizing Mandelbrot with tasks](mandelbrot/)
 
-### Heat equation
+### Hybrid MPI+OpenMP programming
 
+- [Hybrid Hello World](hybrid-hello/)
+- [(Bonus) Multiple thread communication](multiple-thread-communication/)
 - [Hybrid heat equation](heat-hybrid)
-
-

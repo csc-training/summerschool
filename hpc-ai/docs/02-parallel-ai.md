@@ -29,7 +29,7 @@ lang:   en
 - Simple example
 
 
-# Signle-GPU Training
+# Single-GPU Training
 <div class="column"  style="width:58%">
   ![](img/single_gpu.png){width=25%}
 </div>
@@ -71,7 +71,7 @@ lang:   en
   - <small>Maximizes compute by overlapping stages (with microbatching).</small>
 </div>
 
-# Realliity: 3D Parallelism
+# Reality: 3D Parallelism
 <div class="column"  style="width:100%; text-align: center;">
   ![](img/parallelism_3d.png){width=40%}
 </div>
@@ -99,7 +99,7 @@ lang:   en
     4. TensorBoard Visualization
 
 
-# Excerices
+# Exercises
 - How much is the communication overhead?
 - How to reduce communication overhead?
 - How to better split model for model parallelism?
