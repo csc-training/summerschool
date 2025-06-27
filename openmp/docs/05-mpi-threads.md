@@ -73,14 +73,14 @@ I'm thread 2 in process 0
 # Hybrid programming styles: fine/coarse grained
 
 - Fine-grained
-    - use **omp parallel do/for** on the most intensive loops
-    - possible to hybridize an existing MPI code with little effort and in
+    - Use **omp parallel do/for** on the most intensive loops
+    - Possible to hybridize an existing MPI code with little effort and in
       parts
 
 - Coarse-grained
-    - use OpenMP threads to replace MPI tasks
-    - whole (or most of) program within the same parallel region
-    - more likely to scale over the whole node, enables all cores to
+    - Use OpenMP threads to replace MPI tasks
+    - Whole (or most of) program within the same parallel region
+    - More likely to scale over the whole node, enables all cores to
       communicate (if supported by MPI implementation)
 
 
@@ -88,16 +88,9 @@ I'm thread 2 in process 0
 
 - Hybrid programming is relatively straightforward in cases where
   communication is done by only a single thread at a time
-- In the *multiple* thread safety level all threads can make MPI calls
-  independently
-  ```c
-  int required=MPI_THREAD_MULTIPLE, provided;
-  MPI_Init_thread(&argc, &argv, required, &provided)
-  ```
-- When multiple threads communicate, the sending and receiving threads
-  normally need to match
-    - thread-specific tags
-    - thread-specific communicators
+- In `MPI_THREAD_MULTIPLE` thread safety level all threads can make MPI calls independently
+- When multiple threads communicate, the sending and receiving threads normally need to match
+  - Use thread-specific tags or thread-specific communicators
 
 
 # Thread-specific tags
@@ -130,29 +123,39 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 # Collective operations in the multiple mode
 
 - MPI standard allows multiple threads to call collectives simultaneously
-    - programmer must ensure that the same communicator is not being
-      concurrently used by two different collective communication calls at
-      the same process
-- In most cases, even with `MPI_THREAD_MULTIPLE` it is beneficial to
+  -  Programmer must ensure that the collective calls are correctly ordered
+     if using the same communicator in the collective calls
+- In most cases, even with `MPI_THREAD_MULTIPLE` it is often better to
   perform the collective communication from a single thread (usually the
   master thread)
-- Note that MPI collective communication calls do not guarantee
-  synchronization of the thread order
 
 
 # MPI thread support levels
 
 - Modern MPI libraries support all threading levels
-    - OpenMPI (Mahti): Build time configuration, check with<br>
+    - OpenMPI: Build time configuration, check with<br>
       `ompi_info | grep 'Thread support'`
-    - Cray MPICH (LUMI): Set `MPICH_MAX_THREAD_SAFETY` environment variable to
+    - MPICH: Set `MPICH_MAX_THREAD_SAFETY` environment variable to
       `single`, `funneled`, `serialized`, or `multiple` to select the
       threading level
     - Intel MPI: When compiling with `-qopenmp` a thread safe version of the
       MPI library is automatically used
 - Note that using `MPI_THREAD_MULTIPLE` requires the MPI library to
   internally lock some data structures to avoid race conditions
-    - may result in additional overhead in MPI calls
+    - May result in additional overhead in MPI calls
+
+# Checking the thread support level in the program
+
+```cpp
+MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
+
+/* Check that the MPI implementation supports MPI_THREAD_MULTIPLE */
+if (provided < MPI_THREAD_MULTIPLE) {
+    printf("MPI does not support MPI_THREAD_MULTIPLE\n");
+    MPI_Abort(MPI_COMM_WORLD, -1);
+    return 0;
+}
+```
 
 
 # Summary
@@ -160,7 +163,6 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 - Multiple threads may make MPI calls simultaneously
 - Thread-specific tags and/or communicators
 - For collectives it is often better to use a single thread for communication
-
 
 
 # Thread and process affinity {.section}
@@ -180,10 +182,9 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 
 # First touch policy
 
-- The OS typically optimizes memory allocations
-  - `malloc()` does not allocate the memory directly
-  - At first memory access (write), the OS physically allocates the corresponding page (First touch policy)
-- Initializion of data should be done on the thread using the data
+- Operating system typically optimizes memory allocations
+  - `malloc()` does not allocate the memory directly, but at first memory access (write), the operating system physically allocates the corresponding page (first touch policy)
+- To avoid performance loss: Initializion of data should be done on the thread that will be later using this data
 
 # NUMA aware initialization
 
@@ -239,21 +240,21 @@ for (int i=0; i < N; i++)
     - Task can be *pinned* to a specific logical core or a set of logical cores
 
 
-# Controlling affinity
+# Controlling process affinity
 
 - Affinity for a *process* can be set with the `numactl` command
     - Limit the process to logical cores 0,3,7:
       <br><span style="padding-left:2em">
       `numactl --physcpubind=0,3,7 ./my_exe`
       </span>
-    - threads inherit the affinity of their parent process
+    - Threads inherit the affinity of their parent process
 - On LUMI, process affinity is set by using SLURM options
     - `--distribution={nodes}:{sockets}:{cores}`
         - `{nodes|sockets|cores} ∈ [block, cyclic, plane=<size>, ...]`
     - e.g. `--distribution=block:cyclic:fcyclic`
 
 
-# Controlling affinity
+# Controlling thread affinity
 
 - Affinity of a thread can be set with OpenMP environment variables
     - `OMP_PROC_BIND=true/false|auto|spread|close|master`
@@ -262,7 +263,7 @@ for (int i=0; i < N; i++)
         - e.g. `export OMP_PLACES=cores`
 - OpenMP runtime prints the affinity with `OMP_DISPLAY_AFFINITY=true`
 
-- Useful on-line resources:
+- Useful online resources:
     - LUMI User Guide:<br>
       <span style="font-size:0.72em">
       <https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/distribution-binding/>
@@ -299,7 +300,7 @@ Thread 003 affinity 3,7
 <div class="column">
 - MPI library must be aware of the underlying OpenMP for correct
   allocation of resources
-    - oversubscription of CPU cores may cause significant performance
+    - Oversubscription of CPU cores may cause significant performance
       penalty
 - Additional complexity from batch job schedulers
 - Heavily dependent on the platform used!
@@ -326,7 +327,7 @@ Thread 003 affinity 3,7
   ...
   ```
 - Slurm configurations in other HPC centers can be very different
-    - always experiment before production calculations!
+  - Always experiment before production calculations!
 
 
 # Summary
@@ -334,4 +335,4 @@ Thread 003 affinity 3,7
 - Performance of HPC applications is often improved when processes and
   threads are pinned to CPU cores
 - MPI and batch system configurations may affect the affinity
-    - very system dependent, try to always investigate
+    - Very system dependent, try to always investigate
