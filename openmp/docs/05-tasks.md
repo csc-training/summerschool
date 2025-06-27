@@ -234,40 +234,20 @@ b = 2 * a; // Use `a` to compute `b`. Could also mark `b` as an `out` dependency
 
 <small> Demo: `task-dependencies.cpp` </small>
 
-# OpenMP conclusion {.section}
+# OpenMP summary so far {.section}
 
 # OpenMP programming best practices
 
 - Explicitly declare variable privacy level (`shared`/`private`/`firstprivate`)
     - Avoid `shared` variables if not explicitly needed
-    - *Default: `shared`!*
+    - *Default is `shared`!*
 - Maximise parallel regions
     - Reduce fork-join overhead, e.g. combine multiple parallel loops into one
       large parallel region
     - Potential for better cache re-usage
 - Parallelise outermost loops if possible
     - Move PARALLEL DO construct outside of inner loops
-- Use more tasks than threads
-    - Too large number of tasks leads to performance loss
-
-
-# OpenMP summary
-
-- OpenMP is an API for thread-based parallelisation
-    - Compiler directives, runtime API, environment variables
-    - Relatively easy to get started but specially efficient and/or real-world
-      parallelisation non-trivial
-- Features touched in this intro
-    - Parallel regions and work sharing constructs
-    - Data-sharing clauses
-    - Combining MPI and OpenMP
-    - Task based parallelisation
-
-
-# OpenMP summary
-
-![](img/omp-summary.png)
-
+- If using tasks: ensure all threads have a task to work on
 
 # Things that we did not cover
 
