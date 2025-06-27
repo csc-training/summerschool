@@ -133,16 +133,10 @@ call mpi_sendrecv(senddata, n, mpi_real, pid, tidtag, &
 # MPI thread support levels
 
 - Modern MPI libraries support all threading levels
-    - OpenMPI: Build time configuration, check with<br>
-      `ompi_info | grep 'Thread support'`
-    - MPICH: Set `MPICH_MAX_THREAD_SAFETY` environment variable to
-      `single`, `funneled`, `serialized`, or `multiple` to select the
-      threading level
-    - Intel MPI: When compiling with `-qopenmp` a thread safe version of the
-      MPI library is automatically used
+  - LUMI and Mahti support all threading levels
 - Note that using `MPI_THREAD_MULTIPLE` requires the MPI library to
   internally lock some data structures to avoid race conditions
-    - May result in additional overhead in MPI calls
+  - May result in additional overhead in MPI calls
 
 # Checking the thread support level in the program
 
