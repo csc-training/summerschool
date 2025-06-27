@@ -528,9 +528,9 @@ Next take a look at the individual CU
 :::
 ::::::::: {.columns}
 :::::: {.column width="70%"}
-![](img/mi250x.png){width=100%}
+![](img/mi250x_half.png){width=100%}
 ::::::
-:::::: {.column width="30%"}
+:::::: {.column width="60%"}
 ::: incremental
 - CUs
 - memory
@@ -604,7 +604,7 @@ Each of these SMSPs have cores for handling INT32, FP32 and FP64 computation, as
 Again, the most important new thing here for a beginner programmer is the L1 Data Cache / Shared Memory at the bottom of the image. We'll learn about these later.
 :::
 ::::::::: {.columns}
-:::::: {.column width="30%"}
+:::::: {.column width="50%"}
 ![](img/a100_sm.png){width=100%}
 ::::::
 :::::: {.column width="70%"}
