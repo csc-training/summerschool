@@ -70,20 +70,6 @@ I'm thread 2 in process 0
 </div>
 
 
-# Hybrid programming styles: fine/coarse grained
-
-- Fine-grained
-    - Use **omp parallel do/for** on the most intensive loops
-    - Possible to hybridize an existing MPI code with little effort and in
-      parts
-
-- Coarse-grained
-    - Use OpenMP threads to replace MPI tasks
-    - Whole (or most of) program within the same parallel region
-    - More likely to scale over the whole node, enables all cores to
-      communicate (if supported by MPI implementation)
-
-
 # Multiple thread communication
 
 - Hybrid programming is relatively straightforward in cases where
