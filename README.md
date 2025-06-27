@@ -95,7 +95,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 12:00 | Lunch
 | 13:00 | Free time
 | 14:00 | Coffee available until 16:00 next to the lecture room
-| 15:30 | Free time
+| 14:00 | Free time
 | 17:00 | Dinner
 | 18:00 | Free time
 | 20:00 | Snack available at the hotel restaurant until 21:30
