@@ -260,7 +260,7 @@ $$\vec{y} \approx \sum_{n = 0}^{N} \frac{\vec{x}^n}{n!}$$
 
 ::::::
 :::::: {.column width="80%"}
-![](img/runtimes_0.png){.center width=120%}
+![](img/runtimes_0.png){.center width=200%}
 ::::::
 :::::::::
 
