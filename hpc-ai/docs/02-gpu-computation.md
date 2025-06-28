@@ -11,7 +11,7 @@ lang:   en
   - <small>LUMI-G Node.</small>
 </div>
 <div class="column"  style="width:50%">
-  ![](img/amd-mi250.svg){width=20%}
+  ![](img/amd-mi250.avif){width=20%}
   - <small>Single AMD MI250 GPU</small>
 </div>
 
