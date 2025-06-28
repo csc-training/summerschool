@@ -81,6 +81,8 @@ You can run the training directly with the corresponding script listed above:
 3. Why the total number of iterations are different in DDP?
 4. Do you see any overheads for the DDP training?
 5. Why using 2 GPUs in Data Parallel approach is not as fast as DDP? How much is the overhead?
+6. In `train_cifar100.py`, change investigate the effect of switching to a smaller model of `resnet50`. How it affects the training speed? Does it match your expectations based on the number of parameters?
+7. In `train_cifar100.py`, change investigate the effect of switching to a larger batch size. How it affects the training speed? Does it match your expectations based on VRAM utilization?
 
    
 ## Monitoring with visulatization

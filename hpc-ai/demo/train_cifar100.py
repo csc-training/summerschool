@@ -8,6 +8,7 @@ from torch.utils.tensorboard import SummaryWriter
 import torch.profiler
 import time
 
+# TODO: change the model to resnet50 and investigate the performance
 def get_model():
     return torchvision.models.resnet152(num_classes=100)
 
@@ -26,6 +27,7 @@ def train():
         download=True,
         transform=transform
     )
+    # TODO: change the batch size to 256 and investigate the results
     trainloader = DataLoader(trainset, batch_size=64, shuffle=True, num_workers=4, pin_memory=True)
 
     model = get_model().to(device)
