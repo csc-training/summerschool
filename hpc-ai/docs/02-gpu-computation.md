@@ -6,7 +6,7 @@ lang:   en
 
 # GPUs on LUMI-G
 
-<div class="column"  style="width:50%"; text-align: center;">
+<div class="column"  style="width:50%; text-align: center;">
   ![](img/lumi-g.svg){width=20%}
   - <small>LUMI-G Node.</small>
 </div>
@@ -80,33 +80,29 @@ flops = fvcore.nn.FlopCountAnalysis(model, input)
 | Parameters         | 240 MB        |
 | Adam  Optimizer    | 480 MB        |
 | Gradients          | 240 MB        |
-| Activations        | 12–14 GB      |
+| Activations        | ~12–14 GB      |
 | Overhead           | ~1 GB         |
-| **Total**          | ~13–15 GB     |
+| **Total**          | ~14–16 GB     |
 
 
 # Example: ResNet-152 with CIFAR-100
 
 - **Convolution FLOPs Estimate**  
 $FLOPs = 2 \times C_{in} \times K^2 \times H \times W \times C_{out}$
-$2 x c_{in}$
 
 - **Per-Image Total FLOPs**  
-\[
-11.5 times 2\,\text{GFLOPs} = \boxed{23\,\text{GFLOPs per image}}
-\]
+$11.5 \times 2\ GFLOPs = 23\ GFLOPs\ per\ image$
 
 - **Total Epoch FLOPs**  
-\[
-\text{Epoch FLOPs} 23\,\text{GFLOPs} \times 50k= 1.15\,\text{PFLOPs}
-\]
+$FLOPs:\ 23\ GFLOPs \times 50000 = 1.15\ PFLOPs$
+
 
 - **Usable GPU Throughput (Assuming 35% Efficiency)**  
-\[
-\text{Usable Throughput} = 0.35 \times 95.7 = \boxed{33.5\,\text{TFLOPs/s}}
-\]
+$Usable\ Throughput = 0.35 \times 95.7 = 33.5\ TFLOPs/s$
+
 
 - **Estimate Epoch time**
+$Epoch\ Time = \frac{1.15\ PFLOPs}{33.5\ TFLOPs/s} \approx 34.3\ seconds$
 
 # Key Takeaways
 
