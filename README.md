@@ -150,6 +150,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | ----  | ----- |
 | 08:00 | Breakfast
 | 09:00 | [HPC in AI](hpc-ai)
+| 11:50 | Group photo
 | 12:00 | Lunch
 | 13:00 | Exercises
 | 14:00 | Coffee break (Coffee remains available until 16:00)
