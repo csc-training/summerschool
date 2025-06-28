@@ -43,6 +43,8 @@ def train(rank, world_size):
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
     writer = SummaryWriter(log_dir=f"./logs/ddp_cifar100/rank_{rank}")
 
+    pure_cal_time = []
+
     with torch.profiler.profile(
         schedule=torch.profiler.schedule(wait=1, warmup=1, active=2, repeat=1),
         on_trace_ready=torch.profiler.tensorboard_trace_handler(f"./logs/ddp_cifar100/profiler_rank_{rank}"),
@@ -59,12 +61,15 @@ def train(rank, world_size):
             start_epoch = time.time()
             for i, data in enumerate(trainloader, 0):
                 inputs, labels = data[0].to(device, non_blocking=True), data[1].to(device, non_blocking=True)
-                
+
+                start_pure_cal = time.time()
                 optimizer.zero_grad()
                 outputs = model(inputs)
                 loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
+                pure_cal_time.append(time.time() - start_pure_cal)
+
                 torch.cuda.synchronize()
 
                 prof.step()
@@ -88,7 +93,9 @@ def train(rank, world_size):
             
             epoch_time = end_epoch - start_epoch
             if rank == 0:
-                print(f"[Epoch {epoch + 1}] Total epoch time: {epoch_time:.2f} seconds")
+                print(f"[{epoch + 1}], pure cal time sum: {sum(pure_cal_time)}s")  # Sum of pure calculation times
+                print(f"[{epoch + 1}], epoch time: {time.time()-start_epoch}s")  # Reset timer for next group
+                pure_cal_time = []
 
     writer.close()
     dist.destroy_process_group()
