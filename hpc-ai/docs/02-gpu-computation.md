@@ -6,12 +6,12 @@ lang:   en
 
 # GPUs on LUMI-G
 
-<div class="column"  style="width:50%"; text-align: center;">>
+<div class="column"  style="width:50%"; text-align: center;">
   ![](img/lumi-g.svg){width=20%}
   - <small>LUMI-G Node.</small>
 </div>
 <div class="column"  style="width:50%">
-  ![](img/amd-mi250.avif){width=20%}
+  ![](img/amd-mi250.avif){width=60%}
   - <small>Single AMD MI250 GPU</small>
 </div>
 
@@ -19,7 +19,7 @@ lang:   en
 - Computer Power
     - Peak FP64 Performance: 47.9 TFLOPs (per GPU)
     - Peak FP32 Performance: 95.7 TFLOPs
-    - Peak FP16/BF16 Performance: 383 TFLOPs
+    - Peak FP16 Performance: 383 TFLOPs
 
 - Memory
 - 128 GB HBM2e (64 GB per GCD)
@@ -33,10 +33,8 @@ lang:   en
 - Training ML Models = 2 × FLOPs (forward + backward).
 
 - **Example Formula for Convolution Layer:**
-\[ 
-\text{FLOPs} = 2 \times C_{in} \times K^2 \times H \times W \times C_{out} 
-\]
-
+$2 \times C_{in} \times K^2 \times H \times W \times C_{out} 
+$y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
 # ML Parameters vs FLOPs
 
 - **No. Parameters** are static — they define the model size.
