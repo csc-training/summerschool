@@ -60,12 +60,15 @@ lang:   en
 # Coalesced memory access
 
 ::: incremental
-- GPUs can typically access global memory via 32-, 64-, or 128-byte transactions
+- GPUs can typically access global memory via 32-, 64-, or 128-byte transactions[^1][^2]
 - When threads in a warp/wavefront operate on aligned elements close to each other, 
   memory loads and stores can be *coalesced*
     - Coalesced: multiple threads are served by a single memory operation
-    - Non-coalesced: multiple memory accesses needed to serve multiple threads
+    - Non-coalesced: multiple memory accesses needed to serve multiple threads (wasted bandwidth)
 :::
+
+[^1]: https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#device-memory-accesses
+[^2]: https://rocm.docs.amd.com/projects/rocprofiler-compute/en/latest/conceptual/l2-cache.html#request-flow
 
 # Coalesced vs non-coalesced memory access
 
@@ -73,21 +76,21 @@ lang:   en
 // Linear index across the entire grid
 const size_t tid = threadIdx.x + blockIdx.x * blockDim.x;
 
-coalesced[tid] = 2.0f;          // 2 x 128 byte transactions for 64 threads
-non_coalesced[4 * tid] = 2.0f;  // 8 x 128 byte transactions for 64 threads
+coalesced[tid] = 2.0f;          // 4 x 64 byte transactions for 64 threads
+non_coalesced[4 * tid] = 2.0f;  // 16 x 64 byte transactions for 64 threads
 ```
 ```
-Coalesced
-    tid      0   1   2   3 
-    maps to  |   |   |   | 
-    address [0] [1] [2] [3]
+                Coalesced access of 64 bytes serving 16 threads
 
-Non-coalesced
-    tid      0   1   2   3_____________________________________
-    maps     |   |   |_______________________                  |
-    to       |   |___________                |                 |
-             |               |               |                 |
-    address [0] [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15]
+tid          0   1   2   3   4   5   6   7   8   9   10   11   12   13   14   15
+maps to      |   |   |   |   |   |   |   |   |   |    |    |    |    |    |    |
+address     [0] [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15]
+
+                    Non-coalesced access of 64 bytes serving 4 threads
+
+tid          0               1               2                  3
+maps to      |               |               |                  | 
+address     [0] [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15]
 ```
 
 # Summary

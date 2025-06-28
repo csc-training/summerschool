@@ -216,45 +216,43 @@ int fib(int n) {
 ![](img/fibonacci5.png){.center width=90%}
 </div>
 
+# Task dependencies
+
+- The `depend` clause can be used to specify constraints on task execution
+    - `in`/`out`/`inout` dependency on a variable: `in` tasks must execute after any **previously created** `out`/`inout` tasks
+    - Allows fine-grained scheduling of tasks that share data. No need for `taskwait` after every task!
+
+```c
+int a, b;
+
+#pragma omp task depend(out: a)
+a = -1; // Some modification to `a`
+
+#pragma omp task depend(in: a) // Guaranteed to run after the `out` task
+b = 2 * a; // Use `a` to compute `b`. Could also mark `b` as an `out` dependency
+```
+
+<small> Demo: `task-dependencies.cpp` </small>
+
+# OpenMP summary so far {.section}
 
 # OpenMP programming best practices
 
 - Explicitly declare variable privacy level (`shared`/`private`/`firstprivate`)
     - Avoid `shared` variables if not explicitly needed
-    - *Default: `shared`!*
+    - *Default is `shared`!*
 - Maximise parallel regions
     - Reduce fork-join overhead, e.g. combine multiple parallel loops into one
       large parallel region
     - Potential for better cache re-usage
 - Parallelise outermost loops if possible
     - Move PARALLEL DO construct outside of inner loops
-- Use more tasks than threads
-    - Too large number of tasks leads to performance loss
-
-
-# OpenMP summary
-
-- OpenMP is an API for thread-based parallelisation
-    - Compiler directives, runtime API, environment variables
-    - Relatively easy to get started but specially efficient and/or real-world
-      parallelisation non-trivial
-- Features touched in this intro
-    - Parallel regions and work sharing constructs
-    - Data-sharing clauses
-    - Combining MPI and OpenMP
-    - Task based parallelisation
-
-
-# OpenMP summary
-
-![](img/omp-summary.png)
-
+- If using tasks: ensure all threads have a task to work on
 
 # Things that we did not cover
 
 - sections construct
 - scheduling clauses of `for`/`do` constructs
-- task dependencies
 - taskgroup and taskloop constructs
 - simd construct
 - ...

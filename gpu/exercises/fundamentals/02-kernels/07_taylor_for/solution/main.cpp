@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
         std::printf(
             "Give three arguments: number of Taylor's expansion iterations, "
             "size of vector and number of threads\n");
-        std::printf("E.g. %s 20 100000000\n", argv[0]);
+        std::printf("E.g. %s 20 100000000 256\n", argv[0]);
         exit(EXIT_FAILURE);
     }
     const size_t num_iters = std::atol(argv[1]);
