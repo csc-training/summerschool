@@ -88,16 +88,12 @@ flops = fvcore.nn.FlopCountAnalysis(model, input)
 # Example: ResNet-152 with CIFAR-100
 
 - **Convolution FLOPs Estimate**  
-$\text{FLOPs} = 2 \times C_{\text{in}} \times K^2 \times H \times W \times C_{\text{out}}$
+$FLOPs = 2 \times C_{in} \times K^2 \times H \times W \times C_{out}$
+$2 x c_{in}$
 
 - **Per-Image Total FLOPs**  
 \[
 11.5 times 2\,\text{GFLOPs} = \boxed{23\,\text{GFLOPs per image}}
-\]
-
-- **Usable GPU Throughput (Assuming 35% Efficiency)**  
-\[
-\text{Usable Throughput} = 0.35 \times 95.7 = \boxed{33.5\,\text{TFLOPs/s}}
 \]
 
 - **Total Epoch FLOPs**  
@@ -105,9 +101,16 @@ $\text{FLOPs} = 2 \times C_{\text{in}} \times K^2 \times H \times W \times C_{\t
 \text{Epoch FLOPs} 23\,\text{GFLOPs} \times 50k= 1.15\,\text{PFLOPs}
 \]
 
+- **Usable GPU Throughput (Assuming 35% Efficiency)**  
+\[
+\text{Usable Throughput} = 0.35 \times 95.7 = \boxed{33.5\,\text{TFLOPs/s}}
+\]
+
+- **Estimate Epoch time**
+
 # Key Takeaways
 
-- FLOPs are a function of image size, not just model size.
+- FLOPs are a function of input, not just model size.
 - VRAM usage is dominated by activations, especially in deep models.
 - Mixed precision and parallelism help reach closer to max achievable FLOPs.
 - Always measure real-time training performance to understand bottlenecks.
