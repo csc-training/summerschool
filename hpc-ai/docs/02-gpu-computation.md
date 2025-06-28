@@ -32,9 +32,7 @@ lang:   en
 - Commonly used to estimate compute cost of training/inference.
 - Training ML Models = 2 × FLOPs (forward + backward).
 
-- **Example Formula for Convolution Layer:**
-$2 \times C_{in} \times K^2 \times H \times W \times C_{out} 
-$y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
+
 # ML Parameters vs FLOPs
 
 - **No. Parameters** are static — they define the model size.
@@ -60,10 +58,10 @@ $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
 
 # Example: ResNet-152 with CIFAR-100
 
-**Model Info:**
-- Parameters: ~60.2M
-- FLOPs per image (forward): ~11.5 GFLOPs
-- Training FLOPs per image: ~23 GFLOPs
+- **Model Info:**
+    - Parameters: ~60.2M
+    - FLOPs per image (forward): ~11.5 GFLOPs
+    - Training FLOPs per image: ~23 GFLOPs
 
 ```python
 import fvcore
@@ -90,9 +88,7 @@ flops = fvcore.nn.FlopCountAnalysis(model, input)
 # Example: ResNet-152 with CIFAR-100
 
 - **Convolution FLOPs Estimate**  
-\[
-\text{FLOPs} = 2 \times C_{\text{in}} \times K^2 \times H \times W \times C_{\text{out}}
-\]
+$\text{FLOPs} = 2 \times C_{\text{in}} \times K^2 \times H \times W \times C_{\text{out}}$
 
 - **Per-Image Total FLOPs**  
 \[
