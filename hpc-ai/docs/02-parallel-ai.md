@@ -87,6 +87,11 @@ lang:   en
 - ZeRO Idea: Partition optimizer states, gradients, and parameters across GPUs.
 - Result: Train MUCH larger models without running out of memory.
 
+# Multi-GPU performance
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/GPU_overhead.png){width=40%}
+</div>
+- ResNet152 with CIFAR100 multi-gpu performance
 
 # Demo: PyTorch Profiler
 - Track CPU and GPU activities.
