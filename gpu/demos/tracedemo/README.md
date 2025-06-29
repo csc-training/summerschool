@@ -29,3 +29,5 @@ Run:
 srun --job-name=example --account=project_462000956 --partition=small-g --reservation=SummerSchoolGPU --time=00:05:00 --gpus-per-node=1 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1 \
 rocprofv2 -i metrics.txt --plugin perfetto ./tracedemo
 ```
+
+AMD documentation on counters on MI300 and MI200 gpus: https://rocm.docs.amd.com/en/latest/conceptual/gpu-arch/mi300-mi200-performance-counters.html
