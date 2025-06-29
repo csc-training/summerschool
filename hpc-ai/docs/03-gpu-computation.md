@@ -38,7 +38,7 @@ lang:   en
 </div>
 <div class="column"  style="width:60%">
   - <small>Peak performance is calculated based on the hardware charachteristics</small>
-  - <small>FLOPs/s = Cores \times Ops\ per\ Cycle \times Clock\ Frequency$</small>
+  - <small>$FLOPs/s = Cores \times Ops/Cyle \times Clock$</small>
   - <small>Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.</small>
   - <small>Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.</small>
   - <small>Usually **35-70% of Peak FLOPs**</small>
