@@ -28,7 +28,7 @@ and basic counters.
 
 *Note*: `rocprof --list-derived` and `rocprof --list-basic` must be
 executed on a node with GPU present because it queries the available counters
-from the hardware itself.
+from the hardware itself. [AMD Documentation on MI200/MI300 gpu counters](https://rocm.docs.amd.com/en/latest/conceptual/gpu-arch/mi300-mi200-performance-counters.html).
 
 An MI250x GCD has 8 MiB of L2 memory shared across the CUs and each CU has 16
 kiB of L1 memory.
