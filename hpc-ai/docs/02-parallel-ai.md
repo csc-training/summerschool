@@ -66,7 +66,7 @@ lang:   en
 # Bubble issue and GPipe
 <div class="column"  style="width:80%; text-align: center;">
   ![](img/mp_vs_gpipe.png){width=80%}
-  <small>Picture from [GPipe Paper, arXiv:1811.06965](https://arxiv.org/abs/1811.06965)</small>
+  - <small>Picture from [GPipe Paper, arXiv:1811.06965](https://arxiv.org/abs/1811.06965)</small>
 </div>
 - GPipe divided the data to micro-batch to reduce the bubble issue.
 
@@ -79,6 +79,13 @@ lang:   en
   - <small>Send layers or blocks to different GPUs.</small>
   - <small>Transfer outputs between GPUs manually.</small>
 </div>  
+
+
+# How TP works?
+<div class="column"  style="width:80%; text-align: center;">
+  ![](img/tf_example.png){width=80%}
+</div>
+
 
 # Reality: 3D Parallelism
 <div class="column"  style="width:100%; text-align: center;">
