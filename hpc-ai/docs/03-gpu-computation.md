@@ -7,12 +7,12 @@ lang:   en
 # GPUs on LUMI-G
 
 <div class="column"  style="width:50%; text-align: center;">
-  ![](img/lumi-g.svg){width=60%}
+  ![](img/lumi-g.svg){width=90%}
   - <small>LUMI-G Node.</small>
 </div>
-<div class="column"  style="width:50%">
+<div class="column"  style="width:50%; text-align: center;">
   ![](img/amd-mi250.avif){width=50%}
-  - <small>Single AMD MI250 GPU</small>
+  <small>Single AMD MI250 GPU</small>
 </div>
 
 # FLOPs (Floating Point Operations)
@@ -33,12 +33,12 @@ lang:   en
 
 # Peak vs Max-Achievable FLOPs
 <div class="column"  style="width:40%; text-align: center;">
-  ![](img/maf-flops.png){width=60%}
-  - <small>Picture from (AMD)[https://rocm.blogs.amd.com/software-tools-optimization/Understanding_Peak_and_Max-Achievable_FLOPS/README.html]</small>
+  ![](img/maf-flops.png){width=80%}
+  <small>Picture from [AMD](https://rocm.blogs.amd.com/software-tools-optimization/Understanding_Peak_and_Max-Achievable_FLOPS/README.html)</small>
 </div>
 <div class="column"  style="width:60%">
   - <small>Peak performance is calculated based on the hardware charachteristics</small>
-    - <small>FLOPs/s = Cores \times Ops\ per\ Cycle \times Clock\ Frequency$</small>
+  - <small>FLOPs/s = Cores \times Ops\ per\ Cycle \times Clock\ Frequency$</small>
   - <small>Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.</small>
   - <small>Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.</small>
   - <small>Usually **35-70% of Peak FLOPs**</small>
