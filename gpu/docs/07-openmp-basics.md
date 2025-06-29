@@ -401,7 +401,7 @@ data`, we can get corresponding device address by
 
 # Device functions: `declare target`
 
-- In HIP/CUDA functions with `__device` modified can be called from kernels.
+- In HIP/CUDA functions with `__device__` modified can be called from kernels.
 - In OpenMP: `declare target` directive does the same thing
 - Also works with global variables
 - No shared objects
