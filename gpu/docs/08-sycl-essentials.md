@@ -404,7 +404,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
         - dependencies and order need to be set in other ways
     - **in-order**: 
         - `queue q{property::queue::in_order()};`
-        - creates a linear task graph
+        - creates a linear execution task graph
         - a task/kernel  will start execution only when the preceding is completed
         - no concurrent execution
 
