@@ -353,6 +353,8 @@ if(tid%2 == 0) {
 - Exercise: Find out how complicated `f_1` and `f_2` need to be that branch divergence is an issue
 :::
 
+---
+
 ## Related: unroll loops
 
 - For loops introduce integer arithmetic per loop: add to loop counter & perform continuation test
