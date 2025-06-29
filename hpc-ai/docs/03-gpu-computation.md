@@ -7,17 +7,23 @@ lang:   en
 # GPUs on LUMI-G
 
 <div class="column"  style="width:50%; text-align: center;">
-  ![](img/lumi-g.svg){width=20%}
+  ![](img/lumi-g.svg){width=60%}
   - <small>LUMI-G Node.</small>
 </div>
 <div class="column"  style="width:50%">
-  ![](img/amd-mi250.avif){width=60%}
+  ![](img/amd-mi250.avif){width=50%}
   - <small>Single AMD MI250 GPU</small>
 </div>
 
+# FLOPs (Floating Point Operations)
+
+- FLOPs measure how many arithmetic operations a model performs.
+- Commonly used to estimate compute cost of training/inference.
+- Training ML Models = 2 × FLOPs/pass (forward + backward).
+
 # GPU Charachteristics
 - Computer Power
-    - Peak FP64 Performance: 47.9 TFLOPs (per GPU)
+    - Peak FP64 Performance: 47.9 TFLOPs
     - Peak FP32 Performance: 95.7 TFLOPs
     - Peak FP16 Performance: 383 TFLOPs
 
@@ -25,13 +31,18 @@ lang:   en
 - 128 GB HBM2e (64 GB per GCD)
 - 3.2 TB/s total memory bandwidth
 
-
-# FLOPs (Floating Point Operations)
-
-- FLOPs measure how many arithmetic operations a model performs.
-- Commonly used to estimate compute cost of training/inference.
-- Training ML Models = 2 × FLOPs (forward + backward).
-
+# Peak vs Max-Achievable FLOPs
+<div class="column"  style="width:40%; text-align: center;">
+  ![](img/maf-flops.png){width=60%}
+  - <small>Picture from (AMD)[https://rocm.blogs.amd.com/software-tools-optimization/Understanding_Peak_and_Max-Achievable_FLOPS/README.html]</small>
+</div>
+<div class="column"  style="width:60%">
+  - <small>Peak performance is calculated based on the hardware charachteristics</small>
+    - <small>FLOPs/s = Cores \times Ops\ per\ Cycle \times Clock\ Frequency$</small>
+  - <small>Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.</small>
+  - <small>Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.</small>
+  - <small>Usually **35-70% of Peak FLOPs**</small>
+</div>
 
 # ML Parameters vs FLOPs
 
@@ -71,6 +82,7 @@ model.eval()
 input = torch.randn(1, 3, 224, 224).to(device)
 
 flops = fvcore.nn.FlopCountAnalysis(model, input)
+total_params = sum(p.numel() for p in model.parameters())
 ```
 
 # VRAM Estimate: ResNet-152 + CIFAR-100 (224x224)
@@ -80,10 +92,11 @@ flops = fvcore.nn.FlopCountAnalysis(model, input)
 | Parameters         | 240 MB        |
 | Adam  Optimizer    | 480 MB        |
 | Gradients          | 240 MB        |
-| Activations        | ~12–14 GB      |
+| Activations*       | ~200 MB       |
 | Overhead           | ~1 GB         |
-| **Total**          | ~14–16 GB     |
+| **Total**          | ~2 GB         |
 
+- Note: Activations and intermediate results are calculated for one single image.
 
 # Example: ResNet-152 with CIFAR-100
 
@@ -107,6 +120,7 @@ $Epoch\ Time = \frac{1.15\ PFLOPs}{33.5\ TFLOPs/s} \approx 34.3\ seconds$
 # Key Takeaways
 
 - FLOPs are a function of input, not just model size.
-- VRAM usage is dominated by activations, especially in deep models.
+- VRAM usage is dominated by activations, especially in deep models. 
+  - We have control over the `batch_size`
 - Mixed precision and parallelism help reach closer to max achievable FLOPs.
 - Always measure real-time training performance to understand bottlenecks.
