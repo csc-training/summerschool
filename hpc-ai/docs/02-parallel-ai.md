@@ -65,9 +65,10 @@ lang:   en
 
 # Bubble issue and GPipe
 <div class="column"  style="width:80%; text-align: center;">
-  ![](img/gpipe.png){width=80%}
+  ![](img/mp_vs_gpipe.png){width=80%}
+  <small>Picture from [GPipe Paper, arXiv:1811.06965](https://arxiv.org/abs/1811.06965)</small>
 </div>
-- GPipe divided the data to micro-batch to reduce the bublle issue.
+- GPipe divided the data to micro-batch to reduce the bubble issue.
 
 
 # Tensor Parallelism
