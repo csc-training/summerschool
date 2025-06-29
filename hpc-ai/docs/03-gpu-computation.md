@@ -8,7 +8,7 @@ lang:   en
 
 <div class="column"  style="width:50%; text-align: center;">
   ![](img/lumi-g.svg){width=90%}
-  - <small>LUMI-G Node.</small>
+  <small>LUMI-G Node.</small>
 </div>
 <div class="column"  style="width:50%; text-align: center;">
   ![](img/amd-mi250.avif){width=50%}
@@ -32,7 +32,7 @@ lang:   en
 - 3.2 TB/s total memory bandwidth
 
 # Peak vs Max-Achievable FLOPs
-<div class="column"  style="width:40%; text-align: center;">
+<div class="column"  style="width:60%; text-align: center;">
   ![](img/maf-flops.png){width=80%}
   <small>Picture from [AMD](https://rocm.blogs.amd.com/software-tools-optimization/Understanding_Peak_and_Max-Achievable_FLOPS/README.html)</small>
 </div>
@@ -96,7 +96,7 @@ total_params = sum(p.numel() for p in model.parameters())
 | Overhead           | ~1 GB         |
 | **Total**          | ~2 GB         |
 
-- Note: Activations and intermediate results are calculated for one single image.
+- Note: Activations and intermediate results are calculated for one image.
 
 # Example: ResNet-152 with CIFAR-100
 
