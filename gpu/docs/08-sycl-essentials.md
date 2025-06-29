@@ -358,7 +358,7 @@ cgh.parallel_for(nd_range<1>(range<1>(N),range<1>(64)), [=](nd_item<1> item){
   q.memcpy(d_y, y.data(), N * sizeof(int)).wait(); 
 
   q.submit([&](handler& cgh) {
-    cgh.parallel_for(range<1>(N), [=](sid<1> id) {
+    cgh.parallel_for(range<1>(N), [=](id<1> id) {
       d_y[id] += 1;
     });
   }).wait();
