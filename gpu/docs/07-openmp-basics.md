@@ -8,7 +8,7 @@ lang:   en
 
 # What is OpenMP offloading ?
 
-- Set of OpenMP constructs for heterogeneous systems
+- Set of OpenMP directives for heterogeneous systems
   - e.g. CPU+GPU
 - Code regions are offloaded from the host (CPU) to be 
   computed on a device (GPU)
@@ -401,8 +401,8 @@ data`, we can get corresponding device address by
 
 # Device functions: `declare target`
 
-- In HIP/CUDA functions with `__device__` modified can be called from kernels.
-- In OpenMP: `declare target` directive does the same thing
+- HIP/CUDA: `__device__` functions can be called from kernels.
+- OpenMP: `declare target` construct does the same thing
 - Also works with global variables
 - No shared objects
 
