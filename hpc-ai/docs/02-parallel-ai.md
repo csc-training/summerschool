@@ -46,7 +46,7 @@ lang:   en
 # Naive Pytroch Data Parallelism (DDP)
   ![](img/pytorch_ddp_details.png){width=75%}
 
- # Naive Pytroch Data Parallelism (DDP)
+# Naive Pytroch Data Parallelism (DDP)
 - DP is Python threads-based, DDP is multiprocess-based 
   - No Python threads limitations, such as GIL
 - Simpler data flow
