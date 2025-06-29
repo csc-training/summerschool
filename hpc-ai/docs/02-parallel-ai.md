@@ -40,7 +40,7 @@ lang:   en
   ![](img/pytorch_dp_details.png){width=75%}
 
 
-# Naive Pytroch Data Parallelism (DDP)
+# Pytroch Distributed Data Parallelism (DDP)
   ![](img/pytorch_ddp_details.png){width=75%}
 
 
@@ -48,7 +48,7 @@ lang:   en
 - DP is Python threads-based, DDP is multiprocess-based 
   - No Python threads limitations, such as GIL
 - Simpler data flow
-- High inter-GPU communication overhead
+- DDP has a High inter-GPU communication overhead (all-reduce)
 - Overlapping pipeline of gradient all-reduce with layer gradient computation
 
 
