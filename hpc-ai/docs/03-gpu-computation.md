@@ -1,5 +1,5 @@
 ---
-title:  Undernstading GPU computational capabilities
+title:  Understanding GPU Computational Capabilities
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
@@ -15,7 +15,7 @@ lang:   en
   - <small>Single AMD MI250 GPU</small>
 </div>
 
-# GPU Charachteristics
+# GPU Characteristics
 - Computer Power
     - Peak FP64 Performance: 47.9 TFLOPs (per GPU)
     - Peak FP32 Performance: 95.7 TFLOPs
