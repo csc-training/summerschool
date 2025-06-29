@@ -117,6 +117,14 @@ $Usable\ Throughput = 0.35 \times 95.7 = 33.5\ TFLOPs/s$
 - **Estimate Epoch time**
 $Epoch\ Time = \frac{1.15\ PFLOPs}{33.5\ TFLOPs/s} \approx 34.3\ seconds$
 
+
+# Why Profiling Matters
+
+- Visualize computation, memory, communication.
+- Identify bottlenecks early.
+- Optimize GPU usage efficiently
+- Performance highly depends on Code implementation, I/O, etc.
+
 # Key Takeaways
 
 - FLOPs are a function of input, not just model size.

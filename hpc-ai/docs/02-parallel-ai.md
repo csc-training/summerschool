@@ -17,12 +17,6 @@ lang:   en
   - Pipeline Parallelism
 
 
-# Why Profiling Matters
-
-- Visualize computation, memory, communication.
-- Identify bottlenecks early.
-- Optimize GPU usage efficiently
-
 # Single-GPU Training
 <div class="column"  style="width:58%">
   ![](img/single_gpu.png){width=25%}
@@ -46,13 +40,13 @@ lang:   en
 </div>    
 
 # Naive Pytroch Data Parallelism (DP)
-  ![](img/pytorch_dp_details.png){width=70%}
+  ![](img/pytorch_dp_details.png){width=75%}
 
 
 # Naive Pytroch Data Parallelism (DDP)
-  ![](img/pytorch_ddp_details.png){width=70%}
+  ![](img/pytorch_ddp_details.png){width=75%}
 
- #Naive Pytroch Data Parallelism (DDP) (DDP)
+ # Naive Pytroch Data Parallelism (DDP)
 - DP is Python threads-based, DDP is multiprocess-based 
   - No Python threads limitations, such as GIL
 - Simpler data flow
