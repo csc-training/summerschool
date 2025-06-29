@@ -4,18 +4,15 @@ event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
-# Agenda
-
-- Single-GPU
-- Multi-GPU
-- Data Parallelism
-  - Basic Data Parallel (DP)
-  - ZeRO Data Parallel (DeepSpeed)
-  - Distributed Data Parallel (DDP)
-- Model Parallelism
-  - Tensor Parallelism
-  - Pipeline Parallelism
-
+# Single GPU vs Multi-GPU training
+- Training ML models could be intense
+  - Heavy computations
+  - Large Model
+- That's why we might need use multiple GPUs to train
+  - GPUs could be accross multiple nodes
+- Multi-GPU or Multi-Node training has a over head
+  - Communication costs
+  - Distributation of the data
 
 # Single-GPU Training
 <div class="column"  style="width:58%">
@@ -46,7 +43,8 @@ lang:   en
 # Naive Pytroch Data Parallelism (DDP)
   ![](img/pytorch_ddp_details.png){width=75%}
 
-# Naive Pytroch Data Parallelism (DDP)
+
+# DDP vs DP
 - DP is Python threads-based, DDP is multiprocess-based 
   - No Python threads limitations, such as GIL
 - Simpler data flow
@@ -95,15 +93,6 @@ lang:   en
 </div>
 - ResNet152 with CIFAR100 multi-gpu performance
 
-# Demo: PyTorch Profiler
-- Track CPU and GPU activities.
-- Measure compute time, memory usage, communication overhead.
-- Visualize using TensorBoard
-- Demo
-    1. Single-GPU Profiling
-    2. Data Parallel Profiling
-    3. Model Parallel Profiling
-    4. TensorBoard Visualization
 
 # Summary
 - Model fits onto a single GPU -> DDP or ZeRO
