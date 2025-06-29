@@ -51,14 +51,6 @@ lang:   en
 - High inter-GPU communication overhead
 - Overlapping pipeline of gradient all-reduce with layer gradient computation
 
-# Tensor Parallelism
-<div class="column"  style="width:58%">
-  ![](img/tensor_parallelism.png){width=60%}
-</div>
-<div class="column"  style="width:40%">
-  - <small>Send layers or blocks to different GPUs.</small>
-  - <small>Transfer outputs between GPUs manually.</small>
-</div>  
 
 # Pipeline Parallelism
 <div class="column"  style="width:50%">
@@ -69,6 +61,23 @@ lang:   en
   <small>Each GPU processes part of the model sequentially, like a factory pipeline.</small>
   <small>Maximizes compute by overlapping stages (with microbatching).</small>
 </div>
+
+
+# Bubble issue and GPipe
+<div class="column"  style="width:80%; text-align: center;">
+  ![](img/gpipe.png){width=80%}
+</div>
+- GPipe divided the data to micro-batch to reduce the bublle issue.
+
+
+# Tensor Parallelism
+<div class="column"  style="width:58%">
+  ![](img/tensor_parallelism.png){width=60%}
+</div>
+<div class="column"  style="width:40%">
+  - <small>Send layers or blocks to different GPUs.</small>
+  - <small>Transfer outputs between GPUs manually.</small>
+</div>  
 
 # Reality: 3D Parallelism
 <div class="column"  style="width:100%; text-align: center;">
