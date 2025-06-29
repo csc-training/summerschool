@@ -353,6 +353,20 @@ if(tid%2 == 0) {
 - Exercise: Find out how complicated `f_1` and `f_2` need to be that branch divergence is an issue
 :::
 
+## Related: unroll loops
+
+- For loops introduce integer arithmetic per loop: add to loop counter & perform continuation test
+- Mitigate with `#pragma unroll` or `#pragma unroll <count>`
+- Compiler unrolls the loop by `count` or
+- if loop count is known compile time, loop may be completely unrolled
+
+```cpp
+#pragma unroll 64
+for(size_t k = 0; k < N; ++k) 
+  a[tid] += b[tid]*c[tid] + d[tid];
+}
+```
+
 # 6. Minimise number of active local variables 
 
 ::: {.incremental}
