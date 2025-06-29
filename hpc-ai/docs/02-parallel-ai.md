@@ -83,7 +83,7 @@ lang:   en
 
 # How TP works?
 <div class="column"  style="width:80%; text-align: center;">
-  ![](img/tf_example.png){width=80%}
+  ![](img/tp_example.png){width=80%}
 </div>
 
 
