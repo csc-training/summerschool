@@ -46,8 +46,17 @@ lang:   en
 train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 ```
 
+# Multi-GPU techniques
+<div class="column"  style="width:50%">
+  Data Parallelism
+  ![](img/data_parallelism_general.png){width=50%}
+</div>
+<div class="column"  style="width:50%">
+  Model Parallelism (MP)
+  ![](img/model_parallelism_general.png){width=50%}
+</div>
 
-# Data Parallelism (DP)
+# Data Parallelism
 <div class="column"  style="width:58%">
   ![](img/data_parallelism.png){width=50%}
 </div>
