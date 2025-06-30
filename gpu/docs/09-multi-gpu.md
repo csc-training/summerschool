@@ -38,32 +38,6 @@ lang:   en
 ![](img/parallel_regions.png){.center width=60% }
 
 <!---
-# Parallel Programming Models
-
-<!-- Copyright CSC -->
- ![](img/processes-threads.svg){.center width=80%}
-<div class=column>
-**MPI: Processes**
-
-- independent execution units
-- MPI launches N processes at application startup
-- works over multiple nodes
-- data exchange via messages
-</div>
-<div class=column>
-
-**OpenMP: Threads**
-
-- threads share memory space
-- threads are created and destroyed  (parallel regions)
-- limited to a single node
-- directive based
-
-</div>
--->
-
-
-<!---
 # GPU Context
 
 * a context is established implicitly on the current device when the first HIP function requiring an active context is evaluated 
