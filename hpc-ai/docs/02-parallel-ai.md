@@ -66,8 +66,10 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 - DP is Python threads-based, DDP is multiprocess-based 
   - No Python threads limitations, such as GIL
 - Simpler data flow
-- DDP has a High inter-GPU communication overhead (all-reduce)
+- Both have high inter-GPU communication overhead (all-reduce)
+  - DDP has a lower overhead, but still high
 - Overlapping pipeline of gradient all-reduce with layer gradient computation
+- DDP is generally the recommended approach
 
 
 # Pipeline Parallelism
