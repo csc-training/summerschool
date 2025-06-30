@@ -126,7 +126,7 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 
 # Mix and Match: DP + PP!
 <div class="column"  style="width:100%; text-align: center;">
-  ![](img/tp_example.png){width=70%}
+  ![](img/dp_pp.png){width=70%}
 </div>
 
 
