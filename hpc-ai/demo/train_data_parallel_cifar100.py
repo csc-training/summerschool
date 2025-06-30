@@ -26,8 +26,8 @@ def train():
         download=True,
         transform=transform
     )
-    #torch.multiprocessing.set_start_method('spawn')
-    trainloader = DataLoader(trainset, batch_size=64, shuffle=True, num_workers=2, pin_memory=True)
+    
+    trainloader = DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2, pin_memory=True)
 
     model = get_model()
 
@@ -40,8 +40,6 @@ def train():
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
     writer = SummaryWriter(log_dir="./logs/data_parallel_cifar100")
-
-    pure_cal_time = []
 
     with torch.profiler.profile(
         schedule=torch.profiler.schedule(wait=1, warmup=1, active=2, repeat=1),
@@ -57,14 +55,11 @@ def train():
             for i, (inputs, labels) in enumerate(trainloader, 0):
                 inputs, labels = inputs.to(device, non_blocking=True), labels.to(device, non_blocking=True)
 
-                start_pure_cal = time.time()
                 optimizer.zero_grad()
                 outputs = model(inputs)
                 loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
-
-                pure_cal_time.append(time.time() - start_pure_cal)
 
                 torch.cuda.synchronize()
 
@@ -81,9 +76,7 @@ def train():
                     running_loss = 0.0
                     start_group = time.time()
 
-            print(f"[{epoch + 1}], pure cal time sum: {sum(pure_cal_time)}s")  # Sum of pure calculation times
             print(f"[{epoch + 1}], epoch time: {time.time()-start_epoch}s")  # Reset timer for next group
-            pure_cal_time = []
 
     writer.close()
 

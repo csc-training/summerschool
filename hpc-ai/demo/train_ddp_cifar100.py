@@ -34,7 +34,7 @@ def train(rank, world_size):
     )
 
     sampler = DistributedSampler(trainset, num_replicas=world_size, rank=rank)
-    trainloader = DataLoader(trainset, batch_size=64, sampler=sampler, num_workers=4, pin_memory=True)
+    trainloader = DataLoader(trainset, batch_size=int(128/world_size), sampler=sampler, num_workers=4, pin_memory=True)
 
     model = get_model().to(device)
     model = DDP(model, device_ids=[rank])
@@ -42,8 +42,6 @@ def train(rank, world_size):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
     writer = SummaryWriter(log_dir=f"./logs/ddp_cifar100/rank_{rank}")
-
-    pure_cal_time = []
 
     with torch.profiler.profile(
         schedule=torch.profiler.schedule(wait=1, warmup=1, active=2, repeat=1),
@@ -57,18 +55,14 @@ def train(rank, world_size):
             sampler.set_epoch(epoch)
             running_loss = 0.0
             iter_count = 0
-            start_group = time.time()
-            start_epoch = time.time()
             for i, data in enumerate(trainloader, 0):
                 inputs, labels = data[0].to(device, non_blocking=True), data[1].to(device, non_blocking=True)
 
-                start_pure_cal = time.time()
                 optimizer.zero_grad()
                 outputs = model(inputs)
                 loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
-                pure_cal_time.append(time.time() - start_pure_cal)
 
                 torch.cuda.synchronize()
 
@@ -93,9 +87,7 @@ def train(rank, world_size):
             
             epoch_time = end_epoch - start_epoch
             if rank == 0:
-                print(f"[{epoch + 1}], pure cal time sum: {sum(pure_cal_time)}s")  # Sum of pure calculation times
                 print(f"[{epoch + 1}], epoch time: {time.time()-start_epoch}s")  # Reset timer for next group
-                pure_cal_time = []
 
     writer.close()
     dist.destroy_process_group()

@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --job-name=ddp_cifar100
 #SBATCH --account=project_462000956
 #SBATCH --partition=dev-g
 #SBATCH --ntasks=1
