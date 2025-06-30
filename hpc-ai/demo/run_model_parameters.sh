@@ -6,6 +6,7 @@
 #SBATCH --gpus-per-task=1
 #SBATCH --mem=60G
 #SBATCH --time=0:30:00
+#SBATCH --output=run_model_parameters-%j.out
 
 module use  /appl/local/containers/ai-modules
 module load singularity-AI-bindings
