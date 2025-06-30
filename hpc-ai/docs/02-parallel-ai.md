@@ -86,14 +86,15 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 - DDP is generally the recommended approach
 
 
-# Pipeline Parallelism
+# MP: Pipeline Parallelism
 <div class="column"  style="width:50%">
   ![](img/pipeline_parallelism.png){width=60%}
 </div>
 <div class="column"  style="width:40%">
-  <small>Idea: Split model layer-wise across GPUs.</small>
-  <small>Each GPU processes part of the model sequentially, like a factory pipeline.</small>
-  <small>Maximizes compute by overlapping stages (with microbatching).</small>
+  - <small>Idea: Split model layer-wise across GPUs.</small>
+  - <small>Each GPU processes part of the model sequentially</small>
+  - <small>Underutilization is an issue</small>
+  - <small>Maximizes compute by overlapping stages (with microbatching).</small>
 </div>
 
 
@@ -105,7 +106,7 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 - GPipe divided the data to micro-batch to reduce the bubble issue.
 
 
-# Tensor Parallelism
+# MP: Tensor Parallelism
 <div class="column"  style="width:58%">
   ![](img/tensor_parallelism.png){width=60%}
 </div>
@@ -115,7 +116,7 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 </div>  
 
 
-# How TP works?
+# How MP works?
 <div class="column"  style="width:80%; text-align: center;">
   ![](img/tp_example.png){width=80%}
 </div>
@@ -130,13 +131,16 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 
 
 # ZeRO: Advance Data Parallelism
-<div class="column"  style="width:100%; text-align: center;">
-  ![](img/parallelism_zero.png){width=40%}
-</div>
-- Problem with Normal DP: Full optimizer states and gradients duplicated on every GPU.
+- Issue with DP: Full optimizer states and gradients duplicated on every GPU.
+  - Not efficient with VRAM
 - ZeRO Idea: Partition optimizer states, gradients, and parameters across GPUs.
-- Result: Train MUCH larger models without running out of memory.
+- Result: Efficient use of VRAM
+  - Train MUCH larger models without running out of memory.
 
+# ZeRO
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/parallelism_zero.png){width=80%}
+</div>
 
 # Summary
 - Model fits onto a single GPU -> DDP or ZeRO
@@ -146,5 +150,5 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 - Largest Layer not fitting into a single GPU -> TP
 - Multi-Node / Multi-GPU:
   - ZeRO - as it requires close to no modifications to the model
-  - PP+TP+DP: less communications, but requires massive changes to the model
-  - DP+PP+TP+ZeRO-1: when you have slow inter-node connectivity and still low on GPU memory
+  - PP+TP+DDP: less communications, but requires massive changes to the model
+  - PP+TP+ZeRO: when you have slow inter-node connectivity and still low on GPU memory
