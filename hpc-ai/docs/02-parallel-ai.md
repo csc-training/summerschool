@@ -10,19 +10,36 @@ lang:   en
   - Large Model
 - That's why we might need use multiple GPUs to train
   - GPUs could be accross multiple nodes
-- Multi-GPU or Multi-Node training has a over head
+- Multi-GPU or Multi-Node training has overhead
   - Communication costs
   - Distributation of the data
+  - Underutilization
 
 # Single-GPU Training
 <div class="column"  style="width:58%">
   ![](img/single_gpu.png){width=25%}
 </div>
 <div class="column"  style="width:40%">
-  - <small>How it works: Entire model & data on one GPU.</small>
+  - <small>How it works: </small>
+  - <small>Entire model & data on one GPU.</small>
   - <small>Pros: Simple, fast for small models.</small>
-  - <small>Cons: Not scalable to large models/datasets.</small>
+  - <small>Cons: Not scalable to large models/datasets.</small>  
 </div>
+- Oveheads: No major overhead
+
+
+# DataLoader issue
+- Most common bottolneck in workflows
+- Causes the dnderutilization issue
+- Reserve enough CPU cores per GPU, 7 cores/GPU on LUMI
+```bash
+#SBATCH --cpus-per-task=7
+```
+- Use multiple workers (processes) in PyTorch DataLoader
+```python
+train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
+```
+![](img/pytorch_dp_details.png){width=6%}
 
 
 # Data Parallelism (DP)
@@ -30,6 +47,7 @@ lang:   en
   ![](img/data_parallelism.png){width=50%}
 </div>
 <div class="column"  style="width:40%">
+  - <small>How it works:</small>
   - <small>Copy model to each GPU.</small>
   - <small>Split inputs across GPUs.</small>
   - <small>Compute forward/backward.</small>
