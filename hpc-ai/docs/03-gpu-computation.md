@@ -6,14 +6,18 @@ lang:   en
 
 # GPUs on LUMI-G
 
-<div class="column"  style="width:50%; text-align: center;">
-  ![](img/lumi-g.svg){width=90%}
-  <small>LUMI-G Node.</small>
-</div>
-<div class="column"  style="width:50%; text-align: center;">
-  ![](img/amd-mi250.avif){width=50%}
-  <small>Single AMD MI250 GPU</small>
-</div>
+:::::: {.columns}
+::: {.column width="50%"}
+![](img/lumi-g.svg){.center width=90%}
+
+<small>LUMI-G Node.</small>
+:::
+::: {.column width="50%"}
+![](img/amd-mi250.avif){.center width=50%}
+
+<small>Single AMD MI250 GPU</small>
+:::
+::::::
 
 # FLOPs (Floating Point Operations)
 
