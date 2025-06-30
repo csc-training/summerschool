@@ -25,7 +25,7 @@ lang:   en
 - Commonly used to estimate compute cost of training/inference.
 - Training ML Models = 2 × FLOPs/pass (forward + backward).
 
-# GPU Characteristics
+# AMD MI250 GPU Characteristics
 - Computer Power
     - Peak FP64 Performance: 47.9 TFLOPs
     - Peak FP32 Performance: 95.7 TFLOPs
