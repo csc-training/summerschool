@@ -27,7 +27,7 @@ lang:   en
 
 :::::: {.columns}
 ::: {.column width="50%"}
-![](img/single_gpu.png){.center width=60%}
+![](img/single_gpu.png){.center width=30%}
 :::
 ::: {.column width="50%"}
 - <small>How it works:</small>  
@@ -57,7 +57,7 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 :::::: {.columns}
 ::: {.column width="50%"}
 **Data Parallelism**  
-![](img/data_parallelism_general.png){.center width=70%}
+![](img/data_parallelism_general.png){.center width=45%}
 :::
 ::: {.column width="50%"}
 **Model Parallelism (MP)**  
@@ -69,7 +69,7 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 
 :::::: {.columns}
 ::: {.column width="58%"}
-![](img/data_parallelism.png){.center width=90%}
+![](img/data_parallelism.png){.center width=60%}
 :::
 ::: {.column width="40%"}
 - <small>How it works:</small>  
