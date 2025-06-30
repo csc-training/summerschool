@@ -14,7 +14,7 @@ lang:   en
 
 # Machine Learning
 
-- learn patterns from data to make predictions on unseen data
+- learn patterns from data to make predictions
 
 <div class="column"  style="width:99%; text-align: center;">
   ![](img/ML_types.png){width=61%}
