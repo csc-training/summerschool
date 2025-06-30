@@ -148,7 +148,7 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 
 # How MP works?
 
-![](img/tp_example.png){.center width=70%}
+![](img/tp_example.png){.center width=60%}
 
 # Mix and Match: DP + PP!
 
