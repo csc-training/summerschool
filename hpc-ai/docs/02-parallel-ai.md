@@ -153,6 +153,10 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 # Mix and Match: DP + PP!
 
 ![](img/dp_pp.png){.center width=70%}
+- This is from [Deepspeed](https://www.microsoft.com/en-us/research/blog/zero-deepspeed-new-system-optimizations-enable-training-models-with-over-100-billion-parameters/)
+- It reduces the bubble issue
+- For DP, there are two GPUs: GPU0 and GPU1
+- Inside each DP rank, there is a PP.
 
 # Reality: 3D Parallelism
 
