@@ -27,7 +27,7 @@ def train(rank, world_size):
     ])
 
     trainset = torchvision.datasets.CIFAR100(
-        root='./data',
+        root='/scratch/project_462000956/data',
         train=True,
         download=True,
         transform=transform
