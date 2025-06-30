@@ -24,49 +24,70 @@ lang:   en
 
 
 # Single-GPU Training
-<div class="column"  style="width:58%">
-  ![](img/single_gpu.png){width=25%}
-</div>
-<div class="column"  style="width:40%">
-  - <small>How it works: </small>
-  - <small>Entire model & data on one GPU.</small>
-  - <small>Pros: Simple, fast for small models.</small>
-  - <small>Cons: Not scalable to large models/datasets.</small>  
-</div>
-- Oveheads: No major overhead
+
+:::::: {.columns}
+::: {.column width="50%"}
+![](img/single_gpu.png){.center width=60%}
+:::
+::: {.column width="50%"}
+- <small>How it works:</small>  
+- <small>Entire model & data on one GPU.</small>  
+- <small>Pros: Simple, fast for small models.</small>  
+- <small>Cons: Not scalable to large models/datasets.</small>
+:::
+::::::
 
 
-# DataLoader issue
-- Most common bottolneck in workflows
-- Causes the dnderutilization issue
-- Reserve enough CPU cores per GPU, 7 cores/GPU on LUMI
-- Use multiple workers (processes) in PyTorch DataLoader
+# DataLoader Issue
+
+- Most common bottleneck in workflows  
+- Causes the underutilization issue  
+- Reserve enough CPU cores per GPU (7 cores/GPU on LUMI)  
+- Use multiple workers (processes) in PyTorch `DataLoader`  
+
 ```python
-train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
+train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ```
-![](img/data_process.png){width=60%}
 
-# Multi-GPU techniques
-<div class="column"  style="width:50%">
-  Data Parallelism
-  ![](img/data_parallelism_general.png){width=50%}
-</div>
-<div class="column"  style="width:50%">
-  Model Parallelism (MP)
-  ![](img/model_parallelism_general.png){width=50%}
-</div>
+![](img/data_process.png){.center width=60%}
+
+
+# Multi-GPU Techniques
+
+:::::: {.columns}
+::: {.column width="50%"}
+**Data Parallelism**  
+![](img/data_parallelism_general.png){.center width=70%}
+:::
+::: {.column width="50%"}
+**Model Parallelism (MP)**  
+![](img/model_parallelism_general.png){.center width=70%}
+:::
+::::::
 
 # Data Parallelism
-<div class="column"  style="width:58%">
-  ![](img/data_parallelism.png){width=50%}
-</div>
-<div class="column"  style="width:40%">
-  - <small>How it works:</small>
-  - <small>Copy model to each GPU.</small>
-  - <small>Split inputs across GPUs.</small>
-  - <small>Compute forward/backward.</small>
-  - <small>Aggregate gradients.</small>
-</div>    
+
+:::::: {.columns}
+::: {.column width="58%"}
+![](img/data_parallelism.png){.center width=90%}
+:::
+::: {.column width="40%"}
+- <small>How it works:</small>  
+- <small>Copy model to each GPU.</small>  
+- <small>Split inputs across GPUs.</small>  
+- <small>Compute forward/backward.</small>  
+- <small>Aggregate gradients.</small>
+
+**Overheads**
+
+| Type                      | Description   |
+|---------------------------|---------------|
+| Communication Overhead    | High          |
+| Partial distribution      | Possible      |
+| Underutilization          | Possible      |
+:::
+::::::
+ 
 
 # Naive Pytroch Data Parallelism (DP)
   ![](img/pytorch_dp_details.png){width=75%}
@@ -87,15 +108,18 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 
 
 # MP: Pipeline Parallelism
-<div class="column"  style="width:50%">
-  ![](img/pipeline_parallelism.png){width=60%}
-</div>
-<div class="column"  style="width:40%">
-  - <small>Idea: Split model layer-wise across GPUs.</small>
-  - <small>Each GPU processes part of the model sequentially</small>
-  - <small>Underutilization is an issue</small>
-  - <small>Maximizes compute by overlapping stages (with microbatching).</small>
-</div>
+
+:::::: {.columns}
+::: {.column width="50%"}
+![](img/pipeline_parallelism.png){.center width=60%}
+:::
+::: {.column width="40%"}
+- <small>Idea: Split model layer-wise across GPUs.</small>  
+- <small>Each GPU processes part of the model sequentially.</small>  
+- <small>Underutilization is an issue.</small>  
+- <small>Maximizes compute by overlapping stages (with microbatching).</small>
+:::
+::::::
 
 
 # Bubble issue and GPipe
@@ -107,35 +131,41 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 
 
 # MP: Tensor Parallelism
-<div class="column"  style="width:58%">
-  ![](img/tensor_parallelism.png){width=60%}
-</div>
-<div class="column"  style="width:40%">
-  - <small>Horizontal Parallelism:</small>
-  - <small>Divide horizontally</small>
-  - <small>Store part of the layers or blocks on different GPUs.</small>
-  - <small>Concat outputs between GPUs manually.</small>
-</div>  
+
+:::::: {.columns}
+::: {.column width="58%"}
+![](img/tensor_parallelism.png){.center width=60%}
+:::
+::: {.column width="40%"}
+- <small>Horizontal Parallelism:</small>  
+- <small>Divide tensors horizontally.</small>  
+- <small>Store part of the layers or blocks on different GPUs.</small>  
+- <small>Concat outputs between GPUs manually.</small>
+:::
+::::::
+
 
 
 # How MP works?
-<div class="column"  style="width:100%; text-align: center;">
-  ![](img/tp_example.png){width=70%}
-</div>
 
+![](img/tp_example.png){.center width=70%}
 
 # Mix and Match: DP + PP!
-<div class="column"  style="width:100%; text-align: center;">
-  ![](img/dp_pp.png){width=70%}
-</div>
 
+![](img/dp_pp.png){.center width=70%}
 
 # Reality: 3D Parallelism
-<div class="column"  style="width:100%; text-align: center;">
-  ![](img/parallelism_3d.png){width=40%}
-</div>
-- In real world: Data Parallel + Tensor Parallel + Pipeline Parallel are combined.
+
+:::::: {.columns}
+::: {.column width="45%"}
+![](img/parallelism_3d.png){.center width=100%}
+:::
+::: {.column width="55%"}
+- In real world: Data Parallel + Tensor Parallel + Pipeline Parallel are combined.  
 - Example: Training GPT-3 used all three.
+:::
+::::::
+
 
 
 # ZeRO: Advance Data Parallelism
