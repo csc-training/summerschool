@@ -55,6 +55,7 @@ def train(rank, world_size):
             sampler.set_epoch(epoch)
             running_loss = 0.0
             iter_count = 0
+            start_group = time.time()
             for i, data in enumerate(trainloader, 0):
                 inputs, labels = data[0].to(device, non_blocking=True), data[1].to(device, non_blocking=True)
 
@@ -97,4 +98,6 @@ if __name__ == "__main__":
     parser.add_argument("--rank", type=int, default=int(os.environ["RANK"]))
     parser.add_argument("--world_size", type=int, default=int(os.environ["WORLD_SIZE"]))
     args = parser.parse_args()
+    if args.rank == 0:
+        print(f"Running DDP with {args.world_size} GPUs")
     train(args.rank, args.world_size)

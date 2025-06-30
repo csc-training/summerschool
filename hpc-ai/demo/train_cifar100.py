@@ -77,4 +77,5 @@ def train():
     writer.close()
 
 if __name__ == "__main__":
+    print("Training on single GPU")
     train()
