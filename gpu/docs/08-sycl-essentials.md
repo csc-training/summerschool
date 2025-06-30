@@ -618,4 +618,5 @@ auto exception_handler = [] (exception_list exceptions) {
  - Portability, Productivity, Performance
  - **queues**, **command groups**
  - **buffers and accessors API**, **unified shared memory**
+ - **kernels** are executed as **lambdas**, **range** or **nd-range**
  - various ways to enforce dependencies, basic profiling, error handling
