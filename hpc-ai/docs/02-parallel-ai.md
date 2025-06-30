@@ -15,6 +15,14 @@ lang:   en
   - Distributation of the data
   - Underutilization
 
+
+# Multi-GPU performance
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/GPU_overhead.png){width=40%}
+</div>
+- ResNet152 with CIFAR100 multi-gpu performance
+
+
 # Single-GPU Training
 <div class="column"  style="width:58%">
   ![](img/single_gpu.png){width=25%}
@@ -122,13 +130,6 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 - Problem with Normal DP: Full optimizer states and gradients duplicated on every GPU.
 - ZeRO Idea: Partition optimizer states, gradients, and parameters across GPUs.
 - Result: Train MUCH larger models without running out of memory.
-
-
-# Multi-GPU performance
-<div class="column"  style="width:100%; text-align: center;">
-  ![](img/GPU_overhead.png){width=40%}
-</div>
-- ResNet152 with CIFAR100 multi-gpu performance
 
 
 # Summary
