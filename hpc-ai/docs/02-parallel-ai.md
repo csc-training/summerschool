@@ -124,6 +124,12 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 </div>
 
 
+# Mix and Match: DP + PP!
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/tp_example.png){width=70%}
+</div>
+
+
 # Reality: 3D Parallelism
 <div class="column"  style="width:100%; text-align: center;">
   ![](img/parallelism_3d.png){width=40%}
