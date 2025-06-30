@@ -119,8 +119,8 @@ train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 
 
 # How MP works?
-<div class="column"  style="width:80%; text-align: center;">
-  ![](img/tp_example.png){width=80%}
+<div class="column"  style="width:100%; text-align: center;">
+  ![](img/tp_example.png){width=70%}
 </div>
 
 
