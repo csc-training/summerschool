@@ -37,6 +37,9 @@ lang:   en
 <!-- Copyright CSC -->
  ![](img/compp.svg){.center width=40%}
 
+
+
+<!---
 # Parallel Programming Models
 
 <!-- Copyright CSC -->
@@ -59,6 +62,8 @@ lang:   en
 - directive based
 
 </div>
+-->
+
 
 <!---
 # GPU Context
