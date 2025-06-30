@@ -37,17 +37,14 @@ lang:   en
 
 
 # DataLoader issue
+![](img/data_process.png){width=40%}
 - Most common bottolneck in workflows
 - Causes the dnderutilization issue
 - Reserve enough CPU cores per GPU, 7 cores/GPU on LUMI
-```bash
-#SBATCH --cpus-per-task=7
-```
 - Use multiple workers (processes) in PyTorch DataLoader
 ```python
 train_loader = torch.utils.data.DataLoader(data,...,num_workers=N)
 ```
-![](img/pytorch_dp_details.png){width=6%}
 
 
 # Data Parallelism (DP)
