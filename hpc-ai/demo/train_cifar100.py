@@ -28,7 +28,7 @@ def train():
         transform=transform
     )
     # TODO: change the batch size to 256 and investigate the results
-    trainloader = DataLoader(trainset, batch_size=128, shuffle=True, num_workers=4, pin_memory=True)
+    trainloader = DataLoader(trainset, batch_size=128, shuffle=True, num_workers=7, pin_memory=True)
 
     model = get_model().to(device)
     criterion = nn.CrossEntropyLoss()

@@ -34,7 +34,7 @@ def train(rank, world_size):
     )
 
     sampler = DistributedSampler(trainset, num_replicas=world_size, rank=rank)
-    trainloader = DataLoader(trainset, batch_size=int(128/world_size), sampler=sampler, num_workers=4, pin_memory=True)
+    trainloader = DataLoader(trainset, batch_size=int(128/world_size), sampler=sampler, num_workers=7, pin_memory=True)
 
     model = get_model().to(device)
     model = DDP(model, device_ids=[rank])
