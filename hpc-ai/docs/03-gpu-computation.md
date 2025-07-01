@@ -23,10 +23,10 @@ lang:   en
 
 - FLOPs measure how many arithmetic operations a model performs.
 - Commonly used to estimate compute cost of training/inference.
-- Training ML Models = 2 × FLOPs/pass (forward + backward).
+- Training ML Models =  Forward pass + Backward pass.
 
 # AMD MI250 GPU Characteristics
-- Compute Power [L](https://www.amd.com/en/products/accelerators/instinct/mi200/mi250x.html)
+- Compute Power [(Link)](https://www.amd.com/en/products/accelerators/instinct/mi200/mi250x.html)
     - Peak FP64 Performance: 47.9 TFLOPs
     - Peak FP32 Performance: 47.9 TFLOPs
     - Peak FP16 Performance: 383 TFLOPs
@@ -35,7 +35,7 @@ lang:   en
     - 128 GB HBM2e (64 GB per GCD)
 
 - This numbers are for 2 GCDs with 220 CU.
-    -- `gpus-per-task=1`  gives you one GCD.
+    - `gpus-per-task=1`  gives you one GCD.
 
 # Peak vs Max-Achievable FLOPs
 
@@ -80,7 +80,7 @@ lang:   en
 - **Model Info:**
     - Parameters: ~60.2M
     - Forward FLOPs per image: ~11.5 GFLOPs
-    - Backward FLOPs = 2x forward pass
+    - Backward FLOPs = 2x forward pass [(Link)](https://epoch.ai/blog/backward-forward-FLOP-ratio)
     - Training FLOPs per image: ~34.5 GFLOPs
 
 ```python
@@ -120,7 +120,7 @@ $FLOPs:\ 34.5\ GFLOPs \times 50000 = 1.725\ PFLOPs$
 $Usable\ Throughput = 0.40 \times 47.9 = 19.2\ TFLOPs/s$
 
 - **Usable GCD Throughput**    
-$TFLOPs = \frac{19.2\ TFLOPs}{2\ TFLOPs/s} = 9.6\ TFLOPs/s$
+$TFLOPs = \frac{19.2\ TFLOPs}{2} = 9.6\ TFLOPs/s$
 
 - **Estimate Epoch time**
 $Epoch\ Time = \frac{1.725\ PFLOPs}{9.6\ TFLOPs/s} \approx 180\ seconds$
