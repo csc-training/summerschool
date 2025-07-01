@@ -72,7 +72,7 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ![](img/data_parallelism.png){.center width=60%}
 :::
 ::: {.column width="80%"}
-
+<small>
 **Overheads**
 
 | Type                      | Description   |
@@ -80,12 +80,12 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 | Communication Overhead    | High          |
 | Partial distribution      | Possible      |
 | Underutilization          | Possible      |
-<small>
-How it works:
-Copy model to each GPU.
-Split inputs across GPUs.
-Compute forward/backward.
-Aggregate gradients.
+
+- How it works:
+- Copy model to each GPU.
+- Split inputs across GPUs.
+- Compute forward/backward.
+- Aggregate gradients.
 </small>
 :::
 ::::::
