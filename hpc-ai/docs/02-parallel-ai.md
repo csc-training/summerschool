@@ -72,12 +72,13 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ![](img/data_parallelism.png){.center width=70%}
 :::
 ::: {.column width="30%"}
+
 <small>
-- How it works:
-  - Copy model to each GPU.
-  - Split inputs across GPUs.
-  - Compute forward/backward.
-  - Aggregate gradients.
+How it works:
+1. Copy model to each GPU.
+2. Split inputs across GPUs.
+3. Compute forward/backward.
+4. Aggregate gradients.
 </small>
 :::
 ::: {.column width="40%"}
@@ -120,10 +121,10 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 :::
 ::: {.column width="30%"}
 <small>
-- Idea: Split model layer-wise across GPUs.
-  - Each GPU processes part of the model sequentially.
-  - Underutilization is an issue.
-  - Maximizes compute by overlapping stages (with microbatching).
+Idea: Split model layer-wise across GPUs.
+1.Each GPU processes part of the model sequentially.
+2.Underutilization is an issue.
+3.Maximizes compute by overlapping stages (with microbatching).
 </small>
 :::
 ::: {.column width="40%"}
@@ -205,7 +206,6 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ::::::
 
 
-
 # ZeRO: Advance Data Parallelism
 - Issue with DP: Full optimizer states and gradients duplicated on every GPU.
   - Not efficient with VRAM
@@ -213,11 +213,24 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 - Result: Efficient use of VRAM
   - Train MUCH larger models without running out of memory.
 
+
 # ZeRO
 <div class="column"  style="width:100%; text-align: center;">
-  ![](img/parallelism_zero.png){width=80%}
+  ![](img/parallelism_zero.png){width=100%}
 </div>
 
+
+# ZeRO Stages
+- Optimizer State Partitioning
+  - 4x memory reduction, same communication volume as DP
+- Optimizer + Gradient Partitioning
+  - 8x memory reduction, same communication volume as DP
+- Optimizer + Gradient + Parameter Partitioning
+  - Memory reduction is linear with DP degree.
+  - For example, with 64 GPUs will yield a 64x memory reduction.
+  - There is a modest 50% increase in communication volume.
+
+  
 # Summary
 - Model fits onto a single GPU -> DDP or ZeRO
 - Model doesn’t fit onto a single GPU
@@ -227,4 +240,4 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 - Multi-Node / Multi-GPU:
   - ZeRO - as it requires close to no modifications to the model
   - PP+TP+DDP: less communications, but requires massive changes to the model
-  - PP+TP+ZeRO: when you have slow inter-node connectivity and still low on GPU memory
+  - PP+TP+ZeRO-1: when you have slow inter-node connectivity and still low on GPU memory
