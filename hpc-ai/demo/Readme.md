@@ -40,9 +40,11 @@ See [GPU-accelerated machine learning](https://docs.csc.fi/support/tutorials/gpu
 
 ## Tasks
 Now it's time to run some trainings. There are three tasks to be compeleted. For each task, remember to monitor the GPU with opening an overlapping job and using `rocm-smi`. Does the calculations we did during the lecture match the VRAM usage?
-Also, don't forget to look at the Slurm output file which prints information about the training time.
+Also, don't forget to look at the Slurm output file which prints information about the training time. After doing each tasks, try to answer the quetions in the questions section.
 
-## Task 1
+As a bouns, you can play with the code and modify some of the hyperparameters and/or the model. Discuss the effect of these changes.
+
+### Task 1
 
 In the first task, we will use one single GPU to train the model Starting with `train_cifar100.py` and familiarize yourself with the codebase.
 
@@ -63,7 +65,7 @@ lines of that file with the command:
 Use `tail -f` if you want to continuously follow the progress of the
 output. (Press Ctrl-C when you want to stop following the file.)
 
-## Task 2
+### Task 2
 
 Repeat the experimet with `train_data_parallel.py` which trains the model with 2 GPUs with the [Data Parallel](https://docs.pytorch.org/docs/stable/generated/torch.nn.DataParallel.html) technique.
 
@@ -71,7 +73,7 @@ You can run the training directly with the corresponding script listed above:
 
     sbatch  run_data_parallel_cifar100.sh
 
-## Task 3
+### Task 3
 
 Repeat the experiment with the `train_ddp_cifar100.py` Which trains the model with 2 GPUs with the [Distributed Data Parallel](https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html) technique.
 
