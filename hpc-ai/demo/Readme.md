@@ -92,19 +92,23 @@ You can run the training directly with the corresponding script listed above:
     - a. Why the first epoch in all tasks is slower than other epochs?
     - b. Does the time per epoch matches our calculations?
 
-3. Why using DP or DDP increases the speed of the training?
+3. Before changing the `DataLoader` class in `train_cifar100`, run the training. Monitor the GPU utilization with `rocm-smi` every 1 seconds. How much GPU utilization do you get?
+    a. Monitor the GPU behavior every `0.1` seconds. What do observe?
+    a. Increase the number of workers [Link to Pytorch Documentation](https://docs.pytorch.org/docs/stable/data.html). Now examine the GPU utilization. What has changed?
 
-4. Why using 2 GPUs in Data Parallel approach is not as fast as DDP?
+4. Why using DP or DDP increases the speed of the training?
 
-5. Discuss the loss in DDP. Why the loss is not as low as DP and single GPU training?
+5. Why using 2 GPUs in Data Parallel approach is not as fast as DDP?
 
-6. Why the total number of iterations are different in DDP?
+6. Discuss the loss in DDP. Why the loss is not as low as DP and single GPU training?
+
+7. Why the total number of iterations are different in DDP?
     - a. What happens if you divide the the `batch_size` by `world_size`.
     - b. How does it affect the loss after training?
 
-7. In `train_cifar100.py`, investigate the effect of switching to a smaller model of `resnet50`. How it affects the training speed? Does it match your expectations based on the number of parameters?
+8. In `train_cifar100.py`, investigate the effect of switching to a smaller model of `resnet50`. How it affects the training speed? Does it match your expectations based on the number of parameters?
 
-8. In `train_cifar100.py`, change investigate the effect of switching to a larger batch size. How it affects the training speed? Does it match your expectations based on VRAM utilization?
+9. In `train_cifar100.py`, change investigate the effect of switching to a larger batch size. How it affects the training speed? Does it match your expectations based on VRAM utilization?
 
    
 ## Monitoring with visulatization
