@@ -374,7 +374,7 @@ for (size_t k = 0; k<N; ++k) a[k] /= 2.0; // Host code
 #pragma omp target teams distribute parallel for
 for (size_t k = 0; k<N; ++k) c[k] *= a[k]; // Device code
 
-#pragma omp target exit data map(from:c[:N]) map(tofrom: a[:N])
+#pragma omp target exit data map(from:c[:N]) map(from: a[:N])
 ```
 
 # Useful runtime API functions
