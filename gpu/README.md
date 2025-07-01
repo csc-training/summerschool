@@ -46,7 +46,6 @@ concepts to solve some more advanced cases.
 
 ## OpenMP offloading
 
-
 ### Fundamentals
 
 - [Hello world with OpenMP offloading](exercises/fundamentals/07-openmp/01-hello-world)
@@ -60,12 +59,16 @@ concepts to solve some more advanced cases.
 - [Interoperability with HIP](exercises/bonus/07-openmp/hip-interop)
 - [Jacobi](exercises/bonus/07-openmp/jacobi)
 
+## SYCL
+
+### Fundamentals
+
+- [SYCL exercises](exercises/fundamentals/08-sycl)
+
 ## Multi-GPU programming
 
 ### Fundamentals
 
-- [Lorem ipsum](exercises/fundamentals/lorem)
-
-### Bonus exercises
-
-- [Lorem ipsum](exercises/bonus/lorem)
+- [Ping-pong with multiple GPUs and MPI](exercises/fundamentals/09-multi-gpu/01-ping-pong)
+- [Vector sum on two GPUs without MPI](exercises/fundamentals/09-multi-gpu/02-vector-sum)
+- [Peer to peer device access](exercises/fundamentals/09-multi-gpu/03-p2pcopy)
