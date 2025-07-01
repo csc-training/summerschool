@@ -274,6 +274,18 @@ end do
   ```
 :::
 
+# `collapse` clause
+
+- Nested loops distributed across threads with the `collapse(<count>)` clause:
+
+```cpp
+#pragma omp target teams distribute parallel for collapse(2)
+for (size_t k = 0; k < M; ++k)
+  for (size_t l = 0; l < N; ++l)
+    c[k][l] = a[k]*b[l];
+```
+
+
 # OpenMP data model in offloading: *`map`* clause
 
 ::: incremental
@@ -523,8 +535,6 @@ nvfortran -mp=gpu code.f90 -gpu=cc80
 | `OMP_TEAMS_THREAD_LIMIT` | Limits number of threads per team                |
 
 </small>
-
-
 
 
 # Loop construct
