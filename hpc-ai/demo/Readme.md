@@ -38,6 +38,10 @@ The `rocm-smi` tool shows multiple useful metrics such as GPU utilization, memor
 
 See [GPU-accelerated machine learning](https://docs.csc.fi/support/tutorials/gpu-ml/) documentations on LUMI for more information.
 
+## Tasks
+Now it's time to run some trainings. There are three tasks to be compeleted. For each task, remember to monitor the GPU with opening an overlapping job and using `rocm-smi`. Does the calculations we did during the lecture match the VRAM usage?
+Also, don't forget to look at the Slurm output file which prints information about the training time.
+
 ## Task 1
 
 In the first task, we will use one single GPU to train the model Starting with `train_cifar100.py` and familiarize yourself with the codebase.
@@ -50,7 +54,7 @@ As a reminder, you can check the status of your runs with the command:
 
     squeue --me
 
-The output of the run will appear in a file named `slurm-RUN_ID.out`
+The output of the run will appear in a file named `single_gpu_cifar100-slurm-RUN_ID.out`
 where `RUN_ID` is the Slurm batch job id. You can check the last ten
 lines of that file with the command:
 
@@ -61,20 +65,20 @@ output. (Press Ctrl-C when you want to stop following the file.)
 
 ## Task 2
 
+Repeat the experimet with `train_data_parallel.py` which trains the model with 2 GPUs with the [Data Parallel](https://docs.pytorch.org/docs/stable/generated/torch.nn.DataParallel.html) technique.
+
+You can run the training directly with the corresponding script listed above:
+
+    sbatch  run_data_parallel_cifar100.sh
+
+## Task 3
+
 Repeat the experiment with the `train_ddp_cifar100.py` Which trains the model with 2 GPUs with the [Distributed Data Parallel](https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html) technique.
 
 You can run the training directly with the corresponding script listed above:
 
     sbatch  run_ddp_cifar100.sh
 
-
-## Task 3
-
-Repeat the experimet with `train_data_parallel.py` which trains the model with 2 GPUs with the [Data Parallel](https://docs.pytorch.org/docs/stable/generated/torch.nn.DataParallel.html) technique.
-
-You can run the training directly with the corresponding script listed above:
-
-    sbatch  run_data_parallel_cifar100.sh
 
 ## Questions:
 1. For each task, look at the GPU utilization, and VRAM. Discuss on how to increase the VRAM.
