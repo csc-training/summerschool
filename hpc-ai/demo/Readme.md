@@ -83,13 +83,28 @@ You can run the training directly with the corresponding script listed above:
 
 
 ## Questions:
-1. For each task, look at the GPU utilization, and VRAM. Discuss on how to increase the VRAM.
-2. By looking at the `slurm-RUN_ID.out`, look for the training speed for the each iteration and also one epoch. Why the first epoch in all tasks is slower than other epochs?
-3. Why the total number of iterations are different in DDP?
-4. Do you see any overheads for the DDP training?
-5. Why using 2 GPUs in Data Parallel approach is not as fast as DDP? How much is the overhead?
-6. In `train_cifar100.py`, change investigate the effect of switching to a smaller model of `resnet50`. How it affects the training speed? Does it match your expectations based on the number of parameters?
-7. In `train_cifar100.py`, change investigate the effect of switching to a larger batch size. How it affects the training speed? Does it match your expectations based on VRAM utilization?
+1. For each task, look at the GPU utilization, and VRAM. 
+    - a. Does the VRAM matches our calculations?
+    - b. How we can increase the VRAM?
+    - c. Why the VRAM is different in DP?
+
+2. By looking at the `slurm-RUN_ID.out`, look for the training speed for the each iteration and also one epoch.
+    - a. Why the first epoch in all tasks is slower than other epochs?
+    - b. Does the time per epoch matches our calculations?
+
+3. Why using DP or DDP increases the speed of the training?
+
+4. Why using 2 GPUs in Data Parallel approach is not as fast as DDP?
+
+5. Discuss the loss in DDP. Why the loss is not as low as DP and single GPU training?
+
+6. Why the total number of iterations are different in DDP?
+    - a. What happens if you divide the the `batch_size` by `world_size`.
+    - b. How does it affect the loss after training?
+
+7. In `train_cifar100.py`, investigate the effect of switching to a smaller model of `resnet50`. How it affects the training speed? Does it match your expectations based on the number of parameters?
+
+8. In `train_cifar100.py`, change investigate the effect of switching to a larger batch size. How it affects the training speed? Does it match your expectations based on VRAM utilization?
 
    
 ## Monitoring with visulatization
