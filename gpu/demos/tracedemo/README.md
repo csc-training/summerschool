@@ -18,7 +18,7 @@ srun --job-name=example --account=project_462000956 --partition=small-g --reserv
 rocprof --hip-trace ./tracedemo
 ```
 
-`results.json` appears, open it with [ui.perfetto.dev](ui.perfetto.dev) or [chrome://tracing](chrome://tracing).
+`results.json` appears, open it with [ui.perfetto.dev](https://ui.perfetto.dev) or [chrome://tracing](chrome://tracing).
 
 ## extra: rocprof v2
 
