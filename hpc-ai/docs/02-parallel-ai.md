@@ -103,6 +103,10 @@ How it works:
   ![](img/pytorch_ddp_details.png){width=75%}
 
 
+# DDP AllReduce overlap
+  ![](img/ddp_overlap.png){width=75%}
+
+
 # DDP vs DP
 - DP is Python threads-based, DDP is multiprocess-based 
   - No Python threads limitations, such as GIL
@@ -121,10 +125,10 @@ How it works:
 :::
 ::: {.column width="30%"}
 <small>
-Idea: Split model layer-wise across GPUs.
-1.Each GPU processes part of the model sequentially.
-2.Underutilization is an issue.
-3.Maximizes compute by overlapping stages (with microbatching).
+Vertical Parallelism: 
+- Split the layer-wise across GPUs.
+- Each GPU processes part of the model sequentially.
+- Chain of dependencies
 </small>
 :::
 ::: {.column width="40%"}
@@ -221,11 +225,12 @@ Idea: Split model layer-wise across GPUs.
 
 
 # ZeRO Stages
-- Optimizer State Partitioning
+- For 7B model with 64 GPUs:
+- Zero-1O: ptimizer State Partitioning
   - 4x memory reduction, same communication volume as DP
-- Optimizer + Gradient Partitioning
+- Zero-2: Optimizer + Gradient Partitioning
   - 8x memory reduction, same communication volume as DP
-- Optimizer + Gradient + Parameter Partitioning
+- Zero-3: Optimizer + Gradient + Parameter Partitioning
   - Memory reduction is linear with DP degree.
   - For example, with 64 GPUs will yield a 64x memory reduction.
   - There is a modest 50% increase in communication volume.
