@@ -34,8 +34,8 @@ def train(rank, world_size):
     )
 
     sampler = DistributedSampler(trainset, num_replicas=world_size, rank=rank)
-    # TODO: What happens if we set the batch size to 64/world_size?
-    trainloader = DataLoader(trainset, batch_size=int(64), sampler=sampler, num_workers=7)
+    # TODO: What happens if we set the batch size to 128/world_size?
+    trainloader = DataLoader(trainset, batch_size=int(128), sampler=sampler, num_workers=7)
 
     model = get_model().to(device)
     model = DDP(model, device_ids=[rank])

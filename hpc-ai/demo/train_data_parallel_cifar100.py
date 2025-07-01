@@ -27,7 +27,7 @@ def train():
         transform=transform
     )
     
-    trainloader = DataLoader(trainset, batch_size=64, shuffle=True, num_workers=7)
+    trainloader = DataLoader(trainset, batch_size=128, shuffle=True, num_workers=7)
 
     model = get_model()
 
@@ -71,12 +71,14 @@ def train():
                     total_time = end_group - start_group
                     avg_iter_time = total_time / 100
 
-                    print(f"[{epoch + 1}, {i + 1}] loss: {running_loss / 100:.3f}, iteration_time: {total_time:.2f}s, time/iter: {avg_iter_time:.4f}s")
+                    print(f"[{epoch + 1}, {i + 1}] loss: {running_loss / 100:.3f}, 
+                          iteration_time: {total_time:.2f}s, time/iter: {avg_iter_time:.4f}s", 
+                          flush=True)
                     writer.add_scalar('training loss', running_loss / 100, epoch * len(trainloader) + i)
                     running_loss = 0.0
                     start_group = time.time()
 
-            print(f"[{epoch + 1}], epoch time: {time.time()-start_epoch}s")  # Reset timer for next group
+            print(f"[{epoch + 1}], epoch time: {time.time()-start_epoch}s", flush=True)  # Reset timer for next group
 
     writer.close()
 
