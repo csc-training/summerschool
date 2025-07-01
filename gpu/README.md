@@ -44,6 +44,17 @@ concepts to solve some more advanced cases.
 
 - [Matrix transpose](exercises/bonus/06-optimization/matrix-transpose)
 
+## OpenMP offloading
+
+
+### Fundamentals
+
+- [Fundamentals](exercises/fundamentals/07-openmp)
+
+### Bonus exercises
+
+- [Bonus](exercises/bonus/07-openmp)
+
 ## Multi-GPU programming
 
 ### Fundamentals
