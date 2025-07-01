@@ -4,6 +4,8 @@ In this demo, we study image classification with [CIFAR100](https://www.cs.toron
 
 We will train a CNN model called [ResNet152](https://docs.pytorch.org/vision/main/models/generated/torchvision.models.resnet152.html). This model has over 60M parameters to train.
 
+During the lecture, we did a step-by-step calculation for the required memory and FLOPs for the training. However these calculations do not consider real-world compute overheads like I/O, kernel launch, etc. It also doesn't consider any memory overheads like `pin_memory` etc. While our network is training, we will use monitoring tools to verify our calculations.
+
 In this demo, we want to monitor the GPU utilization. Let's first refresh our memory about it.
 
 ## Monitoring GPU Utilization
