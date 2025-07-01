@@ -104,7 +104,10 @@ How it works:
 
 
 # DDP AllReduce overlap
-  ![](img/ddp_overlap.png){width=75%}
+Without overlap:
+  ![](img/ddp_non_interleaved.png){.center width=60%}
+With overlap: 
+  ![](img/ddp_overlap.png){.center width=60%}
 
 
 # DDP vs DP
