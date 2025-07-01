@@ -56,11 +56,11 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 
 :::::: {.columns}
 ::: {.column width="50%"}
-**Data Parallelism**  
+**Model Parallelism**  
 ![](img/data_parallelism_general.png){.center width=45%}
 :::
 ::: {.column width="50%"}
-**Model Parallelism (MP)**  
+**Data Parallelism (MP)**  
 ![](img/model_parallelism_general.png){.center width=70%}
 :::
 ::::::
