@@ -2,17 +2,6 @@
 #include <cstdlib>
 #include <mpi.h>
 #include <omp.h>
-
-__attribute__((noinline))
-void increment_kernel(double *data, int N) {
-    // GPU kernel equivalent: increment each element by 1
-    #pragma omp target teams distribute parallel for map(tofrom: data[0:N])
-    for (int i = 0; i < N; i++) {
-        data[i] += 1.0;
-    }
-}
-
-
 void getNodeInfo(int *nodeRank, int *nodeProcs, int *devCount)
 {
     MPI_Comm intranodecomm;
