@@ -1,8 +1,6 @@
-Work in progress...
-
 # Demo
 
-In this demo, we study image classification with [CIFAR100](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. [This image](./img/cifar100.jpg) is a sample of what the dataset looks like. The dataset has 100 classes containing 600 images each.
+In this demo, we study image classification with [CIFAR100](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. [This image](./img/cifar100.jpg) is a sample of what the dataset looks like. The dataset has 100 classes containing 600 images each; 500 image per class is in the trainset.
 
 We will train a CNN model called [ResNet152](https://docs.pytorch.org/vision/main/models/generated/torchvision.models.resnet152.html). This model has over 60M parameters to train.
 
