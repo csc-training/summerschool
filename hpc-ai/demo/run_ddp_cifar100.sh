@@ -1,12 +1,13 @@
 #!/bin/bash
 #SBATCH --job-name=ddp_cifar100
 #SBATCH --account=project_462000956
-#SBATCH --partition=dev-g
+#SBATCH --partition=small-g
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --gpus-per-node=2
 #SBATCH --mem=60G
 #SBATCH --time=0:30:00
+#SBATCH --output=ddp_cifar100-%j.out
 
 module use  /appl/local/containers/ai-modules
 module load singularity-AI-bindings

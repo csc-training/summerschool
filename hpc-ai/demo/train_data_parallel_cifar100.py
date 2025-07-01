@@ -27,7 +27,7 @@ def train():
         transform=transform
     )
     
-    trainloader = DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2, pin_memory=True)
+    trainloader = DataLoader(trainset, batch_size=64, shuffle=True, num_workers=7)
 
     model = get_model()
 
