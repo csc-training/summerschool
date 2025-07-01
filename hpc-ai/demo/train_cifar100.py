@@ -66,8 +66,9 @@ def train():
                     total_time = end_group - start_group
                     avg_iter_time = total_time / 100
 
-                    print(f"[{epoch + 1}, {i + 1}] loss: {running_loss / 100:.3f}, 
-                          iteration_time: {total_time}s time/iter (100): {avg_iter_time:.4f}", 
+                    print(f"[{epoch + 1}, {i + 1}] loss: {running_loss / 100:.3f}, "
+                          f"iteration_time: {total_time}s, "
+                          f"time/iter (100): {avg_iter_time:.4f}", 
                           flush=True)
 
                     writer.add_scalar('training loss', running_loss / 100, epoch * len(trainloader) + i)
