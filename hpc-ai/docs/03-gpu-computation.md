@@ -7,13 +7,13 @@ lang:   en
 # GPUs on LUMI-G
 
 :::::: {.columns}
-::: {.column width="50%"}
-![](img/lumi-g.svg){.center width=90%}
+::: {.column width="60%"}
+![](img/lumi-g.svg){.center width=100%}
 
 <small>LUMI-G Node.</small>
 :::
-::: {.column width="50%"}
-![](img/amd-mi250.avif){.center width=50%}
+::: {.column width="40%"}
+![](img/amd-mi250.avif){.center width=60%}
 
 <small>Single AMD MI250 GPU</small>
 :::
@@ -26,14 +26,16 @@ lang:   en
 - Training ML Models = 2 × FLOPs/pass (forward + backward).
 
 # AMD MI250 GPU Characteristics
-- Computer Power
+- Compute Power [L](https://www.amd.com/en/products/accelerators/instinct/mi200/mi250x.html)
     - Peak FP64 Performance: 47.9 TFLOPs
-    - Peak FP32 Performance: 95.7 TFLOPs
+    - Peak FP32 Performance: 47.9 TFLOPs
     - Peak FP16 Performance: 383 TFLOPs
 
 - Memory
-- 128 GB HBM2e (64 GB per GCD)
-- 3.2 TB/s total memory bandwidth
+    - 128 GB HBM2e (64 GB per GCD)
+
+- This numbers are for 2 GCDs with 220 CU.
+    -- `gpus-per-task=1`  gives you one GCD.
 
 # Peak vs Max-Achievable FLOPs
 
@@ -47,18 +49,17 @@ lang:   en
 - <small>Peak performance is calculated based on the hardware characteristics</small>  
 - <small>$FLOPs/s = Cores \times Ops/Cycle \times Clock$</small>  
 - <small>Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.</small>  
-- <small>Usually **35–70% of Peak FLOPs** in practice</small>
+- <small>Usually **40–70% of Peak FLOPs** in practice</small>
 :::
 ::::::
 
 # ML Parameters vs FLOPs
 
 - **No. Parameters** are static — they define the model size.
-- **FLOPs** depend on:
-    - Input image size
-    - Number of filters
-    - Spatial dimensions
-    - Batch size (for total cost)
+- **FLOPs** depend on data:
+    - Input size
+    - Number of filters, etc
+    - dataset size (for total cost)
 
 - A model with few parameters can still have high FLOPs if it processes high-resolution inputs.
 
@@ -78,8 +79,9 @@ lang:   en
 
 - **Model Info:**
     - Parameters: ~60.2M
-    - FLOPs per image (forward): ~11.5 GFLOPs
-    - Training FLOPs per image: ~23 GFLOPs
+    - Forward FLOPs per image: ~11.5 GFLOPs
+    - Backward FLOPs = 2x forward pass
+    - Training FLOPs per image: ~34.5 GFLOPs
 
 ```python
 import fvcore
@@ -99,38 +101,38 @@ total_params = sum(p.numel() for p in model.parameters())
 | Parameters         | 240 MB        |
 | Adam  Optimizer    | 480 MB        |
 | Gradients          | 240 MB        |
-| Activations*       | ~200 MB       |
+| Activations*       | ~180 MB       |
 | Overhead           | ~1 GB         |
 | **Total**          | ~2 GB         |
 
-- Note: Activations and intermediate results are calculated for one image.
+- For `batch_size=128` VRAM is ~24Gb .
 
 # Example: ResNet-152 with CIFAR-100
 
-- **Convolution FLOPs Estimate**  
-$FLOPs = 2 \times C_{in} \times K^2 \times H \times W \times C_{out}$
-
 - **Per-Image Total FLOPs**  
-$11.5 \times 2\ GFLOPs = 23\ GFLOPs\ per\ image$
+$11.5 \times 3\ GFLOPs = 34.5\ GFLOPs\ per\ image$
 
 - **Total Epoch FLOPs**  
-$FLOPs:\ 23\ GFLOPs \times 50000 = 1.15\ PFLOPs$
+$FLOPs:\ 34.5\ GFLOPs \times 50000 = 1.725\ PFLOPs$
 
 
 - **Usable GPU Throughput (Assuming 35% Efficiency)**  
-$Usable\ Throughput = 0.35 \times 95.7 = 33.5\ TFLOPs/s$
+$Usable\ Throughput = 0.40 \times 47.9 = 19.2\ TFLOPs/s$
 
+- **Usable GCD Throughput**    
+$TFLOPs = \frac{19.2\ TFLOPs}{2\ TFLOPs/s} = 9.6\ TFLOPs/s$
 
 - **Estimate Epoch time**
-$Epoch\ Time = \frac{1.15\ PFLOPs}{33.5\ TFLOPs/s} \approx 34.3\ seconds$
+$Epoch\ Time = \frac{1.725\ PFLOPs}{9.6\ TFLOPs/s} \approx 180\ seconds$
 
 
-# Why Profiling Matters
+# Real-world performance
 
-- Visualize computation, memory, communication.
-- Identify bottlenecks early.
-- Optimize GPU usage efficiently
 - Performance highly depends on Code implementation, I/O, etc.
+- That's why profiling matters:
+    - Visualize computation, memory, communication.
+    - Identify bottlenecks early.
+    - Optimize GPU usage efficiently
 
 # Key Takeaways
 
