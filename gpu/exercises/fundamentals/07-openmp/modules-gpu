@@ -1,0 +1,4 @@
+module load PrgEnv-cray
+module load LUMI/24.03
+module load partition/G
+module load rocm
