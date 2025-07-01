@@ -68,15 +68,10 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 # Data Parallelism
 
 :::::: {.columns}
-::: {.column width="58%"}
+::: {.column width="20%"}
 ![](img/data_parallelism.png){.center width=60%}
 :::
-::: {.column width="40%"}
-- <small>How it works:</small>  
-- <small>Copy model to each GPU.</small>  
-- <small>Split inputs across GPUs.</small>  
-- <small>Compute forward/backward.</small>  
-- <small>Aggregate gradients.</small>
+::: {.column width="80%"}
 
 **Overheads**
 
@@ -85,6 +80,13 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 | Communication Overhead    | High          |
 | Partial distribution      | Possible      |
 | Underutilization          | Possible      |
+<small>
+How it works:
+Copy model to each GPU.
+Split inputs across GPUs.
+Compute forward/backward.
+Aggregate gradients.
+</small>
 :::
 ::::::
  
@@ -151,11 +153,13 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ![](img/tp_example.png){.center width=60%}
 
 # Mix and Match: DP + PP!
-
-![](img/dp_pp.png){.center width=70%}
+  ![](img/dp_pp.png){.center width=70%}
 - This is from [Deepspeed](https://www.microsoft.com/en-us/research/blog/zero-deepspeed-new-system-optimizations-enable-training-models-with-over-100-billion-parameters/)
+
 - It reduces the bubble issue
+
 - For DP, there are two GPUs: GPU0 and GPU1
+
 - Inside each DP rank, there is a PP.
 
 # Reality: 3D Parallelism
