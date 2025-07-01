@@ -125,6 +125,7 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
   - Underutilization is an issue.
   - Maximizes compute by overlapping stages (with microbatching).
 </small>
+:::
 ::: {.column width="40%"}
 <small>
 **Overheads**
