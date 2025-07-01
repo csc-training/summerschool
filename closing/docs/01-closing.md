@@ -15,7 +15,7 @@ lang:   en
   - Understand and modify HPC applications utilizing MPI, OpenMP, and/or HIP/CUDA
 
 
-# LUMI
+# Summer School LUMI project
 
 - Summer School LUMI project will end next week Thursday 10.7.2025
   - Please transfer out the data you wish to keep
@@ -40,6 +40,17 @@ lang:   en
 :::
 ::::::
 
+
+# Using LUMI
+
+- LUMI documentation
+  - <https://docs.lumi-supercomputer.eu/>
+- LUMI training materials
+  - <https://lumi-supercomputer.github.io/LUMI-training-materials/>
+- LUMI AI Guide
+  - <https://github.com/Lumi-supercomputer/LUMI-AI-Guide>
+- LUMI User Support Team
+  - <https://lumi-supercomputer.eu/user-support/need-help/>
 
 
 # Materials
