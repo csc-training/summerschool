@@ -102,7 +102,7 @@ $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
 - **loss function** measures how good/bad a model’s predictions are compared to the actual results: $E=\frac{1}{2}\sum_k\left[ T_k- \varphi_{ok}\right]^2$
 - choose $w_{ijl}$ that minimize the **loss function**, i.e.
 $\frac{\partial E} {\partial w_{ijl} }=0$
-- **training** is an interative **gradient descent** process: $\frac{\partial w_{ijl}}{\partial t}=- \frac{\partial E}{\partial w_{ijl}}$
+- **training** is an iterative **gradient descent** process: $\frac{\partial w_{ijl}}{\partial t}=- \frac{\partial E}{\partial w_{ijl}}$
   -  training is done using labelled/known data (&#x1F91E; the model works for new data)
   
 **Not guaranteed to find the true minima!**
