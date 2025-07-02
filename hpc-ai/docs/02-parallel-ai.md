@@ -1,6 +1,7 @@
 ---
 title:  "Scaling PyTorch Models: Single vs Multi-GPU Training and Techniques"
 event:  CSC Summer School in High-Performance Computing 2025
+author: Hossein Firooz (FCAI / Aalto University)
 lang:   en
 ---
 

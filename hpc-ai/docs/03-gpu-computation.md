@@ -1,6 +1,7 @@
 ---
 title:  Understanding GPU Computational Capabilities
 event:  CSC Summer School in High-Performance Computing 2025
+author: Hossein Firooz (FCAI / Aalto University)
 lang:   en
 ---
 
