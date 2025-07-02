@@ -15,7 +15,7 @@ lang:   en
 
 # Non-blocking communication
 
-- Non-blocking communication operations return immediately and perform sending/receiving in the background
+- Non-blocking communication operations return immediately and perform sending/receiving later or in the background
     - Communication needs to be separately finalized
 - Enables some computing concurrently with communication
 - Avoids many common deadlock situations
