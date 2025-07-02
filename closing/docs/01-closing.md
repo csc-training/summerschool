@@ -15,7 +15,7 @@ lang:   en
   - Understand and modify HPC applications utilizing MPI, OpenMP, and/or HIP/CUDA
 
 
-# Summer School LUMI project
+# LUMI project used during the school
 
 - Summer School LUMI project will end next week Thursday 10.7.2025
   - Please transfer out the data you wish to keep
@@ -51,6 +51,12 @@ lang:   en
   - <https://github.com/Lumi-supercomputer/LUMI-AI-Guide>
 - LUMI User Support Team
   - <https://lumi-supercomputer.eu/user-support/need-help/>
+
+
+# Chat channel
+
+- The chat channel remains open while active, but note that the message retention period is 6 months
+  - <https://chat.csc.fi/group/CSC_Summer_School_in_HPC_2025>
 
 
 # Materials
