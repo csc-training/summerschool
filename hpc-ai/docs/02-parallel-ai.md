@@ -127,12 +127,11 @@ With overlap:
 ![](img/pipeline_parallelism.png){.center width=70%}
 :::
 ::: {.column width="30%"}
-<small>
-Vertical Parallelism: <br>
-- Split the layer-wise across GPUs.
-- Each GPU processes part of the model sequentially.
-- Chain of dependencies
-</small>
+- <small>Vertical Parallelism:</small>
+  - <small>Split the layer-wise across GPUs.</small>
+  - <small>Each GPU processes part of the model sequentially.</small>
+  - <small>Chain of dependencies</small>
+
 :::
 ::: {.column width="40%"}
 <small>
