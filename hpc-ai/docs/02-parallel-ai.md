@@ -94,11 +94,11 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ::::::
  
 
-# Naive Pytorch Data Parallelism (DP)
+# Naive PyTorch Data Parallelism (DP)
   ![](img/pytorch_dp_details.png){width=75%}
 
 
-# Pytroch Distributed Data Parallelism (DDP)
+# PyTorch Distributed Data Parallelism (DDP)
   ![](img/pytorch_ddp_details.png){width=75%}
 
 
@@ -149,7 +149,7 @@ With overlap:
 # Bubble issue and GPipe
 <div class="column"  style="width:80%; text-align: center;">
   ![](img/mp_vs_gpipe.png){width=80%}
-  - <small>Picture from [GPipe Paper, arXiv:1811.06965](https://arxiv.org/abs/1811.06965)</small>
+  <br><small>Picture from [GPipe Paper, arXiv:1811.06965](https://arxiv.org/abs/1811.06965)</small>
 </div>
 - GPipe divides the data to micro-batch to reduce the bubble issue.
 
