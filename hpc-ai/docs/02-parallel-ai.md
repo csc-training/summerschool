@@ -151,7 +151,7 @@ With overlap:
   ![](img/mp_vs_gpipe.png){width=80%}
   - <small>Picture from [GPipe Paper, arXiv:1811.06965](https://arxiv.org/abs/1811.06965)</small>
 </div>
-- GPipe divided the data to micro-batch to reduce the bubble issue.
+- GPipe divides the data to micro-batch to reduce the bubble issue.
 
 
 # MP: Tensor Parallelism
