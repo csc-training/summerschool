@@ -429,45 +429,91 @@ constexpr size_t pop() const { return calculateIndex({i + 1, j    , k + 1}); }
     - Plot execution time vs. amount of resources used: **should be inversely proportional**
 
 
-# Case Vlasiator: Weak scaling
+# Case Vlasiator: Weak scaling on Mahti
 
 <div class=column>
-![](images/vlasiator_weak_scaling.png){.center width=100%}
+![](images/vlasiator_mahti_weak_scaling.png){.center width=100%}
 </div>
 
 <div class=column>
-![](images/vlasiator_weak_scaling_efficiency.png){.center width=100%}
-</div>
-
-# Case Vlasiator: Strong scaling (light)
-
-<div class=column>
-![](images/vlasiator_strong_scaling_light.png){.center width=100%}
-</div>
-
-<div class=column>
-![](images/vlasiator_strong_scaling_efficiency_light.png){.center width=100%}
-</div>
-
-# Case Vlasiator: Strong scaling (medium)
-
-<div class=column>
-![](images/vlasiator_strong_scaling_medium.png){.center width=100%}
-</div>
-
-<div class=column>
-![](images/vlasiator_strong_scaling_efficiency_medium.png){.center width=100%}
+![](images/vlasiator_mahti_weak_scaling_efficiency.png){.center width=100%}
 </div>
 
 
-# Case Vlasiator: Strong scaling (heavy)
+# Case Vlasiator: Weak scaling on LUMI-C
 
 <div class=column>
-![](images/vlasiator_strong_scaling_heavy.png){.center width=100%}
+![](images/vlasiator_lumic_weak_scaling.png){.center width=100%}
 </div>
 
 <div class=column>
-![](images/vlasiator_strong_scaling_efficiency_heavy.png){.center width=100%}
+![](images/vlasiator_lumic_weak_scaling_efficiency.png){.center width=100%}
+</div>
+
+
+# Case Vlasiator: Strong scaling (light) on Mahti
+
+<div class=column>
+![](images/vlasiator_mahti_strong_scaling_light.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_mahti_strong_scaling_efficiency_light.png){.center width=100%}
+</div>
+
+
+# Case Vlasiator: Strong scaling (light) on LUMI-C
+
+<div class=column>
+![](images/vlasiator_lumic_strong_scaling_light.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_lumic_strong_scaling_efficiency_light.png){.center width=100%}
+</div>
+
+
+# Case Vlasiator: Strong scaling (medium) on Mahti
+
+<div class=column>
+![](images/vlasiator_mahti_strong_scaling_medium.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_mahti_strong_scaling_efficiency_medium.png){.center width=100%}
+</div>
+
+
+# Case Vlasiator: Strong scaling (medium) on LUMI-C
+
+<div class=column>
+![](images/vlasiator_lumic_strong_scaling_medium.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_lumic_strong_scaling_efficiency_medium.png){.center width=100%}
+</div>
+
+
+# Case Vlasiator: Strong scaling (heavy) on Mahti
+
+<div class=column>
+![](images/vlasiator_mahti_strong_scaling_heavy.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_mahti_strong_scaling_efficiency_heavy.png){.center width=100%}
+</div>
+
+
+# Case Vlasiator: Strong scaling (heavy) on LUMI-C
+
+<div class=column>
+![](images/vlasiator_lumic_strong_scaling_heavy.png){.center width=100%}
+</div>
+
+<div class=column>
+![](images/vlasiator_lumic_strong_scaling_efficiency_heavy.png){.center width=100%}
 </div>
 
 
