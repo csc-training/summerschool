@@ -184,7 +184,7 @@ With overlap:
 
 # How MP works?
 
-![](img/tp_example.png){.center width=60%}
+![](img/tp_example.png){width=60%}
 
 # Mix and Match: DP + PP!
   ![](img/dp_pp.png){.center width=70%}
