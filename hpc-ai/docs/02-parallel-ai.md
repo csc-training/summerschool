@@ -94,7 +94,7 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ::::::
  
 
-# Naive Pytroch Data Parallelism (DP)
+# Naive Pytorch Data Parallelism (DP)
   ![](img/pytorch_dp_details.png){width=75%}
 
 
