@@ -73,13 +73,12 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 :::
 ::: {.column width="30%"}
 
-<small>
-How it works:
-1. Copy model to each GPU.
-2. Split inputs across GPUs.
-3. Compute forward/backward.
-4. Aggregate gradients.
-</small>
+- <small> How it works:</small>
+- <small> Copy model to each GPU.</small>
+- <small>Split inputs across GPUs.</small>
+- <small>Compute forward/backward.</small>
+- <small>Aggregate gradients.</small>
+
 :::
 ::: {.column width="40%"}
 <small>
@@ -128,9 +127,9 @@ With overlap:
 :::
 ::: {.column width="30%"}
 - <small>Vertical Parallelism:</small>
-  - <small>Split the layer-wise across GPUs.</small>
-  - <small>Each GPU processes part of the model sequentially.</small>
-  - <small>Chain of dependencies</small>
+- <small>Split layer-wise across GPUs.</small>
+- <small>Each GPU processes part of the model sequentially.</small>
+- <small>Chain of dependencies</small>
 
 :::
 ::: {.column width="40%"}
@@ -162,12 +161,10 @@ With overlap:
 ![](img/tensor_parallelism.png){.center width=70%}
 :::
 ::: {.column width="30%"}
-<small>
--Horizontal Parallelism:
-  - Divide tensors horizontally.
-  - Store part of the layers or blocks on different GPUs.
-  - Concat outputs between GPUs manually.
-</small>
+- <small> Horizontal Parallelism:</small>
+- <small> Divide tensors horizontally.</small>
+- <small> Store part of the layers or blocks on different GPUs.</small>
+- <small> Concat outputs between GPUs manually.</small>
 :::
 ::: {.column width="40%"}
 <small>
