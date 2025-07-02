@@ -161,10 +161,10 @@ With overlap:
 ![](img/tensor_parallelism.png){.center width=70%}
 :::
 ::: {.column width="30%"}
-- <small> Horizontal Parallelism:</small>
-- <small> Divide tensors horizontally.</small>
-- <small> Store part of the layers or blocks on different GPUs.</small>
-- <small> Concat outputs between GPUs manually.</small>
+- <small>Horizontal Parallelism:</small>
+- <small>Divide tensors horizontally.</small>
+- <small>Store part of the layers or blocks on different GPUs.</small>
+- <small>Concat outputs between GPUs manually.</small>
 :::
 ::: {.column width="40%"}
 <small>
