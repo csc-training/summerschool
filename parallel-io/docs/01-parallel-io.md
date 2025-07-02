@@ -218,7 +218,7 @@ Binary files should be preferred for storing large datasets:
 - Smaller file sizes compared to text files (no need for character formatting)
 - Choose your file format and structure carefully
     - Creating your own format means only you know how to read them!
-    - Prefer standardized formats: `HDF5`, `netCDF` *etc.*
+    - Prefer standardized formats: `HDF5`, `netCDF`, `Parquet`, *etc.*
 
 Human-readable text files are common for small configuration/input files.
 
