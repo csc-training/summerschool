@@ -128,7 +128,7 @@ With overlap:
 :::
 ::: {.column width="30%"}
 <small>
-Vertical Parallelism: 
+Vertical Parallelism: <br>
 - Split the layer-wise across GPUs.
 - Each GPU processes part of the model sequentially.
 - Chain of dependencies
