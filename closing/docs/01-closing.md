@@ -81,6 +81,12 @@ lang:   en
   <https://csc.fi/en/trainings/training-calendar/>
 
 
+# Bus to Helsinki
+
+- Bus to Helsinki leaves at 13. Please be at the hotel lobby by 12:55
+- Please let us know if you are not taking the bus
+
+
 # Certificate
 
 - You should have received a training certificate by email already
