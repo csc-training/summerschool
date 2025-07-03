@@ -53,10 +53,13 @@ lang:   en
   - <https://lumi-supercomputer.eu/user-support/need-help/>
 
 
-# Chat channel
+# Keeping contact
 
 - The chat channel remains open while active, but note that the message retention period is 6 months
   - <https://chat.csc.fi/group/CSC_Summer_School_in_HPC_2025>
+- A LinkedIn group for present participants and alumni
+  - <https://www.linkedin.com/groups/12051233>
+- Email works too
 
 
 # Materials
