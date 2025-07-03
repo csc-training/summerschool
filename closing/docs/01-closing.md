@@ -48,7 +48,7 @@ lang:   en
 - LUMI training materials
   - <https://lumi-supercomputer.github.io/LUMI-training-materials/>
 - LUMI AI Guide
-  - <https://github.com/Lumi-supercomputer/LUMI-AI-Guide>
+  - <https://github.com/Lumi-supercomputer/LUMI-AI-Guide/>
 - LUMI User Support Team
   - <https://lumi-supercomputer.eu/user-support/need-help/>
 
