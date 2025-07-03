@@ -18,7 +18,8 @@ lang:   en
 # LUMI project used during the school
 
 - Summer School LUMI project will end next week Thursday 10.7.2025
-  - Please transfer out the data you wish to keep
+- Summer School Mahti project will end next week Friday 11.7.2025
+- Remember to transfer out all the data you wish to keep before the project ends
 
 
 # Using LUMI beyond the school
