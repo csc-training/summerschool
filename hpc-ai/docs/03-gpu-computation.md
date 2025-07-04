@@ -9,14 +9,18 @@ lang:   en
 
 :::::: {.columns}
 ::: {.column width="60%"}
+<center>
 ![](img/lumi-g.svg){.center width=100%}
 
-<small>LUMI-G Node.</small>
+<small>LUMI-G Node</small>
+</center>
 :::
 ::: {.column width="40%"}
+<center>
 ![](img/amd-mi250.avif){.center width=60%}
 
 <small>Single AMD MI250X GPU</small>
+</center>
 :::
 ::::::
 
@@ -131,10 +135,10 @@ $\frac{1.725\ \text{PFLOP}}{9.6\ \text{TFLOPS}} \approx 180\ \text{seconds}$
 
 # Real-world performance
 
-- Performance highly depends on Code implementation, I/O, etc.
+- Performance highly depends on code implementation, I/O, etc.
 - That's why profiling matters:
-    - Visualize computation, memory, communication.
-    - Identify bottlenecks early.
+    - Visualize computation, memory, communication
+    - Identify bottlenecks early
     - Optimize GPU usage efficiently
 
 # Key Takeaways
