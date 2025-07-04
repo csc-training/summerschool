@@ -112,7 +112,7 @@ total_params = sum(p.numel() for p in model.parameters())
 | Overhead           | ~1 GB         |
 | **Total**          | ~2 GB         |
 
-- For `batch_size=128` VRAM is ~24Gb .
+- For `batch_size=128` VRAM is ~24 GB
 
 # Example: ResNet-152 with CIFAR-100
 
