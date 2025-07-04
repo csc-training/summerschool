@@ -31,10 +31,9 @@ lang:   en
 ![](img/single_gpu.png){.center width=30%}
 :::
 ::: {.column width="50%"}
-- <small>How it works:</small>  
-- <small>Entire model & data on one GPU.</small>  
-- <small>Pros: Simple, fast for small models.</small>  
-- <small>Cons: Not scalable to large models/datasets.</small>
+- Entire model & data on one GPU
+- Pros: Simple, fast for small models
+- Cons: Not scalable to large models/dataset
 :::
 ::::::
 
@@ -73,13 +72,10 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ![](img/data_parallelism.png){.center width=70%}
 :::
 ::: {.column width="30%"}
-
-- <small> How it works:</small>
-- <small> Copy model to each GPU.</small>
-- <small>Split inputs across GPUs.</small>
-- <small>Compute forward/backward.</small>
-- <small>Aggregate gradients.</small>
-
+- <small>Copy model to each GPU</small>
+- <small>Split inputs across GPUs</small>
+- <small>Compute forward/backward</small>
+- <small>Aggregate gradients</small>
 :::
 ::: {.column width="40%"}
 <small>
@@ -127,9 +123,9 @@ With overlap:
 ![](img/pipeline_parallelism.png){.center width=70%}
 :::
 ::: {.column width="30%"}
-- <small>Vertical Parallelism:</small>
-- <small>Split layer-wise across GPUs.</small>
-- <small>Each GPU processes part of the model sequentially.</small>
+- <small>Vertical Parallelism</small>
+- <small>Split layer-wise across GPUs</small>
+- <small>Each GPU processes part of the model sequentially</small>
 - <small>Chain of dependencies</small>
 
 :::
@@ -162,10 +158,10 @@ With overlap:
 ![](img/tensor_parallelism.png){.center width=70%}
 :::
 ::: {.column width="30%"}
-- <small>Horizontal Parallelism:</small>
-- <small>Divide tensors horizontally.</small>
-- <small>Store part of the layers or blocks on different GPUs.</small>
-- <small>Concat outputs between GPUs manually.</small>
+- <small>Horizontal Parallelism</small>
+- <small>Divide tensors horizontally</small>
+- <small>Store part of the layers or blocks on different GPUs</small>
+- <small>Concat outputs between GPUs manually</small>
 :::
 ::: {.column width="40%"}
 <small>
@@ -195,7 +191,7 @@ This is from [DeepSpeed](https://www.microsoft.com/en-us/research/blog/zero-deep
 
 - It reduces the bubble issue
 - For DP, there are two GPUs: GPU0 and GPU1
-- Inside each DP rank, there is a PP.
+- Inside each DP rank, there is a PP
 
 # Reality: 3D Parallelism
 
@@ -204,18 +200,18 @@ This is from [DeepSpeed](https://www.microsoft.com/en-us/research/blog/zero-deep
 ![](img/parallelism_3d.png){.center width=100%}
 :::
 ::: {.column width="55%"}
-- In real world: Data Parallel + Tensor Parallel + Pipeline Parallel are combined.  
-- Example: Training GPT-3 used all three.
+- In real world: Data Parallel + Tensor Parallel + Pipeline Parallel are combined
+- Example: Training GPT-3 used all three
 :::
 ::::::
 
 
 # ZeRO: Advanced Data Parallelism
-- Issue with DP: Full optimizer states and gradients duplicated on every GPU.
+- Issue with DP: Full optimizer states and gradients duplicated on every GPU
   - Not efficient with VRAM
-- ZeRO Idea: Partition optimizer states, gradients, and parameters across GPUs.
+- ZeRO Idea: Partition optimizer states, gradients, and parameters across GPUs
 - Result: Efficient use of VRAM
-  - Train MUCH larger models without running out of memory.
+  - Train MUCH larger models without running out of memory
 
 
 # ZeRO
@@ -231,9 +227,9 @@ This is from [DeepSpeed](https://www.microsoft.com/en-us/research/blog/zero-deep
 - Zero-2: Optimizer + Gradient Partitioning
   - 8x memory reduction, same communication volume as DP
 - Zero-3: Optimizer + Gradient + Parameter Partitioning
-  - Memory reduction is linear with DP degree.
-  - For example, with 64 GPUs will yield a 64x memory reduction.
-  - There is a modest 50% increase in communication volume.
+  - Memory reduction is linear with DP degree
+  - For example, with 64 GPUs will yield a 64x memory reduction
+  - There is a modest 50% increase in communication volume
 
   
 # Summary
