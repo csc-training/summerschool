@@ -241,7 +241,7 @@ This is from [DeepSpeed](https://www.microsoft.com/en-us/research/blog/zero-deep
 - Model doesn’t fit onto a single GPU
   - Fast intra-node/GPU connection &rarr; PP, ZeRO, TP
   - Without intra-node/GPU connection &rarr; PP
-- Largest Layer not fitting into a single GPU &rarr; TP
+- Largest layer not fitting into a single GPU &rarr; TP
 - Multi-Node / Multi-GPU:
   - ZeRO - as it requires close to no modifications to the model
   - PP+TP+DDP: less communications, but requires massive changes to the model
