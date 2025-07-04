@@ -413,7 +413,7 @@ data`, we can get corresponding device address by
 
 # Device functions: `declare target`
 
-- HIP/CUDA: `__device__` functions can be called from kernels.
+- HIP/CUDA: `__device__` functions can be called from kernels
 - OpenMP: `declare target` construct does the same thing
 - Also works with global variables
 - No shared objects
@@ -427,8 +427,7 @@ data`, we can get corresponding device address by
 double fun(double a, double b);
 #pragma omp end declare target
 ...
-
-#pragma omp target 
+#pragma omp target
 #pragma omp teams distribute parallel for
 for (int i = 0; i < NX; i++) {
   vecC[i] = fun(vecA[i], vecB[i]);
