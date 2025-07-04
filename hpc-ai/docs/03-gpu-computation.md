@@ -20,49 +20,51 @@ lang:   en
 :::
 ::::::
 
-# FLOPs (Floating Point Operations)
+# FLOPS (Floating point operations per second)
 
-- FLOPs measure how many arithmetic operations a model performs.
-- Commonly used to estimate compute cost of training/inference.
-- Training ML Models =  Forward pass + Backward pass.
+- Performance is often measured in FLOPS (FLOP/s)
+- FLOP count measure the number of arithmetic operations a model performs
+  - Commonly used to estimate compute cost of training/inference
+- Training ML Models = Forward pass + Backward pass
 
 # AMD MI250X GPU Characteristics
 - Compute Power [(Link)](https://www.amd.com/en/products/accelerators/instinct/mi200/mi250x.html)
-    - Peak FP64 Performance: 47.9 TFLOPs
-    - Peak FP32 Performance: 47.9 TFLOPs
-    - Peak FP16 Performance: 383 TFLOPs
+    - Peak FP64 Performance: 47.9 TFLOPS
+    - Peak FP32 Performance: 47.9 TFLOPS
+    - Peak FP16 Performance: 383 TFLOPS
 
 - Memory
     - 128 GB HBM2e (64 GB per GCD)
 
-- This numbers are for 2 GCDs with 220 CU.
-    - `gpus-per-task=1`  gives you one GCD.
+- These numbers are for 2 GCDs with 220 CUs
+    - `--gpus-per-task=1` gives you one GCD
 
-# Peak vs Max-Achievable FLOPs
+# Peak vs Max-Achievable FLOPS
 
 :::::: {.columns}
 ::: {.column width="50%"}
+<center>
 ![](img/maf-flops.png){.center width=80%}
-
 <small>Picture from [AMD](https://rocm.blogs.amd.com/software-tools-optimization/Understanding_Peak_and_Max-Achievable_FLOPS/README.html)</small>
+</center>
+
 :::
-::: {.column width="50%"}
-- <small>Peak performance is calculated based on the hardware characteristics</small>  
-- <small>$FLOPs/s = Cores \times Ops/Cycle \times Clock$</small>  
-- <small>Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.</small>  
-- <small>Usually **40–70% of Peak FLOPs** in practice</small>
+::: {.column width="45%"}
+- Peak performance is calculated based on the hardware characteristics
+  - <small>$\text{FLOPS} = \text{Cores} \times \text{Ops/Cycle} \times \text{Clock}$</small>
+- Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.
+- Usually **40–70% of Peak FLOPS** in practice
 :::
 ::::::
 
-# ML Parameters vs FLOPs
+# ML Parameters vs FLOP count
 
-- **No. Parameters** are static — they define the model size.
-- **FLOPs** depend on data:
+- **No. Parameters** are static — they define the model size
+- **FLOP count** depends on data:
     - Input size
     - Number of filters, etc
-    - dataset size (for total cost)
-
-- A model with few parameters can still have high FLOPs if it processes high-resolution inputs.
+    - Dataset size (for total cost)
+- A model with few parameters can still have high FLOP count if it processes high-resolution inputs
 
 # VRAM Usage Breakdown
 
@@ -80,9 +82,9 @@ lang:   en
 
 - **Model Info:**
     - Parameters: ~60.2M
-    - Forward FLOPs per image: ~11.5 GFLOPs
-    - Backward FLOPs = 2x forward pass [(Link)](https://epoch.ai/blog/backward-forward-FLOP-ratio)
-    - Training FLOPs per image: ~34.5 GFLOPs
+    - Forward FLOP count per image: ~11.5 GFLOP
+    - Backward FLOP = 2x forward pass [(Link)](https://epoch.ai/blog/backward-forward-FLOP-ratio)
+    - Training FLOP per image: ~34.5 GFLOP
 
 ```python
 import fvcore
@@ -110,21 +112,21 @@ total_params = sum(p.numel() for p in model.parameters())
 
 # Example: ResNet-152 with CIFAR-100
 
-- **Per-Image Total FLOPs**  
-$11.5 \times 3\ GFLOPs = 34.5\ GFLOPs\ per\ image$
+- **Per-Image Total FLOP Count:**
+$3 \times 11.5\ \text{GFLOP} = 34.5\ \text{GFLOP\ per\ image}$
 
-- **Total Epoch FLOPs**  
-$FLOPs:\ 34.5\ GFLOPs \times 50000 = 1.725\ PFLOPs$
+- **Total Epoch FLOP Count:**
+$34.5\ \text{GFLOP} \times 50000 = 1.725\ \text{PFLOP}$
 
 
-- **Usable GPU Throughput (Assuming 35% Efficiency)**  
-$Usable\ Throughput = 0.40 \times 47.9 = 19.2\ TFLOPs/s$
+- **Usable Throughput for MI250X GPU (Assuming 40% Efficiency):**
+$0.40 \times 47.9\ \text{TFLOPS} = 19.2\ \text{TFLOPS}$
 
-- **Usable GCD Throughput**    
-$TFLOPs = \frac{19.2\ TFLOPs}{2} = 9.6\ TFLOPs/s$
+- **Usable Throughput for Single GCD (2 GCD per GPU):**
+$\frac{19.2\ \text{TFLOPS}}{2} = 9.6\ \text{TFLOPS}$
 
-- **Estimate Epoch time**
-$Epoch\ Time = \frac{1.725\ PFLOPs}{9.6\ TFLOPs/s} \approx 180\ seconds$
+- **Estimated Epoch Time:**
+$\frac{1.725\ \text{PFLOP}}{9.6\ \text{TFLOPS}} \approx 180\ \text{seconds}$
 
 
 # Real-world performance
@@ -137,8 +139,8 @@ $Epoch\ Time = \frac{1.725\ PFLOPs}{9.6\ TFLOPs/s} \approx 180\ seconds$
 
 # Key Takeaways
 
-- FLOPs are a function of input, not just model size.
-- VRAM usage is dominated by activations, especially in deep models. 
+- FLOP count depends also on input, not just model size
+- VRAM usage is dominated by activations, especially in deep models
   - We have control over the `batch_size`
-- Mixed precision and parallelism help reach closer to max achievable FLOPs.
-- Always measure real-time training performance to understand bottlenecks.
+- Mixed precision and parallelism help reach closer to max achievable FLOPS
+- Always measure real-time training performance to understand bottlenecks
