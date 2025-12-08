@@ -5,7 +5,7 @@ SPDX-FileCopyrightText: CSC Training <www.csc.fi>
 SPDX-License-Identifier: CC-BY-4.0
 -->
 
-# CSC Summer School in High-Performance Computing 2025
+# CSC Summer School in High-Performance Computing 2026
 
 This is the material repository for the High-Performance Computing Summer School organized by [CSC - IT Center for Science](https://csc.fi/en/).
 
@@ -25,7 +25,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 
 ## Schedule
 
-### Day 1, Tue 24.6.
+### Day 1, Tue 23.6.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -40,7 +40,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 18:00 | Exercises
 | 19:00 | Get together & Lightning talks
 
-### Day 2, Wed 25.6.
+### Day 2, Wed 24.6.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -55,7 +55,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | **18:15** | Exercises
 | 19:30 | Snack & Saunas at the lake
 
-### Day 3, Thu 26.6.
+### Day 3, Thu 25.6.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -71,7 +71,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 19:30 | Free time
 | 20:00 | Snack available at the hotel restaurant until 21:30
 
-### Day 4, Fri 27.6.
+### Day 4, Fri 26.6.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -86,7 +86,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 18:00 | Exercises
 | 19:30 | Snack & Saunas at the lake
 
-### Day 5, Sat 28.6.
+### Day 5, Sat 27.6.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -100,7 +100,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 18:00 | Free time
 | 20:00 | Snack available at the hotel restaurant until 21:30
 
-### Day 6, Sun 29.6.
+### Day 6, Sun 28.6.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -113,7 +113,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 17:00 | Dinner
 | 18:00 | Free time / Trekking in Nuuksio (Packed snack available at the hotel restaurant)
 
-### Day 7, Mon 30.6.
+### Day 7, Mon 29.6.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -128,7 +128,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 18:00 | Exercises
 | 19:30 | Snack & Saunas at the lake
 
-### Day 8, Tue 1.7.
+### Day 8, Tue 30.6.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -144,7 +144,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 19:30 | Free time
 | 20:00 | Snack available at the hotel restaurant until 21:30
 
-### Day 9, Wed 2.7.
+### Day 9, Wed 1.7.
 
 | Time  | Topic |
 | ----  | ----- |
@@ -158,7 +158,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 16:00 | Sports: Boating at the lake
 | 19:00 | Farewell party and dinner
 
-### Day 10, Thu 3.7.
+### Day 10, Thu 2.7.
 
 | Time  | Topic |
 | ----  | ----- |
