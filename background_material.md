@@ -26,7 +26,7 @@ If you are not familiar with these commands, please check [this Linux tutorial](
 Here is an example C code `test.c` containing elements that are expected to be familiar.
 If you want to refresh your C knowledge, please check, for example, [this C tutorial](https://www.w3schools.com/c/).
 
-```c
+```cpp
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -114,21 +114,20 @@ This gives the following output:
 
 
 Many core HPC libraries make extensive use of pointers, so please make sure you are familiar with common pointer syntax. Here is a brief cheatsheet:
-```c
+```cpp
 double* a; // variable `a` is a pointer to double; uninitialized.
 double *b; // same as `double* b;`. Whitespace is irrelevant
 
 double value = 42.0; // not a pointer
-a = &value; // take address of `value` and assign it to pointer `a`
-*a; // dereference the pointer, gives the value 42.0
-double same_value = *a; // 42.0
+a = &value; // use operator & to take address of `value`, assign the address of `value` to pointer `a`
+double same_value = *a; // use operator * to dereference the pointer, gives the value 42.0
 
 // Note how the * operator has multiple meanings:
 double value_times_value = (*a) * value; // multiplication, 42.0 * 42.0
 
 double array[3] = { 1.0, 2.0, 3.0 }; // array of 3 doubles
 a = array; // `a` now points to the first element of `array`
-a = &array[0]; // same as above. Can you understand why?
+a = &array[0]; // same as above (address of the first element)
 a[2] = 0.0; // Modifies the last element of `array`
 
 // NULL is a special pointer that "points to nothing". It is defined in stddef.h.
@@ -138,7 +137,7 @@ double* ptr = NULL;
 ```
 
 You should also be familiar with C preprocessor directives:
-```c
+```cpp
 // Preprocessor "#include" does a copy & paste of another file, usually a header.
 // For standard headers like stdio.h use "#include <some_standard_header.h>" instead
 #include "some_header.h"
@@ -156,13 +155,13 @@ Please review the C++ section below how this same C code could look like in C++.
 
 ## C++
 
-The C++ language originally started as an object-oriented extension of C but has long since grown into its own programming ecosystem with different conventions and practices. C++ is required for the GPU sections of this summer school as the low-level GPU frameworks (CUDA, HIP) are extensions of C++, but with a C-style interface.
+C++ is, for the most part, compatible with the C language while also adding a plethora of new features and higher-level abstractions. C++ is required for the GPU sections of this summer school as the low-level GPU frameworks (CUDA, HIP) are extensions of C++, but with a C-style interface. Our exercise model solutions also tend to prefer C++ over C.
 
 We make some use of the C++ Standard Template Library (STL) which provides a handy collection of common container types and other helpers. Apart from these our use of C++ features is kept to a minimum for simplicity:
 - Very little object-oriented code.
 - From STL we mainly use `std::vector` for dynamic arrays, sometimes `std::array` for static arrays. These act as drop-in replacements for raw C-style arrays but provide automatic memory management. The "prefix" `std::` is a namespace specifier; all STL objects and functions reside in the `std` namespace.
 - `constexpr` is used for compile-time constants. This is a type-safe replacement for preprocessor constants created with `#define`.
-- Passing variables by reference to functions. Eg. `void some_function(int &a, const std::vector<double>& b);` declares that the integer `a` parameter is always passed by reference, and `b` (dynamic array of doubles) is always passed by constant reference.
+- Passing variables to functions by reference (meaning no copies of the arguments are taken).
 
 Below is an example C++ code `test.cpp` containing elements that are expected to be familiar.
 
@@ -188,7 +187,7 @@ double calculate_sum(int n, const double *array)
     return sum;
 }
 
-// Same as above, but using C++ style dynamic array which we pass by a const reference
+/* Same as above, but using C++ style dynamic array. The operator & denotes that the std::vector<double> variable is passed by reference (no copy), and we further require the reference to be const (variable is read-only inside the function). */
 double calculate_sum_cpp(const std::vector<double>& array)
 {
     double sum = 0.0;
@@ -205,12 +204,11 @@ double calculate_sum_cpp(const std::vector<double>& array)
 // Main function
 int main(int argc, char *argv[])
 {
-    // This is a compile-time constant
-    constexpr int exactPi = 3;
-
-    // Declare variables
-    int n = 4;
+    // Declare a variable
     double sum;
+
+    // This is a compile-time constant
+    constexpr int n = 4;
 
     // C-style formatted print can still be used
     printf("Hello n=%d\n", n);
