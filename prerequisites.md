@@ -1,9 +1,10 @@
-# Background knowledge material
+# Prerequisite Knowledge
 
-To get most of the summer school, it is expected to have basic working knowledge on Linux and C, C++, or Fortran.
+To get most of the summer school, it is expected to have basic working knowledge on Linux and C or C++ (MPI and OpenMP modules of the school can also be completed optionally with Fortran instead of C or C++).
 You can use this document to check the expected knowledge and prepare before the summer school starts.
 
 Feel free to contact the course organizers if you have any questions.
+
 
 ## Linux and command line shell
 
@@ -21,20 +22,31 @@ rm file3.txt                # rm - remove files
 
 If you are not familiar with these commands, please check [this Linux tutorial](https://docs.csc.fi/support/tutorials/env-guide/).
 
+
 ## C
 
 Here is an example C code `test.c` containing elements that are expected to be familiar.
 If you want to refresh your C knowledge, please check, for example, [this C tutorial](https://www.w3schools.com/c/).
 
 ```cpp
-#include <stdio.h>
-#include <stdlib.h>
-
 // This is a comment
 
 /*
 This is a multi-line comment
 */
+
+// Preprocessor "#include" does a copy-and-paste of another file, usually a header
+#include <stdio.h>
+#include <stdlib.h>
+
+// Preprocessor constant definition
+#define N 4
+
+// Preprocessor macro
+// Somewhat similar to a function, but the compiler literally replaces every occurance of MY_MACRO with the macro body.
+// So MY_MACRO(2) would become (2 + 1)
+#define MY_MACRO(x) (x + 1)
+
 
 // Function definition
 double calculate_sum(int n, const double *array)
@@ -54,21 +66,17 @@ double calculate_sum(int n, const double *array)
 // Main function
 int main(int argc, char *argv[])
 {
-    // Declare variables
-    int n = 4;
+    // Declare variable
     double sum;
 
-    // Explicit type cast: convert 'n' to double type
-    double n_double = (double) n;
-
     // Print
-    printf("Hello n=%d\n", n);
+    printf("Hello n=%d\n", N);
 
     // Declare a fixed-length array
-    double a[4] = {1.1, 2.2, 3.3, 4.4};
+    double a[N] = {1.1, 2.2, 3.3, 4.4};
 
     // Call a function
-    sum = calculate_sum(4, a);
+    sum = calculate_sum(N, a);
     printf("Sum of a is %f\n", sum);
 
     // Control statement
@@ -79,7 +87,11 @@ int main(int argc, char *argv[])
     }
 
     // Allocate a dynamic array
+    int n = N;
     double *b = (double*)malloc(sizeof(double) * n);
+
+    // Explicit type cast: convert 'n' to double type
+    double n_double = (double) n;
 
     // Set the array values by looping over array
     for (int i = 0; i < n; ++i) {
@@ -112,6 +124,11 @@ This gives the following output:
     Sum is large
     Sum of b is 6.600000
 
+In addition to C, it is beneficial to have some knowledge on C++ as we will use C++ standard library containers (array and vector) in many code examples and exercises.
+Please review the C++ section below how this same C code could look like in C++.
+
+
+## C pointers
 
 Many core HPC libraries make extensive use of pointers, so please make sure you are familiar with common pointer syntax. Here is a brief cheatsheet:
 ```cpp
@@ -136,41 +153,27 @@ double* ptr = NULL;
 *ptr = 42.0; // illegal, likely segmentation fault
 ```
 
-You should also be familiar with C preprocessor directives:
-```cpp
-// Preprocessor "#include" does a copy & paste of another file, usually a header.
-// For standard headers like stdio.h use "#include <some_standard_header.h>" instead
-#include "some_header.h"
-
-// Preprocessor constant definition. Use sparingly, prefer const variables instead
-#define MY_PREPROCESSOR_CONSTANT 42
-
-/* Preprocessor macro. Somewhat similar to a function, but the compiler literally replaces every occurance of MY_MACRO with the macro body.
-So MY_MACRO(2) would become 2 + 1 */
-#define MY_MACRO(x) x + 1
-```
-
-In addition to C, it is beneficial to have some knowledge on C++ as we will use C++ standard library containers (array and vector) in some code examples and exercises.
-Please review the C++ section below how this same C code could look like in C++.
 
 ## C++
 
-C++ is, for the most part, compatible with the C language while also adding a plethora of new features and higher-level abstractions. C++ is required for the GPU sections of this summer school as the low-level GPU frameworks (CUDA, HIP) are extensions of C++, but with a C-style interface. Our exercise model solutions also tend to prefer C++ over C.
+C++ is, for the most part, compatible with the C language while also adding a plethora of new features and higher-level abstractions.
+C++ is required for the GPU sections of this summer school as the low-level GPU frameworks (CUDA, HIP) are extensions of C++, but with a C-style interface.
+The exercises also tend to prefer C++ over C.
 
-We make some use of the C++ Standard Template Library (STL) which provides a handy collection of common container types and other helpers. Apart from these our use of C++ features is kept to a minimum for simplicity:
+We make some use of the C++ Standard Template Library (STL) which provides a handy collection of common container types and other helpers.
+Apart from these our use of C++ features is kept to a minimum for simplicity:
 - Very little object-oriented code.
 - From STL we mainly use `std::vector` for dynamic arrays, sometimes `std::array` for static arrays. These act as drop-in replacements for raw C-style arrays but provide automatic memory management. The "prefix" `std::` is a namespace specifier; all STL objects and functions reside in the `std` namespace.
 - `constexpr` is used for compile-time constants. This is a type-safe replacement for preprocessor constants created with `#define`.
 - Passing variables to functions by reference (meaning no copies of the arguments are taken).
 
 Below is an example C++ code `test.cpp` containing elements that are expected to be familiar.
-
 If you want to refresh your C++ knowledge, please check, for example, [this C++ tutorial](https://www.w3schools.com/cpp/).
 
 ```cpp
-#include <vector> // gives std::vector
-#include <array> // gives std::array
-#include <cstdio> // C-style IO routines (could also just include stdio.h)
+#include <vector>  // gives std::vector
+#include <array>   // gives std::array
+#include <cstdio>  // gives C-style IO routines (could alternatively include stdio.h)
 
 // Function definition like in C. array is passed as a pointer, and n is the number of elements in the array
 double calculate_sum(int n, const double *array)
@@ -208,13 +211,13 @@ int main(int argc, char *argv[])
     double sum;
 
     // This is a compile-time constant
-    constexpr int n = 4;
+    constexpr int N = 4;
 
     // C-style formatted print can still be used
-    printf("Hello n=%d\n", n);
+    printf("Hello n=%d\n", N);
 
     // Create a fixed-length array holding doubles
-    std::array<double, 4> a = {1.1, 2.2, 3.3, 4.4};
+    std::array<double, N> a = {1.1, 2.2, 3.3, 4.4};
 
     // Call a function. Use a.size() to get number of array elements, and a.data() to get a raw pointer to the contained data
     sum = calculate_sum(a.size(), a.data());
@@ -227,8 +230,8 @@ int main(int argc, char *argv[])
         printf("Sum is small\n");
     }
 
-    // Allocate a dynamic array, initial length 'n' elements
-    std::vector<double> b(n);
+    // Allocate a dynamic array, initial length 'N' elements
+    std::vector<double> b(N);
 
     // Set the array values by looping over array
     for (int i = 0; i < size(b); ++i) {
@@ -267,20 +270,19 @@ This gives the following output:
     Sum of b is 6.600000
     Sum of b is still 6.600000
 
-Some additional C++ will be introduced over the summer school as they appear (template functions, type casting, implementing classes). We do not assume familiarity with these.
+Some additional C++ will be introduced over the summer school as they appear (template functions, type casting, implementing classes). We do not require familiarity with these.
 
-In addition to higher-level C++ features like the STL, C-style pointers and manual memory management are still frequently used in HPC. Please ensure you are familiar with these concepts by reviewing the C section above.
+In addition to higher-level C++ features like the STL, C-style pointers and manual memory management are still frequently used in HPC. Please ensure you are familiar with these concepts by reviewing the C and C pointers sections above.
 
 
-## Fortran
+## (Optional) Fortran
 
-Here is an example Fortran code `test.f90` containing elements that are expected to be familiar.
-
+Here is an example Fortran code `test.F90` containing elements that are expected to be familiar.
 If you want to refresh your Fortran knowledge, please check, for example, [this Fortran tutorial](https://fortran-lang.org/en/learn/quickstart/).
 
+```f90
 ! This is a comment
 
-```f90
 ! Module definition
 module demo
   use iso_fortran_env, only : real64
@@ -298,6 +300,7 @@ contains
 
 end module demo
 
+! Main program
 program demoprogram
   use demo
   implicit none
@@ -317,13 +320,13 @@ program demoprogram
 
   ! Call a function
   sum_value = calculate_sum(a)
-  write(*,'(a,f8.3)') 'Sum of a is ', sum_value
+  write(*,'(a,f.6)') 'Sum of a is ', sum_value
 
   ! Control statement
   if (sum_value > 10.0_real64) then
-     write(*,*) 'Sum is large'
+     write(*,'(a)') 'Sum is large'
   else
-     write(*,*) 'Sum is small'
+     write(*,'(a)') 'Sum is small'
   end if
 
   ! Allocate array
@@ -344,7 +347,7 @@ end program demoprogram
 
 Compile the code on Linux command line:
 
-    gfortran test.f90 -o test.x
+    gfortran test.F90 -o test.x
 
 Execute the binary on Linux command line:
 
@@ -353,10 +356,10 @@ Execute the binary on Linux command line:
 This gives the following output:
 
     Hello n=4
-    Sum of a is   11.000
-     Sum is large
-    Sum of b is    6.600
+    Sum of a is 11.000000
+    Sum is large
+    Sum of b is 6.600000
 
-In addition to Fortran, it is beneficial to have some knowledge on C/C++ languages as the GPU programming languages are mostly based on these languages.
+In addition to Fortran, it is necessary to have some knowledge on C and C++ languages as the GPU programming languages are mostly based on these languages.
 Please review the C and C++ sections above how this same Fortran code could look like in C and/or C++.
 
