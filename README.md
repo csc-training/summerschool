@@ -23,7 +23,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 - [General exercise instructions](exercise-instructions.md)
 - Session-specific material linked in the schedule below
 
-## Schedule
+## Schedule (draft)
 
 *In addition to lunch, dinner, and refreshments in the daily schedule, we have every day available next to the lecture room:*
 - *09:00–17:00 Coffee, tea, water*
