@@ -37,7 +37,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:00 | Refreshment break
 | 15:30 | [Introduction to HPC](intro-to-hpc)
 | 18:00 | Dinner (available until 20:00)
-| 19:30 | Get together & Lightning talks
+| 20:00 | Get together & Lightning talks
 
 ### Day 2, Wed 24.6.
 
@@ -51,7 +51,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:30 | [MPI](mpi)
 | 16:30 | Activity: Nuuksio Olympic Games
 | 18:00 | Dinner (available until 20:00)
-| 19:00 | Optional exercises
+| 19:00 | Exercises (optional)
 | 20:00 | Saunas & refreshments at the lake, evening snack available
 
 ### Day 3, Thu 25.6.
@@ -66,7 +66,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:30 | [MPI](mpi)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
-| 19:00 | Optional exercises
+| 19:00 | Exercises (optional)
 | 20:00 | Relax, evening snack available
 
 ### Day 4, Fri 26.6.
@@ -81,7 +81,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:30 | [MPI + OpenMP](openmp)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
-| 19:00 | Optional exercises
+| 19:00 | Exercises (optional)
 | 20:00 | Saunas & refreshments at the lake, evening snack available
 
 ### Day 5, Sat 27.6.
@@ -110,7 +110,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:30 | [GPU programming](gpu)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
-| 19:00 | Optional exercises
+| 19:00 | Exercises (optional)
 | 20:00 | Relax, evening snack available
 
 ### Day 7, Mon 29.6.
@@ -125,7 +125,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:30 | [GPU programming](gpu)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
-| 18:00 | Exercises
+| 19:00 | Exercises (optional)
 | 20:00 | Saunas & refreshments at the lake, evening snack available
 
 ### Day 8, Tue 30.6.
@@ -140,8 +140,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:30 | [MPI + GPUs](gpu)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
-| 18:00 | Exercises
-| 19:30 | Free time
+| 19:00 | Exercises (optional)
 | 20:00 | Relax, evening snack available
 
 ### Day 9, Wed 1.7.
