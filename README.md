@@ -34,11 +34,10 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 10:30 | [Introduction to HPC](intro-to-hpc)
 | 12:00 | Lunch
 | 13:00 | [Introduction to HPC](intro-to-hpc)
-| 14:00 | Coffee break (Coffee remains available until 16:00)
-| 14:25 | [Introduction to HPC](intro-to-hpc)
-| 17:00 | Dinner
-| 18:00 | Exercises
-| 19:00 | Get together & Lightning talks
+| 15:00 | Refreshment break
+| 15:30 | [Introduction to HPC](intro-to-hpc)
+| 18:00 | Dinner (available until 20:00)
+| 19:30 | Get together & Lightning talks
 
 ### Day 2, Wed 24.6.
 
@@ -48,12 +47,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [MPI](mpi)
 | 12:00 | Lunch
 | 13:00 | [MPI](mpi)
-| 14:00 | Coffee break (Coffee remains available until 16:00)
-| 14:25 | [MPI](mpi)
-| **15:45** | Sports: Nuuksio Olympic Games
-| **17:15** | Dinner
-| **18:15** | Exercises
-| 19:30 | Snack & Saunas at the lake
+| 15:00 | Refreshment break
+| 15:30 | [MPI](mpi)
+| 16:30 | Activity: Nuuksio Olympic Games
+| 18:00 | Dinner (available until 20:00)
+| 19:00 | Optional exercises
+| 20:00 | Saunas & refreshments at the lake, evening snack available
 
 ### Day 3, Thu 25.6.
 
@@ -63,13 +62,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [MPI](mpi)
 | 12:00 | Lunch
 | 13:00 | [MPI](mpi)
-| 14:00 | Coffee break (Coffee remains available until 16:00)
-| 14:25 | [MPI](mpi)
-| **16:00** | Sports
-| **17:00** | Dinner
-| **18:00** | Exercises
-| 19:30 | Free time
-| 20:00 | Snack available at the hotel restaurant until 21:30
+| 15:00 | Refreshment break
+| 15:30 | [MPI](mpi)
+| 17:00 | Activity
+| 18:00 | Dinner (available until 20:00)
+| 19:00 | Optional exercises
+| 20:00 | Relax, evening snack available
 
 ### Day 4, Fri 26.6.
 
@@ -79,12 +77,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [OpenMP](openmp)
 | 12:00 | Lunch
 | 13:00 | [OpenMP](openmp)
-| 14:00 | Coffee break (Coffee remains available until 16:00)
-| 14:25 | [MPI + OpenMP](openmp)
-| 16:00 | Sports
-| 17:00 | Dinner
-| 18:00 | Exercises
-| 19:30 | Snack & Saunas at the lake
+| 15:00 | Refreshment break
+| 15:30 | [MPI + OpenMP](openmp)
+| 17:00 | Activity
+| 18:00 | Dinner (available until 20:00)
+| 19:00 | Optional exercises
+| 20:00 | Saunas & refreshments at the lake, evening snack available
 
 ### Day 5, Sat 27.6.
 
@@ -94,11 +92,11 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [Parallel I/O](parallel-io)
 | 12:00 | Lunch
 | 13:00 | Free time
-| 14:00 | Coffee available until 16:00 next to the lecture room
-| 14:00 | Free time
-| 17:00 | Dinner
-| 18:00 | Free time
-| 20:00 | Snack available at the hotel restaurant until 21:30
+| 15:00 | Refreshments available as usual
+| 15:30 | Free time
+| 18:00 | Dinner (available until 20:00)
+| 19:00 | Free time
+| 20:00 | Relax, evening snack available
 
 ### Day 6, Sun 28.6.
 
@@ -108,10 +106,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
 | 13:00 | [GPU programming](gpu)
-| 14:00 | Coffee break (Coffee remains available until 16:00)
-| 14:25 | [GPU programming](gpu)
-| 17:00 | Dinner
-| 18:00 | Free time / Trekking in Nuuksio (Packed snack available at the hotel restaurant)
+| 15:00 | Refreshment break
+| 15:30 | [GPU programming](gpu)
+| 17:00 | Activity
+| 18:00 | Dinner (available until 20:00)
+| 19:00 | Optional exercises
+| 20:00 | Relax, evening snack available
 
 ### Day 7, Mon 29.6.
 
@@ -121,12 +121,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
 | 13:00 | [GPU programming](gpu)
-| 14:00 | Coffee break (Coffee remains available until 16:00)
-| 14:25 | [GPU programming](gpu)
-| 16:00 | Sports
-| 17:00 | Dinner
+| 15:00 | Refreshment break
+| 15:30 | [GPU programming](gpu)
+| 17:00 | Activity
+| 18:00 | Dinner (available until 20:00)
 | 18:00 | Exercises
-| 19:30 | Snack & Saunas at the lake
+| 20:00 | Saunas & refreshments at the lake, evening snack available
 
 ### Day 8, Tue 30.6.
 
@@ -136,13 +136,13 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
 | 13:00 | [GPU programming](gpu)
-| 14:00 | Coffee break (Coffee remains available until 16:00)
-| 14:25 | [MPI + GPUs](gpu)
-| 16:00 | Sports
-| 17:00 | Dinner
+| 15:00 | Refreshment break
+| 15:30 | [MPI + GPUs](gpu)
+| 17:00 | Activity
+| 18:00 | Dinner (available until 20:00)
 | 18:00 | Exercises
 | 19:30 | Free time
-| 20:00 | Snack available at the hotel restaurant until 21:30
+| 20:00 | Relax, evening snack available
 
 ### Day 9, Wed 1.7.
 
@@ -153,18 +153,17 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 11:50 | Group photo
 | 12:00 | Lunch
 | 13:00 | Exercises
-| 14:00 | Coffee break (Coffee remains available until 16:00)
-| 14:25 | Exercises
-| 16:00 | Sports: Boating at the lake
-| 19:00 | Farewell party and dinner
+| 15:00 | Refreshment break
+| 15:30 | Exercises
+| 16:00 | Activity: Boating at the lake
+| 19:00 | Special dinner and farewell party
 
 ### Day 10, Thu 2.7.
 
 | Time  | Topic |
 | ----  | ----- |
 | 08:00 | Breakfast
-| 09:00 | [Application design & HPC deployment](application-design)
-| 10:00 | [Application performance](application-performance)
+| 09:00 | [Application design](application-design)
 | 11:00 | [Closing](https://csc-training.github.io/summerschool/) & Check-out
 | 12:00 | Lunch
 | 13:00 | Transport to Helsinki city
