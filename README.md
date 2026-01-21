@@ -25,6 +25,10 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 
 ## Schedule
 
+*In addition to lunch, dinner, and refreshments in the daily schedule, we have every day available next to the lecture room:*
+- *09:00–17:00 Coffee, tea, water*
+- *20:30– Evening snack*
+
 ### Day 1, Tue 23.6.
 
 | Time  | Topic |
@@ -34,7 +38,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 10:30 | [Introduction to HPC](intro-to-hpc)
 | 12:00 | Lunch
 | 13:00 | [Introduction to HPC](intro-to-hpc)
-| 15:00 | Refreshment break
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | [Introduction to HPC](intro-to-hpc)
 | 18:00 | Dinner (available until 20:00)
 | 20:00 | Get together & Lightning talks
@@ -47,12 +51,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [MPI](mpi)
 | 12:00 | Lunch
 | 13:00 | [MPI](mpi)
-| 15:00 | Refreshment break
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | [MPI](mpi)
 | 16:30 | Activity: Nuuksio Olympic Games
 | 18:00 | Dinner (available until 20:00)
 | 19:00 | Exercises (optional)
-| 20:00 | Saunas & refreshments at the lake, evening snack available
+| 20:00 | Saunas & refreshments at the lake
 
 ### Day 3, Thu 25.6.
 
@@ -62,12 +66,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [MPI](mpi)
 | 12:00 | Lunch
 | 13:00 | [MPI](mpi)
-| 15:00 | Refreshment break
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | [MPI](mpi)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
 | 19:00 | Exercises (optional)
-| 20:00 | Relax, evening snack available
+| 20:00 | Relax
 
 ### Day 4, Fri 26.6.
 
@@ -77,12 +81,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [OpenMP](openmp)
 | 12:00 | Lunch
 | 13:00 | [OpenMP](openmp)
-| 15:00 | Refreshment break
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | [MPI + OpenMP](openmp)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
 | 19:00 | Exercises (optional)
-| 20:00 | Saunas & refreshments at the lake, evening snack available
+| 20:00 | Saunas & refreshments at the lake
 
 ### Day 5, Sat 27.6.
 
@@ -96,7 +100,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:30 | Free time
 | 18:00 | Dinner (available until 20:00)
 | 19:00 | Free time
-| 20:00 | Relax, evening snack available
+| 20:00 | Relax
 
 ### Day 6, Sun 28.6.
 
@@ -106,12 +110,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
 | 13:00 | [GPU programming](gpu)
-| 15:00 | Refreshment break
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | [GPU programming](gpu)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
 | 19:00 | Exercises (optional)
-| 20:00 | Relax, evening snack available
+| 20:00 | Relax
 
 ### Day 7, Mon 29.6.
 
@@ -121,12 +125,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
 | 13:00 | [GPU programming](gpu)
-| 15:00 | Refreshment break
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | [GPU programming](gpu)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
 | 19:00 | Exercises (optional)
-| 20:00 | Saunas & refreshments at the lake, evening snack available
+| 20:00 | Saunas & refreshments at the lake
 
 ### Day 8, Tue 30.6.
 
@@ -136,12 +140,12 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 09:00 | [GPU programming](gpu)
 | 12:00 | Lunch
 | 13:00 | [GPU programming](gpu)
-| 15:00 | Refreshment break
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | [MPI + GPUs](gpu)
 | 17:00 | Activity
 | 18:00 | Dinner (available until 20:00)
 | 19:00 | Exercises (optional)
-| 20:00 | Relax, evening snack available
+| 20:00 | Relax
 
 ### Day 9, Wed 1.7.
 
@@ -152,7 +156,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 11:50 | Group photo
 | 12:00 | Lunch
 | 13:00 | Exercises
-| 15:00 | Refreshment break
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | Exercises
 | 16:00 | Activity: Boating at the lake
 | 19:00 | Special dinner and farewell party
