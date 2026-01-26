@@ -42,7 +42,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:00 | Refreshments (available until 16:00)
 | 15:30 | [Introduction to HPC](intro-to-hpc)
 | 18:00 | Dinner (available until 20:00)
-| 20:00 | Get together & Lightning talks
+| 19:30 | Get together & Lightning talks
 
 ### Day 2, Wed 24.6.
 
