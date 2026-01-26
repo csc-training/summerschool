@@ -144,7 +144,11 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
 2010, 2011, 2012, 2013, 2014,<br>
 2015, 2016, 2017, 2018, 2019,<br>
 <del>2020</del>, <del>2021</del>,<br>
-2022, 2023, 2024, 2025, 2026!
+[2022](https://csc.fi/en/news/the-summer-school-is-built-on-learning-high-performance-computing-and-doing-things-together/),
+[2023](https://csc.fi/en/story/summer-school-brings-together-learners-interested-in-high-performance-computing/),
+[2024](https://csc.fi/en/story/csc-summer-school-2024-high-performance-computing-in-nuuksio-national-park/),
+[2025](https://csc.fi/en/story/summer-school-brings-together-computing-collaboration-and-nature/),
+2026!
 </center>
 
 
