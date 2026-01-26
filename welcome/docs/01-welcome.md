@@ -1,6 +1,6 @@
 ---
 title:  Welcome to Nuuksio
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
@@ -40,20 +40,19 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
 - All lectures and exercises will take place in **Kelohonka** room
 - Breakfast, lunch, and dinner will be served in **Nuuksion Tupa** restaurant
 - Special events (see [schedule](https://github.com/csc-training/summerschool)):
-  - Get together and lighting talks on Tue 24.6. at 19:00 in **Loimu** room
-  - **Lake Sauna** reserved for us on Wed 25.6., Fri 27.6., and Mon 30.6. from 19:30--
-  - Farewell dinner on Wed 2.7. will be served in **Hopeapaju** room
-    - Room open from 18:00--, dinner server from 19:00--
+  - Get together and lighting talks on Tue 23.6. at 19:30 in **Loimu** room
+  - **Lake Sauna** reserved for us on Wed 24.6., Fri 26.6., and Mon 29.6. from 20:00--
+  - Farewell dinner will be served in **Hopeapaju** room on Wed 1.7. from 19:00--
 - Feel free to use hotel facilities at all times
   - Indoor sauna and pool can be used if there is no private bookings
 
-# Sports!
+# Outdoor activities (and indoors too)
 
-- On most days free-form sports sessions at 16:00--17:00
+- Time reserved on most days for free-form activities before dinner at 17:00--18:00
   - Good chance to socialize and get out of the computer!
-- Special guided sports sessions:
-  - Wed 25.6. 15:45--17:15: Nuuksio Olympic Games
-  - Wed 2.7. 16:00--18:00: Boating at the lake
+- Special guided outdoor activities:
+  - Wed 24.6. 16:30--18:00: Nuuksio Olympic Games
+  - Wed 1.7. 16:00--18:00: Boating at the lake
 - Free access to hotel gym, rowing boats, tennis rackets, mölkky games, etc.
 - Hiking trails to Nuuksio National Park leave right from the hotel yard
   - <https://www.luontoon.fi/en/destinations/nuuksio-national-park>
@@ -85,19 +84,18 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
 - Note the color of lanyards:
   - **white lanyard** means: ok to be visible in photos
   - **black lanyard** means: no photos, no social media
-- Please keep your lanyard visible throughout the school, especially for the photoshoot on Wed 2.7.
+- Please keep your lanyard visible throughout the school, especially for the photoshoot on Wed 1.7.
 
 # Chat channel
 
 - Feel free to use the chat channel for organizing social activities, asking questions, free discussion, etc.
-  - <https://chat.csc.fi/group/CSC_Summer_School_in_HPC_2025>
+  - <https://chat.csc.fi/group/CSC_Summer_School_in_HPC_2026>
 
 # Acknowledgements
 
 <div style="position: absolute; left:0.0em; top:3.0em">
 ![](img/acknowledgements.svg){.center width=80%}
 </div>
-
 
 # School content {.section}
 
@@ -128,7 +126,7 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
 - We focus on *hands-on* experience in HPC
   - Demos and exercises intermixed with lectures
 - Use the exercise slots during the day to work on the topic at hand
-- The exercise sessions after dinner (18:00--19:30) are free format
+- The exercise sessions after dinner are optional and free format
   - No guided program, but a lecturer will be present in these sessions
   - Session can be used for completing any unfinished exercises, discussing HPC topics, or trying out the learned things in your own code (time permitting)
 
@@ -138,7 +136,16 @@ Map: <https://www.retkikartta.fi/> (Good for hiking!)
   - Slides, demo codes, exercises, ...
   - Schedule, practical information (in [wiki](https://github.com/csc-training/summerschool/wiki))
 - Feel free to fork the repository for your own use
-- After the school, a static copy of 2025 content will be published as a release under GitHub
+- After the school, a static copy of the content will be published as a release under GitHub
+
+# It's 15th CSC Summer School in HPC!
+
+<center>
+2010, 2011, 2012, 2013, 2014,<br>
+2015, 2016, 2017, 2018, 2019,<br>
+<del>2020</del>, <del>2021</del>,<br>
+2022, 2023, 2024, 2025, 2026!
+</center>
 
 
 # Welcome to the school!
