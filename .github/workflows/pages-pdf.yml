@@ -2,10 +2,10 @@ name: Deploy HTML and PDF slides to Pages
 
 on:
   # Runs after HTML deployment (uncomment the following block to activate)
-  workflow_run:
-    workflows: [Deploy HTML slides to Pages]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: [Deploy HTML slides to Pages]
+  #   types:
+  #     - completed
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
