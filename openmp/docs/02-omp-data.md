@@ -1,113 +1,14 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 ---
-title:  OpenMP library routines and data sharing
+title:  OpenMP data sharing
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
-
-
-# OpenMP runtime library and environment variables {.section}
-
-# OpenMP runtime library and environment variables
-
-- OpenMP provides several means to interact with the execution
-  environment. These operations include e.g.
-    - setting the number of threads for parallel regions
-    - requesting the number of CPUs
-    - changing the default scheduling for work-sharing clauses
-- Improves portability of OpenMP programs between different architectures
-  (number of CPUs, etc.)
-
-
-# Environment variables
-
-- OpenMP standard defines a set of environment variables that all
-  implementations have to support
-- The environment variables are set before the program execution and they are
-  read during program start-up
-    - changing them during the execution has no effect
-- We have already used `OMP_NUM_THREADS`
-
-
-# Some useful environment variables
-
-| Variable         | Action                                              |
-|------------------|-----------------------------------------------------|
-| OMP_NUM_THREADS  | Number of threads to use                            |
-| OMP_PROC_BIND    | Bind threads to CPUs                                |
-| OMP_PLACES       | Specify the bindings between threads and CPUs       |
-| OMP_DISPLAY_ENV  | Print the current OpenMP environment info on stderr |
-
-
-# Runtime functions
-
-- Runtime functions can be used either to read the settings or to set
-  (override) the values
-- Function definitions are in
-    - `omp.h` header file (C/C++)
-    - `omp_lib` Fortran module (`omp_lib.h` header in some implementations)
-- Two useful routines for finding out thread ID and number of threads:
-    - `omp_get_thread_num()`
-    - `omp_get_num_threads()`
-
-
-# OpenMP conditional compilation
-
-- In C/C++, one can use the `_OPENMP` macro to compile different code with and
-  without OpenMP:
-
-```c
-#ifdef _OPENMP
-    OpenMP specific code with, e.g., library calls
-#else
-    code without OpenMP
-#endif
-```
-
-
-# Example: Hello world with OpenMP
-
-<!-- Presentation suggestion: live coding, first without #ifdef
-     (compilation without -fopenmp fails) and then with #ifdef
--->
-
-<div class=column>
-```fortranfree
-program hello
-  use omp_lib
-  integer :: omp_rank
-!$omp parallel
-#ifdef _OPENMP
-  omp_rank = omp_get_thread_num()
-#else
-  omp_rank = 0
-#endif
-  print *, 'Hello world! by &
-        thread ', omp_rank
-!$omp end parallel
-end program hello
-```
-</div>
-
-<div class=column>
-```c
-#include <stdio.h>
-#include <omp.h>
-int main(int argc, char* argv[]) {
-  int omp_rank;
-#pragma omp parallel
-  {
-#ifdef _OPENMP
-    omp_rank = omp_get_thread_num();
-#else
-    omp_rank = 0;
-#endif
-    printf("Hello world! by thread %d\n",
-           omp_rank);
-  }
-}
-```
-</div>
-
 
 
 # Parallel regions and data sharing {.section}
@@ -242,8 +143,6 @@ void do_things(int *var) {
 
 # Summary
 
-- OpenMP runtime behavior can be controlled using environment variables
-- OpenMP provides also library routines
 - Visibility of variables in parallel region can be specified with
   data sharing clauses
     - **private** : each thread works with their own variable
