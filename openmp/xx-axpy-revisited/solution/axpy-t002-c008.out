@@ -1,0 +1,10 @@
+level 1 thread 0x7fffbfe89d00 affinity 0
+level 1 thread 0x7fff5d4b5700 affinity 4
+Array size n = 102400000
+Input:
+a =   3.0000
+x =   0.0000   0.0000   0.0000   0.0000 ...   1.0000   1.0000   1.0000   1.0000
+y =   0.0000   0.0000   0.0000   0.0000 ... 100.0000 100.0000 100.0000 100.0000
+Output:
+y =   0.0000   0.0000   0.0000   0.0000 ... 103.0000 103.0000 103.0000 103.0000
+Calculating axpy took 68.421 milliseconds
