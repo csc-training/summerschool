@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: MIT
+
 name: MPI demo
 
 on: workflow_dispatch

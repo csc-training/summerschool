@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: MIT
+
 # Script based on examples in https://github.com/actions/starter-workflows/tree/main/pages
 name: Deploy slides to Pages
 
