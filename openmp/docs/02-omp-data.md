@@ -6,24 +6,26 @@ SPDX-License-Identifier: CC-BY-4.0
 
 ---
 title:  OpenMP data sharing
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
+# Outline
 
-# Parallel regions and data sharing {.section}
+- Data sharing in OpenMP
+
+
+# Data sharing {.section}
 
 # How do OpenMP threads interact?
 
-- Because of the shared address space threads can interact using
-  _shared variables_
-- Threads often need some _private work space_ in addition to the shared
-  variables
-    - for example the index variable of a loop
-- If threads write to the same shared variable a **race condition** appears
-  <br>⇒ undefined end result
+- Threads share the memory address space, so they can interact using _shared variables_
+- Threads often need some _private variables_ in addition to the shared variables
+  - For example the index variable of a multithreaded loop
+- If multiple threads write to the same shared variable a **race condition** appears
+  - End results varies randomly depending on the order in which the threads executed
+  - <https://deadlockempire.github.io/>
 - Visibility of different variables is defined using _data-sharing clauses_
-  in the parallel region definition
 
 
 # Race condition in Hello world
@@ -107,39 +109,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-
-# Data sharing example
-
-<div class=column>
-<small>main.c</small>
-```c
-int A[5];  // shared
-
-int main(void) {
-  int B[2];  // shared
-  #pragma omp parallel
-  {
-    float c;  // private
-    do_things(B);
-    ...
-  }
-  return 0;
-}
-```
-</div>
-<div class=column>
-<small>kernel.c</small>
-```c
-extern int A[5];  // shared
-
-void do_things(int *var) {
-  double wrk[10];  // private
-  static int status; // shared
-  ...
-}
-```
-</div>
-
+# Summary {.section}
 
 # Summary
 
@@ -149,3 +119,4 @@ void do_things(int *var) {
     - **shared** : all threads can write to and read from a shared variable
 - Race conditions possible when writing to shared variables
     - avoiding race conditions is key to correctly functioning OpenMP programs
+
