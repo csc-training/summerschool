@@ -20,7 +20,7 @@ lang:   en
 
 # What is OpenMP?
 
-- OpenMP is a standard for **multi-threaded, shared-memory parallelization**, first version (1.0) published in 1997, latest (6.0) in 2024
+- OpenMP is a standard for **multithreaded, shared-memory parallelization**, first version (1.0) published in 1997, latest (6.0) in 2024
   - <https://www.openmp.org/specifications/>
 - The standard is implemented by different compilers for C, C++, and Fortran
   - [GCC](https://gcc.gnu.org/) 15 supports all of OpenMP 4.5, most of 5.0, 5.1, and 5.2, and the first 6.0 features for C, C++, and Fortran
