@@ -8,6 +8,6 @@ modules:
   - parallel-io
   - gpu
   - hpc-ai
-  - application-design
+  - application-design-deployment
   - application-performance
   - closing
