@@ -8,6 +8,7 @@ on:
   workflow_run:
     workflows:
       - "Build HTML slides"
+      - "Build HTML and PDF slides"
     types:
       - completed
 
@@ -61,9 +62,32 @@ jobs:
               mkdir site
           fi
 
-          echo "- Updating existing pages"
-          rm -rf site/$BRANCH
-          mv build site/$BRANCH
+          # Check if the build included pdfs
+          if [ -d build/pdf ]; then
+              # Deploying build including pdfs
+              # We expect that we are updating html build of the same commit
+              if diff -q build/commit_sha site/$BRANCH/commit_sha >/dev/null 2>&1; then
+                  # The existing build is for the same commit
+                  # OK to update
+                  echo "- Updating existing pages with PDF build"
+                  rm -rf site/$BRANCH
+                  mv build site/$BRANCH
+              else
+                  # Something is wrong
+                  echo "ERROR: PDF build is trying to overwrite existing, possibly newer build"
+                  exit 1
+              fi
+          else
+              # Deploying build with html only
+              # If there exist a build for the same commit, we don't do anything
+              if diff -q build/commit_sha site/$BRANCH/commit_sha >/dev/null 2>&1; then
+                  echo "- Not updating existing pages"
+              else
+                  echo "- Updating with new HTML build"
+                  rm -rf site/$BRANCH
+                  mv build site/$BRANCH
+              fi
+          fi
 
           # Add redirecting index.html at the root
           cat > site/index.html <<'EOF'

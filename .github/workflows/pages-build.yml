@@ -38,6 +38,9 @@ jobs:
               --info_content "Updated for [$GIT_SHORT_SHA]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA) ($GIT_DATE)" \
               $ARGS
 
+          # Save commit sha
+          echo $GITHUB_SHA > build/commit_sha
+
       - name: Upload slide artifact
         uses: actions/upload-artifact@v4
         with:

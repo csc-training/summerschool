@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: Build HTML slides
+name: Build HTML and PDF slides
 
 on:
   push:
@@ -19,11 +19,11 @@ permissions:
 
 # Cancel in-progress builds for new pushes to the branch
 concurrency:
-  group: pages-build-html-${{ github.ref_name }}
+  group: pages-build-pdf-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   pages:
     uses: ./.github/workflows/pages-build.yml
     with:
-      include_pdf: false
+      include_pdf: true
