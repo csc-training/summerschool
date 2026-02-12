@@ -33,9 +33,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
+
       - name: Build slides
         env:
           INCLUDE_PDF: ${{ inputs.include_pdf }}
@@ -53,10 +55,60 @@ jobs:
               --info_content "Updated for [$GIT_SHORT_SHA]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA) ($GIT_DATE)" \
               $ARGS
 
-      - name: Upload artifact
+      - name: Merge previous site and new build
+        shell: bash
+        run: |
+          # Download previous site
+          wget -q "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/site.zip" || echo "Downloading previous site failed"
+
+          # Prepare site directory
+          if [ -f site.zip ]; then
+              unzip -q site.zip
+              rm site.zip
+          else
+              mkdir site
+          fi
+
+          # Update current branch
+          rm -rf site/${{ github.ref_name }}
+          mv build site/${{ github.ref_name }}
+
+          # Add redirecting index.html at the root
+          cat > site/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="refresh" content="0; url=./main/" />
+            <script>
+              window.location.replace('./main/');
+            </script>
+            <title>Redirecting</title>
+          </head>
+          <body>
+            <p>Redirecting to <a href="./main/">main</a></p>
+          </body>
+          </html>
+          EOF
+
+          # Remove pages for deleted branches
+          find site -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+              branch=$(basename "$dir")
+
+              if ! wget -q --spider https://api.github.com/repos/${{ github.repository }}/branches/$branch; then
+                  echo "branch $branch removed"
+                  rm -rf "$dir"
+              fi
+          done
+
+          # Repack site
+          zip -r site site/
+          mv site.zip site/
+
+      - name: Upload artifact for pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build
+          path: ./site
 
   deploy:
     environment:

@@ -5,15 +5,13 @@
 name: Deploy HTML slides to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches:
-      - "master"
+      - "*"
     paths:
-      - "*/docs/**"
+      - "**/docs/**"
+      - "**/about.yml"
       - ".github/workflows/pages.yml"
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -23,7 +21,7 @@ permissions:
   id-token: write
 
 jobs:
-  pages-html:
+  pages:
     uses: ./.github/workflows/pages.yml
     with:
       include_pdf: false
