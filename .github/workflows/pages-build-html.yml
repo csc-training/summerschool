@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: Deploy HTML slides to Pages
+name: Build HTML slides
 
 on:
   push:
@@ -11,17 +11,19 @@ on:
     paths:
       - "**/docs/**"
       - "**/about.yml"
-      - ".github/workflows/pages.yml"
+      - ".github/workflows/pages*.yml"
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
+# Cancel in-progress builds for new pushes to the branch
+concurrency:
+  group: pages-build-${{ github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   pages:
-    uses: ./.github/workflows/pages.yml
+    uses: ./.github/workflows/pages-build.yml
     with:
       include_pdf: false

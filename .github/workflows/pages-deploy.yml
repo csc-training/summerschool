@@ -1,0 +1,110 @@
+# SPDX-FileCopyrightText: 2024 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: MIT
+
+name: Deploy pages
+
+on:
+  workflow_run:
+    workflows:
+      - "Build HTML slides"
+    types:
+      - completed
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy run at a time across all branches
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}${{ github.event.workflow_run.head_branch }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Download slide artifact from build
+        uses: actions/download-artifact@v4
+        with:
+          name: slides
+          path: ./build
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge previous site and new build
+        env:
+          SITE_ZIP: site.zip
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+        shell: bash
+        run: |
+          echo "Updating pages for branch $BRANCH:"
+
+          # Download previous site
+          wget -q "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$SITE_ZIP" || echo "- Downloading previous site failed - starting pages from scratch"
+
+          # Prepare site directory
+          if [ -f $SITE_ZIP ]; then
+              unzip -q $SITE_ZIP
+              rm $SITE_ZIP
+          else
+              mkdir site
+          fi
+
+          echo "- Updating existing pages"
+          rm -rf site/$BRANCH
+          mv build site/$BRANCH
+
+          # Add redirecting index.html at the root
+          cat > site/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="refresh" content="0; url=./main/" />
+            <script>
+              window.location.replace('./main/');
+            </script>
+            <title>Redirecting</title>
+          </head>
+          <body>
+            <p>Redirecting to <a href="./main/">main</a></p>
+          </body>
+          </html>
+          EOF
+
+          # Remove pages for deleted branches
+          echo "Checking branches:"
+          find site -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+              branch=$(basename "$dir")
+
+              if wget -q --spider https://api.github.com/repos/${{ github.repository }}/branches/$branch; then
+                  echo "- $branch: exist - keeping in pages"
+              else
+                  echo "- $branch: deleted - removing from pages"
+                  rm -rf "$dir"
+              fi
+          done
+
+          # Repack site
+          zip -q -r $SITE_ZIP site/
+          mv $SITE_ZIP site/
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

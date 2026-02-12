@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: 2024 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: MIT
+
+name: Build slides
+
+on:
+  workflow_call:
+    inputs:
+      include_pdf:
+        required: true
+        type: boolean
+
+jobs:
+  build:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/csc-training/slidefactory:3.4.3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build slides
+        env:
+          INCLUDE_PDF: ${{ inputs.include_pdf }}
+        shell: bash
+        run: |
+          git config --global --add safe.directory $PWD
+          GIT_SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
+          GIT_DATE=$(git show -s --format=%ci $GITHUB_SHA)
+
+          ARGS=""
+          [[ "$INCLUDE_PDF" == "true" ]] && ARGS="--with-pdf"
+
+          slidefactory pages about.yml build \
+              --filters tools/mpi_links.py \
+              --info_content "Updated for [$GIT_SHORT_SHA]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA) ($GIT_DATE)" \
+              $ARGS
+
+      - name: Upload slide artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: slides
+          path: ./build
