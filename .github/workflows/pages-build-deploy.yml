@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: 2024 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: MIT
+
+name: Build slides and deploy pages
+
+# To enable PDF build, set PDF_SLIDES_ENABLED to "true" in GitHub:
+# Repository -> Settings -> Secrets and variables -> Actions -> Variables
+
+on:
+  push:
+    branches:
+      - "*"
+    paths:
+      - "**/docs/**"
+      - "**/about.yml"
+      - ".github/workflows/pages*.yml"
+  workflow_dispatch:
+    inputs:
+      include_pdf:
+        description: 'Include PDF'
+        type: boolean
+        default: true
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Cancel in-progress builds for new pushes to the branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-html:
+    name: Build HTML slides
+    uses: ./.github/workflows/pages-build.yml
+    with:
+      include_pdf: false
+      slides_artifact: slides-html
+
+  build-pdf:
+    name: Build HTML and PDF slides
+    if: ${{ (github.event_name == 'push' && vars.PDF_SLIDES_ENABLED == 'true') || (github.event_name == 'workflow_dispatch' && fromJSON(inputs.include_pdf)) }}
+    uses: ./.github/workflows/pages-build.yml
+    with:
+      include_pdf: true
+      slides_artifact: slides-pdf
+
+  deploy-html:
+    name: Deploy HTML slides
+    needs: [build-html]
+    uses: ./.github/workflows/pages-deploy.yml
+    with:
+      slides_artifact: slides-html
+
+  deploy-pdf:
+    name: Deploy HTML and PDF slides
+    needs: [deploy-html, build-pdf]  # Deploy after HTML deployment to ensure that HTML-only deployment doesn't override PDF deployment
+    uses: ./.github/workflows/pages-deploy.yml
+    with:
+      slides_artifact: slides-pdf

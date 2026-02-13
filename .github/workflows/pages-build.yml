@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: Build slides
+name: Build slides (reusable workflow)
 
 on:
   workflow_call:
@@ -10,6 +10,9 @@ on:
       include_pdf:
         required: true
         type: boolean
+      slides_artifact:
+        required: true
+        type: string
 
 jobs:
   build:
@@ -38,11 +41,8 @@ jobs:
               --info_content "Updated for [$GIT_SHORT_SHA]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA) ($GIT_DATE)" \
               $ARGS
 
-          # Save commit sha
-          echo $GITHUB_SHA > build/commit_sha
-
       - name: Upload slide artifact
         uses: actions/upload-artifact@v4
         with:
-          name: slides
+          name: ${{ inputs.slides_artifact }}
           path: ./build

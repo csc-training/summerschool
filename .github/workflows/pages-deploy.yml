@@ -2,34 +2,24 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: Deploy pages
+name: Deploy pages (reusable workflow)
 
 on:
-  workflow_run:
-    workflows:
-      - "Build HTML slides"
-      - "Build HTML and PDF slides"
-    types:
-      - completed
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Only one deploy run at a time across all branches
-concurrency:
-  group: pages-deploy
-  cancel-in-progress: false
+  workflow_call:
+    inputs:
+      slides_artifact:
+        required: true
+        type: string
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}${{ github.event.workflow_run.head_branch }}
-    runs-on: ubuntu-latest
+      url: ${{ steps.deployment.outputs.page_url }}${{ github.ref_name }}
+    concurrency:  # Only one deploy run at a time across all branches
+      group: pages-deploy
+      cancel-in-progress: false
     steps:
       - name: Setup Pages
         id: pages
@@ -38,18 +28,16 @@ jobs:
       - name: Download slide artifact from build
         uses: actions/download-artifact@v4
         with:
-          name: slides
+          name: ${{ inputs.slides_artifact }}
           path: ./build
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge previous site and new build
         env:
           SITE_ZIP: site.zip
-          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          BRANCH: ${{ github.ref_name }}
         shell: bash
         run: |
-          echo "Updating pages for branch $BRANCH:"
+          echo "Updating pages for branch $BRANCH"
 
           # Download previous site
           wget -q "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$SITE_ZIP" || echo "- Downloading previous site failed - starting pages from scratch"
@@ -62,32 +50,9 @@ jobs:
               mkdir site
           fi
 
-          # Check if the build included pdfs
-          if [ -d build/pdf ]; then
-              # Deploying build including pdfs
-              # We expect that we are updating html build of the same commit
-              if diff -q build/commit_sha site/$BRANCH/commit_sha >/dev/null 2>&1; then
-                  # The existing build is for the same commit
-                  # OK to update
-                  echo "- Updating existing pages with PDF build"
-                  rm -rf site/$BRANCH
-                  mv build site/$BRANCH
-              else
-                  # Something is wrong
-                  echo "ERROR: PDF build is trying to overwrite existing, possibly newer build"
-                  exit 1
-              fi
-          else
-              # Deploying build with html only
-              # If there exist a build for the same commit, we don't do anything
-              if diff -q build/commit_sha site/$BRANCH/commit_sha >/dev/null 2>&1; then
-                  echo "- Not updating existing pages"
-              else
-                  echo "- Updating with new HTML build"
-                  rm -rf site/$BRANCH
-                  mv build site/$BRANCH
-              fi
-          fi
+          # Update current branch
+          rm -rf site/$BRANCH
+          mv build site/$BRANCH
 
           # Add redirecting index.html at the root
           cat > site/index.html <<'EOF'
@@ -127,8 +92,11 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages-for-${{ inputs.slides_artifact }}
           path: ./site
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-for-${{ inputs.slides_artifact }}
