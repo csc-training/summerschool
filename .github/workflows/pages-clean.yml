@@ -1,0 +1,74 @@
+# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: MIT
+
+name: Remove branch pages
+
+on:
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy run at a time across all branches
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Remove branch sites
+        env:
+          SITE_ZIP: site.zip
+        shell: bash
+        run: |
+          echo "Updating pages:"
+
+          # Download previous site
+          wget -q "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$SITE_ZIP" || echo "- Downloading previous site failed - exiting"
+
+          # Prepare site directory
+          if [ -f $SITE_ZIP ]; then
+              unzip -q $SITE_ZIP
+              rm $SITE_ZIP
+          else
+              exit 1
+          fi
+
+          # Remove pages for deleted branches
+          echo "Checking branches:"
+          find site -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+              branch=$(basename "$dir")
+
+              if [[ "$branch" == "main" ]]; then
+                  echo "- $branch: keeping in pages"
+              else
+                  echo "- $branch: deleting"
+                  rm -rf "$dir"
+              fi
+          done
+
+          # Repack site
+          zip -q -r $SITE_ZIP site/
+          mv $SITE_ZIP site/
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
