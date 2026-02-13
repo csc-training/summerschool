@@ -99,7 +99,7 @@ jobs:
             <script>
               window.location.replace('./main/');
             </script>
-            <title>Redirecting</title>
+            <title>CSC Summer School in High-Performance Computing</title>
           </head>
           <body>
             <p>Redirecting to <a href="./main/">main</a></p>
