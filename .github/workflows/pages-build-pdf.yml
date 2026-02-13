@@ -5,13 +5,14 @@
 name: Build HTML and PDF slides
 
 on:
-  push:
-    branches:
-      - "*"
-    paths:
-      - "**/docs/**"
-      - "**/about.yml"
-      - ".github/workflows/pages*.yml"
+  # Uncomment the following block to activate PDF build for all pushes
+  # push:
+  #   branches:
+  #     - "*"
+  #   paths:
+  #     - "**/docs/**"
+  #     - "**/about.yml"
+  #     - ".github/workflows/pages*.yml"
   workflow_dispatch:
 
 permissions:
