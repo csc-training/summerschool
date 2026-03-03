@@ -1,124 +1,81 @@
 ---
-title:  Multi-GPU programming and HIP/OpenMP/SYCL + MPI
+title:  Multi-GPU programming
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
 ---
 
-# Running on HPC Systems
+# Anatomy of a supercomputer
 
- <div class="column" width=60%>
+Recall that supercomputer consists of *nodes* and *interconnects*
 
+![](img/anatomy.svg){.center}
+
+---
+
+And even within a node there are more *nodes* and *interconnects*
+
+![](img/lumig-node-overview.svg){.center width=60%}
+
+- LUMI-G node
+  - Memory space per GCD
+  - CPUs share memory space (but access across is not uniform)
+
+
+---
+
+
+::::::{.columns}
+:::{.column width=60%}
 * supercomputer are a collection of thousands of nodes
 * currently there are  2 to 8 GPUs per node
 * more GPU resources per node, better per-node-performance 
- 
-</div>
-
- <div class="column" width=40%>
-    ![](img/lumi.png){.center width=200%}
-    <small>Lumi - Pre-exascale system in Finland</small>
- </div>
-
-# Computing in Parallel
-
-- parallel computing
-    - a problem is split into smaller subtasks
-    - multiple subtasks are processed simultaneously using multiple GPUs
-
-<!-- Copyright CSC -->
- ![](img/compp.svg){.center width=40%}
-
-
-# Three Levels of Parallelism
-
-1. GPU - GPU threads on the CUs: HIP
-2. Node - Multiple GPUs and CPUs: MPI, OpenMP
-3. Supercomputer - Many nodes connected with interconnect: MPI 
-
-![](img/parallel_regions.png){.center width=60% }
-
-<!---
-# GPU Context
-
-* a context is established implicitly on the current device when the first HIP function requiring an active context is evaluated 
-* several processes can create contexts for a single device
-    * the device resources are allocated per context
-* by default, one context per device per process in HIP
-    * (CPU) threads of the same process share the primary context (for each device)
-* HIP and SYCL support explicit context management, OpenMP does not
-
-::: notes
-A GPU context is an execution environment that manages resources such as memory allocations, streams, and kernel execution for a specific GPU. It acts as an interface between the application and the GPU, ensuring that operations like memory management and kernel launches are handled correctly.
 :::
+:::{.column}
 
-# Querying Device Properties
-
-* one can query the properties of different devices in the system
-    * no context needed
-    * provides e.g. name, amount of memory, warp size, support for unified
-      virtual addressing, etc.
-    * useful for code portability
-  
-```cpp
-// HIP - get device properties as struct
-hipDeviceProp prop;
-hipGetDeviceProperties(&prop, device)
-
-// OpenMP - use `requires` clause to verify the device properties, e.g.
-#pragma omp requires unified_shared_memory
-
-//SYCL
-auto p_name = device.get_platform().get_info<info::platform::name>();
-auto max_work_group = device.get_info<info::device::max_work_group_size>();
-```
-
--->
+![](img/lumi.png){.center width=100%}
+:::
+:::::: 
 
 # Multi-GPU Programming Models
 
-<div class="column">
-* one GPU per process
-    * syncing is handled through message passing (e.g. MPI)
-* many GPUs per process
-    * process manages all context switching and syncing explicitly
-* one GPU per thread
-    * syncing is handled through thread synchronization requirements
-</div>
 
-<div class="column">
-![](img/single_proc_mpi_gpu2.png){width=50%}
-![](img/single_proc_multi_gpu.png){width=50%}
-![](img/single_proc_thread_gpu.png){width=50%}
-</div>
+*Model - example API*
+
+| | One GPU per process | Many GPUs per process | One GPU per thread |
+|--|--|--|--|
+| Communication | MPI | HIP | HIP  |
+| Synchronization | MPI/HIP | HIP (streams)/OpenMP | OpenMP/HIP |
+| | ![](img/single_proc_mpi_gpu2.png){width=100%} | ![](img/single_proc_multi_gpu.png){width=100%} | ![](img/single_proc_thread_gpu.png){width=100%} | 
+
 
 # One GPU per Process
 
-* recommended for multi-process applications using MPI
-* message passing library takes care of all GPU-GPU communication
-* each process interacts with only one GPU which makes the implementation
-  easier and less invasive (if MPI is used anyway)
-    * apart from each process selecting a different device, the implementation
-      looks much like a single-GPU program
-    * easy manage device selection using environment variables `ROC_VISIBLE_DEVICES` or `CUDA_VISIBLE_DEVICES`
-
+- Simple porting:
+  - Each task assumes one GPU
+  - No GPU device selection
+- Set prior to executing binary
+  - `export ROCR_VISIBLE_DEVICES=$SLURM_LOCALID` on [LUMI-G](https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/lumig-job/)
+  - `CUDA_VISIBLE_DEVICES` on Roihu
+- MPI implementation must be *GPU-aware*
+  - LUMI-G: `export MPICH_GPU_SUPPORT_ENABLED=1`
+- GPUs may be on different nodes
 
 # Many GPUs per Process
 
-* process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP)
-* after selecting the default device, operations such as the following are effective only
+* Process switches the active GPU using `hipSetDevice()` (HIP) or `omp_set_default_device()` (OpenMP)
+* After selecting the default device, operations such as the following are effective only
   on the selected GPU:
-    * memory operations
-    * kernel execution
-    * streams and events (HIP)
-* asynchronous function calls (HIP)/`nowait` (OpenMP) for overlapping work
-* in SYCL each device has a different queue and all calls are asynchronous
+    * Memory operations
+    * Kernel execution
+    * Streams and events (HIP)
+* Asynchronous function calls (HIP)/`nowait` (OpenMP) for overlapping work
 
 # Many GPUs per Process: Code Example 
 
- <div class="column" width=85%>
+::::::{.columns}
+:::{.column}
+*HIP*
 <small>
-
-* HIP
 ```cpp
 // Launch kernels (HIP)
 for(unsigned n = 0; n < num_devices; n++) {
@@ -131,7 +88,11 @@ for(unsigned n = 0; n < num_devices; n++) {
   hipStreamSynchronize(stream[n]);
 }
 ```
-* OpenMP
+</small>
+:::
+:::{.column}
+*OpenMP offload*
+<small>
 ```cpp
 // Launch kernels (OpenMP)
 for(int n = 0; n < num_devices; n++) {
@@ -143,25 +104,8 @@ for(int n = 0; n < num_devices; n++) {
 #pragma omp taskwait //Synchronize all kernels with host (OpenMP)
 ```
 </small>
-</div>
-
-
- <div class="column" width=14%>
-<small>
-
-* SYCL 
-```cpp
-// Launch kernels (SYCL)
-for(unsigned n = 0; n < num_devices; n++) {
-  q[n].parallel_for(size[n], [=](id<1> i) { ...});
-}
-//Synchronize all kernels with host (SYCL)
-for(unsigned n = 0; n < num_devices; n++) {
-  q[n].wait();
-}
-```
-</small>
-</div>
+:::
+::::::
 
 
 # One GPU per (CPU) Thread
@@ -181,9 +125,10 @@ for(unsigned n = 0; n < num_devices; n++) {
 
 
 <div class="column" width=85%>
+*HIP*
 <small>
 
-* HIP 
+
 ```cpp
 // Launch and synchronize kernels
 // from parallel CPU threads using HIP
@@ -195,7 +140,14 @@ for(unsigned n = 0; n < num_devices; n++) {
   hipStreamSynchronize(stream[n]);
 }
 ```
-* OpenMP 
+
+</small>
+</div>
+
+ <div class="column" width=14%>
+ *OpenMP offload*
+<small>
+
 ```cpp
 // Launch and synchronize kernels
 // from parallel CPU threads using OpenMP
@@ -210,24 +162,6 @@ for(unsigned n = 0; n < num_devices; n++) {
 </small>
 </div>
 
- 
- <div class="column" width=14%>
-<small>
-
-* SYCL 
-```cpp
-//Launch and synchronize kernels
-// from parallel CPU threads using SYCL
-#pragma omp parallel num_threads(num_devices)
-{
-  unsigned n = omp_get_thread_num();
-  q[n].parallel_for(size[n], [=](id<1> i) { ...});
-  q[n].wait();
-}
-```
-</small>
-</div>
-
 # Direct Peer to Peer Access
 
 * access peer GPU memory directly from another GPU
@@ -235,7 +169,7 @@ for(unsigned n = 0; n < num_devices; n++) {
     * transfer data between GPUs without going through host memory
     * lower latency, higher bandwidth
 
-```cpp
+```cpp 
 // Check peer accessibility
 hipError_t hipDeviceCanAccessPeer(int* canAccessPeer, int device, int peerDevice)
 
