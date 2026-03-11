@@ -110,19 +110,11 @@ for(int n = 0; n < num_devices; n++) {
 
 # One GPU per (CPU) Thread
 
-* one GPU per CPU thread
-    * e.g. one OpenMP CPU thread per GPU being used
-* HIP and SYCL APIs are threadsafe
-    * multiple threads can call the functions at the same time
-* each thread can create its own context on a different GPU
+* For example: one OpenMP CPU thread per GPU being used
+* HIP/CUDA APIs are threadsafe
+* Each thread have designated context to the GPU assigned to it
     * when setting the device a context per thread is created
     * easy device management with no changing of device
-* from the point of view of a single thread, the implementation closer to a single-GPU case
-* communication between threads still not trivial
-
-
-# One GPU per (CPU) Thread: Code Example
-
 
 <div class="column" width=85%>
 *HIP*
@@ -162,12 +154,19 @@ for(int n = 0; n < num_devices; n++) {
 </small>
 </div>
 
+# Sidetrack: OpenMP `device` clause
+
+- Defines which device the directive should target
+- It is available to following directives: `target`, `target data`, `target enter data`, `target exit data`, and `target update`
+  - (Also: `dispatch` and `interop`)
+- [Specification documentation](https://www.openmp.org/spec-html/5.2/openmpse79.html)
+
 # Direct Peer to Peer Access
 
-* access peer GPU memory directly from another GPU
-    * pass a pointer to data on GPU 1 to a kernel running on GPU 0
-    * transfer data between GPUs without going through host memory
-    * lower latency, higher bandwidth
+* Access peer GPU memory directly from another GPU
+  * pass a pointer to data on GPU 1 to a kernel running on GPU 0
+  * transfer data between GPUs without going through host memory
+  * lower latency, higher bandwidth
 
 ```cpp 
 // Check peer accessibility
