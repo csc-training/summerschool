@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cmath>
 #include <hip/hip_runtime.h>
+#include "error_checking.hpp"
 
 // Data structure for storing decomposition information
 struct Decomp {

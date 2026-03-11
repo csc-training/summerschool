@@ -3,6 +3,7 @@
 #include <mpi.h>
 #include <unistd.h>
 #include <hip/hip_runtime.h>
+#include "../error_checking.hpp"
 
 
 /* HIP kernel to increment every element of a vector by one */
