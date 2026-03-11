@@ -94,9 +94,10 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 08:00 | Breakfast
-| 09:00 | [Parallel I/O](parallel-io)
+| 09:00 | [Parallel algorithms](algorithms)
+| 10:00 | [Parallel I/O](parallel-io)
 | 12:00 | Lunch
-| 13:00 | Free time
+| 13:00 | Exercises (optional)
 | 15:00 | Refreshments available as usual
 | 15:30 | Free time
 | 18:00 | Dinner (available until 20:00)
