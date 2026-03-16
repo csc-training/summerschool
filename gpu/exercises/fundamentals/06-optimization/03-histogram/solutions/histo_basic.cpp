@@ -42,10 +42,30 @@ __global__ void histogram_one_block_per_bin(const int* __restrict__ bins,
                                 counter_t* __restrict__ hist, 
                                 int num_bins)
 {
-    // WRITE THE KERNEL HERE. 
-    // HINT:
-    // every thread "owns" a cell in shared memory. we "split" the array across the threads of every block, and when the value is the one that should be in the bin (remember every block "owns" one bin) then they increment the thread local counter. When all the values in the array are evaluated, we perform a reduction from the shared memory values and only the thread 0 writes in global memory
+    int b = blockIdx.x;                     // one block per bin
+    if (b >= num_bins) return;
 
+    // Parallel reduction inside the block for occurrences of bin b
+    int local = 0;
+    for (size_t i = threadIdx.x; i < n; i += blockDim.x) {
+        int x = bins[i];
+        if (x == b) local++;
+    }
+
+    // Reduce within the block (naive shared-mem sum)
+    extern __shared__ counter_t smem[];
+    smem[threadIdx.x] = local;
+    __syncthreads();
+
+    // standard tree reduction
+    for (int offset = blockDim.x >> 1; offset > 0; offset >>= 1) {
+        if (threadIdx.x < offset) smem[threadIdx.x] += smem[threadIdx.x + offset];
+        __syncthreads();
+    }
+
+    if (threadIdx.x == 0) {
+        hist[b] = smem[0];  // single writer → no atomics
+    }
 }
 
 //#3 atomic add in memory
@@ -54,10 +74,15 @@ __global__ void histogram_intbins_global(const int* __restrict__ bins,
                               counter_t* __restrict__ global_hist,
                               int num_bins)
 {
-    // WRITE THE KERNEL HERE
-    // HINT: 
-    // the algorithm is simpler: every thread gets a value, identifies the bin, performs an atomicadd into the global memory
+    int grid_stride_start = blockIdx.x * blockDim.x + threadIdx.x;
+    int grid_stride_step  = blockDim.x * gridDim.x;
 
+    for (auto i = grid_stride_start; i < n; i += grid_stride_step) {
+        int bin = bins[i];
+        if (static_cast<unsigned>(bin) < static_cast<unsigned>(num_bins)) {
+            atomicAdd(&global_hist[bin], 1ULL);
+        }
+    }
 }
 
 
@@ -67,19 +92,38 @@ __global__ void histogram_intbins_shared(const int* __restrict__ bins,
                               counter_t* __restrict__ global_hist,
                               int num_bins)
 {
-    // WRITE THE KERNEL HERE
-    // HINT:
-    // similar to previous one, but instead of making an atomicadd to global memory for every value we have a shared memory slice that represents all the bins. we do our atomic adds there, and only when all values are processed, we do global atomic add from every bin from all blocks into the result array
+    extern __shared__ counter_t s_hist[]; // size: num_bins * sizeof(counter_t)
 
+    // Initialize shared histogram to zero
+    for (int b = threadIdx.x; b < num_bins; b += blockDim.x) {
+        s_hist[b] = 0;
+    }
+    __syncthreads();
+    
+    int grid_stride_start = blockIdx.x * blockDim.x + threadIdx.x;
+    int grid_stride_step  = blockDim.x * gridDim.x;
+
+    // Accumulate in shared memory
+    for (auto i = grid_stride_start; i < n; i += grid_stride_step) {
+        int bin = bins[i];
+        if (static_cast<unsigned>(bin) < static_cast<unsigned>(num_bins)) {
+            atomicAdd(&s_hist[bin], 1ULL);
+        }
+    }
+    __syncthreads();
+
+    // Flush to global
+    for (int b = threadIdx.x; b < num_bins; b += blockDim.x) {
+        counter_t v = s_hist[b];
+        if (v) atomicAdd(&global_hist[b], v);
+    }
 }
 
 
 
 
 // ============================================================
-//   wrapper functions:
-//   
-//   they setup the grid/block sizes, since every kernel has a different requirement.
+//   wrapper functions
 // ============================================================
 
 void histogram_bins_v1(const int* d_bins, size_t n, counter_t* d_hist, int num_bins)
