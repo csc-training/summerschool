@@ -163,10 +163,12 @@ LAUNCH_KERNEL(baz, dim3(1, 1, 1), dim3(128, 1, 8), 0, 0, 16, d_arr);
 // - argument n = 16, arr = d_arr
 ```
 
-If you're confused by the C macro and C++ template function, don't worry.
-You don't need to understand it at this point, there's a ready made implementation which you can just use.
-
-If you're interested, you can read more about [variadic macros](https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html)
+If you're confused by the C `__VA_ARGS__` macro and C++ `typename... Args` template functions, don't worry.
+That is quite advanced c/c++ stuff that you can use even if you don't fully understand.
+Think about the `printf` function in C. 
+That is a variadic function that I bet all of you already used and none really went into the implementation details!
+You don't need to understand it at this point, consider this as a ready made implementation which you can just use.
+But, since we're here to learn, if you're interested, you can read more about [variadic macros](https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html)
  (`...` and `__VA_ARGS__`) in C
 and [parameter packs](https://en.cppreference.com/w/cpp/language/pack)
 (`typename... Args`, `Args... args` and `args...`) in C++.
@@ -280,6 +282,27 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
 Alternatively, you may use a custom define and pass it to the compiler manually: `CC -DMY_CUSTOM_DEFINE ...`, `#if MY_CUSTOM_DEFINE ...`.
 
 Ok, let's move on.
+
+## Exercise: Errors IN kernel
+
+As we have already mentioned, kernels are executed in asynchronous way. Which means that the trick we just defined will run while the kernel is running, and it will NOT catch errors happening INSIDE the kernel itself.
+Debugging GPU kernels is unfortunately more painful than debugging "normal" code. This happens because of the GPU architecture: it is designed to run many parallel threads, organized in blocks/grids which maps to different compute units(or streaming multiprocessors).
+And in parallel from the host code too. So we have many levels of parallelism to take into account when debugging GPU code.
+
+In CUDA, and future rocm version (from 7.0 on), One first helper when something goes wrong is to force GPU synchronization after every kernel, and check the error code. This can be done by adding this functionality to the macro we defined previously. 
+NOTE: it is important to be sure that this part of the macro is executed ONLY WHEN DEBUGGING! synchronization is an expensive operation and removes some of the advantages of using a separate device.
+This helps us in identifying the kernel that is misbehaving. It may not be needed if the kernel triggers some segfault or similar "deadly" error, because you already know which one is the "offending" kernel.
+
+Once you know that, there are two approaches. either you use a debugger (e.g. rocgdb) or you can insert prints in your device code to see what's happening on the device. 
+
+If you go for this second approach, remember that threads are executed in parallel, and out of order.
+For this reason it is useful to add some "identifiers" to all the prints done, so that you can know which thread is printing what.
+For example you can use: 
+`printf("Block is (%d,%d,%d) thread is (%d,%d,%d): MESSAGE\n",blockIdx.x,blockIdx.y,blockIdx.z,threadIdx.x,threadIdx.y,threadIdx.z)`
+Another useful piece of information is that prints on GPU are buffered and only appear in the stdout/err AFTER the end of the kernel. so if you trigger a segfault, you will not see any prints. A trick I used in the past is to find the instruction that triggers the segfault and comment the kernel from there on to get the prints and analyze them. (TODO: CHECK THIS IS STILL TRUE)
+Finally, the buffer has a limited space. So keep the prints "small" and delete them as long as you proceed with the debugging. And be sure to remove them for the releases!
+
+TODO the exercise itself. Think of something that can show an hidden error that can be seen easily by printing things. (hipstride.cpp in tests folder may be adapted to this).
 
 ## Exercise: Errors from API calls
 
