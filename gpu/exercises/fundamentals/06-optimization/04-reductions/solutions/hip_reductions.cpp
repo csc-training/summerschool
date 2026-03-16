@@ -37,6 +37,25 @@ __global__ void reduce_naive_blockatomic(const double* __restrict__ in,
                                          double* __restrict__ out,
                                          size_t N)
 {
+    size_t tidGlobal = blockIdx.x * blockDim.x + threadIdx.x;
+    size_t stride    = blockDim.x * gridDim.x;
+
+    // Each thread accumulates its local sum
+    double local = 0.0;
+    for (size_t i = tidGlobal; i < N; i += stride)
+        local += in[i];
+
+    // Thread 0 serially accumulates all local sums in this block
+    __shared__ double scratch[1];
+    if (threadIdx.x == 0) scratch[0] = 0.0;
+    __syncthreads();
+
+    // Use atomic within the block to avoid divergence (LDS atomic is fast)
+    atomicAdd(scratch, local);
+    __syncthreads();
+
+    if (threadIdx.x == 0)
+        atomicAdd(out, scratch[0]);
 }
 
 // ==========================================================
@@ -46,6 +65,32 @@ __global__ void reduce_naive_blockatomic(const double* __restrict__ in,
 __global__ void reduce_shared_atomic(const double* __restrict__ in,
                                      double* __restrict__ out,
                                      size_t N)
+{
+    extern __shared__ double sdata[];
+    unsigned tid = threadIdx.x;
+
+    size_t start  = (size_t)blockIdx.x * blockDim.x * 2 + tid;
+    size_t stride = (size_t)blockDim.x * 2 * gridDim.x;
+
+    double sum = 0.0;
+    for (size_t i = start; i < N; i += stride) {
+        double a = in[i];
+        double b = (i + blockDim.x < N) ? in[i + blockDim.x] : 0.0;
+        sum += a + b;
+    }
+
+    sdata[tid] = sum;
+    __syncthreads();
+
+    // Shared memory tree reduction to one value per block
+    for (unsigned s = blockDim.x / 2; s > 0; s >>= 1) {
+        if (tid < s)
+            sdata[tid] += sdata[tid + s];
+        __syncthreads();
+    }
+
+    if (tid == 0)
+        atomicAdd(out, sdata[0]);
 }
 
 
