@@ -21,4 +21,8 @@ We also provide an example with the hipcub library (optimized for the task). How
 
 1. But we can do better with shared memory! what if we use a "tree" algorithm to reduce the partial sum from all threads to thread 0, instead of using atomicadds?
 
+## [EXTRA] Task:
+Try changing the base parameter values. what happens with repetitions? and with increasing/decreasing blocks? help yourself with profiler. 
+[IDEAS to discuss] What about nvidia devices? does it behave the same way? 
+[if i have time] shfl on cuda. shfl on AMD is implemented via shmem, so there is no real gain. is it the same on nvidia?
 
