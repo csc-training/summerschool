@@ -302,7 +302,7 @@ For example you can use:
 Another useful piece of information is that prints on GPU are buffered and only appear in the stdout/err AFTER the end of the kernel. so if you trigger a segfault, you will not see any prints. A trick I used in the past is to find the instruction that triggers the segfault and comment the kernel from there on to get the prints and analyze them. (TODO: CHECK THIS IS STILL TRUE)
 Finally, the buffer has a limited space. So keep the prints "small" and delete them as long as you proceed with the debugging. And be sure to remove them for the releases!
 
-TODO the exercise itself. Think of something that can show an hidden error that can be seen easily by printing things. (hipstride.cpp in tests folder may be adapted to this).
+In [this exercise](05_kernel_error) there is a simple kernel that is wrong. We added some prints there to help us localize the error. go there and follow the [instructions](05_kernel_error/README.md) to debug it!
 
 ## Exercise: Errors from API calls
 
