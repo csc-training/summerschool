@@ -41,7 +41,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 15:00 | Refreshments (available until 17:00)
 | 15:30 | [Introduction to HPC](intro-to-hpc)
 | 18:00 | Dinner (available until 19:30)
-| 19:30 | Get together & Lightning talks in Loimu
+| 19:30 | Get together & Lightning talks in room Loimu
 
 ### Day 2, Wed 24.6.
 
@@ -159,8 +159,8 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 13:00 | Exercises
 | 15:00 | Refreshments (available until 17:00)
 | 15:30 | Exercises
-| 16:00 | Outdoor activity: Boating at the lake
-| 19:00 | Special dinner and farewell party
+| 16:00 | Outdoor activity: Boating at the lake (meetup at the Hotel lobby)
+| 19:00 | Special dinner and farewell party in room Hopeapaju
 
 ### Day 10, Thu 2.7.
 
