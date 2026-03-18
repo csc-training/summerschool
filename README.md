@@ -169,7 +169,8 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 07:45 | Breakfast
 | 09:00 | [Putting It All Together: HPC Applications at Scale](application-design-deployment)
 | 11:00 | [Closing](https://csc-training.github.io/summerschool/)
-| 11:30 | Lunch + Hotel check-out
+| 11:30 | Hotel check-out
+| 12:00 | Lunch
 | 13:00 | Transport to Helsinki city
 
 
