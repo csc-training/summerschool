@@ -157,7 +157,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 11:50 | Group photo
 | 12:00 | Lunch
 | 13:00 | Exercises
-| 15:00 | Refreshments (available until 17:00)
+| 15:00 | Refreshments (available until 16:00)
 | 15:30 | Exercises
 | 16:00 | Outdoor activity: Boating at the lake (meetup at the Hotel lobby)
 | 19:00 | Special dinner and farewell party in room Hopeapaju
@@ -169,8 +169,7 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | 07:45 | Breakfast
 | 09:00 | [Putting It All Together: HPC Applications at Scale](application-design-deployment)
 | 11:00 | [Closing](https://csc-training.github.io/summerschool/)
-| 11:30 | Hotel check-out
-| 12:00 | Lunch
+| 11:30 | Lunch + Hotel check-out
 | 13:00 | Transport to Helsinki city
 
 
