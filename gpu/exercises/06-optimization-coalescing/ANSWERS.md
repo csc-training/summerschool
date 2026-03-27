@@ -17,19 +17,19 @@ read requests!
 
 
 
-###Q2
+### Q2
 - How many L2 read requests are issued?
 TCP_TCC_READ_REQ_sum is the counter to look for this one. As you can see, the best one is with the
 first kernel, while it increases when we break coalescing.
 
-###Q3
+### Q3
 - How many device global memory read requests are issued?
 This is a bit trickier, as it looks like that when this one decreases, performance go down, which is counterintuitive
-as the opposite should happen. However, this decrease explain why the performance improves a bit when the stride is 
-4096. However, the amount of read requests is still higher than the fully coalesced kernel, so even if we
+as the opposite should happen. However, this decrease explain why the performance improves a bit when the stride is 4096.
+However, the amount of read requests is still higher than the fully coalesced kernel, so even if we
  mitigate the global memory access effect, we do not improve global performances!
 
-###Q4
+### Q4
 - The number of Global memory read requests drop when the stride is around 4096. Why?
     *Hint*: Print out the values of `index` for some block in a 16x16 matrix.
     Are some of those indices adjacent within a warp?
