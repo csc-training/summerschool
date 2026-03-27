@@ -9,7 +9,7 @@ SPDX-License-Identifier: CC-BY-4.0
 In this exercise we will try to perform reductions with hip.
 
 In the code we can find a naive approach that accumulate partial results in every thread and uses atomicAdd to sum them in memory. can we do better?
-We also provide an example with the hipcub library (optimized for the task). How close can we go with "simple" optimization to that? We suggest a couple of techniques, in the [solution directory](solution/) provide the code for those two kernels. you are however free to seek further optimizations with other techniques.
+We also provide an example with the hipcub library (optimized for the task). How close can we go with "simple" optimization to that? We suggest a couple of techniques, in the [solution directory](solutions/) provide the code for those two kernels. you are however free to seek further optimizations with other techniques.
 
 
 ## Task: write a blockatomic kernel
