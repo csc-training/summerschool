@@ -170,7 +170,7 @@ That is a variadic function that I bet all of you already used and none really w
 You don't need to understand it at this point, consider this as a ready made implementation which you can just use.
 But, since we're here to learn, if you're interested, you can read more about [variadic macros](https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html)
  (`...` and `__VA_ARGS__`) in C
-and [parameter packs](https://en.cppreference.com/w/cpp/language/pack)
+and [parameter packs](https://en.cppreference.com/w/cpp/language/parameter_pack.html)
 (`typename... Args`, `Args... args` and `args...`) in C++.
 
 Ok, enough exposition. Head over to the [exercise](03_kernel_launch_wrapper) and follow the
@@ -246,7 +246,7 @@ const dim3 max_threads(
         hipDeviceAttribute_t::hipDeviceAttributeMaxBlockDimZ));
 ```
 
-A full list of attributes can be found in the [HIP runtime API documentation](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/global_defines_enums_structs_files/global_enum_and_defines.html#_CPPv420hipDeviceAttribute_t).
+A full list of attributes can be found in the [HIP runtime API documentation](https://rocm.docs.amd.com/projects/HIP/en/latest/doxygen/html/group___global_defs.html#ggacc0acd7b9bda126c6bb3dfd6e2796d7ca1421bb450fe736fda9605a607be69836).
 
 Ok, again, enough with the talk, let's get coding! Head over to [the exercise](04_api_queries) and follow the [instructions](04_api_queries/README.md) there.
 
@@ -310,7 +310,8 @@ In the previous exercise we learned to query values from the API: `const auto re
 The API gives us the value for the attribute we query through a reference: `&value`. Why doesn't it just return it?
 Because it returns something else, and we chose to call it `result`.
 
-Many of the API calls actually return an error code of type [`hipError_t`](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/hip_runtime_api/global_defines_enums_structs_files/global_enum_and_defines.html#group___global_defs_1ga6742b54e2b83c1a5d6861ede4825aafe).
+Many of the API calls actually return an error code of type `hipError_t`
+
 
 We already encountered this earlier when we discussed catching errors
 from kernel launches in a [previous exercise](03_kernel_launch_wrapper).
@@ -393,8 +394,8 @@ static inline void hip_errchk(hipError_t result, const char *file,
 
 This way the error checking is out of the way, but it's still there.
 
-In [this exercise](05_api_errors) there are a bunch of problems with API calls.
-Check the [instructions](05_api_errors/README.md) and fix the errors!
+In [this exercise](06_api_errors) there are a bunch of problems with API calls.
+Check the [instructions](06_api_errors/README.md) and fix the errors!
 
 ## Exercise: Kernel for filling a 1D array with a value
 
@@ -414,7 +415,7 @@ But we've learned that the maximum number of threads per block is 1024. Yes, ind
 but the limit on the maximum number of blocks per grid is much higher! So we should be able to
 easily launch enough *threads per grid* to fill the entire array.
 
-Head over to the [exercise](06_fill) to figure out the rest of the details.
+Head over to the [exercise](07_fill) to figure out the rest of the details.
 
 ## Exercise: Re-use threads in a 1D kernel with a for loop
 
@@ -489,7 +490,7 @@ A significantly more GPU friendly way of doing the same is to use a 'strided loo
 This way the threads of a warp always access memory close to each other: the memory needs of the warp can be
 served with fewer memory accesses.
 
-Head over to the [exercise](07_taylor_for) and follow the [instructions](07_taylor_for/README.md) there.
+Head over to the [exercise](08_taylor_for) and follow the [instructions](08_taylor_for/README.md) there.
 
 ## Bonus exercises
 
