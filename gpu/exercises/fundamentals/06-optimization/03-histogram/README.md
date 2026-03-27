@@ -13,14 +13,15 @@ run and profile the basic program. In the provided code, the only provided kerne
 
 how can we parallelize it?
 
-##Task: first attempt: no AtomicAdd
+## Task: first attempt: no AtomicAdd
 Write a kernel where every block "owns" a bin, thread scan different cell of the array in parallel and add to local bin if value is corresponding. at the end of the scan we make a reduction in the block, then we write in the histogram
 
 Pros: atomics‑free and parallel within each block.
+
 Cons: Each block scans all N elements → very expensive for large num_bins.
 
-##Task: Reduce number of scans
+## Task: Reduce number of scans
 Can we reduce the amount of scans? yes, but we need a way to ensure that there are no data races. Atomic_add comes to help! With that we can scan all numbers once, and add them to the correct bin only. This greatly reduces the amount of needed read from the memory!
 
-##Task: Can we do better?
+## Task: Can we do better?
 atomic_add is an expensive operation when done to global memory... Can we reduce the amount of atomic add to global memory, and make most of them to shared memory instead?
