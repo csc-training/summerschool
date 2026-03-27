@@ -37,7 +37,7 @@ An MI250x GCD has 8 MiB of L2 memory shared across the CUs and each CU has 16
 kiB of L1 memory.
 
 In this exercise we will use the following metrics:
-
+```
 SQ_INSTS_VMEM_RD  Number of vector memory read instructions (including flat) issued. 
 TCP_TCC_READ_REQ_sum  Total number of read requests to L2 cache
 TCC_EA_RDREQ_sum     Number of TCC/EA read requests (either 32-byte or 64-byte). Sum over TCC instances.
@@ -46,20 +46,22 @@ TCC_HIT_sum Total number of L2 cache hits.
 TCC_MISS_sum Total number of L2 cache misses.
 TCP_TOTAL_READ_sum Total number of vector L1d read accesses
 TCP_TCC_READ_REQ_sum  Total number of read requests to L2 cach
-
+```
 equivalent and useful for write: 
-
+```
 TCC_EA_WRREQ_64B_sum  Number of 64-byte transactions going (64-byte write or CMPSWAP) over the TC_EA_wrreq interface 
 TCC_EA_WRREQ_sum  Number of transactions (either 32-byte or 64-byte) going over the TC_EA_wrreq interface
 SQ_INSTS_VMEM_WR  Number of vector memory write instructions (including flat) issued
 TCP_TCC_WRITE_REQ_sum Total number of write requests to L2 cache
-
+```
 
 some terminology explanation:
+```
 TC -> texture cache (i.e. compute unit cache)
 TCC -> L2 texture cache
 TCP -> L1 texture cache
 EX -> external agent (i.e. global memory)
+```
 
 ## Exercise
 
