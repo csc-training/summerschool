@@ -471,7 +471,7 @@ rocSPARSE (AMD) / cuSPARSE (NVIDIA)
 ```cpp
 #pragma omp target data map(tofrom:a[:N]) map(to:b[:N])
 #pragma omp target teams distribute parallel for
-for(size_t k = 0; k<N; ++k) {
+for(size_t k = 0; k < N; ++k) {
   a[k] = 1.25 * a[k];
   a[k] += b[k];
 }
@@ -693,21 +693,29 @@ General-purpose compute via compute pipeline and compute shaders
 | C/C++ | Excellent | Excellent |
 | Fortran | Good | Limited |
 | Python | Good | Limited |
-| Other languages | Bindings only | Bindings only |
+| Other | Varies | Varies |
 
 # How to Use a GPU: Practical Language Guidance
 
 Choose based on your needs:
 
-- C/C++ – Maximum portability and vendor support
-- Python – Rapid development, strong ML frameworks (AMD experimental, except PyTorch)
-- Fortran – Legacy and scientific codes (NVIDIA better)
-- Other languages – Possible but support usually lacking on HPC systems
+- C/C++
+    - Maximum portability and vendor support
+- Python
+    - Rapid development, strong ML frameworks
+    - Numba & CuPy experimental support on AMD
+- Fortran
+    - Legacy and scientific codes
+    - NVIDIA support better
+- Other languages
+    - Possible but support usually lacking on HPC systems
 
 # Problems That Map Well to GPUs {.section}
 
 # Problem Characteristics: Low Coupling & Parallelism
 
+:::::: {.columns}
+::: {.column width="50%"}
 Problems with low coupling and many independent elements
 
 Examples
@@ -716,26 +724,55 @@ Examples
 - Reductions (e.g. sums, max operations) across large arrays
 - Matrix/vector products with many vectors/large matrices
 
+:::
+::: {.column width="50%"}
+```cpp
+for (auto i = 0; i < N; i++) {
+    y[i] = a * x[i] + y[i];
+}
+```
+![](img/matrix-vector-product.png){.center width=100%}
+:::
+::::::
+
 # Problem Examples: Particle Simulations
 
+:::::: {.columns}
+::: {.column width="50%"}
 Particle systems with limited coupling
 
 Examples
 
 - Molecular dynamics with cutoff distances
 - N-body problems with approximate forces
+:::
+::: {.column width="50%"}
+![](img/md-example.jpg){.center width=50%}
+
+<small>Scholes N, Weinzierl R, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons</small>
+:::
+::::::
 
 # Problem Examples: Grid-Based Simulations
 
+:::::: {.columns}
+::: {.column width="50%"}
 Grid-based systems where cells are updated independently
 
 Examples
 
 - Lattice-Boltzmann Methods
 - Cellular automata (Conway's Game of Life)
+:::
+::: {.column width="50%"}
+![](img/conway.png){.center width=100%}
+:::
+::::::
 
 # Problem Examples: Shading & Image Processing
 
+:::::: {.columns}
+::: {.column width="50%"}
 Image processing
 
 Examples
@@ -743,14 +780,32 @@ Examples
 - Rendering 2D/3D scenes (original purpose of GPUs)
 - Image filters (convolutions, blur, edge detection)
 
+:::
+::: {.column width="50%"}
+![](img/rendered_spheres.png){.center width=100%}
+
+<small>Barahag, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons</small>
+:::
+::::::
+
 # Problem Examples: Machine Learning & AI
 
+:::::: {.columns}
+::: {.column width="50%"}
 ML & AI with matrix operations & data parallelism
 
 Examples
 
 - natural language processing
 - computer vision
+
+:::
+::: {.column width="50%"}
+![](img/Banana_Plant_Flask_by_Max_Gruber.jpeg){.center width=100%}
+
+<small>Max Gruber, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons</small>
+:::
+::::::
 
 # Does your problem benefit from a GPU?
 
@@ -783,6 +838,19 @@ Ask yourself
 
 # Bonus: Software -- Hardware mapping {.section}
 
+# Refresh: GPU architecture
+
+:::::: {.columns}
+::: {.column width="70%"}
+![](img/mi250x-layout.png){.center width=100%}
+:::
+::: {.column width="30%"}
+Or more abstractly
+
+![](img/gcd-ce-cu-abstract.png){.center width=100%}
+:::
+::::::
+
 # GPU threads
 
 GPU code is usually written from the perspective of a single GPU thread
@@ -811,18 +879,18 @@ GPU threads are very different from CPU threads:
 - grouped hiearchically
 - mapped to hardware differently
 
+# Grid, block, wavefront, thread hierarchy
+
+![](img/grid-block-wavefront-thread-tree.png){.center width=70%}
+
 # GPU thread -- SIMD lane
 
-:::::: {.columns}
-::: {.column width="50%"}
-A single GPU thread maps to a single lane on a SIMD unit (or SMSP, which is NVIDIAs fancy name for it)
+A single GPU thread maps to a single lane on a SIMD unit
 
-:::
-::: {.column width="50%"}
-TODO
-![](img/cpu-gpu-reduction3.png){.center width=100%}
-:::
-::::::
+\  
+\  
+
+![](img/thread_lane.png){.center width=50%}
 
 # Wavefront/warp -- SIMD unit
 
@@ -834,17 +902,15 @@ Consecutive GPU threads grouped by hardware:
 |-|----|------|--|
 |64|wavefront|AMD|SIMD|
 |32|warp|NVIDA|SMSP|
+:::
+::: {.column width="50%"}
+![](img/wavefront-simd.png){.center width=100%}
+:::
+::::::
 
 SMSP: Streaming Multiprocessor Sub-Partition (~= SIMD)
 
 Wavefronts/warps recide on the same SIMD/SMSP until completion
-
-:::
-::: {.column width="50%"}
-TODO
-![](img/cpu-gpu-reduction3.png){.center width=100%}
-:::
-::::::
 
 # Wavefront
 
@@ -876,21 +942,22 @@ else
 # Block of threads -- CU/SM
 
 :::::: {.columns}
-::: {.column width="50%"}
+::: {.column width="60%"}
 GPU threads grouped also in software by the user
 
 **Block of threads** = N threads, where (1 <= N <= 1024)
 
 Block maps to CU/SM (AMD/NVIDIA)
 
+Blocks may be 1, 2 or 3 dimensional
+
 CU: Compute Unit
 
 SM: Streaming Multiprocessor
 
 :::
-::: {.column width="50%"}
-TODO
-![](img/cpu-gpu-reduction3.png){.center width=100%}
+::: {.column width="40%"}
+![](img/block-cu.png){.center width=60%}
 :::
 ::::::
 
@@ -899,30 +966,26 @@ TODO
 :::::: {.columns}
 ::: {.column width="50%"}
 Multiple blocks may map to a single CU/SM
-
+  \
+  \
+  \
+  \
+  \
+  \
 A single block is never mapped to multiple CU/SMs
-
-Blocks may be 1, 2 or 3 dimensional
 :::
 ::: {.column width="50%"}
-TODO
-![](img/cpu-gpu-reduction3.png){.center width=100%}
+![](img/multi-block-per-cu.png){.center width=100%}
 :::
 ::::::
 
 # Block of threads and shared memory
 
-:::::: {.columns}
-::: {.column width="50%"}
 1. Block of threads maps to a CU/SM
 2. The SIMDs/SMSPs on CU/SM share a small amount of fast memory
 3. Threads within the same block may cooperate through that memory
-:::
-::: {.column width="50%"}
-TODO kuva CU:sta ja LDSstä
-![](img/cpu-gpu-reduction3.png){.center width=100%}
-:::
-::::::
+
+![](img/mi250x-cu-lds-highlight.png){.center width=100%}
 
 # Grid of blocks -- GPU
 
@@ -938,8 +1001,7 @@ Grids may be 1, 2 or 3 dimensional
 
 :::
 ::: {.column width="50%"}
-TODO map to GPU
-![](img/cpu-gpu-reduction3.png){.center width=100%}
+![](img/grid-gcd.png){.center width=50%}
 :::
 ::::::
 
