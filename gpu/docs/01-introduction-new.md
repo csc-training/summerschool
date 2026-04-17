@@ -801,7 +801,7 @@ Examples
 
 :::
 ::: {.column width="50%"}
-![](img/Banana_Plant_Flask_by_Max_Gruber.jpeg){.center width=100%}
+![](img/Banana_Plant_Flask_by_Max_Gruber.png){.center width=100%}
 
 <small>Max Gruber, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons</small>
 :::
