@@ -4,69 +4,27 @@ event:  Tools for High Performance Computing, University of Helsinki, 2026
 lang:   en
 ---
 
-# Introduction to GPU programming
-
 # Overview
 
-- This
-- That
+We will cover the following topics
+
+- What is a GPU and why should you care
+- How does the architecture of a GPU differ from that of a CPU
+- How to use GPUs
+- What problems are a good fit for GPUs
+- (Bonus: Software - hardware mapping on GPUs)
 
 # Learning objectives
 
-- This
-- That
+After this lecture you will understand
 
-# GPUs: what and why? {.section}
+- why GPUs are relevant for HPC
+- how GPUs differ from CPUs
+- how GPUs can be utilized
+- what problems map well to GPUs
+- (if time permits, how the software maps to hardware on a high level)
 
-# What is a GPU?
-
-:::::: {.columns}
-::: {.column width="40%"}
-A GPU is a **coprocessor** with its own architecture (and often its own memory)
-
-Examples
-
-- Grace-Hopper
-- A100 w/ CPU
-- MI250X w/ CPU
-:::
-::: {.column width="60%"}
-
-![](img/cpu-gpu-interconnect.png){.center width=120%}
-
-CPU and GPU on separate chips
-  
-:::
-::::::
-
-# What is a GPU?
-
-:::::: {.columns}
-::: {.column width="40%"}
-A GPU is a **coprocessor** with its own architecture (and often its own memory)
-
-Examples
-
-- MI300A
-:::
-::: {.column width="60%"}
-
-![](img/cpu-gpu-interconnect-superchip.png){.center width=60%}
-
-CPU and GPU on a single chip
-  
-:::
-::::::
-
-# What is a GPU?
-
-Controlled via an API
-
-- CPU acts as an orchestrator
-- GPU executes parallel tasks dispatched by the CPU
-- GPUs are **coprocessors**, not replacements of CPUs
-
-![](img/async-cpu-gpu.png){.center width=100%}
+# GPUs: why and what? {.section}
 
 # Why use GPUs for HPC?
 
@@ -168,7 +126,60 @@ November 2025
   \
   \
   \
-Most of the compute power of modern super computers comes from GPUs
+
+<div style="text-align:center;">
+GPUs enable exascale ($10^{18}$ FLOPS)
+</div>
+
+# What is a GPU?
+
+:::::: {.columns}
+::: {.column width="40%"}
+A GPU is a **coprocessor** with its own architecture (and often its own memory)
+
+Examples
+
+- Grace-Hopper
+- A100 w/ CPU
+- MI250X w/ CPU
+:::
+::: {.column width="60%"}
+
+CPU and GPU on separate chips
+
+![](img/cpu-gpu-interconnect.png){.center width=120%}
+  
+:::
+::::::
+
+# What is a GPU?
+
+:::::: {.columns}
+::: {.column width="40%"}
+A GPU is a **coprocessor** with its own architecture (and often its own memory)
+
+Examples
+
+- MI300A
+:::
+::: {.column width="60%"}
+
+CPU and GPU on a single chip
+
+![](img/cpu-gpu-interconnect-superchip.png){.center width=60%}
+  
+:::
+::::::
+
+# What is a GPU?
+
+Controlled via an API
+
+- CPU acts as an orchestrator
+- GPU executes parallel tasks dispatched by the CPU
+- GPUs are **coprocessors**, not replacements of CPUs
+
+![](img/async-cpu-gpu.png){.center width=100%}
 
 # GPU architecture {.section}
 
@@ -358,6 +369,31 @@ Example: Reductions (summing an array)
 - GPU: Hierarchical reduction with multiple kernel launches & synchronization
 
 ![](img/cpu-gpu-reduction2.png){.center width=100%}
+
+# GPU Architecture Implications: Algorithmic Changes
+
+Reduction step across a SIMD 16 lanes wide
+
+(Illustrative only, shows how different this is from a serial reduction)
+
+:::::: {.columns}
+::: {.column width="50%"}
+```cpp
+// lid (= lane id) goes from 0 to 15
+for (auto i = 4; i > 0; i--) {
+    const auto off1 = 1 << (i - 1);
+    const auto off2 = (lid >> i) << i;
+    const auto mod = (1 << i) - 1;
+    const auto srclane = ((lid + off1) & mod)
+                         + off2;
+    value += __shfl(value, srclane);
+}
+```
+:::
+::: {.column width="50%"}
+![](img/cpu-gpu-reduction3.png){.center width=100%}
+:::
+::::::
 
 # How to Use a GPU {.section}
 
@@ -553,9 +589,9 @@ CUDA (NVIDIA)
 
 ```c++
 __global__ void saxpy_kernel(int n, float alpha, float *x, float *y) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < n) {
-        y[idx] = alpha * x[idx] + y[idx];
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (tid < n) {
+        y[tid] = alpha * x[tid] + y[tid];
     }
 }
 ```
@@ -570,9 +606,9 @@ HIP (AMD/NVIDIA)
 
 ```c++
 __global__ void saxpy_kernel(int n, float alpha, float *x, float *y) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < n) {
-        y[idx] = alpha * x[idx] + y[idx];
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (tid < n) {
+        y[tid] = alpha * x[tid] + y[tid];
     }
 }
 ```
@@ -744,3 +780,197 @@ Ask yourself
 - Many problems map well to the parallel nature of GPUs, but not all
 
 # Questions?
+
+# Bonus: Software -- Hardware mapping {.section}
+
+# GPU threads
+
+GPU code is usually written from the perspective of a single GPU thread
+
+Notice the lack of any for loops
+
+```c++
+__global__ void saxpy_kernel(int n, float alpha, float *x, float *y) {
+    // What is my global thread ID?
+    const int tid = blockIdx.x * blockDim.x + threadIdx.x;
+
+    // Is my thread ID smaller than the length of the array?
+    if (tid < n) {
+        // Perform the operation, for this single ID
+        y[tid] = alpha * x[tid] + y[tid];
+    }
+}
+```
+
+# GPU threads
+
+GPU threads are very different from CPU threads:
+
+- very lightweight
+- spawned automatically
+- grouped hiearchically
+- mapped to hardware differently
+
+# GPU thread -- SIMD lane
+
+:::::: {.columns}
+::: {.column width="50%"}
+A single GPU thread maps to a single lane on a SIMD unit (or SMSP, which is NVIDIAs fancy name for it)
+
+:::
+::: {.column width="50%"}
+TODO
+![](img/cpu-gpu-reduction3.png){.center width=100%}
+:::
+::::::
+
+# Wavefront/warp -- SIMD unit
+
+:::::: {.columns}
+::: {.column width="50%"}
+Consecutive GPU threads grouped by hardware:
+
+|#|Name|Vendor|HW|
+|-|----|------|--|
+|64|wavefront|AMD|SIMD|
+|32|warp|NVIDA|SMSP|
+
+SMSP: Streaming Multiprocessor Sub-Partition (~= SIMD)
+
+Wavefronts/warps recide on the same SIMD/SMSP until completion
+
+:::
+::: {.column width="50%"}
+TODO
+![](img/cpu-gpu-reduction3.png){.center width=100%}
+:::
+::::::
+
+# Wavefront
+
+1. Wavefronts map to a SIMD unit
+2. SIMD units perform the same operation for all lanes
+3. Sub-wavefront divergence reduces throughput
+
+:::::: {.columns}
+::: {.column width="50%"}
+```cpp
+// avoid
+if ((tid % 64) < 32)
+    divergence_within_a_wavefront();
+else
+    reduces_throughput();
+```
+:::
+::: {.column width="50%"}
+```cpp
+// ok
+if ((tid / 64) < 32)
+    no_divergence_since();
+else
+    threads_in_wavefront_take_same_branch();
+```
+:::
+::::::
+
+# Block of threads -- CU/SM
+
+:::::: {.columns}
+::: {.column width="50%"}
+GPU threads grouped also in software by the user
+
+**Block of threads** = N threads, where (1 <= N <= 1024)
+
+Block maps to CU/SM (AMD/NVIDIA)
+
+CU: Compute Unit
+
+SM: Streaming Multiprocessor
+
+:::
+::: {.column width="50%"}
+TODO
+![](img/cpu-gpu-reduction3.png){.center width=100%}
+:::
+::::::
+
+# Block of threads -- CU/SM
+
+:::::: {.columns}
+::: {.column width="50%"}
+Multiple blocks may map to a single CU/SM
+
+A single block is never mapped to multiple CU/SMs
+
+Blocks may be 1, 2 or 3 dimensional
+:::
+::: {.column width="50%"}
+TODO
+![](img/cpu-gpu-reduction3.png){.center width=100%}
+:::
+::::::
+
+# Block of threads and shared memory
+
+:::::: {.columns}
+::: {.column width="50%"}
+1. Block of threads maps to a CU/SM
+2. The SIMDs/SMSPs on CU/SM share a small amount of fast memory
+3. Threads within the same block may cooperate through that memory
+:::
+::: {.column width="50%"}
+TODO kuva CU:sta ja LDSstä
+![](img/cpu-gpu-reduction3.png){.center width=100%}
+:::
+::::::
+
+# Grid of blocks -- GPU
+
+:::::: {.columns}
+::: {.column width="50%"}
+User also defines the number of blocks
+
+**Grid of blocks** = N blocks, where (1 <= N <= M) and M depends on e.g. hardware, but is >= 65535
+
+A grid maps to a single GPU
+
+Grids may be 1, 2 or 3 dimensional
+
+:::
+::: {.column width="50%"}
+TODO map to GPU
+![](img/cpu-gpu-reduction3.png){.center width=100%}
+:::
+::::::
+
+# Mapping summary
+
+|#|Name|HW|User|Dim|Notes|
+|-|----|--|----|---|-----|
+|1|thread|lane|no|1||
+|64|wavefront|SIMD|no|1|AMD (cf. warp)|
+|32|warp|SMSP|no|1|NVIDIA (cf. wavefront)|
+|N|block of threads|CU/SM|yes|1-3|1 <= N <= 1024|
+|N|grid of blocks|GPU|yes|1-3|1 <= N <= M, M varies|
+
+# Defining grids and blocks, launching work
+
+```c++
+__global__ void saxpy_kernel(int n, float alpha, float *x, float *y) {
+    //              [0, 4095]    1024         [0, 1023]
+    const int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    // We use the block ID--/            /         \-- the local thread ID
+    //              and the block size--/
+    // To compute the global thread ID
+    if (tid < n) {
+        y[tid] = alpha * x[tid] + y[tid];
+    }
+}
+
+int main(int argc, char **argv) {
+    // Allocation, initialization etc. not shown
+    const dim3 block_of_threads(1024, 1, 1); // 32 warps, 16 wavefronts
+    const dim3 grid_of_blocks(4096, 1, 1);
+    saxpy_kernel<<<grid_of_blocks, block_of_threads>>>(n, alpha, x, y);
+}
+```
