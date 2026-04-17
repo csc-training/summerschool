@@ -65,9 +65,8 @@ Controlled via an API
 - CPU acts as an orchestrator
 - GPU executes parallel tasks dispatched by the CPU
 - GPUs are **coprocessors**, not replacements of CPUs
-- You cannot run an OS on a GPU (yet?)
 
-TODO: "trace" kuva, jossa CPU ja GPU radat ja CPU laukasee työtä GPUlla
+![](img/async-cpu-gpu.png){.center width=100%}
 
 # Why use GPUs for HPC?
 
@@ -261,7 +260,7 @@ for (auto i = 0; i < N; i++) {
     if ((i % 8) < 4)
         c[i] = a[i] + b[i];
     else
-        c[i] = a[i] / b[i];
+        c[i] = a[i] * b[i];
 }
 ```
 
@@ -352,17 +351,13 @@ Example: Reductions (summing an array)
 
 - CPU: Simple loop with accumulator
 
-TODO: tree showing a reduction for CPU and GPU
+![](img/cpu-gpu-reduction1.png){.center width=100%}
 
 # GPU Architecture Implications: Algorithmic Changes
 
-Some algorithms need restructuring for GPU efficiency
-
-Example: Reductions (summing an array)
-
 - GPU: Hierarchical reduction with multiple kernel launches & synchronization
 
-TODO: tree showing a reduction for CPU and GPU
+![](img/cpu-gpu-reduction2.png){.center width=100%}
 
 # How to Use a GPU {.section}
 
@@ -371,8 +366,8 @@ TODO: tree showing a reduction for CPU and GPU
 Multiple layers of abstraction:
 
 1. GPU accelerated programs
-2. High-level frameworks
-3. Parallel programming libraries
+2. Parallel programming libraries
+3. High-level APIs
 4. Low-level APIs
 5. Assembly-like intermediate representations
 
@@ -466,15 +461,40 @@ enddo
 - NVIDIA has excellent support
 - AMD support limited
 
-# How to Use a GPU: High-Level APIs – C++ Frameworks
+# How to Use a GPU: High-Level APIs – C++
 
-- Kokkos, Linux Foundation project
-- RAJA, from Lawrence Livermore National Laboratory
-- SYCL, Khronos standard
-- All these run on CPU, NVIDIA, AMD(, Intel GPUs)
-- Vendor-neutral, multi-platform
+| Library | Origin | CPU | NVIDIA | AMD | Intel |
+|---|---|:---:|:---:|:---:|:---:|
+| Kokkos | Sandia / LF | Yes | Yes | Yes | Yes |
+| RAJA | LLNL | Yes | Yes | Yes | Partial |
+| SYCL | Khronos standard | Yes | Yes | Yes | Yes |
 
-# How to Use a GPU: High-Level APIs – Python Frameworks
+LF: Linux Foundation
+
+LLNL: Lawrence Livermore National Laboratory
+
+# How to Use a GPU: High-Level APIs – C++
+
+<pre class="code"><code class="language-cpp">// Kokkos
+<span style="background:#8abeb7">Kokkos::parallel_for</span>("saxpy", <span style="background:#f0c674">Kokkos::RangePolicy&lt;execution_space&gt;(0, N)</span>,
+  <span style="background:#c5c8c6">KOKKOS_LAMBDA(const size_type i) {
+    y(i) = a * x(i) + y(i);
+  }</span>);
+
+// RAJA
+<span style="background:#8abeb7">RAJA::forall</span>&lt;Exec_GPU&gt;(<span style="background:#f0c674">RAJA::RangeSegment(0,N)</span>,
+  <span style="background:#c5c8c6">[=] RAJA_DEVICE (idx_t i){
+    y[i] = a * x[i] + y[i];
+  }</span>
+);
+
+// SYCL
+<span style="background:#8abeb7">h.parallel_for</span>&lt;class saxpy&gt;(<span style="background:#f0c674">sycl::range&lt;1&gt;(N)</span>, <span style="background:#c5c8c6">[=](sycl::id&lt;1&gt; i){
+    y[i] = a * x[i] + y[i];
+}</span>);
+</code></pre>
+
+# How to Use a GPU: High-Level APIs – Python
 
 CuPy
 
@@ -491,7 +511,7 @@ def elementwise_copy(x, y, size):
 - Also possible to write GPU kernels in Python syntax
 - NVIDIA support mature, AMD support experimental
 
-# How to Use a GPU: High-Level APIs – Python Frameworks
+# How to Use a GPU: High-Level APIs – Python
 
 Numba
 
@@ -510,7 +530,7 @@ def increment_by_one(an_array):
 - Good performance, lower boilerplate than CUDA
 - NVIDIA support mature, AMD support experimental
 
-# How to Use a GPU: High-Level APIs – Python Frameworks
+# How to Use a GPU: High-Level APIs – Python
 
 PyTorch
 
@@ -580,8 +600,8 @@ def saxpy_kernel(y_ptr, x_ptr, alpha, n, BLOCK_SIZE: tl.constexpr):
 ```
 
 - Python-like GPU programming language from OpenAI
-- Compiles to efficient GPU code
-- Reduces boilerplate compared to CUDA
+- Mostly used in AI/ML context
+- Can be use for general purpose computing
 
 
 # How to Use a GPU: Assembly-like languages -- PTX
