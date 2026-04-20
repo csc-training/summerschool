@@ -1036,3 +1036,7 @@ int main(int argc, char **argv) {
     saxpy_kernel<<<grid_of_blocks, block_of_threads>>>(n, alpha, x, y);
 }
 ```
+
+# The End
+
+Thank you, bye
