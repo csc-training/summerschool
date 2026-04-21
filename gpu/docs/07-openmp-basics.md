@@ -1,6 +1,6 @@
 ---
 title:  "OpenMP offloading"
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 

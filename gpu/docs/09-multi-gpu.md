@@ -1,6 +1,6 @@
 ---
 title:  Multi-GPU programming and HIP/OpenMP/SYCL + MPI
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
