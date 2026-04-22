@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include "../../error_checking.hpp"
 
-#include "helperfuns.h"
+#include "../04-streams-helperfuns.h"
 
 // GPU kernel definition
 int main() {

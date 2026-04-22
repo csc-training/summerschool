@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include "../../error_checking.hpp"
 
-#include "helperfuns.h"
+#include "../04-streams-helperfuns.h"
 
 int main() {
   constexpr size_t N = 1<<10; // 1024 items
