@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../error_checking.hpp"
+#include "../error_checking.hpp"
 
 // GPU kernel definition
 __global__ void kernel(float *a, int n)

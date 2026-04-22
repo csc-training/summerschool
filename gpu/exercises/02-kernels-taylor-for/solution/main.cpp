@@ -3,7 +3,7 @@
 #include <hip/hip_runtime.h>
 
 // This file include macros for checking the API and kernel launch errors
-#include "../../../../error_checking.hpp"
+#include "../../error_checking.hpp"
 
 __device__ __host__ float taylor(float x, size_t N) {
     float sum = 1.0f;

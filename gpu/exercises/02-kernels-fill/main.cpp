@@ -2,7 +2,7 @@
 #include <hip/hip_runtime.h>
 
 // This file include macros for checking the API and kernel launch errors
-#include "../../../error_checking.hpp"
+#include "../error_checking.hpp"
 
 __global__ void fill(float *arr, float a, size_t num_values) {
     // TODO: Fill the array 'arr' with the constant 'a'.

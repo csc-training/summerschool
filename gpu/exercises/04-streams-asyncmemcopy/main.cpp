@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../error_checking.hpp"
+#include "../error_checking.hpp"
 
 #include "../04-streams-helperfuns.h"
 

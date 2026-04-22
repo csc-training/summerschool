@@ -1,7 +1,7 @@
 #include <hip/hip_runtime.h>
 
 // This file contains the kernel launch macro
-#include "error_checking.hpp"
+#include "../error_checking.hpp"
 
 __global__ void hello(int32_t num_blocks, int32_t num_threads) {
     assert(num_blocks != 10);
