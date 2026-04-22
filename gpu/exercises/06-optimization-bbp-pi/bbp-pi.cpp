@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include "../../../error_checking.hpp"
+#include "../error_checking.hpp"
 
 // This function looks suspicious
 __device__ int ipow_mod(int m, int n, int mod) {

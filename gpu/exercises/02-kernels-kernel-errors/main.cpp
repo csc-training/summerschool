@@ -3,7 +3,7 @@
 #include <math.h>
 #include <vector>
 
-#include "../../../error_checking.hpp"
+#include "../error_checking.hpp"
 
 __global__ void fill(size_t n, float a, float *arr) {
     const size_t tid = threadIdx.x + blockDim.y * blockDim.x;
