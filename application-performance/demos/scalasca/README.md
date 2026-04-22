@@ -48,9 +48,9 @@ bash << 'EOF'
 
 export EBU_USER_PREFIX=/projappl/project_462000956/EB/
 
-ml LUMI/24.03
+ml LUMI/25.03
 ml partition/C
-ml Score-P/9.0-cpeGNU-24.03
+ml Score-P/9.4-cpeGNU-25.03
 
 rm ../../common/*.o
 make clean
@@ -77,10 +77,10 @@ export EBU_USER_PREFIX=/projappl/project_462000956/EB/
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export SCOREP_EXPERIMENT_DIRECTORY=scorep_experiment_${SLURM_JOBID}
 
-ml LUMI/24.03
+ml LUMI/25.03
 ml partition/C
-ml Score-P/9.0-cpeGNU-24.03
-ml Scalasca/2.6.2-cpeGNU-24.03
+ml Score-P/9.4-cpeGNU-25.03
+ml Scalasca/2.6.2-cpeGNU-25.03
 
 # Run the analysis
 scalasca \
@@ -120,10 +120,10 @@ export EBU_USER_PREFIX=/projappl/project_462000956/EB/
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export SCOREP_EXPERIMENT_DIRECTORY=scorep_experiment_${SLURM_JOBID}
 
-ml LUMI/24.03
+ml LUMI/25.03
 ml partition/C
-ml Score-P/9.0-cpeGNU-24.03
-ml Scalasca/2.6.2-cpeGNU-24.03
+ml Score-P/9.4-cpeGNU-25.03
+ml Scalasca/2.6.2-cpeGNU-25.03
 
 # Run the analysis
 scalasca \
@@ -142,7 +142,7 @@ download the summary from LUMI and open it with CubeGUI:
 ```bash
 wget https://apps.fz-juelich.de/scalasca/releases/cube/4.9/dist/CubeGUI-4.9.AppImage
 chmod +x CubeGUI-4.9.AppImage
-scp lumi:/scratch/project_462000956/juhanala/heat-equation/2d/mpi-openmp/scorep_experiment_11503172/trace.cubex .
+scp lumi:/scratch/project_462000956/juhanala/heat-equation/2d/mpi-openmp/scorep_experiment_11503172/summary.cubex .
 ./CubeGUI-4.9.AppImage summary.cubex
 ```
 
@@ -164,10 +164,10 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export SCOREP_EXPERIMENT_DIRECTORY=scorep_experiment_${SLURM_JOBID}
 export SCOREP_TOTAL_MEMORY=88MB
 
-ml LUMI/24.03
+ml LUMI/25.03
 ml partition/C
-ml Score-P/9.0-cpeGNU-24.03
-ml Scalasca/2.6.2-cpeGNU-24.03
+ml Score-P/9.4-cpeGNU-25.03
+ml Scalasca/2.6.2-cpeGNU-25.03
 
 export SCAN_TRACE_FILESYS=${PWD}${SCAN_TRACE_FILESYS:+:${SCAN_TRACE_FILESYS}}
 
