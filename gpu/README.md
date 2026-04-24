@@ -47,6 +47,8 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 - [Investigate coalescing](exercises/06-optimization-coalescing)
 - [Tracing with rocprof](exercises/06-optimization-trace)
+- [Optimize histogram calculation](exercises/06-optimization-histogram)
+- [Optimize reductions](exercises/06-optimization-reductions)
 
 ## Tuesday exercises
 
