@@ -1,4 +1,8 @@
-# Kernel: copy2d
+# [Bonus exercise] Kernel: copy2d
+
+If you've reached this far, congratulations! You've learned the very basics of launching kernels
+on the GPU, calling the HIP API and finding out about and fixing errors related to the kernels & API.
+You also learned something about re-using threads.
 
 Write a device kernel that performs the double precision BLAS operation
 **dcopy**, i.e. `y = x` using GPU threads in a 2D grid.
