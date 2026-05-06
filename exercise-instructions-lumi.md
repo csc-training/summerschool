@@ -17,8 +17,8 @@ See [wiki](../../wiki/Setting-up-CSC-account-and-SSH) for further details.
 All the exercises should be carried out in the scratch disk area.
 This scratch area is shared between all the project members, so create a personal working directory there:
 
-    mkdir -p /scratch/project_46200XXXX/$USER
-    cd /scratch/project_46200XXXX/$USER
+    mkdir -p /scratch/project_462001452/$USER
+    cd /scratch/project_462001452/$USER
 
 and clone the summer school git repository there:
 
@@ -188,7 +188,7 @@ Programs need to be executed via the batch job system. A simple job running with
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_46200XXXX
+#SBATCH --account=project_462001452
 #SBATCH --partition=small
 #SBATCH --reservation=SummerSchoolCPU
 #SBATCH --time=00:05:00
@@ -215,7 +215,7 @@ for threading with `--cpus-per-task`:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_46200XXXX
+#SBATCH --account=project_462001452
 #SBATCH --partition=small
 #SBATCH --reservation=SummerSchoolCPU
 #SBATCH --time=00:05:00
@@ -230,7 +230,7 @@ srun ./my_omp_exe
 
 The same result can be achieved using directly `srun`
 ```
-srun --job-name=example --account=project_46200XXXX --partition=small --reservation=SummerSchoolCPU --time=00:05:00 --nodes=1 --ntasks-per-node=1 --cpus-per-task=4 ./my_omp_exe
+srun --job-name=example --account=project_462001452 --partition=small --reservation=SummerSchoolCPU --time=00:05:00 --nodes=1 --ntasks-per-node=1 --cpus-per-task=4 ./my_omp_exe
 ```
 #### Hybrid MPI+OpenMP
 
@@ -245,7 +245,7 @@ the following batch job script:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_46200XXXX
+#SBATCH --account=project_462001452
 #SBATCH --partition=small
 #SBATCH --reservation=SummerSchoolCPU
 #SBATCH --time=00:05:00
@@ -259,7 +259,7 @@ srun ./my_exe
 
 The same result can be achieved using directly `srun`
 ```
-srun --job-name=example --account=project_46200XXXX --partition=small --reservation=SummerSchoolCPU --time=00:05:00 --nodes=2 --ntasks-per-node=32 --cpus-per-task=4 ./my_omp_exe
+srun --job-name=example --account=project_462001452 --partition=small --reservation=SummerSchoolCPU --time=00:05:00 --nodes=2 --ntasks-per-node=32 --cpus-per-task=4 ./my_omp_exe
 ```
 #### GPU programs
 
@@ -270,7 +270,7 @@ single GPU with single MPI task and a single thread use:
 ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=project_46200XXXX
+#SBATCH --account=project_462001452
 #SBATCH --partition=small-g
 #SBATCH --reservation=SummerSchoolGPU
 #SBATCH --gpus-per-node=1
@@ -283,7 +283,7 @@ srun ./my_gpu_exe
 
 The same result can be achieved using directly `srun`
 ```
-srun --job-name=example --account=project_46200XXXX --partition=small-g --reservation=SummerSchoolGPU --time=00:05:00 --gpus-per-node=1 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1 ./my_gpu_exe
+srun --job-name=example --account=project_462001452 --partition=small-g --reservation=SummerSchoolGPU --time=00:05:00 --gpus-per-node=1 --nodes=1 --ntasks-per-node=1 --cpus-per-task=1 ./my_gpu_exe
 ```
 **Note!** Some programs require GPU-aware MPI to perform MPI operations using directly the GPU pointers (this is avoiding some GPU-CPU transfers). This is enabled via:
 
@@ -297,7 +297,7 @@ export MPICH_GPU_SUPPORT_ENABLED=1
 When debugging or doing performance analysis the user needs to interact with the application on the compute nodes.
 
 ```bash
-salloc --account=<project_id> –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00
+salloc --account=project_462001452 –-partition=small –-nodes=2 –-ntasks-per-nodes=128 --time=00:30:00
 ```
 Once the allocation is made, this command will start a shell on the login node.
 
