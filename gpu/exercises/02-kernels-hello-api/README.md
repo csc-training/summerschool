@@ -18,4 +18,4 @@ Compile and run a simple HIP test program provided as `hello.cpp`.
 Once you've successfully compiled and run the code, you can select the second exercise
 
 Please follow the system-specific instructions provided in the
-[exercise instructions](../../../exercise-instructions.md).
+[exercise instructions](../../../exercise-instructions-lumi.md).
