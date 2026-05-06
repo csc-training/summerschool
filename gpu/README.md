@@ -25,8 +25,10 @@ See [demos](demos/) for demo codes referred to in the slides.
 - [Kernel launch wrapper](exercises/02-kernels-kernel-launch-wrapper)
 - [Using the API to query information](exercises/02-kernels-api-queries)
 - [Catching API errors](exercises/02-kernels-api-errors)
+- [Debugging kernels with prints](exercises/02-kernels-kernel-errors)
 - [Fill kernel](exercises/02-kernels-fill)
 - [Taylor for](exercises/02-kernels-taylor-for)
+- [Copy2d](exercises/02-kernels-copy2d)
 
 ## Monday exercises
 
@@ -45,6 +47,8 @@ See [demos](demos/) for demo codes referred to in the slides.
 
 - [Investigate coalescing](exercises/06-optimization-coalescing)
 - [Tracing with rocprof](exercises/06-optimization-trace)
+- [Optimize histogram calculation](exercises/06-optimization-histogram)
+- [Optimize reductions](exercises/06-optimization-reductions)
 
 ## Tuesday exercises
 
