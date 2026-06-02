@@ -6,7 +6,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Profiling with Score-P
 
-Use the [`message-chain` exercise](../../../mpi/exercises/05-message-chain/) as an example.
+Use the [message-chain exercise](../../../mpi/exercises/05-message-chain/) as an example.
 
 ```bash
 export EBU_USER_PREFIX=/projappl/project_462001452/EasyBuild/
@@ -39,10 +39,13 @@ ml Vampir
 vampir &
 ```
 
+After opening the trace file you should see something like the following:
+![](./img/vampir_startup.png)
+
 TODO summarize basic vampir usage
 - Move around using the minimap at top right
-
-![](./img/vampir_startup.png)
+- Zooming in/out
+- Colors
 
 
 Traces for chain A: individual sends and recvs.
