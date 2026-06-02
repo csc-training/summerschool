@@ -6,7 +6,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Profiling with Score-P
 
-Use the [`message-chain`](../../../mpi/exercises/05-message-chain/solution/) as an example.
+Use the [`message-chain` exercise](../../../mpi/exercises/05-message-chain/) as an example.
 
 ```bash
 export EBU_USER_PREFIX=/projappl/project_462001452/EasyBuild/
