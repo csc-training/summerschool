@@ -6,7 +6,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Profiling with Score-P
 
-Use `message-chain` as an example, see `mpi/exercises/05-message-chain/solution/`.
+Use the [`message-chain`](`mpi/exercises/05-message-chain/solution/`) as an example.
 
 ```bash
 export EBU_USER_PREFIX=/projappl/project_462001452/EasyBuild/
@@ -39,10 +39,15 @@ ml Vampir
 vampir &
 ```
 
+TODO summarize basic vampir usage
 - Move around using the minimap at top right
 
 ![](./img/vampir_startup.png)
 
+
+Traces for chain A: individual sends and recvs.
 ![](./img/trace_chainA.png)
 
+
+Traces for chains B and C. B uses MPI_Sendrecv, C has alternating send and recv.
 ![](./img/trace_chainBC.png)
