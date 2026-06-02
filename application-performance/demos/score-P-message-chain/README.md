@@ -7,19 +7,57 @@ SPDX-License-Identifier: CC-BY-4.0
 # Profiling with Score-P
 
 Use the [message-chain exercise](../../../mpi/exercises/05-message-chain/) as an example.
+Recall that this exercise implements a message-passing chain:
+- Rank 0 sends to rank 1 and receives from no one
+- Rank 1 receives from rank 0 and sends to rank 2
+- ...
+- Last rank n receives from n-1 and sends to no one
 
+The model solution demonstrates three implementations:
+- Case A implements this by having every rank send first, wait for the message to arrive at the receiver, then start its own `MPI_Recv`.
+- Case B uses `MPI_Sendrecv` to initiate receive operation at the same time as the send operation.
+- Case C has even ranks calling `MPI_Send` first and odd ranks calling `MPI_Recv` first.
+
+This demo uses the profiling and instrumentation tool [Score-P](https://www.vi-hps.org/projects/score-p/overview/overview.html) to record traces of the model solution run and shows how to view the traces using an interactive session on LUMI. The traces will clearly show how each chain implementation behaves in terms of MPI wait times.
+
+
+## Collecting traces with Score-P
+
+This describes LUMI-C only.
+
+Load our installation of Score-P:
 ```bash
 export EBU_USER_PREFIX=/projappl/project_462001452/EasyBuild/
 module load LUMI/25.03 partition/C Score-P/9.4-cpeGNU-25.03
+```
+The [LUMI software library](https://lumi-supercomputer.github.io/LUMI-EasyBuild-docs/s/Score-P/) has build recipes for Score-P if you ever need to build your own installation.
 
+We then compile the exercise solution using a Score-P instrumentation wrapper. This will insert trace markers and other profiling information into the produced executable.
+```bash
 cd /path/to/message-chain/solution/
 scorep CC chain.cpp -o chain_scorep
-
-SCOREP_ENABLE_TRACING=1 SCOREP_ENABLE_PROFILING=0 SCOREP_TOTAL_MEMORY=1G srun -A project_462001452 -p small --nodes=1 --ntasks-per-node=8 chain_scorep
 ```
-Score-P output goes in a directory named something like `scorep-20260602_0937_4649433290416212`. You can change this with an environment variable: `export SCOREP_EXPERIMENT_DIRECTORY=$PWD/scorep_out`
 
-The traces are generated as `.otf2` files (Open Trace Format).
+We now run the program as usual, but set some environment variables for configuring runtime behavior of Score-P.
+Use the following Slurm job script:
+```bash
+#!/bin/bash
+#SBATCH --account=project_462001452
+#SBATCH --partition=small
+#SBATCH --reservation=SummerSchoolCPU
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+
+export SCOREP_ENABLE_TRACING=1                    # record traces
+export SCOREP_ENABLE_PROFILING=0                  # disable sampling
+export SCOREP_TOTAL_MEMORY=1G                     # more memory for Score-P (tracing can be memory hungry)
+export SCOREP_EXPERIMENT_DIRECTORY=scorep_output  # Score-P output directory
+
+srun ./chain_scorep
+```
+
+The traces are generated as `.otf2` files (Open Trace Format) and stored in the specified output directory.
+The OTF2 file format is part of the Score-P profiling "ecosystem" and requires a specialized trace viewer with `.otf2` support; the format is not widely used outside of HPC. We use a tool called [Vampir](https://vampir.eu/).
 
 
 ## Viewing the trace with Vampir
@@ -39,18 +77,17 @@ ml Vampir
 vampir &
 ```
 
-After opening the trace file you should see something like the following:
+Open the `.otf2` trace file in Vampir. You should see something similar to the screenshot below:
 ![](./img/vampir_startup.png)
 
-TODO summarize basic vampir usage
-- Move around using the minimap at top right
-- Zooming in/out
-- Colors
+In the left-hand side window you see traces for each MPI task, labeled as "Master thread:n". We didn't use multithreading in this example so for each task there is just one "master" thread. Vampir and Score-P would support also MPI + multithreaded tracing.
 
+For this example case we are only interested in tracing MPI calls, denoted in Vampir by red blocks. You can see the MPI_Init calls near the start of each trace. Our message chains are near the very end of the trace, and everything in between can be identified as array access operations
+as the main function is initializing our input arrays.
 
-Traces for chain A: individual sends and recvs.
+There is a "minimap" at top right that you can use to zoom in (mouse scroll on the minimap). Let's navigate to the end where our MPI communication happens and zoom in. We can identify the "case A" chain. The little dots on the trace mark where each task calls MPI_Barrier, ie. is done with its sends and receives. We can clearly see how tasks earlier in the chain have to wait for the full chain to unwind before their `MPI_Send`  can finish.
 ![](./img/trace_chainA.png)
 
 
-Traces for chains B and C. B uses MPI_Sendrecv, C has alternating send and recv.
+Zooming in to the next two trace segments show the message chains for implementations B (`MPI_Sendrecv`) and C (alternating send and receive).
 ![](./img/trace_chainBC.png)
