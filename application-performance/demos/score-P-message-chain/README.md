@@ -73,7 +73,7 @@ Start a Desktop session. Reserve 4 cores so that you have enough memory (trace f
 
 When in the desktop session, open a terminal and type
 ```bash
-ml Vampir
+module load Vampir
 vampir &
 ```
 
