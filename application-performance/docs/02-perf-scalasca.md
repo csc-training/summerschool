@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: CC-BY-4.0
 
-title: Profiling tools — `perf` and Scalasca
+title: Profiling tools — perf and Scalasca
 event: CSC Summer School in High-Performance Computing 2026
 lang:  en
 ---
