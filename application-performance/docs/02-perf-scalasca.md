@@ -1,3 +1,13 @@
+---
+# SPDX-FileCopyrightText: 2025 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
+title: Profiling tools: `perf` and Scalasca
+event: CSC Summer School in High-Performance Computing 2026
+lang:  en
+---
+
 # Overview
 
 - Two CPU profiling toolsets
