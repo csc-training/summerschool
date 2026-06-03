@@ -4,8 +4,15 @@ SPDX-FileCopyrightText: 2019 CSC - IT Center for Science Ltd. <www.csc.fi>
 SPDX-License-Identifier: CC-BY-4.0
 -->
 
-## Application performance
+# Application performance section
 
-The [demos](demos) directory contains demonstrations that'll be shown during the summer school.
+This directory collects miscellaneous material about performance analysis and profiling tools.
+Some of this will be presented in conjuction with other learning modules during the school.
 
-The demos show how to profile serial or MPI + OpenMP applications on a single node and across multiple nodes.
+## Presentation slides
+
+Presentation slides are available [here](https://csc-training.github.io/summerschool/?open=application-performance).
+
+## Demo codes
+
+See [demos](demos/) for demonstrations on using different profiling tools.
