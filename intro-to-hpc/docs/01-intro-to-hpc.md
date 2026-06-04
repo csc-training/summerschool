@@ -17,12 +17,12 @@ lang:   en
 <br>
 <br>
 
-- Why to use supercomputers?
+- Why use supercomputers?
 - What are supercomputers?
 - Current trends in high-performance computing
 
 
-# Why to use supercomputers? {.section}
+# Why use supercomputers? {.section}
 
 # Supercomputer application areas
 
