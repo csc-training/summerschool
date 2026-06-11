@@ -48,16 +48,26 @@ Use the following Slurm job script:
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
 
-export SCOREP_ENABLE_TRACING=1                    # record traces
-export SCOREP_ENABLE_PROFILING=0                  # disable sampling
+export SCOREP_ENABLE_TRACING=1                    # record and output traces
 export SCOREP_TOTAL_MEMORY=1G                     # more memory for Score-P (tracing can be memory hungry)
 export SCOREP_EXPERIMENT_DIRECTORY=scorep_output  # Score-P output directory
 
 srun ./chain_scorep
 ```
 
-The traces are generated as `.otf2` files (Open Trace Format) and stored in the specified output directory.
-The OTF2 file format is part of the Score-P profiling "ecosystem" and requires a specialized trace viewer with `.otf2` support; the format is not widely used outside of HPC. We use a tool called [Vampir](https://vampir.eu/).
+You can find Score-P output in the specified output directory (`scorep_output` in this case) once the run finishes.
+It contains a "profile" file `profile.cubex` that records how much time was spent in any instrumented function call.
+You can view it, for example, using
+```bash
+scorep-score -r profile.cubex
+```
+If you are only interested in trace files (below), you could instruct Score-P to omit this profile file altogether by
+setting `SCOREP_ENABLE_PROFILING=0` in the environment.
+
+There is also a trace file, `traces.otf2`, and a bunch of auxiliary files related to it. Score-P generates traces in the
+Open Trace Format 2 (`.otf2`). This format is part of the Score-P profiling "ecosystem" and requires a specialized trace
+viewer with `.otf2` support. The format is not widely used outside of HPC.
+We use a tool called [Vampir](https://vampir.eu/) to view it.
 
 
 ## Viewing the trace with Vampir
