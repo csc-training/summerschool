@@ -13,6 +13,8 @@ Some of this will be presented in conjuction with other learning modules during 
 
 Presentation slides are available [here](https://csc-training.github.io/summerschool/?open=application-performance).
 
-## Demo codes
+## Exercises and demos
 
-See [demos](demos/) for demonstrations on using different profiling tools.
+See the [exercises](exercises/) directory for exercises on using different profiling tools.
+Some of these will be presented as live demonstrations during the school. You are also
+encouraged to go through them on your own during exercise sessions.
