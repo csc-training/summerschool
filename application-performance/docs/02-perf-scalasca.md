@@ -18,7 +18,7 @@ lang:  en
 
 - https://perfwiki.github.io/main/
 - part of Linux since kernel version 2.6.31 in 2009
-- statistical performance profiling
+- statistical performance profiling with sampling
 - hardware counters
 
 # perf subcommands
@@ -59,10 +59,13 @@ lang:  en
 ::: incremental
 
 - https://www.vi-hps.org/projects/score-p
-- instrumentation and measurement of codes MPI + OpenMP
+- instrumentation and measurement of MPI + OpenMP codes
+     -  optional support of GPU codes
 - jointly developed by a consortium of partners from Germany & US
 - common data formats for profiles & traces
-    - used by e.g. Scalasca, TAU, Vampir...
+- simple text based profile output
+- additional analysis and visualization is done with other tools
+    - Scalasca, TAU, Vampir...
 
 :::
 
@@ -73,6 +76,8 @@ lang:  en
 - https://www.scalasca.org/
 - targets MPI and OpenMP, separately or together
 - measure and visualize time spent on computation, communication and synchronization
+    - tries to identity common communication bottlenecks
+
 - based on Score-P
 
 :::
