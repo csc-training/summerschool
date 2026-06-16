@@ -41,8 +41,6 @@ float max_error(float *a, int n)
   return max_err;
 }
 
-}
-
 int main() {
   const size_t N = 1<<9;
 
