@@ -11,7 +11,7 @@
 #include <cassert>
 #include <cstring>
 
-#include "../../../error_checking.hpp"
+#include "../error_checking.hpp"
 
 
 

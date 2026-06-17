@@ -10,7 +10,7 @@
 #include <cmath>
 #include <limits>
 
-#include "../../../error_checking.hpp"
+#include "../../error_checking.hpp"
 
 // ==========================================================
 // 1) Naive: each thread atomically adds its grid-stride sum
