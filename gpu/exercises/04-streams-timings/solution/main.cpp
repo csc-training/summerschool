@@ -76,6 +76,11 @@ int main() {
   float *b; float *d_b;
   float *c; float *d_c;
 
+  // Timing
+  float t_kernel_a_ms;
+  float t_kernel_b_ms;
+  float t_kernel_c_ms;
+
   // Host allocations
   HIP_ERRCHK(hipHostMalloc((void**)&a, N_bytes));
   HIP_ERRCHK(hipHostMalloc((void**)&b, N_bytes));
