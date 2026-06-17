@@ -6,12 +6,12 @@ Examples of batch scripts for GPUs and CPUs can be found in
 
 1. Compile the program first without offloading support. you will need
    ```
-   source ../modules-cpu
+   source ../07-openmp-modules-cpu
    ```
    Try to run the code in a CPU and GPU node.
 
 2. Next, compile the code with offloading support.
    ```
-   source ../modules-gpu
+   source ../07-openmp-modules-gpu
    ```
    Try to run both in a GPU node and in a CPU node.
