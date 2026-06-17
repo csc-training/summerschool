@@ -11,7 +11,7 @@ In this exercise you will assign GPUs to different MPI ranks in a simple
 
 The provided [hello.cpp](hello.cpp) code is an MPI program that prints out
 total number of MPI tasks and the rank of each task, selected device id and
-number of available dewvices.
+number of available devices.
 
 # Tasks
 
