@@ -50,6 +50,7 @@ __global__ void reduce_naive_blockatomic(const double* __restrict__ in,
 __global__ void reduce_shared_atomic(const double* __restrict__ in,
                                      double* __restrict__ out,
                                      size_t N)
+{
 }
 
 
