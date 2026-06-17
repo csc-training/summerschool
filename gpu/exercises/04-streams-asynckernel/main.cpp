@@ -110,13 +110,13 @@ int main() {
   #error synchronize the host with stream C, before copying d_C back
   HIP_ERRCHK(hipMemcpy(c, d_c, N_bytes, hipMemcpyDefault));
 
-  for (int i = 0; i < 20; ++i) printf("%f ", a[i]);
+  for (int i = 0; i < 10; ++i) printf("%f ", a[i]);
   printf("\n");
 
-  for (int i = 0; i < 20; ++i) printf("%f ", b[i]);
+  for (int i = 0; i < 10; ++i) printf("%f ", b[i]);
   printf("\n");
 
-  for (int i = 0; i < 20; ++i) printf("%f ", c[i]);
+  for (int i = 0; i < 10; ++i) printf("%f ", c[i]);
   printf("\n");
   // Free device and host memory allocations
   HIP_ERRCHK(hipFree(d_a));

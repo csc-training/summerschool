@@ -135,15 +135,15 @@ int main() {
 
   // Synchronize each stream with host before printing out results
   HIP_ERRCHK(hipStreamSynchronize(stream_a));
-  for (int i = 0; i < 20; ++i) printf("%f ", a[i]);
+  for (int i = 0; i < 10; ++i) printf("%f ", a[i]);
   printf("\n");
 
   HIP_ERRCHK(hipStreamSynchronize(stream_b));
-  for (int i = 0; i < 20; ++i) printf("%f ", b[i]);
+  for (int i = 0; i < 10; ++i) printf("%f ", b[i]);
   printf("\n");
 
   HIP_ERRCHK(hipStreamSynchronize(stream_c));
-  for (int i = 0; i < 20; ++i) printf("%f ", c[i]);
+  for (int i = 0; i < 10; ++i) printf("%f ", c[i]);
   printf("\n");
 
   HIP_ERRCHK(hipEventElapsedTime(&t_kernel_a_ms, start_a, end_a));
