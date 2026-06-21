@@ -10,8 +10,8 @@
  *   - Open chromium url chrome://tracing or https://ui.perfetto.dev, open file "results.json"
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include "error_checking.hpp"
 

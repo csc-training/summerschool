@@ -9,8 +9,8 @@
  *   - Open chrome://tracing in Chromium or https://ui.perfetto.dev, open the generated "results.jso>
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include "error_checking.hpp"
 

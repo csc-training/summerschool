@@ -12,8 +12,8 @@
  *   - destroy the stream
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include "error_checking.hpp"
 

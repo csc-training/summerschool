@@ -12,8 +12,8 @@
  * - additionally, change host memory allocation and freeing into pinned memory calls
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include "error_checking.hpp"
 

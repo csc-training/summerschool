@@ -13,8 +13,8 @@
  * - Print out the results
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include "error_checking.hpp"
 
@@ -114,24 +114,24 @@ int main() {
   HIP_ERRCHK(hipMalloc((void**)&d_c, N_bytes));
 
   // warmup
-  kernel_c<<<gridsize, blocksize>>>(d_a, N, 100);
+  kernel_c<<<gridsize, blocksize>>>(d_a, N);
   HIP_ERRCHK(hipMemcpy(a, d_a, N_bytes/100, hipMemcpyDefault));
   HIP_ERRCHK(hipDeviceSynchronize());
   // warmup ends
 
   // Record timing events around each kernel launch
   HIP_ERRCHK(hipEventRecord(start_a, stream_a));
-  kernel_a<<<gridsize, blocksize,0,stream_a>>>(d_a, N, 100);
+  kernel_a<<<gridsize, blocksize,0,stream_a>>>(d_a, N);
   HIP_ERRCHK(hipGetLastError());
   HIP_ERRCHK(hipEventRecord(end_a, stream_a));
 
   HIP_ERRCHK(hipEventRecord(start_b, stream_b));
-  kernel_b<<<gridsize, blocksize,0,stream_b>>>(d_b, N, 300);
+  kernel_b<<<gridsize, blocksize,0,stream_b>>>(d_b, N);
   HIP_ERRCHK(hipGetLastError());
   HIP_ERRCHK(hipEventRecord(end_b, stream_b));
 
   HIP_ERRCHK(hipEventRecord(start_c, stream_c));
-  kernel_c<<<gridsize, blocksize,0,stream_c>>>(d_c, N, 600);
+  kernel_c<<<gridsize, blocksize,0,stream_c>>>(d_c, N);
   HIP_ERRCHK(hipGetLastError());
   HIP_ERRCHK(hipEventRecord(end_c, stream_c));
 
