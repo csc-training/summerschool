@@ -40,6 +40,10 @@ Only the following HIP function is needed in this exercise:
 
 ### Compiling
 
+**Note!** This bonus exercise uses ROCm-specific profiling tools and ROCTx ranges. It is intended for LUMI during the course.
+
+The profiling instructions will not work on Mahti as written, because Mahti uses NVIDIA GPUs. To run a similar profiling exercise on Mahti, the ROCTx annotations and `rocprofv3` commands would need to be replaced with NVIDIA tools, e.g. NVTX annotations and Nsys.
+
 This is a bonus exercise that implements `roctX` ranges to make CPU work visible in the profiling timeline:
 
 - `roctxRangePush()`
