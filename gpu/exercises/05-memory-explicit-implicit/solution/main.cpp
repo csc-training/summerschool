@@ -13,6 +13,7 @@
 #include <cstdio>
 #include <cstring>
 #include <chrono>
+#include <string>
 #include "error_checking.hpp"
 
 /* Blocksize divisible by the warp size */
