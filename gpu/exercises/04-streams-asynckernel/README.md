@@ -14,9 +14,9 @@ This causes the kernels to execute sequentially.
 If your program executes correctly, you should get the following output:
 
 ```
-1.258728 1.258728 1.258728 ...
-1.618034 1.618034 1.618034 ...
-0.000000 0.064829 0.066859 ...
+1.000000 1.000000 1.000000 ...
+1.313534 1.313534 1.313534 ...
+0.739085 0.739085 0.739085 ...
 ```
 
 Printing the 10 first values in each kernel output array.
@@ -105,7 +105,7 @@ The kernels in this exercise are synthetic workloads only for teaching purposes.
 
 Each GPU thread performs repeated floating-point computations using mathematical functions (e.g. `sin`, `cos`, `log`).
 
-The workloads copy and operate on large arrays (~256 MB per array) and are quite heavy computationally (although quite redundant)
+The workloads copy and operate on large arrays (~64 MB per array) and are quite heavy computationally (although quite redundant)
 so that concurrent execution, as well as data transfers, become visible in the profiling tools.
 
 </details>

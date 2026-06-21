@@ -19,9 +19,9 @@ In this exercise, we will measure our GPU kernel execution time using HIP events
 Expected output is still the same:
 
 ```
-1.258728 1.258728 1.258728 ...
-1.618034 1.618034 1.618034 ...
-0.000000 0.064829 0.066859 ...
+1.000000 1.000000 1.000000 ...
+1.313534 1.313534 1.313534 ...
+0.739085 0.739085 0.739085 ...
 ```
 
 In addition, your program should print timing information for the kernels, for example:
@@ -64,7 +64,7 @@ Refer to your trace output in Perfetto to check that the timings are sensible.
 <details>
 <summary><strong>Profiling the execution</strong></summary>
 
-Profile your program with rocprof. Do you see the same numbers
+Profile your program with rocprofv3. Do you see the same numbers
 reported by the profiler as you do with events?
 
 You might see some discrepancy, why?
