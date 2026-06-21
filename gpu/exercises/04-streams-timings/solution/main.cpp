@@ -23,49 +23,56 @@ __global__ void kernel_a(float *a, int n)
 {
   int tid = threadIdx.x + blockIdx.x * blockDim.x;
 
+  // Evaluate the trigonometric identity
+  // sin^2(x) + cos^2(x) = 1
+  // Very light kernel, one sin/cos evaluation per element
   if (tid < n) {
-    float x = tid;
+    float x = 0.001f * float(tid % 1000);
+    float s = sinf(x);
+    float c = cosf(x);
 
-    for (int i = 0; i < 30; ++i) {
-      x = sinf(x) + cosf(x);
-    }
-
-    a[tid] = x;
+    a[tid] = s * s + c * c;
   }
 }
 
-__global__ void kernel_b(float *a, int n)
+
+__global__ void kernel_b(float *b, int n)
+{
+  int tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+  // Heavy kernel: repeatedly updates x using sine, cosine, and arctangent
+  // Converges to 1.313534
+  if (tid < n) {
+    float x = 0.001f * float(tid % 1000) + 1.0f;
+
+    for (int i = 0; i < 200; ++i) {
+      x = sinf(x) + cosf(x) + 0.1f * atanf(x);
+    }
+
+    b[tid] = x;
+  }
+}
+
+__global__ void kernel_c(float *c, int n)
 {
   int tid = threadIdx.x + blockIdx.x * blockDim.x;
 
   if (tid < n) {
-    float x = tid;
+    float x = 0.001f * float(tid % 1000);
 
-    for (int i = 0; i < 30; ++i) {
-      x = sqrtf(x + 1.0f);
+    // Fixed-point iteration for cos(x) = x.
+    // Converges to ~0.739085
+    // Medium
+    for (int i = 0; i < 50; ++i) {
+      x = cosf(x);
     }
 
-    a[tid] = x;
-  }
-}
-
-__global__ void kernel_c(float *a, int n)
-{
-  int tid = threadIdx.x + blockIdx.x * blockDim.x;
-
-  if (tid < n) {
-    float x = tid;
-
-    for (int i = 0; i < 30; ++i) {
-      x = logf(x + 1.0f);
-    }
-
-    a[tid] = x;
+    c[tid] = x;
   }
 }
 
 int main() {
-  constexpr size_t N = 1<<26; // ~68 million items
+  constexpr size_t N = 1<<24; // ~64 MiB array
 
   constexpr int blocksize = 256;
   constexpr int gridsize =(N-1+blocksize)/blocksize;
@@ -107,24 +114,24 @@ int main() {
   HIP_ERRCHK(hipMalloc((void**)&d_c, N_bytes));
 
   // warmup
-  kernel_c<<<gridsize, blocksize>>>(d_a, N);
+  kernel_c<<<gridsize, blocksize>>>(d_a, N, 100);
   HIP_ERRCHK(hipMemcpy(a, d_a, N_bytes/100, hipMemcpyDefault));
   HIP_ERRCHK(hipDeviceSynchronize());
   // warmup ends
 
   // Record timing events around each kernel launch
   HIP_ERRCHK(hipEventRecord(start_a, stream_a));
-  kernel_a<<<gridsize, blocksize,0,stream_a>>>(d_a, N);
+  kernel_a<<<gridsize, blocksize,0,stream_a>>>(d_a, N, 100);
   HIP_ERRCHK(hipGetLastError());
   HIP_ERRCHK(hipEventRecord(end_a, stream_a));
 
   HIP_ERRCHK(hipEventRecord(start_b, stream_b));
-  kernel_b<<<gridsize, blocksize,0,stream_b>>>(d_b, N);
+  kernel_b<<<gridsize, blocksize,0,stream_b>>>(d_b, N, 300);
   HIP_ERRCHK(hipGetLastError());
   HIP_ERRCHK(hipEventRecord(end_b, stream_b));
 
   HIP_ERRCHK(hipEventRecord(start_c, stream_c));
-  kernel_c<<<gridsize, blocksize,0,stream_c>>>(d_c, N);
+  kernel_c<<<gridsize, blocksize,0,stream_c>>>(d_c, N, 600);
   HIP_ERRCHK(hipGetLastError());
   HIP_ERRCHK(hipEventRecord(end_c, stream_c));
 
