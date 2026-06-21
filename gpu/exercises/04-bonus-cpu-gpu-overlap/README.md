@@ -48,25 +48,25 @@ This is a bonus exercise that implements `roctX` ranges to make CPU work visible
 Compile the program with `rocTX` linked:
 
 ```bash
-module load rocm/6.3.4
-
-CC -xhip -lroctx64 overlapping_work.cpp -o overlapping_work
+CC -xhip -lroctx64 main.cpp -o prog.x
 ```
 
 ## Profiling CPU/GPU overlap
 
 Run the program with ROCm profiling **and** `roctx` enabled:
 
+Launch your application with rocprofv3 **and** `roctx` enabled, by replacing your normal launch command at the end of your job script with the following:
+
 ```bash
-run_tue rocprofv3 --runtime-trace --marker-trace --output-format pftrace -- ./<yourapp>
+srun rocprofv3 --runtime-trace --marker-trace --output-format pftrace -- ./<yourapp>
 ```
 
-This generates a file with a suffix: `.pftrace`
+This generates a file with a suffix: `.pftrace`, under a directory `nidXXXX`.
 
 Copy the file to your local machine:
 
 ```bash
-scp <your_username>@lumi.csc.fi:/scratch/project_462001376/<your_username>/hip-programming/streams/0X-bonus-cpu-gpu-overlap/<path-to-your-file>.pftrace .
+scp <your_username>@lumi.csc.fi:/scratch/project_462001452/<your_username>/summerschool/gpu/exercises/04-bonus-cpu-gpu-overlap/<path-to-your-file>.pftrace .
 ```
 
 Replace the `<your_username>` and `<path-to-your-file>` sections in the above.  

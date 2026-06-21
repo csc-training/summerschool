@@ -75,16 +75,18 @@ Which synchronizes the entire device rather than a single stream.
 
 After completing the exercise, validate that the kernels execute concurrently.
 
+Launch your application with rocprofv3 at the end of your batch job script, by replacing your normal launch command with the following:
+
 ```bash
-run_tue rocprofv3 --hip-trace --kernel-trace --output-format pftrace -- ./<yourapp>
+srun  rocprofv3 --runtime-trace --output-format pftrace -- ./<yourapp>
 ```
 
-This generates a file with a suffix: `.pftrace`
+This generates a file with a suffix: `.pftrace`, under a directory `nidXXXX` that is specific to your run.
 
 Copy the file to your local machine:
 
 ```bash
-scp <your_username>@lumi.csc.fi:/scratch/project_462001376/<your_username>/hip-programming/streams/02-streams-asynckernel/<path-to-your-file>.pftrace .
+scp <your_username>@lumi.csc.fi:/scratch/project_462001452/<your_username>/summerschool/gpu/exercises/04-streams-asynckernel/<path-to-your-file>.pftrace .
 ```
 
 Replace the `<your_username>` and `<path-to-your-file>` sections in the above.
