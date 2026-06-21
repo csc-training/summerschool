@@ -71,7 +71,7 @@ Which synchronizes the entire device rather than a single stream.
 
 </details>
 
-## Profiling kernel concurrency
+## Profiling kernel concurrency on LUMI
 
 After completing the exercise, validate that the kernels execute concurrently.
 
@@ -81,15 +81,17 @@ Launch your application with rocprofv3 at the end of your batch job script, by r
 srun  rocprofv3 --runtime-trace --output-format pftrace -- ./<yourapp>
 ```
 
-This generates a file with a suffix: `.pftrace`, under a directory `nidXXXX` that is specific to your run.
+This generates a file with a suffix: `.pftrace`, under a directory `nidXXXX`.
+
+The directory identifier, `nidXXXX`, is based on the compute node you ran your program in.
 
 Copy the file to your local machine:
 
 ```bash
-scp <your_username>@lumi.csc.fi:/scratch/project_462001452/<your_username>/summerschool/gpu/exercises/04-streams-asynckernel/<path-to-your-file>.pftrace .
+scp <your_username>@lumi.csc.fi:/scratch/project_462001452/<your_username>/hip-programming/streams/04-streams-asyncmemcopy/nidXXXX/<xyz_results.pftrace> .
 ```
 
-Replace the `<your_username>` and `<path-to-your-file>` sections in the above.
+Replace the `<your_username>`, `nidXXXX` and `<xyz_results.pftrace>` sections in the above.
 The `.` at the end means that the file will be copied to the current directory.
 
 You can open the trace in either:

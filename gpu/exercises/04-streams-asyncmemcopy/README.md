@@ -42,26 +42,28 @@ The following HIP functions are needed in this exercise:
 * `hipMemcpyAsync()`
 * `hipStreamSynchronize()`
 
-## Profiling kernel concurrency
+## Profiling kernel concurrency on LUMI
 
 After completing the exercise, inspect asynchronous memory copy behavior through
 `rocprof` and Perfetto.
 
-Run the program with ROCm profiling enabled:
+Run the program with ROCm profiling enabled (replace normal srun launch command with the following):
 
 ```bash
-run_tue rocprofv3 --hip-trace --kernel-trace --output-format pftrace -- ./<yourapp>
+srun  rocprofv3 --runtime-trace --output-format pftrace -- ./<yourapp>
 ```
 
-This generates a file with a suffix: `.pftrace`
+This generates a file with a suffix: `.pftrace`, under a directory `nidXXXX`.
+
+The directory identifier, `nidXXXX`, is based on the compute node you ran your program in.
 
 Copy the file to your local machine:
 
 ```bash
-scp <your_username>@lumi.csc.fi:/scratch/project_462001376/<your_username>/hip-programming/streams/03-streams-asyncmemcpy/<path-to-your-file>.pftrace .
+scp <your_username>@lumi.csc.fi:/scratch/project_462001452/<your_username>/hip-programming/streams/04-streams-asyncmemcopy/nidXXXX/<xyz_results.pftrace> .
 ```
 
-Replace the `<your_username>` and `<path-to-your-file>` sections in the above.  
+Replace the `<your_username>`, `nidXXXX` and `<xyz_results.pftrace>` sections in the above.  
 The `.` at the end means that the file will be copied to the current directory.
 
 You can open the trace in either:
