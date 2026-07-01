@@ -21,9 +21,9 @@ lang:   en
   - Understand and modify HPC applications utilizing MPI, OpenMP, and/or HIP/CUDA
 
 
-# LUMI project used during the school
+# Compute projects used during the school
 
-- Summer School LUMI and Mahti projects will end next week Thursday 9.7.2026
+- LUMI, Mahti, and Roihu projects used during the school will end next week Thursday 9.7.2026 (or a few days later)
 - Remember to transfer out all the data you wish to keep before the project ends
 
 
@@ -75,7 +75,7 @@ lang:   en
 - A static copy of 2026 content will be published as a release under GitHub
 
 
-# Upcoming CSC trainings
+# CSC trainings
 
 - Training portfolio: Overview of trainings<br>
   <https://research.csc.fi/training-portfolio/>
@@ -88,7 +88,7 @@ lang:   en
 
 # Bus to Helsinki
 
-- Bus to Helsinki leaves at 13:00. Please be at the hotel lobby by 12:55
+- Bus to Helsinki leaves at 13:00 (latest at 13:15). Please be in time at the hotel lobby.
 - Please let us know if you are not taking the bus
 
 
