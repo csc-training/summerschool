@@ -1,8 +1,10 @@
----
-# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
-#
-# SPDX-License-Identifier: CC-BY-4.0
+<!--
+SPDX-FileCopyrightText: 2021 CSC - IT Center for Science Ltd. <www.csc.fi>
 
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
+---
 title:  HIP, CUDA and GPU kernels
 event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
@@ -81,12 +83,12 @@ But most important, you will be able to launch kernels!
 # GPU terminology
 
 ::: incremental
-- Wavefront/Warp (AMD/Nvidia)
+- Wavefront / Warp (AMD/Nvidia)
     - Collection of threads: execute the same instruction in lockstep
     - Fixed number of threads (AMD: 64, NVIDIA 32)
     - Threads per block is chosen at kernel launch
         - Wavefronts per block = threads per block / 64
-- workgroup / Thread block (AMD/Nvidia)
+- Workgroup / Thread block (AMD/Nvidia)
     - Group of threads partitioned to wavefronts/warps
     - Execute on the same CU/SM (AMD/Nvidia)
     - Can synchronise together and communicate through memory in the CU/SM (AMD/Nvidia)

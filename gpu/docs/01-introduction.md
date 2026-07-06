@@ -1,8 +1,10 @@
----
-# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
-#
-# SPDX-License-Identifier: CC-BY-4.0
+<!--
+SPDX-FileCopyrightText: 2021 CSC - IT Center for Science Ltd. <www.csc.fi>
 
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
+---
 title:  Introduction to GPU programming
 event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
@@ -620,9 +622,3 @@ Ask yourself
   - High-level libraries (more assumptions, less control)
   - Low-level APIs (more explicit, maximum control)
 - Many problems map well to the parallel nature of GPUs, but not all
-
-# Questions?
-
-# The End
-
-Thank you, bye

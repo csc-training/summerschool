@@ -1,8 +1,10 @@
----
-# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
-#
-# SPDX-License-Identifier: CC-BY-4.0
+<!--
+SPDX-FileCopyrightText: 2021 CSC - IT Center for Science Ltd. <www.csc.fi>
 
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
+---
 title: Streams, events, and synchronization
 event: CSC Summer School in High-Performance Computing 2026
 lang:  en
@@ -331,23 +333,23 @@ Measure duration of tasks on GPU:
 
 * Synchronize the host with a specific **stream**
 ```cpp
-​hipError_t hipStreamSynchronize ( hipStream_t stream )
-``` 
+hipError_t hipStreamSynchronize ( hipStream_t stream )
+```
 
 * Synchronize the host with a specific **event**
 ```cpp
-​hipError_t hipEventSynchronize ( hipEvent_t event )
-``` 
+hipError_t hipEventSynchronize ( hipEvent_t event )
+```
 
-* Synchronize a specific stream with a specific event (the event can be in another stream) 
+* Synchronize a specific stream with a specific event (the event can be in another stream)
 ```cpp
-​hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int  flags = 0 )
-``` 
+hipError_t hipStreamWaitEvent ( hipStream_t stream, hipEvent_t event, unsigned int  flags = 0 )
+```
 
 * Synchronize the host with the whole **device** (wait until all device tasks are finished)
 ```cpp
-hipError_t hipDeviceSynchronize ( void ) 
-``` 
+hipError_t hipDeviceSynchronize ( void )
+```
 
 * In-kernel blockwise synchronization across threads (not between host/device)
 ```cpp
