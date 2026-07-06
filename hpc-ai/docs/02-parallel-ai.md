@@ -52,9 +52,6 @@ lang:   en
 train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 ```
 
-![](https://a3s.fi/summerschool/assets/images/hpc-ai/data_process.png){.center width=60%}
-
-
 # Multi-GPU Techniques
 
 :::::: {.columns}

@@ -35,11 +35,11 @@ lang:   en
 - Various national and international organisations, in particular:
 
 <div class=column style=width:35%>
-![](images/CSC_2012_LOGO.png)
+![](https://a3s.fi/summerschool/assets/images/csc-logo.svg)
 </div>
 
 <div class=column style=width:55%>
-![](images/EuroHPC_JU_logo.png)
+![](https://a3s.fi/summerschool/assets/images/eurohpc-ju-logo.png)
 </div>
 
 
@@ -50,7 +50,7 @@ lang:   en
    - Non-profit state enterprise (70% state, 30% HEI)
    - Free-of-charge for Finnish academic users
 
-![](images/LUMI.jpg)
+![](https://a3s.fi/summerschool/assets/images/lumi.jpg){.center width=65%}
 </div>
 
 <div class=column style=width:49%>

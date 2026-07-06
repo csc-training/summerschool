@@ -36,7 +36,7 @@ lang:   en
 - overfitting can be prevented by regularization
 
 <div class="column"  style="width:99%; text-align: center;">
-  ![](img/Under_Over_fitting.png){width=64%}
+  ![](https://a3s.fi/summerschool/assets/images/hpc-ai/Under_Over_fitting.png){width=64%}
 
   <small>Adapted from [Wikimedia Commons](https://en.wikipedia.org/wiki/Overfitting), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
@@ -47,7 +47,7 @@ lang:   en
   ![](https://a3s.fi/summerschool/assets/images/hpc-ai/Neuron.png){width=125%}
 </div>
 <div class="column"  style="width:39%; text-align: center;">
-  ![](img/activation_functions.png){width=65%}
+  ![](https://a3s.fi/summerschool/assets/images/hpc-ai/activation_functions.png){width=65%}
 </div>
 
 

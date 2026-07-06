@@ -10,17 +10,11 @@ lang:   en
 
 # Anatomy of a supercomputer
 
-<div class="column" style=width:58%>
 - Supercomputers consist of nodes connected by a high-speed network
 - A node can contain several multicore CPUs and several GPUs
     - 8 GPUs per node in LUMI, 4 GPUs per node in Mahti and Roihu
 - All CPU memory within a node is shared
 - GPU memories within a node are distinct
-</div>
-<div class="column" style=width:38%>
-![](img/lumi.png){.center width=80%}
-<small>Lumi - Pre-exascale system in Finland</small>
-</div>
 
 # Using multiple GPUs
 

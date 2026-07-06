@@ -10,22 +10,12 @@ lang:   en
 
 # GPUs on LUMI-G
 
-:::::: {.columns}
-::: {.column width="60%"}
 <center>
-![](img/lumi-g.svg){.center width=100%}
+![](https://a3s.fi/summerschool/assets/images/lumi-g.svg){width=60%}
 
 <small>LUMI-G Node</small>
 </center>
-:::
-::: {.column width="40%"}
-<center>
-![](https://a3s.fi/summerschool/assets/images/hpc-ai/amd-mi250.avif){.center width=60%}
 
-<small>Single AMD MI250X GPU</small>
-</center>
-:::
-::::::
 
 # FLOPS (Floating point operations per second)
 
@@ -48,21 +38,11 @@ lang:   en
 
 # Peak vs Max-Achievable FLOPS
 
-:::::: {.columns}
-::: {.column width="50%"}
-<center>
-![](https://a3s.fi/summerschool/assets/images/hpc-ai/maf-flops.png){.center width=80%}
-<small>Picture from [AMD](https://rocm.blogs.amd.com/software-tools-optimization/Understanding_Peak_and_Max-Achievable_FLOPS/README.html)</small>
-</center>
-
-:::
-::: {.column width="45%"}
 - Peak performance is calculated based on the hardware characteristics
   - <small>$\text{FLOPS} = \text{Cores} \times \text{Ops/Cycle} \times \text{Clock}$</small>
 - Memory Bandwidth Limits, Underutilization, Load Imbalance, etc.
 - Usually **40–70% of Peak FLOPS** in practice
-:::
-::::::
+  - See [AMD ROCm blog](https://rocm.blogs.amd.com/software-tools-optimization/Understanding_Peak_and_Max-Achievable_FLOPS/README.html)
 
 # ML Parameters vs FLOP count
 
