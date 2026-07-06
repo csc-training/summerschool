@@ -41,7 +41,7 @@ After this lecture you will understand
 
 Top 500 supercomputers mapped by coprocessor type.
 
-https://www.top500.org/statistics/treemaps/
+<https://www.top500.org/statistics/treemaps/>
 
 :::
 ::: {.column width="70%"}
@@ -60,7 +60,7 @@ November 2005
 
 Top 500 supercomputers mapped by coprocessor type.
 
-https://www.top500.org/statistics/treemaps/
+<https://www.top500.org/statistics/treemaps/>
 
 :::
 ::: {.column width="70%"}
@@ -79,7 +79,7 @@ November 2010
 
 Top 500 supercomputers mapped by coprocessor type.
 
-https://www.top500.org/statistics/treemaps/
+<https://www.top500.org/statistics/treemaps/>
 
 :::
 ::: {.column width="70%"}
@@ -98,7 +98,7 @@ November 2015
 
 Top 500 supercomputers mapped by coprocessor type.
 
-https://www.top500.org/statistics/treemaps/
+<https://www.top500.org/statistics/treemaps/>
 
 :::
 ::: {.column width="70%"}
@@ -117,7 +117,7 @@ November 2020
 
 Top 500 supercomputers mapped by coprocessor type.
 
-https://www.top500.org/statistics/treemaps/
+<https://www.top500.org/statistics/treemaps/>
 
 :::
 ::: {.column width="70%"}
@@ -317,7 +317,7 @@ Abstract schematic of Epyc 7763 CPU
 ::: {.column width="30%"}
 Die shot of Zen3 CCD by Fritzchen Fritz
 
-<small>Fritzchens Fritz, public domain, https://www.flickr.com/people/130561288@N04/</small>
+<small>Fritzchens Fritz, public domain, <https://www.flickr.com/people/130561288@N04/></small>
 :::
 ::: {.column width="70%"}
 ![](img/zen3_ccd_fritzchen_fritz_overlay.png){.center width=100%}
@@ -339,7 +339,7 @@ Abstract schematic of MI250x GPU
 
 Die shot of MI250X (on the web page)
 
-https://www.amd.com/en/technologies/cdna.html#cdna2
+<https://www.amd.com/en/technologies/cdna.html#cdna2>
 
 # CPU vs GPU threads
 
@@ -535,7 +535,7 @@ Examples
 :::
 ::: {.column width="50%"}
 ![](img/Interaction_of_acetylcholinesterase_with_silver_nanoparticle.png){.center width=100%}
-<small>Semen Yesylevskyy, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons</small>
+<small>Semen Yesylevskyy, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0), via Wikimedia Commons</small>
 :::
 ::::::
 
@@ -570,7 +570,7 @@ Examples
 ::: {.column width="50%"}
 ![](img/rendered_spheres.png){.center width=100%}
 
-<small>Barahag, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons</small>
+<small>Barahag, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0), via Wikimedia Commons</small>
 :::
 ::::::
 
@@ -589,7 +589,7 @@ Examples
 ::: {.column width="50%"}
 ![](img/Banana_Plant_Flask_by_Max_Gruber.png){.center width=100%}
 
-<small>Max Gruber, CC BY 4.0 <https://creativecommons.org/licenses/by/4.0>, via Wikimedia Commons</small>
+<small>Max Gruber, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0), via Wikimedia Commons</small>
 :::
 ::::::
 
