@@ -176,10 +176,8 @@ Code on the GPU from the point of view of a single thread
 # Kernel example: $\vec{y} = \alpha \vec x + \vec y$ (axpy)
 
 ```cpp
-__global__ void axpy(int n, double a, double *x, double *y)
-{
+__global__ void axpy(int n, double a, double *x, double *y) {
     const int tid = threadIdx.x + blockIdx.x * blockDim.x;
-
     if (tid < n) {
         y[tid] += a * x[tid];
     }
@@ -187,21 +185,17 @@ __global__ void axpy(int n, double a, double *x, double *y)
 ```
 ![](img/kernel_tid_limit.svg){.center width=70%}
 
-::: incremental
 - global ID `tid` calculated based on the thread and block IDs
 - only threads with `tid` smaller than `n` calculate
 - works only if number of threads ≥ `n`
-:::
 
 
 # Kernel example: axpy (revisited)
 
 ```cpp
-__global__ void axpy(int n, double a, double *x, double *y)
-{
+__global__ void axpy(int n, double a, double *x, double *y) {
     const int tid = threadIdx.x + blockIdx.x * blockDim.x;
     const int stride = blockDim.x * gridDim.x;
-
     for (int i = tid; i < n; i += stride) {
         y[i] += a * x[i];
     }
