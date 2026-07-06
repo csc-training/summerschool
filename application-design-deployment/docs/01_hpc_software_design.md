@@ -44,7 +44,7 @@ Good project design helps you
 - We only cover the surface today
 - The goal is to recognise the tools and know what to adopt as your software size increases
 
-# Section 1: Version control
+# Section 1: Version control {.section}
 
 # Version control
 - Version control records the history of a project
@@ -136,7 +136,7 @@ git push
 
 </div>
 
-# Section 2: Testing
+# Section 2: Testing {.section}
 
 # Testing
 - Tests check that the software behaves as expected
@@ -183,7 +183,7 @@ git push
 - Low coverage is a warning sign
 
 
-# Section 3: CI/CD
+# Section 3: CI/CD {.section}
 
 # CI/CD
 - **Continuous Integration (CI)**
@@ -252,7 +252,7 @@ In a training repository:
 - Do not run production-scale benchmarks as normal CI jobs
 
 
-# Section 4: Documentation
+# Section 4: Documentation {.section}
 
 # Documentation
 - Documentation is part of the software project
