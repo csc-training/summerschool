@@ -1,8 +1,11 @@
----
-# SPDX-FileCopyrightText: 2026 Hossein Firooz (Aalto University) and CSC - IT Center for Science Ltd. <www.csc.fi>
-#
-# SPDX-License-Identifier: CC-BY-4.0
+<!--
+SPDX-FileCopyrightText: 2025 Hossein Firooz (Aalto University)
+SPDX-FileCopyrightText: 2025 CSC - IT Center for Science Ltd. <www.csc.fi>
 
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
+---
 title:  "Scaling PyTorch Models: Single vs Multi-GPU Training and Techniques"
 event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
