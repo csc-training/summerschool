@@ -39,7 +39,7 @@ jobs:
           unzip update-theme.zip
 
           ARGS=""
-          [[ "$INCLUDE_PDF" == "true" ]] && ARGS="--with-pdf"
+          [[ "$INCLUDE_PDF" == "true" ]] && ARGS="--with-pdf --merge-pdf"
 
           slidefactory pages about.yml build \
               --filters tools/mpi_links.py \
@@ -52,7 +52,18 @@ jobs:
           # TODO: PR to slidefactory
           bash tools/patch-index-open.sh build/index.html
 
+          # Note that the merged PDF doesn't include Parallel Algorithms
+          if [[ "$INCLUDE_PDF" == "true" ]]; then
+              bash tools/patch-index-merged-pdf.sh build/index.html
+          fi
+
           # Fetch external slides
+          # TODO: This runs after slidefactory has already built
+          # build/slides-merged.pdf (see --merge-pdf above), so the merged
+          # PDF still has the placeholder link-slide for Parallel Algorithms
+          # instead of this externally-hosted deck. Fix once slidefactory
+          # supports building the merged PDF from an already-built output
+          # directory, or otherwise incorporating external slides into it.
           rm -rf build/*/algorithms/
           mkdir -p build/pdf/algorithms/
           wget https://a3s.fi/summerschool/assets/slides/parallel-algorithms.pdf -O build/pdf/algorithms/parallel-algorithms.pdf
