@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/csc-training/slidefactory:3.4.3
+      image: ghcr.io/csc-training/slidefactory:merge-pdf-test
     steps:
       - name: Checkout
         uses: actions/checkout@v6
